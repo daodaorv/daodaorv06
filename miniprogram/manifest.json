@@ -5,6 +5,9 @@
     "versionName" : "1.0.0",
     "versionCode" : "100",
     "transformPx" : false,
+    "optimization" : {
+        "subPackages" : true
+    },
     /* 5+App特有相关 */
     "app-plus" : {
         "usingComponents" : true,
@@ -52,13 +55,24 @@
     "mp-weixin" : {
         "appid" : "wx545d8668053b84a8",
         "setting" : {
-            "urlCheck" : false
+            "urlCheck" : false,
+            "es6" : true,
+            "postcss" : true,
+            "minified" : true,
+            "newFeature" : true,
+            "filter" : false
         },
         "usingComponents" : true,
+        "requiredPrivateInfos" : [
+            "getLocation"
+        ],
         "permission" : {
             "scope.userLocation" : {
                 "desc" : "仅用于向客户提供最近门店服务"
             }
+        },
+        "optimization" : {
+            "subPackages" : true
         }
     },
     "mp-alipay" : {

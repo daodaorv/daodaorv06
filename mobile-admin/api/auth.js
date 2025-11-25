@@ -14,8 +14,9 @@ export const authApi = {
   login(data) {
     return request.post('/auth/login', {
       ...data,
-      login_type: 'password',
-      platform: 'mobile-admin'
+      loginIp: '192.168.0.102',
+      loginDevice: 'Mobile Admin',
+      loginPlatform: 'mobile_admin'
     });
   },
 

@@ -3,6 +3,8 @@ import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
 import dotenv from 'dotenv';
+
+// 触发重启
 import rateLimit from 'express-rate-limit';
 import { createServer } from 'http';
 
@@ -33,7 +35,25 @@ app.use(helmet());
 app.use(cors({
   origin: process.env.NODE_ENV === 'production'
     ? ['https://admin.daodaorv.com', 'https://m.daodaorv.com']
-    : ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:3000'],
+    : [
+        'http://localhost:5173',
+        'http://localhost:5174',
+        'http://localhost:5175',
+        'http://localhost:5176',
+        'http://localhost:5177',
+        'http://localhost:5178',
+        'http://localhost:5179',
+        'http://localhost:3005',
+        'http://192.168.0.102:5173',
+        'http://192.168.0.102:5174',
+        'http://192.168.0.102:5175',
+        'http://192.168.0.102:5176',
+        'http://192.168.0.102:5177',
+        'http://192.168.0.102:5178',
+        'http://192.168.0.102:5179',
+        'http://192.168.0.102:3005',
+        'http://localhost:3000'
+      ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
@@ -71,10 +91,29 @@ app.use('/api/v1', (req, res, next) => {
 // Import routes
 import authRoutes from '@/routes/auth.routes';
 import userRoutes from '@/routes/user.routes';
+// import diyPagesRoutes from '@/routes/diy.pages.routes'; // Temporarily commented for testing
+import diyComponentsRoutes from '@/routes/diy.library.routes';
+import diyLibraryRoutes from '@/routes/diy.library.routes';
 
 // API routes
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/users', userRoutes);
+// app.use('/api/v1/diy/pages', diyPagesRoutes); // Temporarily commented for testing
+app.use('/api/v1/diy/library', diyLibraryRoutes);
+
+// Simple DIY pages test route
+app.get('/api/v1/diy/pages', (req, res) => {
+  res.json({
+    code: 0,
+    message: 'DIY pages API is working',
+    data: {
+      pages: [],
+      total: 0,
+      page: 1,
+      pageSize: 10
+    }
+  });
+});
 
 // Test route
 app.get('/api/v1/test', (req, res) => {
@@ -99,7 +138,7 @@ app.use('*', (req, res) => {
   });
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 async function startServer() {
   try {
@@ -141,3 +180,4 @@ process.on('SIGINT', () => {
 startServer();
 
 export { app, server };
+ 

@@ -4,6 +4,12 @@ import { logger } from '@/utils/logger';
 let redisClient: RedisClientType;
 
 export async function connectRedis(): Promise<RedisClientType> {
+  // 如果使用内存数据模式，跳过Redis连接
+  if (process.env.USE_MEMORY_DATA === 'true') {
+    logger.info('Using memory data mode - skipping Redis connection');
+    return {} as RedisClientType; // 返回空对象
+  }
+
   try {
     redisClient = createClient({
       socket: {

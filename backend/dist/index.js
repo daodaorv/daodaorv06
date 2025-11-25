@@ -32,9 +32,21 @@ const limiter = (0, express_rate_limit_1.default)({
 app.use((0, helmet_1.default)());
 app.use((0, cors_1.default)({
     origin: process.env.NODE_ENV === 'production'
-        ? ['https://admin.daodaorv.com']
-        : ['http://localhost:5173', 'http://localhost:3000'],
-    credentials: true
+        ? ['https://admin.daodaorv.com', 'https://m.daodaorv.com']
+        : [
+            'http://localhost:5173',
+            'http://localhost:5174',
+            'http://localhost:5175',
+            'http://localhost:5176',
+            'http://192.168.0.102:5173',
+            'http://192.168.0.102:5174',
+            'http://192.168.0.102:5175',
+            'http://192.168.0.102:5176',
+            'http://localhost:3000'
+        ],
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
 app.use((0, compression_1.default)());
 app.use(express_1.default.json({ limit: '10mb' }));
@@ -59,6 +71,14 @@ app.use('/api/v1', (req, res, next) => {
     });
     next();
 });
+const auth_routes_1 = __importDefault(require("@/routes/auth.routes"));
+const user_routes_1 = __importDefault(require("@/routes/user.routes"));
+const diy_pages_routes_1 = __importDefault(require("@/routes/diy.pages.routes"));
+const diy_components_routes_1 = __importDefault(require("@/routes/diy.components.routes"));
+app.use('/api/v1/auth', auth_routes_1.default);
+app.use('/api/v1/users', user_routes_1.default);
+app.use('/api/v1/diy/pages', diy_pages_routes_1.default);
+app.use('/api/v1/diy', diy_components_routes_1.default);
 app.get('/api/v1/test', (req, res) => {
     res.json({
         code: 0,
@@ -76,7 +96,7 @@ app.use('*', (req, res) => {
         data: null
     });
 });
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 async function startServer() {
     try {
         await (0, database_1.connectDatabase)();

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>叨叨房车 - 项目详情</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../../assets/css/variables.css">
+    <link rel="stylesheet" href="../../assets/css/common.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-50 pb-24">
+    <div class="container mx-auto">
+        <!-- Header -->
+        <header class="bg-white p-4 sticky top-0 z-40 shadow-sm flex items-center">
+            <i class="fas fa-chevron-left text-gray-600 text-lg mr-4" onclick="history.back()"></i>
+            <h1 class="font-bold text-lg">项目详情</h1>
+        </header>
+
+        <!-- Project Banner -->
+        <div class="h-48 bg-gray-200 relative">
+            <img src="https://images.unsplash.com/photo-1511919884226-fd3cad34687c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+                alt="RV" class="w-full h-full object-cover">
+            <div class="absolute top-4 left-4 bg-red-500 text-white text-xs px-2 py-1 rounded">募集中</div>
+        </div>
+
+        <!-- Project Info -->
+        <div class="bg-white p-4 mb-2">
+            <h1 class="font-bold text-xl text-gray-900 mb-2">上汽大通 MAXUS V90 (2024款)</h1>
+            <div class="flex gap-2 mb-4">
+                <span class="text-xs bg-orange-100 text-orange-500 px-2 py-1 rounded">年化 8%-12%</span>
+                <span class="text-xs bg-blue-100 text-blue-500 px-2 py-1 rounded">低风险</span>
+                <span class="text-xs bg-gray-100 text-gray-500 px-2 py-1 rounded">按月分红</span>
+            </div>
+
+            <div class="bg-gray-50 rounded-xl p-4">
+                <div class="flex justify-between text-sm mb-2">
+                    <span class="text-gray-500">目标金额</span>
+                    <span class="font-bold">¥ 350,000</span>
+                </div>
+                <div class="flex justify-between text-sm mb-2">
+                    <span class="text-gray-500">剩余时间</span>
+                    <span class="font-bold text-orange-500">12 天</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
+                    <div class="bg-blue-500 h-2 rounded-full" style="width: 65%"></div>
+                </div>
+                <div class="flex justify-between text-xs text-gray-500">
+                    <span>已筹 ¥227,500</span>
+                    <span>65%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Details Tabs -->
+        <div class="bg-white mb-2">
+            <div class="flex border-b border-gray-100">
+                <div class="flex-1 py-3 text-center text-orange-500 font-bold border-b-2 border-orange-500">项目介绍</div>
+                <div class="flex-1 py-3 text-center text-gray-500">车辆详情</div>
+                <div class="flex-1 py-3 text-center text-gray-500">风险揭示</div>
+            </div>
+            <div class="p-4 text-sm text-gray-600 leading-relaxed">
+                <p class="mb-4">本项目为上汽大通 MAXUS V90 房车众筹项目。车辆将投放至“叨叨房车”平台进行租赁运营，投资人将按照持有份额比例享受车辆运营收益分红。</p>
+                <h3 class="font-bold text-gray-800 mb-2">收益测算</h3>
+                <p class="mb-4">预计车辆年出租率 60%-80%，扣除运营成本后，预计年化收益率在 8%-12% 之间。收益按月结算，每月 15 日发放上月收益。</p>
+                <h3 class="font-bold text-gray-800 mb-2">退出机制</h3>
+                <p>项目封闭期 6 个月，封闭期结束后，投资人可通过平台“份额交易市场”转让份额，或持有至车辆处置期（3年）结束，享受车辆残值分配。</p>
+            </div>
+        </div>
+
+        <!-- Bottom Action Bar -->
+        <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-3 flex items-center z-50"
+            style="max-width: 480px; margin: 0 auto;">
+            <div class="flex-1 pr-4">
+                <div class="text-xs text-gray-500">起投金额</div>
+                <div class="text-orange-500 font-bold text-lg">¥ 1,000</div>
+            </div>
+            <button class="flex-[2] bg-blue-600 text-white font-bold py-3 rounded-full" onclick="showToast('认购功能开发中')">
+                立即认购
+            </button>
+        </div>
+    </div>
+
+    <script src="../../assets/js/common.js"></script>
+</body>
+
+</html>

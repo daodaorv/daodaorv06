@@ -1,0 +1,143 @@
+/**
+ * 叨叨房车项目统一SCSS变量定义
+ * 适用于所有uni-app项目，包括小程序和移动管理端
+ */
+
+/* ===========================================
+   颜色系统 - Color System
+   =========================================== */
+
+/* 主色调 - Primary Colors */
+$primary-color: #FF6B35;
+$primary-light: #FF8F5A;
+$primary-dark: #E55A2B;
+
+/* 辅助色 - Secondary Colors */
+$secondary-color: #48BB78;
+$secondary-light: #68D391;
+$accent-color: #4299E1;
+$member-color: #8860D0;
+
+/* 功能色 - Functional Colors */
+$warning-color: #F6AD55;
+$error-color: #FC8181;
+$success-color: #48BB78;
+$info-color: #4299E1;
+
+/* 文本色 - Text Colors */
+$text-primary: #2D3748;
+$text-secondary: #4A5568;
+$text-tertiary: #718096;
+$text-disabled: #A0AEC0;
+$text-placeholder: #CBD5E0;
+$text-white: #FFFFFF;
+
+/* 背景色 - Background Colors */
+$bg-primary: #FFFFFF;
+$bg-secondary: #F7FAFC;
+$bg-tertiary: #EDF2F7;
+$bg-overlay: rgba(0, 0, 0, 0.5);
+
+/* 边框色 - Border Colors */
+$border-light: #E2E8F0;
+$border-medium: #CBD5E0;
+$border-dark: #A0AEC0;
+
+/* ===========================================
+   间距系统 - Spacing System
+   =========================================== */
+
+$spacing-xs: 8rpx;
+$spacing-sm: 16rpx;
+$spacing-md: 24rpx;
+$spacing-lg: 32rpx;
+$spacing-xl: 48rpx;
+$spacing-2xl: 64rpx;
+
+/* ===========================================
+   圆角系统 - Border Radius System
+   =========================================== */
+
+$radius-xs: 4rpx;
+$radius-sm: 8rpx;
+$radius-md: 12rpx;
+$radius-lg: 16rpx;
+$radius-xl: 24rpx;
+$radius-round: 50rpx;
+$radius-circle: 50%;
+
+/* ===========================================
+   阴影系统 - Shadow System
+   =========================================== */
+
+$shadow-xs: 0 1rpx 4rpx rgba(0, 0, 0, 0.04);
+$shadow-sm: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
+$shadow-md: 0 4rpx 16rpx rgba(0, 0, 0, 0.08);
+$shadow-lg: 0 8rpx 24rpx rgba(0, 0, 0, 0.12);
+$shadow-xl: 0 16rpx 48rpx rgba(0, 0, 0, 0.16);
+
+/* ===========================================
+   字体系统 - Typography System
+   =========================================== */
+
+/* 字号 - Font Sizes */
+$font-xs: 24rpx;
+$font-sm: 28rpx;
+$font-md: 32rpx;
+$font-lg: 36rpx;
+$font-xl: 48rpx;
+$font-2xl: 56rpx;
+
+/* 字重 - Font Weights */
+$weight-light: 300;
+$weight-normal: 400;
+$weight-medium: 500;
+$weight-semibold: 600;
+$weight-bold: 700;
+
+/* ===========================================
+   布局系统 - Layout System
+   =========================================== */
+
+/* 容器最大宽度 */
+$max-width-xs: 480rpx;
+$max-width-sm: 768rpx;
+$max-width-md: 1024rpx;
+$max-width-lg: 1200rpx;
+$max-width-xl: 1440rpx;
+
+/* ===========================================
+   动画系统 - Animation System
+   =========================================== */
+
+/* 动画时长 */
+$transition-fast: 0.15s;
+$transition-normal: 0.25s;
+$transition-slow: 0.35s;
+
+/* 缓动函数 */
+$ease-in: ease-in;
+$ease-out: ease-out;
+$ease-in-out: ease-in-out;
+
+/* ===========================================
+   层级系统 - Z-Index System
+   =========================================== */
+
+$z-dropdown: 1000;
+$z-sticky: 1020;
+$z-fixed: 1030;
+$z-modal-backdrop: 1040;
+$z-modal: 1050;
+$z-popover: 1060;
+$z-tooltip: 1070;
+
+/* ===========================================
+   响应式断点 - Responsive Breakpoints
+   =========================================== */
+
+$breakpoint-xs: 480px;
+$breakpoint-sm: 768px;
+$breakpoint-md: 1024px;
+$breakpoint-lg: 1200px;
+$breakpoint-xl: 1440px;

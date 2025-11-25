@@ -69,17 +69,20 @@
           <div class="card-container">
             <h3>快速操作</h3>
             <el-space direction="vertical" style="width: 100%">
-              <el-button type="primary" style="width: 100%">
-                新增订单
+              <el-button type="primary" style="width: 100%" @click="$router.push('/orders/create')">
+                新建订单
               </el-button>
-              <el-button type="success" style="width: 100%">
+              <el-button type="success" style="width: 100%" @click="$router.push('/vehicles')">
                 车辆管理
               </el-button>
-              <el-button type="warning" style="width: 100%">
+              <el-button type="warning" style="width: 100%" @click="$router.push('/orders')">
+                订单管理
+              </el-button>
+              <el-button type="info" style="width: 100%" @click="$router.push('/users')">
                 用户管理
               </el-button>
-              <el-button type="info" style="width: 100%">
-                系统设置
+              <el-button style="width: 100%" @click="$router.push('/diy')">
+                DIY管理
               </el-button>
             </el-space>
           </div>

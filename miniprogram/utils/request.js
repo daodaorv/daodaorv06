@@ -85,5 +85,7 @@ class Request {
   }
 }
 
-export default new Request();
+const requestInstance = new Request();
+
+export default requestInstance;
 

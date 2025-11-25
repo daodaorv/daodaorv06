@@ -26,6 +26,12 @@ const sequelize = new Sequelize({
 });
 
 export async function connectDatabase(): Promise<Sequelize> {
+  // 如果使用内存数据模式，跳过数据库连接
+  if (process.env.USE_MEMORY_DATA === 'true') {
+    logger.info('Using memory data mode - skipping database connection');
+    return sequelize as any;
+  }
+
   try {
     await sequelize.authenticate();
     logger.info('Database connection has been established successfully.');
@@ -33,13 +39,6 @@ export async function connectDatabase(): Promise<Sequelize> {
     // Initialize models
     initModels(sequelize);
     logger.info('Database models initialized successfully.');
-
-    // Sync database (for development only)
-    // Note: We don't use sync() because we manage schema with SQL migrations
-    // if (process.env.NODE_ENV === 'development') {
-    //   await sequelize.sync({ alter: true });
-    //   logger.info('Database synchronized successfully.');
-    // }
 
     return sequelize;
   } catch (error) {

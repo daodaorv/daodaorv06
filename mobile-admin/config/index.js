@@ -4,7 +4,7 @@
 
 // 开发环境配置
 const development = {
-  baseURL: 'http://localhost:3000/api/v1',
+  baseURL: 'http://192.168.0.102:3000/api/v1',
   timeout: 10000
 };
 

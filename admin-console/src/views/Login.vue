@@ -74,8 +74,9 @@ const handleLogin = async () => {
         const res = await login({
           phone: loginForm.username,
           password: loginForm.password,
-          login_type: 'password',
-          platform: 'pc-admin'
+          loginIp: '127.0.0.1',
+          loginDevice: 'PC Browser',
+          loginPlatform: 'pc'
         })
 
         localStorage.setItem('admin_token', res.data.token)

@@ -1,0 +1,20 @@
+:root {
+    /* 品牌色 */
+    --primary-orange: #FF9F29;
+    --primary-orange-light: rgba(255, 159, 41, 0.1);
+    --member-purple: #8860D0;
+
+    /* 辅助色 */
+    --success-green: #67C23A;
+    --error-red: #FF4D4F;
+    --info-blue: #4B91FF;
+
+    /* 文字色 */
+    --text-primary: #1A1A1A;
+    --text-secondary: #666666;
+    --text-tertiary: #999999;
+
+    /* 背景色 */
+    --bg-page: #F7F8FA;
+    --bg-card: #FFFFFF;
+}

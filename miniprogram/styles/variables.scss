@@ -1,0 +1,146 @@
+/**
+ * 叨叨房车项目统一SCSS变量定义
+ * 基于原型图设计规范，适用于所有uni-app项目
+ */
+
+/* ===========================================
+   设计令牌 - Design Tokens (基于原型图)
+   =========================================== */
+
+/* 品牌色 - Brand Colors */
+$primary-orange: #FF9F29;           /* 主品牌色 - 橙色 */
+$primary-orange-light: rgba(255, 159, 41, 0.1);
+$member-purple: #8860D0;            /* 会员专享色 - 紫色 */
+$member-purple-light: rgba(136, 96, 208, 0.1);
+
+/* 功能色 - Functional Colors */
+$success-green: #67C23A;            /* 成功状态 */
+$error-red: #FF4D4F;                /* 错误状态 */
+$info-blue: #4B91FF;                /* 信息提示 */
+$warning-yellow: #E6A23C;           /* 警告状态 */
+
+/* 文本色 - Text Colors */
+$text-primary: #333333;             /* 主要文字 */
+$text-secondary: #666666;           /* 次要文字 */
+$text-tertiary: #999999;            /* 辅助文字 */
+$text-placeholder: #CCCCCC;         /* 占位文字 */
+$text-white: #FFFFFF;               /* 白色文字 */
+
+/* 背景色 - Background Colors */
+$bg-page: #F8F8F8;                  /* 页面背景 - 米白色 */
+$bg-card: #FFFFFF;                  /* 卡片背景 - 纯白色 */
+$bg-section: #FAFAFA;               /* 区域背景 */
+
+/* 边框色 - Border Colors */
+$border-light: #E8E8E8;             /* 浅边框 */
+$border-medium: #DDDDDD;            /* 中等边框 */
+$border-dark: #CCCCCC;              /* 深边框 */
+
+/* ===========================================
+   间距系统 - Spacing System
+   =========================================== */
+
+$spacing-xs: 8rpx;      /* 极小间距 */
+$spacing-sm: 16rpx;     /* 小间距 */
+$spacing-md: 24rpx;     /* 中等间距 */
+$spacing-lg: 32rpx;     /* 大间距 */
+$spacing-xl: 48rpx;     /* 超大间距 */
+$spacing-xxl: 80rpx;    /* 极大间距 */
+
+/* 兼容性别名 */
+$spacing-2xl: $spacing-xxl;
+
+/* ===========================================
+   圆角系统 - Border Radius System
+   =========================================== */
+
+$radius-xs: 8rpx;       /* 极小圆角 */
+$radius-sm: 12rpx;      /* 小圆角 */
+$radius-md: 16rpx;      /* 中等圆角 */
+$radius-lg: 20rpx;      /* 大圆角 */
+$radius-xl: 24rpx;      /* 超大圆角 */
+$radius-round: 50rpx;   /* 圆角按钮 */
+$radius-circle: 50%;    /* 圆形 */
+
+/* ===========================================
+   阴影系统 - Shadow System
+   =========================================== */
+
+$shadow-light: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);    /* 轻微阴影 */
+$shadow-medium: 0 4rpx 16rpx rgba(0, 0, 0, 0.08);  /* 中等阴影 */
+$shadow-heavy: 0 8rpx 32rpx rgba(0, 0, 0, 0.12);   /* 重度阴影 */
+$shadow-card: 0 4rpx 16rpx rgba(0, 0, 0, 0.05);    /* 卡片阴影 */
+
+/* ===========================================
+   字体系统 - Typography System
+   =========================================== */
+
+/* 字号 - Font Sizes */
+$font-xs: 20rpx;       /* 极小字号 */
+$font-sm: 24rpx;       /* 小字号 */
+$font-md: 28rpx;       /* 中等字号 */
+$font-lg: 32rpx;       /* 大字号 */
+$font-xl: 36rpx;       /* 超大字号 */
+$font-2xl: 40rpx;      /* 标题字号 */
+$font-3xl: 48rpx;      /* 大标题字号 */
+
+/* 字重 - Font Weights */
+$weight-light: 300;     /* 轻字体 */
+$weight-normal: 400;    /* 正常字体 */
+$weight-medium: 500;    /* 中等字体 */
+$weight-semibold: 600;  /* 半粗字体 */
+$weight-bold: 700;      /* 粗字体 */
+
+/* 行高 - Line Heights */
+$line-height-tight: 1.2;
+$line-height-normal: 1.4;
+$line-height-loose: 1.6;
+
+/* ===========================================
+   布局系统 - Layout System
+   =========================================== */
+
+/* 容器边距 */
+$container-padding: 30rpx;
+$container-margin: 30rpx;
+$card-padding: 30rpx;
+
+/* 安全区域 */
+$safe-area-bottom: calc(120rpx + env(safe-area-inset-bottom));
+
+/* ===========================================
+   动画系统 - Animation System
+   =========================================== */
+
+/* 动画时长 */
+$transition-fast: 0.2s;
+$transition-normal: 0.3s;
+$transition-slow: 0.4s;
+
+/* 缓动函数 */
+$ease-out: ease-out;
+$ease-in-out: ease-in-out;
+
+/* ===========================================
+   层级系统 - Z-Index System
+   =========================================== */
+
+$z-popup: 1000;           /* 弹窗 */
+$z-modal: 1050;           /* 模态框 */
+$z-toast: 1100;           /* 提示 */
+$z-navbar: 100;           /* 导航栏 */
+
+/* ===========================================
+   兼容性别名 - Compatibility Aliases
+   =========================================== */
+
+/* 为了兼容现有代码，保留旧变量名的映射 */
+$primary-color: $primary-orange;
+$primary-light: $primary-orange-light;
+$member-color: $member-purple;
+$text-disabled: $text-placeholder;
+$bg-primary: $bg-card;
+$bg-secondary: $bg-page;
+$border-light: $border-light;
+$border-medium: $border-medium;
+$border-dark: $border-dark;

@@ -27,10 +27,22 @@ class Request {
         },
         timeout: this.timeout,
         success: (res) => {
+          console.log('API Response:', res);
+
           if (res.statusCode === 200) {
             // 业务成功
             if (res.data.code === 0 || res.data.code === 200) {
-              resolve(res.data.data);
+              // 检查data字段是否存在且不为null
+              if (res.data.data !== null && res.data.data !== undefined) {
+                resolve(res.data.data);
+              } else {
+                // 如果data为null，但有token等其他字段，直接返回整个res.data
+                if (res.data.token || res.data.user) {
+                  resolve(res.data);
+                } else {
+                  resolve({});
+                }
+              }
             } else {
               // 业务失败
               const error = new Error(res.data.message || '请求失败');
@@ -53,7 +65,7 @@ class Request {
             reject(new Error('未授权'));
           } else {
             // HTTP错误
-            reject(new Error(res.data.message || `请求失败 (${res.statusCode})`));
+            reject(new Error(res.data?.message || `请求失败 (${res.statusCode})`));
           }
         },
         fail: (err) => {

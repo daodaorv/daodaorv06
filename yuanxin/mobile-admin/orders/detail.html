@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>叨叨房车 - 订单详情</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../../assets/css/variables.css">
+    <link rel="stylesheet" href="../../assets/css/common.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-50 pb-24">
+    <div class="container mx-auto">
+        <!-- Header -->
+        <header class="bg-white p-4 sticky top-0 z-40 shadow-sm flex items-center">
+            <i class="fas fa-chevron-left text-gray-600 text-lg mr-4" onclick="history.back()"></i>
+            <h1 class="font-bold text-lg">订单详情</h1>
+        </header>
+
+        <!-- Status Banner -->
+        <div class="bg-orange-500 text-white p-6">
+            <h2 class="text-2xl font-bold mb-1">待取车</h2>
+            <p class="text-sm opacity-80">请核验用户身份信息后办理取车</p>
+        </div>
+
+        <!-- User Info -->
+        <div class="m-4 bg-white rounded-xl p-4 shadow-sm -mt-4 relative z-10">
+            <div class="flex items-center gap-3 mb-4">
+                <img src="https://i.pravatar.cc/150?img=3" class="w-12 h-12 rounded-full">
+                <div>
+                    <h3 class="font-bold text-gray-800">张三</h3>
+                    <div class="flex items-center gap-2">
+                        <span class="text-sm text-gray-500">138****8888</span>
+                        <i class="fas fa-phone-alt text-green-500 cursor-pointer"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-100 pt-3 flex justify-between text-sm">
+                <span class="text-gray-500">信用分</span>
+                <span class="text-green-500 font-bold">720 (极好)</span>
+            </div>
+        </div>
+
+        <!-- Vehicle Info -->
+        <div class="m-4 bg-white rounded-xl p-4 shadow-sm">
+            <h3 class="font-bold text-gray-800 mb-3">车辆信息</h3>
+            <div class="flex gap-3 mb-3">
+                <img src="https://images.unsplash.com/photo-1511919884226-fd3cad34687c?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80"
+                    class="w-20 h-20 rounded-lg object-cover">
+                <div class="flex-1">
+                    <h4 class="font-bold text-gray-800">上汽大通 MAXUS V90</h4>
+                    <p class="text-xs text-gray-500 mb-1">沪A 88888</p>
+                    <span class="text-xs bg-green-100 text-green-600 px-2 py-0.5 rounded">整备完成</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Booking Info -->
+        <div class="m-4 bg-white rounded-xl p-4 shadow-sm space-y-3">
+            <h3 class="font-bold text-gray-800 mb-2">租赁信息</h3>
+            <div class="flex justify-between text-sm">
+                <span class="text-gray-500">取车时间</span>
+                <span class="text-gray-800">11-22 10:00</span>
+            </div>
+            <div class="flex justify-between text-sm">
+                <span class="text-gray-500">还车时间</span>
+                <span class="text-gray-800">11-25 18:00</span>
+            </div>
+            <div class="flex justify-between text-sm">
+                <span class="text-gray-500">取还地点</span>
+                <span class="text-gray-800">上海浦东张江店</span>
+            </div>
+            <div class="flex justify-between text-sm">
+                <span class="text-gray-500">租期</span>
+                <span class="text-gray-800">3 天</span>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-3 z-50"
+            style="max-width: 480px; margin: 0 auto;">
+            <div class="grid grid-cols-2 gap-4">
+                <button class="border border-gray-300 text-gray-600 font-bold py-3 rounded-lg">取消订单</button>
+                <button class="bg-blue-600 text-white font-bold py-3 rounded-lg"
+                    onclick="navigateTo('../vehicles/check.html')">开始验车</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../assets/js/common.js"></script>
+</body>
+
+</html>

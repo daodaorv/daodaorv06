@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>叨叨房车 - 管理端工作台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../../assets/css/variables.css">
+    <link rel="stylesheet" href="../../assets/css/common.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-50 pb-24">
+    <div class="container mx-auto">
+        <!-- Header -->
+        <header class="bg-white p-4 sticky top-0 z-40 shadow-sm flex justify-between items-center">
+            <h1 class="font-bold text-lg">工作台</h1>
+            <div class="flex items-center gap-2">
+                <span class="text-sm text-gray-500">张店长</span>
+                <img src="https://i.pravatar.cc/150?img=11" class="w-8 h-8 rounded-full">
+            </div>
+        </header>
+
+        <!-- Stats -->
+        <div class="p-4 grid grid-cols-2 gap-4">
+            <div class="bg-white rounded-xl p-4 shadow-sm">
+                <div class="text-xs text-gray-500 mb-1">今日订单</div>
+                <div class="text-2xl font-bold text-gray-800">12</div>
+                <div class="text-xs text-green-500 mt-1">+2 (环比)</div>
+            </div>
+            <div class="bg-white rounded-xl p-4 shadow-sm">
+                <div class="text-xs text-gray-500 mb-1">待处理</div>
+                <div class="text-2xl font-bold text-orange-500">5</div>
+                <div class="text-xs text-gray-400 mt-1">需尽快处理</div>
+            </div>
+            <div class="bg-white rounded-xl p-4 shadow-sm">
+                <div class="text-xs text-gray-500 mb-1">在租车辆</div>
+                <div class="text-2xl font-bold text-blue-500">8</div>
+                <div class="text-xs text-gray-400 mt-1">总库存 15</div>
+            </div>
+            <div class="bg-white rounded-xl p-4 shadow-sm">
+                <div class="text-xs text-gray-500 mb-1">今日营收</div>
+                <div class="text-2xl font-bold text-gray-800">¥ 8.5k</div>
+                <div class="text-xs text-red-500 mt-1">-5% (环比)</div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="px-4 mb-4">
+            <h2 class="font-bold text-gray-800 mb-3">常用功能</h2>
+            <div class="bg-white rounded-xl p-4 shadow-sm grid grid-cols-4 gap-4">
+                <div class="flex flex-col items-center gap-2" onclick="navigateTo('../vehicles/check.html')">
+                    <div class="w-10 h-10 bg-blue-50 rounded-full flex items-center justify-center text-blue-500">
+                        <i class="fas fa-clipboard-check"></i>
+                    </div>
+                    <span class="text-xs text-gray-600">车辆检查</span>
+                </div>
+                <div class="flex flex-col items-center gap-2" onclick="navigateTo('../orders/list.html')">
+                    <div class="w-10 h-10 bg-orange-50 rounded-full flex items-center justify-center text-orange-500">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <span class="text-xs text-gray-600">订单管理</span>
+                </div>
+                <div class="flex flex-col items-center gap-2">
+                    <div class="w-10 h-10 bg-green-50 rounded-full flex items-center justify-center text-green-500">
+                        <i class="fas fa-key"></i>
+                    </div>
+                    <span class="text-xs text-gray-600">车辆调度</span>
+                </div>
+                <div class="flex flex-col items-center gap-2">
+                    <div class="w-10 h-10 bg-purple-50 rounded-full flex items-center justify-center text-purple-500">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <span class="text-xs text-gray-600">经营报表</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Todo List -->
+        <div class="px-4 mb-4">
+            <h2 class="font-bold text-gray-800 mb-3">待办事项</h2>
+            <div class="space-y-3">
+                <div
+                    class="bg-white rounded-xl p-4 shadow-sm flex items-center justify-between border-l-4 border-orange-500">
+                    <div>
+                        <h3 class="font-bold text-gray-800 text-sm">车辆整备 - 沪A 88888</h3>
+                        <p class="text-xs text-gray-500 mt-1">预计取车时间: 今日 14:00</p>
+                    </div>
+                    <button
+                        class="text-orange-500 text-sm font-bold border border-orange-500 rounded-lg px-3 py-1">去处理</button>
+                </div>
+                <div
+                    class="bg-white rounded-xl p-4 shadow-sm flex items-center justify-between border-l-4 border-blue-500">
+                    <div>
+                        <h3 class="font-bold text-gray-800 text-sm">还车验车 - 沪A 66666</h3>
+                        <p class="text-xs text-gray-500 mt-1">预计还车时间: 今日 16:00</p>
+                    </div>
+                    <button
+                        class="text-blue-500 text-sm font-bold border border-blue-500 rounded-lg px-3 py-1">去处理</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom TabBar (Admin) -->
+        <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around py-2 z-50"
+            style="max-width: 480px; margin: 0 auto;">
+            <div class="flex flex-col items-center text-blue-600">
+                <i class="fas fa-th-large text-xl mb-1"></i>
+                <span class="text-xs">工作台</span>
+            </div>
+            <div class="flex flex-col items-center text-gray-400" onclick="navigateTo('../orders/list.html')">
+                <i class="fas fa-list-alt text-xl mb-1"></i>
+                <span class="text-xs">订单</span>
+            </div>
+            <div class="flex flex-col items-center text-gray-400">
+                <i class="fas fa-car text-xl mb-1"></i>
+                <span class="text-xs">车辆</span>
+            </div>
+            <div class="flex flex-col items-center text-gray-400" onclick="navigateTo('../user/index.html')">
+                <i class="fas fa-user text-xl mb-1"></i>
+                <span class="text-xs">我的</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../assets/js/common.js"></script>
+</body>
+
+</html>

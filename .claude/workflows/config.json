@@ -1,0 +1,60 @@
+{
+  "version": "1.0.0",
+  "project": "daodao-rv-rental",
+  "description": "叨叨房车租赁管理平台 AI 工作流配置",
+  "workflows": {
+    "feature-development": {
+      "name": "功能开发工作流",
+      "description": "完整的功能开发流程，从需求到部署",
+      "steps": [
+        "需求分析",
+        "API设计",
+        "数据库设计",
+        "后端开发",
+        "前端开发",
+        "测试",
+        "部署"
+      ]
+    },
+    "bug-fix": {
+      "name": "Bug修复工作流",
+      "description": "系统化的Bug修复流程",
+      "steps": [
+        "Bug分析",
+        "根因定位",
+        "修复方案",
+        "代码修改",
+        "测试验证",
+        "部署上线"
+      ]
+    },
+    "api-development": {
+      "name": "API开发工作流",
+      "description": "专门的API接口开发流程",
+      "steps": [
+        "接口规范设计",
+        "数据模型定义",
+        "业务逻辑实现",
+        "接口测试",
+        "文档更新"
+      ]
+    }
+  },
+  "specialists": {
+    "backend-developer": {
+      "name": "后端开发专家",
+      "expertise": ["Node.js", "Express", "TypeScript", "MySQL", "Redis", "JWT"],
+      "focus": "API开发、数据库设计、身份认证"
+    },
+    "frontend-developer": {
+      "name": "前端开发专家",
+      "expertise": ["Vue 3", "uni-app", "TypeScript", "Element Plus", "Pinia"],
+      "focus": "用户界面、状态管理、跨平台兼容"
+    },
+    "database-architect": {
+      "name": "数据库架构师",
+      "expertise": ["MySQL", "Redis", "数据库设计", "性能优化"],
+      "focus": "数据建模、查询优化、数据迁移"
+    }
+  }
+}

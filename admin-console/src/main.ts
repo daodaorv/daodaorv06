@@ -11,6 +11,7 @@ import router from './router'
 // Styles
 import '@/styles/index.scss'
 
+
 const app = createApp(App)
 
 // Register Element Plus icons

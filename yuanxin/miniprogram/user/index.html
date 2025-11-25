@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>叨叨房车 - 个人中心</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="../../assets/css/variables.css">
+  <link rel="stylesheet" href="../../assets/css/common.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-50">
+  <div class="container mx-auto pb-20">
+    <!-- Header / User Info -->
+    <div class="bg-gradient-to-br from-orange-400 to-orange-600 p-6 pb-12 text-white">
+      <div class="flex justify-end mb-4">
+        <i class="fas fa-cog text-xl"></i>
+      </div>
+      <div class="flex items-center gap-4 mb-4" onclick="navigateTo('login.html')">
+        <div class="w-16 h-16 bg-white rounded-full border-2 border-white overflow-hidden">
+          <img src="https://i.pravatar.cc/150?img=12" alt="Avatar" class="w-full h-full object-cover">
+        </div>
+        <div>
+          <h1 class="text-xl font-bold">点击登录/注册</h1>
+          <p class="text-sm opacity-80">登录后享受更多权益</p>
+        </div>
+      </div>
+      <div class="flex justify-around text-center">
+        <div>
+          <div class="font-bold text-lg">0</div>
+          <div class="text-xs opacity-80">优惠券</div>
+        </div>
+        <div>
+          <div class="font-bold text-lg">0</div>
+          <div class="text-xs opacity-80">积分</div>
+        </div>
+        <div>
+          <div class="font-bold text-lg">0</div>
+          <div class="text-xs opacity-80">余额</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Order Status -->
+    <div class="px-4 -mt-8 mb-4">
+      <div class="bg-white rounded-xl p-4 shadow-sm">
+        <div class="flex justify-between items-center mb-4 border-b border-gray-100 pb-2">
+          <h2 class="font-bold text-gray-800">我的订单</h2>
+          <span class="text-xs text-gray-400" onclick="navigateTo('orders.html')">全部订单 <i
+              class="fas fa-chevron-right"></i></span>
+        </div>
+        <div class="flex justify-around text-center">
+          <div class="flex flex-col items-center gap-1">
+            <i class="fas fa-wallet text-orange-500 text-xl"></i>
+            <span class="text-xs text-gray-600">待付款</span>
+          </div>
+          <div class="flex flex-col items-center gap-1">
+            <i class="fas fa-car text-orange-500 text-xl"></i>
+            <span class="text-xs text-gray-600">待取车</span>
+          </div>
+          <div class="flex flex-col items-center gap-1">
+            <i class="fas fa-route text-orange-500 text-xl"></i>
+            <span class="text-xs text-gray-600">出行中</span>
+          </div>
+          <div class="flex flex-col items-center gap-1">
+            <i class="fas fa-comment-dots text-orange-500 text-xl"></i>
+            <span class="text-xs text-gray-600">待评价</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Services Grid -->
+    <div class="px-4 mb-4">
+      <div class="bg-white rounded-xl p-4 shadow-sm">
+        <h2 class="font-bold text-gray-800 mb-4">常用服务</h2>
+        <div class="grid grid-cols-4 gap-4">
+          <div class="flex flex-col items-center gap-2">
+            <i class="fas fa-id-card text-blue-500 text-xl"></i>
+            <span class="text-xs text-gray-600">实名认证</span>
+          </div>
+          <div class="flex flex-col items-center gap-2">
+            <i class="fas fa-address-book text-green-500 text-xl"></i>
+            <span class="text-xs text-gray-600">常用联系人</span>
+          </div>
+          <div class="flex flex-col items-center gap-2">
+            <i class="fas fa-file-invoice text-purple-500 text-xl"></i>
+            <span class="text-xs text-gray-600">发票管理</span>
+          </div>
+          <div class="flex flex-col items-center gap-2">
+            <i class="fas fa-headset text-orange-500 text-xl"></i>
+            <span class="text-xs text-gray-600">联系客服</span>
+          </div>
+          <div class="flex flex-col items-center gap-2">
+            <i class="fas fa-crown text-yellow-500 text-xl"></i>
+            <span class="text-xs text-gray-600">会员中心</span>
+          </div>
+          <div class="flex flex-col items-center gap-2">
+            <i class="fas fa-share-alt text-pink-500 text-xl"></i>
+            <span class="text-xs text-gray-600">邀请好友</span>
+          </div>
+          <div class="flex flex-col items-center gap-2">
+            <i class="fas fa-question-circle text-gray-500 text-xl"></i>
+            <span class="text-xs text-gray-600">帮助中心</span>
+          </div>
+          <div class="flex flex-col items-center gap-2">
+            <i class="fas fa-cog text-gray-500 text-xl"></i>
+            <span class="text-xs text-gray-600">设置</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Admin Entry (Hidden/Special) -->
+    <div class="px-4 mb-4">
+      <div class="bg-gray-800 rounded-xl p-4 text-white flex justify-between items-center"
+        onclick="navigateTo('../../mobile-admin/dashboard/index.html')">
+        <div>
+          <h3 class="font-bold">管理端入口</h3>
+          <p class="text-xs opacity-70">仅管理员可见</p>
+        </div>
+        <i class="fas fa-arrow-right"></i>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="../../assets/js/common.js"></script>
+  <script>
+    injectTabBar('user');
+  </script>
+</body>
+
+</html>

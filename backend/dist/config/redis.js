@@ -6,6 +6,10 @@ const redis_1 = require("redis");
 const logger_1 = require("@/utils/logger");
 let redisClient;
 async function connectRedis() {
+    if (process.env.USE_MEMORY_DATA === 'true') {
+        logger_1.logger.info('Using memory data mode - skipping Redis connection');
+        return {};
+    }
     try {
         redisClient = (0, redis_1.createClient)({
             socket: {

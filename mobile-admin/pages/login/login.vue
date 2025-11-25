@@ -20,19 +20,25 @@
 <script setup>
 import { ref } from 'vue'
 import { authApi } from '../../api/auth'
+import { validatePhone, validatePassword, checkRateLimit, logOperation } from '../../utils/auth'
 
 const phone = ref('')
 const password = ref('')
 const loading = ref(false)
 
 const handleLogin = async () => {
+  // 频率限制检查
+  if (!checkRateLimit('login', 2000)) {
+    return
+  }
+
   // 验证手机号
   if (!phone.value) {
     uni.showToast({ title: '请输入手机号', icon: 'none' })
     return
   }
 
-  if (!/^1[3-9]\d{9}$/.test(phone.value)) {
+  if (!validatePhone(phone.value)) {
     uni.showToast({ title: '手机号格式不正确', icon: 'none' })
     return
   }
@@ -43,8 +49,9 @@ const handleLogin = async () => {
     return
   }
 
-  if (password.value.length < 6) {
-    uni.showToast({ title: '密码至少6位', icon: 'none' })
+  const passwordValidation = validatePassword(password.value)
+  if (!passwordValidation.isValid) {
+    uni.showToast({ title: passwordValidation.message, icon: 'none' })
     return
   }
 
@@ -57,8 +64,18 @@ const handleLogin = async () => {
     })
 
     // 保存token和用户信息（使用mobile_admin_前缀）
-    uni.setStorageSync('mobile_admin_token', result.token)
-    uni.setStorageSync('mobile_admin_userInfo', result.user)
+    if (result && result.token) {
+      uni.setStorageSync('mobile_admin_token', result.token)
+    }
+    if (result && result.user) {
+      uni.setStorageSync('mobile_admin_userInfo', result.user)
+    }
+
+    // 记录登录日志
+    logOperation('login', 'auth', {
+      phone: phone.value,
+      loginTime: new Date().toISOString()
+    })
 
     uni.showToast({
       title: '登录成功',
@@ -70,6 +87,14 @@ const handleLogin = async () => {
     }, 1000)
   } catch (error) {
     console.error('登录失败:', error)
+
+    // 记录登录失败日志
+    logOperation('login_failed', 'auth', {
+      phone: phone.value,
+      error: error.message,
+      failTime: new Date().toISOString()
+    })
+
     uni.showToast({
       title: error.message || '登录失败',
       icon: 'none'

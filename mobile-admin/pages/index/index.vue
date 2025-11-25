@@ -28,19 +28,19 @@
       <text class="section-title">快捷操作</text>
       <view class="action-grid">
         <view class="action-item" @click="navigateTo('/pages/users/users')">
-          <text class="action-icon">👥</text>
+          <uni-icons type="person-filled" size="30" color="#007AFF"></uni-icons>
           <text class="action-label">用户管理</text>
         </view>
-        <view class="action-item">
-          <text class="action-icon">📋</text>
+        <view class="action-item" @click="navigateToOrders()">
+          <uni-icons type="list-filled" size="30" color="#007AFF"></uni-icons>
           <text class="action-label">订单管理</text>
         </view>
-        <view class="action-item">
-          <text class="action-icon">🚗</text>
+        <view class="action-item" @click="navigateToVehicles()">
+          <uni-icons type="gear-filled" size="30" color="#007AFF"></uni-icons>
           <text class="action-label">车辆管理</text>
         </view>
         <view class="action-item" @click="handleLogout">
-          <text class="action-icon">🚪</text>
+          <uni-icons type="close-filled" size="30" color="#f5222d"></uni-icons>
           <text class="action-label">退出登录</text>
         </view>
       </view>
@@ -51,6 +51,8 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { authApi } from '../../api/auth'
+import { statsApi } from '../../api/stats'
+import { routeGuard, safeLogout } from '../../utils/auth'
 
 const userInfo = ref({})
 const stats = ref({
@@ -61,7 +63,19 @@ const stats = ref({
 })
 
 const navigateTo = (url) => {
-  uni.switchTab({ url })
+  if (url.includes('/pages/users/users') || url.includes('/pages/orders/orders') || url.includes('/pages/vehicles/vehicles')) {
+    uni.switchTab({ url })
+  } else {
+    uni.navigateTo({ url })
+  }
+}
+
+const navigateToOrders = () => {
+  uni.switchTab({ url: '/pages/orders/orders' })
+}
+
+const navigateToVehicles = () => {
+  uni.switchTab({ url: '/pages/vehicles/vehicles' })
 }
 
 const handleLogout = () => {
@@ -70,17 +84,8 @@ const handleLogout = () => {
     content: '确定要退出登录吗？',
     success: async (res) => {
       if (res.confirm) {
-        try {
-          // 调用退出登录API
-          await authApi.logout()
-        } catch (error) {
-          console.error('退出登录失败:', error)
-        } finally {
-          // 清除本地存储（使用mobile_admin_前缀）
-          uni.removeStorageSync('mobile_admin_token')
-          uni.removeStorageSync('mobile_admin_userInfo')
-          uni.reLaunch({ url: '/pages/login/login' })
-        }
+        // 使用安全退出函数
+        safeLogout(authApi)
       }
     }
   })
@@ -100,25 +105,39 @@ const loadUserInfo = async () => {
   }
 }
 
+const loadStats = async () => {
+  try {
+    // 获取首页统计数据
+    const result = await statsApi.getDashboardStats()
+    stats.value = {
+      totalUsers: result.totalUsers || 0,
+      activeUsers: result.activeUsers || 0,
+      todayOrders: result.todayOrders || 0,
+      todayRevenue: result.todayRevenue || 0
+    }
+  } catch (error) {
+    console.error('获取统计数据失败:', error)
+    // 如果API调用失败，使用默认数据
+    stats.value = {
+      totalUsers: 0,
+      activeUsers: 0,
+      todayOrders: 0,
+      todayRevenue: 0
+    }
+  }
+}
+
 onMounted(() => {
-  // 检查登录状态（使用mobile_admin_前缀）
-  const token = uni.getStorageSync('mobile_admin_token')
-  if (!token) {
-    uni.reLaunch({ url: '/pages/login/login' })
+  // 权限守卫检查
+  if (!routeGuard()) {
     return
   }
 
   // 加载用户信息
   loadUserInfo()
 
-  // TODO: 从API获取真实的统计数据
-  // 目前使用模拟数据
-  stats.value = {
-    totalUsers: 1234,
-    activeUsers: 856,
-    todayOrders: 45,
-    todayRevenue: 12580
-  }
+  // 加载统计数据
+  loadStats()
 })
 </script>
 
@@ -199,17 +218,25 @@ onMounted(() => {
 
 .action-item {
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20rpx 10rpx;
+  border-radius: 16rpx;
+  transition: all 0.3s ease;
 }
 
-.action-icon {
-  display: block;
-  font-size: 60rpx;
-  margin-bottom: 10rpx;
+.action-item:active {
+  background: #f5f5f5;
+  transform: scale(0.95);
 }
 
 .action-label {
   display: block;
   font-size: 24rpx;
   color: #666;
+  margin-top: 16rpx;
+  font-weight: 500;
 }
 </style>

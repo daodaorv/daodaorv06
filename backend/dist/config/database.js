@@ -4,6 +4,7 @@ exports.sequelize = void 0;
 exports.connectDatabase = connectDatabase;
 const sequelize_1 = require("sequelize");
 const logger_1 = require("@/utils/logger");
+const models_1 = require("@/models");
 const sequelize = new sequelize_1.Sequelize({
     database: process.env.DB_NAME || 'daodao',
     username: process.env.DB_USER || 'daodao_dev',
@@ -28,13 +29,15 @@ const sequelize = new sequelize_1.Sequelize({
 });
 exports.sequelize = sequelize;
 async function connectDatabase() {
+    if (process.env.USE_MEMORY_DATA === 'true') {
+        logger_1.logger.info('Using memory data mode - skipping database connection');
+        return sequelize;
+    }
     try {
         await sequelize.authenticate();
         logger_1.logger.info('Database connection has been established successfully.');
-        if (process.env.NODE_ENV === 'development') {
-            await sequelize.sync({ alter: true });
-            logger_1.logger.info('Database synchronized successfully.');
-        }
+        (0, models_1.initModels)(sequelize);
+        logger_1.logger.info('Database models initialized successfully.');
         return sequelize;
     }
     catch (error) {

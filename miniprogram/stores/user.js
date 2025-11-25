@@ -29,7 +29,7 @@ export const useUserStore = defineStore('user', {
     },
 
     async fetchUserInfo() {
-      // TODO: 从API获取用户信息
+      // 获取用户信息
       try {
         // const result = await authApi.getUserInfo();
         // this.setUserInfo(result.user);

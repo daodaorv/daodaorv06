@@ -50,9 +50,8 @@ export class AuthController {
         username,
       });
 
-      // Remove password_hash from response
-      const userResponse = result.user.toJSON();
-      delete (userResponse as any).password_hash;
+      // 返回用户信息（service已移除密码）
+      const userResponse = result.user;
 
       res.status(201).json({
         code: 0,
@@ -77,10 +76,10 @@ export class AuthController {
    */
   login = async (req: Request, res: Response) => {
     try {
-      const { phone, password } = req.body;
-      const loginIp = req.ip;
-      const loginDevice = req.get('User-Agent');
-      const loginPlatform = req.body.platform || 'pc';
+      const { phone, password, loginDevice: bodyLoginDevice, loginIp: bodyLoginIp } = req.body;
+      const loginIp = bodyLoginIp || req.ip;
+      const loginDevice = bodyLoginDevice || req.get('User-Agent')?.substring(0, 200) || 'Unknown';
+      const loginPlatform = req.body.loginPlatform || req.body.platform || 'pc';
 
       const result = await this.authService.login({
         phone,
@@ -90,9 +89,8 @@ export class AuthController {
         loginPlatform,
       });
 
-      // Remove password_hash from response
-      const userResponse = result.user.toJSON();
-      delete (userResponse as any).password_hash;
+      // 返回用户信息（service已移除密码）
+      const userResponse = result.user;
 
       res.json({
         code: 0,
@@ -131,9 +129,8 @@ export class AuthController {
         loginPlatform,
       });
 
-      // Remove password_hash from response
-      const userResponse = result.user.toJSON();
-      delete (userResponse as any).password_hash;
+      // 返回用户信息（service已移除密码）
+      const userResponse = result.user;
 
       res.json({
         code: 0,
