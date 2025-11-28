@@ -57,12 +57,7 @@
 	export default {
 		name: 'uniFormsItem',
 		options: {
-			// #ifdef MP-TOUTIAO
-			virtualHost: false,
-			// #endif
-			// #ifndef MP-TOUTIAO
 			virtualHost: true
-			// #endif
 		},
 		provide() {
 			return {

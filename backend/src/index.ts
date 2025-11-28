@@ -90,9 +90,11 @@ app.use('/api/v1', (req, res, next) => {
 
 // Import modular route system
 import authRoutes from '@/routes/auth.routes';
+import userRoutes from '@/routes/user.routes';
 
 // Core API routes (小程序端)
 app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/users', userRoutes);
 // TODO: Add other core routes as they are updated
 // app.use('/api/v1/vehicles', vehicleRoutes);
 // app.use('/api/v1/orders', orderRoutes);

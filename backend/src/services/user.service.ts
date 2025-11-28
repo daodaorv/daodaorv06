@@ -2,6 +2,7 @@ import { User } from '@/models/User';
 import { UserProfile } from '@/models/UserProfile';
 import { UserLoginLog } from '@/models/UserLoginLog';
 import { Op } from 'sequelize';
+import bcrypt from 'bcryptjs';
 
 export class UserService {
   /**
@@ -167,6 +168,133 @@ export class UserService {
     await user.update({ status });
 
     return user;
+  }
+
+  /**
+   * Create new user (admin only)
+   */
+  async createUser(data: {
+    username: string;
+    phone: string;
+    password: string;
+    email?: string;
+    user_type: 'customer' | 'mobile_admin' | 'pc_admin';
+    real_name?: string;
+  }): Promise<{ user: User; profile: UserProfile }> {
+    // Check if phone already exists
+    const existingUser = await User.findOne({
+      where: { phone: data.phone },
+    });
+
+    if (existingUser) {
+      throw new Error('Phone number already exists');
+    }
+
+    // Check if username already exists
+    const existingUsername = await User.findOne({
+      where: { username: data.username },
+    });
+
+    if (existingUsername) {
+      throw new Error('Username already exists');
+    }
+
+    // Hash password
+    const salt = await bcrypt.genSalt(parseInt(process.env.BCRYPT_ROUNDS || '12'));
+    const passwordHash = await bcrypt.hash(data.password, salt);
+
+    // Create user
+    const userData = {
+      username: data.username,
+      phone: data.phone,
+      password_hash: passwordHash,
+      email: data.email,
+      user_type: data.user_type,
+      real_name: data.real_name,
+      status: 'active' as const,
+    };
+    const user = await User.create(userData as any);
+
+    // Create profile
+    const profileData = {
+      user_id: user.id,
+    };
+    const profile = await UserProfile.create(profileData as any);
+
+    return { user, profile };
+  }
+
+  /**
+   * Update user (admin only)
+   */
+  async updateUser(
+    userId: number,
+    data: {
+      username?: string;
+      email?: string;
+      user_type?: 'customer' | 'mobile_admin' | 'pc_admin';
+      real_name?: string;
+      status?: 'active' | 'inactive' | 'banned';
+    }
+  ): Promise<User> {
+    const user = await User.findByPk(userId);
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    // Check if username already exists (if changing username)
+    if (data.username && data.username !== user.username) {
+      const existingUsername = await User.findOne({
+        where: {
+          username: data.username,
+          id: { [Op.ne]: userId },
+        },
+      });
+
+      if (existingUsername) {
+        throw new Error('Username already exists');
+      }
+    }
+
+    await user.update(data);
+
+    return user;
+  }
+
+  /**
+   * Delete user (admin only)
+   */
+  async deleteUser(userId: number): Promise<void> {
+    const user = await User.findByPk(userId);
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    // Delete related data
+    await UserProfile.destroy({ where: { user_id: userId } });
+    await UserLoginLog.destroy({ where: { user_id: userId } });
+
+    // Delete user
+    await user.destroy();
+  }
+
+  /**
+   * Reset user password (admin only)
+   */
+  async resetPassword(userId: number, newPassword: string): Promise<void> {
+    const user = await User.findByPk(userId);
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    // Hash new password
+    const salt = await bcrypt.genSalt(parseInt(process.env.BCRYPT_ROUNDS || '12'));
+    const passwordHash = await bcrypt.hash(newPassword, salt);
+
+    await user.update({ password_hash: passwordHash });
   }
 }
 

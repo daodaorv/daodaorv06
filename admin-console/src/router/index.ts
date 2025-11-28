@@ -1,199 +1,119 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
+import Layout from '@/components/layout/AdminLayout.vue'
+import { useUserStore } from '@/stores/user'
 
-const routes: RouteRecordRaw[] = [
-  {
-    path: '/',
-    name: 'Home',
-    component: () => import('@/views/Home.vue'),
-    meta: { title: '首页' }
-  },
+const routes: Array<RouteRecordRaw> = [
   {
     path: '/login',
     name: 'Login',
-    component: () => import('@/views/Login.vue'),
-    meta: { title: '登录' }
+    component: () => import('@/views/auth/Login.vue'),
+    meta: { title: '登录', requiresAuth: false },
   },
   {
-    path: '/dashboard',
-    name: 'Dashboard',
-    component: () => import('@/views/Dashboard.vue'),
-    meta: { title: '仪表盘', requiresAuth: true }
+    path: '/',
+    component: Layout,
+    redirect: '/dashboard',
+    meta: { requiresAuth: true },
+    children: [
+      {
+        path: '/dashboard',
+        name: 'Dashboard',
+        component: () => import('@/views/dashboard/Dashboard.vue'),
+        meta: { title: '工作台', icon: 'House' },
+      },
+      {
+        path: '/vehicles',
+        name: 'Vehicles',
+        component: () => import('@/views/vehicles/VehicleList.vue'),
+        meta: { title: '车辆管理', icon: 'Van' },
+      },
+      {
+        path: '/vehicles/create',
+        name: 'VehicleCreate',
+        component: () => import('@/views/vehicles/VehicleForm.vue'),
+        meta: { title: '添加车辆', hidden: true },
+      },
+      {
+        path: '/vehicles/:id/edit',
+        name: 'VehicleEdit',
+        component: () => import('@/views/vehicles/VehicleForm.vue'),
+        meta: { title: '编辑车辆', hidden: true },
+      },
+      {
+        path: '/orders',
+        name: 'Orders',
+        component: () => import('@/views/orders/OrderList.vue'),
+        meta: { title: '订单管理', icon: 'List' },
+      },
+      {
+        path: '/orders/:id',
+        name: 'OrderDetail',
+        component: () => import('@/views/orders/OrderDetail.vue'),
+        meta: { title: '订单详情', hidden: true },
+      },
+      {
+        path: '/users',
+        name: 'Users',
+        component: () => import('@/views/users/UserList.vue'),
+        meta: { title: '用户管理', icon: 'User' },
+      },
+      {
+        path: '/payments',
+        name: 'Payments',
+        component: () => import('@/views/payments/PaymentList.vue'),
+        meta: { title: '财务管理', icon: 'Money' },
+      },
+      {
+        path: '/coupons',
+        name: 'Coupons',
+        component: () => import('@/views/marketing/CouponList.vue'),
+        meta: { title: '优惠券管理', icon: 'Ticket' },
+      },
+      {
+        path: '/reviews',
+        name: 'Reviews',
+        component: () => import('@/views/marketing/ReviewList.vue'),
+        meta: { title: '评价管理', icon: 'ChatDotRound' },
+      },
+    ],
   },
   {
-    path: '/users',
-    name: 'UserList',
-    component: () => import('@/views/users/index.vue'),
-    meta: { title: '用户管理', requiresAuth: true }
+    path: '/404',
+    name: 'NotFound',
+    component: () => import('@/views/error/NotFound.vue'),
+    meta: { title: '页面不存在' },
   },
   {
-    path: '/users/:id',
-    name: 'UserDetail',
-    component: () => import('@/views/users/Detail.vue'),
-    meta: { title: '用户详情', requiresAuth: true }
+    path: '/:pathMatch(.*)*',
+    redirect: '/404',
   },
-  {
-    path: '/users/:id/edit',
-    name: 'UserEdit',
-    component: () => import('@/views/users/Edit.vue'),
-    meta: { title: '编辑用户', requiresAuth: true }
-  },
-  {
-    path: '/diy',
-    name: 'DiyProjects',
-    component: () => import('@/views/diy/projects/index.vue'),
-    meta: { title: 'DIY项目管理', requiresAuth: true }
-  },
-  {
-    path: '/diy/projects/new',
-    name: 'DiyProjectCreate',
-    component: () => import('@/views/diy/projects/Create.vue'),
-    meta: { title: '创建DIY项目', requiresAuth: true }
-  },
-  {
-    path: '/diy/projects/:id',
-    name: 'DiyProjectDetail',
-    component: () => import('@/views/diy/projects/Detail.vue'),
-    meta: { title: 'DIY项目详情', requiresAuth: true }
-  },
-  {
-    path: '/diy/projects/:id/edit',
-    name: 'DiyEditor',
-    component: () => import('@/views/diy/editor/index.vue'),
-    meta: { title: 'DIY可视化编辑器', requiresAuth: true }
-  },
-  {
-    path: '/diy/templates',
-    name: 'DiyTemplates',
-    component: () => import('@/views/diy/templates/index.vue'),
-    meta: { title: 'DIY模板管理', requiresAuth: true }
-  },
-  {
-    path: '/vehicles',
-    name: 'VehicleList',
-    component: () => import('@/views/vehicles/index.vue'),
-    meta: { title: '车辆管理', requiresAuth: true }
-  },
-  {
-    path: '/vehicles/create',
-    name: 'VehicleCreate',
-    component: () => import('@/views/vehicles/Create.vue'),
-    meta: { title: '添加车辆', requiresAuth: true }
-  },
-  {
-    path: '/vehicles/:id',
-    name: 'VehicleDetail',
-    component: () => import('@/views/vehicles/Detail.vue'),
-    meta: { title: '车辆详情', requiresAuth: true }
-  },
-  {
-    path: '/vehicles/:id/edit',
-    name: 'VehicleEdit',
-    component: () => import('@/views/vehicles/Edit.vue'),
-    meta: { title: '编辑车辆', requiresAuth: true }
-  },
-  {
-    path: '/vehicles/:id/availability',
-    name: 'VehicleAvailability',
-    component: () => import('@/views/vehicles/Availability.vue'),
-    meta: { title: '车辆可用性', requiresAuth: true }
-  },
-  {
-    path: '/vehicles/:id/maintenance',
-    name: 'VehicleMaintenance',
-    component: () => import('@/views/vehicles/Maintenance.vue'),
-    meta: { title: '维护记录', requiresAuth: true }
-  },
-  {
-    path: '/vehicles/:id/bookings',
-    name: 'VehicleBookings',
-    component: () => import('@/views/vehicles/Bookings.vue'),
-    meta: { title: '预约记录', requiresAuth: true }
-  },
-  {
-    path: '/vehicles/:id/reviews',
-    name: 'VehicleReviews',
-    component: () => import('@/views/vehicles/Reviews.vue'),
-    meta: { title: '车辆评价', requiresAuth: true }
-  },
-  {
-    path: '/orders',
-    name: 'OrderList',
-    component: () => import('@/views/orders/index.vue'),
-    meta: { title: '订单管理', requiresAuth: true }
-  },
-  {
-    path: '/orders/create',
-    name: 'OrderCreate',
-    component: () => import('@/views/orders/Create.vue'),
-    meta: { title: '新建订单', requiresAuth: true }
-  },
-  {
-    path: '/orders/:id',
-    name: 'OrderDetail',
-    component: () => import('@/views/orders/Detail.vue'),
-    meta: { title: '订单详情', requiresAuth: true }
-  },
-  {
-    path: '/orders/:id/edit',
-    name: 'OrderEdit',
-    component: () => import('@/views/orders/Edit.vue'),
-    meta: { title: '编辑订单', requiresAuth: true }
-  },
-  {
-    path: '/orders/:id/payment',
-    name: 'OrderPayment',
-    component: () => import('@/views/orders/Payment.vue'),
-    meta: { title: '订单支付', requiresAuth: true }
-  },
-  {
-    path: '/orders/:id/refund',
-    name: 'OrderRefund',
-    component: () => import('@/views/orders/Refund.vue'),
-    meta: { title: '订单退款', requiresAuth: true }
-  },
-  {
-    path: '/orders/:id/pickup',
-    name: 'OrderPickup',
-    component: () => import('@/views/orders/Pickup.vue'),
-    meta: { title: '取车管理', requiresAuth: true }
-  },
-  {
-    path: '/orders/:id/return',
-    name: 'OrderReturn',
-    component: () => import('@/views/orders/Return.vue'),
-    meta: { title: '还车管理', requiresAuth: true }
-  },
-  {
-    path: '/orders/:id/documents',
-    name: 'OrderDocuments',
-    component: () => import('@/views/orders/Documents.vue'),
-    meta: { title: '订单文件', requiresAuth: true }
-  }
 ]
 
 const router = createRouter({
   history: createWebHistory(),
-  routes
+  routes,
 })
 
-// Navigation guards
-router.beforeEach((to, from, next) => {
-  // Set page title
-  if (to.meta?.title) {
-    document.title = `${to.meta.title} - 叨叨房车管理后台`
+// 路由守卫
+router.beforeEach(async (to, from, next) => {
+  const userStore = useUserStore()
+  const isAuthenticated = userStore.isAuthenticated
+
+  if (to.meta.requiresAuth !== false && !isAuthenticated) {
+    // 需要登录但未登录，跳转到登录页
+    next('/login')
+  } else if (to.path === '/login' && isAuthenticated) {
+    // 已登录用户访问登录页，跳转到工作台
+    next('/dashboard')
+  } else {
+    next()
   }
 
-  // Authentication check
-  if (to.meta?.requiresAuth) {
-    const token = localStorage.getItem('admin_token')
-    if (!token) {
-      next('/login')
-      return
-    }
+  // 设置页面标题
+  if (to.meta.title) {
+    document.title = `${to.meta.title} - 叨叨房车租赁管理平台`
   }
-
-  next()
 })
 
 export default router

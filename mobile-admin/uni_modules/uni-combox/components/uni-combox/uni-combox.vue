@@ -4,11 +4,10 @@
 			<text>{{label}}</text>
 		</view>
 		<view class="uni-combox__input-box">
-			<input class="uni-combox__input" type="text" :placeholder="placeholder" placeholder-class="uni-combox__input-plac"
-				v-model="inputVal" @input="onInput" @focus="onFocus" @blur="onBlur" />
-			<uni-icons v-if="!inputVal || !clearAble" :type="showSelector? 'top' : 'bottom'" size="14" color="#999" @click="toggleSelector">
-			</uni-icons>
-			<uni-icons v-if="inputVal && clearAble" type="clear" size="24" color="#999" @click="clean">
+			<input class="uni-combox__input" type="text" :placeholder="placeholder" 
+			placeholder-class="uni-combox__input-plac" v-model="inputVal" @input="onInput" @focus="onFocus" 
+@blur="onBlur" />
+			<uni-icons :type="showSelector? 'top' : 'bottom'" size="14" color="#999" @click="toggleSelector">
 			</uni-icons>
 		</view>
 		<view class="uni-combox__selector" v-if="showSelector">
@@ -17,8 +16,8 @@
 				<view class="uni-combox__selector-empty" v-if="filterCandidatesLength === 0">
 					<text>{{emptyTips}}</text>
 				</view>
-				<view class="uni-combox__selector-item" v-for="(item,index) in filterCandidates" :key="index"
-					@click="onSelectorClick(index)">
+				<view class="uni-combox__selector-item" v-for="(item,index) in filterCandidates" :key="index" 
+				@click="onSelectorClick(index)">
 					<text>{{item}}</text>
 				</view>
 			</scroll-view>
@@ -42,10 +41,6 @@
 		name: 'uniCombox',
 		emits: ['input', 'update:modelValue'],
 		props: {
-			clearAble: {
-				type: Boolean,
-				default: false
-			},
 			border: {
 				type: Boolean,
 				default: true
@@ -148,10 +143,6 @@
 					this.$emit('input', this.inputVal)
 					this.$emit('update:modelValue', this.inputVal)
 				})
-			},
-			clean() {
-				this.inputVal = ''
-				this.onInput()
 			}
 		}
 	}

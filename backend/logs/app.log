@@ -962,3 +962,64 @@
 {"level":"info","message":"Redis client ready","service":"daodao-backend","timestamp":"2025-11-21 18:59:26"}
 {"level":"info","message":"Redis connected successfully","service":"daodao-backend","timestamp":"2025-11-21 18:59:26"}
 {"level":"info","message":"Server is running on port 3000 in development mode","service":"daodao-backend","timestamp":"2025-11-21 18:59:26"}
+{"level":"info","message":"Database connection has been established successfully.","service":"daodao-backend","timestamp":"2025-11-28 20:44:02"}
+{"level":"info","message":"Database models initialized successfully.","service":"daodao-backend","timestamp":"2025-11-28 20:44:02"}
+{"level":"info","message":"Database connected successfully","service":"daodao-backend","timestamp":"2025-11-28 20:44:02"}
+{"level":"info","message":"Redis client connected","service":"daodao-backend","timestamp":"2025-11-28 20:44:02"}
+{"level":"info","message":"Redis client ready","service":"daodao-backend","timestamp":"2025-11-28 20:44:02"}
+{"level":"info","message":"Redis connected successfully","service":"daodao-backend","timestamp":"2025-11-28 20:44:02"}
+{"level":"info","message":"Server is running on port 3000 in development mode","service":"daodao-backend","timestamp":"2025-11-28 20:44:02"}
+{"ip":"::1","level":"info","message":"POST /auth/login","service":"daodao-backend","timestamp":"2025-11-28 20:45:26","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"}
+{"ip":"::1","level":"info","message":"POST /auth/login","service":"daodao-backend","timestamp":"2025-11-28 20:50:12","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"}
+{"level":"info","message":"Database connection has been established successfully.","service":"daodao-backend","timestamp":"2025-11-28 20:58:21"}
+{"level":"info","message":"Database models initialized successfully.","service":"daodao-backend","timestamp":"2025-11-28 20:58:21"}
+{"level":"info","message":"Database connected successfully","service":"daodao-backend","timestamp":"2025-11-28 20:58:21"}
+{"level":"info","message":"Redis client connected","service":"daodao-backend","timestamp":"2025-11-28 20:58:21"}
+{"level":"info","message":"Redis client ready","service":"daodao-backend","timestamp":"2025-11-28 20:58:21"}
+{"level":"info","message":"Redis connected successfully","service":"daodao-backend","timestamp":"2025-11-28 20:58:21"}
+{"level":"info","message":"Server is running on port 3000 in development mode","service":"daodao-backend","timestamp":"2025-11-28 20:58:21"}
+{"level":"info","message":"Database connection has been established successfully.","service":"daodao-backend","timestamp":"2025-11-28 20:58:37"}
+{"level":"info","message":"Database models initialized successfully.","service":"daodao-backend","timestamp":"2025-11-28 20:58:37"}
+{"level":"info","message":"Database connected successfully","service":"daodao-backend","timestamp":"2025-11-28 20:58:37"}
+{"level":"info","message":"Redis client connected","service":"daodao-backend","timestamp":"2025-11-28 20:58:37"}
+{"level":"info","message":"Redis client ready","service":"daodao-backend","timestamp":"2025-11-28 20:58:37"}
+{"level":"info","message":"Redis connected successfully","service":"daodao-backend","timestamp":"2025-11-28 20:58:37"}
+{"level":"info","message":"Server is running on port 3000 in development mode","service":"daodao-backend","timestamp":"2025-11-28 20:58:37"}
+{"level":"info","message":"Database connection has been established successfully.","service":"daodao-backend","timestamp":"2025-11-28 20:59:50"}
+{"level":"info","message":"Database models initialized successfully.","service":"daodao-backend","timestamp":"2025-11-28 20:59:50"}
+{"level":"info","message":"Database connected successfully","service":"daodao-backend","timestamp":"2025-11-28 20:59:50"}
+{"level":"info","message":"Redis client connected","service":"daodao-backend","timestamp":"2025-11-28 20:59:50"}
+{"level":"info","message":"Redis client ready","service":"daodao-backend","timestamp":"2025-11-28 20:59:50"}
+{"level":"info","message":"Redis connected successfully","service":"daodao-backend","timestamp":"2025-11-28 20:59:50"}
+{"level":"info","message":"Server is running on port 3000 in development mode","service":"daodao-backend","timestamp":"2025-11-28 20:59:50"}
+{"level":"info","message":"Database connection has been established successfully.","service":"daodao-backend","timestamp":"2025-11-28 21:02:32"}
+{"level":"info","message":"Database models initialized successfully.","service":"daodao-backend","timestamp":"2025-11-28 21:02:32"}
+{"level":"info","message":"Database connected successfully","service":"daodao-backend","timestamp":"2025-11-28 21:02:32"}
+{"level":"info","message":"Redis client connected","service":"daodao-backend","timestamp":"2025-11-28 21:02:32"}
+{"level":"info","message":"Redis client ready","service":"daodao-backend","timestamp":"2025-11-28 21:02:32"}
+{"level":"info","message":"Database connection has been established successfully.","service":"daodao-backend","timestamp":"2025-11-28 21:03:24"}
+{"level":"info","message":"Database models initialized successfully.","service":"daodao-backend","timestamp":"2025-11-28 21:03:24"}
+{"level":"info","message":"Database connected successfully","service":"daodao-backend","timestamp":"2025-11-28 21:03:24"}
+{"level":"info","message":"Redis client connected","service":"daodao-backend","timestamp":"2025-11-28 21:03:24"}
+{"level":"info","message":"Redis client ready","service":"daodao-backend","timestamp":"2025-11-28 21:03:24"}
+{"level":"info","message":"Redis connected successfully","service":"daodao-backend","timestamp":"2025-11-28 21:03:24"}
+{"level":"info","message":"Server is running on port 3000 in development mode","service":"daodao-backend","timestamp":"2025-11-28 21:03:24"}
+{"level":"info","message":"Database connection has been established successfully.","service":"daodao-backend","timestamp":"2025-11-28 21:03:24"}
+{"level":"info","message":"Database models initialized successfully.","service":"daodao-backend","timestamp":"2025-11-28 21:03:24"}
+{"level":"info","message":"Database connected successfully","service":"daodao-backend","timestamp":"2025-11-28 21:03:24"}
+{"level":"info","message":"Redis client connected","service":"daodao-backend","timestamp":"2025-11-28 21:03:24"}
+{"level":"info","message":"Redis client ready","service":"daodao-backend","timestamp":"2025-11-28 21:03:24"}
+{"level":"info","message":"Database connection has been established successfully.","service":"daodao-backend","timestamp":"2025-11-28 23:01:37"}
+{"level":"info","message":"Database models initialized successfully.","service":"daodao-backend","timestamp":"2025-11-28 23:01:37"}
+{"level":"info","message":"Database connected successfully","service":"daodao-backend","timestamp":"2025-11-28 23:01:37"}
+{"level":"info","message":"Redis client connected","service":"daodao-backend","timestamp":"2025-11-28 23:01:37"}
+{"level":"info","message":"Redis client ready","service":"daodao-backend","timestamp":"2025-11-28 23:01:37"}
+{"level":"info","message":"Database connection has been established successfully.","service":"daodao-backend","timestamp":"2025-11-28 23:10:02"}
+{"level":"info","message":"Database models initialized successfully.","service":"daodao-backend","timestamp":"2025-11-28 23:10:02"}
+{"level":"info","message":"Database connected successfully","service":"daodao-backend","timestamp":"2025-11-28 23:10:02"}
+{"level":"info","message":"Redis client connected","service":"daodao-backend","timestamp":"2025-11-28 23:10:02"}
+{"level":"info","message":"Redis client ready","service":"daodao-backend","timestamp":"2025-11-28 23:10:02"}
+{"level":"info","message":"Redis connected successfully","service":"daodao-backend","timestamp":"2025-11-28 23:10:02"}
+{"level":"info","message":"Server is running on port 3000 in development mode","service":"daodao-backend","timestamp":"2025-11-28 23:10:02"}
+{"ip":"::1","level":"info","message":"GET /users","service":"daodao-backend","timestamp":"2025-11-28 23:15:37","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"}
+{"ip":"::1","level":"info","message":"GET /users","service":"daodao-backend","timestamp":"2025-11-28 23:15:41","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"}

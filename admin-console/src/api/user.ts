@@ -1,102 +1,81 @@
-import request from './request'
+import { request } from '@/utils/request'
+import type { ApiResponse } from '@/types/user'
 
-// 用户列表查询参数
+// 用户管理API接口类型定义
 export interface UserListParams {
   page?: number
   pageSize?: number
-  search?: string
+  phone?: string
+  username?: string
   userType?: string
   status?: string
 }
 
-// 用户信息
-export interface User {
+export interface UserInfo {
   id: number
-  phone: string
   username: string
-  user_type: 'customer' | 'mobile_admin' | 'pc_admin'
+  phone: string
+  email?: string
+  userType: 'customer' | 'mobile_admin' | 'pc_admin'
   status: 'active' | 'inactive' | 'banned'
-  created_at: string
-  updated_at: string
-  last_login_at: string
+  realName?: string
+  avatarUrl?: string
+  lastLoginAt?: string
+  createdAt: string
+  updatedAt: string
 }
 
-// 用户列表响应
 export interface UserListResponse {
-  code: number
-  message: string
-  data: {
-    users: User[]
-    total: number
-    page: number
-    pageSize: number
-  }
+  list: UserInfo[]
+  total: number
+  page: number
+  pageSize: number
 }
 
-// 获取用户列表
-export function getUserList(params: UserListParams) {
-  return request({
-    url: '/users',
-    method: 'get',
-    params
-  })
+export interface CreateUserParams {
+  username: string
+  phone: string
+  password: string
+  email?: string
+  userType: 'customer' | 'mobile_admin' | 'pc_admin'
+  realName?: string
 }
 
-// 获取用户详情
-export function getUserDetail(id: number) {
-  return request({
-    url: `/users/${id}`,
-    method: 'get'
-  })
-}
-
-// 更新用户信息
 export interface UpdateUserParams {
+  id: number
   username?: string
-  user_type?: 'customer' | 'mobile_admin' | 'pc_admin'
+  email?: string
+  userType?: 'customer' | 'mobile_admin' | 'pc_admin'
   status?: 'active' | 'inactive' | 'banned'
+  realName?: string
 }
 
-export function updateUser(id: number, data: UpdateUserParams) {
-  return request({
-    url: `/users/${id}`,
-    method: 'put',
-    data
-  })
-}
+export const userApi = {
+  // 获取用户列表
+  getUserList: (params: UserListParams) =>
+    request.get<ApiResponse<UserListResponse>>('/users', params),
 
-// 删除用户
-export function deleteUser(id: number) {
-  return request({
-    url: `/users/${id}`,
-    method: 'delete'
-  })
-}
+  // 获取用户详情
+  getUserDetail: (id: number) =>
+    request.get<ApiResponse<UserInfo>>(`/users/${id}`),
 
-// 批量删除用户
-export function batchDeleteUsers(ids: number[]) {
-  return request({
-    url: '/users/batch-delete',
-    method: 'post',
-    data: { ids }
-  })
-}
+  // 创建用户
+  createUser: (data: CreateUserParams) =>
+    request.post<ApiResponse<UserInfo>>('/users', data),
 
-// 更新用户状态
-export function updateUserStatus(id: number, status: string) {
-  return request({
-    url: `/users/${id}/status`,
-    method: 'put',
-    data: { status }
-  })
-}
+  // 更新用户信息
+  updateUser: (data: UpdateUserParams) =>
+    request.put<ApiResponse<UserInfo>>(`/users/${data.id}`, data),
 
-// 重置用户密码
-export function resetUserPassword(id: number, password: string) {
-  return request({
-    url: `/users/${id}/reset-password`,
-    method: 'post',
-    data: { password }
-  })
-}
+  // 删除用户
+  deleteUser: (id: number) =>
+    request.delete<ApiResponse>(`/users/${id}`),
 
+  // 更改用户状态
+  changeUserStatus: (id: number, status: 'active' | 'inactive' | 'banned') =>
+    request.put<ApiResponse>(`/users/${id}/status`, { status }),
+
+  // 重置用户密码
+  resetPassword: (id: number, newPassword: string) =>
+    request.put<ApiResponse>(`/users/${id}/reset-password`, { password: newPassword }),
+}

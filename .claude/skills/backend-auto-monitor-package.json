@@ -1,0 +1,24 @@
+{
+  "name": "backend-auto-monitor",
+  "version": "1.0.0",
+  "description": "叨叨房车后端自动巡检工作流工具",
+  "main": "backend-auto-monitor.js",
+  "scripts": {
+    "start": "node backend-auto-monitor.js",
+    "dev": "node backend-auto-monitor.js"
+  },
+  "keywords": [
+    "monitoring",
+    "automation",
+    "backend",
+    "api",
+    "workflow"
+  ],
+  "author": "Daodao Team",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {},
+  "engines": {
+    "node": ">=18.18.0"
+  }
+}

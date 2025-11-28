@@ -5,6 +5,8 @@
     "@types/uni-app": "^1.4.8"
   },
   "dependencies": {
-    "@dcloudio/uni-ui": "^1.5.11"
+    "@dcloudio/uni-ui": "^1.5.11",
+    "dayjs": "^1.11.19",
+    "pinia": "^3.0.4"
   }
 }

@@ -29,12 +29,52 @@ router.get(
   userController.getAllUsers
 );
 
+// Get user detail by ID (admin only)
+router.get(
+  '/:id',
+  authenticate,
+  authorize('pc_admin', 'mobile_admin'),
+  userController.getUserById
+);
+
+// Create new user (admin only)
+router.post(
+  '/',
+  authenticate,
+  authorize('pc_admin'),
+  userController.createUser
+);
+
+// Update user (admin only)
+router.put(
+  '/:id',
+  authenticate,
+  authorize('pc_admin'),
+  userController.updateUser
+);
+
+// Delete user (admin only)
+router.delete(
+  '/:id',
+  authenticate,
+  authorize('pc_admin'),
+  userController.deleteUser
+);
+
 // Update user status (admin only)
 router.put(
   '/:id/status',
   authenticate,
   authorize('pc_admin'),
   userController.updateUserStatus
+);
+
+// Reset user password (admin only)
+router.put(
+  '/:id/reset-password',
+  authenticate,
+  authorize('pc_admin'),
+  userController.resetUserPassword
 );
 
 export default router;

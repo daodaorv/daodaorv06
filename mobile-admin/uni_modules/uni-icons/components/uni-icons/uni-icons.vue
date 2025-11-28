@@ -85,8 +85,8 @@
 			}
 		},
 		methods: {
-			_onClick(e) {
-				this.$emit('click', e)
+			_onClick() {
+				this.$emit('click')
 			}
 		}
 	}

@@ -1,0 +1,52 @@
+{
+  "name": "daodao-workflow-suite",
+  "version": "1.0.0",
+  "description": "叨叨房车前端开发工作流工具套件",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc && npm run build:tools",
+    "build:core": "tsc",
+    "build:tools": "tsc --project tools/admin-workflow && tsc --project tools/miniprogram-workflow && tsc --project tools/mobile-admin-workflow",
+    "dev": "tsc --watch",
+    "test": "jest",
+    "lint": "eslint src/**/*.ts",
+    "format": "prettier --write src/**/*.ts"
+  },
+  "keywords": [
+    "claude-skills",
+    "frontend-workflow",
+    "vue3",
+    "uni-app",
+    "daodao"
+  ],
+  "author": "Daodao Tech Team",
+  "license": "MIT",
+  "dependencies": {
+    "@types/marked": "^5.0.2",
+    "@types/node": "^20.0.0",
+    "@types/node-fetch": "^2.6.13",
+    "@types/uuid": "^10.0.0",
+    "cheerio": "^1.0.0-rc.12",
+    "fs-extra": "^11.0.0",
+    "glob": "^10.0.0",
+    "marked": "^5.0.0",
+    "node-fetch": "^3.3.2",
+    "typescript": "^5.0.0",
+    "uuid": "^13.0.0",
+    "yaml": "^2.3.0"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.0",
+    "@types/jest": "^29.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.0.0",
+    "jest": "^29.0.0",
+    "prettier": "^3.0.0",
+    "ts-jest": "^29.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
