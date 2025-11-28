@@ -1,7 +1,7 @@
 {
   "id": "uni-countdown",
   "displayName": "uni-countdown 倒计时",
-  "version": "1.2.5",
+  "version": "1.2.3",
   "description": "CountDown 倒计时组件",
   "keywords": [
     "uni-ui",
@@ -42,15 +42,12 @@
     "platforms": {
       "cloud": {
         "tcb": "y",
-        "aliyun": "y",
-        "alipay": "n"
+        "aliyun": "y"
       },
       "client": {
         "App": {
-            "app-vue": "y",
-            "app-nvue": "y",
-            "app-harmony": "u",
-            "app-uvue": "u"
+          "app-vue": "y",
+          "app-nvue": "y"
         },
         "H5-mobile": {
           "Safari": "y",

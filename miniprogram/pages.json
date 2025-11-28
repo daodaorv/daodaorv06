@@ -1,10 +1,10 @@
 {
 	"pages": [
 		{
-			"path": "pages/home/index",
+			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "首页",
-				"navigationStyle": "default"
+				"navigationBarTitleText": "叨叨房车",
+				"navigationStyle": "custom"
 			}
 		},
 		{
@@ -20,241 +20,91 @@
 			}
 		},
 		{
-			"path": "pages/profile/index",
+			"path": "pages/vehicle/list",
 			"style": {
-				"navigationBarTitleText": "我的"
+				"navigationBarTitleText": "选择房车"
 			}
 		},
 		{
-			"path": "pages/login/index",
+			"path": "pages/vehicle/detail",
 			"style": {
-				"navigationBarTitleText": "登录",
-				"navigationBarBackgroundColor": "#FFFFFF"
-			}
-		},
-		{
-			"path": "pages/vehicles/index",
-			"style": {
-				"navigationBarTitleText": "车辆列表",
-				"enablePullDownRefresh": true,
-				"backgroundColor": "#f5f5f5"
-			}
-		},
-		{
-			"path": "pages/vehicles/detail",
-			"style": {
-				"navigationBarTitleText": "车辆详情",
-				"backgroundColor": "#ffffff"
-			}
-		},
-		{
-			"path": "pages/vehicles/search",
-			"style": {
-				"navigationBarTitleText": "搜索",
-				"backgroundColor": "#ffffff"
-			}
-		},
-		{
-			"path": "pages/vehicles/filter",
-			"style": {
-				"navigationBarTitleText": "筛选",
-				"backgroundColor": "#ffffff"
-			}
-		},
-		{
-			"path": "pages/auth/register",
-			"style": {
-				"navigationBarTitleText": "注册",
-				"navigationBarBackgroundColor": "#667eea",
-				"navigationBarTextStyle": "white",
-				"backgroundColor": "#f5f5f5"
-			}
-		},
-		{
-			"path": "pages/auth/agreement",
-			"style": {
-				"navigationBarTitleText": "用户协议",
-				"backgroundColor": "#ffffff"
+				"navigationBarTitleText": "房车详情"
 			}
 		},
 		{
 			"path": "pages/order/confirm",
 			"style": {
-				"navigationBarTitleText": "确认订单",
-				"backgroundColor": "#f5f5f5"
+				"navigationBarTitleText": "确认订单"
+			}
+		},
+		{
+			"path": "pages/order/pay",
+			"style": {
+				"navigationBarTitleText": "收银台"
 			}
 		},
 		{
 			"path": "pages/order/list",
 			"style": {
 				"navigationBarTitleText": "我的订单",
-				"backgroundColor": "#f5f5f5"
+				"enablePullDownRefresh": true
 			}
 		},
 		{
 			"path": "pages/order/detail",
 			"style": {
-				"navigationBarTitleText": "订单详情",
-				"backgroundColor": "#f5f5f5"
+				"navigationBarTitleText": "订单详情"
 			}
 		},
 		{
-			"path": "pages/payment/index",
+			"path": "pages/order/report",
 			"style": {
-				"navigationBarTitleText": "支付订单",
-				"backgroundColor": "#f5f5f5"
+				"navigationBarTitleText": "事故/故障申报"
 			}
 		},
 		{
-			"path": "pages/payment/result",
+			"path": "pages/profile/edit",
 			"style": {
-				"navigationBarTitleText": "支付结果",
-				"backgroundColor": "#f5f5f5"
+				"navigationBarTitleText": "个人信息"
 			}
 		},
 		{
-			"path": "pages/payment/records",
+			"path": "pages/profile/index",
 			"style": {
-				"navigationBarTitleText": "交易记录",
-				"backgroundColor": "#f5f5f5"
-			}
-		},
-		{
-			"path": "pages/balance/index",
-			"style": {
-				"navigationBarTitleText": "我的余额",
-				"backgroundColor": "#f5f5f5"
-			}
-		},
-		{
-			"path": "pages/balance/recharge",
-			"style": {
-				"navigationBarTitleText": "余额充值",
-				"backgroundColor": "#f5f5f5"
-			}
-		},
-		{
-			"path": "pages/coupon/list",
-			"style": {
-				"navigationBarTitleText": "优惠券",
-				"backgroundColor": "#f5f5f5"
-			}
-		},
-		{
-			"path": "pages/rating/list",
-			"style": {
-				"navigationBarTitleText": "用户评价",
-				"backgroundColor": "#f5f5f5"
-			}
-		},
-		{
-			"path": "pages/rating/detail",
-			"style": {
-				"navigationBarTitleText": "评价详情",
-				"backgroundColor": "#f5f5f5"
-			}
-		},
-		{
-			"path": "pages/rating/create",
-			"style": {
-				"navigationBarTitleText": "发表评价",
-				"backgroundColor": "#f5f5f5"
-			}
-		},
-		{
-			"path": "pages/favorite/list",
-			"style": {
-				"navigationBarTitleText": "我的收藏",
-				"backgroundColor": "#f5f5f5"
-			}
-		},
-		{
-			"path": "pages/help/index",
-			"style": {
-				"navigationBarTitleText": "帮助中心",
-				"backgroundColor": "#f5f5f5"
-			}
-		},
-		{
-			"path": "pages/order/refund",
-			"style": {
-				"navigationBarTitleText": "申请退款",
-				"backgroundColor": "#f5f5f5"
-			}
-		},
-		{
-			"path": "pages/order/reminder",
-			"style": {
-				"navigationBarTitleText": "订单提醒",
-				"backgroundColor": "#f5f5f5"
-			}
-		},
-		{
-			"path": "pages/booking/create",
-			"style": {
-				"navigationBarTitleText": "预订车辆",
-				"navigationStyle": "custom",
-				"backgroundColor": "#f5f5f5"
-			}
-		},
-		{
-			"path": "pages/service/index",
-			"style": {
-				"navigationBarTitleText": "服务",
-				"backgroundColor": "#f5f5f5"
-			}
-		},
-		{
-			"path": "pages/camping/index",
-			"style": {
-				"navigationBarTitleText": "营地推荐",
-				"backgroundColor": "#f5f5f5"
-			}
-		},
-		{
-			"path": "pages/travel/index",
-			"style": {
-				"navigationBarTitleText": "旅游攻略",
-				"backgroundColor": "#f5f5f5"
-			}
-		},
-		{
-			"path": "pages/vip/index",
-			"style": {
-				"navigationBarTitleText": "会员中心",
-				"backgroundColor": "#f5f5f5"
+				"navigationBarTitleText": "个人中心",
+				"navigationStyle": "custom"
 			}
 		}
 	],
 	"tabBar": {
 		"color": "rgba(0, 0, 0, 0.6)",
 		"selectedColor": "#FF9F29",
-		"borderStyle": "black",
 		"backgroundColor": "#FFFFFF",
+		"borderStyle": "black",
 		"list": [
 			{
-				"pagePath": "pages/home/index",
+				"pagePath": "pages/index/index",
+				"text": "首页",
 				"iconPath": "static/tabbar/home.png",
-				"selectedIconPath": "static/tabbar/home-active.png",
-				"text": "首页"
+				"selectedIconPath": "static/tabbar/home-active.png"
 			},
 			{
 				"pagePath": "pages/community/index",
+				"text": "社区",
 				"iconPath": "static/tabbar/community.png",
-				"selectedIconPath": "static/tabbar/community-active.png",
-				"text": "社区"
+				"selectedIconPath": "static/tabbar/community-active.png"
 			},
 			{
 				"pagePath": "pages/crowdfunding/index",
+				"text": "众筹",
 				"iconPath": "static/tabbar/crowdfunding.png",
-				"selectedIconPath": "static/tabbar/crowdfunding-active.png",
-				"text": "众筹"
+				"selectedIconPath": "static/tabbar/crowdfunding-active.png"
 			},
 			{
 				"pagePath": "pages/profile/index",
+				"text": "我的",
 				"iconPath": "static/tabbar/profile.png",
-				"selectedIconPath": "static/tabbar/profile-active.png",
-				"text": "我的"
+				"selectedIconPath": "static/tabbar/profile-active.png"
 			}
 		]
 	},
@@ -264,25 +114,10 @@
 		"navigationBarBackgroundColor": "#FFFFFF",
 		"backgroundColor": "#F8F8F8"
 	},
-	"requiredPrivateInfos": [
-		"getLocation"
-	],
-	"permission": {
-		"scope.userLocation": {
-			"desc": "仅用于向客户提供最近门店服务"
-		}
-	},
-	"uniIdRouter": {},
 	"easycom": {
 		"autoscan": true,
 		"custom": {
-			"^NoticeBanner$": "@/components/base/NoticeBanner.vue",
-			"^Vehicle(.*)": "@/components/business/vehicle/Vehicle$1.vue",
-			"^CrowdfundingProjectCard$": "@/components/business/crowdfunding/CrowdfundingProjectCard.vue",
-			"^ServiceGrid$": "@/components/business/ServiceGrid.vue",
-			"^(CitySelector|DateTimePicker|AuthForm|BookingForm)$": "@/components/form/$1.vue",
-			"^(WaterfallItem)$": "@/components/content/$1.vue",
-			"^u-(.*)": "uni-ui/u-$1/u-$1.vue"
+			"^uni-(.*)": "@/uni_modules/uni-$1/components/uni-$1/uni-$1.vue"
 		}
 	}
 }

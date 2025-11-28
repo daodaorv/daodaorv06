@@ -1,7 +1,7 @@
 {
   "id": "uni-data-checkbox",
   "displayName": "uni-data-checkbox 数据选择器",
-  "version": "1.0.6",
+  "version": "1.0.5",
   "description": "通过数据驱动的单选框和复选框",
   "keywords": [
     "uni-ui",
@@ -43,15 +43,12 @@
     "platforms": {
       "cloud": {
         "tcb": "y",
-        "aliyun": "y",
-        "alipay": "n"
+        "aliyun": "y"
       },
       "client": {
         "App": {
-            "app-vue": "y",
-            "app-nvue": "y",
-            "app-harmony": "u",
-            "app-uvue": "u"
+          "app-vue": "y",
+          "app-nvue": "y"
         },
         "H5-mobile": {
           "Safari": "y",

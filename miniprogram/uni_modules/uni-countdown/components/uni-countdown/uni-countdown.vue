@@ -96,12 +96,6 @@
 			timestamp: {
 				type: Number,
 				default: 0
-			},
-			filterShow : {
-				type:Object,
-				default () {
-					return {}
-				}
 			}
 		},
 		data() {
@@ -215,13 +209,22 @@
 				} else {
 					this.timeUp()
 				}
-				this.d  = String(day).padStart(this.validFilterShow(this.filterShow.d), '0')
-				this.h = String(hour).padStart(this.validFilterShow(this.filterShow.h), '0')
-				this.i = String(minute).padStart(this.validFilterShow(this.filterShow.m), '0')
-				this.s = String(second).padStart(this.validFilterShow(this.filterShow.s), '0')
-			},
-			validFilterShow(filter){
-				return (filter && filter > 0) ? filter : 2;
+				if (day < 10) {
+					day = '0' + day
+				}
+				if (hour < 10) {
+					hour = '0' + hour
+				}
+				if (minute < 10) {
+					minute = '0' + minute
+				}
+				if (second < 10) {
+					second = '0' + second
+				}
+				this.d = day
+				this.h = hour
+				this.i = minute
+				this.s = second
 			},
 			startData() {
 				this.seconds = this.toSeconds(this.timestamp, this.day, this.hour, this.minute, this.second)

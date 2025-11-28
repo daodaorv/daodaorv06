@@ -1,756 +1,775 @@
 <template>
-  <view class="order-confirm-page">
-    <!-- 头部导航 -->
-    <view class="header">
-      <view class="nav-bar">
-        <view class="nav-item back-btn" @tap="goBack">
-          <uni-icons type="arrowleft" size="20" color="#333"></uni-icons>
-        </view>
-        <text class="nav-title">确认订单</text>
-        <view class="nav-item"></view>
-      </view>
-    </view>
+	<view class="order-confirm-page">
+		<scroll-view scroll-y class="content-scroll">
+			<!-- 车辆信息 -->
+			<view class="section">
+				<view class="section-title">车辆信息</view>
+				<view class="vehicle-info">
+					<image class="vehicle-image" :src="orderData.vehicleImage" mode="aspectFill"></image>
+					<view class="vehicle-details">
+						<text class="vehicle-name">{{ orderData.vehicleName }}</text>
+						<text class="vehicle-spec">{{ orderData.vehicleType }} | {{ orderData.seats }}座{{ orderData.beds }}卧</text>
+					</view>
+				</view>
+			</view>
 
-    <!-- 订单内容 -->
-    <scroll-view class="order-content" scroll-y="true" v-if="orderData">
-      <!-- 车辆信息 -->
-      <view class="vehicle-card">
-        <view class="card-header">
-          <text class="card-title">车辆信息</text>
-        </view>
-        <view class="vehicle-info">
-          <image
-            class="vehicle-image"
-            :src="orderData.vehicle.images?.[0] || '/static/placeholder-vehicle.png'"
-            mode="aspectFill"
-          ></image>
-          <view class="vehicle-details">
-            <text class="vehicle-name">{{ orderData.vehicle.name }}</text>
-            <view class="vehicle-features">
-              <text class="feature-item" v-if="orderData.vehicle.specifications?.seats">
-                <uni-icons type="person" size="14" color="#666"></uni-icons>
-                {{ orderData.vehicle.specifications.seats }}座
-              </text>
-              <text class="feature-item" v-if="orderData.vehicle.specifications?.fuelType">
-                <uni-icons type="gear" size="14" color="#666"></uni-icons>
-                {{ orderData.vehicle.specifications.fuelType }}
-              </text>
-              <text class="feature-item" v-if="orderData.vehicle.specifications?.transmission">
-                <uni-icons type="settings" size="14" color="#666"></uni-icons>
-                {{ orderData.vehicle.specifications.transmission }}
-              </text>
-            </view>
-          </view>
-        </view>
-      </view>
+			<!-- 租赁信息 -->
+			<view class="section">
+				<view class="section-title">租赁信息</view>
+				<view class="rental-info">
+					<!-- 租期概览 -->
+					<view class="rental-duration">
+						<view class="duration-icon">
+							<uni-icons type="calendar-filled" size="20" color="#FF9F29"></uni-icons>
+						</view>
+						<view class="duration-info">
+							<text class="duration-label">租期</text>
+							<text class="duration-value">{{ rentalDays }}天</text>
+						</view>
+					</view>
+					
+					<!-- 取还车时间线 -->
+					<view class="rental-timeline">
+						<!-- 取车信息 -->
+						<view class="timeline-item pickup">
+							<view class="timeline-dot">
+								<view class="dot-inner"></view>
+							</view>
+							<view class="timeline-content">
+								<view class="timeline-header">
+									<uni-icons type="flag-filled" size="18" color="#4CAF50"></uni-icons>
+									<text class="timeline-title">取车</text>
+								</view>
+								<view class="timeline-detail">
+									<view class="detail-item">
+										<uni-icons type="location" size="14" color="#999"></uni-icons>
+										<text class="detail-text">{{ orderData.pickupLocation }}</text>
+									</view>
+									<view class="detail-item">
+										<uni-icons type="calendar" size="14" color="#999"></uni-icons>
+										<text class="detail-text">{{ orderData.pickupDate }} {{ orderData.pickupTime }}</text>
+									</view>
+								</view>
+							</view>
+						</view>
+						
+						<!-- 还车信息 -->
+						<view class="timeline-item return">
+							<view class="timeline-dot">
+								<view class="dot-inner"></view>
+							</view>
+							<view class="timeline-content">
+								<view class="timeline-header">
+									<uni-icons type="checkmarkempty" size="18" color="#FF9F29"></uni-icons>
+									<text class="timeline-title">还车</text>
+								</view>
+								<view class="timeline-detail">
+									<view class="detail-item">
+										<uni-icons type="location" size="14" color="#999"></uni-icons>
+										<text class="detail-text">{{ orderData.returnLocation }}</text>
+									</view>
+									<view class="detail-item">
+										<uni-icons type="calendar" size="14" color="#999"></uni-icons>
+										<text class="detail-text">{{ orderData.returnDate }} {{ orderData.returnTime }}</text>
+									</view>
+								</view>
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
 
-      <!-- 租赁信息 -->
-      <view class="rental-card">
-        <view class="card-header">
-          <text class="card-title">租赁信息</text>
-        </view>
-        <view class="rental-info">
-          <view class="info-item">
-            <view class="item-label">
-              <uni-icons type="location" size="16" color="#FF9F29"></uni-icons>
-              <text class="label-text">取车门店</text>
-            </view>
-            <text class="item-value">{{ orderData.pickupStore.name }}</text>
-          </view>
-          <view class="info-item" v-if="orderData.returnStore.id !== orderData.pickupStore.id">
-            <view class="item-label">
-              <uni-icons type="flag" size="16" color="#4B91FF"></uni-icons>
-              <text class="label-text">还车门店</text>
-            </view>
-            <text class="item-value">{{ orderData.returnStore.name }}</text>
-          </view>
-          <view class="info-item">
-            <view class="item-label">
-              <uni-icons type="calendar" size="16" color="#FF9F29"></uni-icons>
-              <text class="label-text">取车时间</text>
-            </view>
-            <text class="item-value">{{ formatDateTime(orderData.pickupTime) }}</text>
-          </view>
-          <view class="info-item">
-            <view class="item-label">
-              <uni-icons type="calendar" size="16" color="#FF9F29"></uni-icons>
-              <text class="label-text">还车时间</text>
-            </view>
-            <text class="item-value">{{ formatDateTime(orderData.returnTime) }}</text>
-          </view>
-          <view class="info-item">
-            <view class="item-label">
-              <uni-icons type="clock" size="16" color="#FF9F29"></uni-icons>
-              <text class="label-text">租赁天数</text>
-            </view>
-            <text class="item-value">{{ priceCalculation?.rentalDays }}天</text>
-          </view>
-        </view>
-      </view>
+			<!-- 保险方案 -->
+			<view class="section">
+				<view class="section-title">选择保险方案</view>
+				<view class="insurance-list">
+					<view 
+						v-for="(plan, index) in insurancePlans" 
+						:key="index"
+						class="insurance-item"
+						:class="{ selected: selectedInsurance === index }"
+						@tap="selectInsurance(index)"
+					>
+						<view class="insurance-header">
+							<view class="insurance-name-box">
+								<text class="insurance-name">{{ plan.name }}</text>
+								<text class="insurance-price">+¥{{ plan.price }}/天</text>
+							</view>
+							<uni-icons 
+								:type="selectedInsurance === index ? 'checkmarkempty' : 'circle'" 
+								size="20" 
+								:color="selectedInsurance === index ? '#FF9F29' : '#DDD'">
+							</uni-icons>
+						</view>
+						<text class="insurance-desc">{{ plan.description }}</text>
+					</view>
+				</view>
+			</view>
 
-      <!-- 联系人信息 -->
-      <view class="contact-card">
-        <view class="card-header">
-          <text class="card-title">联系人信息</text>
-        </view>
-        <view class="contact-form">
-          <view class="form-item">
-            <view class="item-label">
-              <text class="required">*</text>
-              <text class="label-text">联系人姓名</text>
-            </view>
-            <input
-              class="form-input"
-              type="text"
-              v-model="contactForm.contactName"
-              placeholder="请输入真实姓名"
-              maxlength="50"
-            />
-          </view>
-          <view class="form-item">
-            <view class="item-label">
-              <text class="required">*</text>
-              <text class="label-text">手机号码</text>
-            </view>
-            <input
-              class="form-input"
-              type="number"
-              v-model="contactForm.contactPhone"
-              placeholder="请输入手机号"
-              maxlength="11"
-            />
-          </view>
-          <view class="form-item">
-            <view class="item-label">
-              <text class="required">*</text>
-              <text class="label-text">身份证号</text>
-            </view>
-            <input
-              class="form-input"
-              type="text"
-              v-model="contactForm.idCardNumber"
-              placeholder="请输入身份证号"
-              maxlength="18"
-            />
-          </view>
-          <view class="form-item">
-            <view class="item-label">
-              <text class="label-text">驾驶证号</text>
-            </view>
-            <input
-              class="form-input"
-              type="text"
-              v-model="contactForm.driverLicenseNumber"
-              placeholder="请输入驾驶证号"
-              maxlength="50"
-            />
-          </view>
-          <view class="form-item">
-            <view class="item-label">
-              <text class="label-text">备注信息</text>
-            </view>
-            <textarea
-              class="form-textarea"
-              v-model="contactForm.userRemark"
-              placeholder="请输入备注信息（选填）"
-              maxlength="500"
-            ></textarea>
-          </view>
-        </view>
-      </view>
+			<!-- 附加服务 -->
+			<view class="section">
+				<view class="section-title">附加服务(可选)</view>
+				<view class="services-list">
+					<view 
+						v-for="(service, index) in additionalServices" 
+						:key="index"
+						class="service-item"
+						@tap="toggleService(index)"
+					>
+						<view class="service-info">
+							<text class="service-name">{{ service.name }}</text>
+							<text class="service-price">+¥{{ service.price }}/{{ service.unit }}</text>
+						</view>
+						<uni-icons 
+							:type="service.selected ? 'checkbox-filled' : 'checkbox'" 
+							size="20" 
+							:color="service.selected ? '#FF9F29' : '#DDD'">
+						</uni-icons>
+					</view>
+				</view>
+			</view>
 
-      <!-- 优惠券 -->
-      <view class="coupon-card" @tap="selectCoupon">
-        <view class="card-header">
-          <text class="card-title">优惠券</text>
-          <uni-icons type="right" size="16" color="#999"></uni-icons>
-        </view>
-        <view class="coupon-info">
-          <text class="coupon-text" v-if="selectedCoupon">
-            {{ selectedCoupon.name }} -¥{{ selectedCoupon.discount }}
-          </text>
-          <text class="coupon-placeholder" v-else>
-            选择优惠券
-          </text>
-        </view>
-      </view>
+			<!-- 优惠券 -->
+			<view class="section coupon-section" @tap="selectCoupon">
+				<view class="coupon-row">
+					<text class="section-title">优惠券</text>
+					<view class="coupon-value">
+						<text class="coupon-text">{{ selectedCoupon ? selectedCoupon.name : '请选择' }}</text>
+						<uni-icons type="right" size="16" color="#999"></uni-icons>
+					</view>
+				</view>
+			</view>
 
-      <!-- 费用明细 -->
-      <view class="price-card">
-        <view class="card-header">
-          <text class="card-title">费用明细</text>
-        </view>
-        <view class="price-details" v-if="priceCalculation">
-          <view class="price-item">
-            <text class="price-label">车辆租赁费</text>
-            <text class="price-value">¥{{ priceCalculation.vehicleFee }}</text>
-          </view>
-          <view class="price-item">
-            <text class="price-label">保险费</text>
-            <text class="price-value">¥{{ priceCalculation.insuranceFee }}</text>
-          </view>
-          <view class="price-item">
-            <text class="price-label">服务费</text>
-            <text class="price-value">¥{{ priceCalculation.serviceFee }}</text>
-          </view>
-          <view class="price-item discount" v-if="priceCalculation.couponDiscount > 0">
-            <text class="price-label">优惠券折扣</text>
-            <text class="price-value">-¥{{ priceCalculation.couponDiscount }}</text>
-          </view>
-          <view class="price-divider"></view>
-          <view class="price-item">
-            <text class="price-label">租赁费用合计</text>
-            <text class="price-value">¥{{ priceCalculation.totalAmount }}</text>
-          </view>
-          <view class="price-item">
-            <text class="price-label">押金</text>
-            <text class="price-value">¥{{ priceCalculation.depositAmount }}</text>
-          </view>
-          <view class="price-divider"></view>
-          <view class="price-item total">
-            <text class="price-label">实付金额</text>
-            <text class="price-value">¥{{ totalPayAmount }}</text>
-          </view>
-        </view>
-      </view>
+			<!-- 价格明细 -->
+			<view class="section">
+				<view class="section-title">价格明细</view>
+				<view class="price-detail">
+					<view class="detail-row">
+						<text class="detail-label">租金({{ rentalDays }}天 × ¥{{ orderData.dailyPrice }})</text>
+						<text class="detail-value">¥{{ basePrice }}</text>
+					</view>
+					<view class="detail-row">
+						<text class="detail-label">保险费用</text>
+						<text class="detail-value">¥{{ insurancePrice }}</text>
+					</view>
+					<view v-if="servicesPrice > 0" class="detail-row">
+						<text class="detail-label">附加服务</text>
+						<text class="detail-value">¥{{ servicesPrice }}</text>
+					</view>
+					<view v-if="selectedCoupon" class="detail-row discount">
+						<text class="detail-label">优惠券抵扣</text>
+						<text class="detail-value">-¥{{ couponDiscount }}</text>
+					</view>
+					<view class="detail-row total">
+						<text class="detail-label">合计</text>
+						<text class="detail-value">¥{{ totalPrice }}</text>
+					</view>
+				</view>
+			</view>
 
-      <!-- 预订须知 -->
-      <view class="notice-card">
-        <view class="card-header">
-          <text class="card-title">预订须知</text>
-        </view>
-        <view class="notice-content">
-          <view class="notice-item">
-            <uni-icons type="checkmarkempty" size="14" color="#67C23A"></uni-icons>
-            <text class="notice-text">取车时请携带身份证、驾驶证等有效证件</text>
-          </view>
-          <view class="notice-item">
-            <uni-icons type="checkmarkempty" size="14" color="#67C23A"></uni-icons>
-            <text class="notice-text">需要支付押金，还车后无损坏情况将退还</text>
-          </view>
-          <view class="notice-item">
-            <uni-icons type="checkmarkempty" size="14" color="#67C23A"></uni-icons>
-            <text class="notice-text">请按照约定时间取车还车，超时将产生额外费用</text>
-          </view>
-          <view class="notice-item">
-            <uni-icons type="checkmarkempty" size="14" color="#67C23A"></uni-icons>
-            <text class="notice-text">订单确认后不可随意取消，请谨慎操作</text>
-          </view>
-        </view>
-      </view>
+			<!-- 底部占位 -->
+			<view class="bottom-placeholder"></view>
+		</scroll-view>
 
-      <!-- 底部占位 -->
-      <view class="bottom-placeholder"></view>
-    </scroll-view>
-
-    <!-- 底部操作栏 -->
-    <view class="bottom-bar">
-      <view class="price-info">
-        <text class="price-label">实付：</text>
-        <text class="price-amount">¥{{ totalPayAmount }}</text>
-      </view>
-      <button
-        class="submit-btn"
-        :class="{ 'disabled': !canSubmit || calculating }"
-        :disabled="!canSubmit || calculating || submitting"
-        :loading="submitting"
-        @tap="submitOrder"
-      >
-        {{ calculating ? '计算中...' : '确认下单' }}
-      </button>
-    </view>
-  </view>
+		<!-- 底部操作栏 -->
+		<view class="bottom-bar">
+			<view class="total-info">
+				<text class="total-label">总计</text>
+				<view class="total-price">
+					<text class="currency">¥</text>
+					<text class="price">{{ totalPrice }}</text>
+				</view>
+			</view>
+			<button class="submit-btn" @tap="handleSubmit">提交订单</button>
+		</view>
+	</view>
 </template>
 
-<script setup>
-import { ref, computed, onMounted } from 'vue';
-import { onLoad, onShow } from '@dcloudio/uni-app';
-import { useUserStore } from '@/stores/user';
-import { orderApi } from '@/api/order';
-
-const userStore = useUserStore();
+<script setup lang="ts">
+import { ref, computed } from 'vue';
+import { onLoad } from '@dcloudio/uni-app';
 
 // 订单数据
-const orderData = ref(null);
-const priceCalculation = ref(null);
-const selectedCoupon = ref(null);
-const calculating = ref(false);
-const submitting = ref(false);
-
-// 联系人表单
-const contactForm = ref({
-  contactName: '',
-  contactPhone: '',
-  idCardNumber: '',
-  driverLicenseNumber: '',
-  userRemark: ''
+const orderData = ref({
+	vehicleId: '',
+	vehicleName: '上汽大通RG10',
+	vehicleType: 'C型房车',
+	vehicleImage: '/static/场景推荐2.jpg',
+	seats: 6,
+	beds: 4,
+	dailyPrice: 680,
+	pickupLocation: '成都市武侯区天府大道中段',
+	pickupDate: '2024-12-01',
+	pickupTime: '09:00',
+	returnLocation: '成都市武侯区天府大道中段',
+	returnDate: '2024-12-05',
+	returnTime: '18:00'
 });
 
-// 参数
-const vehicleId = ref(null);
-const pickupStoreId = ref(null);
-const returnStoreId = ref(null);
-const pickupTime = ref(null);
-const returnTime = ref(null);
+// 保险方案
+const insurancePlans = ref([
+	{
+		name: '基础险',
+		price: 50,
+		description: '第三者责任险,保障第三方人身和财产损失'
+	},
+	{
+		name: '标准险',
+		price: 100,
+		description: '基础险+车辆损失险(80%赔付),更全面的保障'
+	},
+	{
+		name: '全险',
+		price: 150,
+		description: '标准险+车辆损失险(100%赔付)+驾意险,无忧出行'
+	}
+]);
 
-// 计算属性
-const totalPayAmount = computed(() => {
-  if (!priceCalculation.value) return 0;
-  return priceCalculation.value.totalAmount + priceCalculation.value.depositAmount;
+const selectedInsurance = ref(0); // 默认选择基础险
+
+// 附加服务
+const additionalServices = ref([
+	{ name: 'GPS导航', price: 20, unit: '天', selected: false },
+	{ name: '儿童安全座椅', price: 30, unit: '天', selected: false },
+	{ name: '车载WiFi', price: 15, unit: '天', selected: false },
+	{ name: '异地还车', price: 500, unit: '次', selected: false }
+]);
+
+// 优惠券
+const selectedCoupon = ref<any>(null);
+
+// 计算租赁天数
+const rentalDays = computed(() => {
+	const pickup = new Date(orderData.value.pickupDate);
+	const returnDate = new Date(orderData.value.returnDate);
+	const days = Math.ceil((returnDate.getTime() - pickup.getTime()) / (1000 * 60 * 60 * 24));
+	return days > 0 ? days : 1;
 });
 
-const canSubmit = computed(() => {
-  if (!orderData.value || !priceCalculation.value) return false;
-
-  const form = contactForm.value;
-  return (
-    form.contactName.trim() &&
-    form.contactPhone.trim() &&
-    form.idCardNumber.trim() &&
-    /^1[3-9]\d{9}$/.test(form.contactPhone) &&
-    /^\d{17}[\dXx]$/.test(form.idCardNumber)
-  );
+// 计算基础租金
+const basePrice = computed(() => {
+	return orderData.value.dailyPrice * rentalDays.value;
 });
 
-// 页面加载
-onLoad((options) => {
-  // 接收参数
-  vehicleId.value = parseInt(options.vehicleId);
-  pickupStoreId.value = parseInt(options.pickupStoreId);
-  returnStoreId.value = options.returnStoreId ? parseInt(options.returnStoreId) : null;
-  pickupTime.value = options.pickupTime;
-  returnTime.value = options.returnTime;
-
-  // 初始化用户信息
-  if (userStore.userInfo) {
-    contactForm.value.contactName = userStore.userInfo.realName || '';
-    contactForm.value.contactPhone = userStore.userInfo.phone || '';
-  }
-
-  // 加载订单数据
-  loadOrderData();
+// 计算保险费用
+const insurancePrice = computed(() => {
+	return insurancePlans.value[selectedInsurance.value].price * rentalDays.value;
 });
 
-// 加载订单数据
-const loadOrderData = async () => {
-  try {
-    calculating.value = true;
+// 计算附加服务费用
+const servicesPrice = computed(() => {
+	return additionalServices.value.reduce((total, service) => {
+		if (service.selected) {
+			return total + (service.unit === '天' ? service.price * rentalDays.value : service.price);
+		}
+		return total;
+	}, 0);
+});
 
-    // 获取车辆详情和门店信息
-    const [vehicleDetail, priceData] = await Promise.all([
-      // 这里应该调用车辆详情API
-      Promise.resolve({
-        id: vehicleId.value,
-        name: '奔驰Sprinter豪华房车',
-        images: ['/static/placeholder-vehicle.png'],
-        specifications: {
-          seats: 6,
-          fuelType: '柴油',
-          transmission: '自动'
-        }
-      }),
-      orderApi.calculatePrice({
-        vehicleId: vehicleId.value,
-        pickupTime: pickupTime.value,
-        returnTime: returnTime.value,
-        couponId: selectedCoupon.value?.id
-      })
-    ]);
+// 计算优惠券抵扣
+const couponDiscount = computed(() => {
+	if (!selectedCoupon.value) return 0;
+	return selectedCoupon.value.discount || 0;
+});
 
-    orderData.value = {
-      vehicle: vehicleDetail,
-      pickupStore: {
-        id: pickupStoreId.value,
-        name: '深圳机场店',
-        address: '深圳市宝安区机场路'
-      },
-      returnStore: returnStoreId.value ? {
-        id: returnStoreId.value,
-        name: '深圳市中心店',
-        address: '深圳市福田区华强北'
-      } : {
-        id: pickupStoreId.value,
-        name: '深圳机场店',
-        address: '深圳市宝安区机场路'
-      },
-      pickupTime: pickupTime.value,
-      returnTime: returnTime.value
-    };
+// 计算总价
+const totalPrice = computed(() => {
+	const total = basePrice.value + insurancePrice.value + servicesPrice.value - couponDiscount.value;
+	return Math.max(total, 0);
+});
 
-    priceCalculation.value = priceData;
+onLoad((options: any) => {
+	if (options.vehicleId) {
+		orderData.value.vehicleId = options.vehicleId;
+		// TODO: 根据vehicleId加载车辆信息
+		console.log('加载订单确认页:', options.vehicleId);
+	}
+});
 
-  } catch (error) {
-    console.error('加载订单数据失败:', error);
-    uni.showToast({
-      title: '加载失败，请重试',
-      icon: 'none'
-    });
-  } finally {
-    calculating.value = false;
-  }
+const selectInsurance = (index: number) => {
+	selectedInsurance.value = index;
 };
 
-// 选择优惠券
+const toggleService = (index: number) => {
+	additionalServices.value[index].selected = !additionalServices.value[index].selected;
+};
+
 const selectCoupon = () => {
-  uni.navigateTo({
-    url: '/pages/coupon/select?amount=' + (priceCalculation.value?.totalAmount || 0)
-  });
+	// TODO: 打开优惠券选择页面
+	uni.showToast({
+		title: '优惠券功能开发中',
+		icon: 'none'
+	});
 };
 
-// 提交订单
-const submitOrder = async () => {
-  if (!canSubmit.value) {
-    uni.showToast({
-      title: '请完善订单信息',
-      icon: 'none'
-    });
-    return;
-  }
-
-  submitting.value = true;
-
-  try {
-    const orderParams = {
-      vehicleId: vehicleId.value,
-      pickupStoreId: pickupStoreId.value,
-      returnStoreId: returnStoreId.value,
-      pickupTime: pickupTime.value,
-      returnTime: returnTime.value,
-      contactName: contactForm.value.contactName,
-      contactPhone: contactForm.value.contactPhone,
-      idCardNumber: contactForm.value.idCardNumber,
-      driverLicenseNumber: contactForm.value.driverLicenseNumber,
-      userRemark: contactForm.value.userRemark,
-      couponId: selectedCoupon.value?.id
-    };
-
-    const result = await orderApi.createOrder(orderParams);
-
-    uni.showToast({
-      title: '订单创建成功',
-      icon: 'success',
-      duration: 1500
-    });
-
-    // 跳转到支付页面
-    setTimeout(() => {
-      uni.redirectTo({
-        url: `/pages/payment/index?orderId=${result.id}&orderNo=${result.orderNo}`
-      });
-    }, 1500);
-
-  } catch (error) {
-    console.error('提交订单失败:', error);
-    uni.showToast({
-      title: error.message || '提交失败，请重试',
-      icon: 'none'
-    });
-  } finally {
-    submitting.value = false;
-  }
+const handleSubmit = () => {
+	// 模拟生成订单号
+	const orderNo = 'DD' + Date.now();
+	
+	uni.showLoading({ title: '提交中...' });
+	
+	setTimeout(() => {
+		uni.hideLoading();
+		
+		// 跳转到支付页面
+		uni.navigateTo({
+			url: `/pages/order/pay?orderNo=${orderNo}&amount=${totalPrice.value}`
+		});
+	}, 1000);
 };
-
-// 返回
-const goBack = () => {
-  uni.navigateBack();
-};
-
-// 格式化日期时间
-const formatDateTime = (dateTimeStr) => {
-  const date = new Date(dateTimeStr);
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
-  const hours = date.getHours();
-  const minutes = date.getMinutes();
-
-  return `${month}月${day}日 ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
-};
-
-// 监听页面显示（从优惠券选择页面返回时更新价格）
-onShow(() => {
-  // 检查是否有选中的优惠券
-  const pages = getCurrentPages();
-  const currentPage = pages[pages.length - 1];
-
-  if (currentPage.data?.selectedCoupon) {
-    selectedCoupon.value = currentPage.data.selectedCoupon;
-    currentPage.data.selectedCoupon = null; // 清除临时数据
-
-    // 重新计算价格
-    if (vehicleId.value && pickupTime.value && returnTime.value) {
-      loadOrderData();
-    }
-  }
-});
 </script>
 
-<style>
+<style scoped lang="scss">
 .order-confirm-page {
-  min-height: 100vh;
-  background-color: #f5f5f5;
-  padding-bottom: 160rpx;
+	min-height: 100vh;
+	background-color: #F8F8F8;
+	display: flex;
+	flex-direction: column;
 }
 
-// 头部
-.header {
-  background-color: #ffffff;
-
-  .nav-bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 24rpx 32rpx;
-    height: 88rpx;
-
-    .nav-item {
-      width: 60rpx;
-      height: 60rpx;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .nav-title {
-      font-size: 36rpx;
-      font-weight: 600;
-      color: rgba(0, 0, 0, 0.9);
-    }
-  }
+.content-scroll {
+	flex: 1;
+	height: 0;
 }
 
-// 订单内容
-.order-content {
-  height: calc(100vh - 160rpx);
+.section {
+	background-color: #FFFFFF;
+	padding: 32rpx;
+	margin-bottom: 16rpx;
+	border-radius: 16rpx;
+	box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
 }
 
-// 通用卡片样式
-.vehicle-card,
-.rental-card,
-.contact-card,
-.coupon-card,
-.price-card,
-.notice-card {
-  margin: 24rpx;
-  background-color: #ffffff;
-  border-radius: 16rpx;
-  overflow: hidden;
-
-  .card-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 32rpx;
-    border-bottom: 2rpx solid #f0f0f0;
-
-    .card-title {
-      font-size: 32rpx;
-      font-weight: 600;
-      color: rgba(0, 0, 0, 0.9);
-    }
-  }
+.section-title {
+	font-size: 32rpx;
+	font-weight: bold;
+	color: #333;
+	margin-bottom: 24rpx;
+	position: relative;
+	padding-left: 16rpx;
+	
+	&::before {
+		content: '';
+		position: absolute;
+		left: 0;
+		top: 50%;
+		transform: translateY(-50%);
+		width: 6rpx;
+		height: 28rpx;
+		background: linear-gradient(135deg, #FF9F29 0%, #FFB84D 100%);
+		border-radius: 3rpx;
+	}
 }
 
-// 车辆信息卡片
-.vehicle-card  { .vehicle-info { display: flex;
-    padding: 32rpx;
-    gap: 24rpx;
-
-    .vehicle-image { width: 200rpx;
-      height: 150rpx;
-      border-radius: 12rpx;
-      background-color: #f0f0f0; }.vehicle-details { flex: 1;
-
-      .vehicle-name { display: block;
-        font-size: 32rpx;
-        font-weight: 600;
-        color: rgba(0, 0, 0, 0.9);
-        margin-bottom: 16rpx; }.vehicle-features { display: flex;
-        flex-wrap: wrap;
-        gap: 16rpx;
-
-        .feature-item { display: flex;
-          align-items: center;
-          gap: 6rpx;
-          font-size: 24rpx;
-          color: rgba(0, 0, 0, 0.6);
-          background-color: #f8f8f8;
-          padding: 8rpx 12rpx;
-          border-radius: 8rpx; } }
-    }
-  }
+// 车辆信息
+.vehicle-info {
+	display: flex;
+	gap: 24rpx;
+	padding: 20rpx;
+	background: linear-gradient(135deg, #FFF9F0 0%, #FFFFFF 100%);
+	border-radius: 12rpx;
+	border: 1rpx solid #FFE8CC;
 }
 
-// 租赁信息卡片
-.rental-card  { .rental-info { padding: 32rpx;
-
-    .info-item { display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 16rpx 0;
-
-      .not(:last-child) { border-bottom: 2rpx solid #f8f8f8; }.item-label { display: flex;
-        align-items: center;
-        gap: 12rpx;
-
-        .label-text { font-size: 28rpx;
-          color: rgba(0, 0, 0, 0.8); } }
-
-      .item-value {
-        font-size: 28rpx;
-        color: rgba(0, 0, 0, 0.9);
-      }
-    }
-  }
+.vehicle-image {
+	width: 160rpx;
+	height: 120rpx;
+	border-radius: 12rpx;
+	background-color: #F5F5F5;
+	box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
 }
 
-// 联系人信息卡片
-.contact-card  { .contact-form { padding: 32rpx;
-
-    .form-item { margin-bottom: 32rpx;
-
-      .last-child { margin-bottom: 0; }.item-label { display: flex;
-        align-items: center;
-        margin-bottom: 16rpx;
-
-        .required { color: #FF4D4F;
-          margin-right: 4rpx; }.label-text { font-size: 28rpx;
-          color: rgba(0, 0, 0, 0.8); } }
-
-      .form-input,
-      .form-textarea {
-        width: 100%;
-        padding: 24rpx;
-        border: 2rpx solid #f0f0f0;
-        border-radius: 12rpx;
-        font-size: 28rpx;
-        color: rgba(0, 0, 0, 0.9);
-        background-color: #ffffff;
-        box-sizing: border-box;
-      }
-
-      .form-textarea {
-        height: 120rpx;
-        resize: none;
-      }
-    }
-  }
+.vehicle-details {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: 12rpx;
 }
 
-// 优惠券卡片
-.coupon-card  { .coupon-info { padding: 32rpx;
-
-    .coupon-text { font-size: 28rpx;
-      color: #FF9F29;
-      font-weight: 500; }.coupon-placeholder { font-size: 28rpx;
-      color: rgba(0, 0, 0, 0.4); } }
+.vehicle-name {
+	font-size: 30rpx;
+	font-weight: bold;
+	color: #333;
 }
 
-// 费用明细卡片
-.price-card  { .price-details { padding: 32rpx;
-
-    .price-item { display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 16rpx 0;
-
-      &.discount { .price-value { color: #67C23A; } }
-
-      &.total  { .price-label,
-        .price-value { font-size: 32rpx;
-          font-weight: 600;
-          color: rgba(0, 0, 0, 0.9); } }
-
-      .price-label {
-        font-size: 28rpx;
-        color: rgba(0, 0, 0, 0.8);
-      }
-
-      .price-value {
-        font-size: 32rpx;
-        color: rgba(0, 0, 0, 0.9);
-        font-weight: 500;
-      }
-    }
-
-    .price-divider {
-      height: 2rpx;
-      background-color: #f0f0f0;
-      margin: 16rpx 0;
-    }
-  }
+.vehicle-spec {
+	font-size: 24rpx;
+	color: #999;
 }
 
-// 预订须知卡片
-.notice-card  { .notice-content { padding: 32rpx;
-
-    .notice-item { display: flex;
-      align-items: flex-start;
-      gap: 12rpx;
-      margin-bottom: 16rpx;
-
-      .last-child { margin-bottom: 0; }.notice-text { flex: 1;
-        font-size: 26rpx;
-        color: rgba(0, 0, 0, 0.6);
-        line-height: 1.6; } }
-  }
+// 租赁信息
+.rental-info {
+	display: flex;
+	flex-direction: column;
+	gap: 24rpx;
 }
 
-// 底部占位
+// 租期概览
+.rental-duration {
+	display: flex;
+	align-items: center;
+	gap: 16rpx;
+	padding: 20rpx;
+	background: linear-gradient(135deg, #FFF5E9 0%, #FFFBF5 100%);
+	border-radius: 12rpx;
+	border: 2rpx solid #FFE4C4;
+}
+
+.duration-icon {
+	width: 48rpx;
+	height: 48rpx;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: linear-gradient(135deg, #FF9F29 0%, #FFB84D 100%);
+	border-radius: 50%;
+	box-shadow: 0 4rpx 12rpx rgba(255, 159, 41, 0.3);
+}
+
+.duration-info {
+	flex: 1;
+	display: flex;
+	align-items: baseline;
+	gap: 12rpx;
+}
+
+.duration-label {
+	font-size: 26rpx;
+	color: #666;
+}
+
+.duration-value {
+	font-size: 36rpx;
+	font-weight: bold;
+	color: #FF9F29;
+}
+
+// 时间线
+.rental-timeline {
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+}
+
+.timeline-item {
+	display: flex;
+	gap: 16rpx;
+	position: relative;
+	padding-bottom: 32rpx;
+	
+	&:last-child {
+		padding-bottom: 0;
+		
+		.timeline-dot::after {
+			display: none;
+		}
+	}
+}
+
+.timeline-dot {
+	width: 32rpx;
+	height: 32rpx;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+	flex-shrink: 0;
+	margin-top: 4rpx;
+	
+	&::after {
+		content: '';
+		position: absolute;
+		top: 32rpx;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 2rpx;
+		height: 100%;
+		background: linear-gradient(180deg, #E0E0E0 0%, #F5F5F5 100%);
+	}
+}
+
+.dot-inner {
+	width: 12rpx;
+	height: 12rpx;
+	border-radius: 50%;
+	background: linear-gradient(135deg, #4CAF50 0%, #66BB6A 100%);
+	box-shadow: 0 0 0 4rpx rgba(76, 175, 80, 0.15);
+}
+
+.timeline-item.return .dot-inner {
+	background: linear-gradient(135deg, #FF9F29 0%, #FFB84D 100%);
+	box-shadow: 0 0 0 4rpx rgba(255, 159, 41, 0.15);
+}
+
+.timeline-content {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	gap: 12rpx;
+}
+
+.timeline-header {
+	display: flex;
+	align-items: center;
+	gap: 8rpx;
+}
+
+.timeline-title {
+	font-size: 28rpx;
+	font-weight: bold;
+	color: #333;
+}
+
+.timeline-detail {
+	display: flex;
+	flex-direction: column;
+	gap: 8rpx;
+	padding-left: 26rpx;
+}
+
+.detail-item {
+	display: flex;
+	align-items: center;
+	gap: 8rpx;
+}
+
+.detail-text {
+	font-size: 26rpx;
+	color: #666;
+	line-height: 1.5;
+}
+
+// 保险方案
+.insurance-list {
+	display: flex;
+	flex-direction: column;
+	gap: 16rpx;
+}
+
+.insurance-item {
+	padding: 24rpx;
+	border: 2rpx solid #E0E0E0;
+	border-radius: 12rpx;
+	background-color: #FFFFFF;
+	transition: all 0.3s ease;
+	
+	&.selected {
+		border-color: transparent;
+		background: linear-gradient(white, white) padding-box,
+		            linear-gradient(135deg, #FF9F29 0%, #FFB84D 100%) border-box;
+		box-shadow: 0 4rpx 16rpx rgba(255, 159, 41, 0.15);
+		
+		.insurance-name {
+			color: #FF9F29;
+		}
+	}
+}
+
+.insurance-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 8rpx;
+}
+
+.insurance-name-box {
+	display: flex;
+	align-items: baseline;
+	gap: 12rpx;
+}
+
+.insurance-name {
+	font-size: 28rpx;
+	font-weight: bold;
+	color: #333;
+	transition: color 0.3s ease;
+}
+
+.insurance-price {
+	font-size: 24rpx;
+	color: $uni-color-primary;
+	font-weight: 600;
+}
+
+.insurance-desc {
+	font-size: 24rpx;
+	color: #999;
+	line-height: 1.6;
+}
+
+// 附加服务
+.services-list {
+	display: flex;
+	flex-direction: column;
+	gap: 16rpx;
+}
+
+.service-item {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 20rpx 0;
+	border-bottom: 1rpx solid #F5F5F5;
+	
+	&:last-child {
+		border-bottom: none;
+	}
+}
+
+.service-info {
+	display: flex;
+	flex-direction: column;
+	gap: 4rpx;
+}
+
+.service-name {
+	font-size: 28rpx;
+	color: #333;
+}
+
+.service-price {
+	font-size: 24rpx;
+	color: #999;
+}
+
+// 优惠券
+.coupon-section {
+	padding: 24rpx 32rpx;
+}
+
+.coupon-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.coupon-value {
+	display: flex;
+	align-items: center;
+	gap: 8rpx;
+}
+
+.coupon-text {
+	font-size: 28rpx;
+	color: #999;
+}
+
+// 价格明细
+.price-detail {
+	display: flex;
+	flex-direction: column;
+	gap: 16rpx;
+}
+
+.detail-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	
+	&.discount {
+		.detail-value {
+			color: #F44336;
+		}
+	}
+	
+	&.total {
+		padding-top: 16rpx;
+		border-top: 1rpx solid #E0E0E0;
+		
+		.detail-label {
+			font-size: 32rpx;
+			font-weight: bold;
+		}
+		
+		.detail-value {
+			font-size: 36rpx;
+			font-weight: bold;
+			color: $uni-color-primary;
+		}
+	}
+}
+
+.detail-label {
+	font-size: 28rpx;
+	color: #666;
+}
+
+.detail-value {
+	font-size: 28rpx;
+	color: #333;
+}
+
 .bottom-placeholder {
-  height: 160rpx;
+	height: 180rpx;
 }
 
 // 底部操作栏
 .bottom-bar {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 144rpx;
-  background-color: #ffffff;
-  border-top: 2rpx solid #f0f0f0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 32rpx;
-  z-index: 100;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 20rpx 32rpx;
+	padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
+	background: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 1) 100%);
+	backdrop-filter: blur(20rpx);
+	border-top: 1rpx solid rgba(0, 0, 0, 0.05);
+	box-shadow: 0 -8rpx 24rpx rgba(0, 0, 0, 0.08);
+	z-index: 100;
+}
 
-  .price-info {
-    display: flex;
-    align-items: baseline;
-    gap: 8rpx;
+.total-info {
+	display: flex;
+	flex-direction: column;
+	gap: 4rpx;
+}
 
-    .price-label {
-      font-size: 28rpx;
-      color: rgba(0, 0, 0, 0.6);
-    }
+.total-label {
+	font-size: 24rpx;
+	color: #999;
+}
 
-    .price-amount {
-      font-size: 40rpx;
-      font-weight: 600;
-      color: #FF9F29;
-    }
-  }
+.total-price {
+	display: flex;
+	align-items: baseline;
+	color: $uni-color-primary;
+	
+	.currency {
+		font-size: 24rpx;
+		font-weight: bold;
+	}
+	
+	.price {
+		font-size: 40rpx;
+		font-weight: bold;
+		margin-left: 4rpx;
+	}
+}
 
-  .submit-btn {
-    width: 240rpx;
-    height: 88rpx;
-    background: linear-gradient(135deg, #FF9F29 0%, #FFB84D 100%);
-    color: #ffffff;
-    border-radius: 44rpx;
-    font-size: 32rpx;
-    font-weight: 500;
-    border: none;
-    box-shadow: 0 8rpx 24rpx rgba(255, 159, 41, 0.3);
-
-    &.disabled {
-      background: linear-gradient(135deg, #ccc 0%, #999 100%);
-      box-shadow: none;
-    }
-
-    &::after {
-      border: none;
-    }
-  }
+.submit-btn {
+	margin: 0;
+	padding: 0 56rpx;
+	height: 88rpx;
+	line-height: 88rpx;
+	font-size: 32rpx;
+	background: linear-gradient(135deg, #FF9F29 0%, #FFB84D 100%);
+	color: #FFFFFF;
+	border-radius: 44rpx;
+	font-weight: bold;
+	box-shadow: 0 8rpx 24rpx rgba(255, 159, 41, 0.35);
+	transition: all 0.3s ease;
+	
+	&::after {
+		border: none;
+	}
+	
+	&:active {
+		transform: scale(0.98);
+		box-shadow: 0 4rpx 16rpx rgba(255, 159, 41, 0.3);
+	}
 }
 </style>

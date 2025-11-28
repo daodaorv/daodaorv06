@@ -6,6 +6,7 @@
 				{{content}}
 			</slot>
 		</view>
+
 	</view>
 </template>
 
@@ -63,7 +64,7 @@
 						}
 						break;
 				}
-				return style;
+				return Object.entries(style).map(([key, value]) => `${key}: ${value}`).join('; ');
 			}
 		},
 		props: {
