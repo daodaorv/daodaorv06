@@ -78,7 +78,7 @@ app.get('/health', (req, res) => {
   });
 });
 
-// API routes
+// API routes with unified structure
 app.use('/api/v1', (req, res, next) => {
   logger.info(`${req.method} ${req.path}`, {
     ip: req.ip,
@@ -88,18 +88,27 @@ app.use('/api/v1', (req, res, next) => {
   next();
 });
 
-// Import routes
+// Import modular route system
 import authRoutes from '@/routes/auth.routes';
-import userRoutes from '@/routes/user.routes';
-// import diyPagesRoutes from '@/routes/diy.pages.routes'; // Temporarily commented for testing
-import diyComponentsRoutes from '@/routes/diy.library.routes';
-import diyLibraryRoutes from '@/routes/diy.library.routes';
 
-// API routes
+// Core API routes (小程序端)
 app.use('/api/v1/auth', authRoutes);
-app.use('/api/v1/users', userRoutes);
-// app.use('/api/v1/diy/pages', diyPagesRoutes); // Temporarily commented for testing
-app.use('/api/v1/diy/library', diyLibraryRoutes);
+// TODO: Add other core routes as they are updated
+// app.use('/api/v1/vehicles', vehicleRoutes);
+// app.use('/api/v1/orders', orderRoutes);
+// app.use('/api/v1/payments', paymentRoutes);
+
+// Admin API routes (PC管理端)
+// TODO: Implement admin routes
+// app.use('/api/v1/admin/auth', adminAuthRoutes);
+// app.use('/api/v1/admin/users', adminUserRoutes);
+// app.use('/api/v1/admin/vehicles', adminVehicleRoutes);
+
+// Mobile API routes (移动管理端)
+// TODO: Implement mobile routes
+// app.use('/api/v1/mobile/auth', mobileAuthRoutes);
+// app.use('/api/v1/mobile/orders', mobileOrderRoutes);
+// app.use('/api/v1/mobile/vehicles', mobileVehicleRoutes);
 
 // Simple DIY pages test route
 app.get('/api/v1/diy/pages', (req, res) => {
