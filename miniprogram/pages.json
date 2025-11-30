@@ -28,13 +28,52 @@
 		{
 			"path": "pages/campsite/list",
 			"style": {
-				"navigationBarTitleText": "营地预订"
+				"navigationBarTitleText": "营地预订",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/campsite/detail",
+			"style": {
+				"navigationBarTitleText": "营地详情"
+			}
+		},
+		{
+			"path": "pages/campsite/booking",
+			"style": {
+				"navigationBarTitleText": "预订营位"
 			}
 		},
 		{
 			"path": "pages/tour/list",
 			"style": {
-				"navigationBarTitleText": "房车旅游"
+				"navigationBarTitleText": "房车旅游",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/tour/detail",
+			"style": {
+				"navigationBarTitleText": "线路详情"
+			}
+		},
+		{
+			"path": "pages/tour/booking",
+			"style": {
+				"navigationBarTitleText": "预订线路"
+			}
+		},
+		{
+			"path": "pages/special-offer/list",
+			"style": {
+				"navigationBarTitleText": "特惠租车",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/special-offer/detail",
+			"style": {
+				"navigationBarTitleText": "套餐详情"
 			}
 		},
 		{
@@ -82,6 +121,12 @@
 			}
 		},
 		{
+			"path": "pages/profile/index",
+			"style": {
+				"navigationBarTitleText": "我的"
+			}
+		},
+		{
 			"path": "pages/profile/edit",
 			"style": {
 				"navigationBarTitleText": "个人信息"
@@ -119,55 +164,66 @@
 			}
 		},
 		{
-			"path": "pages/profile/index",
+			"path": "pages/profile/wallet",
 			"style": {
-				"navigationBarTitleText": "个人中心",
-				"navigationStyle": "custom"
+				"navigationBarTitleText": "我的钱包"
+			}
+		},
+		{
+			"path": "pages/profile/coupons",
+			"style": {
+				"navigationBarTitleText": "优惠券"
+			}
+		},
+		{
+			"path": "pages/profile/crowdfunding-assets",
+			"style": {
+				"navigationBarTitleText": "我的众筹"
 			}
 		}
 	],
 	"tabBar": {
-		"color": "rgba(0, 0, 0, 0.6)",
-		"selectedColor": "#FF9F29",
-		"backgroundColor": "#FFFFFF",
-		"borderStyle": "black",
-		"list": [
-			{
-				"pagePath": "pages/index/index",
-				"text": "首页",
-				"iconPath": "static/tabbar/home.png",
-				"selectedIconPath": "static/tabbar/home-active.png"
-			},
-			{
-				"pagePath": "pages/community/index",
-				"text": "社区",
-				"iconPath": "static/tabbar/community.png",
-				"selectedIconPath": "static/tabbar/community-active.png"
-			},
-			{
-				"pagePath": "pages/crowdfunding/index",
-				"text": "众筹",
-				"iconPath": "static/tabbar/crowdfunding.png",
-				"selectedIconPath": "static/tabbar/crowdfunding-active.png"
-			},
-			{
-				"pagePath": "pages/profile/index",
-				"text": "我的",
-				"iconPath": "static/tabbar/profile.png",
-				"selectedIconPath": "static/tabbar/profile-active.png"
+			"color": "rgba(0, 0, 0, 0.6)",
+			"selectedColor": "#FF9F29",
+			"backgroundColor": "#FFFFFF",
+			"borderStyle": "black",
+			"list": [
+				{
+					"pagePath": "pages/index/index",
+					"text": "首页",
+					"iconPath": "static/tabbar/home.png",
+					"selectedIconPath": "static/tabbar/home-active.png"
+				},
+				{
+					"pagePath": "pages/community/index",
+					"text": "社区",
+					"iconPath": "static/tabbar/community.png",
+					"selectedIconPath": "static/tabbar/community-active.png"
+				},
+				{
+					"pagePath": "pages/crowdfunding/index",
+					"text": "众筹",
+					"iconPath": "static/tabbar/crowdfunding.png",
+					"selectedIconPath": "static/tabbar/crowdfunding-active.png"
+				},
+				{
+					"pagePath": "pages/profile/index",
+					"text": "我的",
+					"iconPath": "static/tabbar/profile.png",
+					"selectedIconPath": "static/tabbar/profile-active.png"
+				}
+			]
+		},
+		"globalStyle": {
+			"navigationBarTextStyle": "black",
+			"navigationBarTitleText": "叨叨房车",
+			"navigationBarBackgroundColor": "#FFFFFF",
+			"backgroundColor": "#F8F8F8"
+		},
+		"easycom": {
+			"autoscan": true,
+			"custom": {
+				"^uni-(.*)": "@/uni_modules/uni-$1/components/uni-$1/uni-$1.vue"
 			}
-		]
-	},
-	"globalStyle": {
-		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "叨叨房车",
-		"navigationBarBackgroundColor": "#FFFFFF",
-		"backgroundColor": "#F8F8F8"
-	},
-	"easycom": {
-		"autoscan": true,
-		"custom": {
-			"^uni-(.*)": "@/uni_modules/uni-$1/components/uni-$1/uni-$1.vue"
 		}
 	}
-}

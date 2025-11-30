@@ -1,13 +1,17 @@
 // 用户相关类型
+import type { UserRole } from './permission'
+
 export interface User {
   id: number
   username: string
   email: string
   phone: string
   avatar?: string
-  role: 'admin' | 'manager' | 'staff'
+  role: UserRole
   permissions: string[]
   status: 'active' | 'inactive' | 'banned'
+  storeId?: string // 所属门店ID
+  regionId?: string // 所属区域ID
   createdAt: string
   updatedAt: string
 }

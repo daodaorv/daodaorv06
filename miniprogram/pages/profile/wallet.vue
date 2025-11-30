@@ -1,0 +1,538 @@
+<template>
+	<view class="wallet-page">
+		<!-- 余额卡片 -->
+		<view class="balance-card">
+			<text class="balance-label">账户余额(元)</text>
+			<view class="balance-amount">
+				<text class="amount-symbol">¥</text>
+				<text class="amount-value">{{ walletInfo.balance.toFixed(2) }}</text>
+			</view>
+			<view class="balance-actions">
+				<button class="action-btn primary" @tap="showRechargeDialog">充值</button>
+				<button class="action-btn" @tap="showWithdrawDialog">提现</button>
+			</view>
+			<view v-if="walletInfo.frozenAmount > 0" class="frozen-tip">
+				<uni-icons type="info" size="14" color="#FF9F29"></uni-icons>
+				<text>冻结金额:¥{{ walletInfo.frozenAmount.toFixed(2) }}</text>
+			</view>
+		</view>
+
+		<!-- 交易记录 -->
+		<view class="transactions-section">
+			<view class="section-header">
+				<text class="title">交易记录</text>
+			</view>
+
+			<!-- 空状态 -->
+			<view v-if="transactions.length === 0" class="empty-state">
+				<uni-icons type="list" size="80" color="#DDD"></uni-icons>
+				<text class="empty-text">暂无交易记录</text>
+			</view>
+
+			<!-- 交易列表 -->
+			<view v-else class="transaction-list">
+				<view 
+					v-for="item in transactions" 
+					:key="item.id"
+					class="transaction-item"
+				>
+					<view class="transaction-info">
+						<view class="transaction-type">
+							<uni-icons 
+								:type="getTransactionIcon(item.type)" 
+								size="20" 
+								:color="getTransactionColor(item.type)"
+							></uni-icons>
+							<text class="type-text">{{ item.description }}</text>
+						</view>
+						<text class="transaction-time">{{ item.time }}</text>
+					</view>
+					<view class="transaction-amount" :class="{ 'income': item.type !== 'payment' && item.type !== 'withdraw' }">
+						<text>{{ getAmountPrefix(item.type) }}¥{{ item.amount.toFixed(2) }}</text>
+					</view>
+				</view>
+			</view>
+		</view>
+
+		<!-- 充值弹窗 -->
+		<uni-popup ref="rechargePopup" type="center">
+			<view class="dialog">
+				<text class="dialog-title">充值</text>
+				<view class="amount-options">
+					<view 
+						v-for="amount in rechargeOptions" 
+						:key="amount"
+						class="amount-option"
+						:class="{ 'selected': rechargeAmount === amount }"
+						@tap="selectRechargeAmount(amount)"
+					>
+						<text>¥{{ amount }}</text>
+					</view>
+				</view>
+				<input 
+					class="custom-input" 
+					v-model.number="customAmount"
+					type="digit"
+					placeholder="自定义金额"
+				/>
+				<view class="dialog-actions">
+					<button class="cancel-btn" @tap="closeRechargeDialog">取消</button>
+					<button class="confirm-btn" @tap="confirmRecharge">确定充值</button>
+				</view>
+			</view>
+		</uni-popup>
+
+		<!-- 提现弹窗 -->
+		<uni-popup ref="withdrawPopup" type="center">
+			<view class="dialog">
+				<text class="dialog-title">提现</text>
+				<view class="withdraw-info">
+					<text class="info-text">可提现余额:¥{{ walletInfo.balance.toFixed(2) }}</text>
+					<text class="info-tip">提现将在1-3个工作日到账</text>
+				</view>
+				<input 
+					class="custom-input" 
+					v-model.number="withdrawAmount"
+					type="digit"
+					placeholder="请输入提现金额"
+				/>
+				<view class="dialog-actions">
+					<button class="cancel-btn" @tap="closeWithdrawDialog">取消</button>
+					<button class="confirm-btn" @tap="confirmWithdraw">确定提现</button>
+				</view>
+			</view>
+		</uni-popup>
+	</view>
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue';
+
+// 钱包信息
+const walletInfo = ref({
+	balance: 1280.50,
+	frozenAmount: 0
+});
+
+// 充值选项
+const rechargeOptions = [100, 200, 500, 1000, 2000, 5000];
+const rechargeAmount = ref(0);
+const customAmount = ref<number | null>(null);
+
+// 提现金额
+const withdrawAmount = ref<number | null>(null);
+
+// 弹窗引用
+const rechargePopup = ref(null);
+const withdrawPopup = ref(null);
+
+// Mock交易记录
+const transactions = ref([
+	{
+		id: 'TX001',
+		type: 'recharge',
+		amount: 500,
+		balance: 1280.50,
+		time: '2025-11-29 10:30:00',
+		description: '微信充值'
+	},
+	{
+		id: 'TX002',
+		type: 'payment',
+		amount: 360,
+		balance: 780.50,
+		time: '2025-11-28 15:20:00',
+		description: '订单支付'
+	},
+	{
+		id: 'TX003',
+		type: 'refund',
+		amount: 360,
+		balance: 1140.50,
+		time: '2025-11-27 09:15:00',
+		description: '订单退款'
+	},
+	{
+		id: 'TX004',
+		type: 'withdraw',
+		amount: 200,
+		balance: 940.50,
+		time: '2025-11-26 14:00:00',
+		description: '提现到微信'
+	}
+]);
+
+// 获取交易图标
+const getTransactionIcon = (type: string) => {
+	const icons: Record<string, string> = {
+		recharge: 'plus-filled',
+		payment: 'minus-filled',
+		refund: 'redo-filled',
+		withdraw: 'download-filled'
+	};
+	return icons[type] || 'circle';
+};
+
+// 获取交易颜色
+const getTransactionColor = (type: string) => {
+	const colors: Record<string, string> = {
+		recharge: '#4CAF50',
+		payment: '#FF4D4F',
+		refund: '#FF9F29',
+		withdraw: '#2196F3'
+	};
+	return colors[type] || '#999';
+};
+
+// 获取金额前缀
+const getAmountPrefix = (type: string) => {
+	return (type === 'recharge' || type === 'refund') ? '+' : '-';
+};
+
+// 选择充值金额
+const selectRechargeAmount = (amount: number) => {
+	rechargeAmount.value = amount;
+	customAmount.value = null;
+};
+
+// 显示充值弹窗
+const showRechargeDialog = () => {
+	rechargePopup.value?.open();
+};
+
+// 关闭充值弹窗
+const closeRechargeDialog = () => {
+	rechargePopup.value?.close();
+	rechargeAmount.value = 0;
+	customAmount.value = null;
+};
+
+// 确认充值
+const confirmRecharge = () => {
+	const amount = customAmount.value || rechargeAmount.value;
+	
+	if (!amount || amount <= 0) {
+		uni.showToast({
+			title: '请选择或输入充值金额',
+			icon: 'none'
+		});
+		return;
+	}
+
+	// Mock充值成功
+	walletInfo.value.balance += amount;
+	
+	// 添加交易记录
+	transactions.value.unshift({
+		id: `TX${Date.now()}`,
+		type: 'recharge',
+		amount: amount,
+		balance: walletInfo.value.balance,
+		time: new Date().toLocaleString('zh-CN', { hour12: false }).replace(/\//g, '-'),
+		description: '微信充值'
+	});
+
+	uni.showToast({
+		title: '充值成功!',
+		icon: 'success'
+	});
+
+	closeRechargeDialog();
+};
+
+// 显示提现弹窗
+const showWithdrawDialog = () => {
+	withdrawPopup.value?.open();
+};
+
+// 关闭提现弹窗
+const closeWithdrawDialog = () => {
+	withdrawPopup.value?.close();
+	withdrawAmount.value = null;
+};
+
+// 确认提现
+const confirmWithdraw = () => {
+	const amount = withdrawAmount.value;
+
+	if (!amount || amount <= 0) {
+		uni.showToast({
+			title: '请输入提现金额',
+			icon: 'none'
+		});
+		return;
+	}
+
+	if (amount > walletInfo.value.balance) {
+		uni.showToast({
+			title: '余额不足',
+			icon: 'none'
+		});
+		return;
+	}
+
+	// Mock提现成功
+	walletInfo.value.balance -= amount;
+
+	// 添加交易记录
+	transactions.value.unshift({
+		id: `TX${Date.now()}`,
+		type: 'withdraw',
+		amount: amount,
+		balance: walletInfo.value.balance,
+		time: new Date().toLocaleString('zh-CN', { hour12: false }).replace(/\//g, '-'),
+		description: '提现到微信'
+	});
+
+	uni.showToast({
+		title: '提现申请已提交!',
+		icon: 'success'
+	});
+
+	closeWithdrawDialog();
+};
+</script>
+
+<style lang="scss" scoped>
+.wallet-page {
+	min-height: 100vh;
+	background-color: #F5F5F5;
+}
+
+// 余额卡片
+.balance-card {
+	background: linear-gradient(135deg, #FF9F29 0%, #FFB84D 100%);
+	margin: 24rpx;
+	border-radius: 24rpx;
+	padding: 48rpx 32rpx;
+	color: #FFFFFF;
+	box-shadow: 0 8rpx 24rpx rgba(255, 159, 41, 0.3);
+
+	.balance-label {
+		font-size: 28rpx;
+		opacity: 0.9;
+		display: block;
+		margin-bottom: 16rpx;
+	}
+
+	.balance-amount {
+		display: flex;
+		align-items: baseline;
+		margin-bottom: 32rpx;
+
+		.amount-symbol {
+			font-size: 40rpx;
+			font-weight: 600;
+		}
+
+		.amount-value {
+			font-size: 72rpx;
+			font-weight: bold;
+			margin-left: 8rpx;
+		}
+	}
+
+	.balance-actions {
+		display: flex;
+		gap: 24rpx;
+
+		.action-btn {
+			flex: 1;
+			padding: 20rpx;
+			border-radius: 48rpx;
+			font-size: 30rpx;
+			border: none;
+
+			&.primary {
+				background-color: #FFFFFF;
+				color: #FF9F29;
+			}
+
+			&:not(.primary) {
+				background-color: rgba(255, 255, 255, 0.2);
+				color: #FFFFFF;
+			}
+		}
+	}
+
+	.frozen-tip {
+		margin-top: 24rpx;
+		display: flex;
+		align-items: center;
+		gap: 8rpx;
+		font-size: 24rpx;
+		opacity: 0.9;
+	}
+}
+
+// 交易记录区
+.transactions-section {
+	background-color: #FFFFFF;
+	margin: 24rpx;
+	border-radius: 16rpx;
+	padding: 24rpx;
+
+	.section-header {
+		margin-bottom: 24rpx;
+
+		.title {
+			font-size: 32rpx;
+			font-weight: 600;
+			color: rgba(0, 0, 0, 0.9);
+		}
+	}
+}
+
+// 空状态
+.empty-state {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 80rpx 0;
+
+	.empty-text {
+		font-size: 28rpx;
+		color: rgba(0, 0, 0, 0.4);
+		margin-top: 24rpx;
+	}
+}
+
+// 交易列表
+.transaction-list {
+	.transaction-item {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 24rpx 0;
+		border-bottom: 2rpx solid #F5F5F5;
+
+		&:last-child {
+			border-bottom: none;
+		}
+
+		.transaction-info {
+			flex: 1;
+
+			.transaction-type {
+				display: flex;
+				align-items: center;
+				gap: 12rpx;
+				margin-bottom: 8rpx;
+
+				.type-text {
+					font-size: 30rpx;
+					color: rgba(0, 0, 0, 0.9);
+				}
+			}
+
+			.transaction-time {
+				font-size: 24rpx;
+				color: rgba(0, 0, 0, 0.4);
+			}
+		}
+
+		.transaction-amount {
+			font-size: 32rpx;
+			font-weight: 600;
+			color: #FF4D4F;
+
+			&.income {
+				color: #4CAF50;
+			}
+		}
+	}
+}
+
+// 弹窗样式
+.dialog {
+	width: 600rpx;
+	background-color: #FFFFFF;
+	border-radius: 24rpx;
+	padding: 48rpx 32rpx 32rpx;
+
+	.dialog-title {
+		display: block;
+		text-align: center;
+		font-size: 36rpx;
+		font-weight: 600;
+		color: rgba(0, 0, 0, 0.9);
+		margin-bottom: 40rpx;
+	}
+
+	.amount-options {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 16rpx;
+		margin-bottom: 24rpx;
+
+		.amount-option {
+			padding: 24rpx;
+			text-align: center;
+			border: 2rpx solid #E0E0E0;
+			border-radius: 12rpx;
+			font-size: 30rpx;
+			color: rgba(0, 0, 0, 0.6);
+
+			&.selected {
+				border-color: #FF9F29;
+				background-color: rgba(255, 159, 41, 0.1);
+				color: #FF9F29;
+				font-weight: 600;
+			}
+		}
+	}
+
+	.custom-input {
+		width: 100%;
+		padding: 24rpx;
+		border: 2rpx solid #E0E0E0;
+		border-radius: 12rpx;
+		font-size: 28rpx;
+		margin-bottom: 40rpx;
+	}
+
+	.withdraw-info {
+		background-color: #F5F5F5;
+		padding: 24rpx;
+		border-radius: 12rpx;
+		margin-bottom: 24rpx;
+
+		.info-text {
+			display: block;
+			font-size: 28rpx;
+			color: rgba(0, 0, 0, 0.9);
+			margin-bottom: 8rpx;
+		}
+
+		.info-tip {
+			display: block;
+			font-size: 24rpx;
+			color: rgba(0, 0, 0, 0.5);
+		}
+	}
+
+	.dialog-actions {
+		display: flex;
+		gap: 24rpx;
+
+		button {
+			flex: 1;
+			padding: 20rpx;
+			border-radius: 48rpx;
+			font-size: 30rpx;
+			border: none;
+		}
+
+		.cancel-btn {
+			background-color: #F5F5F5;
+			color: rgba(0, 0, 0, 0.6);
+		}
+
+		.confirm-btn {
+			background: linear-gradient(135deg, #FF9F29 0%, #FFB84D 100%);
+			color: #FFFFFF;
+		}
+	}
+}
+</style>

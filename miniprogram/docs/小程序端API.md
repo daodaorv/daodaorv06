@@ -549,9 +549,944 @@
 
 ---
 
-## 4. 支付模块 (payments)
+## 4. 特惠租车模块 (special-offers)
 
-### 4.1 创建支付订单
+### 4.1 获取特惠套餐列表
+**接口**: `GET /api/v1/special-offers`
+
+**开发状态**: 🟡 已开发（前端Mock完成）
+
+**前端Mock位置**: `miniprogram/pages/special-offer/list.vue:236`
+
+**前端API位置**: `miniprogram/api/special-offer.ts:13`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**查询参数**:
+- route: string (可选) - 路线筛选（如：hangzhou, shanghai）
+- priceRange: string (可选) - 价格区间（如：0-1000, 1000-1500）
+- sortBy: string (可选) - 排序方式（price-asc, price-desc, quota）
+- page: number (可选) - 页码，默认1
+- limit: number (可选) - 每页数量，默认20
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "list": [
+      {
+        "id": "string",
+        "route": {
+          "from": "杭州",
+          "to": "千岛湖"
+        },
+        "vehicle": {
+          "name": "依维柯欧胜C型房车",
+          "image": "string",
+          "features": ["自动挡", "4-6人", "独立卫浴"]
+        },
+        "packagePrice": 1280,
+        "originalPrice": 1680,
+        "rentalDays": 3,
+        "availableTimeRange": {
+          "start": "2025-12-01",
+          "end": "2025-12-31"
+        },
+        "remainingQuota": 3,
+        "totalQuota": 10
+      }
+    ],
+    "pagination": {
+      "page": 1,
+      "limit": 20,
+      "total": 50,
+      "totalPages": 3
+    }
+  }
+}
+```
+
+### 4.2 获取特惠套餐详情
+**接口**: `GET /api/v1/special-offers/{id}`
+
+**开发状态**: 🟡 已开发（前端Mock完成）
+
+**前端Mock位置**: `miniprogram/pages/special-offer/detail.vue:95`
+
+**前端API位置**: `miniprogram/api/special-offer.ts:34`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "id": "string",
+    "route": {
+      "from": "杭州",
+      "to": "千岛湖"
+    },
+    "vehicle": {
+      "name": "依维柯欧胜C型房车",
+      "images": ["string"],
+      "specifications": [
+        { "label": "车型", "value": "C型房车" },
+        { "label": "座位数", "value": "4-6座" }
+      ],
+      "features": ["独立卫浴", "太阳能系统"]
+    },
+    "packagePrice": 1280,
+    "originalPrice": 1680,
+    "rentalDays": 3,
+    "remainingQuota": 3,
+    "totalQuota": 10,
+    "pickupStore": {
+      "name": "杭州西湖门店",
+      "address": "浙江省杭州市西湖区文三路123号"
+    },
+    "returnStore": {
+      "name": "千岛湖景区门店",
+      "address": "浙江省杭州市淳安县千岛湖镇环湖路88号"
+    },
+    "availableTimeRange": {
+      "start": "2025-12-01",
+      "end": "2025-12-31"
+    },
+    "packageIncludes": [
+      { "name": "车辆租金", "description": "3天2晚固定租期" },
+      { "name": "基础保险", "description": "第三者责任险" }
+    ],
+    "bookingNotices": ["string"],
+    "cancellationPolicy": [
+      { "condition": "出发前7天以上取消", "result": "全额退款" }
+    ]
+  }
+}
+```
+
+### 4.3 创建特惠套餐订单
+**接口**: `POST /api/v1/special-offers/orders`
+
+**开发状态**: 🔴 未开发
+
+**前端API位置**: `miniprogram/api/special-offer.ts:47`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**请求参数**:
+```json
+{
+  "offerId": "string",
+  "pickupDate": "2025-12-05T10:00:00+08:00",
+  "insuranceType": "standard",
+  "selectedServices": ["string"],
+  "couponCode": "string",
+  "contactInfo": {
+    "name": "string",
+    "phone": "string",
+    "idCard": "string",
+    "driverLicense": "string"
+  }
+}
+```
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "订单创建成功",
+  "data": {
+    "orderId": "string",
+    "orderNo": "DD202512050001",
+    "status": "PENDING_PAYMENT",
+    "amount": {
+      "packageFee": 1280,
+      "insuranceFee": 80,
+      "serviceFee": 50,
+      "discount": 100,
+      "totalAmount": 1310
+    },
+    "returnTime": "2025-12-08T10:00:00+08:00",
+    "expireTime": "2025-12-05T10:15:00+08:00"
+  }
+}
+```
+
+### 4.4 计算特惠套餐价格
+**接口**: `POST /api/v1/special-offers/calculate-price`
+
+**开发状态**: 🔴 未开发
+
+**前端API位置**: `miniprogram/api/special-offer.ts:71`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**请求参数**: 与创建订单相同的参数，但不实际创建订单。
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "packageFee": 1280,
+    "insuranceFee": 80,
+    "serviceFee": 50,
+    "discount": 100,
+    "totalAmount": 1310,
+    "breakdown": [
+      {
+        "name": "套餐费用",
+        "amount": 1280,
+        "description": "杭州→千岛湖 3天2晚"
+      },
+      {
+        "name": "保险费用",
+        "amount": 80,
+        "description": "标准险"
+      }
+    ]
+  }
+}
+```
+
+### 4.5 检查套餐可用性
+**接口**: `GET /api/v1/special-offers/{id}/availability`
+
+**开发状态**: 🔴 未开发
+
+**前端API位置**: `miniprogram/api/special-offer.ts:87`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**查询参数**:
+- pickupDate: string (必填) - 取车日期
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "available": true,
+    "remainingQuota": 3,
+    "message": "该日期可预订"
+  }
+}
+```
+
+---
+
+## 5. 营地预订模块 (campsites)
+
+### 5.1 获取营地列表
+**接口**: `GET /api/v1/campsites`
+
+**开发状态**: 🟡 已开发（前端Mock完成）
+
+**前端Mock位置**: `miniprogram/pages/campsite/list.vue:167`
+
+**前端API位置**: `miniprogram/api/campsite.ts:95`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**查询参数**:
+- page: number (可选) - 页码，默认1
+- pageSize: number (可选) - 每页数量，默认20
+- distance: string (可选) - 距离筛选（如：0-5, 5-10, 10-20, 20-）
+- price: string (可选) - 价格筛选（如：0-200, 200-300, 300-400, 400-）
+- type: string (可选) - 类型筛选（lake, mountain, sea, forest）
+- keyword: string (可选) - 搜索关键词
+- latitude: number (可选) - 用户纬度
+- longitude: number (可选) - 用户经度
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "list": [
+      {
+        "id": "string",
+        "name": "千岛湖房车营地",
+        "image": "string",
+        "images": ["string"],
+        "tags": ["湖景", "烧烤", "WiFi"],
+        "rating": 4.8,
+        "reviewCount": 156,
+        "distance": 5.2,
+        "price": 280,
+        "availableSites": 8,
+        "isHot": true,
+        "address": "浙江省杭州市淳安县千岛湖镇环湖路88号"
+      }
+    ],
+    "total": 50,
+    "page": 1,
+    "pageSize": 20,
+    "hasMore": true
+  }
+}
+```
+
+### 5.2 获取营地详情
+**接口**: `GET /api/v1/campsites/{id}`
+
+**开发状态**: 🟡 已开发（前端Mock完成）
+
+**前端Mock位置**: `miniprogram/pages/campsite/detail.vue:236`
+
+**前端API位置**: `miniprogram/api/campsite.ts:108`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "id": "string",
+    "name": "千岛湖房车营地",
+    "images": ["string"],
+    "rating": 4.8,
+    "reviewCount": 156,
+    "address": "浙江省杭州市淳安县千岛湖镇环湖路88号",
+    "distance": 5.2,
+    "minPrice": 280,
+    "isHot": true,
+    "features": ["湖景", "烧烤区", "WiFi覆盖", "24小时热水"],
+    "facilities": [
+      {
+        "name": "淋浴间",
+        "icon": "fire"
+      },
+      {
+        "name": "卫生间",
+        "icon": "home"
+      }
+    ],
+    "siteTypes": [
+      {
+        "id": "string",
+        "name": "标准营位",
+        "description": "适合小型房车或帐篷，配备基础设施",
+        "area": 50,
+        "capacity": 4,
+        "price": 280,
+        "available": 8
+      }
+    ],
+    "description": "营地详细介绍...",
+    "checkInNotices": ["入住时间：14:00后，退房时间：12:00前"],
+    "cancellationPolicy": [
+      {
+        "condition": "入住前3天以上取消",
+        "result": "全额退款"
+      }
+    ],
+    "reviews": [
+      {
+        "id": "string",
+        "userName": "房车旅行家",
+        "userAvatar": "string",
+        "rating": 5,
+        "content": "营地环境非常好...",
+        "images": ["string"],
+        "createdAt": "2025-11-25"
+      }
+    ]
+  }
+}
+```
+
+### 5.3 创建营地预订订单
+**接口**: `POST /api/v1/campsites/bookings`
+
+**开发状态**: 🟡 已开发（前端Mock完成）
+
+**前端Mock位置**: `miniprogram/pages/campsite/booking.vue:329`
+
+**前端API位置**: `miniprogram/api/campsite.ts:121`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**请求参数**:
+```json
+{
+  "campsiteId": "string",
+  "siteTypeId": "string",
+  "checkInDate": "2025-12-05",
+  "checkOutDate": "2025-12-07",
+  "guests": 2,
+  "contactName": "张三",
+  "contactPhone": "13800138000",
+  "remark": "需要靠近湖边的位置"
+}
+```
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "预订成功",
+  "data": {
+    "orderId": "string",
+    "orderNo": "CS202512050001",
+    "status": "PENDING_PAYMENT",
+    "totalPrice": 610,
+    "paymentDeadline": "2025-12-05T10:15:00+08:00"
+  }
+}
+```
+
+### 5.4 计算营地预订价格
+**接口**: `POST /api/v1/campsites/calculate-price`
+
+**开发状态**: 🔴 未开发
+
+**前端API位置**: `miniprogram/api/campsite.ts:135`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**请求参数**:
+```json
+{
+  "campsiteId": "string",
+  "siteTypeId": "string",
+  "checkInDate": "2025-12-05",
+  "checkOutDate": "2025-12-07",
+  "guests": 2
+}
+```
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "siteFee": 560,
+    "cleaningFee": 50,
+    "serviceFee": 0,
+    "totalPrice": 610,
+    "nights": 2
+  }
+}
+```
+
+### 5.5 检查营位可用性
+**接口**: `POST /api/v1/campsites/check-availability`
+
+**开发状态**: 🔴 未开发
+
+**前端API位置**: `miniprogram/api/campsite.ts:149`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**请求参数**:
+```json
+{
+  "campsiteId": "string",
+  "siteTypeId": "string",
+  "checkInDate": "2025-12-05",
+  "checkOutDate": "2025-12-07"
+}
+```
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "available": true,
+    "remainingCount": 8,
+    "message": "该时间段可预订"
+  }
+}
+```
+
+### 5.6 获取营地评价列表
+**接口**: `GET /api/v1/campsites/{id}/reviews`
+
+**开发状态**: 🔴 未开发
+
+**前端API位置**: `miniprogram/api/campsite.ts:163`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**查询参数**:
+- page: number (可选) - 页码，默认1
+- pageSize: number (可选) - 每页数量，默认10
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "list": [
+      {
+        "id": "string",
+        "userName": "房车旅行家",
+        "userAvatar": "string",
+        "rating": 5,
+        "content": "营地环境非常好...",
+        "images": ["string"],
+        "createdAt": "2025-11-25"
+      }
+    ],
+    "total": 156,
+    "hasMore": true
+  }
+}
+```
+
+### 5.7 获取附近营地
+**接口**: `GET /api/v1/campsites/nearby`
+
+**开发状态**: 🔴 未开发
+
+**前端API位置**: `miniprogram/api/campsite.ts:179`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**查询参数**:
+- latitude: number (必填) - 纬度
+- longitude: number (必填) - 经度
+- radius: number (可选) - 半径（公里），默认50
+- limit: number (可选) - 返回数量，默认10
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": [
+    {
+      "id": "string",
+      "name": "千岛湖房车营地",
+      "image": "string",
+      "rating": 4.8,
+      "reviewCount": 156,
+      "distance": 5.2,
+      "price": 280,
+      "availableSites": 8,
+      "isHot": true
+    }
+  ]
+}
+```
+
+### 5.8 获取热门营地
+**接口**: `GET /api/v1/campsites/hot`
+
+**开发状态**: 🔴 未开发
+
+**前端API位置**: `miniprogram/api/campsite.ts:195`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**查询参数**:
+- limit: number (可选) - 返回数量，默认10
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": [
+    {
+      "id": "string",
+      "name": "千岛湖房车营地",
+      "image": "string",
+      "rating": 4.8,
+      "reviewCount": 156,
+      "distance": 5.2,
+      "price": 280,
+      "availableSites": 8,
+      "isHot": true
+    }
+  ]
+}
+```
+
+---
+
+## 6. 房车旅游模块 (tours)
+
+### 6.1 获取旅游线路列表
+**接口**: `GET /api/v1/tours`
+
+**开发状态**: 🟡 已开发（前端Mock完成）
+
+**前端Mock位置**: `miniprogram/pages/tour/list.vue:157`
+
+**前端API位置**: `miniprogram/api/tour.ts:95`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**查询参数**:
+- page: number (可选) - 页码，默认1
+- pageSize: number (可选) - 每页数量，默认20
+- duration: string (可选) - 行程天数筛选（如：3-5, 6-8, 9-）
+- price: string (可选) - 价格筛选（如：0-3000, 3000-5000, 5000-7000, 7000-）
+- status: string (可选) - 状态筛选（recruiting, confirmed, departed）
+- keyword: string (可选) - 搜索关键词
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "list": [
+      {
+        "id": "string",
+        "title": "川西秘境·稻城亚丁房车深度游",
+        "image": "string",
+        "tags": ["高原风光", "摄影天堂", "藏族文化"],
+        "days": 7,
+        "minPeople": 5,
+        "maxPeople": 12,
+        "currentPeople": 8,
+        "price": 4980,
+        "childPrice": 2490,
+        "status": "recruiting",
+        "isHot": true,
+        "available": 4
+      }
+    ],
+    "total": 50,
+    "page": 1,
+    "pageSize": 20,
+    "hasMore": true
+  }
+}
+```
+
+### 6.2 获取旅游线路详情
+**接口**: `GET /api/v1/tours/{id}`
+
+**开发状态**: 🟡 已开发（前端Mock完成）
+
+**前端Mock位置**: `miniprogram/pages/tour/detail.vue:236`
+
+**前端API位置**: `miniprogram/api/tour.ts:109`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "id": "string",
+    "title": "川西秘境·稻城亚丁房车深度游",
+    "images": ["string"],
+    "tags": ["高原风光", "摄影天堂", "藏族文化"],
+    "duration": 7,
+    "minPeople": 5,
+    "maxPeople": 12,
+    "destination": "四川·稻城亚丁",
+    "pricePerPerson": 4980,
+    "childPrice": 2490,
+    "isHot": true,
+    "batches": [
+      {
+        "id": "string",
+        "departureDate": "2025-12-15",
+        "status": "recruiting",
+        "currentPeople": 8,
+        "maxPeople": 12
+      }
+    ],
+    "itinerary": [
+      {
+        "title": "成都集合",
+        "content": "全天成都集合，入住酒店...",
+        "highlights": ["成都美食", "自由活动"]
+      }
+    ],
+    "priceIncludes": ["全程房车使用费", "6晚住宿"],
+    "priceExcludes": ["往返成都大交通", "午餐和晚餐"],
+    "bookingNotices": ["本线路为成团产品..."],
+    "cancellationPolicy": [
+      {
+        "condition": "出发前7天以上取消",
+        "result": "全额退款"
+      }
+    ]
+  }
+}
+```
+
+### 6.3 创建旅游预订订单
+**接口**: `POST /api/v1/tours/bookings`
+
+**开发状态**: 🟡 已开发（前端Mock完成）
+
+**前端Mock位置**: `miniprogram/pages/tour/booking.vue:329`
+
+**前端API位置**: `miniprogram/api/tour.ts:122`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**请求参数**:
+```json
+{
+  "tourId": "string",
+  "batchId": "string",
+  "adults": 2,
+  "children": 1,
+  "contactName": "张三",
+  "contactPhone": "13800138000",
+  "idCard": "330106199001011234",
+  "emergencyContact": "李四",
+  "emergencyPhone": "13900139000",
+  "remark": "有高原反应史，需要特别关注"
+}
+```
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "预订成功",
+  "data": {
+    "orderId": "string",
+    "orderNo": "TR202512050001",
+    "status": "PENDING_PAYMENT",
+    "totalPrice": 12450,
+    "paymentDeadline": "2025-12-05T10:15:00+08:00"
+  }
+}
+```
+
+### 6.4 计算旅游预订价格
+**接口**: `POST /api/v1/tours/calculate-price`
+
+**开发状态**: 🟡 已开发（前端API完成）
+
+**前端API位置**: `miniprogram/api/tour.ts:136`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**请求参数**:
+```json
+{
+  "tourId": "string",
+  "batchId": "string",
+  "adults": 2,
+  "children": 1
+}
+```
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "adultFee": 9960,
+    "childFee": 2490,
+    "insuranceFee": 150,
+    "totalPrice": 12600,
+    "breakdown": [
+      {
+        "name": "成人费用",
+        "amount": 9960,
+        "description": "¥4980 × 2人"
+      },
+      {
+        "name": "儿童费用",
+        "amount": 2490,
+        "description": "¥2490 × 1人"
+      },
+      {
+        "name": "保险费用",
+        "amount": 150,
+        "description": "¥50 × 3人"
+      }
+    ]
+  }
+}
+```
+
+### 6.5 检查批次可用性
+**接口**: `POST /api/v1/tours/check-availability`
+
+**开发状态**: 🟡 已开发（前端API完成）
+
+**前端API位置**: `miniprogram/api/tour.ts:150`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**请求参数**:
+```json
+{
+  "tourId": "string",
+  "batchId": "string",
+  "people": 3
+}
+```
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "available": true,
+    "remainingSeats": 4,
+    "message": "该批次还有4个名额"
+  }
+}
+```
+
+### 6.6 获取热门旅游线路
+**接口**: `GET /api/v1/tours/hot`
+
+**开发状态**: 🟡 已开发（前端API完成）
+
+**前端API位置**: `miniprogram/api/tour.ts:164`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**查询参数**:
+- limit: number (可选) - 返回数量，默认10
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": [
+    {
+      "id": "string",
+      "title": "川西秘境·稻城亚丁房车深度游",
+      "image": "string",
+      "tags": ["高原风光", "摄影天堂"],
+      "days": 7,
+      "price": 4980,
+      "status": "recruiting",
+      "isHot": true
+    }
+  ]
+}
+```
+
+### 6.7 获取推荐旅游线路
+**接口**: `GET /api/v1/tours/recommended`
+
+**开发状态**: 🟡 已开发（前端API完成）
+
+**前端API位置**: `miniprogram/api/tour.ts:178`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**查询参数**:
+- limit: number (可选) - 返回数量，默认10
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": [
+    {
+      "id": "string",
+      "title": "云南秘境·香格里拉梅里雪山行",
+      "image": "string",
+      "tags": ["雪山风光", "藏区文化"],
+      "days": 6,
+      "price": 4280,
+      "status": "recruiting"
+    }
+  ]
+}
+```
+
+### 6.8 获取批次列表
+**接口**: `GET /api/v1/tours/{id}/batches`
+
+**开发状态**: 🟡 已开发（前端API完成）
+
+**前端API位置**: `miniprogram/api/tour.ts:192`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": [
+    {
+      "id": "string",
+      "departureDate": "2025-12-15",
+      "status": "recruiting",
+      "currentPeople": 8,
+      "maxPeople": 12
+    }
+  ]
+}
+```
+
+---
+
+## 7. 支付模块 (payments)
+
+### 7.1 创建支付订单
 **接口**: `POST /api/v1/payments`
 
 **开发状态**: 待后端开发

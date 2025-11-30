@@ -25,12 +25,12 @@ interface Service {
 }
 
 const services = ref<Service[]>([
-	{ id: '1', name: '特惠租车', icon: 'gift', path: '/pages/special/index' },
-	{ id: '2', name: '营地预定', icon: 'location', path: '/pages/camp/index' },
-	{ id: '3', name: '房车旅游', icon: 'map', path: '/pages/travel/index' },
+	{ id: '1', name: '特惠租车', icon: 'gift', path: '/pages/special-offer/list' },
+	{ id: '2', name: '营地预定', icon: 'location', path: '/pages/campsite/list' },
+	{ id: '3', name: '房车旅游', icon: 'map', path: '/pages/tour/list' },
 	{ id: '4', name: '房车众筹', icon: 'wallet', path: '/pages/crowdfunding/index' },
-	{ id: '5', name: '优惠券', icon: 'gift-filled', path: '/pages/coupon/index' },
-	{ id: '6', name: 'PLUS会员', icon: 'vip-filled', path: '/pages/member/index' }
+	{ id: '5', name: '优惠券', icon: 'gift-filled', path: '/pages/profile/coupons' },
+	{ id: '6', name: 'PLUS会员', icon: 'vip-filled', path: '/pages/membership/index' }
 ]);
 
 const handleServiceClick = (service: Service) => {

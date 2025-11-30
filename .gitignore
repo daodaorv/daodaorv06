@@ -96,10 +96,14 @@ config/secrets.*
 .secrets/
 
 # AI 工具临时文件
-.claude/
+.claude/skills/
 .codex/
 .antigravity/
 .ai-temp/
+
+# TypeScript 自动生成文件
+*.tsbuildinfo
+components.d.ts
 
 # 备份文件
 *.bak

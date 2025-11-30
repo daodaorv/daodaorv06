@@ -1,80 +1,275 @@
 <template>
   <view class="tour-list-page">
-    <!-- 筛选 -->
+    <!-- 筛选栏 -->
     <view class="filter-bar">
-      <view class="filter-item" v-for="(item, index) in filters" :key="index" :class="{ active: currentFilter === index }" @click="currentFilter = index">
-        {{ item }}
+      <view class="filter-item" @tap="showDurationFilter">
+        <text class="filter-text">{{ currentDuration || '行程天数' }}</text>
+        <uni-icons type="arrowdown" size="12" color="#666"></uni-icons>
+      </view>
+      <view class="filter-item" @tap="showPriceFilter">
+        <text class="filter-text">{{ currentPrice || '价格' }}</text>
+        <uni-icons type="arrowdown" size="12" color="#666"></uni-icons>
+      </view>
+      <view class="filter-item" @tap="showStatusFilter">
+        <text class="filter-text">{{ currentStatus || '状态' }}</text>
+        <uni-icons type="arrowdown" size="12" color="#666"></uni-icons>
       </view>
     </view>
 
     <!-- 路线列表 -->
-    <scroll-view class="tour-list" scroll-y>
-      <view class="tour-card" v-for="item in tours" :key="item.id" @click="viewDetail(item)">
-        <image class="tour-image" :src="item.image" mode="aspectFill"></image>
-        <view class="tour-badge" :class="item.status">{{ getStatusText(item.status) }}</view>
-        <view class="tour-info">
-          <text class="tour-title">{{ item.title }}</text>
-          <view class="tour-details">
-            <text class="detail-item">{{ item.days }}天{{ item.days - 1 }}晚</text>
-            <text class="detail-item">{{ item.minPeople }}-{{ item.maxPeople }}人成团</text>
+    <scroll-view
+      class="tour-list"
+      scroll-y
+      refresher-enabled
+      :refresher-triggered="refreshing"
+      @refresherrefresh="onRefresh"
+      @scrolltolower="loadMore"
+    >
+      <!-- 空状态 -->
+      <view v-if="tours.length === 0 && !loading" class="empty-state">
+        <image class="empty-image" src="/static/empty-tour.png" mode="aspectFit"></image>
+        <text class="empty-text">暂无旅游线路</text>
+        <text class="empty-tip">敬请期待更多精彩线路</text>
+      </view>
+
+      <!-- 线路卡片 -->
+      <view v-else>
+        <view class="tour-card" v-for="item in tours" :key="item.id" @tap="viewDetail(item)">
+          <image class="tour-image" :src="item.image" mode="aspectFill"></image>
+
+          <!-- 状态标签 -->
+          <view class="tour-badge" :class="item.status">{{ getStatusText(item.status) }}</view>
+
+          <!-- 热门标签 -->
+          <view v-if="item.isHot" class="hot-tag">
+            <text class="tag-text">热门</text>
           </view>
-          <view class="price-row">
-            <view class="price-box">
-              <text class="price">¥{{ item.price }}</text>
-              <text class="unit">/人</text>
+
+          <view class="tour-info">
+            <text class="tour-title">{{ item.title }}</text>
+
+            <!-- 线路标签 -->
+            <view class="tour-tags">
+              <text class="tag-item" v-for="tag in item.tags" :key="tag">{{ tag }}</text>
             </view>
-            <text class="availability">剩余{{ item.available }}名额</text>
+
+            <view class="tour-details">
+              <view class="detail-item">
+                <uni-icons type="calendar" size="14" color="#999"></uni-icons>
+                <text class="detail-text">{{ item.days }}天{{ item.days - 1 }}晚</text>
+              </view>
+              <view class="detail-item">
+                <uni-icons type="person" size="14" color="#999"></uni-icons>
+                <text class="detail-text">{{ item.minPeople }}-{{ item.maxPeople }}人成团</text>
+              </view>
+            </view>
+
+            <!-- 成团进度 -->
+            <view class="group-progress" v-if="item.status === 'recruiting'">
+              <view class="progress-bar">
+                <view class="progress-fill" :style="{ width: getProgressWidth(item) }"></view>
+              </view>
+              <text class="progress-text">已报名{{ item.currentPeople }}人/{{ item.maxPeople }}人</text>
+            </view>
+
+            <view class="price-row">
+              <view class="price-box">
+                <text class="price">¥{{ item.price }}</text>
+                <text class="unit">/人起</text>
+                <text class="child-price" v-if="item.childPrice">儿童¥{{ item.childPrice }}</text>
+              </view>
+              <view class="action-btn" :class="{ disabled: item.status === 'departed' || item.status === 'completed' }">
+                <text class="btn-text">{{ getActionText(item.status) }}</text>
+              </view>
+            </view>
           </view>
         </view>
       </view>
+
+      <!-- 加载状态 -->
+      <view class="load-more" v-if="loading">
+        <text class="load-text">加载中...</text>
+      </view>
+
+      <!-- 没有更多 -->
+      <view class="no-more" v-if="!loading && !hasMore && tours.length > 0">
+        <text class="no-more-text">没有更多线路了</text>
+      </view>
     </scroll-view>
+
+    <!-- 筛选弹窗 -->
+    <uni-popup ref="filterPopup" type="bottom">
+      <view class="filter-popup">
+        <view class="popup-header">
+          <text class="popup-title">{{ filterTitle }}</text>
+          <uni-icons type="closeempty" size="20" color="#666" @tap="closeFilter"></uni-icons>
+        </view>
+        <view class="popup-content">
+          <view
+            v-for="item in filterOptions"
+            :key="item.value"
+            class="filter-option"
+            :class="{ active: item.value === currentFilterValue }"
+            @tap="selectFilter(item)"
+          >
+            <text class="option-text">{{ item.label }}</text>
+            <uni-icons v-if="item.value === currentFilterValue" type="checkmarkempty" size="18" color="#FF9F29"></uni-icons>
+          </view>
+        </view>
+      </view>
+    </uni-popup>
   </view>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 
-const filters = ['全部', '招募中', '已成团', '即将出发'];
-const currentFilter = ref(0);
+// 状态管理
+const tours = ref<any[]>([]);
+const loading = ref(false);
+const refreshing = ref(false);
+const hasMore = ref(true);
+const page = ref(1);
 
-const tours = ref([
-  {
-    id: '1',
-    title: '川西小环线7日游',
-    image: 'https://picsum.photos/700/400?random=10',
-    days: 7,
-    minPeople: 3,
-    maxPeople: 10,
-    price: 5999,
-    status: 'recruiting',
-    available: 3
-  },
-  {
-    id: '2',
-    title: '新疆独库公路10日游',
-    image: 'https://picsum.photos/700/400?random=11',
-    days: 10,
-    minPeople: 5,
-    maxPeople: 12,
-    price: 8999,
-    status: 'confirmed',
-    available: 2
-  },
-  {
-    id: '3',
-    title: '环青海湖5日游',
-    image: 'https://picsum.photos/700/400?random=12',
-    days: 5,
-    minPeople: 3,
-    maxPeople: 8,
-    price: 3999,
-    status: 'recruiting',
-    available: 6
+// 筛选状态
+const currentDuration = ref('');
+const currentPrice = ref('');
+const currentStatus = ref('');
+const filterPopup = ref<any>(null);
+const filterTitle = ref('');
+const filterOptions = ref<any[]>([]);
+const currentFilterValue = ref('');
+const currentFilterType = ref('');
+
+// 页面加载
+onMounted(() => {
+  loadTours();
+});
+
+// 加载旅游线路列表
+const loadTours = async (isRefresh = false) => {
+  if (loading.value && !isRefresh) return;
+
+  try {
+    loading.value = true;
+
+    // Mock数据 - 5个完整线路
+    const mockTours = [
+      {
+        id: '1',
+        title: '川西秘境·稻城亚丁房车深度游',
+        image: 'https://picsum.photos/700/400?random=10',
+        tags: ['高原风光', '摄影天堂', '藏族文化'],
+        days: 7,
+        minPeople: 5,
+        maxPeople: 12,
+        currentPeople: 8,
+        price: 4980,
+        childPrice: 2490,
+        status: 'recruiting',
+        isHot: true,
+        available: 4
+      },
+      {
+        id: '2',
+        title: '大西北环线·青海湖敦煌房车之旅',
+        image: 'https://picsum.photos/700/400?random=11',
+        tags: ['大漠风光', '丝绸之路', '星空露营'],
+        days: 8,
+        minPeople: 5,
+        maxPeople: 10,
+        currentPeople: 10,
+        price: 5680,
+        childPrice: 2840,
+        status: 'confirmed',
+        isHot: true,
+        available: 0
+      },
+      {
+        id: '3',
+        title: '云南秘境·香格里拉梅里雪山行',
+        image: 'https://picsum.photos/700/400?random=12',
+        tags: ['雪山风光', '藏区文化', '徒步探险'],
+        days: 6,
+        minPeople: 5,
+        maxPeople: 12,
+        currentPeople: 6,
+        price: 4280,
+        childPrice: 2140,
+        status: 'recruiting',
+        isHot: false,
+        available: 6
+      },
+      {
+        id: '4',
+        title: '新疆伊犁·天山草原房车自驾',
+        image: 'https://picsum.photos/700/400?random=13',
+        tags: ['草原风光', '哈萨克文化', '野生动物'],
+        days: 9,
+        minPeople: 5,
+        maxPeople: 15,
+        currentPeople: 3,
+        price: 6280,
+        childPrice: 3140,
+        status: 'recruiting',
+        isHot: false,
+        available: 12
+      },
+      {
+        id: '5',
+        title: '内蒙古草原·呼伦贝尔房车穿越',
+        image: 'https://picsum.photos/700/400?random=14',
+        tags: ['大草原', '蒙古文化', '骑马体验'],
+        days: 5,
+        minPeople: 5,
+        maxPeople: 12,
+        currentPeople: 12,
+        price: 3680,
+        childPrice: 1840,
+        status: 'departed',
+        isHot: false,
+        available: 0
+      }
+    ];
+
+    if (isRefresh) {
+      tours.value = mockTours;
+      page.value = 1;
+      hasMore.value = false;
+    } else {
+      tours.value.push(...mockTours);
+      hasMore.value = false;
+    }
+
+  } catch (error) {
+    console.error('加载旅游线路失败:', error);
+    uni.showToast({
+      title: '加载失败，请重试',
+      icon: 'none'
+    });
+  } finally {
+    loading.value = false;
+    refreshing.value = false;
   }
-]);
+};
 
+// 下拉刷新
+const onRefresh = () => {
+  refreshing.value = true;
+  loadTours(true);
+};
+
+// 加载更多
+const loadMore = () => {
+  if (hasMore.value && !loading.value) {
+    page.value++;
+    loadTours();
+  }
+};
+
+// 获取状态文本
 const getStatusText = (status: string) => {
-  const map: any = {
+  const map: Record<string, string> = {
     recruiting: '招募中',
     confirmed: '已成团',
     departed: '已出发',
@@ -83,6 +278,88 @@ const getStatusText = (status: string) => {
   return map[status] || status;
 };
 
+// 获取操作按钮文本
+const getActionText = (status: string) => {
+  const map: Record<string, string> = {
+    recruiting: '立即报名',
+    confirmed: '查看详情',
+    departed: '已出发',
+    completed: '已结束'
+  };
+  return map[status] || '查看详情';
+};
+
+// 计算成团进度宽度
+const getProgressWidth = (tour: any) => {
+  const percentage = (tour.currentPeople / tour.maxPeople) * 100;
+  return `${Math.min(percentage, 100)}%`;
+};
+
+// 显示天数筛选
+const showDurationFilter = () => {
+  filterTitle.value = '行程天数';
+  currentFilterType.value = 'duration';
+  currentFilterValue.value = currentDuration.value;
+  filterOptions.value = [
+    { label: '不限', value: '' },
+    { label: '3-5天', value: '3-5' },
+    { label: '6-8天', value: '6-8' },
+    { label: '9天以上', value: '9-' }
+  ];
+  filterPopup.value?.open();
+};
+
+// 显示价格筛选
+const showPriceFilter = () => {
+  filterTitle.value = '价格区间';
+  currentFilterType.value = 'price';
+  currentFilterValue.value = currentPrice.value;
+  filterOptions.value = [
+    { label: '不限', value: '' },
+    { label: '3000元以下', value: '0-3000' },
+    { label: '3000-5000元', value: '3000-5000' },
+    { label: '5000-7000元', value: '5000-7000' },
+    { label: '7000元以上', value: '7000-' }
+  ];
+  filterPopup.value?.open();
+};
+
+// 显示状态筛选
+const showStatusFilter = () => {
+  filterTitle.value = '线路状态';
+  currentFilterType.value = 'status';
+  currentFilterValue.value = currentStatus.value;
+  filterOptions.value = [
+    { label: '全部状态', value: '' },
+    { label: '招募中', value: 'recruiting' },
+    { label: '已成团', value: 'confirmed' },
+    { label: '已出发', value: 'departed' }
+  ];
+  filterPopup.value?.open();
+};
+
+// 选择筛选项
+const selectFilter = (item: any) => {
+  currentFilterValue.value = item.value;
+
+  if (currentFilterType.value === 'duration') {
+    currentDuration.value = item.value ? item.label : '';
+  } else if (currentFilterType.value === 'price') {
+    currentPrice.value = item.value ? item.label : '';
+  } else if (currentFilterType.value === 'status') {
+    currentStatus.value = item.value ? item.label : '';
+  }
+
+  closeFilter();
+  loadTours(true);
+};
+
+// 关闭筛选弹窗
+const closeFilter = () => {
+  filterPopup.value?.close();
+};
+
+// 查看详情
 const viewDetail = (item: any) => {
   uni.navigateTo({ url: `/pages/tour/detail?id=${item.id}` });
 };
@@ -96,39 +373,69 @@ const viewDetail = (item: any) => {
   flex-direction: column;
 }
 
+// 筛选栏
 .filter-bar {
   background-color: #FFFFFF;
   display: flex;
-  padding: 16rpx 32rpx;
-  gap: 32rpx;
-  overflow-x: auto;
+  padding: 24rpx 32rpx;
+  gap: 48rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .filter-item {
-  font-size: 28rpx;
-  color: #666;
-  padding: 8rpx 16rpx;
-  border-radius: 20rpx;
-  white-space: nowrap;
-  
-  &.active {
-    background-color: rgba(255, 159, 41, 0.1);
-    color: #FF9F29;
-    font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+
+  .filter-text {
+    font-size: 28rpx;
+    color: #333;
   }
 }
 
+// 线路列表
 .tour-list {
   flex: 1;
   padding: 24rpx;
 }
 
+// 空状态
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 120rpx 0;
+
+  .empty-image {
+    width: 200rpx;
+    height: 200rpx;
+    margin-bottom: 32rpx;
+    opacity: 0.6;
+  }
+
+  .empty-text {
+    font-size: 28rpx;
+    color: rgba(0, 0, 0, 0.6);
+    margin-bottom: 16rpx;
+  }
+
+  .empty-tip {
+    font-size: 24rpx;
+    color: rgba(0, 0, 0, 0.4);
+  }
+}
+
+// 线路卡片
 .tour-card {
   background-color: #FFFFFF;
   border-radius: 16rpx;
   overflow: hidden;
   margin-bottom: 24rpx;
-  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.04);
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
   position: relative;
 }
 
@@ -137,29 +444,47 @@ const viewDetail = (item: any) => {
   height: 400rpx;
 }
 
+// 状态标签
 .tour-badge {
   position: absolute;
-  top: 16rpx;
-  left: 16rpx;
-  padding: 6rpx 16rpx;
-  border-radius: 8rpx;
+  top: 24rpx;
+  right: 24rpx;
+  padding: 8rpx 16rpx;
+  border-radius: 20rpx;
   font-size: 22rpx;
   color: #FFFFFF;
-  
+  font-weight: 600;
+
   &.recruiting {
-    background-color: #FF9F29;
+    background-color: rgba(103, 194, 58, 0.9);
   }
-  
+
   &.confirmed {
-    background-color: #4CAF50;
+    background-color: rgba(255, 159, 41, 0.9);
   }
-  
+
   &.departed {
-    background-color: #2196F3;
+    background-color: rgba(144, 147, 153, 0.9);
   }
-  
+
   &.completed {
-    background-color: #999;
+    background-color: rgba(144, 147, 153, 0.9);
+  }
+}
+
+// 热门标签
+.hot-tag {
+  position: absolute;
+  top: 24rpx;
+  left: 0;
+  background: linear-gradient(135deg, #FF9F29 0%, #FFB84D 100%);
+  color: #FFFFFF;
+  padding: 8rpx 24rpx 8rpx 16rpx;
+  border-radius: 0 20rpx 20rpx 0;
+
+  .tag-text {
+    font-size: 24rpx;
+    font-weight: 600;
   }
 }
 
@@ -169,48 +494,186 @@ const viewDetail = (item: any) => {
 
 .tour-title {
   font-size: 32rpx;
-  font-weight: bold;
+  font-weight: 600;
   color: #333;
-  margin-bottom: 12rpx;
+  margin-bottom: 16rpx;
   display: block;
+  line-height: 1.4;
+}
+
+// 线路标签
+.tour-tags {
+  display: flex;
+  gap: 12rpx;
+  margin-bottom: 16rpx;
+  flex-wrap: wrap;
+
+  .tag-item {
+    font-size: 22rpx;
+    color: #FF9F29;
+    background-color: rgba(255, 159, 41, 0.1);
+    padding: 6rpx 12rpx;
+    border-radius: 6rpx;
+  }
 }
 
 .tour-details {
   display: flex;
   gap: 24rpx;
   margin-bottom: 16rpx;
+
+  .detail-item {
+    display: flex;
+    align-items: center;
+    gap: 8rpx;
+
+    .detail-text {
+      font-size: 24rpx;
+      color: #999;
+    }
+  }
 }
 
-.detail-item {
-  font-size: 24rpx;
-  color: #999;
+// 成团进度
+.group-progress {
+  margin-bottom: 20rpx;
+
+  .progress-bar {
+    width: 100%;
+    height: 8rpx;
+    background-color: #F0F0F0;
+    border-radius: 4rpx;
+    overflow: hidden;
+    margin-bottom: 12rpx;
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #67C23A 0%, #85CE61 100%);
+      border-radius: 4rpx;
+      transition: width 0.3s ease;
+    }
+  }
+
+  .progress-text {
+    font-size: 24rpx;
+    color: #67C23A;
+  }
 }
 
 .price-row {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
 }
 
 .price-box {
   display: flex;
-  align-items: baseline;
+  flex-direction: column;
+  gap: 8rpx;
+
+  .price {
+    font-size: 48rpx;
+    font-weight: 700;
+    color: #F44336;
+  }
+
+  .unit {
+    font-size: 24rpx;
+    color: #999;
+    margin-left: 4rpx;
+  }
+
+  .child-price {
+    font-size: 22rpx;
+    color: #999;
+  }
 }
 
-.price {
-  font-size: 36rpx;
-  font-weight: bold;
-  color: #F44336;
+.action-btn {
+  background: linear-gradient(135deg, #FF9F29 0%, #FFB84D 100%);
+  color: #FFFFFF;
+  padding: 20rpx 48rpx;
+  border-radius: 44rpx;
+
+  &.disabled {
+    background: #E0E0E0;
+    color: #999;
+  }
+
+  .btn-text {
+    font-size: 28rpx;
+    font-weight: 500;
+  }
 }
 
-.unit {
-  font-size: 24rpx;
-  color: #999;
-  margin-left: 4rpx;
+// 加载状态
+.load-more {
+  text-align: center;
+  padding: 32rpx 0;
+
+  .load-text {
+    font-size: 26rpx;
+    color: rgba(0, 0, 0, 0.6);
+  }
 }
 
-.availability {
-  font-size: 24rpx;
-  color: #FF9F29;
+// 没有更多
+.no-more {
+  text-align: center;
+  padding: 32rpx 0;
+
+  .no-more-text {
+    font-size: 26rpx;
+    color: rgba(0, 0, 0, 0.4);
+  }
+}
+
+// 筛选弹窗
+.filter-popup {
+  background-color: #FFFFFF;
+  border-radius: 24rpx 24rpx 0 0;
+
+  .popup-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 32rpx;
+    border-bottom: 2rpx solid #F0F0F0;
+
+    .popup-title {
+      font-size: 32rpx;
+      font-weight: 600;
+      color: #333;
+    }
+  }
+
+  .popup-content {
+    max-height: 600rpx;
+    overflow-y: auto;
+
+    .filter-option {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 32rpx;
+      border-bottom: 2rpx solid #F8F8F8;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      .option-text {
+        font-size: 28rpx;
+        color: #333;
+      }
+
+      &.active {
+        .option-text {
+          color: #FF9F29;
+          font-weight: 500;
+        }
+      }
+    }
+  }
 }
 </style>

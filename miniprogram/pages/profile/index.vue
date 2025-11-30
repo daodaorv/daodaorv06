@@ -124,6 +124,9 @@ const orderCounts = ref({
 
 // 菜单列表
 const menuList = [
+	{ name: '优惠券', icon: 'gift-filled', iconColor: '#F44336', path: '/pages/profile/coupons', badge: 3 },
+	{ name: '钱包余额', icon: 'wallet-filled', iconColor: '#FF9F29', path: '/pages/profile/wallet', amount: '1280.50' },
+	{ name: '众筹资产', icon: 'bars', iconColor: '#4CAF50', path: '/pages/profile/crowdfunding-assets', count: 2 },
 	{ name: '我的收藏', icon: 'star', iconColor: '#FF9F29', path: '/pages/profile/favorites' },
 	{ name: '常用联系人', icon: 'staff', iconColor: '#4CAF50', path: '/pages/profile/contacts' },
 	{ name: '我的优惠券', icon: 'gift', iconColor: '#F44336', path: '/pages/profile/coupons' },

@@ -16,20 +16,20 @@
       text-color="#303133"
       active-text-color="#409eff"
     >
-      <template v-for="route in menuRoutes" :key="route.path">
+      <template v-for="menuItem in menuRoutes" :key="menuItem.path">
         <el-sub-menu
-          v-if="route.children && route.children.length > 0"
-          :index="route.path"
+          v-if="menuItem.children && menuItem.children.length > 0"
+          :index="menuItem.path"
         >
           <template #title>
-            <el-icon v-if="route.meta?.icon">
-              <component :is="route.meta.icon" />
+            <el-icon v-if="menuItem.meta?.icon">
+              <component :is="menuItem.meta.icon" />
             </el-icon>
-            <span>{{ route.meta?.title }}</span>
+            <span>{{ menuItem.meta?.title }}</span>
           </template>
 
           <el-menu-item
-            v-for="child in route.children.filter(item => !item.meta?.hidden)"
+            v-for="child in menuItem.children"
             :key="child.path"
             :index="child.path"
           >
@@ -40,11 +40,11 @@
           </el-menu-item>
         </el-sub-menu>
 
-        <el-menu-item v-else :index="route.path">
-          <el-icon v-if="route.meta?.icon">
-            <component :is="route.meta.icon" />
+        <el-menu-item v-else :index="menuItem.path">
+          <el-icon v-if="menuItem.meta?.icon">
+            <component :is="menuItem.meta.icon" />
           </el-icon>
-          <template #title>{{ route.meta?.title }}</template>
+          <template #title>{{ menuItem.meta?.title }}</template>
         </el-menu-item>
       </template>
     </el-menu>
@@ -55,19 +55,14 @@
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useAppStore } from '@/stores/app'
-
-interface MenuRoute {
-  path: string
-  meta?: {
-    title?: string
-    icon?: string
-    hidden?: boolean
-  }
-  children?: MenuRoute[]
-}
+import { useUserStore } from '@/stores/user'
+import { menuConfig } from '@/config/menu'
+import { filterMenuByPermission } from '@/utils/permission'
+import type { MenuItem } from '@/types/permission'
 
 const route = useRoute()
 const appStore = useAppStore()
+const userStore = useUserStore()
 
 const collapsed = computed(() => appStore.sidebarCollapsed)
 
@@ -77,58 +72,10 @@ const activeMenu = computed(() => {
   return path
 })
 
-// 菜单路由配置
-const menuRoutes = computed<MenuRoute[]>(() => {
-  return [
-    {
-      path: '/dashboard',
-      meta: { title: '工作台', icon: 'House' },
-    },
-    {
-      path: '/vehicles',
-      meta: { title: '车辆管理', icon: 'Van' },
-      children: [
-        {
-          path: '/vehicles',
-          meta: { title: '车辆列表' },
-        },
-        {
-          path: '/vehicles/create',
-          meta: { title: '添加车辆', hidden: true },
-        },
-      ],
-    },
-    {
-      path: '/orders',
-      meta: { title: '订单管理', icon: 'List' },
-    },
-    {
-      path: '/users',
-      meta: { title: '用户管理', icon: 'User' },
-    },
-    {
-      path: '/payments',
-      meta: { title: '财务管理', icon: 'Money' },
-    },
-    {
-      path: '/marketing',
-      meta: { title: '营销管理', icon: 'Promotion' },
-      children: [
-        {
-          path: '/coupons',
-          meta: { title: '优惠券管理' },
-        },
-        {
-          path: '/reviews',
-          meta: { title: '评价管理' },
-        },
-      ],
-    },
-    {
-      path: '/settings',
-      meta: { title: '系统设置', icon: 'Setting' },
-    },
-  ]
+// 根据用户权限过滤菜单
+const menuRoutes = computed<MenuItem[]>(() => {
+  const user = userStore.user
+  return filterMenuByPermission(menuConfig, user)
 })
 </script>
 

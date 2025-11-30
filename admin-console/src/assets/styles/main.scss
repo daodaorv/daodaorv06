@@ -12,6 +12,9 @@
   --el-color-danger: #f56c6c;
   --el-color-error: #f56c6c;
   --el-color-info: #909399;
+
+  // 覆盖 Element Plus 默认字体，避免加载 Google Fonts
+  --el-font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
 }
 
 // 全局样式重置
