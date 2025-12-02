@@ -123,6 +123,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { onLoad, onPullDownRefresh, onReachBottom } from '@dcloudio/uni-app';
 
 // 状态管理
 const tours = ref<any[]>([]);
@@ -158,7 +159,7 @@ const loadTours = async (isRefresh = false) => {
       {
         id: '1',
         title: '川西秘境·稻城亚丁房车深度游',
-        image: 'https://picsum.photos/700/400?random=10',
+        image: 'https://placehold.co/700x400/FF5722/FFFFFF?text=%E7%BA%BF%E8%B7%AF1',
         tags: ['高原风光', '摄影天堂', '藏族文化'],
         days: 7,
         minPeople: 5,
@@ -173,7 +174,7 @@ const loadTours = async (isRefresh = false) => {
       {
         id: '2',
         title: '大西北环线·青海湖敦煌房车之旅',
-        image: 'https://picsum.photos/700/400?random=11',
+        image: 'https://placehold.co/700x400/3F51B5/FFFFFF?text=%E7%BA%BF%E8%B7%AF2',
         tags: ['大漠风光', '丝绸之路', '星空露营'],
         days: 8,
         minPeople: 5,
@@ -188,7 +189,7 @@ const loadTours = async (isRefresh = false) => {
       {
         id: '3',
         title: '云南秘境·香格里拉梅里雪山行',
-        image: 'https://picsum.photos/700/400?random=12',
+        image: 'https://placehold.co/700x400/607D8B/FFFFFF?text=%E7%BA%BF%E8%B7%AF3',
         tags: ['雪山风光', '藏区文化', '徒步探险'],
         days: 6,
         minPeople: 5,
@@ -203,7 +204,7 @@ const loadTours = async (isRefresh = false) => {
       {
         id: '4',
         title: '新疆伊犁·天山草原房车自驾',
-        image: 'https://picsum.photos/700/400?random=13',
+        image: 'https://placehold.co/700x400/4CAF50/FFFFFF?text=%E7%BA%BF%E8%B7%AF4',
         tags: ['草原风光', '哈萨克文化', '野生动物'],
         days: 9,
         minPeople: 5,
@@ -218,7 +219,7 @@ const loadTours = async (isRefresh = false) => {
       {
         id: '5',
         title: '内蒙古草原·呼伦贝尔房车穿越',
-        image: 'https://picsum.photos/700/400?random=14',
+        image: 'https://placehold.co/700x400/795548/FFFFFF?text=%E7%BA%BF%E8%B7%AF5',
         tags: ['大草原', '蒙古文化', '骑马体验'],
         days: 5,
         minPeople: 5,
@@ -371,6 +372,8 @@ const viewDetail = (item: any) => {
   background-color: #F8F8F8;
   display: flex;
   flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 // 筛选栏
@@ -400,6 +403,8 @@ const viewDetail = (item: any) => {
 .tour-list {
   flex: 1;
   padding: 24rpx;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 // 空状态

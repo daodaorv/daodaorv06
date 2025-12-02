@@ -5,20 +5,20 @@
 
 /* 主题色 */
 $uni-color-primary: #FF9F29;
-$uni-color-secondary: #333333;
+$uni-color-secondary: #1A1A1A;
 $uni-color-success: #4CAF50;
 $uni-color-warning: #FF9800;
 $uni-color-error: #F44336;
 $uni-color-info: #2196F3;
 
 /* 背景色 */
-$uni-bg-color: #F8F8F8;
-$uni-bg-color-light: #FFF5E9;
+$uni-bg-color: #F5F7FA;
+$uni-bg-color-light: #FFF8F0;
 $uni-bg-color-card: #FFFFFF;
 
 /* 文字颜色 */
-$uni-text-color: #333333;
-$uni-text-color-secondary: #6C757D;
+$uni-text-color: #1A1A1A;
+$uni-text-color-secondary: #666666;
 $uni-text-color-placeholder: #999999;
 $uni-text-color-inverse: #FFFFFF;
 
@@ -48,6 +48,6 @@ $uni-font-size-lg: 36rpx;
 $uni-font-size-xl: 40rpx;
 
 /* 阴影 */
-$uni-shadow-sm: 0 2rpx 8rpx rgba(0, 0, 0, 0.08);
-$uni-shadow-md: 0 4rpx 16rpx rgba(0, 0, 0, 0.12);
-$uni-shadow-lg: 0 8rpx 24rpx rgba(0, 0, 0, 0.16);
+$uni-shadow-sm: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+$uni-shadow-md: 0 4rpx 16rpx rgba(0, 0, 0, 0.08);
+$uni-shadow-lg: 0 8rpx 24rpx rgba(0, 0, 0, 0.12);

@@ -371,9 +371,11 @@ const loadFromStorage = () => {
 <style scoped lang="scss">
 .booking-form {
 	background-color: #FFFFFF;
-	border-radius: 24rpx;
-	padding: 32rpx;
-	box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.06);
+	border-radius: $uni-border-radius-lg;
+	padding: 40rpx 32rpx;
+	box-shadow: $uni-shadow-lg;
+	position: relative;
+	z-index: 10;
 }
 
 .form-row {
@@ -398,29 +400,34 @@ const loadFromStorage = () => {
 
 .label {
 	font-size: 24rpx;
-	color: #999;
-	margin-bottom: 12rpx;
+	color: $uni-text-color-secondary;
+	margin-bottom: 16rpx;
+	font-weight: 500;
 }
 
 .input-box {
 	display: flex;
 	align-items: center;
-	gap: 8rpx;
-	height: 80rpx;
-	padding: 0 16rpx;
-	background-color: #F8F8F8;
-	border: 1rpx solid #EEEEEE;
-	border-radius: 12rpx;
+	gap: 12rpx;
+	height: 88rpx;
+	padding: 0 24rpx;
+	background-color: $uni-bg-color;
+	border-radius: 16rpx;
+	transition: background-color 0.2s;
+	
+	&:active {
+		background-color: darken($uni-bg-color, 2%);
+	}
 }
 
 .input-text {
 	flex: 1;
-	font-size: 28rpx;
-	color: #333;
+	font-size: 30rpx;
+	color: $uni-text-color;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	font-weight: 500;
+	font-weight: 600;
 }
 
 /* 综合时间选择框 */
@@ -428,11 +435,11 @@ const loadFromStorage = () => {
 	flex: 1;
 	display: flex;
 	align-items: center;
-	height: 120rpx;
-	background-color: #F8F8F8;
-	border: 1rpx solid #EEEEEE;
-	border-radius: 12rpx;
-	padding: 0 24rpx;
+	height: 140rpx;
+	background-color: $uni-bg-color;
+	border-radius: 16rpx;
+	padding: 0 32rpx;
+	position: relative;
 }
 
 .dt-section {
@@ -440,6 +447,7 @@ const loadFromStorage = () => {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
+	z-index: 1;
 	
 	&.right {
 		align-items: flex-end;
@@ -448,7 +456,7 @@ const loadFromStorage = () => {
 
 .dt-label {
 	font-size: 22rpx;
-	color: #999;
+	color: $uni-text-color-secondary;
 	margin-bottom: 8rpx;
 }
 
@@ -459,35 +467,42 @@ const loadFromStorage = () => {
 }
 
 .dt-date {
-	font-size: 32rpx;
+	font-size: 36rpx;
 	font-weight: bold;
-	color: #333;
+	color: $uni-text-color;
+	font-family: 'DIN Alternate', sans-serif;
 }
 
 .dt-time {
 	font-size: 26rpx;
-	color: #666;
+	color: $uni-text-color-secondary;
 }
 
 .duration-divider {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	padding: 0 20rpx;
+	z-index: 0;
 }
 
 .duration-tag {
-	height: 40rpx;
-	padding: 0 16rpx;
-	background-color: #FFF9F0;
-	border-radius: 20rpx;
+	height: 44rpx;
+	padding: 0 24rpx;
+	background-color: #FFFFFF;
+	border-radius: 22rpx;
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	box-shadow: $uni-shadow-sm;
+	border: 1rpx solid $uni-border-color-light;
 }
 
 .duration-text {
-	font-size: 22rpx;
+	font-size: 24rpx;
 	color: $uni-color-primary;
 	font-weight: bold;
 }
@@ -496,25 +511,25 @@ const loadFromStorage = () => {
 .checkbox-row {
 	display: flex;
 	justify-content: flex-end;
-	margin-bottom: 24rpx;
+	margin-bottom: 32rpx;
 	
 	&.compact {
-		margin-top: -16rpx; /* 稍微上移 */
+		margin-top: -16rpx;
 	}
 }
 
 .checkbox-container {
 	display: flex;
 	align-items: center;
-	gap: 8rpx;
+	gap: 12rpx;
 	padding: 8rpx 0;
 }
 
 .checkbox {
-	width: 32rpx;
-	height: 32rpx;
+	width: 36rpx;
+	height: 36rpx;
 	border: 2rpx solid #DDD;
-	border-radius: 6rpx;
+	border-radius: 8rpx;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -528,23 +543,23 @@ const loadFromStorage = () => {
 
 .checkbox-text {
 	font-size: 26rpx;
-	color: #333;
+	color: $uni-text-color;
 }
 
 /* 查询按钮 */
 .search-button {
 	width: 100%;
-	height: 96rpx;
-	background-color: $uni-color-primary;
+	height: 100rpx;
+	background: linear-gradient(135deg, $uni-color-primary 0%, #FFB84D 100%);
 	color: #FFFFFF;
-	font-size: 34rpx;
+	font-size: 36rpx;
 	font-weight: bold;
-	border-radius: 48rpx;
+	border-radius: 50rpx;
 	border: none;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	box-shadow: 0 8rpx 24rpx rgba(255, 159, 41, 0.3);
+	box-shadow: 0 12rpx 32rpx rgba(255, 159, 41, 0.3);
 	transition: all 0.2s;
 	
 	&::after {
@@ -554,7 +569,7 @@ const loadFromStorage = () => {
 
 .search-button-hover {
 	transform: scale(0.98);
-	opacity: 0.9;
-	box-shadow: 0 4rpx 12rpx rgba(255, 159, 41, 0.3);
+	opacity: 0.95;
+	box-shadow: 0 6rpx 16rpx rgba(255, 159, 41, 0.3);
 }
 </style>

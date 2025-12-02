@@ -40,40 +40,34 @@
 
 		<!-- 推广卡片 -->
 		<view class="promo-cards">
-			<view class="promo-card" @tap="navigateTo('/pages/coupon/index')">
+			<view class="promo-card" @tap="navigateTo('/pages/special-offer/list')">
 				<view class="promo-content">
 					<text class="promo-title">特惠商城</text>
-					<text class="promo-desc">优惠券入口</text>
+					<text class="promo-desc">特惠套餐</text>
 				</view>
 				<uni-icons type="gift-filled" size="40" color="#FF9F29"></uni-icons>
 			</view>
-			<view class="promo-card" @tap="navigateTo('/pages/member/index')">
+			<view class="promo-card" @tap="navigateTo('/pages/membership/index')">
 				<view class="promo-content">
 					<text class="promo-title">PLUS会员</text>
-					<text class="promo-desc">推广入口</text>
+					<text class="promo-desc">专属权益</text>
 				</view>
 				<uni-icons type="vip-filled" size="40" color="#FF9F29"></uni-icons>
 			</view>
 		</view>
 
-		<!-- 内容标签页 -->
-		<view class="content-tabs">
-			<view class="tab-header">
-				<view 
-					v-for="(tab, index) in tabs" 
-					:key="index"
-					class="tab-item"
-					:class="{ active: currentTab === index }"
-					@tap="switchTab(index)"
-				>
-					<text class="tab-text">{{ tab }}</text>
+		<!-- 社区内容列表 -->
+		<view class="content-section">
+			<view class="section-title">
+				<text class="title-text">社区精选</text>
+				<view class="more-link" @tap="uni.switchTab({ url: '/pages/community/index' })">
+					<text class="more-text">更多</text>
+					<uni-icons type="right" size="14" color="#999"></uni-icons>
 				</view>
 			</view>
-
-			<!-- 社区内容列表 -->
-			<view v-if="currentTab === 0" class="content-list">
-				<view 
-					v-for="(item, index) in communityList" 
+			<view class="content-list">
+				<view
+					v-for="(item, index) in communityList"
 					:key="index"
 					class="content-item"
 					@tap="navigateTo('/pages/community/detail?id=' + item.id)"
@@ -91,11 +85,6 @@
 						</view>
 					</view>
 				</view>
-			</view>
-
-			<!-- 众筹项目列表 -->
-			<view v-else class="content-list">
-				<text class="placeholder-text">众筹项目开发中...</text>
 			</view>
 		</view>
 	</view>
@@ -122,9 +111,6 @@ const banners = ref([
 	{ id: '2', image: '/static/优惠政策.jpg' }
 ]);
 
-// 标签页
-const tabs = ref(['社区内容', '众筹项目']);
-const currentTab = ref(0);
 
 // 社区内容
 const communityList = ref([
@@ -230,10 +216,6 @@ const handleSearch = (params: any) => {
 	});
 };
 
-const switchTab = (index: number) => {
-	currentTab.value = index;
-};
-
 const navigateTo = (url: string) => {
 	uni.navigateTo({ url });
 };
@@ -243,11 +225,16 @@ const navigateTo = (url: string) => {
 .index-page {
 	min-height: 100vh;
 	background-color: $uni-bg-color;
+	padding-bottom: 20rpx;
 }
 
 .custom-navbar {
-	background-color: #FFFFFF;
-	border-bottom: 1rpx solid $uni-border-color;
+	background-color: rgba(255, 255, 255, 0.95);
+	backdrop-filter: blur(10px);
+	position: sticky;
+	top: 0;
+	z-index: 100;
+	box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
 }
 
 .navbar-content {
@@ -260,8 +247,9 @@ const navigateTo = (url: string) => {
 
 .navbar-title {
 	font-size: 36rpx;
-	font-weight: bold;
+	font-weight: 800;
 	color: $uni-color-secondary;
+	letter-spacing: -0.5px;
 }
 
 .navbar-actions {
@@ -271,15 +259,16 @@ const navigateTo = (url: string) => {
 
 .banner-swiper {
 	width: 100%;
-	padding: 0 32rpx;
-	margin-top: 16rpx;
+	padding: 24rpx 0 0; // Remove horizontal padding
 }
 
 .swiper {
 	width: 100%;
-	height: 320rpx; /* 调整为 320rpx */
-	border-radius: $uni-border-radius-lg;
+	height: 340rpx;
+	// border-radius: $uni-border-radius-lg; // Remove border radius for full width
 	overflow: hidden;
+	box-shadow: $uni-shadow-md;
+	transform: translateY(0);
 }
 
 .banner-image {
@@ -288,13 +277,16 @@ const navigateTo = (url: string) => {
 }
 
 .booking-section {
-	padding: 32rpx;
+	padding: 0 32rpx;
+	margin-top: 24rpx;
+	position: relative;
+	z-index: 10;
 }
 
 .promo-cards {
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
-	gap: 32rpx;
+	gap: 24rpx;
 	padding: 0 32rpx 32rpx;
 }
 
@@ -303,8 +295,14 @@ const navigateTo = (url: string) => {
 	align-items: center;
 	justify-content: space-between;
 	padding: 32rpx;
-	background-color: $uni-bg-color;
+	background-color: #FFFFFF;
 	border-radius: $uni-border-radius-lg;
+	box-shadow: $uni-shadow-sm;
+	transition: transform 0.2s;
+	
+	&:active {
+		transform: scale(0.98);
+	}
 }
 
 .promo-content {
@@ -314,61 +312,51 @@ const navigateTo = (url: string) => {
 }
 
 .promo-title {
-	font-size: 32rpx;
+	font-size: 30rpx;
 	font-weight: bold;
 	color: $uni-text-color;
 }
 
 .promo-desc {
-	font-size: 24rpx;
+	font-size: 22rpx;
 	color: $uni-text-color-secondary;
 }
 
-.content-tabs {
-	padding: 32rpx;
+.content-section {
+	padding: 0 32rpx 32rpx;
 }
 
-.tab-header {
+.section-title {
 	display: flex;
-	border-bottom: 2rpx solid $uni-border-color;
-	margin-bottom: 32rpx;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 24rpx;
 }
 
-.tab-item {
-	flex: 1;
-	padding: 24rpx 0;
-	text-align: center;
-	position: relative;
-	
-	&.active {
-		.tab-text {
-			color: $uni-color-primary;
-			font-weight: bold;
-		}
-		
-		&::after {
-			content: '';
-			position: absolute;
-			bottom: 0;
-			left: 50%;
-			transform: translateX(-50%);
-			width: 60rpx;
-			height: 4rpx;
-			background-color: $uni-color-primary;
-			border-radius: 2rpx;
-		}
-	}
+.title-text {
+	font-size: 34rpx;
+	font-weight: bold;
+	color: $uni-text-color;
 }
 
-.tab-text {
-	font-size: 28rpx;
+.more-link {
+	display: flex;
+	align-items: center;
+	gap: 4rpx;
+	padding: 8rpx 16rpx;
+	background-color: rgba(0, 0, 0, 0.03);
+	border-radius: 24rpx;
+}
+
+.more-text {
+	font-size: 24rpx;
 	color: $uni-text-color-secondary;
 }
 
 .content-list {
 	display: flex;
 	flex-direction: column;
-	gap: 32rpx;
+	gap: 24rpx;
 }
 
 .content-item {
@@ -377,51 +365,68 @@ const navigateTo = (url: string) => {
 	background-color: #FFFFFF;
 	border-radius: $uni-border-radius-lg;
 	overflow: hidden;
+	padding: 20rpx;
+	box-shadow: $uni-shadow-sm;
 }
 
 .content-image {
-	width: 192rpx;
-	height: 192rpx;
+	width: 200rpx;
+	height: 200rpx;
 	flex-shrink: 0;
+	border-radius: $uni-border-radius-md;
+	background-color: #F0F0F0;
 }
 
 .content-info {
 	flex: 1;
-	padding: 16rpx 16rpx 16rpx 0;
 	display: flex;
 	flex-direction: column;
-	gap: 8rpx;
+	justify-content: space-between;
+	padding: 4rpx 0;
 }
 
 .content-title {
-	font-size: 28rpx;
+	font-size: 30rpx;
 	font-weight: bold;
-	color: $uni-color-primary;
+	color: $uni-text-color;
 	line-height: 1.4;
+	margin-bottom: 8rpx;
 }
 
 .content-desc {
 	font-size: 24rpx;
 	color: $uni-text-color-secondary;
 	line-height: 1.5;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	overflow: hidden;
 }
 
 .content-meta {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	margin-top: auto;
+	margin-top: 16rpx;
 }
 
 .meta-text {
-	font-size: 20rpx;
-	color: $uni-text-color-secondary;
+	font-size: 22rpx;
+	color: #999;
 }
 
 .meta-likes {
 	display: flex;
 	align-items: center;
-	gap: 4rpx;
+	gap: 6rpx;
+	background-color: #FFF5E9;
+	padding: 4rpx 12rpx;
+	border-radius: 20rpx;
+	
+	.meta-text {
+		color: $uni-color-primary;
+		font-weight: 500;
+	}
 }
 
 .placeholder-text {

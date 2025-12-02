@@ -185,7 +185,7 @@ const goToDetail = (vehicle: Vehicle) => {
 <style scoped lang="scss">
 .vehicle-list-page {
 	min-height: 100vh;
-	background-color: #F8F8F8;
+	background-color: $uni-bg-color;
 	display: flex;
 	flex-direction: column;
 }
@@ -200,32 +200,40 @@ const goToDetail = (vehicle: Vehicle) => {
 }
 
 .store-group {
-	margin-bottom: 32rpx;
+	margin-bottom: 40rpx;
 }
 
 .store-header {
 	display: flex;
 	align-items: center;
 	gap: 12rpx;
-	padding: 16rpx 0;
-	margin-bottom: 16rpx;
+	padding: 20rpx 0;
+	margin-bottom: 20rpx;
+	position: sticky;
+	top: 0;
+	background-color: $uni-bg-color;
+	z-index: 10;
 }
 
 .store-name {
-	font-size: 28rpx;
+	font-size: 30rpx;
 	font-weight: bold;
-	color: #333;
+	color: $uni-text-color;
 }
 
 .vehicle-count {
 	font-size: 24rpx;
-	color: #999;
+	color: $uni-text-color-secondary;
 	margin-left: auto;
+	background-color: rgba(0, 0, 0, 0.05);
+	padding: 4rpx 16rpx;
+	border-radius: 20rpx;
 }
 
 .vehicle-list {
 	display: flex;
 	flex-direction: column;
+	gap: 24rpx;
 }
 
 .empty-state {
@@ -233,12 +241,12 @@ const goToDetail = (vehicle: Vehicle) => {
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	padding: 120rpx 0;
-	gap: 24rpx;
+	padding: 160rpx 0;
+	gap: 32rpx;
 }
 
 .empty-text {
 	font-size: 28rpx;
-	color: #999;
+	color: $uni-text-color-secondary;
 }
 </style>

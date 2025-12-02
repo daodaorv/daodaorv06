@@ -2,7 +2,7 @@
  * 营地预订相关API
  */
 
-import request from '@/utils/request';
+import { request } from '@/utils/request';
 
 /**
  * 营地列表查询参数

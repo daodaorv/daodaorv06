@@ -377,9 +377,12 @@ export interface Vehicle {
   modelName: string
   brandName: string
   vehicleType: 'c_type' | 'b_type' | 'trailer'
-  ownershipType: 'crowdfunding' | 'cooperative' // 所有权类型：众筹/合作
-  crowdfundingProjectId?: number // 众筹项目ID
-  crowdfundingProjectName?: string // 众筹项目名称
+  ownershipType: 'platform' | 'hosting' | 'cooperative' // 所有权类型：平台自有/托管/合作
+  hostingId?: number // 托管记录ID(托管车辆)
+  hostingOwnerName?: string // 车主姓名(托管车辆)
+  hostingOwnerPhone?: string // 车主电话(托管车辆)
+  cooperativePartnerId?: number // 合作商ID(合作车辆)
+  cooperativePartnerName?: string // 合作商名称(合作车辆)
   storeId: number
   storeName: string
   status: 'available' | 'rented' | 'maintenance' | 'repair' | 'retired' // 车辆状态
@@ -409,9 +412,7 @@ export const mockVehicles: Vehicle[] = [
     modelName: 'RV80 C型房车',
     brandName: '大通',
     vehicleType: 'c_type',
-    ownershipType: 'crowdfunding',
-    crowdfundingProjectId: 1,
-    crowdfundingProjectName: '大通RV80众筹项目一期',
+    ownershipType: 'platform',
     storeId: 1,
     storeName: '北京朝阳店',
     status: 'available',
@@ -438,9 +439,10 @@ export const mockVehicles: Vehicle[] = [
     modelName: 'RV80 C型房车',
     brandName: '大通',
     vehicleType: 'c_type',
-    ownershipType: 'crowdfunding',
-    crowdfundingProjectId: 1,
-    crowdfundingProjectName: '大通RV80众筹项目一期',
+    ownershipType: 'hosting',
+    hostingId: 1,
+    hostingOwnerName: '张三',
+    hostingOwnerPhone: '13800138001',
     storeId: 1,
     storeName: '北京朝阳店',
     status: 'rented',
@@ -467,9 +469,7 @@ export const mockVehicles: Vehicle[] = [
     modelName: '全顺B型房车',
     brandName: '福特',
     vehicleType: 'b_type',
-    ownershipType: 'crowdfunding',
-    crowdfundingProjectId: 2,
-    crowdfundingProjectName: '福特全顺众筹项目',
+    ownershipType: 'platform',
     storeId: 2,
     storeName: '上海浦东店',
     status: 'available',
@@ -496,9 +496,9 @@ export const mockVehicles: Vehicle[] = [
     modelName: '全顺B型房车',
     brandName: '福特',
     vehicleType: 'b_type',
-    ownershipType: 'crowdfunding',
-    crowdfundingProjectId: 2,
-    crowdfundingProjectName: '福特全顺众筹项目',
+    ownershipType: 'cooperative',
+    cooperativePartnerId: 1,
+    cooperativePartnerName: '上海合作租车公司',
     storeId: 2,
     storeName: '上海浦东店',
     status: 'maintenance',
@@ -525,9 +525,10 @@ export const mockVehicles: Vehicle[] = [
     modelName: '欧胜拖挂房车',
     brandName: '依维柯',
     vehicleType: 'trailer',
-    ownershipType: 'crowdfunding',
-    crowdfundingProjectId: 3,
-    crowdfundingProjectName: '依维柯拖挂众筹项目',
+    ownershipType: 'hosting',
+    hostingId: 2,
+    hostingOwnerName: '李四',
+    hostingOwnerPhone: '13800138002',
     storeId: 3,
     storeName: '深圳南山店',
     status: 'available',
@@ -554,9 +555,7 @@ export const mockVehicles: Vehicle[] = [
     modelName: 'Sprinter 豪华B型',
     brandName: '奔驰',
     vehicleType: 'b_type',
-    ownershipType: 'crowdfunding',
-    crowdfundingProjectId: 4,
-    crowdfundingProjectName: '奔驰Sprinter豪华众筹',
+    ownershipType: 'platform',
     storeId: 1,
     storeName: '北京朝阳店',
     status: 'available',
@@ -583,9 +582,9 @@ export const mockVehicles: Vehicle[] = [
     modelName: '特顺C型房车',
     brandName: '江铃',
     vehicleType: 'c_type',
-    ownershipType: 'crowdfunding',
-    crowdfundingProjectId: 5,
-    crowdfundingProjectName: '江铃特顺众筹项目',
+    ownershipType: 'cooperative',
+    cooperativePartnerId: 2,
+    cooperativePartnerName: '成都合作租车公司',
     storeId: 4,
     storeName: '成都武侯店',
     status: 'repair',

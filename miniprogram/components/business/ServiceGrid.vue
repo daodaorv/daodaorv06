@@ -28,9 +28,7 @@ const services = ref<Service[]>([
 	{ id: '1', name: '特惠租车', icon: 'gift', path: '/pages/special-offer/list' },
 	{ id: '2', name: '营地预定', icon: 'location', path: '/pages/campsite/list' },
 	{ id: '3', name: '房车旅游', icon: 'map', path: '/pages/tour/list' },
-	{ id: '4', name: '房车众筹', icon: 'wallet', path: '/pages/crowdfunding/index' },
-	{ id: '5', name: '优惠券', icon: 'gift-filled', path: '/pages/profile/coupons' },
-	{ id: '6', name: 'PLUS会员', icon: 'vip-filled', path: '/pages/membership/index' }
+	{ id: '4', name: '托管中心', icon: 'home', path: '/pages/hosting/index' }
 ]);
 
 const handleServiceClick = (service: Service) => {
@@ -44,8 +42,10 @@ const handleServiceClick = (service: Service) => {
 .service-grid {
 	display: grid;
 	grid-template-columns: repeat(4, 1fr);
-	gap: 32rpx 16rpx;
-	padding: 32rpx;
+	gap: 24rpx;
+	padding: 32rpx 24rpx;
+	background-color: #FFFFFF;
+	margin-bottom: 24rpx;
 }
 
 .service-item {
@@ -53,21 +53,28 @@ const handleServiceClick = (service: Service) => {
 	flex-direction: column;
 	align-items: center;
 	gap: 16rpx;
+	transition: transform 0.2s;
+	
+	&:active {
+		transform: scale(0.95);
+	}
 }
 
 .service-icon {
-	width: 112rpx;
-	height: 112rpx;
+	width: 100rpx;
+	height: 100rpx;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background-color: #FFF5E9;
-	border-radius: 50%;
+	background: linear-gradient(135deg, #FFF5E9 0%, #FFF0E0 100%);
+	border-radius: 32rpx;
+	box-shadow: 0 4rpx 12rpx rgba(255, 159, 41, 0.1);
 }
 
 .service-name {
-	font-size: 24rpx;
+	font-size: 26rpx;
 	color: $uni-text-color;
 	text-align: center;
+	font-weight: 500;
 }
 </style>

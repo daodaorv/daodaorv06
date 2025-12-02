@@ -2,8 +2,8 @@
   <div class="vehicle-list-container">
     <!-- 页面标题 -->
     <div class="page-header">
-      <h2>车辆列表（众筹车辆）</h2>
-      <p class="page-description">管理众筹车辆档案、状态跟踪和位置管理</p>
+      <h2>车辆列表</h2>
+      <p class="page-description">管理平台所有车辆档案、状态跟踪和位置管理(包含平台自有、托管、合作车辆)</p>
     </div>
 
     <!-- 搜索栏 -->
@@ -59,18 +59,16 @@
             <el-option label="成都武侯店" :value="4" />
           </el-select>
         </el-form-item>
-        <el-form-item label="众筹项目">
+        <el-form-item label="所有权类型">
           <el-select
-            v-model="searchForm.crowdfundingProjectId"
-            placeholder="请选择项目"
+            v-model="searchForm.ownershipType"
+            placeholder="请选择类型"
             clearable
-            style="width: 200px"
+            style="width: 150px"
           >
-            <el-option label="大通RV80众筹项目一期" :value="1" />
-            <el-option label="福特全顺众筹项目" :value="2" />
-            <el-option label="依维柯拖挂众筹项目" :value="3" />
-            <el-option label="奔驰Sprinter豪华众筹" :value="4" />
-            <el-option label="江铃特顺众筹项目" :value="5" />
+            <el-option label="平台自有" value="platform" />
+            <el-option label="托管车辆" value="hosting" />
+            <el-option label="合作车辆" value="cooperative" />
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -118,7 +116,19 @@
         </el-table-column>
         <el-table-column prop="vehicleNumber" label="车牌号" width="120" />
         <el-table-column prop="modelName" label="车型" width="180" />
-        <el-table-column prop="crowdfundingProjectName" label="众筹项目" width="200" show-overflow-tooltip />
+        <el-table-column label="所有权类型" width="150">
+          <template #default="{ row }">
+            <el-tag :type="getOwnershipTypeTag(row.ownershipType)" size="small">
+              {{ getOwnershipTypeLabel(row.ownershipType) }}
+            </el-tag>
+            <div v-if="row.ownershipType === 'hosting'" style="font-size: 12px; color: #909399; margin-top: 2px;">
+              {{ row.hostingOwnerName }}
+            </div>
+            <div v-if="row.ownershipType === 'cooperative'" style="font-size: 12px; color: #909399; margin-top: 2px;">
+              {{ row.cooperativePartnerName }}
+            </div>
+          </template>
+        </el-table-column>
         <el-table-column label="车辆状态" width="100">
           <template #default="{ row }">
             <el-tag :type="getStatusTag(row.status)" size="small">
@@ -225,13 +235,11 @@
             </el-row>
             <el-row :gutter="20">
               <el-col :span="12">
-                <el-form-item label="众筹项目" prop="crowdfundingProjectId">
-                  <el-select v-model="form.crowdfundingProjectId" placeholder="请选择众筹项目" style="width: 100%">
-                    <el-option label="大通RV80众筹项目一期" :value="1" />
-                    <el-option label="福特全顺众筹项目" :value="2" />
-                    <el-option label="依维柯拖挂众筹项目" :value="3" />
-                    <el-option label="奔驰Sprinter豪华众筹" :value="4" />
-                    <el-option label="江铃特顺众筹项目" :value="5" />
+                <el-form-item label="所有权类型" prop="ownershipType">
+                  <el-select v-model="form.ownershipType" placeholder="请选择所有权类型" style="width: 100%">
+                    <el-option label="平台自有" value="platform" />
+                    <el-option label="托管车辆" value="hosting" />
+                    <el-option label="合作车辆" value="cooperative" />
                   </el-select>
                 </el-form-item>
               </el-col>
@@ -402,7 +410,7 @@ const searchForm = reactive({
   modelId: null as number | null,
   status: '',
   storeId: null as number | null,
-  crowdfundingProjectId: null as number | null,
+  ownershipType: '',
 })
 
 // 车辆列表
@@ -430,8 +438,7 @@ const form = reactive({
   id: 0,
   vehicleNumber: '',
   modelId: null as number | null,
-  crowdfundingProjectId: null as number | null,
-  crowdfundingProjectName: '',
+  ownershipType: 'platform' as 'platform' | 'hosting' | 'cooperative',
   storeId: null as number | null,
   storeName: '',
   purchaseDate: '',
@@ -717,6 +724,26 @@ const getStatusLabel = (status: string) => {
     retired: '已退役',
   }
   return labelMap[status] || status
+}
+
+// 获取所有权类型标签
+const getOwnershipTypeTag = (type: string) => {
+  const tagMap: Record<string, any> = {
+    platform: 'primary',
+    hosting: 'success',
+    cooperative: 'warning',
+  }
+  return tagMap[type] || 'info'
+}
+
+// 获取所有权类型标签文本
+const getOwnershipTypeLabel = (type: string) => {
+  const labelMap: Record<string, string> = {
+    platform: '平台自有',
+    hosting: '托管车辆',
+    cooperative: '合作车辆',
+  }
+  return labelMap[type] || type
 }
 
 // 页面加载

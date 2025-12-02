@@ -2,7 +2,7 @@
  * 房车旅游相关API
  */
 
-import request from '@/utils/request';
+import { request } from '@/utils/request';
 
 /**
  * 旅游线路列表查询参数

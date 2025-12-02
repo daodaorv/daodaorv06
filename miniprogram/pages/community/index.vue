@@ -127,15 +127,19 @@ const switchCategory = (id: string) => {
 };
 
 const navigateTo = (url: string) => {
-  uni.showToast({ title: '功能开发中', icon: 'none' });
+  uni.navigateTo({ url });
 };
 
 const viewDetail = (post: any) => {
-  uni.showToast({ title: `查看: ${post.title}`, icon: 'none' });
+  uni.navigateTo({
+    url: `/pages/community/detail?id=${post.id}`
+  });
 };
 
 const handlePublish = () => {
-  uni.showToast({ title: '发布功能开发中', icon: 'none' });
+  uni.navigateTo({
+    url: '/pages/community/publish'
+  });
 };
 </script>
 

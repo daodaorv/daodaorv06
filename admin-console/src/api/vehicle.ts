@@ -316,5 +316,268 @@ export const getMaintenanceStats = () => {
   return request.get('/vehicles/maintenance/stats')
 }
 
+// ==================== 保险管理 ====================
+
+import {
+  mockGetInsuranceRecords,
+  mockGetInsuranceRecordDetail,
+  mockCreateInsuranceRecord,
+  mockUpdateInsuranceRecord,
+  mockDeleteInsuranceRecord,
+  mockGetClaimRecords,
+  mockGetClaimRecordDetail,
+  mockCreateClaimRecord,
+  mockUpdateClaimRecord,
+  mockGetRenewalReminders,
+  mockGetInsuranceStats,
+  type InsuranceRecord,
+  type ClaimRecord,
+  type RenewalReminder,
+} from '@/mock/insurance'
+
+/**
+ * 获取保险记录列表
+ */
+export const getInsuranceRecords = (params: {
+  page?: number
+  pageSize?: number
+  vehicleId?: number | null
+  vehicleNumber?: string
+  insuranceType?: string
+  status?: string
+  insuranceCompany?: string
+}) => {
+  if (USE_MOCK) {
+    return mockGetInsuranceRecords(params)
+  }
+  return request.get('/vehicles/insurance/records', { params })
+}
+
+/**
+ * 获取保险记录详情
+ */
+export const getInsuranceRecordDetail = (id: number) => {
+  if (USE_MOCK) {
+    return mockGetInsuranceRecordDetail(id)
+  }
+  return request.get(`/vehicles/insurance/records/${id}`)
+}
+
+/**
+ * 创建保险记录
+ */
+export const createInsuranceRecord = (data: Partial<InsuranceRecord>) => {
+  if (USE_MOCK) {
+    return mockCreateInsuranceRecord(data)
+  }
+  return request.post('/vehicles/insurance/records', data)
+}
+
+/**
+ * 更新保险记录
+ */
+export const updateInsuranceRecord = (id: number, data: Partial<InsuranceRecord>) => {
+  if (USE_MOCK) {
+    return mockUpdateInsuranceRecord(id, data)
+  }
+  return request.put(`/vehicles/insurance/records/${id}`, data)
+}
+
+/**
+ * 删除保险记录
+ */
+export const deleteInsuranceRecord = (id: number) => {
+  if (USE_MOCK) {
+    return mockDeleteInsuranceRecord(id)
+  }
+  return request.delete(`/vehicles/insurance/records/${id}`)
+}
+
+/**
+ * 获取理赔记录列表
+ */
+export const getClaimRecords = (params: {
+  page?: number
+  pageSize?: number
+  vehicleId?: number | null
+  vehicleNumber?: string
+  status?: string
+  startDate?: string
+  endDate?: string
+}) => {
+  if (USE_MOCK) {
+    return mockGetClaimRecords(params)
+  }
+  return request.get('/vehicles/insurance/claims', { params })
+}
+
+/**
+ * 获取理赔记录详情
+ */
+export const getClaimRecordDetail = (id: number) => {
+  if (USE_MOCK) {
+    return mockGetClaimRecordDetail(id)
+  }
+  return request.get(`/vehicles/insurance/claims/${id}`)
+}
+
+/**
+ * 创建理赔记录
+ */
+export const createClaimRecord = (data: Partial<ClaimRecord>) => {
+  if (USE_MOCK) {
+    return mockCreateClaimRecord(data)
+  }
+  return request.post('/vehicles/insurance/claims', data)
+}
+
+/**
+ * 更新理赔记录
+ */
+export const updateClaimRecord = (id: number, data: Partial<ClaimRecord>) => {
+  if (USE_MOCK) {
+    return mockUpdateClaimRecord(id, data)
+  }
+  return request.put(`/vehicles/insurance/claims/${id}`, data)
+}
+
+/**
+ * 获取续保提醒列表
+ */
+export const getRenewalReminders = (params: {
+  page?: number
+  pageSize?: number
+  status?: string
+  daysThreshold?: number
+}) => {
+  if (USE_MOCK) {
+    return mockGetRenewalReminders(params)
+  }
+  return request.get('/vehicles/insurance/renewals', { params })
+}
+
+/**
+ * 获取保险统计
+ */
+export const getInsuranceStats = () => {
+  if (USE_MOCK) {
+    return mockGetInsuranceStats()
+  }
+  return request.get('/vehicles/insurance/stats')
+}
+
+// ==================== 违章管理 ====================
+
+import {
+  mockGetViolationRecords,
+  mockGetViolationRecordDetail,
+  mockCreateViolationRecord,
+  mockUpdateViolationRecord,
+  mockDeleteViolationRecord,
+  mockProcessViolation,
+  mockGetViolationStats,
+  type ViolationRecord,
+  type ViolationStats,
+} from '@/mock/violation'
+
+/**
+ * 获取违章记录列表
+ */
+export const getViolationRecords = (params: {
+  page?: number
+  pageSize?: number
+  vehicleId?: number | null
+  vehicleNumber?: string
+  violationType?: string
+  status?: string
+  startDate?: string
+  endDate?: string
+}) => {
+  if (USE_MOCK) {
+    return mockGetViolationRecords(params)
+  }
+  return request.get('/vehicles/violations/records', { params })
+}
+
+/**
+ * 获取违章记录详情
+ */
+export const getViolationRecordDetail = (id: number) => {
+  if (USE_MOCK) {
+    return mockGetViolationRecordDetail(id)
+  }
+  return request.get(`/vehicles/violations/records/${id}`)
+}
+
+/**
+ * 创建违章记录
+ */
+export const createViolationRecord = (data: Partial<ViolationRecord>) => {
+  if (USE_MOCK) {
+    return mockCreateViolationRecord(data)
+  }
+  return request.post('/vehicles/violations/records', data)
+}
+
+/**
+ * 更新违章记录
+ */
+export const updateViolationRecord = (id: number, data: Partial<ViolationRecord>) => {
+  if (USE_MOCK) {
+    return mockUpdateViolationRecord(id, data)
+  }
+  return request.put(`/vehicles/violations/records/${id}`, data)
+}
+
+/**
+ * 删除违章记录
+ */
+export const deleteViolationRecord = (id: number) => {
+  if (USE_MOCK) {
+    return mockDeleteViolationRecord(id)
+  }
+  return request.delete(`/vehicles/violations/records/${id}`)
+}
+
+/**
+ * 处理违章
+ */
+export const processViolation = (
+  id: number,
+  data: {
+    processDate: string
+    paymentDate?: string
+    paymentMethod?: string
+    handler: string
+    remark?: string
+  }
+) => {
+  if (USE_MOCK) {
+    return mockProcessViolation(id, data)
+  }
+  return request.post(`/vehicles/violations/records/${id}/process`, data)
+}
+
+/**
+ * 获取违章统计
+ */
+export const getViolationStats = () => {
+  if (USE_MOCK) {
+    return mockGetViolationStats()
+  }
+  return request.get('/vehicles/violations/stats')
+}
+
 // 导出类型
-export type { VehicleModel, Vehicle, VehicleStatusHistory, MaintenanceRecord, MaintenancePlan }
+export type {
+  VehicleModel,
+  Vehicle,
+  VehicleStatusHistory,
+  MaintenanceRecord,
+  MaintenancePlan,
+  InsuranceRecord,
+  ClaimRecord,
+  RenewalReminder,
+  ViolationRecord,
+  ViolationStats,
+}

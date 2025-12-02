@@ -258,22 +258,9 @@ import {
   Plus,
   Download,
 } from '@element-plus/icons-vue'
+import { roleApi, type Role } from '@/api/role'
 
 const router = useRouter()
-
-// 角色数据类型
-interface Role {
-  id: number
-  name: string
-  code: string
-  type: 'platform_admin' | 'regional_manager' | 'store_manager' | 'store_staff'
-  description: string
-  dataScope: 'all' | 'region' | 'store' | 'self'
-  userCount: number
-  status: 'active' | 'inactive'
-  isSystem: boolean
-  createdAt: string
-}
 
 // 搜索表单
 const searchForm = reactive({
@@ -282,58 +269,27 @@ const searchForm = reactive({
 })
 
 // 角色列表
-const roleList = ref<Role[]>([
-  {
-    id: 1,
-    name: '平台管理员',
-    code: 'platform_admin',
-    type: 'platform_admin',
-    description: '拥有系统所有权限',
-    dataScope: 'all',
-    userCount: 5,
-    status: 'active',
-    isSystem: true,
-    createdAt: '2024-01-01T00:00:00.000Z',
-  },
-  {
-    id: 2,
-    name: '区域经理',
-    code: 'regional_manager',
-    type: 'regional_manager',
-    description: '管理所辖区域所有门店',
-    dataScope: 'region',
-    userCount: 12,
-    status: 'active',
-    isSystem: true,
-    createdAt: '2024-01-01T00:00:00.000Z',
-  },
-  {
-    id: 3,
-    name: '门店经理',
-    code: 'store_manager',
-    type: 'store_manager',
-    description: '管理本门店业务',
-    dataScope: 'store',
-    userCount: 28,
-    status: 'active',
-    isSystem: true,
-    createdAt: '2024-01-01T00:00:00.000Z',
-  },
-  {
-    id: 4,
-    name: '门店员工',
-    code: 'store_staff',
-    type: 'store_staff',
-    description: '处理门店日常业务',
-    dataScope: 'self',
-    userCount: 156,
-    status: 'active',
-    isSystem: true,
-    createdAt: '2024-01-01T00:00:00.000Z',
-  },
-])
-
+const roleList = ref<Role[]>([])
 const loading = ref(false)
+
+// 加载角色列表
+const loadRoleList = async () => {
+  loading.value = true
+  try {
+    const response = await roleApi.getRoleList({
+      page: pagination.page,
+      pageSize: pagination.pageSize,
+      keyword: searchForm.keyword,
+      status: searchForm.status as any,
+    })
+    roleList.value = response.data.list
+    pagination.total = response.data.total
+  } catch (error: any) {
+    ElMessage.error(error.message || '加载角色列表失败')
+  } finally {
+    loading.value = false
+  }
+}
 
 // 分页
 const pagination = reactive({
@@ -441,7 +397,7 @@ const roleUsers = ref([])
 // 搜索
 const handleSearch = () => {
   pagination.page = 1
-  ElMessage.success('搜索功能开发中...')
+  loadRoleList()
 }
 
 // 重置
@@ -449,6 +405,7 @@ const handleReset = () => {
   searchForm.keyword = ''
   searchForm.status = ''
   pagination.page = 1
+  loadRoleList()
 }
 
 // 新增角色
@@ -484,22 +441,29 @@ const handleDelete = async (row: Role) => {
         type: 'warning',
       }
     )
+    await roleApi.deleteRole(row.id)
     ElMessage.success('删除成功')
-    const index = roleList.value.findIndex(r => r.id === row.id)
-    if (index > -1) {
-      roleList.value.splice(index, 1)
-      pagination.total--
-    }
-  } catch (error) {
+    loadRoleList()
+  } catch (error: any) {
     if (error !== 'cancel') {
-      ElMessage.error('删除失败')
+      ElMessage.error(error.message || '删除失败')
     }
   }
 }
 
 // 状态切换
-const handleStatusChange = (row: Role) => {
-  ElMessage.success(`角色状态已${row.status === 'active' ? '启用' : '禁用'}`)
+const handleStatusChange = async (row: Role) => {
+  try {
+    await roleApi.updateRole({
+      id: row.id,
+      status: row.status,
+    })
+    ElMessage.success(`角色状态已${row.status === 'active' ? '启用' : '禁用'}`)
+  } catch (error: any) {
+    ElMessage.error(error.message || '状态更新失败')
+    // 恢复原状态
+    row.status = row.status === 'active' ? 'inactive' : 'active'
+  }
 }
 
 // 配置权限
@@ -517,20 +481,15 @@ const handlePermission = (row: Role) => {
 }
 
 // 查看用户
-const handleViewUsers = (row: Role) => {
+const handleViewUsers = async (row: Role) => {
   currentRole.value = row
-  // Mock数据
-  roleUsers.value = [
-    {
-      id: 1,
-      username: 'admin',
-      realName: '管理员',
-      phone: '13800138000',
-      department: '技术部',
-      status: 'active',
-    },
-  ] as any
-  usersDialogVisible.value = true
+  try {
+    const response = await roleApi.getRoleUsers(row.id)
+    roleUsers.value = response.data.list as any
+    usersDialogVisible.value = true
+  } catch (error: any) {
+    ElMessage.error(error.message || '获取用户列表失败')
+  }
 }
 
 // 提交表单
@@ -543,38 +502,30 @@ const handleSubmit = async () => {
     submitLoading.value = true
     try {
       if (isEdit.value) {
-        const index = roleList.value.findIndex(r => r.id === form.id)
-        if (index > -1) {
-          roleList.value[index] = {
-            ...roleList.value[index],
-            name: form.name,
-            type: form.type,
-            description: form.description,
-            dataScope: form.dataScope,
-            status: form.status,
-          }
-        }
+        await roleApi.updateRole({
+          id: form.id,
+          name: form.name,
+          type: form.type,
+          description: form.description,
+          dataScope: form.dataScope,
+          status: form.status,
+        })
         ElMessage.success('更新成功')
       } else {
-        const newRole: Role = {
-          id: roleList.value.length + 1,
+        await roleApi.createRole({
           name: form.name,
           code: form.code,
           type: form.type,
           description: form.description,
           dataScope: form.dataScope,
-          userCount: 0,
           status: form.status,
-          isSystem: false,
-          createdAt: new Date().toISOString(),
-        }
-        roleList.value.push(newRole)
-        pagination.total++
+        })
         ElMessage.success('创建成功')
       }
       dialogVisible.value = false
-    } catch (error) {
-      ElMessage.error(isEdit.value ? '更新失败' : '创建失败')
+      loadRoleList()
+    } catch (error: any) {
+      ElMessage.error(error.message || (isEdit.value ? '更新失败' : '创建失败'))
     } finally {
       submitLoading.value = false
     }
@@ -582,10 +533,21 @@ const handleSubmit = async () => {
 }
 
 // 保存权限配置
-const handlePermissionSubmit = () => {
-  const checkedNodes = menuTreeRef.value.getCheckedKeys()
-  ElMessage.success('权限配置保存成功')
-  permissionDialogVisible.value = false
+const handlePermissionSubmit = async () => {
+  if (!currentRole.value) return
+
+  try {
+    const checkedNodes = menuTreeRef.value.getCheckedKeys()
+    await roleApi.configRolePermissions({
+      roleId: currentRole.value.id,
+      menuPermissions: checkedNodes,
+      functionPermissions: checkedPermissions.value,
+    })
+    ElMessage.success('权限配置保存成功')
+    permissionDialogVisible.value = false
+  } catch (error: any) {
+    ElMessage.error(error.message || '权限配置失败')
+  }
 }
 
 // 对话框关闭
@@ -603,10 +565,12 @@ const handleDialogClose = () => {
 // 分页
 const handleSizeChange = (size: number) => {
   pagination.pageSize = size
+  loadRoleList()
 }
 
 const handleCurrentChange = (page: number) => {
   pagination.page = page
+  loadRoleList()
 }
 
 // 获取角色类型标签
@@ -656,7 +620,7 @@ const formatDateTime = (dateStr: string) => {
 
 // 页面加载
 onMounted(() => {
-  // TODO: 加载角色列表
+  loadRoleList()
 })
 </script>
 

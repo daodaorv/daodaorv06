@@ -827,72 +827,80 @@ const showBookingOptions = () => {
   left: 0;
   right: 0;
   background-color: #FFFFFF;
-  padding: 16rpx 32rpx;
-  padding-bottom: calc(16rpx + env(safe-area-inset-bottom));
-  box-shadow: 0 -4rpx 12rpx rgba(0, 0, 0, 0.08);
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 16rpx 32rpx;
+  padding-bottom: calc(16rpx + env(safe-area-inset-bottom));
+  box-shadow: 0 -2rpx 10rpx rgba(0, 0, 0, 0.05);
   z-index: 100;
 
   .bar-left {
+    display: flex;
+    align-items: baseline;
+    
     .bar-price {
       display: flex;
       align-items: baseline;
-      margin-bottom: 4rpx;
-
+      
       .bar-symbol {
-        font-size: 24rpx;
+        font-size: 28rpx;
         color: #F44336;
         font-weight: 600;
       }
-
+      
       .bar-amount {
-        font-size: 40rpx;
+        font-size: 44rpx;
         color: #F44336;
         font-weight: 700;
-        margin-left: 4rpx;
+        margin: 0 4rpx;
       }
     }
-
+    
     .bar-tip {
-      font-size: 22rpx;
+      font-size: 24rpx;
       color: #999;
+      margin-left: 4rpx;
     }
   }
 
   .bar-actions {
     display: flex;
-    gap: 16rpx;
+    align-items: center;
+    gap: 20rpx;
 
     .contact-btn {
       display: flex;
+      flex-direction: column;
       align-items: center;
-      gap: 8rpx;
-      padding: 20rpx 32rpx;
-      background-color: #FFFFFF;
-      border: 2rpx solid #FF9F29;
-      color: #FF9F29;
-      border-radius: 44rpx;
-      font-size: 28rpx;
-
-      &::after {
-        border: none;
+      justify-content: center;
+      background: none;
+      padding: 0 20rpx;
+      line-height: 1.2;
+      
+      &::after { border: none; }
+      
+      text {
+        font-size: 20rpx;
+        color: #666;
+        margin-top: 4rpx;
       }
     }
 
     .book-btn {
-      padding: 20rpx 48rpx;
       background: linear-gradient(135deg, #FF9F29 0%, #FFB84D 100%);
       color: #FFFFFF;
-      border-radius: 44rpx;
       font-size: 28rpx;
       font-weight: 600;
-      border: none;
-
-      &::after {
-        border: none;
-      }
+      padding: 0 48rpx;
+      height: 80rpx;
+      line-height: 80rpx;
+      border-radius: 40rpx;
+      margin: 0;
+      
+      &::after { border: none; }
+      
+      &:active { opacity: 0.9; }
     }
   }
 }

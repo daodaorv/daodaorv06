@@ -28,9 +28,9 @@
 ### 1.1 发送验证码
 **接口**: `POST /api/v1/auth/send-code`
 
-**开发状态**: 待后端开发
+**开发状态**: 🟡 已开发（使用Mock）
 
-**前端Mock位置**: `miniprogram/api/auth.js:5`
+**前端Mock位置**: `miniprogram/api/auth.ts:66`
 
 **后端实现位置**: 待开发
 
@@ -55,9 +55,9 @@
 ### 1.2 用户注册
 **接口**: `POST /api/v1/auth/register`
 
-**开发状态**: 待后端开发
+**开发状态**: 🟡 已开发（使用Mock）
 
-**前端Mock位置**: `miniprogram/api/auth.js:10`
+**前端Mock位置**: `miniprogram/api/auth.ts:85`
 
 **后端实现位置**: 待开发
 
@@ -91,9 +91,9 @@
 ### 1.3 用户登录
 **接口**: `POST /api/v1/auth/login`
 
-**开发状态**: 待后端开发
+**开发状态**: 🟡 已开发（使用Mock）
 
-**前端Mock位置**: `miniprogram/api/auth.js:15`
+**前端Mock位置**: `miniprogram/api/auth.ts:106`
 
 **后端实现位置**: 待开发
 
@@ -108,9 +108,9 @@
 ### 1.4 微信授权登录
 **接口**: `POST /api/v1/auth/wechat-login`
 
-**开发状态**: 待后端开发
+**开发状态**: 🟡 已开发（使用Mock）
 
-**前端Mock位置**: `miniprogram/api/auth.js:25`
+**前端Mock位置**: `miniprogram/api/auth.ts:160`
 
 **后端实现位置**: 待开发
 
@@ -125,9 +125,9 @@
 ### 1.5 刷新Token
 **接口**: `POST /api/v1/auth/refresh-token`
 
-**开发状态**: 待后端开发
+**开发状态**: 🟡 已开发（使用Mock）
 
-**前端Mock位置**: `miniprogram/api/auth.js:45`
+**前端Mock位置**: `miniprogram/api/auth.ts:194`
 
 **后端实现位置**: 待开发
 
@@ -148,12 +148,160 @@
 }
 ```
 
-### 1.6 获取用户信息
+### 1.6 验证码登录
+**接口**: `POST /api/v1/auth/login-with-code`
+
+**开发状态**: 🟡 已开发（使用Mock）
+
+**前端Mock位置**: `miniprogram/api/auth.ts:133`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**请求参数**:
+- phone: string (必填) - 手机号
+- code: string (必填) - 验证码
+
+**响应格式**: 同注册接口
+
+### 1.7 绑定手机号
+**接口**: `POST /api/v1/auth/bind-phone`
+
+**开发状态**: 🟡 已开发（使用Mock）
+
+**前端Mock位置**: `miniprogram/api/auth.ts:180`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**请求参数**:
+- phone: string (必填) - 手机号
+- code: string (必填) - 验证码
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "success": true
+  }
+}
+```
+
+### 1.8 支付宝授权登录
+**接口**: `POST /api/v1/auth/alipay-login`
+
+**开发状态**: 🟡 已开发（使用Mock）
+
+**前端Mock位置**: `miniprogram/api/auth.ts:201`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**请求参数**:
+- code: string (必填) - 支付宝授权码
+- authCode: string (可选) - 支付宝认证码
+
+**响应格式**: 同注册接口
+
+### 1.9 抖音授权登录
+**接口**: `POST /api/v1/auth/douyin-login`
+
+**开发状态**: 🟡 已开发（使用Mock）
+
+**前端Mock位置**: `miniprogram/api/auth.ts:221`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**请求参数**:
+- code: string (必填) - 抖音授权码
+- anonymousCode: string (可选) - 抖音匿名码
+
+**响应格式**: 同注册接口
+
+### 1.10 用户名密码登录
+**接口**: `POST /api/v1/auth/login-with-username`
+
+**开发状态**: 🟡 已开发（使用Mock）
+
+**前端Mock位置**: `miniprogram/api/auth.ts:241`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**请求参数**:
+- username: string (必填) - 用户名或邮箱
+- password: string (必填) - 登录密码
+
+**响应格式**: 同注册接口
+
+### 1.11 退出登录
+**接口**: `POST /api/v1/auth/logout`
+
+**开发状态**: 🟡 已开发（使用Mock）
+
+**前端Mock位置**: `miniprogram/api/auth.ts:236`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**请求头**: `Authorization: Bearer <token>`
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "success": true
+  }
+}
+```
+
+### 1.9 检查登录状态
+**接口**: `GET /api/v1/auth/check-login`
+
+**开发状态**: 🟡 已开发（使用Mock）
+
+**前端Mock位置**: `miniprogram/api/auth.ts:254`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**请求头**: `Authorization: Bearer <token>`
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "isLoggedIn": true,
+    "user": {
+      "id": "string",
+      "phone": "string",
+      "nickname": "string",
+      "avatar": "string"
+    }
+  }
+}
+```
+
+### 1.10 获取用户信息
 **接口**: `GET /api/v1/users/profile`
 
-**开发状态**: 待后端开发
+**开发状态**: 🟡 已开发（使用Mock）
 
-**前端Mock位置**: `miniprogram/api/auth.js:55`
+**前端Mock位置**: `miniprogram/api/auth.ts:209`
 
 **后端实现位置**: 待开发
 
@@ -1562,22 +1710,217 @@
 
 ---
 
-## 5. 众筹模块 (crowdfunding)
+## 5. 托管中心模块 (hosting)
 
-### 5.1 获取众筹项目列表
-**接口**: `GET /api/v1/crowdfunding/projects`
+### 5.1 获取托管收益
+**接口**: `GET /api/v1/hosting/income`
 
-**开发状态**: 待后端开发
+**开发状态**: 🟡 已开发（使用Mock）
 
-**前端Mock位置**: 需要重建 - 删除现有错误实现
+**前端Mock位置**: `miniprogram/api/hosting.ts:10`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "totalIncome": 125800.50,
+    "todayIncome": 350.00,
+    "monthIncome": 8500.00,
+    "availableBalance": 5200.00,
+    "frozenBalance": 0
+  }
+}
+```
+
+### 5.2 获取托管车辆列表
+**接口**: `GET /api/v1/hosting/vehicles`
+
+**开发状态**: 🟡 已开发（使用Mock）
+
+**前端Mock位置**: `miniprogram/api/hosting.ts:20`
 
 **后端实现位置**: 待开发
 
 **联调结果**: 待测试
 
 **查询参数**:
-- status: string (可选) - 项目状态：active/completed/failed
-- riskLevel: string (可选) - 风险等级：low/medium/high
+- status: string (可选) - 车辆状态：operating/maintenance/self_use
+- page: number (可选) - 页码，默认1
+- limit: number (可选) - 每页数量，默认10
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "list": [
+      {
+        "id": "string",
+        "plateNumber": "string",
+        "brand": "string",
+        "model": "string",
+        "image": "string",
+        "status": "operating",
+        "location": "string",
+        "todayIncome": 350.00,
+        "monthIncome": 8500.00,
+        "totalIncome": 125800.50,
+        "hostingStartDate": "2024-01-15"
+      }
+    ],
+    "pagination": {
+      "page": 1,
+      "limit": 10,
+      "total": 3,
+      "totalPages": 1
+    }
+  }
+}
+```
+
+### 5.3 提交自有车托管申请
+**接口**: `POST /api/v1/hosting/old-car/apply`
+
+**开发状态**: 🟡 已开发（使用Mock）
+
+**前端Mock位置**: `miniprogram/api/hosting.ts:30`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**请求参数**:
+```json
+{
+  "vehicleInfo": {
+    "plateNumber": "string",
+    "brand": "string",
+    "model": "string",
+    "year": 2020,
+    "mileage": 50000,
+    "registrationCertificate": "string"
+  },
+  "photos": ["string"],
+  "ownerInfo": {
+    "name": "string",
+    "phone": "string",
+    "idCard": "string"
+  },
+  "storeId": "string"
+}
+```
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "applicationId": "string",
+    "status": "pending",
+    "estimatedReviewTime": "1-3个工作日"
+  }
+}
+```
+
+### 5.4 提交购车托管申请
+**接口**: `POST /api/v1/hosting/new-car/apply`
+
+**开发状态**: 🟡 已开发（使用Mock）
+
+**前端Mock位置**: `miniprogram/api/hosting.ts:40`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**请求参数**:
+```json
+{
+  "modelId": "string",
+  "installmentPeriod": 24,
+  "applicantInfo": {
+    "name": "string",
+    "phone": "string",
+    "idCard": "string",
+    "income": "string"
+  }
+}
+```
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "applicationId": "string",
+    "status": "pending",
+    "estimatedReviewTime": "3-5个工作日"
+  }
+}
+```
+
+### 5.5 申请车主自用
+**接口**: `POST /api/v1/hosting/self-use/apply`
+
+**开发状态**: 🟡 已开发（使用Mock）
+
+**前端Mock位置**: `miniprogram/api/hosting.ts:50`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**请求参数**:
+```json
+{
+  "vehicleId": "string",
+  "pickupStoreId": "string",
+  "returnStoreId": "string",
+  "pickupTime": "2025-12-05T10:00:00+08:00",
+  "returnTime": "2025-12-10T18:00:00+08:00",
+  "additionalServices": ["string"]
+}
+```
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "orderId": "string",
+    "status": "pending",
+    "totalFee": 500.00,
+    "serviceFee": 300.00,
+    "crossCityFee": 200.00
+  }
+}
+```
+
+### 5.6 获取收益明细
+**接口**: `GET /api/v1/hosting/income/detail`
+
+**开发状态**: 🟡 已开发（使用Mock）
+
+**前端Mock位置**: `miniprogram/api/hosting.ts:60`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**查询参数**:
+- vehicleId: string (可选) - 车辆ID
+- startDate: string (可选) - 开始日期
+- endDate: string (可选) - 结束日期
 - page: number (可选) - 页码，默认1
 - limit: number (可选) - 每页数量，默认20
 
@@ -1590,52 +1933,30 @@
     "list": [
       {
         "id": "string",
-        "title": "string",
-        "description": "string",
-        "image": "string",
-        "targetAmount": 1000000,
-        "raisedAmount": 800000,
-        "progress": 80,
-        "returnRate": "8-12",
-        "riskLevel": "high",
-        "status": "active",
-        "daysLeft": 15,
-        "minInvestment": 10000,
-        "maxInvestment": 1000000,
-        "investors": 156,
-        "createdAt": "2025-11-01T00:00:00+08:00",
-        "endTime": "2025-12-20T23:59:59+08:00"
+        "vehicleId": "string",
+        "plateNumber": "string",
+        "date": "2025-12-01",
+        "income": 350.00,
+        "type": "rental",
+        "description": "租赁收益"
       }
     ],
     "pagination": {
       "page": 1,
       "limit": 20,
-      "total": 15,
-      "totalPages": 1
+      "total": 156,
+      "totalPages": 8
     }
   }
 }
 ```
 
-### 5.2 获取众筹项目详情
-**接口**: `GET /api/v1/crowdfunding/projects/{id}`
+### 5.7 提现
+**接口**: `POST /api/v1/hosting/withdraw`
 
-**开发状态**: 待后端开发
+**开发状态**: 🟡 已开发（使用Mock）
 
-**前端Mock位置**: 需要重建 - 删除现有错误实现
-
-**后端实现位置**: 待开发
-
-**联调结果**: 待测试
-
-**响应格式**: 包含项目的完整信息，包括车辆详情、风险说明、投资协议等。
-
-### 5.3 购买众筹份额
-**接口**: `POST /api/v1/crowdfunding/orders`
-
-**开发状态**: 待后端开发
-
-**前端Mock位置**: 需要重建 - 删除现有错误实现
+**前端Mock位置**: `miniprogram/api/hosting.ts:70`
 
 **后端实现位置**: 待开发
 
@@ -1644,19 +1965,30 @@
 **请求参数**:
 ```json
 {
-  "projectId": "string",
-  "amount": 50000,
-  "shares": 5,
-  "agreeTerms": true
+  "amount": 1000.00,
+  "bankCard": "string"
 }
 ```
 
-### 5.4 获取交易市场行情
-**接口**: `GET /api/v1/crowdfunding/market`
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "withdrawId": "string",
+    "status": "processing",
+    "estimatedArrivalTime": "T+1到账"
+  }
+}
+```
 
-**开发状态**: 待后端开发
+### 5.8 获取车辆详情
+**接口**: `GET /api/v1/hosting/vehicles/{id}`
 
-**前端Mock位置**: 需要重建 - 删除现有错误实现
+**开发状态**: 🟡 已开发（使用Mock）
+
+**前端Mock位置**: `miniprogram/api/hosting.ts:80`
 
 **后端实现位置**: 待开发
 
@@ -1668,19 +2000,94 @@
   "code": 0,
   "message": "success",
   "data": {
-    "currentPrice": 125.80,
-    "changePercent": 2.3,
-    "changeAmount": 2.82,
-    "volume": 1250,
-    "turnover": 157250,
-    "highestPrice": 128.50,
-    "lowestPrice": 123.20,
-    "marketStatus": "open",
-    "userInfo": {
-      "holdings": 50,
-      "todayProfit": 128.50,
-      "totalProfit": 1258.30
+    "id": "string",
+    "plateNumber": "string",
+    "brand": "string",
+    "model": "string",
+    "images": ["string"],
+    "status": "operating",
+    "location": "string",
+    "todayIncome": 350.00,
+    "monthIncome": 8500.00,
+    "totalIncome": 125800.50,
+    "hostingStartDate": "2024-01-15",
+    "insurance": {
+      "expiryDate": "2025-12-31",
+      "status": "valid"
+    },
+    "maintenance": {
+      "lastDate": "2025-11-01",
+      "nextDate": "2026-02-01"
     }
+  }
+}
+```
+
+### 5.9 获取热门车型
+**接口**: `GET /api/v1/hosting/popular-models`
+
+**开发状态**: 🟡 已开发（使用Mock）
+
+**前端Mock位置**: `miniprogram/api/hosting.ts:90`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "list": [
+      {
+        "id": "string",
+        "brand": "string",
+        "model": "string",
+        "image": "string",
+        "price": 450000,
+        "monthlyIncome": 3500,
+        "annualReturn": "9.3%",
+        "installmentOptions": [12, 24, 36]
+      }
+    ]
+  }
+}
+```
+
+### 5.10 获取门店列表
+**接口**: `GET /api/v1/hosting/stores`
+
+**开发状态**: 🟡 已开发（使用Mock）
+
+**前端Mock位置**: `miniprogram/api/hosting.ts:100`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**查询参数**:
+- city: string (可选) - 城市
+- type: string (可选) - 门店类型
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "list": [
+      {
+        "id": "string",
+        "name": "string",
+        "address": "string",
+        "phone": "string",
+        "latitude": 39.9042,
+        "longitude": 116.4074,
+        "businessHours": "09:00-18:00"
+      }
+    ]
   }
 }
 ```
@@ -1747,9 +2154,667 @@
 
 ---
 
-## 8. 用户中心模块
+## 7. 会员服务模块 (membership)
 
-### 8.1 更新用户资料
+### 7.1 获取会员信息
+**接口**: `GET /api/v1/membership/info`
+
+**开发状态**: 🟡 已开发（前端Mock完成）
+
+**前端Mock位置**: `miniprogram/api/membership.ts:mockGetMembershipInfo`
+
+**前端API位置**: `miniprogram/api/membership.ts:getMembershipInfo`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**请求头**: `Authorization: Bearer <token>`
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "id": "mem_001",
+    "userId": "user_001",
+    "memberLevel": "PLUS",
+    "startDate": "2024-01-15",
+    "endDate": "2025-01-15",
+    "autoRenew": true,
+    "status": "ACTIVE",
+    "benefits": [
+      {
+        "id": "benefit_001",
+        "name": "租车95折",
+        "description": "房车租赁享受95折优惠",
+        "icon": "discount",
+        "type": "DISCOUNT",
+        "value": "95%"
+      }
+    ]
+  }
+}
+```
+
+### 7.2 获取会员套餐列表
+**接口**: `GET /api/v1/membership/packages`
+
+**开发状态**: 🟡 已开发（前端Mock完成）
+
+**前端Mock位置**: `miniprogram/api/membership.ts:mockGetMembershipPackages`
+
+**前端API位置**: `miniprogram/api/membership.ts:getMembershipPackages`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": [
+    {
+      "id": "package_001",
+      "name": "PLUS会员年卡",
+      "price": 99,
+      "originalPrice": 199,
+      "duration": 12,
+      "isRecommended": true,
+      "benefits": [
+        {
+          "id": "benefit_001",
+          "name": "租车95折",
+          "description": "房车租赁享受95折优惠（特惠套餐除外）",
+          "icon": "discount",
+          "type": "DISCOUNT",
+          "value": "95%"
+        }
+      ]
+    }
+  ]
+}
+```
+
+### 7.3 获取会员权益列表
+**接口**: `GET /api/v1/membership/benefits`
+
+**开发状态**: 🔴 未开发
+
+**前端API位置**: `miniprogram/api/membership.ts:getMembershipBenefits`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": [
+    {
+      "id": "benefit_001",
+      "name": "租车95折",
+      "description": "房车租赁享受95折优惠（特惠套餐除外）",
+      "icon": "discount",
+      "type": "DISCOUNT",
+      "value": "95%"
+    }
+  ]
+}
+```
+
+### 7.4 购买会员
+**接口**: `POST /api/v1/membership/purchase`
+
+**开发状态**: 🟡 已开发（前端Mock完成）
+
+**前端Mock位置**: `miniprogram/api/membership.ts:mockPurchaseMembership`
+
+**前端API位置**: `miniprogram/api/membership.ts:purchaseMembership`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**请求头**: `Authorization: Bearer <token>`
+
+**请求参数**:
+```json
+{
+  "packageId": "package_001",
+  "autoRenew": true,
+  "paymentMethod": "wechat"
+}
+```
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "购买成功",
+  "data": {
+    "orderId": "order_123456",
+    "orderNo": "MEM202512010001",
+    "amount": 99,
+    "paymentParams": {
+      "appId": "wx545d8668053b84a8",
+      "timeStamp": "1701234567",
+      "nonceStr": "mock_nonce_123",
+      "package": "prepay_id=mock_prepay_id",
+      "signType": "MD5",
+      "paySign": "mock_sign"
+    }
+  }
+}
+```
+
+### 7.5 续费会员
+**接口**: `POST /api/v1/membership/renew`
+
+**开发状态**: 🔴 未开发
+
+**前端API位置**: `miniprogram/api/membership.ts:renewMembership`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**请求头**: `Authorization: Bearer <token>`
+
+**请求参数**: 同购买会员
+
+**响应格式**: 同购买会员
+
+### 7.6 取消自动续费
+**接口**: `POST /api/v1/membership/cancel-auto-renew`
+
+**开发状态**: 🔴 未开发
+
+**前端API位置**: `miniprogram/api/membership.ts:cancelAutoRenew`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**请求头**: `Authorization: Bearer <token>`
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "已取消自动续费",
+  "data": {
+    "autoRenew": false
+  }
+}
+```
+
+### 7.7 开启自动续费
+**接口**: `POST /api/v1/membership/enable-auto-renew`
+
+**开发状态**: 🔴 未开发
+
+**前端API位置**: `miniprogram/api/membership.ts:enableAutoRenew`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**请求头**: `Authorization: Bearer <token>`
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "已开启自动续费",
+  "data": {
+    "autoRenew": true
+  }
+}
+```
+
+---
+
+## 8. 评价反馈模块 (ratings)
+
+### 8.1 创建评价
+**接口**: `POST /api/v1/ratings`
+
+**开发状态**: 🟡 已开发（前端Mock完成）
+
+**前端Mock位置**: `miniprogram/api/rating.ts:mockCreateRating`
+
+**前端API位置**: `miniprogram/api/rating.ts:createRating`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**请求头**: `Authorization: Bearer <token>`
+
+**请求参数**:
+```json
+{
+  "orderId": "order_001",
+  "type": "VEHICLE",
+  "targetId": "vehicle_001",
+  "rating": 5,
+  "content": "车况非常好，内部设施齐全，驾驶体验很棒！",
+  "images": [
+    "https://example.com/image1.jpg",
+    "https://example.com/image2.jpg"
+  ],
+  "tags": ["车况好", "服务好", "性价比高"]
+}
+```
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "评价成功",
+  "data": {
+    "id": "rating_001",
+    "userId": "user_001",
+    "userName": "房车旅行家",
+    "userAvatar": "/static/images/default-avatar.png",
+    "orderId": "order_001",
+    "type": "VEHICLE",
+    "targetId": "vehicle_001",
+    "targetName": "依维柯欧胜C型房车",
+    "rating": 5,
+    "content": "车况非常好，内部设施齐全，驾驶体验很棒！",
+    "images": ["https://example.com/image1.jpg"],
+    "tags": ["车况好", "服务好"],
+    "status": "PUBLISHED",
+    "rewardPoints": 50,
+    "createdAt": "2025-12-01T10:30:00+08:00"
+  }
+}
+```
+
+### 8.2 获取我的评价列表
+**接口**: `GET /api/v1/ratings`
+
+**开发状态**: 🟡 已开发（前端Mock完成）
+
+**前端Mock位置**: `miniprogram/api/rating.ts:mockGetMyRatings`
+
+**前端API位置**: `miniprogram/api/rating.ts:getMyRatings`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**请求头**: `Authorization: Bearer <token>`
+
+**查询参数**:
+- type: string (可选) - 评价类型：VEHICLE/CAMPSITE/TOUR
+- status: string (可选) - 评价状态：PENDING/PUBLISHED/REJECTED
+- page: number (可选) - 页码，默认1
+- pageSize: number (可选) - 每页数量，默认10
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "list": [
+      {
+        "id": "rating_001",
+        "userId": "user_001",
+        "userName": "房车旅行家",
+        "userAvatar": "/static/images/default-avatar.png",
+        "orderId": "order_001",
+        "type": "VEHICLE",
+        "targetId": "vehicle_001",
+        "targetName": "依维柯欧胜C型房车",
+        "rating": 5,
+        "content": "车况非常好，内部设施齐全，驾驶体验很棒！",
+        "images": ["/static/images/rating-1.jpg"],
+        "tags": ["车况好", "服务好", "性价比高"],
+        "status": "PUBLISHED",
+        "rewardPoints": 50,
+        "createdAt": "2025-11-25T10:30:00+08:00",
+        "reply": {
+          "id": "reply_001",
+          "content": "感谢您的好评！我们会继续努力为您提供更好的服务。",
+          "createdAt": "2025-11-25T14:20:00+08:00"
+        }
+      }
+    ],
+    "total": 10,
+    "page": 1,
+    "pageSize": 10,
+    "hasMore": false
+  }
+}
+```
+
+### 8.3 获取评价详情
+**接口**: `GET /api/v1/ratings/{id}`
+
+**开发状态**: 🔴 未开发
+
+**前端API位置**: `miniprogram/api/rating.ts:getRatingDetail`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**请求头**: `Authorization: Bearer <token>`
+
+**响应格式**: 同创建评价响应
+
+### 8.4 更新评价
+**接口**: `PUT /api/v1/ratings/{id}`
+
+**开发状态**: 🟡 已开发（前端Mock完成）
+
+**前端Mock位置**: `miniprogram/api/rating.ts:mockUpdateRating`
+
+**前端API位置**: `miniprogram/api/rating.ts:updateRating`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**请求头**: `Authorization: Bearer <token>`
+
+**请求参数**:
+```json
+{
+  "rating": 5,
+  "content": "更新后的评价内容",
+  "images": ["https://example.com/image1.jpg"],
+  "tags": ["车况好", "服务好"]
+}
+```
+
+**响应格式**: 同创建评价响应
+
+**业务规则**:
+- 仅支持24小时内修改
+- 仅限修改1次
+- 商家已回复的评价不可修改
+
+### 8.5 删除评价
+**接口**: `DELETE /api/v1/ratings/{id}`
+
+**开发状态**: 🔴 未开发
+
+**前端API位置**: `miniprogram/api/rating.ts:deleteRating`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**请求头**: `Authorization: Bearer <token>`
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "删除成功",
+  "data": null
+}
+```
+
+### 8.6 上传评价图片
+**接口**: `POST /api/v1/ratings/upload-image`
+
+**开发状态**: 🟡 已开发（前端Mock完成）
+
+**前端Mock位置**: `miniprogram/api/rating.ts:mockUploadRatingImage`
+
+**前端API位置**: `miniprogram/api/rating.ts:uploadRatingImage`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**请求头**: `Authorization: Bearer <token>`
+
+**请求参数**: multipart/form-data
+- file: File (必填) - 图片文件
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "上传成功",
+  "data": {
+    "url": "https://example.com/images/123456.jpg"
+  }
+}
+```
+
+**业务规则**:
+- 支持格式：JPG、PNG、WEBP
+- 单张图片最大5MB
+- 自动压缩处理
+- 最多上传9张
+
+---
+
+## 9. 帮助中心模块 (help)
+
+### 9.1 获取帮助分类列表
+**接口**: `GET /api/v1/help/categories`
+
+**开发状态**: 🟡 已开发（前端Mock完成）
+
+**前端Mock位置**: `miniprogram/api/help.ts:mockGetHelpCategories`
+
+**前端API位置**: `miniprogram/api/help.ts:getHelpCategories`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": [
+    {
+      "id": "cat_001",
+      "name": "租车相关",
+      "icon": "car",
+      "articleCount": 12,
+      "order": 1
+    }
+  ]
+}
+```
+
+### 9.2 获取帮助文章列表
+**接口**: `GET /api/v1/help/articles`
+
+**开发状态**: 🟡 已开发（前端Mock完成）
+
+**前端Mock位置**: `miniprogram/api/help.ts:mockGetHelpArticles`
+
+**前端API位置**: `miniprogram/api/help.ts:getHelpArticles`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**查询参数**:
+- categoryId: string (可选) - 分类ID
+- keyword: string (可选) - 搜索关键词
+- page: number (可选) - 页码，默认1
+- pageSize: number (可选) - 每页数量，默认10
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "list": [
+      {
+        "id": "article_001",
+        "categoryId": "cat_001",
+        "categoryName": "租车相关",
+        "title": "如何预订房车？",
+        "summary": "详细介绍房车预订的完整流程和注意事项",
+        "content": "# 如何预订房车？\n\n## 预订流程...",
+        "views": 1250,
+        "helpful": 89,
+        "isHot": true,
+        "createdAt": "2025-11-01T10:00:00+08:00"
+      }
+    ],
+    "total": 50,
+    "page": 1,
+    "pageSize": 10,
+    "hasMore": true
+  }
+}
+```
+
+### 9.3 获取帮助文章详情
+**接口**: `GET /api/v1/help/articles/{id}`
+
+**开发状态**: 🟡 已开发（前端Mock完成）
+
+**前端Mock位置**: `miniprogram/api/help.ts:mockGetHelpArticleDetail`
+
+**前端API位置**: `miniprogram/api/help.ts:getHelpArticleDetail`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "id": "article_001",
+    "categoryId": "cat_001",
+    "categoryName": "租车相关",
+    "title": "如何预订房车？",
+    "summary": "详细介绍房车预订的完整流程和注意事项",
+    "content": "# 如何预订房车？\n\n## 预订流程...",
+    "views": 1250,
+    "helpful": 89,
+    "isHot": true,
+    "createdAt": "2025-11-01T10:00:00+08:00"
+  }
+}
+```
+
+### 9.4 搜索帮助文章
+**接口**: `GET /api/v1/help/search`
+
+**开发状态**: 🔴 未开发
+
+**前端API位置**: `miniprogram/api/help.ts:searchHelpArticles`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**查询参数**:
+- keyword: string (必填) - 搜索关键词
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": [
+    {
+      "id": "article_001",
+      "categoryId": "cat_001",
+      "categoryName": "租车相关",
+      "title": "如何预订房车？",
+      "summary": "详细介绍房车预订的完整流程和注意事项",
+      "content": "",
+      "views": 1250,
+      "helpful": 89,
+      "isHot": true,
+      "createdAt": "2025-11-01T10:00:00+08:00"
+    }
+  ]
+}
+```
+
+### 9.5 获取热门问题
+**接口**: `GET /api/v1/help/hot`
+
+**开发状态**: 🟡 已开发（前端Mock完成）
+
+**前端Mock位置**: `miniprogram/api/help.ts:mockGetHotArticles`
+
+**前端API位置**: `miniprogram/api/help.ts:getHotArticles`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": [
+    {
+      "id": "article_001",
+      "categoryId": "cat_001",
+      "categoryName": "租车相关",
+      "title": "如何预订房车？",
+      "summary": "详细介绍房车预订的完整流程和注意事项",
+      "content": "",
+      "views": 1250,
+      "helpful": 89,
+      "isHot": true,
+      "createdAt": "2025-11-01T10:00:00+08:00"
+    }
+  ]
+}
+```
+
+### 9.6 标记文章有帮助
+**接口**: `POST /api/v1/help/articles/{id}/helpful`
+
+**开发状态**: 🔴 未开发
+
+**前端API位置**: `miniprogram/api/help.ts:markArticleHelpful`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**请求头**: `Authorization: Bearer <token>`
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "感谢您的反馈",
+  "data": {
+    "helpful": 90
+  }
+}
+```
+
+---
+
+## 10. 用户中心模块
+
+### 10.1 更新用户资料
 **接口**: `PUT /api/v1/users/profile`
 
 **开发状态**: 待后端开发
@@ -1820,3 +2885,668 @@
 - 每次API开发完成后，必须及时更新开发状态
 - 联调过程中发现问题，必须记录在联调结果中
 - 最终完成后，所有API状态都应为"联调成功"
+
+---
+
+## 11. 社区互动模块 (community)
+
+### 11.1 发布内容
+**接口**: `POST /api/v1/community/posts`
+
+**开发状态**: 🔴 未开发
+
+**前端API位置**: 待创建 `miniprogram/api/community.ts:createPost`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**请求头**: `Authorization: Bearer <token>`
+
+**请求参数**:
+```json
+{
+  "type": "GUIDE",
+  "title": "川西房车自驾攻略",
+  "content": "详细的攻略内容...",
+  "images": [
+    "https://example.com/image1.jpg",
+    "https://example.com/image2.jpg"
+  ],
+  "tags": ["川西", "自驾", "攻略"],
+  "location": "四川省成都市"
+}
+```
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "发布成功，等待审核",
+  "data": {
+    "id": "post_001",
+    "userId": "user_001",
+    "type": "GUIDE",
+    "title": "川西房车自驾攻略",
+    "content": "详细的攻略内容...",
+    "images": ["https://example.com/image1.jpg"],
+    "tags": ["川西", "自驾", "攻略"],
+    "location": "四川省成都市",
+    "status": "PENDING",
+    "createdAt": "2025-12-01T10:00:00+08:00"
+  }
+}
+```
+
+**业务规则**:
+- 内容类型：GUIDE（攻略）、EXPERIENCE（体验）、ACTIVITY（活动）、QA（问答）
+- 图片限制：最多9张，单张最大5MB
+- 标签限制：最多5个标签
+- 审核机制：发布后进入待审核状态，24小时内完成审核
+
+---
+
+### 11.2 获取内容详情
+**接口**: `GET /api/v1/community/posts/{id}`
+
+**开发状态**: 🔴 未开发
+
+**前端API位置**: 待创建 `miniprogram/api/community.ts:getPostDetail`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "id": "post_001",
+    "userId": "user_001",
+    "userName": "房车旅行家",
+    "userAvatar": "/static/images/avatar.png",
+    "type": "GUIDE",
+    "title": "川西房车自驾攻略",
+    "content": "详细的攻略内容...",
+    "images": ["https://example.com/image1.jpg"],
+    "tags": ["川西", "自驾", "攻略"],
+    "location": "四川省成都市",
+    "viewCount": 1250,
+    "likeCount": 89,
+    "commentCount": 23,
+    "favoriteCount": 45,
+    "isLiked": false,
+    "isFavorited": false,
+    "status": "PUBLISHED",
+    "createdAt": "2025-11-25T10:00:00+08:00"
+  }
+}
+```
+
+---
+
+### 11.3 点赞内容
+**接口**: `POST /api/v1/community/posts/{id}/like`
+
+**开发状态**: 🔴 未开发
+
+**前端API位置**: 待创建 `miniprogram/api/community.ts:likePost`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**请求头**: `Authorization: Bearer <token>`
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "点赞成功",
+  "data": {
+    "isLiked": true,
+    "likeCount": 90
+  }
+}
+```
+
+---
+
+### 11.4 评论内容
+**接口**: `POST /api/v1/community/posts/{id}/comments`
+
+**开发状态**: 🔴 未开发
+
+**前端API位置**: 待创建 `miniprogram/api/community.ts:commentPost`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**请求头**: `Authorization: Bearer <token>`
+
+**请求参数**:
+```json
+{
+  "content": "非常实用的攻略，感谢分享！",
+  "replyToId": "comment_001",
+  "replyToUserId": "user_002"
+}
+```
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "评论成功",
+  "data": {
+    "id": "comment_003",
+    "postId": "post_001",
+    "userId": "user_001",
+    "userName": "房车爱好者",
+    "userAvatar": "/static/images/avatar.png",
+    "content": "非常实用的攻略，感谢分享！",
+    "replyToId": "comment_001",
+    "replyToUserId": "user_002",
+    "replyToUserName": "旅行达人",
+    "likeCount": 0,
+    "createdAt": "2025-12-01T10:30:00+08:00"
+  }
+}
+```
+
+---
+
+### 11.5 获取评论列表
+**接口**: `GET /api/v1/community/posts/{id}/comments`
+
+**开发状态**: 🔴 未开发
+
+**前端API位置**: 待创建 `miniprogram/api/community.ts:getComments`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**查询参数**:
+- page: number (可选) - 页码，默认1
+- pageSize: number (可选) - 每页数量，默认20
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "list": [
+      {
+        "id": "comment_001",
+        "postId": "post_001",
+        "userId": "user_002",
+        "userName": "旅行达人",
+        "userAvatar": "/static/images/avatar.png",
+        "content": "很棒的攻略！",
+        "likeCount": 5,
+        "replyCount": 2,
+        "createdAt": "2025-11-26T10:00:00+08:00",
+        "replies": [
+          {
+            "id": "comment_002",
+            "userId": "user_001",
+            "userName": "房车旅行家",
+            "content": "谢谢支持！",
+            "createdAt": "2025-11-26T10:05:00+08:00"
+          }
+        ]
+      }
+    ],
+    "total": 23,
+    "page": 1,
+    "pageSize": 20,
+    "hasMore": true
+  }
+}
+```
+
+---
+
+### 11.6 收藏内容
+**接口**: `POST /api/v1/community/posts/{id}/favorite`
+
+**开发状态**: 🔴 未开发
+
+**前端API位置**: 待创建 `miniprogram/api/community.ts:favoritePost`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**请求头**: `Authorization: Bearer <token>`
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "收藏成功",
+  "data": {
+    "isFavorited": true,
+    "favoriteCount": 46
+  }
+}
+```
+
+---
+
+### 11.7 获取用户主页
+**接口**: `GET /api/v1/community/users/{id}`
+
+**开发状态**: 🔴 未开发
+
+**前端API位置**: 待创建 `miniprogram/api/community.ts:getUserProfile`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "id": "user_001",
+    "userName": "房车旅行家",
+    "avatar": "/static/images/avatar.png",
+    "bio": "热爱房车旅行，分享旅途故事",
+    "postCount": 25,
+    "followerCount": 1250,
+    "followingCount": 320,
+    "likeCount": 5680,
+    "isFollowing": false,
+    "posts": [
+      {
+        "id": "post_001",
+        "type": "GUIDE",
+        "title": "川西房车自驾攻略",
+        "coverImage": "/static/images/post1.jpg",
+        "likeCount": 89,
+        "commentCount": 23,
+        "createdAt": "2025-11-25T10:00:00+08:00"
+      }
+    ]
+  }
+}
+```
+
+---
+
+### 11.8 关注用户
+**接口**: `POST /api/v1/community/users/{id}/follow`
+
+**开发状态**: 🔴 未开发
+
+**前端API位置**: 待创建 `miniprogram/api/community.ts:followUser`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**请求头**: `Authorization: Bearer <token>`
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "关注成功",
+  "data": {
+    "isFollowing": true,
+    "followerCount": 1251
+  }
+}
+```
+
+**业务规则**:
+- 关注上限：最多关注500人
+- 不能关注自己
+- 重复关注自动取消关注
+
+---
+
+### 11.9 上传图片
+**接口**: `POST /api/v1/community/upload-image`
+
+**开发状态**: 🔴 未开发
+
+**前端API位置**: 待创建 `miniprogram/api/community.ts:uploadImage`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**请求头**: `Authorization: Bearer <token>`
+
+**请求参数**: multipart/form-data
+- file: File (必填) - 图片文件
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "上传成功",
+  "data": {
+    "url": "https://example.com/images/123456.jpg",
+    "thumbnail": "https://example.com/images/123456_thumb.jpg"
+  }
+}
+```
+
+**业务规则**:
+- 支持格式：JPG、PNG、WEBP
+- 单张图片最大5MB
+- 自动压缩和生成缩略图
+
+---
+
+## 12. 积分系统模块 (points)
+
+### 12.1 获取积分余额
+**接口**: `GET /api/v1/points/balance`
+
+**开发状态**: 🟡 已开发（使用Mock）
+
+**前端Mock位置**: `miniprogram/api/points.ts:152` (getPointsBalance函数)
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**请求头**: `Authorization: Bearer <token>`
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "balance": 1250,
+    "totalEarned": 5680,
+    "totalUsed": 4430,
+    "expiringSoon": 100,
+    "expiryDate": "2025-12-31"
+  }
+}
+```
+
+---
+
+### 12.2 获取积分记录
+**接口**: `GET /api/v1/points/records`
+
+**开发状态**: 🟡 已开发（使用Mock）
+
+**前端Mock位置**: `miniprogram/api/points.ts:172` (getPointsRecords函数)
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**请求头**: `Authorization: Bearer <token>`
+
+**查询参数**:
+- type: string (可选) - 记录类型：EARN（获取）、USE（使用）
+- page: number (可选) - 页码，默认1
+- pageSize: number (可选) - 每页数量，默认20
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "list": [
+      {
+        "id": "record_001",
+        "type": "EARN",
+        "amount": 50,
+        "source": "REVIEW",
+        "description": "优质评价奖励",
+        "balance": 1250,
+        "createdAt": "2025-12-01T10:00:00+08:00"
+      },
+      {
+        "id": "record_002",
+        "type": "USE",
+        "amount": -100,
+        "source": "EXCHANGE",
+        "description": "兑换优惠券",
+        "balance": 1200,
+        "createdAt": "2025-11-30T15:30:00+08:00"
+      }
+    ],
+    "total": 156,
+    "page": 1,
+    "pageSize": 20,
+    "hasMore": true
+  }
+}
+```
+
+---
+
+### 12.3 获取积分规则
+**接口**: `GET /api/v1/points/rules`
+
+**开发状态**: 🟡 已开发（使用Mock）
+
+**前端Mock位置**: `miniprogram/api/points.ts:280` (getPointsRules函数)
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "earnRules": [
+      {
+        "type": "HOSTING_INCOME",
+        "name": "托管收益",
+        "description": "托管车主每月收益的1%转化为消费积分（仅首次托管）",
+        "points": "收益的1%",
+        "userType": "HOSTING_OWNER"
+      },
+      {
+        "type": "REVIEW",
+        "name": "评价反馈",
+        "description": "优质评价获得10-50积分，图片评价额外20积分",
+        "points": "10-50",
+        "userType": "HOSTING_OWNER"
+      },
+      {
+        "type": "DAILY_SIGNIN",
+        "name": "签到打卡",
+        "description": "每日签到获得2积分，连续签到额外奖励",
+        "points": "2+",
+        "userType": "HOSTING_OWNER"
+      },
+      {
+        "type": "RENTAL",
+        "name": "租车消费",
+        "description": "普通用户租车消费100元返1积分",
+        "points": "消费的1%",
+        "userType": "NORMAL"
+      }
+    ],
+    "useRules": [
+      {
+        "type": "EXCHANGE_COUPON",
+        "name": "兑换优惠券",
+        "description": "1积分=1元，仅可兑换优惠券",
+        "ratio": "1:1"
+      }
+    ],
+    "generalRules": [
+      "积分根据用户身份获取，不设定有效期",
+      "积分不支持转让或赠送",
+      "积分不可抵扣现金，仅用于特惠商城兑换优惠券"
+    ]
+  }
+}
+```
+
+---
+
+### 12.4 获取兑换商品列表
+**接口**: `GET /api/v1/points/mall/items`
+
+**开发状态**: 🟡 已开发（使用Mock）
+
+**前端Mock位置**: `miniprogram/api/points.ts:343` (getExchangeItems函数)
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**查询参数**:
+- category: string (可选) - 商品分类：COUPON（优惠券）
+- page: number (可选) - 页码，默认1
+- pageSize: number (可选) - 每页数量，默认20
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "list": [
+      {
+        "id": "item_001",
+        "type": "COUPON",
+        "name": "50元租车优惠券",
+        "description": "适用于房车租赁，满500元可用",
+        "points": 50,
+        "stock": 100,
+        "image": "/static/images/coupon.png",
+        "validDays": 30
+      },
+      {
+        "id": "item_002",
+        "type": "COUPON",
+        "name": "100元租车优惠券",
+        "description": "适用于房车租赁，满1000元可用",
+        "points": 100,
+        "stock": 50,
+        "image": "/static/images/coupon.png",
+        "validDays": 30
+      }
+    ],
+    "total": 10,
+    "page": 1,
+    "pageSize": 20,
+    "hasMore": false
+  }
+}
+```
+
+---
+
+### 12.5 兑换商品
+**接口**: `POST /api/v1/points/mall/exchange`
+
+**开发状态**: 🟡 已开发（使用Mock）
+
+**前端Mock位置**: `miniprogram/api/points.ts:485` (exchangeItem函数)
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**请求头**: `Authorization: Bearer <token>`
+
+**请求参数**:
+```json
+{
+  "itemId": "item_001",
+  "quantity": 1
+}
+```
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "兑换成功",
+  "data": {
+    "exchangeId": "exchange_001",
+    "itemId": "item_001",
+    "itemName": "50元租车优惠券",
+    "pointsUsed": 50,
+    "balance": 1200,
+    "couponId": "coupon_123",
+    "validUntil": "2026-01-01T23:59:59+08:00",
+    "createdAt": "2025-12-01T10:00:00+08:00"
+  }
+}
+```
+
+**业务规则**:
+- 积分不足时无法兑换
+- 库存不足时无法兑换
+- 兑换成功后积分立即扣除
+- 优惠券自动发放到账户
+
+---
+
+### 12.6 获取兑换记录
+**接口**: `GET /api/v1/points/mall/records`
+
+**开发状态**: 🟡 已开发（使用Mock）
+
+**前端Mock位置**: `miniprogram/api/points.ts:510` (getExchangeRecords函数)
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**请求头**: `Authorization: Bearer <token>`
+
+**查询参数**:
+- page: number (可选) - 页码，默认1
+- pageSize: number (可选) - 每页数量，默认20
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "list": [
+      {
+        "id": "exchange_001",
+        "itemId": "item_001",
+        "itemName": "50元租车优惠券",
+        "itemImage": "/static/images/coupon.png",
+        "pointsUsed": 50,
+        "quantity": 1,
+        "status": "SUCCESS",
+        "createdAt": "2025-12-01T10:00:00+08:00"
+      }
+    ],
+    "total": 15,
+    "page": 1,
+    "pageSize": 20,
+    "hasMore": false
+  }
+}
+```
+
+---
+
+**文档更新时间**: 2025-12-01
+**文档版本**: v1.1.0
+**维护者**: 小程序端开发团队

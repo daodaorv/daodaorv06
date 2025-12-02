@@ -14,15 +14,59 @@
 			}
 		},
 		{
-			"path": "pages/crowdfunding/index",
+			"path": "pages/community/publish",
 			"style": {
-				"navigationBarTitleText": "房车众筹"
+				"navigationBarTitleText": "发布内容",
+				"navigationStyle": "custom"
 			}
 		},
 		{
-			"path": "pages/crowdfunding/detail",
+			"path": "pages/community/detail",
 			"style": {
-				"navigationBarTitleText": "项目详情"
+				"navigationBarTitleText": "详情"
+			}
+		},
+		{
+			"path": "pages/community/user",
+			"style": {
+				"navigationBarTitleText": "个人主页"
+			}
+		},
+		{
+			"path": "pages/hosting/index",
+			"style": {
+				"navigationBarTitleText": "托管中心",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/hosting/old-car/index",
+			"style": {
+				"navigationBarTitleText": "自有车托管"
+			}
+		},
+		{
+			"path": "pages/hosting/new-car/index",
+			"style": {
+				"navigationBarTitleText": "购车托管"
+			}
+		},
+		{
+			"path": "pages/hosting/self-use/index",
+			"style": {
+				"navigationBarTitleText": "车主自用申请"
+			}
+		},
+		{
+			"path": "pages/hosting/income/index",
+			"style": {
+				"navigationBarTitleText": "收益管理"
+			}
+		},
+		{
+			"path": "pages/hosting/vehicle-detail/index",
+			"style": {
+				"navigationBarTitleText": "车辆详情"
 			}
 		},
 		{
@@ -176,9 +220,76 @@
 			}
 		},
 		{
-			"path": "pages/profile/crowdfunding-assets",
+			"path": "pages/membership/index",
 			"style": {
-				"navigationBarTitleText": "我的众筹"
+				"navigationBarTitleText": "PLUS会员"
+			}
+		},
+		{
+			"path": "pages/membership/purchase",
+			"style": {
+				"navigationBarTitleText": "开通会员"
+			}
+		},
+		{
+			"path": "pages/rating/create",
+			"style": {
+				"navigationBarTitleText": "评价服务"
+			}
+		},
+		{
+			"path": "pages/rating/list",
+			"style": {
+				"navigationBarTitleText": "我的评价",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/help/index",
+			"style": {
+				"navigationBarTitleText": "帮助中心"
+			}
+		},
+		{
+			"path": "pages/help/article",
+			"style": {
+				"navigationBarTitleText": "帮助详情"
+			}
+		},
+		{
+			"path": "pages/auth/login",
+			"style": {
+				"navigationBarTitleText": "登录"
+			}
+		},
+		{
+			"path": "pages/auth/register",
+			"style": {
+				"navigationBarTitleText": "注册"
+			}
+		},
+		{
+			"path": "pages/auth/bind-phone",
+			"style": {
+				"navigationBarTitleText": "绑定手机号"
+			}
+		},
+		{
+			"path": "pages/auth/reset-password",
+			"style": {
+				"navigationBarTitleText": "重置密码"
+			}
+		},
+		{
+			"path": "pages/profile/points",
+			"style": {
+				"navigationBarTitleText": "积分中心"
+			}
+		},
+		{
+			"path": "pages/profile/points-mall",
+			"style": {
+				"navigationBarTitleText": "积分商城"
 			}
 		}
 	],
@@ -201,10 +312,10 @@
 					"selectedIconPath": "static/tabbar/community-active.png"
 				},
 				{
-					"pagePath": "pages/crowdfunding/index",
-					"text": "众筹",
-					"iconPath": "static/tabbar/crowdfunding.png",
-					"selectedIconPath": "static/tabbar/crowdfunding-active.png"
+					"pagePath": "pages/hosting/index",
+					"text": "托管中心",
+					"iconPath": "static/tabbar/hosting.png",
+					"selectedIconPath": "static/tabbar/hosting-active.png"
 				},
 				{
 					"pagePath": "pages/profile/index",

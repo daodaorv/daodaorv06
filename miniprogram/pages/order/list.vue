@@ -186,7 +186,9 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue';
+import { onShow } from '@dcloudio/uni-app';
 import { orderApi } from '@/api/order';
+import { requireLogin } from '@/utils/auth';
 
 // 状态管理
 const orders = ref([]);
@@ -207,6 +209,11 @@ const currentStatusText = computed(() => {
 
 // 页面加载
 onMounted(() => {
+  // 检查登录状态，未登录则跳转登录页
+  if (!requireLogin()) {
+    return;
+  }
+
   loadStatusList();
   loadOrders();
 });
@@ -222,7 +229,9 @@ onShow(() => {
 // 加载状态列表
 const loadStatusList = async () => {
   try {
-    const statusData = await orderApi.getOrderStatusList();
+    const result = await orderApi.getOrderStatusList();
+    // 解析标准响应格式
+    const statusData = result.data || result;
     statusList.value = statusData.map(status => ({
       ...status,
       count: 0 // 这里应该调用API获取各状态订单数量
@@ -248,15 +257,17 @@ const loadOrders = async (isRefresh = false) => {
       params.status = currentStatus.value;
     }
 
-    const response = await orderApi.getUserOrders(params);
+    const result = await orderApi.getUserOrders(params);
+    // 解析标准响应格式
+    const response = result.data || result;
 
     if (isRefresh) {
-      orders.value = response.orders;
+      orders.value = response.orders || [];
       page.value = 1;
-      hasMore.value = response.pagination.current < response.pagination.pages;
+      hasMore.value = response.pagination ? response.pagination.current < response.pagination.pages : false;
     } else {
-      orders.value.push(...response.orders);
-      hasMore.value = response.pagination.current < response.pagination.pages;
+      orders.value.push(...(response.orders || []));
+      hasMore.value = response.pagination ? response.pagination.current < response.pagination.pages : false;
     }
 
   } catch (error) {
@@ -462,12 +473,18 @@ const goBack = () => {
 <style lang="scss" scoped>
 .order-list-page {
   min-height: 100vh;
-  background-color: #f5f5f5;
+  background-color: $uni-bg-color;
+  display: flex;
+  flex-direction: column;
 }
 
 // 头部
 .header {
   background-color: #ffffff;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
 
   .nav-bar {
     display: flex;
@@ -486,18 +503,18 @@ const goBack = () => {
 
     .nav-title {
       font-size: 36rpx;
-      font-weight: 600;
-      color: rgba(0, 0, 0, 0.9);
+      font-weight: 800;
+      color: $uni-text-color;
     }
   }
 
   // 状态筛选标签
   .status-tabs {
     display: flex;
-    padding: 24rpx 32rpx;
-    gap: 32rpx;
+    padding: 20rpx 32rpx;
+    gap: 24rpx;
     overflow-x: auto;
-    border-bottom: 2rpx solid #f0f0f0;
+    border-bottom: 1rpx solid $uni-border-color-light;
 
     .tab-item {
       position: relative;
@@ -505,39 +522,38 @@ const goBack = () => {
       align-items: center;
       gap: 8rpx;
       white-space: nowrap;
-      padding: 16rpx 0;
+      padding: 12rpx 24rpx;
+      background-color: $uni-bg-color;
+      border-radius: 32rpx;
+      transition: all 0.2s;
 
       .tab-text {
-        font-size: 28rpx;
-        color: rgba(0, 0, 0, 0.6);
+        font-size: 26rpx;
+        color: $uni-text-color-secondary;
         transition: color 0.3s ease;
       }
 
       .tab-badge {
-        background-color: #FF4D4F;
+        background-color: $uni-color-error;
         color: #ffffff;
         font-size: 20rpx;
-        padding: 4rpx 8rpx;
+        padding: 2rpx 8rpx;
         border-radius: 10rpx;
         min-width: 20rpx;
         text-align: center;
       }
 
       &.active {
+        background-color: $uni-color-primary;
+        box-shadow: 0 4rpx 12rpx rgba(255, 159, 41, 0.2);
+
         .tab-text {
-          color: #FF9F29;
+          color: #FFFFFF;
           font-weight: 500;
         }
-
+        
         &::after {
-          content: '';
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          right: 0;
-          height: 4rpx;
-          background: #FF9F29;
-          border-radius: 2rpx;
+          display: none;
         }
       }
     }
@@ -546,7 +562,8 @@ const goBack = () => {
 
 // 订单列表
 .order-list {
-  height: calc(100vh - 200rpx);
+  flex: 1;
+  height: 0;
   padding: 24rpx;
 }
 
@@ -556,77 +573,101 @@ const goBack = () => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 120rpx 0;
+  padding: 160rpx 0;
 
   .empty-image {
-    width: 200rpx;
-    height: 200rpx;
+    width: 240rpx;
+    height: 240rpx;
     margin-bottom: 32rpx;
-    opacity: 0.6;
+    opacity: 0.8;
   }
 
   .empty-text {
     font-size: 28rpx;
-    color: rgba(0, 0, 0, 0.6);
+    color: $uni-text-color-secondary;
     margin-bottom: 48rpx;
   }
 
   .browse-btn {
-    padding: 20rpx 48rpx;
-    background: linear-gradient(135deg, #FF9F29 0%, #FFB84D 100%);
+    padding: 0 48rpx;
+    height: 80rpx;
+    line-height: 80rpx;
+    background: linear-gradient(135deg, $uni-color-primary 0%, #FFB84D 100%);
     color: #ffffff;
-    border-radius: 44rpx;
+    border-radius: 40rpx;
     font-size: 28rpx;
     border: none;
+    box-shadow: 0 8rpx 20rpx rgba(255, 159, 41, 0.3);
+    
+    &::after {
+      border: none;
+    }
   }
 }
 
 // 订单卡片
-.order-cards  { .order-card { background-color: #ffffff;
-    border-radius: 16rpx;
+.order-cards {
+  .order-card {
+    background-color: #ffffff;
+    border-radius: $uni-border-radius-lg;
     margin-bottom: 24rpx;
     overflow: hidden;
-    box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
+    box-shadow: $uni-shadow-sm;
+    transition: transform 0.2s;
+    
+    &:active {
+      transform: scale(0.99);
+    }
 
     // 订单头部
-    .order-header { display: flex;
+    .order-header {
+      display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      padding: 32rpx;
-      border-bottom: 2rpx solid #f8f8f8;
+      padding: 24rpx 32rpx;
+      border-bottom: 1rpx solid $uni-border-color-light;
 
-      .order-info { flex: 1;
+      .order-info {
+        flex: 1;
 
-        .order-no { display: block;
-          font-size: 28rpx;
-          color: rgba(0, 0, 0, 0.9);
-          margin-bottom: 8rpx; }.order-time { font-size: 24rpx;
-          color: rgba(0, 0, 0, 0.6); } }
+        .order-no {
+          display: block;
+          font-size: 26rpx;
+          color: $uni-text-color;
+          margin-bottom: 8rpx;
+          font-family: monospace;
+        }
+
+        .order-time {
+          font-size: 22rpx;
+          color: $uni-text-color-secondary;
+        }
+      }
 
       .order-status {
-        padding: 8rpx 16rpx;
-        border-radius: 20rpx;
+        padding: 6rpx 16rpx;
+        border-radius: 8rpx;
         font-size: 24rpx;
         font-weight: 500;
 
         &.pending {
           background-color: rgba(255, 159, 41, 0.1);
-          color: #FF9F29;
+          color: $uni-color-primary;
         }
 
         &.processing {
-          background-color: rgba(75, 145, 255, 0.1);
-          color: #4B91FF;
+          background-color: rgba(33, 150, 243, 0.1);
+          color: $uni-color-info;
         }
 
         &.completed {
-          background-color: rgba(103, 194, 58, 0.1);
-          color: #67C23A;
+          background-color: rgba(76, 175, 80, 0.1);
+          color: $uni-color-success;
         }
 
         &.cancelled {
-          background-color: rgba(0, 0, 0, 0.1);
-          color: rgba(0, 0, 0, 0.6);
+          background-color: rgba(0, 0, 0, 0.05);
+          color: $uni-text-color-secondary;
         }
       }
     }
@@ -646,26 +687,29 @@ const goBack = () => {
 
       .vehicle-info {
         flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
 
         .vehicle-name {
           display: block;
-          font-size: 32rpx;
-          font-weight: 500;
-          color: rgba(0, 0, 0, 0.9);
+          font-size: 30rpx;
+          font-weight: bold;
+          color: $uni-text-color;
           margin-bottom: 12rpx;
           line-height: 1.4;
         }
 
         .vehicle-specs {
           display: flex;
-          gap: 16rpx;
+          gap: 12rpx;
 
           .spec-item {
-            font-size: 24rpx;
-            color: rgba(0, 0, 0, 0.6);
-            background-color: #f8f8f8;
-            padding: 6rpx 12rpx;
-            border-radius: 8rpx;
+            font-size: 22rpx;
+            color: $uni-text-color-secondary;
+            background-color: $uni-bg-color;
+            padding: 4rpx 12rpx;
+            border-radius: 6rpx;
           }
         }
       }
@@ -681,13 +725,9 @@ const goBack = () => {
         gap: 12rpx;
         margin-bottom: 12rpx;
 
-        .last-child {
-          margin-bottom: 0;
-        }
-
         .rental-text {
           font-size: 26rpx;
-          color: rgba(0, 0, 0, 0.8);
+          color: $uni-text-color;
           line-height: 1.4;
         }
       }
@@ -697,23 +737,26 @@ const goBack = () => {
     .order-price {
       display: flex;
       align-items: baseline;
+      justify-content: flex-end;
       padding: 0 32rpx 24rpx;
+      border-bottom: 1rpx solid $uni-border-color-light;
 
       .price-label {
-        font-size: 26rpx;
-        color: rgba(0, 0, 0, 0.8);
+        font-size: 24rpx;
+        color: $uni-text-color-secondary;
       }
 
       .price-amount {
-        font-size: 32rpx;
-        font-weight: 600;
-        color: #FF9F29;
+        font-size: 36rpx;
+        font-weight: bold;
+        color: $uni-color-primary;
         margin-left: 8rpx;
+        font-family: 'DIN Alternate', sans-serif;
       }
 
       .deposit-info {
-        font-size: 24rpx;
-        color: rgba(0, 0, 0, 0.6);
+        font-size: 22rpx;
+        color: $uni-text-color-secondary;
         margin-left: 12rpx;
       }
     }
@@ -722,28 +765,34 @@ const goBack = () => {
     .order-actions {
       display: flex;
       justify-content: flex-end;
-      gap: 16rpx;
-      padding: 24rpx 32rpx 32rpx;
-      border-top: 2rpx solid #f8f8f8;
+      gap: 20rpx;
+      padding: 24rpx 32rpx;
 
       .action-btn {
-        padding: 16rpx 32rpx;
-        border-radius: 25rpx;
+        margin: 0;
+        padding: 0 32rpx;
+        height: 64rpx;
+        line-height: 64rpx;
+        border-radius: 32rpx;
         font-size: 26rpx;
-        border: 2rpx solid #f0f0f0;
+        border: 1rpx solid $uni-border-color;
         background-color: #ffffff;
-        color: rgba(0, 0, 0, 0.8);
-        line-height: 1.2;
+        color: $uni-text-color;
+        
+        &::after {
+          border: none;
+        }
 
         &.primary {
-          background: linear-gradient(135deg, #FF9F29 0%, #FFB84D 100%);
+          background: linear-gradient(135deg, $uni-color-primary 0%, #FFB84D 100%);
           color: #ffffff;
           border-color: transparent;
+          box-shadow: 0 4rpx 12rpx rgba(255, 159, 41, 0.2);
         }
 
         &.delete {
-          border-color: #FF4D4F;
-          color: #FF4D4F;
+          border-color: $uni-color-error;
+          color: $uni-color-error;
         }
       }
     }
@@ -756,8 +805,8 @@ const goBack = () => {
   padding: 32rpx 0;
 
   .load-text {
-    font-size: 26rpx;
-    color: rgba(0, 0, 0, 0.6);
+    font-size: 24rpx;
+    color: $uni-text-color-secondary;
   }
 }
 
@@ -767,8 +816,8 @@ const goBack = () => {
   padding: 32rpx 0;
 
   .no-more-text {
-    font-size: 26rpx;
-    color: rgba(0, 0, 0, 0.4);
+    font-size: 24rpx;
+    color: $uni-text-color-placeholder;
   }
 }
 </style>

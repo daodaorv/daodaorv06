@@ -3,7 +3,7 @@
  * 提供特惠套餐的查询、详情、预订等功能
  */
 
-import request from '@/utils/request';
+import { request } from '@/utils/request';
 
 /**
  * 获取特惠套餐列表

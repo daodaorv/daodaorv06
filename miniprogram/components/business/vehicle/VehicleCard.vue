@@ -78,90 +78,107 @@ const handleFavorite = () => {
 
 <style scoped lang="scss">
 .vehicle-card {
-	background-color: #FFFFFF;
-	border-radius: 24rpx;
+	background-color: $uni-bg-color-card;
+	border-radius: $uni-border-radius-lg;
 	overflow: hidden;
-	margin-bottom: 24rpx;
-	box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.04);
+	margin-bottom: 32rpx;
+	box-shadow: $uni-shadow-md;
 	display: flex;
 	flex-direction: column;
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+	&:active {
+		transform: scale(0.98);
+		box-shadow: $uni-shadow-sm;
+	}
 }
 
 .image-wrapper {
 	position: relative;
+	height: 400rpx;
 }
 
 .vehicle-image {
 	width: 100%;
-	height: 320rpx;
-	background-color: #F5F5F5;
+	height: 100%;
+	background-color: #F0F0F0;
 }
 
 .favorite-btn {
 	position: absolute;
-	top: 16rpx;
-	right: 16rpx;
-	width: 56rpx;
-	height: 56rpx;
-	background-color: rgba(0, 0, 0, 0.3);
+	top: 24rpx;
+	right: 24rpx;
+	width: 64rpx;
+	height: 64rpx;
+	background-color: rgba(255, 255, 255, 0.9);
 	border-radius: 50%;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	backdrop-filter: blur(4rpx);
+	box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.1);
+	transition: all 0.2s;
+	
+	&:active {
+		transform: scale(0.9);
+	}
 }
 
 .vehicle-info {
-	padding: 24rpx;
+	padding: 32rpx;
 }
 
 .header {
-	margin-bottom: 12rpx;
+	margin-bottom: 16rpx;
 }
 
 .vehicle-name {
-	font-size: 32rpx;
-	font-weight: bold;
-	color: #333;
-	margin-bottom: 8rpx;
+	font-size: 34rpx;
+	font-weight: 600;
+	color: $uni-text-color;
+	margin-bottom: 12rpx;
 	display: block;
+	line-height: 1.4;
 }
 
 .tags {
 	display: flex;
 	flex-wrap: wrap;
-	gap: 8rpx;
+	gap: 12rpx;
 }
 
 .tag {
-	font-size: 20rpx;
-	color: #666;
-	background-color: #F5F5F5;
-	padding: 4rpx 12rpx;
-	border-radius: 4rpx;
+	font-size: 22rpx;
+	color: $uni-color-primary;
+	background-color: rgba(255, 159, 41, 0.1);
+	padding: 6rpx 16rpx;
+	border-radius: 8rpx;
+	font-weight: 500;
 }
 
 .specs {
 	display: flex;
 	align-items: center;
-	margin-bottom: 24rpx;
+	margin-bottom: 32rpx;
+	flex-wrap: wrap;
 }
 
 .spec-item {
-	font-size: 24rpx;
-	color: #999;
+	font-size: 26rpx;
+	color: $uni-text-color-secondary;
 }
 
 .divider {
-	font-size: 20rpx;
-	color: #DDD;
-	margin: 0 12rpx;
+	font-size: 22rpx;
+	color: $uni-border-color;
+	margin: 0 16rpx;
 }
 
 .footer {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
+	padding-top: 24rpx;
+	border-top: 1rpx solid $uni-border-color-light;
 }
 
 .price-box {
@@ -171,37 +188,36 @@ const handleFavorite = () => {
 }
 
 .currency {
-	font-size: 24rpx;
-	font-weight: bold;
+	font-size: 28rpx;
+	font-weight: 600;
 }
 
 .price {
-	font-size: 40rpx;
-	font-weight: bold;
+	font-size: 44rpx;
+	font-weight: 600;
 	margin: 0 4rpx;
+	font-family: 'DIN Alternate', sans-serif;
 }
 
 .unit {
-	font-size: 22rpx;
-	color: #999;
+	font-size: 24rpx;
+	color: $uni-text-color-secondary;
 }
 
 .book-btn {
 	margin: 0;
-	padding: 0 32rpx;
-	height: 64rpx;
-	line-height: 64rpx;
-	font-size: 26rpx;
-	background-color: $uni-color-primary;
+	padding: 0 40rpx;
+	height: 72rpx;
+	line-height: 72rpx;
+	font-size: 28rpx;
+	background: linear-gradient(135deg, $uni-color-primary 0%, #FFB84D 100%);
 	color: #FFFFFF;
-	border-radius: 32rpx;
+	border-radius: 36rpx;
+	font-weight: 600;
+	box-shadow: 0 8rpx 20rpx rgba(255, 159, 41, 0.3);
 
 	&::after {
 		border: none;
-	}
-
-	&:active {
-		opacity: 0.9;
 	}
 }
 </style>

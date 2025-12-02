@@ -197,15 +197,15 @@ const handleBook = () => {
 <style scoped lang="scss">
 .vehicle-detail-page {
 	min-height: 100vh;
-	background-color: #F8F8F8;
+	background-color: $uni-bg-color;
 	display: flex;
 	flex-direction: column;
 }
 
 .image-swiper {
 	width: 100%;
-	height: 500rpx;
-	background-color: #F5F5F5;
+	height: 560rpx;
+	background-color: #F0F0F0;
 }
 
 .swiper-image {
@@ -220,34 +220,38 @@ const handleBook = () => {
 
 .info-section {
 	background-color: #FFFFFF;
-	padding: 32rpx;
-	margin-bottom: 16rpx;
+	padding: 40rpx 32rpx;
+	margin-bottom: 20rpx;
+	border-radius: 0 0 $uni-border-radius-lg $uni-border-radius-lg;
+	box-shadow: $uni-shadow-sm;
 }
 
 .vehicle-header {
-	margin-bottom: 16rpx;
+	margin-bottom: 24rpx;
 }
 
 .vehicle-name {
-	font-size: 36rpx;
-	font-weight: bold;
-	color: #333;
+	font-size: 40rpx;
+	font-weight: 800;
+	color: $uni-text-color;
 	display: block;
-	margin-bottom: 12rpx;
+	margin-bottom: 16rpx;
+	line-height: 1.3;
 }
 
 .tags {
 	display: flex;
 	flex-wrap: wrap;
-	gap: 8rpx;
+	gap: 12rpx;
 }
 
 .tag {
-	font-size: 20rpx;
-	color: #666;
-	background-color: #F5F5F5;
-	padding: 4rpx 12rpx;
-	border-radius: 4rpx;
+	font-size: 22rpx;
+	color: $uni-color-primary;
+	background-color: rgba(255, 159, 41, 0.1);
+	padding: 6rpx 16rpx;
+	border-radius: 8rpx;
+	font-weight: 500;
 }
 
 .price-box {
@@ -257,87 +261,106 @@ const handleBook = () => {
 }
 
 .currency {
-	font-size: 24rpx;
-	font-weight: bold;
+	font-size: 28rpx;
+	font-weight: 600;
 }
 
 .price {
-	font-size: 48rpx;
+	font-size: 56rpx;
 	font-weight: bold;
 	margin: 0 4rpx;
+	font-family: 'DIN Alternate', sans-serif;
 }
 
 .unit {
 	font-size: 24rpx;
-	color: #999;
+	color: $uni-text-color-secondary;
 }
 
 .section {
 	background-color: #FFFFFF;
 	padding: 32rpx;
-	margin-bottom: 16rpx;
+	margin-bottom: 20rpx;
+	border-radius: $uni-border-radius-lg;
+	box-shadow: $uni-shadow-sm;
 }
 
 .section-title {
 	font-size: 32rpx;
 	font-weight: bold;
-	color: #333;
-	margin-bottom: 24rpx;
+	color: $uni-text-color;
+	margin-bottom: 32rpx;
+	display: flex;
+	align-items: center;
+	
+	&::before {
+		content: '';
+		width: 8rpx;
+		height: 32rpx;
+		background-color: $uni-color-primary;
+		border-radius: 4rpx;
+		margin-right: 16rpx;
+	}
 }
 
 .section-header {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	margin-bottom: 24rpx;
+	margin-bottom: 32rpx;
 }
 
 .rating-score {
-	font-size: 28rpx;
+	font-size: 32rpx;
 	color: #FFB400;
 	font-weight: bold;
 }
 
 // 规格行布局
 .specs-row {
-	display: flex;
-	align-items: center;
-	gap: 32rpx;
-	flex-wrap: wrap;
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 24rpx;
 }
 
 .spec-item-inline {
 	display: flex;
+	flex-direction: column;
 	align-items: center;
-	gap: 8rpx;
+	gap: 12rpx;
+	padding: 24rpx 0;
+	background-color: $uni-bg-color;
+	border-radius: 16rpx;
 }
 
 .spec-text {
-	font-size: 26rpx;
-	color: #333;
+	font-size: 24rpx;
+	color: $uni-text-color;
+	font-weight: 500;
 }
 
 .features-list {
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
-	gap: 16rpx;
+	gap: 24rpx;
 }
 
 .feature-item {
 	display: flex;
 	align-items: center;
-	gap: 8rpx;
+	gap: 12rpx;
 }
 
 .feature-text {
 	font-size: 28rpx;
-	color: #333;
+	color: $uni-text-color;
 }
 
 // 车辆详情
 .detail-content {
 	line-height: 1.8;
-	color: #333;
+	color: $uni-text-color;
+	font-size: 28rpx;
 }
 
 .reviews-list {
@@ -348,37 +371,37 @@ const handleBook = () => {
 
 .review-item {
 	padding: 24rpx;
-	background-color: #F8F8F8;
-	border-radius: 12rpx;
+	background-color: $uni-bg-color;
+	border-radius: 16rpx;
 }
 
 .review-header {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	margin-bottom: 8rpx;
+	margin-bottom: 12rpx;
 }
 
 .reviewer-name {
 	font-size: 28rpx;
 	font-weight: bold;
-	color: #333;
+	color: $uni-text-color;
 }
 
 .review-date {
 	font-size: 24rpx;
-	color: #999;
+	color: $uni-text-color-secondary;
 }
 
 .review-rating {
 	display: flex;
 	gap: 4rpx;
-	margin-bottom: 12rpx;
+	margin-bottom: 16rpx;
 }
 
 .review-content {
 	font-size: 26rpx;
-	color: #666;
+	color: $uni-text-color-secondary;
 	line-height: 1.6;
 }
 
@@ -389,55 +412,11 @@ const handleBook = () => {
 
 .empty-text {
 	font-size: 28rpx;
-	color: #999;
-}
-
-.store-info {
-	display: flex;
-	flex-direction: column;
-	gap: 16rpx;
-}
-
-.store-row {
-	display: flex;
-	align-items: center;
-	gap: 12rpx;
-}
-
-.store-name {
-	font-size: 28rpx;
-	font-weight: bold;
-	color: #333;
-}
-
-.store-address {
-	font-size: 26rpx;
-	color: #666;
-	flex: 1;
-}
-
-.nav-btn {
-	margin: 0;
-	padding: 0 24rpx;
-	height: 56rpx;
-	line-height: 56rpx;
-	font-size: 24rpx;
-	background-color: #FFF5E9;
-	color: $uni-color-primary;
-	border: 1rpx solid $uni-color-primary;
-	border-radius: 28rpx;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	gap: 8rpx;
-	
-	&::after {
-		border: none;
-	}
+	color: $uni-text-color-secondary;
 }
 
 .bottom-placeholder {
-	height: 120rpx;
+	height: 140rpx;
 }
 
 .bottom-bar {
@@ -448,11 +427,12 @@ const handleBook = () => {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	padding: 16rpx 32rpx;
-	padding-bottom: calc(16rpx + env(safe-area-inset-bottom));
+	padding: 24rpx 32rpx;
+	padding-bottom: calc(24rpx + env(safe-area-inset-bottom));
 	background-color: #FFFFFF;
-	border-top: 1rpx solid #F5F5F5;
-	box-shadow: 0 -4rpx 16rpx rgba(0, 0, 0, 0.05);
+	border-top: 1rpx solid $uni-border-color-light;
+	box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.05);
+	z-index: 100;
 }
 
 .price-info {
@@ -462,7 +442,7 @@ const handleBook = () => {
 
 .price-label {
 	font-size: 22rpx;
-	color: #999;
+	color: $uni-text-color-secondary;
 }
 
 .price-value {
@@ -471,34 +451,41 @@ const handleBook = () => {
 	color: $uni-color-primary;
 	
 	.currency {
-		font-size: 20rpx;
+		font-size: 24rpx;
 		font-weight: bold;
 	}
 	
 	.price {
-		font-size: 36rpx;
+		font-size: 44rpx;
 		font-weight: bold;
 		margin: 0 4rpx;
+		font-family: 'DIN Alternate', sans-serif;
 	}
 	
 	.unit {
-		font-size: 20rpx;
+		font-size: 22rpx;
 	}
 }
 
 .book-btn {
 	margin: 0;
-	padding: 0 48rpx;
-	height: 80rpx;
-	line-height: 80rpx;
-	font-size: 30rpx;
-	background-color: $uni-color-primary;
+	padding: 0 64rpx;
+	height: 88rpx;
+	line-height: 88rpx;
+	font-size: 32rpx;
+	background: linear-gradient(135deg, $uni-color-primary 0%, #FFB84D 100%);
 	color: #FFFFFF;
-	border-radius: 40rpx;
+	border-radius: 44rpx;
 	font-weight: bold;
+	box-shadow: 0 8rpx 20rpx rgba(255, 159, 41, 0.3);
 	
 	&::after {
 		border: none;
+	}
+	
+	&:active {
+		opacity: 0.9;
+		transform: scale(0.98);
 	}
 }
 </style>
