@@ -34,6 +34,13 @@
 	/* #ifndef APP-NVUE */
 	@import '@/static/customicons.css';
 
+	/* 强制加载 uView Plus 本地字体 */
+	@font-face {
+		font-family: 'uicon-iconfont';
+		src: url('/static/uicon-iconfont.ttf') format('truetype');
+	}
+	/* #endif */
+
 	// 设置整个项目的背景色
 	page {
 		background-color: #F5F7FA;

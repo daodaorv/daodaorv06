@@ -1,35 +1,41 @@
 <template>
   <view class="campsite-detail">
     <!-- 图片轮播 -->
-    <swiper v-if="campsiteDetail.images && campsiteDetail.images.length > 0" class="image-swiper" :indicator-dots="true" :autoplay="true" :interval="3000" :duration="500">
-      <swiper-item v-for="(image, index) in campsiteDetail.images" :key="index">
-        <image class="swiper-image" :src="image" mode="aspectFill"></image>
-      </swiper-item>
-    </swiper>
+    <view class="swiper-wrapper">
+        <u-swiper
+            :list="campsiteDetail.images"
+            height="500"
+            indicator
+            indicatorMode="line"
+            circular
+            radius="0"
+        ></u-swiper>
+    </view>
 
     <!-- 营地基本信息 -->
     <view class="campsite-info-section">
       <view class="name-header">
         <text class="campsite-name">{{ campsiteDetail.name }}</text>
-        <view v-if="campsiteDetail.isHot" class="hot-badge">
-          <text class="badge-text">热门</text>
+        <view v-if="campsiteDetail.isHot" class="hot-badge-wrapper">
+          <u-tag text="热门" type="error" shape="circle" size="mini" icon="fire-fill"></u-tag>
         </view>
       </view>
 
       <!-- 评分信息 -->
       <view class="rating-section">
         <view class="rating-main">
-          <u-icon name="star-fill" size="18" color="#FF9F29"></u-icon>
+          <u-rate :count="5" v-model="campsiteDetail.rating" readonly allowHalf activeColor="#FF9F29" size="18"></u-rate>
           <text class="rating-score">{{ campsiteDetail.rating }}</text>
           <text class="rating-count">({{ campsiteDetail.reviewCount }}条评价)</text>
         </view>
       </view>
 
       <!-- 位置信息 -->
-      <view class="location-section">
-        <u-icon name="location" size="16" color="#FF9F29"></u-icon>
+      <view class="location-section" @tap="openLocation">
+        <u-icon name="map-fill" size="16" color="#FF9F29"></u-icon>
         <text class="location-text">{{ campsiteDetail.address }}</text>
         <text class="distance-text">距离{{ campsiteDetail.distance }}km</text>
+        <u-icon name="arrow-right" size="12" color="#999"></u-icon>
       </view>
 
       <!-- 价格信息 -->
@@ -48,10 +54,17 @@
         <text class="title-text">营地特色</text>
       </view>
       <view class="feature-tags">
-        <view class="feature-tag" v-for="feature in (campsiteDetail.features || [])" :key="feature">
-          <u-icon name="checkbox-mark" size="16" color="#67C23A"></u-icon>
-          <text class="feature-text">{{ feature }}</text>
-        </view>
+        <u-tag 
+            v-for="feature in (campsiteDetail.features || [])" 
+            :key="feature" 
+            :text="feature" 
+            plain 
+            type="success" 
+            shape="circle" 
+            size="mini" 
+            icon="checkmark-circle"
+            style="margin-right: 16rpx; margin-bottom: 16rpx;"
+        ></u-tag>
       </view>
     </view>
 
@@ -77,9 +90,12 @@
         <view class="site-type-card" v-for="siteType in (campsiteDetail.siteTypes || [])" :key="siteType.id">
           <view class="site-type-header">
             <text class="site-type-name">{{ siteType.name }}</text>
-            <view class="site-type-badge" :class="{ unavailable: siteType.available === 0 }">
-              <text class="badge-text">{{ siteType.available > 0 ? `剩余${siteType.available}个` : '已满' }}</text>
-            </view>
+            <u-tag 
+                :text="siteType.available > 0 ? `剩余${siteType.available}个` : '已满'" 
+                :type="siteType.available > 0 ? 'success' : 'info'" 
+                plain 
+                size="mini"
+            ></u-tag>
           </view>
           <text class="site-type-desc">{{ siteType.description }}</text>
           <view class="site-type-specs">
@@ -91,14 +107,15 @@
               <text class="price-amount">¥{{ siteType.price }}</text>
               <text class="price-unit">/晚</text>
             </view>
-            <button
-              class="book-btn"
-              :class="{ disabled: siteType.available === 0 }"
-              :disabled="siteType.available === 0"
-              @tap="bookSite(siteType)"
-            >
-              {{ siteType.available > 0 ? '立即预订' : '已满' }}
-            </button>
+            <u-button 
+                :type="siteType.available > 0 ? 'primary' : 'info'" 
+                shape="circle" 
+                size="small" 
+                :text="siteType.available > 0 ? '立即预订' : '已满'"
+                :disabled="siteType.available === 0"
+                @click="bookSite(siteType)"
+                customStyle="width: 160rpx; height: 60rpx;"
+            ></u-button>
           </view>
         </view>
       </view>
@@ -109,7 +126,9 @@
       <view class="section-title">
         <text class="title-text">营地介绍</text>
       </view>
-      <text class="description-text">{{ campsiteDetail.description }}</text>
+      <u-read-more :toggle="true" show-height="200">
+          <text class="description-text">{{ campsiteDetail.description }}</text>
+      </u-read-more>
     </view>
 
     <!-- 入住须知 -->
@@ -150,30 +169,18 @@
       <view class="review-list">
         <view class="review-item" v-for="review in (campsiteDetail.reviews || [])" :key="review.id">
           <view class="review-header">
-            <image class="user-avatar" :src="review.userAvatar" mode="aspectFill"></image>
+            <u-avatar :src="review.userAvatar" size="32"></u-avatar>
             <view class="user-info">
               <text class="user-name">{{ review.userName }}</text>
               <view class="review-rating">
-                <u-icon
-                  v-for="star in 5"
-                  :key="star"
-                  name="star-fill"
-                  size="12"
-                  :color="star <= review.rating ? '#FF9F29' : '#E0E0E0'"
-                ></u-icon>
+                <u-rate :count="5" v-model="review.rating" readonly activeColor="#FF9F29" size="12"></u-rate>
               </view>
             </view>
             <text class="review-date">{{ formatDate(review.createdAt) }}</text>
           </view>
           <text class="review-content">{{ review.content }}</text>
           <view v-if="review.images && review.images.length > 0" class="review-images">
-            <image
-              v-for="(img, idx) in review.images"
-              :key="idx"
-              class="review-image"
-              :src="img"
-              mode="aspectFill"
-            ></image>
+             <u-album :urls="review.images" multipleSize="60"></u-album>
           </view>
         </view>
       </view>
@@ -189,13 +196,12 @@
         <text class="bar-tip">/晚起</text>
       </view>
       <view class="bar-actions">
-        <button class="contact-btn" @tap="contactService">
-          <u-icon name="chat" size="18" color="#FF9F29"></u-icon>
-          <text>咨询</text>
-        </button>
-        <button class="book-btn" @tap="showBookingOptions">
-          立即预订
-        </button>
+        <view class="action-btn-wrapper">
+            <u-button shape="circle" plain type="warning" icon="chat" text="咨询" @click="contactService"></u-button>
+        </view>
+        <view class="action-btn-wrapper">
+            <u-button shape="circle" type="primary" text="立即预订" @click="showBookingOptions"></u-button>
+        </view>
       </view>
     </view>
   </view>
@@ -411,14 +417,9 @@ const showBookingOptions = () => {
 }
 
 // 图片轮播
-.image-swiper {
+.swiper-wrapper {
   width: 100%;
   height: 500rpx;
-
-  .swiper-image {
-    width: 100%;
-    height: 100%;
-  }
 }
 
 // 营地基本信息
@@ -439,16 +440,8 @@ const showBookingOptions = () => {
       color: #333;
     }
 
-    .hot-badge {
-      background: linear-gradient(135deg, #FF9F29 0%, #FFB84D 100%);
-      color: #FFFFFF;
-      font-size: 22rpx;
-      padding: 6rpx 16rpx;
-      border-radius: 20rpx;
-
-      .badge-text {
-        font-weight: 600;
-      }
+    .hot-badge-wrapper {
+      margin-left: 16rpx;
     }
   }
 
@@ -769,12 +762,6 @@ const showBookingOptions = () => {
       align-items: center;
       gap: 16rpx;
       margin-bottom: 16rpx;
-
-      .user-avatar {
-        width: 64rpx;
-        height: 64rpx;
-        border-radius: 50%;
-      }
 
       .user-info {
         flex: 1;

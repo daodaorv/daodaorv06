@@ -5,7 +5,7 @@
 			<view class="navbar-content">
 				<text class="navbar-title">叨叨房车</text>
 				<view class="navbar-actions">
-					<u-icon name="notification" size="24" color="#333"></u-icon>
+					<u-icon name="bell" size="24" color="#333"></u-icon>
 				</view>
 			</view>
 		</view>
@@ -15,19 +15,17 @@
 
 		<!-- 轮播图 -->
 		<view class="banner-swiper">
-			<swiper 
-				class="swiper" 
-				:indicator-dots="true" 
-				:autoplay="true" 
-				:interval="3000" 
+			<u-swiper
+				:list="banners"
+				keyName="image"
+				:autoplay="true"
 				:circular="true"
-				indicator-color="rgba(255,255,255,0.5)"
-				indicator-active-color="#FF9F29"
-			>
-				<swiper-item v-for="(banner, index) in banners" :key="index">
-					<image class="banner-image" :src="banner.image" mode="aspectFill"></image>
-				</swiper-item>
-			</swiper>
+				radius="16"
+				height="340"
+				indicator
+				indicatorMode="line"
+				indicatorActiveColor="#FF9F29"
+			></u-swiper>
 		</view>
 
 		<!-- 预订表单 -->
@@ -62,7 +60,7 @@
 				<text class="title-text">社区精选</text>
 				<view class="more-link" @tap="uni.switchTab({ url: '/pages/community/index' })">
 					<text class="more-text">更多</text>
-					<u-icon name="right" size="14" color="#999"></u-icon>
+					<u-icon name="arrow-right" size="14" color="#999"></u-icon>
 				</view>
 			</view>
 			<view class="content-list">

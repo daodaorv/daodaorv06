@@ -27,22 +27,23 @@
     >
       <!-- 空状态 -->
       <view v-if="tours.length === 0 && !loading" class="empty-state">
-        <u-icon name="map" size="80" color="#DDD"></u-icon>
-        <text class="empty-text">暂无旅游线路</text>
-        <text class="empty-tip">敬请期待更多精彩线路</text>
+        <u-empty mode="list" text="暂无旅游线路" icon="http://cdn.uviewui.com/uview/empty/list.png">
+        </u-empty>
       </view>
 
       <!-- 线路卡片 -->
       <view v-else>
         <view class="tour-card" v-for="item in tours" :key="item.id" @tap="viewDetail(item)">
-          <image class="tour-image" :src="item.image" mode="aspectFill"></image>
-
-          <!-- 状态标签 -->
-          <view class="tour-badge" :class="item.status">{{ getStatusText(item.status) }}</view>
-
-          <!-- 热门标签 -->
-          <view v-if="item.isHot" class="hot-tag">
-            <text class="tag-text">热门</text>
+          <view class="image-wrapper">
+             <u-image :src="item.image" width="100%" height="400rpx" mode="aspectFill" radius="16rpx 16rpx 0 0"></u-image>
+             <!-- 状态标签 -->
+             <view class="tour-badge-wrapper">
+                 <u-tag :text="getStatusText(item.status)" :type="getStatusType(item.status)" shape="circle" size="mini"></u-tag>
+             </view>
+             <!-- 热门标签 -->
+             <view v-if="item.isHot" class="hot-tag-wrapper">
+                 <u-tag text="热门" type="error" shape="circle" size="mini" icon="fire-fill"></u-tag>
+             </view>
           </view>
 
           <view class="tour-info">
@@ -50,7 +51,7 @@
 
             <!-- 线路标签 -->
             <view class="tour-tags">
-              <text class="tag-item" v-for="tag in item.tags" :key="tag">{{ tag }}</text>
+              <u-tag v-for="tag in item.tags" :key="tag" :text="tag" plain size="mini" type="warning" style="margin-right: 10rpx;"></u-tag>
             </view>
 
             <view class="tour-details">
@@ -66,9 +67,7 @@
 
             <!-- 成团进度 -->
             <view class="group-progress" v-if="item.status === 'recruiting'">
-              <view class="progress-bar">
-                <view class="progress-fill" :style="{ width: getProgressWidth(item) }"></view>
-              </view>
+              <u-line-progress :percentage="(item.currentPeople / item.maxPeople) * 100" activeColor="#67C23A" height="8"></u-line-progress>
               <text class="progress-text">已报名{{ item.currentPeople }}人/{{ item.maxPeople }}人</text>
             </view>
 
@@ -78,23 +77,22 @@
                 <text class="unit">/人起</text>
                 <text class="child-price" v-if="item.childPrice">儿童¥{{ item.childPrice }}</text>
               </view>
-              <view class="action-btn" :class="{ disabled: item.status === 'departed' || item.status === 'completed' }">
-                <text class="btn-text">{{ getActionText(item.status) }}</text>
-              </view>
+              <u-button 
+                :type="getBtnType(item.status)" 
+                shape="circle" 
+                size="small" 
+                :text="getActionText(item.status)"
+                :disabled="item.status === 'departed' || item.status === 'completed'"
+                customStyle="width: 180rpx; height: 64rpx;"
+              ></u-button>
             </view>
           </view>
         </view>
       </view>
 
       <!-- 加载状态 -->
-      <view class="load-more" v-if="loading">
-        <text class="load-text">加载中...</text>
-      </view>
-
-      <!-- 没有更多 -->
-      <view class="no-more" v-if="!loading && !hasMore && tours.length > 0">
-        <text class="no-more-text">没有更多线路了</text>
-      </view>
+      <u-loadmore :status="loading ? 'loading' : (hasMore ? 'loadmore' : 'nomore')" />
+      
     </scroll-view>
 
     <!-- 筛选弹窗 -->
@@ -279,6 +277,28 @@ const getStatusText = (status: string) => {
   return map[status] || status;
 };
 
+// 获取状态类型
+const getStatusType = (status: string) => {
+  const map: Record<string, string> = {
+    recruiting: 'success',
+    confirmed: 'warning',
+    departed: 'info',
+    completed: 'info'
+  };
+  return map[status] || 'primary';
+};
+
+// 获取按钮类型
+const getBtnType = (status: string) => {
+   const map: Record<string, string> = {
+    recruiting: 'primary',
+    confirmed: 'warning',
+    departed: 'info',
+    completed: 'info'
+  };
+  return map[status] || 'primary';
+};
+
 // 获取操作按钮文本
 const getActionText = (status: string) => {
   const map: Record<string, string> = {
@@ -444,53 +464,26 @@ const viewDetail = (item: any) => {
   position: relative;
 }
 
-.tour-image {
+.image-wrapper {
+  position: relative;
   width: 100%;
   height: 400rpx;
 }
 
 // 状态标签
-.tour-badge {
+.tour-badge-wrapper {
   position: absolute;
   top: 24rpx;
   right: 24rpx;
-  padding: 8rpx 16rpx;
-  border-radius: 20rpx;
-  font-size: 22rpx;
-  color: #FFFFFF;
-  font-weight: 600;
-
-  &.recruiting {
-    background-color: rgba(103, 194, 58, 0.9);
-  }
-
-  &.confirmed {
-    background-color: rgba(255, 159, 41, 0.9);
-  }
-
-  &.departed {
-    background-color: rgba(144, 147, 153, 0.9);
-  }
-
-  &.completed {
-    background-color: rgba(144, 147, 153, 0.9);
-  }
+  z-index: 1;
 }
 
 // 热门标签
-.hot-tag {
+.hot-tag-wrapper {
   position: absolute;
   top: 24rpx;
   left: 0;
-  background: linear-gradient(135deg, #FF9F29 0%, #FFB84D 100%);
-  color: #FFFFFF;
-  padding: 8rpx 24rpx 8rpx 16rpx;
-  border-radius: 0 20rpx 20rpx 0;
-
-  .tag-text {
-    font-size: 24rpx;
-    font-weight: 600;
-  }
+  z-index: 1;
 }
 
 .tour-info {
