@@ -27,7 +27,7 @@
     >
       <!-- 空状态 -->
       <view v-if="offers.length === 0 && !loading" class="empty-state">
-        <image class="empty-image" src="/static/empty-offer.png" mode="aspectFit"></image>
+        <uni-icons type="gift" size="80" color="#DDD"></uni-icons>
         <text class="empty-text">暂无特惠套餐</text>
         <text class="empty-tip">敬请期待更多优惠活动</text>
       </view>
@@ -142,7 +142,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed } from 'vue';
+import { onLoad } from '@dcloudio/uni-app';
 
 // 状态管理
 const offers = ref<any[]>([]);
@@ -162,7 +163,7 @@ const currentFilterValue = ref('');
 const currentFilterType = ref('');
 
 // 页面加载
-onMounted(() => {
+onLoad(() => {
   loadOffers();
 });
 

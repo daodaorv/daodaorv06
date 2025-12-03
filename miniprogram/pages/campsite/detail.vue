@@ -1,7 +1,7 @@
 <template>
   <view class="campsite-detail">
     <!-- 图片轮播 -->
-    <swiper class="image-swiper" :indicator-dots="true" :autoplay="true" :interval="3000" :duration="500">
+    <swiper v-if="campsiteDetail.images && campsiteDetail.images.length > 0" class="image-swiper" :indicator-dots="true" :autoplay="true" :interval="3000" :duration="500">
       <swiper-item v-for="(image, index) in campsiteDetail.images" :key="index">
         <image class="swiper-image" :src="image" mode="aspectFill"></image>
       </swiper-item>
@@ -48,7 +48,7 @@
         <text class="title-text">营地特色</text>
       </view>
       <view class="feature-tags">
-        <view class="feature-tag" v-for="feature in campsiteDetail.features" :key="feature">
+        <view class="feature-tag" v-for="feature in (campsiteDetail.features || [])" :key="feature">
           <uni-icons type="checkmarkempty" size="16" color="#67C23A"></uni-icons>
           <text class="feature-text">{{ feature }}</text>
         </view>
@@ -61,7 +61,7 @@
         <text class="title-text">营地设施</text>
       </view>
       <view class="facility-grid">
-        <view class="facility-item" v-for="facility in campsiteDetail.facilities" :key="facility.name">
+        <view class="facility-item" v-for="facility in (campsiteDetail.facilities || [])" :key="facility.name">
           <uni-icons :type="facility.icon" size="24" color="#FF9F29"></uni-icons>
           <text class="facility-name">{{ facility.name }}</text>
         </view>
@@ -74,7 +74,7 @@
         <text class="title-text">营位类型</text>
       </view>
       <view class="site-types">
-        <view class="site-type-card" v-for="siteType in campsiteDetail.siteTypes" :key="siteType.id">
+        <view class="site-type-card" v-for="siteType in (campsiteDetail.siteTypes || [])" :key="siteType.id">
           <view class="site-type-header">
             <text class="site-type-name">{{ siteType.name }}</text>
             <view class="site-type-badge" :class="{ unavailable: siteType.available === 0 }">
@@ -118,7 +118,7 @@
         <text class="title-text">入住须知</text>
       </view>
       <view class="notice-list">
-        <view class="notice-item" v-for="(notice, index) in campsiteDetail.checkInNotices" :key="index">
+        <view class="notice-item" v-for="(notice, index) in (campsiteDetail.checkInNotices || [])" :key="index">
           <text class="notice-number">{{ index + 1 }}.</text>
           <text class="notice-text">{{ notice }}</text>
         </view>
@@ -131,7 +131,7 @@
         <text class="title-text">取消政策</text>
       </view>
       <view class="policy-list">
-        <view class="policy-item" v-for="policy in campsiteDetail.cancellationPolicy" :key="policy.condition">
+        <view class="policy-item" v-for="policy in (campsiteDetail.cancellationPolicy || [])" :key="policy.condition">
           <view class="policy-condition">
             <uni-icons type="info-filled" size="16" color="#FF9F29"></uni-icons>
             <text class="condition-text">{{ policy.condition }}</text>
@@ -148,7 +148,7 @@
         <text class="title-count">({{ campsiteDetail.reviewCount }}条)</text>
       </view>
       <view class="review-list">
-        <view class="review-item" v-for="review in campsiteDetail.reviews" :key="review.id">
+        <view class="review-item" v-for="review in (campsiteDetail.reviews || [])" :key="review.id">
           <view class="review-header">
             <image class="user-avatar" :src="review.userAvatar" mode="aspectFill"></image>
             <view class="user-info">
@@ -216,7 +216,7 @@ onLoad((options: any) => {
 // 营地详情数据
 const campsiteDetail = ref<any>({
   id: '',
-  name: '',
+  name: '加载中...',
   images: [],
   rating: 0,
   reviewCount: 0,
@@ -243,10 +243,10 @@ const loadCampsiteDetail = async () => {
       id: campsiteId.value,
       name: '千岛湖房车营地',
       images: [
-        'https://picsum.photos/750/500?random=11',
-        'https://picsum.photos/750/500?random=12',
-        'https://picsum.photos/750/500?random=13',
-        'https://picsum.photos/750/500?random=14'
+        'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=750&h=500&fit=crop',
+        'https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?w=750&h=500&fit=crop',
+        'https://images.unsplash.com/photo-1445308394109-4ec2920981b1?w=750&h=500&fit=crop',
+        'https://images.unsplash.com/photo-1537565732299-5b5e9cdf2f87?w=750&h=500&fit=crop'
       ],
       rating: 4.8,
       reviewCount: 156,
@@ -313,19 +313,19 @@ const loadCampsiteDetail = async () => {
         {
           id: '1',
           userName: '房车旅行家',
-          userAvatar: 'https://picsum.photos/100/100?random=1',
+          userAvatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop',
           rating: 5,
           content: '营地环境非常好，设施齐全，工作人员服务态度很好。湖景位置视野开阔，晚上可以看星星。强烈推荐！',
           images: [
-            'https://picsum.photos/200/150?random=21',
-            'https://picsum.photos/200/150?random=22'
+            'https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?w=200&h=150&fit=crop',
+            'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=200&h=150&fit=crop'
           ],
           createdAt: '2025-11-25'
         },
         {
           id: '2',
           userName: '自驾游爱好者',
-          userAvatar: 'https://picsum.photos/100/100?random=2',
+          userAvatar: 'https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=100&h=100&fit=crop',
           rating: 4,
           content: '整体不错，就是周末人比较多。建议工作日来会更安静一些。',
           images: [],
@@ -867,7 +867,7 @@ const showBookingOptions = () => {
   .bar-actions {
     display: flex;
     align-items: center;
-    gap: 20rpx;
+    gap: 12rpx;
 
     .contact-btn {
       display: flex;
@@ -875,11 +875,11 @@ const showBookingOptions = () => {
       align-items: center;
       justify-content: center;
       background: none;
-      padding: 0 20rpx;
+      padding: 0 16rpx;
       line-height: 1.2;
-      
+
       &::after { border: none; }
-      
+
       text {
         font-size: 20rpx;
         color: #666;
@@ -890,16 +890,16 @@ const showBookingOptions = () => {
     .book-btn {
       background: linear-gradient(135deg, #FF9F29 0%, #FFB84D 100%);
       color: #FFFFFF;
-      font-size: 28rpx;
+      font-size: 26rpx;
       font-weight: 600;
-      padding: 0 48rpx;
-      height: 80rpx;
-      line-height: 80rpx;
-      border-radius: 40rpx;
+      padding: 0 40rpx;
+      height: 68rpx;
+      line-height: 68rpx;
+      border-radius: 34rpx;
       margin: 0;
-      
+
       &::after { border: none; }
-      
+
       &:active { opacity: 0.9; }
     }
   }

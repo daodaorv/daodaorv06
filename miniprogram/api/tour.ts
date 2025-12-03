@@ -2,7 +2,7 @@
  * 房车旅游相关API
  */
 
-import { request } from '@/utils/request';
+import { request, type ResponseData } from '@/utils/request';
 
 /**
  * 旅游线路列表查询参数
@@ -177,7 +177,7 @@ export interface TourAvailabilityCheckResponse {
  * 获取旅游线路列表
  * @param params 查询参数
  */
-export const getTourList = (params: TourListParams): Promise<TourListResponse> => {
+export const getTourList = (params: TourListParams): Promise<ResponseData<TourListResponse>> => {
   return request({
     url: '/api/v1/tours',
     method: 'GET',
@@ -189,7 +189,7 @@ export const getTourList = (params: TourListParams): Promise<TourListResponse> =
  * 获取旅游线路详情
  * @param id 线路ID
  */
-export const getTourDetail = (id: string): Promise<TourDetail> => {
+export const getTourDetail = (id: string): Promise<ResponseData<TourDetail>> => {
   return request({
     url: `/api/v1/tours/${id}`,
     method: 'GET'
@@ -200,7 +200,7 @@ export const getTourDetail = (id: string): Promise<TourDetail> => {
  * 创建旅游预订订单
  * @param params 预订参数
  */
-export const createTourBooking = (params: TourBookingParams): Promise<TourBookingResponse> => {
+export const createTourBooking = (params: TourBookingParams): Promise<ResponseData<TourBookingResponse>> => {
   return request({
     url: '/api/v1/tours/bookings',
     method: 'POST',
@@ -212,7 +212,7 @@ export const createTourBooking = (params: TourBookingParams): Promise<TourBookin
  * 计算旅游预订价格
  * @param params 价格计算参数
  */
-export const calculateTourPrice = (params: TourPriceCalculateParams): Promise<TourPriceCalculateResponse> => {
+export const calculateTourPrice = (params: TourPriceCalculateParams): Promise<ResponseData<TourPriceCalculateResponse>> => {
   return request({
     url: '/api/v1/tours/calculate-price',
     method: 'POST',
@@ -224,7 +224,7 @@ export const calculateTourPrice = (params: TourPriceCalculateParams): Promise<To
  * 检查批次可用性
  * @param params 可用性检查参数
  */
-export const checkTourAvailability = (params: TourAvailabilityCheckParams): Promise<TourAvailabilityCheckResponse> => {
+export const checkTourAvailability = (params: TourAvailabilityCheckParams): Promise<ResponseData<TourAvailabilityCheckResponse>> => {
   return request({
     url: '/api/v1/tours/check-availability',
     method: 'POST',
@@ -236,7 +236,7 @@ export const checkTourAvailability = (params: TourAvailabilityCheckParams): Prom
  * 获取热门旅游线路
  * @param limit 返回数量
  */
-export const getHotTours = (limit: number = 10): Promise<Tour[]> => {
+export const getHotTours = (limit: number = 10): Promise<ResponseData<Tour[]>> => {
   return request({
     url: '/api/v1/tours/hot',
     method: 'GET',
@@ -248,7 +248,7 @@ export const getHotTours = (limit: number = 10): Promise<Tour[]> => {
  * 获取推荐旅游线路
  * @param limit 返回数量
  */
-export const getRecommendedTours = (limit: number = 10): Promise<Tour[]> => {
+export const getRecommendedTours = (limit: number = 10): Promise<ResponseData<Tour[]>> => {
   return request({
     url: '/api/v1/tours/recommended',
     method: 'GET',
@@ -260,7 +260,7 @@ export const getRecommendedTours = (limit: number = 10): Promise<Tour[]> => {
  * 获取批次列表
  * @param tourId 线路ID
  */
-export const getTourBatches = (tourId: string): Promise<TourBatch[]> => {
+export const getTourBatches = (tourId: string): Promise<ResponseData<TourBatch[]>> => {
   return request({
     url: `/api/v1/tours/${tourId}/batches`,
     method: 'GET'

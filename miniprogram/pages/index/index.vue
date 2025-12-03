@@ -40,7 +40,7 @@
 
 		<!-- 推广卡片 -->
 		<view class="promo-cards">
-			<view class="promo-card" @tap="navigateTo('/pages/special-offer/list')">
+			<view class="promo-card" @tap="navigateTo('/pages/coupon-mall/index')">
 				<view class="promo-content">
 					<text class="promo-title">特惠商城</text>
 					<text class="promo-desc">特惠套餐</text>

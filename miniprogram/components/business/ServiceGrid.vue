@@ -22,19 +22,27 @@ interface Service {
 	name: string;
 	icon: string;
 	path: string;
+	isTabBar?: boolean; // 标识是否为 tabBar 页面
 }
 
 const services = ref<Service[]>([
 	{ id: '1', name: '特惠租车', icon: 'gift', path: '/pages/special-offer/list' },
-	{ id: '2', name: '营地预定', icon: 'location', path: '/pages/campsite/list' },
-	{ id: '3', name: '房车旅游', icon: 'map', path: '/pages/tour/list' },
-	{ id: '4', name: '托管中心', icon: 'home', path: '/pages/hosting/index' }
+	{ id: '3', name: '托管中心', icon: 'home', path: '/pages/hosting/index', isTabBar: true },
+	{ id: '4', name: '营地预订', icon: 'location', path: '/pages/campsite/list' },
+	{ id: '5', name: '房车旅游', icon: 'map', path: '/pages/tour/list' }
 ]);
 
 const handleServiceClick = (service: Service) => {
-	uni.navigateTo({
-		url: service.path
-	});
+	// tabBar 页面使用 switchTab，普通页面使用 navigateTo
+	if (service.isTabBar) {
+		uni.switchTab({
+			url: service.path
+		});
+	} else {
+		uni.navigateTo({
+			url: service.path
+		});
+	}
 };
 </script>
 
@@ -42,7 +50,7 @@ const handleServiceClick = (service: Service) => {
 .service-grid {
 	display: grid;
 	grid-template-columns: repeat(4, 1fr);
-	gap: 24rpx;
+	gap: 32rpx 24rpx;
 	padding: 32rpx 24rpx;
 	background-color: #FFFFFF;
 	margin-bottom: 24rpx;

@@ -2,8 +2,8 @@
 	<view class="coupons-page">
 		<!-- 顶部Tab切换 -->
 		<view class="tabs-header">
-			<view 
-				v-for="(tab, index) in tabs" 
+			<view
+				v-for="(tab, index) in tabs"
 				:key="index"
 				class="tab-item"
 				:class="{ 'active': currentTab === index }"
@@ -11,6 +11,30 @@
 			>
 				<text class="tab-text">{{ tab.name }}</text>
 				<text v-if="tab.count > 0" class="tab-count">({{ tab.count }})</text>
+			</view>
+		</view>
+
+		<!-- 使用统计卡片 -->
+		<view class="stats-card">
+			<view class="stats-header">
+				<uni-icons type="chart-filled" size="20" color="#FF9F29"></uni-icons>
+				<text class="stats-title">优惠券统计</text>
+			</view>
+			<view class="stats-content">
+				<view class="stat-item">
+					<text class="stat-value">{{ couponStats.totalSaved }}</text>
+					<text class="stat-label">累计节省(元)</text>
+				</view>
+				<view class="stat-divider"></view>
+				<view class="stat-item">
+					<text class="stat-value">{{ couponStats.usedCount }}</text>
+					<text class="stat-label">已使用(张)</text>
+				</view>
+				<view class="stat-divider"></view>
+				<view class="stat-item">
+					<text class="stat-value">{{ couponStats.availableCount }}</text>
+					<text class="stat-label">可用(张)</text>
+				</view>
 			</view>
 		</view>
 
@@ -24,12 +48,18 @@
 
 			<!-- 优惠券卡片 -->
 			<view v-else class="coupon-cards">
-				<view 
-					v-for="coupon in filteredCoupons" 
+				<view
+					v-for="coupon in filteredCoupons"
 					:key="coupon.id"
 					class="coupon-card"
-					:class="{ 'disabled': coupon.status !== 'available' }"
+					:class="{ 'disabled': coupon.status !== 'available', 'expiring-soon': isExpiringSoon(coupon) }"
 				>
+					<!-- 即将过期标签 -->
+					<view v-if="isExpiringSoon(coupon)" class="expiring-badge">
+						<uni-icons type="info-filled" size="14" color="#FF4D4F"></uni-icons>
+						<text class="badge-text">即将过期</text>
+					</view>
+
 					<view class="coupon-left">
 						<view class="coupon-amount">
 							<text class="amount-symbol">¥</text>
@@ -40,10 +70,13 @@
 					<view class="coupon-right">
 						<text class="coupon-name">{{ coupon.name }}</text>
 						<text class="coupon-desc">{{ coupon.description }}</text>
-						<text class="coupon-time">有效期:{{ formatDate(coupon.validFrom) }} - {{ formatDate(coupon.validTo) }}</text>
+						<view class="coupon-time-row">
+							<text class="coupon-time">有效期:{{ formatDate(coupon.validFrom) }} - {{ formatDate(coupon.validTo) }}</text>
+							<text v-if="isExpiringSoon(coupon)" class="expiring-days">还剩{{ getDaysUntilExpiry(coupon) }}天</text>
+						</view>
 						<view class="coupon-actions">
-							<button 
-								v-if="coupon.status === 'available'" 
+							<button
+								v-if="coupon.status === 'available'"
 								class="use-btn"
 								@tap="useCoupon(coupon)"
 							>
@@ -134,7 +167,7 @@ const coupons = ref([
 	},
 	{
 		id: 'CP004',
-		name: '已使用券',
+		name: '已使用券1',
 		description: '已使用的优惠券示例',
 		type: 'discount',
 		amount: 100,
@@ -145,6 +178,50 @@ const coupons = ref([
 	},
 	{
 		id: 'CP005',
+		name: '已使用券2',
+		description: '已使用的优惠券示例',
+		type: 'discount',
+		amount: 200,
+		minAmount: 1000,
+		validFrom: '2025-10-01',
+		validTo: '2025-11-30',
+		status: 'used'
+	},
+	{
+		id: 'CP006',
+		name: '已使用券3',
+		description: '已使用的优惠券示例',
+		type: 'discount',
+		amount: 150,
+		minAmount: 800,
+		validFrom: '2025-10-01',
+		validTo: '2025-11-30',
+		status: 'used'
+	},
+	{
+		id: 'CP007',
+		name: '已使用券4',
+		description: '已使用的优惠券示例',
+		type: 'discount',
+		amount: 80,
+		minAmount: 400,
+		validFrom: '2025-10-01',
+		validTo: '2025-11-30',
+		status: 'used'
+	},
+	{
+		id: 'CP008',
+		name: '已使用券5',
+		description: '已使用的优惠券示例',
+		type: 'discount',
+		amount: 120,
+		minAmount: 600,
+		validFrom: '2025-10-01',
+		validTo: '2025-11-30',
+		status: 'used'
+	},
+	{
+		id: 'CP009',
 		name: '已过期券',
 		description: '已过期的优惠券示例',
 		type: 'discount',
@@ -155,6 +232,21 @@ const coupons = ref([
 		status: 'expired'
 	}
 ]);
+
+// 优惠券统计数据
+const couponStats = computed(() => {
+	const usedCoupons = coupons.value.filter(c => c.status === 'used');
+	const availableCoupons = coupons.value.filter(c => c.status === 'available');
+
+	// 计算累计节省金额
+	const totalSaved = usedCoupons.reduce((sum, coupon) => sum + coupon.amount, 0);
+
+	return {
+		totalSaved: totalSaved,
+		usedCount: usedCoupons.length,
+		availableCount: availableCoupons.length
+	};
+});
 
 // 过滤优惠券
 const filteredCoupons = computed(() => {
@@ -210,17 +302,37 @@ const confirmExchange = () => {
 		});
 		return;
 	}
-	
+
 	// Mock兑换成功
 	uni.showToast({
 		title: '兑换成功!',
 		icon: 'success'
 	});
-	
+
 	closeExchangeDialog();
-	
+
 	// 刷新数据
 	tabs.value[0].count++;
+};
+
+// 判断优惠券是否即将过期（7天内）
+const isExpiringSoon = (coupon: any) => {
+	if (coupon.status !== 'available') return false;
+
+	const today = new Date();
+	const expiryDate = new Date(coupon.validTo);
+	const daysUntilExpiry = Math.ceil((expiryDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+
+	return daysUntilExpiry > 0 && daysUntilExpiry <= 7;
+};
+
+// 获取距离过期的天数
+const getDaysUntilExpiry = (coupon: any) => {
+	const today = new Date();
+	const expiryDate = new Date(coupon.validTo);
+	const daysUntilExpiry = Math.ceil((expiryDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+
+	return Math.max(0, daysUntilExpiry);
 };
 </script>
 
@@ -281,6 +393,58 @@ const confirmExchange = () => {
 	}
 }
 
+// 统计卡片
+.stats-card {
+	margin: 24rpx;
+	padding: 32rpx;
+	background: linear-gradient(135deg, #FFF9F0 0%, #FFF5E6 100%);
+	border-radius: 24rpx;
+	border: 2rpx solid #FFE8CC;
+}
+
+.stats-header {
+	display: flex;
+	align-items: center;
+	gap: 8rpx;
+	margin-bottom: 24rpx;
+}
+
+.stats-title {
+	font-size: 30rpx;
+	font-weight: bold;
+	color: #FF9F29;
+}
+
+.stats-content {
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+}
+
+.stat-item {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 12rpx;
+}
+
+.stat-value {
+	font-size: 48rpx;
+	font-weight: bold;
+	color: #FF9F29;
+}
+
+.stat-label {
+	font-size: 24rpx;
+	color: #999;
+}
+
+.stat-divider {
+	width: 2rpx;
+	height: 80rpx;
+	background-color: #FFE8CC;
+}
+
 // 优惠券列表
 .coupons-list {
 	flex: 1;
@@ -305,6 +469,7 @@ const confirmExchange = () => {
 // 优惠券卡片
 .coupon-cards {
 	.coupon-card {
+		position: relative;
 		background-color: #FFFFFF;
 		border-radius: 16rpx;
 		margin-bottom: 24rpx;
@@ -314,6 +479,10 @@ const confirmExchange = () => {
 
 		&.disabled {
 			opacity: 0.6;
+		}
+
+		&.expiring-soon {
+			border: 2rpx solid #FF4D4F;
 		}
 
 		.coupon-left {
@@ -361,6 +530,26 @@ const confirmExchange = () => {
 			}
 		}
 
+		// 即将过期标签
+		.expiring-badge {
+			position: absolute;
+			top: 16rpx;
+			right: 16rpx;
+			display: flex;
+			align-items: center;
+			gap: 4rpx;
+			padding: 6rpx 12rpx;
+			background-color: rgba(255, 77, 79, 0.1);
+			border-radius: 8rpx;
+			z-index: 1;
+
+			.badge-text {
+				font-size: 20rpx;
+				color: #FF4D4F;
+				font-weight: 500;
+			}
+		}
+
 		.coupon-right {
 			flex: 1;
 			padding: 24rpx;
@@ -380,10 +569,22 @@ const confirmExchange = () => {
 				margin-bottom: 16rpx;
 			}
 
+			.coupon-time-row {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				margin-bottom: 16rpx;
+			}
+
 			.coupon-time {
 				font-size: 22rpx;
 				color: rgba(0, 0, 0, 0.4);
-				margin-bottom: 16rpx;
+			}
+
+			.expiring-days {
+				font-size: 22rpx;
+				color: #FF4D4F;
+				font-weight: 500;
 			}
 
 			.coupon-actions {

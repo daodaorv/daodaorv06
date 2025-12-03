@@ -2123,6 +2123,296 @@
 
 **联调结果**: 待测试
 
+### 6.3 获取优惠券列表（特惠商城）
+**接口**: `GET /api/v1/coupons`
+
+**开发状态**: 🟡 已开发（使用Mock）
+
+**前端Mock位置**: `miniprogram/api/coupon.ts:14`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**查询参数**:
+- category: string (可选) - 优惠券分类：all/discount/rate/daily/service/special
+- page: number (可选) - 页码，默认1
+- pageSize: number (可选) - 每页数量，默认10
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "list": [
+      {
+        "id": "string",
+        "name": "string",
+        "type": "discount|rate|daily|service|special",
+        "amount": 50,
+        "condition": "满500元可用",
+        "scope": "房车租赁",
+        "validity": "领取后30天有效",
+        "price": 0,
+        "pointsPrice": 0,
+        "stock": 1000,
+        "claimed": false,
+        "soldOut": false,
+        "isNew": true,
+        "isVip": false,
+        "isHot": true
+      }
+    ],
+    "total": 100,
+    "page": 1,
+    "pageSize": 10
+  }
+}
+```
+
+### 6.4 获取优惠券详情
+**接口**: `GET /api/v1/coupons/{id}`
+
+**开发状态**: 🟡 已开发（使用Mock）
+
+**前端Mock位置**: `miniprogram/api/coupon.ts:26`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "id": "string",
+    "name": "房车租赁50元满减券",
+    "type": "discount",
+    "amount": 50,
+    "condition": "满500元可用",
+    "scope": "适用于所有房车租赁订单",
+    "validity": "领取后30天内有效",
+    "description": "本优惠券适用于所有房车租赁订单...",
+    "stackRule": "不可与其他满减券叠加使用",
+    "specialLimit": "仅限新用户首单使用",
+    "price": 0,
+    "pointsPrice": 0,
+    "stock": 1000,
+    "limitPerUser": 1
+  }
+}
+```
+
+### 6.5 获取我的优惠券列表
+**接口**: `GET /api/v1/coupons/my`
+
+**开发状态**: 🟡 已开发（使用Mock）
+
+**前端Mock位置**: `miniprogram/api/coupon.ts:68`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**查询参数**:
+- status: string (可选) - 优惠券状态：unused/used/expired
+- page: number (可选) - 页码
+- pageSize: number (可选) - 每页数量
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "list": [
+      {
+        "id": "string",
+        "name": "string",
+        "type": "discount",
+        "amount": 50,
+        "condition": "满500元可用",
+        "scope": "房车租赁",
+        "expiryDate": "2025-12-05",
+        "usedDate": "2025-11-20",
+        "orderId": "ORD202511200001"
+      }
+    ],
+    "total": 10,
+    "page": 1,
+    "pageSize": 10
+  }
+}
+```
+
+### 6.6 分享优惠券
+**接口**: `POST /api/v1/coupons/{id}/share`
+
+**开发状态**: 🟡 已开发（使用Mock）
+
+**前端Mock位置**: `miniprogram/api/coupon.ts:80`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "shareUrl": "https://example.com/coupon/123",
+    "shareCode": "SHARE123"
+  }
+}
+```
+
+### 6.7 获取优惠券分类
+**接口**: `GET /api/v1/coupons/categories`
+
+**开发状态**: 🟡 已开发（使用Mock）
+
+**前端Mock位置**: `miniprogram/api/coupon.ts:46`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": [
+    { "id": "all", "name": "全部" },
+    { "id": "discount", "name": "满减券" },
+    { "id": "rate", "name": "折扣券" },
+    { "id": "daily", "name": "日租抵扣" },
+    { "id": "service", "name": "服务费减免" },
+    { "id": "special", "name": "特殊券种" }
+  ]
+}
+```
+
+### 6.8 检查优惠券可用性
+**接口**: `POST /api/v1/coupons/check-availability`
+
+**开发状态**: 🟡 已开发（使用Mock）
+
+**前端Mock位置**: `miniprogram/api/coupon.ts:54`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**请求参数**:
+- couponId: string (必填) - 优惠券ID
+- orderId: string (可选) - 订单ID
+- orderAmount: number (可选) - 订单金额
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "available": true,
+    "reason": ""
+  }
+}
+```
+
+### 6.9 生成邀请码
+**接口**: `POST /api/v1/invite/generate-code`
+
+**开发状态**: 🟡 已开发（使用Mock）
+
+**前端Mock位置**: `miniprogram/api/coupon.ts:89`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "inviteCode": "DAODAO2025",
+    "inviteUrl": "https://example.com/invite/DAODAO2025"
+  }
+}
+```
+
+### 6.10 获取邀请统计
+**接口**: `GET /api/v1/invite/stats`
+
+**开发状态**: 🟡 已开发（使用Mock）
+
+**前端Mock位置**: `miniprogram/api/coupon.ts:96`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "totalInvites": 12,
+    "successfulRegistrations": 8,
+    "completedFirstOrders": 5,
+    "totalRewards": 15,
+    "inviteCode": "DAODAO2025"
+  }
+}
+```
+
+### 6.11 获取邀请记录
+**接口**: `GET /api/v1/invite/records`
+
+**开发状态**: 🟡 已开发（使用Mock）
+
+**前端Mock位置**: `miniprogram/api/coupon.ts:104`
+
+**后端实现位置**: 待开发
+
+**联调结果**: 待测试
+
+**查询参数**:
+- page: number (可选) - 页码
+- pageSize: number (可选) - 每页数量
+
+**响应格式**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "list": [
+      {
+        "id": "string",
+        "username": "张三",
+        "avatar": "string",
+        "registerTime": "2025-11-28 10:30:00",
+        "status": "registered|first_order_completed",
+        "rewardStatus": "pending|granted"
+      }
+    ],
+    "total": 10,
+    "page": 1,
+    "pageSize": 10
+  }
+}
+```
+
 ---
 
 ## 7. 门店模块 (stores)

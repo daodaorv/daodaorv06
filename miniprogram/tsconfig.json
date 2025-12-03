@@ -27,6 +27,12 @@
         "noImplicitThis": true,
         "alwaysStrict": true
     },
+    "vueCompilerOptions": {
+        "target": 3,
+        "experimentalRuntimeMode": "runtime-uni-app",
+        "nativeTags": ["block", "component", "template", "slot"],
+        "globalTypesPath": "./types/global.d.ts"
+    },
     "include": [
         "**/*.ts",
         "**/*.d.ts",

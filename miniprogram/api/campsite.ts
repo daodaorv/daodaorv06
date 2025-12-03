@@ -2,7 +2,7 @@
  * 营地预订相关API
  */
 
-import { request } from '@/utils/request';
+import { request, type ResponseData } from '@/utils/request';
 
 /**
  * 营地列表查询参数
@@ -181,7 +181,7 @@ export interface AvailabilityCheckResponse {
  * 获取营地列表
  * @param params 查询参数
  */
-export const getCampsiteList = (params: CampsiteListParams): Promise<CampsiteListResponse> => {
+export const getCampsiteList = (params: CampsiteListParams): Promise<ResponseData<CampsiteListResponse>> => {
   return request({
     url: '/api/v1/campsites',
     method: 'GET',
@@ -193,7 +193,7 @@ export const getCampsiteList = (params: CampsiteListParams): Promise<CampsiteLis
  * 获取营地详情
  * @param id 营地ID
  */
-export const getCampsiteDetail = (id: string): Promise<CampsiteDetail> => {
+export const getCampsiteDetail = (id: string): Promise<ResponseData<CampsiteDetail>> => {
   return request({
     url: `/api/v1/campsites/${id}`,
     method: 'GET'
@@ -204,7 +204,7 @@ export const getCampsiteDetail = (id: string): Promise<CampsiteDetail> => {
  * 创建营地预订订单
  * @param params 预订参数
  */
-export const createCampsiteBooking = (params: CampsiteBookingParams): Promise<CampsiteBookingResponse> => {
+export const createCampsiteBooking = (params: CampsiteBookingParams): Promise<ResponseData<CampsiteBookingResponse>> => {
   return request({
     url: '/api/v1/campsites/bookings',
     method: 'POST',
@@ -216,7 +216,7 @@ export const createCampsiteBooking = (params: CampsiteBookingParams): Promise<Ca
  * 计算营地预订价格
  * @param params 价格计算参数
  */
-export const calculateCampsitePrice = (params: PriceCalculateParams): Promise<PriceCalculateResponse> => {
+export const calculateCampsitePrice = (params: PriceCalculateParams): Promise<ResponseData<PriceCalculateResponse>> => {
   return request({
     url: '/api/v1/campsites/calculate-price',
     method: 'POST',
@@ -228,7 +228,7 @@ export const calculateCampsitePrice = (params: PriceCalculateParams): Promise<Pr
  * 检查营位可用性
  * @param params 可用性检查参数
  */
-export const checkCampsiteAvailability = (params: AvailabilityCheckParams): Promise<AvailabilityCheckResponse> => {
+export const checkCampsiteAvailability = (params: AvailabilityCheckParams): Promise<ResponseData<AvailabilityCheckResponse>> => {
   return request({
     url: '/api/v1/campsites/check-availability',
     method: 'POST',
@@ -246,7 +246,7 @@ export const getCampsiteReviews = (
   campsiteId: string,
   page: number = 1,
   pageSize: number = 10
-): Promise<{ list: Review[]; total: number; hasMore: boolean }> => {
+): Promise<ResponseData<{ list: Review[]; total: number; hasMore: boolean }>> => {
   return request({
     url: `/api/v1/campsites/${campsiteId}/reviews`,
     method: 'GET',
@@ -266,7 +266,7 @@ export const getNearbyCampsites = (
   longitude: number,
   radius: number = 50,
   limit: number = 10
-): Promise<Campsite[]> => {
+): Promise<ResponseData<Campsite[]>> => {
   return request({
     url: '/api/v1/campsites/nearby',
     method: 'GET',
@@ -278,7 +278,7 @@ export const getNearbyCampsites = (
  * 获取热门营地
  * @param limit 返回数量
  */
-export const getHotCampsites = (limit: number = 10): Promise<Campsite[]> => {
+export const getHotCampsites = (limit: number = 10): Promise<ResponseData<Campsite[]>> => {
   return request({
     url: '/api/v1/campsites/hot',
     method: 'GET',

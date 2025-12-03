@@ -25,9 +25,66 @@
 						<view class="duration-info">
 							<text class="duration-label">租期</text>
 							<text class="duration-value">{{ rentalDays }}天</text>
+							<text v-if="isSpecialOffer" class="duration-tip">(固定租期)</text>
 						</view>
 					</view>
-					
+
+					<!-- 特惠套餐：取车时间选择 -->
+					<view v-if="isSpecialOffer" class="pickup-time-selector">
+						<view class="selector-title">
+							<uni-icons type="calendar" size="18" color="#FF9F29"></uni-icons>
+							<text class="title-text">选择取车时间</text>
+						</view>
+						<view class="selector-tip">
+							<uni-icons type="info" size="14" color="#999"></uni-icons>
+							<text class="tip-text">可选时间段：{{ formatDateRange(specialOfferData.availableTimeRange) }}</text>
+						</view>
+
+						<!-- 日期选择 -->
+						<picker
+							mode="date"
+							:value="orderData.pickupDate"
+							:start="specialOfferData.availableTimeRange.start"
+							:end="specialOfferData.availableTimeRange.end"
+							@change="onDateChange"
+						>
+							<view class="time-picker-row">
+								<view class="picker-label">
+									<uni-icons type="calendar" size="16" color="#666"></uni-icons>
+									<text class="label-text">取车日期</text>
+								</view>
+								<view class="picker-value">
+									<text class="value-text">{{ orderData.pickupDate }}</text>
+									<uni-icons type="right" size="16" color="#999"></uni-icons>
+								</view>
+							</view>
+						</picker>
+
+						<!-- 时间选择 -->
+						<picker
+							mode="time"
+							:value="orderData.pickupTime"
+							@change="onTimeChange"
+						>
+							<view class="time-picker-row">
+								<view class="picker-label">
+									<uni-icons type="clock" size="16" color="#666"></uni-icons>
+									<text class="label-text">取车时间</text>
+								</view>
+								<view class="picker-value">
+									<text class="value-text">{{ orderData.pickupTime }}</text>
+									<uni-icons type="right" size="16" color="#999"></uni-icons>
+								</view>
+							</view>
+						</picker>
+
+						<!-- 自动计算提示 -->
+						<view class="auto-calc-tip">
+							<uni-icons type="info-filled" size="16" color="#4CAF50"></uni-icons>
+							<text class="calc-tip-text">还车时间：{{ orderData.returnDate }} {{ orderData.returnTime }}</text>
+						</view>
+					</view>
+
 					<!-- 取还车时间线 -->
 					<view class="rental-timeline">
 						<!-- 取车信息 -->
@@ -39,6 +96,7 @@
 								<view class="timeline-header">
 									<uni-icons type="flag-filled" size="18" color="#4CAF50"></uni-icons>
 									<text class="timeline-title">取车</text>
+									<text v-if="isSpecialOffer" class="timeline-badge">固定门店</text>
 								</view>
 								<view class="timeline-detail">
 									<view class="detail-item">
@@ -52,7 +110,7 @@
 								</view>
 							</view>
 						</view>
-						
+
 						<!-- 还车信息 -->
 						<view class="timeline-item return">
 							<view class="timeline-dot">
@@ -62,6 +120,7 @@
 								<view class="timeline-header">
 									<uni-icons type="checkmarkempty" size="18" color="#FF9F29"></uni-icons>
 									<text class="timeline-title">还车</text>
+									<text v-if="isSpecialOffer" class="timeline-badge">固定门店</text>
 								</view>
 								<view class="timeline-detail">
 									<view class="detail-item">
@@ -75,6 +134,12 @@
 								</view>
 							</view>
 						</view>
+					</view>
+
+					<!-- 特惠套餐重要提示 -->
+					<view v-if="isSpecialOffer" class="special-notice">
+						<uni-icons type="info-filled" size="16" color="#FF9F29"></uni-icons>
+						<text class="notice-text">取车门店、还车门店、租期均为固定，不可更改。如需改变行程，订单将转为常规订单按原价计费。</text>
 					</view>
 				</view>
 			</view>
@@ -138,6 +203,11 @@
 						<uni-icons type="right" size="16" color="#999"></uni-icons>
 					</view>
 				</view>
+				<!-- 节省金额提示 -->
+				<view v-if="selectedCoupon" class="savings-tip">
+					<uni-icons type="checkmarkempty" size="16" color="#52C41A"></uni-icons>
+					<text class="savings-text">已为您节省 ¥{{ couponDiscount }}</text>
+				</view>
 			</view>
 
 			<!-- 价格明细 -->
@@ -186,8 +256,24 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, watch, onUnmounted } from 'vue';
 import { onLoad } from '@dcloudio/uni-app';
+
+// 订单类型
+const orderType = ref<'normal' | 'special-offer'>('normal');
+const isSpecialOffer = computed(() => orderType.value === 'special-offer');
+
+// 特惠套餐数据
+const specialOfferData = ref({
+	offerId: '',
+	fixedRentalDays: 5, // 固定租期（天）
+	packagePrice: 0, // 套餐价格
+	originalPrice: 0, // 原价
+	availableTimeRange: {
+		start: '2025-12-05',
+		end: '2025-12-30'
+	}
+});
 
 // 订单数据
 const orderData = ref({
@@ -240,6 +326,11 @@ const selectedCoupon = ref<any>(null);
 
 // 计算租赁天数
 const rentalDays = computed(() => {
+	if (isSpecialOffer.value) {
+		// 特惠套餐使用固定租期
+		return specialOfferData.value.fixedRentalDays;
+	}
+	// 常规订单计算租期
 	const pickup = new Date(orderData.value.pickupDate);
 	const returnDate = new Date(orderData.value.returnDate);
 	const days = Math.ceil((returnDate.getTime() - pickup.getTime()) / (1000 * 60 * 60 * 24));
@@ -248,6 +339,10 @@ const rentalDays = computed(() => {
 
 // 计算基础租金
 const basePrice = computed(() => {
+	if (isSpecialOffer.value) {
+		// 特惠套餐使用套餐价格
+		return specialOfferData.value.packagePrice;
+	}
 	return orderData.value.dailyPrice * rentalDays.value;
 });
 
@@ -278,12 +373,142 @@ const totalPrice = computed(() => {
 	return Math.max(total, 0);
 });
 
+// 自动计算还车时间（特惠套餐）
+const calculateReturnDateTime = () => {
+	if (!isSpecialOffer.value) return;
+
+	const pickupDateTime = new Date(`${orderData.value.pickupDate} ${orderData.value.pickupTime}`);
+	const returnDateTime = new Date(pickupDateTime.getTime() + specialOfferData.value.fixedRentalDays * 24 * 60 * 60 * 1000);
+
+	const year = returnDateTime.getFullYear();
+	const month = String(returnDateTime.getMonth() + 1).padStart(2, '0');
+	const day = String(returnDateTime.getDate()).padStart(2, '0');
+	const hours = String(returnDateTime.getHours()).padStart(2, '0');
+	const minutes = String(returnDateTime.getMinutes()).padStart(2, '0');
+
+	orderData.value.returnDate = `${year}-${month}-${day}`;
+	orderData.value.returnTime = `${hours}:${minutes}`;
+};
+
+// 监听取车日期和时间变化，自动计算还车时间
+watch([() => orderData.value.pickupDate, () => orderData.value.pickupTime], () => {
+	if (isSpecialOffer.value) {
+		calculateReturnDateTime();
+	}
+});
+
+// 格式化日期范围
+const formatDateRange = (range: { start: string; end: string }) => {
+	const formatDate = (dateStr: string) => {
+		const date = new Date(dateStr);
+		return `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日`;
+	};
+	return `${formatDate(range.start)} - ${formatDate(range.end)}`;
+};
+
+// 日期选择变化
+const onDateChange = (e: any) => {
+	orderData.value.pickupDate = e.detail.value;
+};
+
+// 时间选择变化
+const onTimeChange = (e: any) => {
+	orderData.value.pickupTime = e.detail.value;
+};
+
+// 加载特惠套餐数据
+const loadSpecialOfferData = async (offerId: string) => {
+	try {
+		uni.showLoading({ title: '加载中...' });
+
+		// TODO: 调用API加载特惠套餐详情
+		// const response = await getSpecialOfferDetail(offerId);
+
+		// Mock数据
+		const mockData = {
+			offerId: offerId,
+			fixedRentalDays: 5,
+			packagePrice: 1280,
+			originalPrice: 3400,
+			vehicle: {
+				name: '依维柯欧胜C型房车',
+				type: 'C型房车',
+				image: '/static/场景推荐2.jpg',
+				seats: 6,
+				beds: 4
+			},
+			pickupStore: {
+				name: '北京大新门店',
+				address: '北京市朝阳区大新路123号'
+			},
+			returnStore: {
+				name: '西安鼓楼门店',
+				address: '陕西省西安市碑林区鼓楼街88号'
+			},
+			availableTimeRange: {
+				start: '2025-12-05',
+				end: '2025-12-30'
+			}
+		};
+
+		// 更新特惠套餐数据
+		specialOfferData.value = {
+			offerId: mockData.offerId,
+			fixedRentalDays: mockData.fixedRentalDays,
+			packagePrice: mockData.packagePrice,
+			originalPrice: mockData.originalPrice,
+			availableTimeRange: mockData.availableTimeRange
+		};
+
+		// 更新订单数据
+		orderData.value.vehicleName = mockData.vehicle.name;
+		orderData.value.vehicleType = mockData.vehicle.type;
+		orderData.value.vehicleImage = mockData.vehicle.image;
+		orderData.value.seats = mockData.vehicle.seats;
+		orderData.value.beds = mockData.vehicle.beds;
+		orderData.value.pickupLocation = `${mockData.pickupStore.name} - ${mockData.pickupStore.address}`;
+		orderData.value.returnLocation = `${mockData.returnStore.name} - ${mockData.returnStore.address}`;
+
+		// 设置默认取车时间为可选时间段的第一天
+		orderData.value.pickupDate = mockData.availableTimeRange.start;
+		orderData.value.pickupTime = '09:00';
+
+		// 计算还车时间
+		calculateReturnDateTime();
+
+		uni.hideLoading();
+	} catch (error) {
+		console.error('加载特惠套餐失败:', error);
+		uni.hideLoading();
+		uni.showToast({
+			title: '加载失败',
+			icon: 'none'
+		});
+	}
+};
+
 onLoad((options: any) => {
-	if (options.vehicleId) {
+	// 判断订单类型
+	if (options.type === 'special-offer' && options.offerId) {
+		orderType.value = 'special-offer';
+		loadSpecialOfferData(options.offerId);
+	} else if (options.vehicleId) {
+		orderType.value = 'normal';
 		orderData.value.vehicleId = options.vehicleId;
 		// TODO: 根据vehicleId加载车辆信息
-		console.log('加载订单确认页:', options.vehicleId);
+		console.log('加载常规订单确认页:', options.vehicleId);
 	}
+
+	// 监听优惠券选择事件
+	uni.$on('couponSelected', (coupon: any) => {
+		selectedCoupon.value = coupon;
+		console.log('选中优惠券:', coupon);
+	});
+});
+
+// 页面卸载时移除监听
+onUnmounted(() => {
+	uni.$off('couponSelected');
 });
 
 const selectInsurance = (index: number) => {
@@ -295,22 +520,36 @@ const toggleService = (index: number) => {
 };
 
 const selectCoupon = () => {
-	// TODO: 打开优惠券选择页面
-	uni.showToast({
-		title: '优惠券功能开发中',
-		icon: 'none'
+	// 跳转到优惠券选择页面
+	uni.navigateTo({
+		url: `/pages/order/select-coupon?amount=${totalPrice.value}&selectedId=${selectedCoupon.value?.id || ''}`
 	});
 };
 
 const handleSubmit = () => {
+	// 特惠套餐验证取车时间
+	if (isSpecialOffer.value) {
+		const pickupDate = new Date(orderData.value.pickupDate);
+		const startDate = new Date(specialOfferData.value.availableTimeRange.start);
+		const endDate = new Date(specialOfferData.value.availableTimeRange.end);
+
+		if (pickupDate < startDate || pickupDate > endDate) {
+			uni.showToast({
+				title: '请选择有效的取车日期',
+				icon: 'none'
+			});
+			return;
+		}
+	}
+
 	// 模拟生成订单号
 	const orderNo = 'DD' + Date.now();
-	
+
 	uni.showLoading({ title: '提交中...' });
-	
+
 	setTimeout(() => {
 		uni.hideLoading();
-		
+
 		// 跳转到支付页面
 		uni.navigateTo({
 			url: `/pages/order/pay?orderNo=${orderNo}&amount=${totalPrice.value}`
@@ -432,6 +671,7 @@ const handleSubmit = () => {
 	display: flex;
 	align-items: baseline;
 	gap: 12rpx;
+	flex-wrap: wrap;
 }
 
 .duration-label {
@@ -445,11 +685,119 @@ const handleSubmit = () => {
 	color: #FF9F29;
 }
 
+.duration-tip {
+	font-size: 22rpx;
+	color: #999;
+	margin-left: 8rpx;
+}
+
+// 取车时间选择器（特惠套餐）
+.pickup-time-selector {
+	margin-top: 24rpx;
+	padding: 24rpx;
+	background: linear-gradient(135deg, #FFF9F0 0%, #FFFFFF 100%);
+	border-radius: 12rpx;
+	border: 2rpx solid #FFE8CC;
+}
+
+.selector-title {
+	display: flex;
+	align-items: center;
+	gap: 8rpx;
+	margin-bottom: 12rpx;
+}
+
+.title-text {
+	font-size: 28rpx;
+	font-weight: bold;
+	color: #333;
+}
+
+.selector-tip {
+	display: flex;
+	align-items: center;
+	gap: 8rpx;
+	margin-bottom: 20rpx;
+	padding: 12rpx;
+	background-color: rgba(255, 159, 41, 0.1);
+	border-radius: 8rpx;
+}
+
+.tip-text {
+	font-size: 24rpx;
+	color: #666;
+	line-height: 1.5;
+}
+
+.time-picker-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 20rpx;
+	margin-bottom: 12rpx;
+	background-color: #FFFFFF;
+	border-radius: 12rpx;
+	border: 1rpx solid #E0E0E0;
+	transition: all 0.3s ease;
+
+	&:active {
+		background-color: #F8F8F8;
+		border-color: #FF9F29;
+	}
+
+	&:last-of-type {
+		margin-bottom: 0;
+	}
+}
+
+.picker-label {
+	display: flex;
+	align-items: center;
+	gap: 8rpx;
+}
+
+.label-text {
+	font-size: 28rpx;
+	color: #666;
+}
+
+.picker-value {
+	display: flex;
+	align-items: center;
+	gap: 8rpx;
+}
+
+.value-text {
+	font-size: 28rpx;
+	color: #333;
+	font-weight: 500;
+}
+
+.auto-calc-tip {
+	display: flex;
+	align-items: flex-start;
+	gap: 8rpx;
+	margin-top: 16rpx;
+	padding: 12rpx;
+	background-color: rgba(76, 175, 80, 0.1);
+	border-radius: 8rpx;
+	border-left: 4rpx solid #4CAF50;
+}
+
+.calc-tip-text {
+	flex: 1;
+	font-size: 28rpx;
+	color: #333;
+	line-height: 1.5;
+	font-weight: 500;
+}
+
 // 时间线
 .rental-timeline {
 	display: flex;
 	flex-direction: column;
 	gap: 0;
+	margin-top: 24rpx;
 }
 
 .timeline-item {
@@ -521,6 +869,16 @@ const handleSubmit = () => {
 	color: #333;
 }
 
+.timeline-badge {
+	margin-left: 8rpx;
+	padding: 4rpx 12rpx;
+	font-size: 20rpx;
+	color: #FF9F29;
+	background-color: rgba(255, 159, 41, 0.1);
+	border-radius: 6rpx;
+	font-weight: 500;
+}
+
 .timeline-detail {
 	display: flex;
 	flex-direction: column;
@@ -538,6 +896,25 @@ const handleSubmit = () => {
 	font-size: 26rpx;
 	color: #666;
 	line-height: 1.5;
+}
+
+// 特惠套餐重要提示
+.special-notice {
+	display: flex;
+	align-items: flex-start;
+	gap: 8rpx;
+	margin-top: 24rpx;
+	padding: 16rpx;
+	background: linear-gradient(135deg, rgba(255, 159, 41, 0.1) 0%, rgba(255, 184, 77, 0.05) 100%);
+	border-radius: 12rpx;
+	border-left: 4rpx solid #FF9F29;
+}
+
+.notice-text {
+	flex: 1;
+	font-size: 24rpx;
+	color: #666;
+	line-height: 1.6;
 }
 
 // 保险方案
@@ -653,6 +1030,23 @@ const handleSubmit = () => {
 .coupon-text {
 	font-size: 28rpx;
 	color: #999;
+}
+
+.savings-tip {
+	display: flex;
+	align-items: center;
+	gap: 8rpx;
+	margin-top: 16rpx;
+	padding: 12rpx 16rpx;
+	background: linear-gradient(135deg, rgba(82, 196, 26, 0.1) 0%, rgba(82, 196, 26, 0.05) 100%);
+	border-radius: 8rpx;
+	border-left: 4rpx solid #52C41A;
+}
+
+.savings-text {
+	font-size: 26rpx;
+	color: #52C41A;
+	font-weight: 500;
 }
 
 // 价格明细

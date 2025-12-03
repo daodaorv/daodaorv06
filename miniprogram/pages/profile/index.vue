@@ -1,15 +1,17 @@
+<template>
+	<view class="profile-page">
 		<!-- 头部用户信息 -->
 		<view class="header-section" :style="{ paddingTop: headerPaddingTop + 'px' }" @tap="handleLogin">
 			<view class="user-card">
 				<view class="user-info-row">
 					<view class="avatar-wrapper">
-						<image 
-							class="avatar" 
-							:src="isLogin ? userInfo.avatar : '/static/default-avatar.png'" 
+						<image
+							class="avatar"
+							:src="isLogin ? userInfo.avatar : '/static/default-avatar.png'"
 							mode="aspectFill"
 						></image>
 						<view v-if="isLogin" class="vip-badge">
-							<uni-icons type="vip-filled" size="12" color="#8F5E1E"></uni-icons>
+							<uni-icons type="vip-filled" :size="12" :color="'#8F5E1E'"></uni-icons>
 						</view>
 					</view>
 					<view class="info-col">
@@ -22,18 +24,18 @@
 							<text class="sub-tip">登录后享受更多权益</text>
 						</view>
 					</view>
-					<uni-icons type="right" size="16" color="#999"></uni-icons>
+					<uni-icons type="right" :size="16" :color="'#999'"></uni-icons>
 				</view>
-				
+
 				<!-- 会员卡片 -->
 				<view class="vip-card-entry" v-if="isLogin">
 					<view class="vip-left">
-						<uni-icons type="vip-filled" size="20" color="#FFD700"></uni-icons>
+						<uni-icons type="vip-filled" :size="20" :color="'#FFD700'"></uni-icons>
 						<text class="vip-title">{{ userInfo.levelName }}</text>
 					</view>
 					<view class="vip-right">
 						<text class="vip-desc">查看权益</text>
-						<uni-icons type="right" size="12" color="#FFD700"></uni-icons>
+						<uni-icons type="right" :size="12" :color="'#FFD700'"></uni-icons>
 					</view>
 				</view>
 			</view>
@@ -51,41 +53,63 @@
 			<view class="status-grid">
 				<view class="status-item" @tap="navigateToOrders(1)">
 					<view class="icon-wrapper">
-						<uni-icons type="wallet" size="28" color="#666"></uni-icons>
+						<uni-icons type="wallet" :size="28" :color="'#666'"></uni-icons>
 						<view v-if="orderCounts.pendingPayment > 0" class="badge">{{ orderCounts.pendingPayment }}</view>
 					</view>
 					<text class="status-text">待付款</text>
 				</view>
 				<view class="status-item" @tap="navigateToOrders(2)">
 					<view class="icon-wrapper">
-						<uni-icons type="shop" size="28" color="#666"></uni-icons>
+						<uni-icons type="shop" :size="28" :color="'#666'"></uni-icons>
 						<view v-if="orderCounts.pendingConfirm > 0" class="badge">{{ orderCounts.pendingConfirm }}</view>
 					</view>
 					<text class="status-text">待门店确认</text>
 				</view>
 				<view class="status-item" @tap="navigateToOrders(3)">
 					<view class="icon-wrapper">
-						<uni-icons type="calendar" size="28" color="#666"></uni-icons>
+						<uni-icons type="calendar" :size="28" :color="'#666'"></uni-icons>
 						<view v-if="orderCounts.pendingPickup > 0" class="badge">{{ orderCounts.pendingPickup }}</view>
 					</view>
 					<text class="status-text">待取车</text>
 				</view>
 				<view class="status-item" @tap="navigateToOrders(4)">
 					<view class="icon-wrapper">
-						<uni-icons type="paperplane" size="28" color="#666"></uni-icons>
+						<uni-icons type="paperplane" :size="28" :color="'#666'"></uni-icons>
 						<view v-if="orderCounts.renting > 0" class="badge">{{ orderCounts.renting }}</view>
 					</view>
 					<text class="status-text">租赁中</text>
 				</view>
 			</view>
 		</view>
-		
-		<!-- ... (rest of the template) ... -->
+
+		<!-- 功能菜单 -->
+		<view class="menu-section">
+			<view
+				v-for="(item, index) in menuList"
+				:key="index"
+				class="menu-item"
+				@tap="handleMenuClick(item)"
+			>
+				<view class="menu-left">
+					<uni-icons :type="item.icon" :size="24" :color="item.iconColor"></uni-icons>
+					<text class="menu-name">{{ item.name }}</text>
+				</view>
+				<view class="menu-right">
+					<text v-if="item.badge" class="menu-badge">{{ item.badge }}</text>
+					<text v-if="item.amount" class="menu-amount">¥{{ item.amount }}</text>
+					<uni-icons type="right" :size="16" :color="'#999'"></uni-icons>
+				</view>
+			</view>
+		</view>
+
+		<!-- 退出登录按钮 -->
+		<view v-if="isLogin" class="logout-btn-box">
+			<button class="logout-btn" @tap="handleLogout">退出登录</button>
+		</view>
 	</view>
 </template>
 
 <script setup lang="ts">
-// ... (script content remains mostly same, just ensuring no conflicts)
 import { ref, computed } from 'vue';
 import { onShow } from '@dcloudio/uni-app';
 import { isLoggedIn, getCurrentUser, logout as logoutUtil } from '@/utils/auth';
@@ -100,7 +124,7 @@ getStatusBarHeight();
 
 // 计算顶部安全区域高度(状态栏高度)
 const headerPaddingTop = computed(() => {
-	return statusBarHeight.value; // Remove extra padding, handle in CSS
+	return statusBarHeight.value;
 });
 
 // 登录状态
@@ -287,7 +311,7 @@ const handleMenuClick = (item: any) => {
 .avatar-wrapper {
 	position: relative;
 	margin-right: 24rpx;
-	
+
 	.avatar {
 		width: 120rpx;
 		height: 120rpx;
@@ -295,7 +319,7 @@ const handleMenuClick = (item: any) => {
 		border: 4rpx solid rgba(255,255,255,0.8);
 		background-color: #FFF;
 	}
-	
+
 	.vip-badge {
 		position: absolute;
 		bottom: 0;
@@ -351,24 +375,24 @@ const handleMenuClick = (item: any) => {
 	align-items: center;
 	justify-content: space-between;
 	margin-top: 20rpx;
-	
+
 	.vip-left {
 		display: flex;
 		align-items: center;
 		gap: 12rpx;
-		
+
 		.vip-title {
 			color: #FFD700;
 			font-size: 28rpx;
 			font-weight: 600;
 		}
 	}
-	
+
 	.vip-right {
 		display: flex;
 		align-items: center;
 		gap: 4rpx;
-		
+
 		.vip-desc {
 			color: #FFD700;
 			font-size: 24rpx;
@@ -392,13 +416,13 @@ const handleMenuClick = (item: any) => {
 	align-items: center;
 	justify-content: space-between;
 	margin-bottom: 32rpx;
-	
+
 	.title {
 		font-size: 32rpx;
 		font-weight: bold;
 		color: #333;
 	}
-	
+
 	.more {
 		display: flex;
 		align-items: center;
@@ -419,7 +443,7 @@ const handleMenuClick = (item: any) => {
 	flex-direction: column;
 	align-items: center;
 	gap: 16rpx;
-	
+
 	&:active {
 		transform: scale(0.96);
 	}
@@ -472,11 +496,11 @@ const handleMenuClick = (item: any) => {
 	justify-content: space-between;
 	padding: 36rpx 0;
 	border-bottom: 1rpx solid #F5F5F5;
-	
+
 	&:last-child {
 		border-bottom: none;
 	}
-	
+
 	&:active {
 		opacity: 0.7;
 	}
@@ -494,6 +518,32 @@ const handleMenuClick = (item: any) => {
 	font-weight: 500;
 }
 
+.menu-right {
+	display: flex;
+	align-items: center;
+	gap: 12rpx;
+}
+
+.menu-badge {
+	background-color: #FF4D4F;
+	color: #FFFFFF;
+	font-size: 20rpx;
+	min-width: 32rpx;
+	height: 32rpx;
+	border-radius: 16rpx;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0 8rpx;
+	font-weight: bold;
+}
+
+.menu-amount {
+	font-size: 28rpx;
+	color: #FF9F29;
+	font-weight: 600;
+}
+
 .logout-btn-box {
 	margin: 64rpx 32rpx;
 }
@@ -507,11 +557,11 @@ const handleMenuClick = (item: any) => {
 	line-height: 96rpx;
 	font-weight: bold;
 	box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.05);
-	
+
 	&::after {
 		border: none;
 	}
-	
+
 	&:active {
 		background-color: #FAFAFA;
 	}

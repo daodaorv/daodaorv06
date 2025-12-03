@@ -55,6 +55,7 @@
             "urlCheck" : false
         },
         "usingComponents" : true,
+        "lazyCodeLoading" : "requiredComponents",
         "permission" : {
             "scope.userLocation" : {
                 "desc" : "仅用于为您提供附近门店服务"

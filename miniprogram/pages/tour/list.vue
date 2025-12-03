@@ -27,7 +27,7 @@
     >
       <!-- 空状态 -->
       <view v-if="tours.length === 0 && !loading" class="empty-state">
-        <image class="empty-image" src="/static/empty-tour.png" mode="aspectFit"></image>
+        <uni-icons type="map" size="80" color="#DDD"></uni-icons>
         <text class="empty-text">暂无旅游线路</text>
         <text class="empty-tip">敬请期待更多精彩线路</text>
       </view>

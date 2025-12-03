@@ -22,6 +22,9 @@ $uni-text-color-secondary: #666666;
 $uni-text-color-placeholder: #999999;
 $uni-text-color-inverse: #FFFFFF;
 
+/* 兼容性别名（用于第三方组件） */
+$uni-text-color-grey: $uni-text-color-secondary;
+
 /* 边框颜色 */
 $uni-border-color: #E9ECEF;
 $uni-border-color-light: #F0F0F0;

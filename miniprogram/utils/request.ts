@@ -19,7 +19,7 @@ interface RequestOptions {
     header?: any;
 }
 
-interface ResponseData<T = any> {
+export interface ResponseData<T = any> {
     code: number;
     message: string;
     data: T;

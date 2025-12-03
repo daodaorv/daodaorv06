@@ -39,8 +39,9 @@
     >
       <!-- 空状态 -->
       <view v-if="campsites.length === 0 && !loading" class="empty-state">
-        <image class="empty-image" src="/static/empty-campsite.png" mode="aspectFit"></image>
+        <uni-icons type="location" size="80" color="#DDD"></uni-icons>
         <text class="empty-text">暂无营地信息</text>
+        <text class="empty-tip">敬请期待更多营地</text>
       </view>
 
       <!-- 营地卡片 -->
