@@ -15,9 +15,9 @@
 
 <style lang="scss">
 	/*每个页面公共css */
-	/* 必须先导入 uni.scss 变量，再导入 uview-ui */
+	/* 必须先导入 uni.scss 变量，再导入 uview-plus */
 	@import '@/uni.scss';
-	@import 'uview-ui/index.scss';
+	@import 'uview-plus/index.scss';
 	/* #ifndef APP-NVUE */
 	@import '@/static/customicons.css';
 	// 设置整个项目的背景色
