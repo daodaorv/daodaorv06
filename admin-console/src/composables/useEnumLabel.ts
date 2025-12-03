@@ -10,7 +10,8 @@ import {
   PAYMENT_STATUS_MAP,
   PAYMENT_METHOD_MAP,
   GENDER_MAP,
-  BLACKLIST_REASON_MAP
+  BLACKLIST_REASON_MAP,
+  VEHICLE_TYPE_MAP
 } from '@/constants/enums'
 
 /**
@@ -112,6 +113,13 @@ export function useEnumLabel() {
   }
 
   /**
+   * 获取车辆类型标签
+   */
+  const getVehicleTypeLabel = (type: string): string => {
+    return VEHICLE_TYPE_MAP[type] || type
+  }
+
+  /**
    * 通用枚举标签获取
    * @param value 枚举值
    * @param map 枚举映射对象
@@ -133,6 +141,7 @@ export function useEnumLabel() {
     getPaymentMethodLabel,
     getGenderLabel,
     getBlacklistReasonLabel,
+    getVehicleTypeLabel,
     getEnumLabel
   }
 }

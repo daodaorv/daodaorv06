@@ -32,7 +32,9 @@ import {
   LOG_TYPE_MAP,
   NOTIFICATION_TYPE_MAP,
   NOTIFICATION_STATUS_MAP,
-  BLACKLIST_REASON_MAP
+  BLACKLIST_REASON_MAP,
+  VEHICLE_TYPE_MAP,
+  STORE_MAP
 } from './enums'
 
 /**
@@ -194,6 +196,19 @@ export const NOTIFICATION_STATUS_OPTIONS = mapToOptions(NOTIFICATION_STATUS_MAP)
  * 黑名单原因选项
  */
 export const BLACKLIST_REASON_OPTIONS = mapToOptions(BLACKLIST_REASON_MAP)
+
+/**
+ * 车辆类型选项
+ */
+export const VEHICLE_TYPE_OPTIONS = mapToOptions(VEHICLE_TYPE_MAP)
+
+/**
+ * 门店选项
+ */
+export const STORE_OPTIONS: Option[] = Object.entries(STORE_MAP).map(([value, label]) => ({
+  label,
+  value: Number(value)
+}))
 
 /**
  * 是/否选项

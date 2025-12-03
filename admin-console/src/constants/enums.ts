@@ -296,3 +296,21 @@ export const BLACKLIST_REASON_MAP: Record<string, string> = {
   violation: '违规操作',
   other: '其他原因'
 } as const
+
+/**
+ * 车辆类型映射
+ */
+export const VEHICLE_TYPE_MAP: Record<string, string> = {
+  c_type: '自行式C型',
+  b_type: '自行式B型',
+  trailer: '拖挂式'
+} as const
+
+/**
+ * 门店映射（示例数据，实际应从后端获取）
+ */
+export const STORE_MAP: Record<number, string> = {
+  1: '北京朝阳店',
+  2: '上海浦东店',
+  3: '深圳南山店'
+} as const
