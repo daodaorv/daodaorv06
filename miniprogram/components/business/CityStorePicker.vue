@@ -1,5 +1,5 @@
 <template>
-	<u-popup v-model="show" mode="bottom" :closeable="false">
+	<u-popup :show="show" @close="close" mode="bottom" :closeable="false" :z-index="10075" :safe-area-inset-bottom="true">
 		<view class="picker-popup">
 			<!-- 顶部标题栏 -->
 			<view class="popup-header">

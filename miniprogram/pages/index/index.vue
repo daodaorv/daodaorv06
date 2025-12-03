@@ -233,7 +233,7 @@ const navigateTo = (url: string) => {
 	backdrop-filter: blur(10px);
 	position: sticky;
 	top: 0;
-	z-index: 100;
+	z-index: 99;
 	box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
 }
 

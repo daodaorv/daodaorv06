@@ -1,5 +1,5 @@
 <template>
-	<u-popup v-model="show" mode="bottom" :closeable="false">
+	<u-popup :show="show" @close="close" mode="bottom" :closeable="false" :z-index="10075" :safe-area-inset-bottom="true">
 		<view class="rent-date-picker">
 			<!-- 顶部标题栏 -->
 			<view class="popup-header">
@@ -220,11 +220,12 @@ const onTimeClick = (time: string) => {
 };
 
 const open = (pickupDate?: string, returnDate?: string, time?: string) => {
-	console.log('RentDatePicker open:', pickupDate, returnDate, time);
+	console.log('🔍 RentDatePicker open 被调用:', pickupDate, returnDate, time);
 	tempPickupDate.value = pickupDate || '';
 	tempReturnDate.value = returnDate || '';
 	tempTime.value = time || '10:00';
 	show.value = true;
+	console.log('🔍 show.value 已设置为:', show.value);
 };
 
 const close = () => {
@@ -261,10 +262,11 @@ defineExpose({ open, close });
 .rent-date-picker {
 	background-color: #FFFFFF;
 	border-radius: 32rpx 32rpx 0 0;
-	height: 85vh;
+	max-height: 85vh;
 	display: flex;
 	flex-direction: column;
 	padding-bottom: env(safe-area-inset-bottom);
+	overflow: hidden;
 }
 
 .popup-header {
@@ -273,23 +275,35 @@ defineExpose({ open, close });
 	justify-content: space-between;
 	padding: 32rpx;
 	border-bottom: 1rpx solid #EEE;
+	background-color: #FFFFFF;
+	position: sticky;
+	top: 0;
+	z-index: 100;
+	flex-shrink: 0;
+	min-height: 96rpx;
 }
 
 .popup-title {
 	font-size: 32rpx;
 	font-weight: bold;
 	color: #333;
+	flex: 1;
+	text-align: center;
 }
 
 .cancel-text {
 	font-size: 28rpx;
 	color: #999;
+	padding: 10rpx 20rpx;
+	cursor: pointer;
 }
 
 .confirm-text {
 	font-size: 28rpx;
 	color: $uni-color-primary;
 	font-weight: bold;
+	padding: 10rpx 20rpx;
+	cursor: pointer;
 }
 
 .picker-body {

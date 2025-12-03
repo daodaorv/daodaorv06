@@ -3,6 +3,20 @@
 		onLaunch: function() {
 			console.warn('当前组件仅支持 uni_modules 目录结构 ，请升级 HBuilderX 到 3.1.0 版本以上！')
 			console.log('App Launch')
+
+			// 添加字体加载检查
+			console.log('🔍 ========== uView Plus 字体配置检查 ==========');
+			uni.getSystemInfo({
+				success: (res) => {
+					console.log('🔍 当前平台:', res.platform);
+					console.log('🔍 微信版本:', res.version);
+					console.log('🔍 基础库版本:', res.SDKVersion);
+				}
+			});
+
+			// 检查字体文件是否存在
+			console.log('🔍 字体文件路径: /static/uicon-iconfont.ttf');
+			console.log('🔍 ========================================');
 		},
 		onShow: function() {
 			console.log('App Show')

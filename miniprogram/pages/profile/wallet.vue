@@ -55,7 +55,7 @@
 		</view>
 
 		<!-- 充值弹窗 -->
-		<u-popup v-model="showRechargePopup" mode="center" :closeable="true">
+		<u-popup :show="showRechargePopup" @close="closeRechargeDialog" mode="center" :closeable="true">
 			<view class="dialog">
 				<text class="dialog-title">充值</text>
 				<view class="amount-options">
@@ -83,7 +83,7 @@
 		</u-popup>
 
 		<!-- 提现弹窗 -->
-		<u-popup v-model="showWithdrawPopup" mode="center" :closeable="true">
+		<u-popup :show="showWithdrawPopup" @close="closeWithdrawDialog" mode="center" :closeable="true">
 			<view class="dialog">
 				<text class="dialog-title">提现</text>
 				<view class="withdraw-info">

@@ -219,27 +219,36 @@ const formatDate = (date: string) => {
 
 // Picker Handlers
 const openCityPicker = (target: 'pickup' | 'return') => {
+	console.log('🔍 openCityPicker 被调用', target);
+	console.log('🔍 cityStorePicker.value:', cityStorePicker.value);
+
 	currentPickerTarget.value = target;
 	pickerType.value = 'city';
 	pickerTitle.value = target === 'pickup' ? '选择取车城市' : '选择还车城市';
 	pickerData.value = cities;
 	currentSelectedId.value = target === 'pickup' ? pickupCityId.value : returnCityId.value;
 	cityStorePicker.value?.open();
+
+	console.log('🔍 cityStorePicker.open() 已调用');
 };
 
 const openStorePicker = (target: 'pickup' | 'return') => {
+	console.log('🔍 openStorePicker 被调用', target);
+
 	const cityId = target === 'pickup' ? pickupCityId.value : returnCityId.value;
 	if (!cityId) {
 		uni.showToast({ title: '请先选择城市', icon: 'none' });
 		return;
 	}
-	
+
 	currentPickerTarget.value = target;
 	pickerType.value = 'store';
 	pickerTitle.value = target === 'pickup' ? '选择取车门店' : '选择还车门店';
 	pickerData.value = (stores as any)[cityId] || [];
 	currentSelectedId.value = target === 'pickup' ? pickupStoreId.value : returnStoreId.value;
 	cityStorePicker.value?.open();
+
+	console.log('🔍 openStorePicker 完成');
 };
 
 const onPickerConfirm = (item: any) => {
@@ -270,8 +279,11 @@ const onPickerConfirm = (item: any) => {
 
 // Date Picker Handlers
 const openDatePicker = () => {
-	console.log('Opening Date Picker with:', pickupDate.value, returnDate.value, pickupTime.value);
+	console.log('🔍 openDatePicker 被调用');
+	console.log('🔍 rentDatePicker.value:', rentDatePicker.value);
+	console.log('🔍 当前日期数据:', pickupDate.value, returnDate.value, pickupTime.value);
 	rentDatePicker.value?.open(pickupDate.value, returnDate.value, pickupTime.value);
+	console.log('🔍 rentDatePicker.open() 已调用');
 };
 
 const onDateConfirm = (data: any) => {

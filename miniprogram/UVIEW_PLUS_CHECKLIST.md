@@ -75,7 +75,7 @@ $u-success: #4CAF50;
 **解决方案**:
 1. ✅ 已下载字体到本地：`miniprogram/static/uicon-iconfont.ttf` (55KB)
 
-2. ✅ **关键修改**：修改 `node_modules/uview-plus/libs/config/config.js:42`
+2. ✅ **关键修改 1**：修改 `node_modules/uview-plus/libs/config/config.js:42`
    ```javascript
    // 原始配置（在线字体）
    iconUrl: 'https://at.alicdn.com/t/font_2225171_8kdcwk4po24.ttf',
@@ -86,7 +86,21 @@ $u-success: #4CAF50;
 
    **说明**: 微信小程序使用 `uni.loadFontFace` API 加载字体，配置在 config.js 中
 
-3. ✅ 已修改 `node_modules/uview-plus/components/u-icon/u-icon.vue:169`（用于其他平台）
+3. ✅ **关键修改 2（最重要）**：修改 `node_modules/uview-plus/libs/config/config.js:57`
+   ```javascript
+   // 原始配置（默认不加载）
+   loadFontOnce: false,
+
+   // 修改后（启用字体加载）
+   loadFontOnce: true,
+   ```
+
+   **说明**:
+   - 🔥 **这是最关键的配置！** 根据 uView Plus 官方文档，默认不再自动加载字体
+   - 必须设置 `loadFontOnce: true` 才能启用字体加载
+   - 这就是图标显示为文字的根本原因
+
+4. ✅ 已修改 `node_modules/uview-plus/components/u-icon/u-icon.vue:169`（用于其他平台）
    ```scss
    // 原始配置（在线字体）
    src: url('https://at.alicdn.com/t/font_2225171_8kdcwk4po24.ttf') format('truetype');
@@ -98,11 +112,16 @@ $u-success: #4CAF50;
    **说明**: 此修改用于 APP、QQ 小程序等其他平台
 
 **⚠️ 重要提示**:
-- 每次执行 `npm install` 后需要重新修改以下两个文件：
-  1. `node_modules/uview-plus/libs/config/config.js` (第 42 行)
-  2. `node_modules/uview-plus/components/u-icon/u-icon.vue` (第 169 行)
-- 建议创建自动化脚本处理这些修改
+- 每次执行 `npm install` 后需要重新修改以下配置：
+  1. `node_modules/uview-plus/libs/config/config.js` (第 42 行 - iconUrl)
+  2. `node_modules/uview-plus/libs/config/config.js` (第 57 行 - loadFontOnce) 🔥 **最关键**
+  3. `node_modules/uview-plus/components/u-icon/u-icon.vue` (第 169 行)
+- ✅ 已创建自动化脚本：`npm run fix-font` 或 `npm install` 自动执行
 - 真机环境建议使用在线字体（CDN 更快）
+
+**📚 官方文档参考**:
+- [uView Plus Icon 组件文档](https://uview-plus.jiangruyi.com/components/icon.html)
+- 官方说明：微信开发者工具中的字体加载失败提示可以忽略（微信已知问题）
 
 ## 🔍 已解决的问题
 

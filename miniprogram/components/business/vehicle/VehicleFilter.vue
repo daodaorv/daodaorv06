@@ -40,7 +40,7 @@
 		</view>
 
 		<!-- 筛选弹窗 -->
-		<u-popup v-model="showPopup" mode="top" @close="onPopupClose">
+		<u-popup :show="showPopup" @close="onPopupClose" mode="top">
 			<view class="filter-popup-content">
 				<!-- 车型筛选 -->
 				<view v-if="activeFilter === 'type'" class="filter-options">

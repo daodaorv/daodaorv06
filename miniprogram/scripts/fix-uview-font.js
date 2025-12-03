@@ -22,6 +22,11 @@ const CONFIG = {
           search: /iconUrl:\s*['"]https:\/\/at\.alicdn\.com\/t\/font_2225171_8kdcwk4po24\.ttf['"]/,
           replace: `iconUrl: '/static/uicon-iconfont.ttf'`,
           description: '修改 config.js 中的 iconUrl 配置'
+        },
+        {
+          search: /loadFontOnce:\s*false/,
+          replace: `loadFontOnce: true`,
+          description: '启用 loadFontOnce 配置（关键：确保字体加载）'
         }
       ]
     },

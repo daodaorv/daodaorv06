@@ -1,5 +1,5 @@
 <template>
-	<u-popup v-model="show" mode="center" :closeable="true" @close="handleClose">
+	<u-popup :show="show" @close="handleClose" mode="center" :closeable="true">
 		<view class="dialog-container">
 			<view class="dialog-header">
 				<text class="dialog-title">{{ title }}</text>
