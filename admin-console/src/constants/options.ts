@@ -30,6 +30,8 @@ import {
   TOUR_DIFFICULTY_MAP,
   PERMISSION_TYPE_MAP,
   LOG_TYPE_MAP,
+  LOG_MODULE_MAP,
+  LOG_ACTION_MAP,
   NOTIFICATION_TYPE_MAP,
   NOTIFICATION_STATUS_MAP,
   BLACKLIST_REASON_MAP,
@@ -181,6 +183,16 @@ export const PERMISSION_TYPE_OPTIONS = mapToOptions(PERMISSION_TYPE_MAP)
  * 日志类型选项
  */
 export const LOG_TYPE_OPTIONS = mapToOptions(LOG_TYPE_MAP)
+
+/**
+ * 日志模块选项
+ */
+export const LOG_MODULE_OPTIONS = mapToOptions(LOG_MODULE_MAP)
+
+/**
+ * 日志操作类型选项
+ */
+export const LOG_ACTION_OPTIONS = mapToOptions(LOG_ACTION_MAP)
 
 /**
  * 通知类型选项

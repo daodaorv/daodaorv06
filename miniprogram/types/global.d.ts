@@ -1,25 +1,11 @@
+// @ts-nocheck
 export {};
 
-// uni-app 全局类型声明
-declare global {
-	const uni: UniApp.Uni;
-	const wx: WechatMiniprogram.Wx;
-	const getCurrentPages: () => any[];
-	const getApp: () => any;
-
-	// Vue 3 编译器宏
-	const defineProps: typeof import('vue')['defineProps'];
-	const defineEmits: typeof import('vue')['defineEmits'];
-	const defineExpose: typeof import('vue')['defineExpose'];
-	const withDefaults: typeof import('vue')['withDefaults'];
-}
-
-declare module 'vue' {
+; declare module 'vue' {
 	export interface GlobalComponents { }
 	export interface GlobalDirectives { }
 }
-
-declare global {
+; declare global {
 	var __VLS_PROPS_FALLBACK: Record<string, unknown>;
 
 	const __VLS_directiveBindingRestFields: { instance: null, oldValue: null, modifiers: any, dir: any };

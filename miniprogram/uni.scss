@@ -59,6 +59,9 @@ $uni-shadow-lg: 0 8rpx 24rpx rgba(0, 0, 0, 0.12);
 /* uView Plus 主题变量配置 */
 /* ============================================ */
 
+/* 导入 uView Plus 主题文件（包含所有变量和 mixin） */
+@import 'uview-plus/theme.scss';
+
 /* uView Plus 主题色配置 - 映射到叨叨房车主题色 */
 $u-primary: #FF9F29;
 $u-success: #4CAF50;

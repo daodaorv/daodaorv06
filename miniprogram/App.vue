@@ -14,19 +14,19 @@
 </script>
 
 <style lang="scss">
-	/*每个页面公共css */
-	/* 必须先导入 uni.scss 变量，再导入 uview-plus */
-	@import '@/uni.scss';
-	@import 'uview-plus/index.scss';
+	/* 按照 uview-plus 官方文档要求，第一行导入 uview-plus 样式 */
+	@import "uview-plus/index.scss";
+
 	/* #ifndef APP-NVUE */
 	@import '@/static/customicons.css';
+
 	// 设置整个项目的背景色
 	page {
 		background-color: #F5F7FA;
 		font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Segoe UI, Arial, Roboto, 'PingFang SC', 'miui', 'Hiragino Sans GB', 'Microsoft Yahei', sans-serif;
 	}
-
 	/* #endif */
+
 	.example-info {
 		font-size: 14px;
 		color: #333;

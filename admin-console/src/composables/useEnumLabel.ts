@@ -12,7 +12,9 @@ import {
   GENDER_MAP,
   BLACKLIST_REASON_MAP,
   VEHICLE_TYPE_MAP,
-  VIOLATION_STATUS_MAP
+  VIOLATION_STATUS_MAP,
+  LOG_MODULE_MAP,
+  LOG_ACTION_MAP
 } from '@/constants/enums'
 
 /**
@@ -128,6 +130,22 @@ export function useEnumLabel() {
   }
 
   /**
+   * 获取日志模块标签
+   */
+  const getLogModuleLabel = (module?: string): string => {
+    if (!module) return ''
+    return LOG_MODULE_MAP[module] || module
+  }
+
+  /**
+   * 获取日志操作类型标签
+   */
+  const getLogActionLabel = (action?: string): string => {
+    if (!action) return ''
+    return LOG_ACTION_MAP[action] || action
+  }
+
+  /**
    * 通用枚举标签获取
    * @param value 枚举值
    * @param map 枚举映射对象
@@ -151,6 +169,8 @@ export function useEnumLabel() {
     getBlacklistReasonLabel,
     getVehicleTypeLabel,
     getViolationStatusLabel,
+    getLogModuleLabel,
+    getLogActionLabel,
     getEnumLabel
   }
 }

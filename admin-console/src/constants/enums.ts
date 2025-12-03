@@ -270,6 +270,34 @@ export const LOG_TYPE_MAP: Record<string, string> = {
 } as const
 
 /**
+ * 日志模块映射
+ */
+export const LOG_MODULE_MAP: Record<string, string> = {
+  user: '用户管理',
+  vehicle: '车辆管理',
+  order: '订单管理',
+  payment: '支付管理',
+  role: '角色管理',
+  permission: '权限管理',
+  system: '系统管理',
+  backup: '备份管理'
+} as const
+
+/**
+ * 日志操作类型映射
+ */
+export const LOG_ACTION_MAP: Record<string, string> = {
+  create: '创建',
+  update: '更新',
+  delete: '删除',
+  query: '查询',
+  export: '导出',
+  import: '导入',
+  login: '登录',
+  logout: '登出'
+} as const
+
+/**
  * 通知类型映射
  */
 export const NOTIFICATION_TYPE_MAP: Record<string, string> = {
