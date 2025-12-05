@@ -39,7 +39,7 @@
     >
       <!-- 空状态 -->
       <view v-if="campsites.length === 0 && !loading" class="empty-state">
-        <u-icon name="location" size="80" color="#DDD"></u-icon>
+        <u-icon name="map" size="80" color="#DDD"></u-icon>
         <text class="empty-text">暂无营地信息</text>
         <text class="empty-tip">敬请期待更多营地</text>
       </view>
@@ -75,7 +75,7 @@
             </view>
 
             <view class="location-info">
-              <u-icon name="location" size="14" color="#999"></u-icon>
+              <u-icon name="map" size="14" color="#999"></u-icon>
               <text class="distance">距离{{ item.distance }}km</text>
             </view>
 

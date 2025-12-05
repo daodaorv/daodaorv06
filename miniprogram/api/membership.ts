@@ -156,7 +156,7 @@ export const mockGetMembershipInfo = (): Promise<MembershipInfo> => {
             id: 'benefit_001',
             name: '租车95折',
             description: '房车租赁享受95折优惠',
-            icon: 'discount',
+            icon: 'coupon',
             type: 'DISCOUNT',
             value: '95%'
           },
@@ -164,14 +164,14 @@ export const mockGetMembershipInfo = (): Promise<MembershipInfo> => {
             id: 'benefit_002',
             name: '免费取消',
             description: '取车前24小时内免费取消',
-            icon: 'cancel',
+            icon: 'close-circle',
             type: 'PRIVILEGE'
           },
           {
             id: 'benefit_003',
             name: '专属客服',
             description: '专属客服优先响应',
-            icon: 'service',
+            icon: 'server-fill',
             type: 'SERVICE'
           },
           {
@@ -206,7 +206,7 @@ export const mockGetMembershipPackages = (): Promise<MembershipPackage[]> => {
               id: 'benefit_001',
               name: '租车95折',
               description: '房车租赁享受95折优惠（特惠套餐除外）',
-              icon: 'discount',
+              icon: 'coupon',
               type: 'DISCOUNT',
               value: '95%'
             },
@@ -214,14 +214,14 @@ export const mockGetMembershipPackages = (): Promise<MembershipPackage[]> => {
               id: 'benefit_002',
               name: '免费取消',
               description: '取车前24小时内免费取消订单',
-              icon: 'cancel',
+              icon: 'close-circle',
               type: 'PRIVILEGE'
             },
             {
               id: 'benefit_003',
               name: '专属客服',
               description: '专属客服通道，优先响应',
-              icon: 'service',
+              icon: 'server-fill',
               type: 'SERVICE'
             },
             {
@@ -235,14 +235,14 @@ export const mockGetMembershipPackages = (): Promise<MembershipPackage[]> => {
               id: 'benefit_005',
               name: '积分翻倍',
               description: '消费积分双倍返还',
-              icon: 'points',
+              icon: 'integral',
               type: 'PRIVILEGE'
             },
             {
               id: 'benefit_006',
               name: '优先取车',
               description: '门店取车享受优先服务',
-              icon: 'priority',
+              icon: 'arrow-upward',
               type: 'SERVICE'
             }
           ]

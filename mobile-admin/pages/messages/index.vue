@@ -195,8 +195,12 @@ export default {
             read: msg.isRead
           }))
         }
-      } catch (error) {
-        console.error('加载消息失败:', error)
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          console.error('加载消息失败:', error.message)
+        } else {
+          console.error('加载消息失败:', String(error))
+        }
         uni.showToast({
           title: '加载失败，请重试',
           icon: 'none'
@@ -212,8 +216,12 @@ export default {
         this.messageTabs[0].unread = counts.system
         this.messageTabs[1].unread = counts.order
         this.messageTabs[2].unread = counts.ticket
-      } catch (error) {
-        console.error('加载未读数失败:', error)
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          console.error('加载未读数失败:', error.message)
+        } else {
+          console.error('加载未读数失败:', String(error))
+        }
       }
     },
 
@@ -238,8 +246,12 @@ export default {
           content: message.content,
           showCancel: false
         })
-      } catch (error) {
-        console.error('标记已读失败:', error)
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          console.error('标记已读失败:', error.message)
+        } else {
+          console.error('标记已读失败:', String(error))
+        }
       }
     },
 
@@ -256,8 +268,12 @@ export default {
         uni.navigateTo({
           url: `/pages/orders/detail?id=${message.orderId}`
         })
-      } catch (error) {
-        console.error('标记已读失败:', error)
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          console.error('标记已读失败:', error.message)
+        } else {
+          console.error('标记已读失败:', String(error))
+        }
         // 即使标记失败也允许跳转
         uni.navigateTo({
           url: `/pages/orders/detail?id=${message.orderId}`
@@ -279,8 +295,12 @@ export default {
           title: '工单功能开发中',
           icon: 'none'
         })
-      } catch (error) {
-        console.error('标记已读失败:', error)
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          console.error('标记已读失败:', error.message)
+        } else {
+          console.error('标记已读失败:', String(error))
+        }
       }
     }
   }

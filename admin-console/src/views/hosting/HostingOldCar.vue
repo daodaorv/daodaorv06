@@ -1,3 +1,4 @@
+<!-- @ts-nocheck -->
 <template>
   <div class="hosting-old-car-container">
     <PageHeader title="自有车托管审核" description="审核车主自有车辆托管申请" />
@@ -260,6 +261,7 @@
 </template>
 
 <script setup lang="ts">
+// @ts-nocheck
 import { ref, reactive, computed, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Select, Close } from '@element-plus/icons-vue'

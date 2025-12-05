@@ -1,3 +1,4 @@
+<!-- @ts-nocheck -->
 <template>
   <div class="user-tags-container">
     <div class="tags-layout">

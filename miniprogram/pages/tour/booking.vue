@@ -1,6 +1,6 @@
-<template>
+﻿<template>
   <view class="tour-booking">
-    <!-- 线路信息卡片 -->
+    <!-- 绾胯矾淇℃伅鍗＄墖 -->
     <view class="tour-card">
       <view class="tour-header">
         <text class="tour-title">{{ tourInfo.title }}</text>
@@ -8,26 +8,26 @@
       <view class="tour-meta">
         <view class="meta-item">
           <u-icon name="calendar" size="14" color="#999"></u-icon>
-          <text class="meta-text">{{ tourInfo.duration }}天{{ tourInfo.duration - 1 }}晚</text>
+          <text class="meta-text">{{ tourInfo.duration }}澶﹞{ tourInfo.duration - 1 }}鏅x/text>
         </view>
         <view class="meta-item">
           <u-icon name="flag" size="14" color="#999"></u-icon>
-          <text class="meta-text">出发日期：{{ formatDate(batchInfo.departureDate) }}</text>
+          <text class="meta-text">鍑哄彂鏃ユ湡锛歿{ formatDate(batchInfo.departureDate) }}</text>
         </view>
       </view>
     </view>
 
-    <!-- 参团人员信息 -->
+    <!-- 鍙傚洟浜哄憳淇℃伅 -->
     <view class="form-section">
       <view class="section-title">
-        <text class="title-text">参团人员</text>
-        <text class="title-tip">（至少1人）</text>
+        <text class="title-text">鍙傚洟浜哄憳</text>
+        <text class="title-tip">锛堣嚦灏x浜猴級</text>
       </view>
 
-      <!-- 成人数量 -->
+      <!-- 鎴愪汉鏁伴噺 -->
       <view class="form-item">
         <view class="item-label">
-          <text class="label-text">成人</text>
+          <text class="label-text">鎴愪汉</text>
           <text class="required">*</text>
         </view>
         <view class="item-value">
@@ -35,67 +35,67 @@
             <button class="stepper-btn" @tap="decreaseAdults" :disabled="bookingForm.adults <= 1">
               <u-icon name="minus" size="16" color="#666"></u-icon>
             </button>
-            <text class="stepper-value">{{ bookingForm.adults }}人</text>
+            <text class="stepper-value">{{ bookingForm.adults }}浜x/text>
             <button class="stepper-btn" @tap="increaseAdults" :disabled="totalPeople >= maxPeople">
               <u-icon name="plus" size="16" color="#666"></u-icon>
             </button>
           </view>
-          <text class="price-text">¥{{ tourInfo.pricePerPerson }}/人</text>
+          <text class="price-text">楼{{ tourInfo.pricePerPerson }}/浜x/text>
         </view>
       </view>
 
-      <!-- 儿童数量 -->
+      <!-- 鍎跨鏁伴噺 -->
       <view class="form-item">
         <view class="item-label">
-          <text class="label-text">儿童</text>
-          <text class="label-tip">（12岁以下）</text>
+          <text class="label-text">鍎跨</text>
+          <text class="label-tip">锛x2宀佷互涓嬶級</text>
         </view>
         <view class="item-value">
           <view class="stepper">
             <button class="stepper-btn" @tap="decreaseChildren" :disabled="bookingForm.children <= 0">
               <u-icon name="minus" size="16" color="#666"></u-icon>
             </button>
-            <text class="stepper-value">{{ bookingForm.children }}人</text>
+            <text class="stepper-value">{{ bookingForm.children }}浜x/text>
             <button class="stepper-btn" @tap="increaseChildren" :disabled="totalPeople >= maxPeople">
               <u-icon name="plus" size="16" color="#666"></u-icon>
             </button>
           </view>
-          <text class="price-text">¥{{ tourInfo.childPrice }}/人</text>
+          <text class="price-text">楼{{ tourInfo.childPrice }}/浜x/text>
         </view>
       </view>
 
-      <!-- 人数提示 -->
+      <!-- 浜烘暟鎻愮ず -->
       <view class="people-tip">
-        <text class="tip-text">当前{{ totalPeople }}人，成团需{{ tourInfo.minPeople }}-{{ tourInfo.maxPeople }}人</text>
+        <text class="tip-text">褰撳墠{{ totalPeople }}浜猴紝鎴愬洟闇€{{ tourInfo.minPeople }}-{{ tourInfo.maxPeople }}浜x/text>
       </view>
     </view>
 
-    <!-- 联系人信息 -->
+    <!-- 鑱旂郴浜轰俊鎭x-->
     <view class="form-section">
       <view class="section-title">
-        <text class="title-text">联系人信息</text>
+        <text class="title-text">鑱旂郴浜轰俊鎭x/text>
       </view>
 
-      <!-- 姓名 -->
+      <!-- 濮撳悕 -->
       <view class="form-item">
         <view class="item-label">
-          <text class="label-text">姓名</text>
+          <text class="label-text">濮撳悕</text>
           <text class="required">*</text>
         </view>
         <view class="item-value">
           <input
             class="input-field"
             v-model="bookingForm.contactName"
-            placeholder="请输入联系人姓名"
+            placeholder="璇疯緭鍏ヨ仈绯讳汉濮撳悕"
             placeholder-class="input-placeholder"
           />
         </view>
       </view>
 
-      <!-- 手机号 -->
+      <!-- 鎵嬫満鍙x-->
       <view class="form-item">
         <view class="item-label">
-          <text class="label-text">手机号</text>
+          <text class="label-text">鎵嬫満鍙x/text>
           <text class="required">*</text>
         </view>
         <view class="item-value">
@@ -104,16 +104,16 @@
             v-model="bookingForm.contactPhone"
             name="number"
             maxlength="11"
-            placeholder="请输入手机号"
+            placeholder="璇疯緭鍏ユ墜鏈哄彿"
             placeholder-class="input-placeholder"
           />
         </view>
       </view>
 
-      <!-- 身份证号 -->
+      <!-- 韬唤璇佸彿 -->
       <view class="form-item">
         <view class="item-label">
-          <text class="label-text">身份证号</text>
+          <text class="label-text">韬唤璇佸彿</text>
           <text class="required">*</text>
         </view>
         <view class="item-value">
@@ -121,32 +121,32 @@
             class="input-field"
             v-model="bookingForm.idCard"
             maxlength="18"
-            placeholder="请输入身份证号"
+            placeholder="璇疯緭鍏ヨ韩浠借瘉鍙x
             placeholder-class="input-placeholder"
           />
         </view>
       </view>
 
-      <!-- 紧急联系人 -->
+      <!-- 绱ф€ヨ仈绯讳汉 -->
       <view class="form-item">
         <view class="item-label">
-          <text class="label-text">紧急联系人</text>
+          <text class="label-text">绱ф€ヨ仈绯讳汉</text>
           <text class="required">*</text>
         </view>
         <view class="item-value">
           <input
             class="input-field"
             v-model="bookingForm.emergencyContact"
-            placeholder="请输入紧急联系人姓名"
+            placeholder="璇疯緭鍏ョ揣鎬ヨ仈绯讳汉濮撳悕"
             placeholder-class="input-placeholder"
           />
         </view>
       </view>
 
-      <!-- 紧急联系电话 -->
+      <!-- 绱ф€ヨ仈绯荤數璇x-->
       <view class="form-item">
         <view class="item-label">
-          <text class="label-text">紧急联系电话</text>
+          <text class="label-text">绱ф€ヨ仈绯荤數璇x/text>
           <text class="required">*</text>
         </view>
         <view class="item-value">
@@ -155,22 +155,22 @@
             v-model="bookingForm.emergencyPhone"
             name="number"
             maxlength="11"
-            placeholder="请输入紧急联系电话"
+            placeholder="璇疯緭鍏ョ揣鎬ヨ仈绯荤數璇x
             placeholder-class="input-placeholder"
           />
         </view>
       </view>
 
-      <!-- 备注 -->
+      <!-- 澶囨敞 -->
       <view class="form-item textarea-item">
         <view class="item-label">
-          <text class="label-text">备注</text>
+          <text class="label-text">澶囨敞</text>
         </view>
         <view class="item-value full-width">
           <textarea
             class="textarea-field"
             v-model="bookingForm.remark"
-            placeholder="请输入特殊需求或备注信息（选填）"
+            placeholder="璇疯緭鍏ョ壒娈婇渶姹傛垨澶囨敞淇℃伅锛堥€夊～锛x
             placeholder-class="input-placeholder"
             maxlength="200"
           />
@@ -179,14 +179,14 @@
       </view>
     </view>
 
-    <!-- 预订须知 -->
+    <!-- 棰勮椤荤煡 -->
     <view class="notice-section">
       <view class="section-title">
-        <text class="title-text">预订须知</text>
+        <text class="title-text">棰勮椤荤煡</text>
       </view>
       <view class="notice-list">
         <view class="notice-item" v-for="(notice, index) in bookingNotices" :key="index">
-          <text class="notice-dot">•</text>
+          <text class="notice-dot">鈥x/text>
           <text class="notice-text">{{ notice }}</text>
         </view>
       </view>
@@ -194,52 +194,52 @@
         <checkbox-group @change="onAgreementChange">
           <label class="agreement-label">
             <checkbox value="agree" :checked="agreed" color="#FF9F29" />
-            <text class="agreement-text">我已阅读并同意</text>
-            <text class="agreement-link" @tap.stop="viewAgreement">《旅游服务协议》</text>
+            <text class="agreement-text">鎴戝凡闃呰骞跺悓鎰x/text>
+            <text class="agreement-link" @tap.stop="viewAgreement">銆婃梾娓告湇鍔″崗璁€x/text>
           </label>
         </checkbox-group>
       </view>
     </view>
 
-    <!-- 价格明细 -->
+    <!-- 浠锋牸鏄庣粏 -->
     <view class="price-section">
       <view class="section-title">
-        <text class="title-text">价格明细</text>
+        <text class="title-text">浠锋牸鏄庣粏</text>
       </view>
       <view class="price-list">
         <view class="price-item">
-          <text class="price-label">成人费用</text>
-          <text class="price-value">¥{{ tourInfo.pricePerPerson }} × {{ bookingForm.adults }}人</text>
-          <text class="price-amount">¥{{ adultFee }}</text>
+          <text class="price-label">鎴愪汉璐圭敤</text>
+          <text class="price-value">楼{{ tourInfo.pricePerPerson }} 脳 {{ bookingForm.adults }}浜x/text>
+          <text class="price-amount">楼{{ adultFee }}</text>
         </view>
         <view class="price-item" v-if="bookingForm.children > 0">
-          <text class="price-label">儿童费用</text>
-          <text class="price-value">¥{{ tourInfo.childPrice }} × {{ bookingForm.children }}人</text>
-          <text class="price-amount">¥{{ childFee }}</text>
+          <text class="price-label">鍎跨璐圭敤</text>
+          <text class="price-value">楼{{ tourInfo.childPrice }} 脳 {{ bookingForm.children }}浜x/text>
+          <text class="price-amount">楼{{ childFee }}</text>
         </view>
         <view class="price-item">
-          <text class="price-label">保险费用</text>
-          <text class="price-value">¥{{ insuranceFee }}/人 × {{ totalPeople }}人</text>
-          <text class="price-amount">¥{{ totalInsuranceFee }}</text>
+          <text class="price-label">淇濋櫓璐圭敤</text>
+          <text class="price-value">楼{{ insuranceFee }}/浜x脳 {{ totalPeople }}浜x/text>
+          <text class="price-amount">楼{{ totalInsuranceFee }}</text>
         </view>
         <view class="price-item total">
-          <text class="price-label">合计</text>
-          <text class="price-amount highlight">¥{{ totalPrice }}</text>
+          <text class="price-label">鍚堣</text>
+          <text class="price-amount highlight">楼{{ totalPrice }}</text>
         </view>
       </view>
     </view>
 
-    <!-- 底部操作栏 -->
+    <!-- 搴曢儴鎿嶄綔鏍x-->
     <view class="bottom-bar">
       <view class="bar-left">
-        <text class="bar-label">总计：</text>
+        <text class="bar-label">鎬昏锛x/text>
         <view class="bar-price">
-          <text class="bar-symbol">¥</text>
+          <text class="bar-symbol">楼</text>
           <text class="bar-amount">{{ totalPrice }}</text>
         </view>
       </view>
-      <button class="submit-btn" @tap="submitBooking" :disabled="!canSubmit">
-        提交预订
+      <button class="submit-btn" @tap="submitBooking" :disabled="!canSubmit || submitting" :loading="submitting">
+        鎻愪氦棰勮
       </button>
     </view>
   </view>
@@ -248,8 +248,9 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { onLoad } from '@dcloudio/uni-app';
+import { createTourBooking, type TourBookingParams, type TourBookingResponse } from '@/api/tour';
 
-// 获取路由参数
+// 鑾峰彇璺敱鍙傛暟
 const tourId = ref('');
 const batchId = ref('');
 
@@ -259,7 +260,7 @@ onLoad((options: any) => {
   loadBookingData();
 });
 
-// 线路信息
+// 绾胯矾淇℃伅
 const tourInfo = ref<any>({
   id: '',
   title: '',
@@ -270,7 +271,7 @@ const tourInfo = ref<any>({
   childPrice: 0
 });
 
-// 批次信息
+// 鎵规淇℃伅
 const batchInfo = ref<any>({
   id: '',
   departureDate: '',
@@ -278,7 +279,7 @@ const batchInfo = ref<any>({
   maxPeople: 0
 });
 
-// 预订表单
+// 棰勮琛ㄥ崟
 const bookingForm = ref({
   adults: 1,
   children: 0,
@@ -290,53 +291,51 @@ const bookingForm = ref({
   remark: ''
 });
 
-// 是否同意协议
+const submitting = ref(false);
+
+// 鏄惁鍚屾剰鍗忚
 const agreed = ref(false);
 
-// 保险费用（每人）
+// 淇濋櫓璐圭敤锛堟瘡浜猴級
 const insuranceFee = ref(50);
 
-// 预订须知
+// 棰勮椤荤煡
 const bookingNotices = ref([
-  '本线路为成团产品，最少5人成团，出发前7天确认是否成团',
-  '高原地区，请提前做好身体准备，有高血压、心脏病等疾病者不宜参加',
-  '请携带身份证、驾驶证等有效证件',
-  '儿童价格适用于12岁以下，不占床位',
-  '行程中如遇天气、路况等不可抗力因素，领队有权调整行程',
-  '建议购买高原旅游保险'
+  '鏈嚎璺负鎴愬洟浜у搧锛屾渶灏x浜烘垚鍥紝鍑哄彂鍓x澶╃‘璁ゆ槸鍚︽垚鍥x,
+  '楂樺師鍦板尯锛岃鎻愬墠鍋氬ソ韬綋鍑嗗锛屾湁楂樿鍘嬨€佸績鑴忕梾绛夌柧鐥呰€呬笉瀹滃弬鍔x,
+  '璇锋惡甯﹁韩浠借瘉銆侀┚椹惰瘉绛夋湁鏁堣瘉浠x,
+  '鍎跨浠锋牸閫傜敤浜x2宀佷互涓嬶紝涓嶅崰搴婁綅',
+  '琛岀▼涓閬囧ぉ姘斻€佽矾鍐电瓑涓嶅彲鎶楀姏鍥犵礌锛岄闃熸湁鏉冭皟鏁磋绋x,
+  '寤鸿璐拱楂樺師鏃呮父淇濋櫓'
 ]);
 
-// 最大人数限制
-const maxPeople = computed(() => {
+// 鏈€澶т汉鏁伴檺鍒xconst maxPeople = computed(() => {
   return batchInfo.value.maxPeople - batchInfo.value.currentPeople;
 });
 
-// 总人数
-const totalPeople = computed(() => {
+// 鎬讳汉鏁xconst totalPeople = computed(() => {
   return bookingForm.value.adults + bookingForm.value.children;
 });
 
-// 成人费用
+// 鎴愪汉璐圭敤
 const adultFee = computed(() => {
   return tourInfo.value.pricePerPerson * bookingForm.value.adults;
 });
 
-// 儿童费用
+// 鍎跨璐圭敤
 const childFee = computed(() => {
   return tourInfo.value.childPrice * bookingForm.value.children;
 });
 
-// 总保险费用
-const totalInsuranceFee = computed(() => {
+// 鎬讳繚闄╄垂鐢xconst totalInsuranceFee = computed(() => {
   return insuranceFee.value * totalPeople.value;
 });
 
-// 总价格
-const totalPrice = computed(() => {
+// 鎬讳环鏍xconst totalPrice = computed(() => {
   return adultFee.value + childFee.value + totalInsuranceFee.value;
 });
 
-// 是否可以提交
+// 鏄惁鍙互鎻愪氦
 const canSubmit = computed(() => {
   return (
     bookingForm.value.adults >= 1 &&
@@ -350,15 +349,15 @@ const canSubmit = computed(() => {
   );
 });
 
-// 加载预订数据
+// 鍔犺浇棰勮鏁版嵁
 const loadBookingData = async () => {
   try {
-    uni.showLoading({ title: '加载中...' });
+    uni.showLoading({ title: '鍔犺浇涓x..' });
 
-    // Mock数据
+    // Mock鏁版嵁
     const mockTour = {
       id: tourId.value,
-      title: '川西秘境·稻城亚丁房车深度游',
+      title: '宸濊タ绉樺路绋诲煄浜氫竵鎴胯溅娣卞害娓x,
       duration: 7,
       minPeople: 5,
       maxPeople: 12,
@@ -377,9 +376,9 @@ const loadBookingData = async () => {
     batchInfo.value = mockBatch;
 
   } catch (error) {
-    console.error('加载预订数据失败:', error);
+    console.error('鍔犺浇棰勮鏁版嵁澶辫触:', error);
     uni.showToast({
-      title: '加载失败',
+      title: '鍔犺浇澶辫触',
       icon: 'none'
     });
   } finally {
@@ -387,74 +386,73 @@ const loadBookingData = async () => {
   }
 };
 
-// 格式化日期
-const formatDate = (dateStr: string) => {
+// 鏍煎紡鍖栨棩鏈xconst formatDate = (dateStr: string) => {
   const date = new Date(dateStr);
-  return `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日`;
+  return `${date.getFullYear()}骞x{date.getMonth() + 1}鏈x{date.getDate()}鏃;
 };
 
-// 增加成人数量
+// 澧炲姞鎴愪汉鏁伴噺
 const increaseAdults = () => {
   if (totalPeople.value < maxPeople.value) {
     bookingForm.value.adults++;
   }
 };
 
-// 减少成人数量
+// 鍑忓皯鎴愪汉鏁伴噺
 const decreaseAdults = () => {
   if (bookingForm.value.adults > 1) {
     bookingForm.value.adults--;
   }
 };
 
-// 增加儿童数量
+// 澧炲姞鍎跨鏁伴噺
 const increaseChildren = () => {
   if (totalPeople.value < maxPeople.value) {
     bookingForm.value.children++;
   }
 };
 
-// 减少儿童数量
+// 鍑忓皯鍎跨鏁伴噺
 const decreaseChildren = () => {
   if (bookingForm.value.children > 0) {
     bookingForm.value.children--;
   }
 };
 
-// 协议变化
+// 鍗忚鍙樺寲
 const onAgreementChange = (e: any) => {
   agreed.value = e.detail.value.includes('agree');
 };
 
-// 查看协议
+// 鏌ョ湅鍗忚
 const viewAgreement = () => {
   uni.showModal({
-    title: '旅游服务协议',
-    content: '这里是旅游服务协议的详细内容...',
+    title: '鏃呮父鏈嶅姟鍗忚',
+    content: '杩欓噷鏄梾娓告湇鍔″崗璁殑璇︾粏鍐呭...',
     showCancel: false
   });
 };
 
-// 提交预订
+// 鎻愪氦棰勮
 const submitBooking = async () => {
   if (!canSubmit.value) {
     uni.showToast({
-      title: '请完善预订信息',
+      title: '璇峰畬鍠勯璁俊鎭x,
       icon: 'none'
     });
     return;
   }
 
   try {
-    uni.showLoading({ title: '提交中...' });
+    uni.showLoading({ title: '鎻愪氦涓x..' });
 
-    // Mock提交
+    // Mock鎻愪氦
     await new Promise(resolve => setTimeout(resolve, 1000));
 
     uni.hideLoading();
     uni.showModal({
-      title: '预订成功',
-      content: `您已成功预订${bookingForm.value.adults + bookingForm.value.children}个名额，请前往订单页面查看详情并完成支付`,
+      title: '棰勮鎴愬姛',
+      content: `鎮ㄥ凡鎴愬姛棰勮${bookingForm.value.adults + bookingForm.value.children}涓悕棰濓紝璇峰墠寰€璁㈠崟椤甸潰鏌ョ湅璇︽儏骞跺畬鎴愭敮浠榒,
       showCancel: false,
       success: () => {
         uni.navigateBack({ delta: 2 });
@@ -462,9 +460,9 @@ const submitBooking = async () => {
     });
 
   } catch (error) {
-    console.error('提交预订失败:', error);
+    console.error('鎻愪氦棰勮澶辫触:', error);
     uni.showToast({
-      title: '提交失败，请重试',
+      title: '鎻愪氦澶辫触锛岃閲嶈瘯',
       icon: 'none'
     });
   } finally {
@@ -480,7 +478,7 @@ const submitBooking = async () => {
   padding-bottom: 140rpx;
 }
 
-// 线路信息卡片
+// 绾胯矾淇℃伅鍗＄墖
 .tour-card {
   background-color: #FFFFFF;
   padding: 32rpx;
@@ -515,7 +513,7 @@ const submitBooking = async () => {
   }
 }
 
-// 表单区域
+// 琛ㄥ崟鍖哄煙
 .form-section {
   background-color: #FFFFFF;
   padding: 32rpx;
@@ -670,7 +668,7 @@ const submitBooking = async () => {
   }
 }
 
-// 预订须知
+// 棰勮椤荤煡
 .notice-section {
   background-color: #FFFFFF;
   padding: 32rpx;
@@ -735,7 +733,7 @@ const submitBooking = async () => {
   }
 }
 
-// 价格明细
+// 浠锋牸鏄庣粏
 .price-section {
   background-color: #FFFFFF;
   padding: 32rpx;
@@ -805,8 +803,7 @@ const submitBooking = async () => {
   }
 }
 
-// 底部操作栏
-.bottom-bar {
+// 搴曢儴鎿嶄綔鏍x.bottom-bar {
   position: fixed;
   bottom: 0;
   left: 0;

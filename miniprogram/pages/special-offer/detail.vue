@@ -3,7 +3,7 @@
     <!-- 图片轮播 -->
     <swiper class="image-swiper" :indicator-dots="true" :autoplay="true" :interval="3000" :duration="500">
       <swiper-item v-for="(image, index) in offerDetail.vehicle.images" :key="index">
-        <image class="swiper-image" :src="image" mode="aspectFill"></image>
+        <image class="swiper-image" :src="photo" mode="aspectFill"></image>
       </swiper-item>
     </swiper>
 
@@ -75,7 +75,7 @@
         <!-- 取车信息 -->
         <view class="route-item">
           <view class="route-icon pickup">
-            <u-icon name="location-fill" size="20" color="#FFFFFF"></u-icon>
+            <u-icon name="map-fill" size="20" color="#FFFFFF"></u-icon>
           </view>
           <view class="route-content">
             <text class="route-label">取车门店</text>
@@ -90,7 +90,7 @@
         <!-- 还车信息 -->
         <view class="route-item">
           <view class="route-icon return">
-            <u-icon name="flag-fill" size="20" color="#FFFFFF"></u-icon>
+            <u-icon name="pushpin-fill" size="20" color="#FFFFFF"></u-icon>
           </view>
           <view class="route-content">
             <text class="route-label">还车门店</text>
@@ -242,10 +242,10 @@ const loadOfferDetail = async () => {
       vehicle: {
         name: '依维柯欧胜C型房车',
         images: [
-          'https://picsum.photos/750/500?random=1',
-          'https://picsum.photos/750/500?random=2',
-          'https://picsum.photos/750/500?random=3',
-          'https://picsum.photos/750/500?random=4'
+          '/static/logo.png',
+          '/static/logo.png',
+          '/static/logo.png',
+          '/static/logo.png'
         ],
         specifications: [
           { label: '车型', value: 'C型房车' },

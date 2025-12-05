@@ -127,6 +127,7 @@
 <script>
 import { getDashboardOverview, getTodoList } from '@/api/dashboard'
 import { formatMoney, formatDateTime } from '@/utils/format'
+import logger from '@/utils/logger'
 
 export default {
   data() {
@@ -167,13 +168,19 @@ export default {
       try {
         // 加载数据概览
         const overviewData = await getDashboardOverview()
-        this.overview = overviewData
+        this.overview = overviewData || this.overview
 
         // 加载待办任务（只显示前3条）
         const todoData = await getTodoList({ status: 'pending' })
-        this.todoList = todoData.list.slice(0, 3)
-      } catch (error) {
-        console.error('加载数据失败:', error)
+        // 边界检查：确保返回的数据是数组
+        const todoList = Array.isArray(todoData?.list) ? todoData.list : []
+        this.todoList = todoList.slice(0, 3)
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          logger.error('Dashboard', '加载数据失败:', error.message)
+        } else {
+          logger.error('Dashboard', '加载数据失败:', String(error))
+        }
         uni.showToast({
           title: '加载失败，请重试',
           icon: 'none'
@@ -184,6 +191,15 @@ export default {
     },
 
     navigateTo(url) {
+      // 空值检查：确保URL有效
+      if (!url || typeof url !== 'string') {
+        uni.showToast({
+          title: '页面路径无效',
+          icon: 'none'
+        })
+        return
+      }
+
       // 判断是否为 tabbar 页面
       const tabbarPages = [
         '/pages/dashboard/index',
@@ -211,6 +227,15 @@ export default {
     },
 
     handleTodo(todo) {
+      // 空值检查：确保任务对象有效
+      if (!todo || !todo.type) {
+        uni.showToast({
+          title: '任务信息无效',
+          icon: 'none'
+        })
+        return
+      }
+
       // 根据任务类型跳转到对应页面
       if (todo.type === 'order') {
         this.navigateTo('/pages/orders/index')
@@ -220,9 +245,15 @@ export default {
     },
 
     handleQuickAction(action) {
-      if (action.path) {
-        this.navigateTo(action.path)
+      // 空值检查：确保操作对象有效
+      if (!action || !action.path) {
+        uni.showToast({
+          title: '操作信息无效',
+          icon: 'none'
+        })
+        return
       }
+      this.navigateTo(action.path)
     },
 
     getPriorityText(priority) {

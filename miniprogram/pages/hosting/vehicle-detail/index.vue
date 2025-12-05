@@ -49,7 +49,7 @@ export default {
       vehicle: {
         name: '上汽大通V90',
         plate: '京A·12345',
-        image: 'https://picsum.photos/750/400?random=1',
+        image: '/static/logo.png',
         status: 'renting',
         statusText: '出租中',
         todayIncome: 350,

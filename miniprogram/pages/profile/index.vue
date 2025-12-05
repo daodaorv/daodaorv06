@@ -11,7 +11,7 @@
 							mode="aspectFill"
 						></image>
 						<view v-if="isLogin" class="vip-badge">
-							<u-icon name="vip-fill" :size="12" :color="'#8F5E1E'"></u-icon>
+							<u-icon name="level" :size="12" :color="'#8F5E1E'"></u-icon>
 						</view>
 					</view>
 					<view class="info-col">
@@ -24,18 +24,18 @@
 							<text class="sub-tip">登录后享受更多权益</text>
 						</view>
 					</view>
-					<u-icon name="right" :size="16" :color="'#999'"></u-icon>
+					<u-icon name="arrow-right" :size="16" :color="'#999'"></u-icon>
 				</view>
 
 				<!-- 会员卡片 -->
 				<view class="vip-card-entry" v-if="isLogin">
 					<view class="vip-left">
-						<u-icon name="vip-fill" :size="20" :color="'#FFD700'"></u-icon>
+						<u-icon name="level" :size="20" :color="'#FFD700'"></u-icon>
 						<text class="vip-title">{{ userInfo.levelName }}</text>
 					</view>
 					<view class="vip-right">
 						<text class="vip-desc">查看权益</text>
-						<u-icon name="right" :size="12" :color="'#FFD700'"></u-icon>
+						<u-icon name="arrow-right" :size="12" :color="'#FFD700'"></u-icon>
 					</view>
 				</view>
 			</view>
@@ -47,20 +47,20 @@
 				<text class="title">我的订单</text>
 				<view class="more">
 					<text>全部订单</text>
-					<u-icon name="right" size="12" color="#999"></u-icon>
+					<u-icon name="arrow-right" size="12" color="#999"></u-icon>
 				</view>
 			</view>
 			<view class="status-grid">
 				<view class="status-item" @tap="navigateToOrders(1)">
 					<view class="icon-wrapper">
-						<u-icon name="wallet" :size="28" :color="'#666'"></u-icon>
+						<u-icon name="rmb" :size="28" :color="'#666'"></u-icon>
 						<view v-if="orderCounts.pendingPayment > 0" class="badge">{{ orderCounts.pendingPayment }}</view>
 					</view>
 					<text class="status-text">待付款</text>
 				</view>
 				<view class="status-item" @tap="navigateToOrders(2)">
 					<view class="icon-wrapper">
-						<u-icon name="shop" :size="28" :color="'#666'"></u-icon>
+						<u-icon name="bag" :size="28" :color="'#666'"></u-icon>
 						<view v-if="orderCounts.pendingConfirm > 0" class="badge">{{ orderCounts.pendingConfirm }}</view>
 					</view>
 					<text class="status-text">待门店确认</text>
@@ -74,7 +74,7 @@
 				</view>
 				<view class="status-item" @tap="navigateToOrders(4)">
 					<view class="icon-wrapper">
-						<u-icon name="paperplane" :size="28" :color="'#666'"></u-icon>
+						<u-icon name="car" :size="28" :color="'#666'"></u-icon>
 						<view v-if="orderCounts.renting > 0" class="badge">{{ orderCounts.renting }}</view>
 					</view>
 					<text class="status-text">租赁中</text>
@@ -97,7 +97,7 @@
 				<view class="menu-right">
 					<text v-if="item.badge" class="menu-badge">{{ item.badge }}</text>
 					<text v-if="item.amount" class="menu-amount">¥{{ item.amount }}</text>
-					<u-icon name="right" :size="16" :color="'#999'"></u-icon>
+					<u-icon name="arrow-right" :size="16" :color="'#999'"></u-icon>
 				</view>
 			</view>
 		</view>
@@ -181,15 +181,15 @@ const checkLoginStatus = () => {
 
 // 菜单列表
 const menuList = [
-	{ name: '我的优惠券', icon: 'gift-filled', iconColor: '#F44336', path: '/pages/profile/coupons', badge: 3 },
-	{ name: '积分中心', icon: 'medal', iconColor: '#FF9F29', path: '/pages/profile/points' },
-	{ name: 'PLUS会员', icon: 'vip-filled', iconColor: '#FFD700', path: '/pages/membership/index' },
-	{ name: '钱包余额', icon: 'wallet-filled', iconColor: '#FF9F29', path: '/pages/profile/wallet', amount: '1280.50' },
+	{ name: '我的优惠券', icon: 'gift-fill', iconColor: '#F44336', path: '/pages/profile/coupons', badge: 3 },
+	{ name: '积分中心', icon: 'integral', iconColor: '#FF9F29', path: '/pages/profile/points' },
+	{ name: 'PLUS会员', icon: 'level', iconColor: '#FFD700', path: '/pages/membership/index' },
+	{ name: '钱包余额', icon: 'rmb-circle-fill', iconColor: '#FF9F29', path: '/pages/profile/wallet', amount: '1280.50' },
 	{ name: '我的收藏', icon: 'star', iconColor: '#FF9F29', path: '/pages/profile/favorites' },
-	{ name: '常用联系人', icon: 'staff', iconColor: '#4CAF50', path: '/pages/profile/contacts' },
-	{ name: '地址管理', icon: 'location', iconColor: '#2196F3', path: '/pages/profile/address' },
-	{ name: '联系客服', icon: 'headphones', iconColor: '#9C27B0', action: 'call' },
-	{ name: '设置', icon: 'gear', iconColor: '#607D8B', path: '/pages/profile/settings' }
+	{ name: '常用联系人', icon: 'server-man', iconColor: '#4CAF50', path: '/pages/profile/contacts' },
+	{ name: '地址管理', icon: 'map', iconColor: '#2196F3', path: '/pages/profile/address' },
+	{ name: '联系客服', icon: 'server-fill', iconColor: '#9C27B0', action: 'call' },
+	{ name: '设置', icon: 'setting', iconColor: '#607D8B', path: '/pages/profile/settings' }
 ];
 
 // 登录/注册/编辑资料

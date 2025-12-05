@@ -38,11 +38,11 @@
              <u-image :src="item.image" width="100%" height="400rpx" mode="aspectFill" radius="16rpx 16rpx 0 0"></u-image>
              <!-- 状态标签 -->
              <view class="tour-badge-wrapper">
-                 <u-tag :text="getStatusText(item.status)" :type="getStatusType(item.status)" shape="circle" size="mini"></u-tag>
+                 <u-tag :text="getStatusText(item.status)" :type="getStatusType(item.status)" shape="checkmark-circle" size="mini"></u-tag>
              </view>
              <!-- 热门标签 -->
              <view v-if="item.isHot" class="hot-tag-wrapper">
-                 <u-tag text="热门" type="error" shape="circle" size="mini" icon="fire-fill"></u-tag>
+                 <u-tag text="热门" type="error" shape="checkmark-circle" size="mini" icon="star-fill"></u-tag>
              </view>
           </view>
 
@@ -79,7 +79,7 @@
               </view>
               <u-button 
                 :type="getBtnType(item.status)" 
-                shape="circle" 
+                shape="checkmark-circle" 
                 size="small" 
                 :text="getActionText(item.status)"
                 :disabled="item.status === 'departed' || item.status === 'completed'"

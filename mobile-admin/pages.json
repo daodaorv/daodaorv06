@@ -27,6 +27,12 @@
 			}
 		},
 		{
+			"path": "pages/orders/return",
+			"style": {
+				"navigationBarTitleText": "还车流程"
+			}
+		},
+		{
 			"path": "pages/vehicles/index",
 			"style": {
 				"navigationBarTitleText": "车辆管理",

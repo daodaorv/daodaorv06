@@ -12,7 +12,7 @@
 					<view class="meta-row">
 						<text class="publish-time">{{ formatTime(post.createdAt) }}</text>
 						<text class="separator">·</text>
-						<text class="location" v-if="post.location">{{ post.location }}</text>
+						<text class="map" v-if="post.location">{{ post.location }}</text>
 					</view>
 				</view>
 				<button class="follow-btn" :class="{ following: isFollowing }" @click.stop="handleFollow">
@@ -25,7 +25,7 @@
 		<view v-if="post.images && post.images.length > 0" class="media-section">
 			<swiper class="image-swiper" :indicator-dots="post.images.length > 1" indicator-active-color="#FF9F29" :autoplay="false" :circular="true">
 				<swiper-item v-for="(image, index) in post.images" :key="index" @click="previewImage(index)">
-					<image :src="image" class="swiper-image" mode="aspectFill" />
+					<image :src="photo" class="swiper-image" mode="aspectFill" />
 				</swiper-item>
 			</swiper>
 		</view>
@@ -96,7 +96,7 @@
 		<!-- 底部操作栏 -->
 		<view class="bottom-action-bar">
 			<view class="input-box" @click="focusInput">
-				<u-icon name="compose" size="16" color="#666" />
+				<u-icon name="edit-pen" size="16" color="#666" />
 				<text class="placeholder">说点什么...</text>
 			</view>
 			<view class="actions">
@@ -272,13 +272,13 @@ const loadPost = async () => {
         id: '1',
         userId: 'u1',
         userName: '房车旅行家',
-        userAvatar: 'https://picsum.photos/100/100?random=1',
+        userAvatar: '/static/logo.png',
         type: 'GUIDE',
         title: '川西秘境·稻城亚丁房车自驾攻略',
         content: '稻城亚丁被誉为"蓝色星球上的最后一片净土"。\n\n这里有雪山、冰川、峡谷、森林、草甸、湖泊，风景绝美。\n\n最佳旅游季节：9-10月，此时秋色迷人，气候宜人。\n\n注意事项：\n1. 高原反应预防\n2. 防晒保暖\n3. 尊重当地风俗',
         images: [
-            'https://picsum.photos/750/500?random=101',
-            'https://picsum.photos/750/500?random=102'
+            '/static/logo.png',
+            '/static/logo.png'
         ],
         tags: ['川西', '自驾', '攻略'],
         location: '四川·甘孜',
@@ -300,7 +300,7 @@ const loadComments = async () => {
             id: 'c1',
             userId: 'u2',
             userName: '路在脚下',
-            userAvatar: 'https://picsum.photos/100/100?random=2',
+            userAvatar: '/static/logo.png',
             content: '太美了！请问租车费用大概多少？',
             createdAt: '2025-11-28T10:30:00Z',
             likeCount: 5,

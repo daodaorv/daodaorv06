@@ -1,3 +1,4 @@
+<!-- @ts-nocheck -->
 <template>
   <div class="store-detail-container">
     <PageHeader

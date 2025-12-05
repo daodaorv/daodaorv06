@@ -165,12 +165,12 @@ const transactions = ref([
 // 获取交易图标
 const getTransactionIcon = (type: string) => {
 	const icons: Record<string, string> = {
-		recharge: 'plus-filled',
-		payment: 'minus-filled',
-		refund: 'redo-filled',
-		withdraw: 'download-filled'
+		recharge: 'plus-circle-fill',
+		payment: 'minus-circle-fill',
+		refund: 'reload',
+		withdraw: 'download'
 	};
-	return icons[type] || 'circle';
+	return icons[type] || 'info-circle';
 };
 
 // 获取交易颜色

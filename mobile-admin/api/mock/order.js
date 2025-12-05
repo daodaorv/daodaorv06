@@ -313,6 +313,44 @@ export function startReturn(orderId) {
           mileage: 12500,
           fuelLevel: 80,
           pickupTime: '2025-11-28 10:00:00'
+        },
+        checklistTemplate: {
+          exterior: [
+            { id: 21, name: '车身前部', checked: false },
+            { id: 22, name: '车身后部', checked: false },
+            { id: 23, name: '左侧车身', checked: false },
+            { id: 24, name: '右侧车身', checked: false },
+            { id: 25, name: '车顶/天窗', checked: false }
+          ],
+          interior: [
+            { id: 26, name: '驾驶座', checked: false },
+            { id: 27, name: '乘客座', checked: false },
+            { id: 28, name: '中控面板', checked: false },
+            { id: 29, name: '后备箱', checked: false }
+          ],
+          functions: [
+            { id: 30, name: '灯光系统', checked: false },
+            { id: 31, name: '空调系统', checked: false },
+            { id: 32, name: '影音系统', checked: false },
+            { id: 33, name: '导航系统', checked: false },
+            { id: 34, name: '露营设备', checked: false }
+          ]
+        },
+        photoPositions: {
+          exterior: [
+            { key: 'front', label: '车头正面' },
+            { key: 'back', label: '车尾' },
+            { key: 'left', label: '左侧45°' },
+            { key: 'right', label: '右侧45°' }
+          ],
+          interior: [
+            { key: 'dashboard', label: '仪表盘' },
+            { key: 'cabin', label: '驾驶舱' }
+          ],
+          optional: [
+            { key: 'detail1', label: '局部细节1' },
+            { key: 'detail2', label: '局部细节2' }
+          ]
         }
       })
     }, 500)

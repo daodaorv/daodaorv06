@@ -12,17 +12,37 @@
     </view>
 
     <view v-if="activeTab === 0" class="list">
-      <view v-for="item in incomeList" :key="item.id" class="list-item">
-        <view class="item-left">
-          <text class="item-title">{{ item.title }}</text>
-          <text class="item-date">{{ item.date }}</text>
+      <view v-for="item in incomeList" :key="item.id" class="income-card">
+        <view class="card-header">
+          <text class="order-no">订单号 {{ item.orderNo }}</text>
+          <text class="status-tag">{{ item.statusText }}</text>
         </view>
-        <text class="item-amount">+¥{{ item.amount }}</text>
+        <view class="card-body">
+          <view class="info-row">
+            <text class="info-label">车辆</text>
+            <text class="info-value">{{ item.vehicle }}</text>
+          </view>
+          <view class="info-row">
+            <text class="info-label">执行日期</text>
+            <text class="info-value">{{ item.period }}</text>
+          </view>
+          <view class="info-row">
+            <text class="info-label">订单金额</text>
+            <text class="info-value">¥{{ item.orderAmount }}</text>
+          </view>
+          <view class="info-row">
+            <text class="info-label">结算收益</text>
+            <text class="info-value highlight">+¥{{ item.amount }}</text>
+          </view>
+        </view>
+        <view class="card-footer">
+          <text class="footer-text">{{ item.settleDate }} 结算</text>
+        </view>
       </view>
     </view>
 
     <view v-else class="list">
-      <view v-for="item in withdrawList" :key="item.id" class="list-item">
+      <view v-for="item in withdrawList" :key="item.id" class="withdraw-item">
         <view class="item-left">
           <text class="item-title">提现</text>
           <text class="item-date">{{ item.date }}</text>
@@ -43,11 +63,30 @@ export default {
       totalIncome: 12580.50,
       activeTab: 0,
       incomeList: [
-        { id: 1, title: '租金收益', date: '2025-12-01', amount: 350.00 },
-        { id: 2, title: '租金收益', date: '2025-11-30', amount: 420.00 }
+        {
+          id: 'INC001',
+          orderNo: 'DD20241201001',
+          vehicle: '上汽大通V90',
+          period: '2024-12-01 至 2024-12-05',
+          orderAmount: 4800,
+          amount: 360,
+          settleDate: '2024-12-06',
+          statusText: '已结算'
+        },
+        {
+          id: 'INC002',
+          orderNo: 'DD20241128005',
+          vehicle: '览众勇士C7',
+          period: '2024-11-26 至 2024-11-29',
+          orderAmount: 4200,
+          amount: 315,
+          settleDate: '2024-11-30',
+          statusText: '已结算'
+        }
       ],
       withdrawList: [
-        { id: 1, date: '2025-11-25', amount: 5000, status: 'success', statusText: '已到账' }
+        { id: 'WD001', date: '2024-11-25', amount: 5000, status: 'success', statusText: '已到账' },
+        { id: 'WD002', date: '2024-10-12', amount: 3200, status: 'processing', statusText: '处理中' }
       ]
     }
   },
@@ -77,11 +116,23 @@ export default {
 .tab { flex: 1; text-align: center; padding: 32rpx 0; font-size: 28rpx; color: #666; }
 .tab.active { color: #FF9F29; border-bottom: 4rpx solid #FF9F29; }
 .list { padding: 24rpx 32rpx; }
-.list-item { display: flex; justify-content: space-between; background: #FFF; border-radius: 12rpx; padding: 32rpx; margin-bottom: 16rpx; }
+.income-card { background: #FFF; border-radius: 16rpx; padding: 32rpx; margin-bottom: 24rpx; box-shadow: 0 4rpx 16rpx rgba(0,0,0,0.04); }
+.card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16rpx; }
+.order-no { font-size: 26rpx; color: #666; }
+.status-tag { font-size: 24rpx; color: #52C41A; background: rgba(82,196,26,0.12); padding: 6rpx 18rpx; border-radius: 24rpx; }
+.card-body { display: flex; flex-direction: column; gap: 16rpx; }
+.info-row { display: flex; justify-content: space-between; font-size: 26rpx; color: #666; }
+.info-label { color: #999; }
+.info-value { color: #333; font-weight: 500; }
+.info-value.highlight { color: #FF9F29; font-size: 32rpx; }
+.card-footer { margin-top: 24rpx; padding-top: 16rpx; border-top: 1rpx solid #F5F5F5; }
+.footer-text { font-size: 24rpx; color: #999; }
+.withdraw-item { display: flex; justify-content: space-between; background: #FFF; border-radius: 12rpx; padding: 32rpx; margin-bottom: 16rpx; }
 .item-title { display: block; font-size: 28rpx; color: #333; margin-bottom: 8rpx; }
 .item-date { display: block; font-size: 24rpx; color: #999; }
 .item-amount { font-size: 32rpx; font-weight: 600; color: #FF9F29; }
 .item-right { text-align: right; }
 .status { display: block; font-size: 24rpx; margin-top: 8rpx; }
 .status.success { color: #4CAF50; }
+.status.processing { color: #FFA940; }
 </style>

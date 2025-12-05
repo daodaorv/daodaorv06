@@ -3,14 +3,25 @@
  * 提供图片上传、文件上传、图片压缩等功能
  */
 
+// 常量配置
+const MAX_IMAGE_COUNT = 9
+const DEFAULT_COMPRESS_QUALITY = 0.8
+const MAX_IMAGE_WIDTH = 1920
+const MAX_IMAGE_HEIGHT = 1920
+const MAX_FILE_SIZE_MB = 2
+const MAX_FILE_SIZE = MAX_FILE_SIZE_MB * 1024 * 1024
+const MOCK_UPLOAD_DELAY = 1000
+const PROGRESS_INCREMENT = 10
+const PROGRESS_INTERVAL = 100
+
 /**
  * 图片压缩配置
  */
 const COMPRESS_CONFIG = {
-  quality: 0.8, // 压缩质量 0-1
-  maxWidth: 1920, // 最大宽度
-  maxHeight: 1920, // 最大高度
-  maxSize: 2 * 1024 * 1024 // 最大文件大小 2MB
+  quality: DEFAULT_COMPRESS_QUALITY,
+  maxWidth: MAX_IMAGE_WIDTH,
+  maxHeight: MAX_IMAGE_HEIGHT,
+  maxSize: MAX_FILE_SIZE
 }
 
 /**
@@ -32,7 +43,7 @@ const FILE_TYPES = {
  */
 export function chooseImage(options = {}) {
   const {
-    count = 9,
+    count = MAX_IMAGE_COUNT,
     sizeType = ['original', 'compressed'],
     sourceType = ['album', 'camera']
   } = options
@@ -45,9 +56,13 @@ export function chooseImage(options = {}) {
       success: (res) => {
         resolve(res.tempFilePaths)
       },
-      fail: (err) => {
-        console.error('选择图片失败:', err)
-        reject(err)
+      fail: (error) => {
+        if (error instanceof Error) {
+          console.error('选择图片失败:', error.message)
+        } else {
+          console.error('选择图片失败:', String(error))
+        }
+        reject(error)
       }
     })
   })
@@ -69,8 +84,12 @@ export function compressImage(src, options = {}) {
       success: (res) => {
         resolve(res.tempFilePath)
       },
-      fail: (err) => {
-        console.error('压缩图片失败:', err)
+      fail: (error) => {
+        if (error instanceof Error) {
+          console.error('压缩图片失败:', error.message)
+        } else {
+          console.error('压缩图片失败:', String(error))
+        }
         // 压缩失败返回原图
         resolve(src)
       }
@@ -96,12 +115,58 @@ export function getImageInfo(src) {
           type: res.type
         })
       },
-      fail: (err) => {
-        console.error('获取图片信息失败:', err)
-        reject(err)
+      fail: (error) => {
+        if (error instanceof Error) {
+          console.error('获取图片信息失败:', error.message)
+        } else {
+          console.error('获取图片信息失败:', String(error))
+        }
+        reject(error)
       }
     })
   })
+}
+
+/**
+ * 处理上传响应
+ * @param {Object} res - 上传响应
+ * @returns {Object} 解析后的数据
+ */
+function handleUploadResponse(res) {
+  if (res.statusCode !== 200) {
+    throw new Error(`上传失败，状态码: ${res.statusCode}`)
+  }
+
+  try {
+    const data = JSON.parse(res.data)
+    if (data.code === 0) {
+      return data.data
+    } else {
+      throw new Error(data.message || '上传失败')
+    }
+  } catch (err) {
+    if (err.message && err.message !== '上传失败') {
+      throw new Error('解析响应数据失败')
+    }
+    throw err
+  }
+}
+
+/**
+ * 设置上传进度监听
+ * @param {Object} uploadTask - 上传任务
+ * @param {Function} onProgress - 进度回调
+ */
+function setupProgressListener(uploadTask, onProgress) {
+  if (onProgress && typeof onProgress === 'function') {
+    uploadTask.onProgressUpdate((res) => {
+      onProgress({
+        progress: res.progress,
+        totalBytesSent: res.totalBytesSent,
+        totalBytesExpectedToSend: res.totalBytesExpectedToSend
+      })
+    })
+  }
 }
 
 /**
@@ -129,38 +194,62 @@ export function uploadFile(filePath, options = {}) {
       name,
       formData,
       success: (res) => {
-        if (res.statusCode === 200) {
-          try {
-            const data = JSON.parse(res.data)
-            if (data.code === 0) {
-              resolve(data.data)
-            } else {
-              reject(new Error(data.message || '上传失败'))
-            }
-          } catch (err) {
-            reject(new Error('解析响应数据失败'))
-          }
-        } else {
-          reject(new Error(`上传失败，状态码: ${res.statusCode}`))
+        try {
+          const data = handleUploadResponse(res)
+          resolve(data)
+        } catch (err) {
+          reject(err)
         }
       },
-      fail: (err) => {
-        console.error('上传文件失败:', err)
-        reject(err)
+      fail: (error) => {
+        if (error instanceof Error) {
+          console.error('上传文件失败:', error.message)
+        } else {
+          console.error('上传文件失败:', String(error))
+        }
+        reject(error)
       }
     })
 
-    // 监听上传进度
-    if (onProgress && typeof onProgress === 'function') {
-      uploadTask.onProgressUpdate((res) => {
-        onProgress({
-          progress: res.progress,
-          totalBytesSent: res.totalBytesSent,
-          totalBytesExpectedToSend: res.totalBytesExpectedToSend
-        })
-      })
-    }
+    setupProgressListener(uploadTask, onProgress)
   })
+}
+
+/**
+ * 压缩单张图片（带错误处理）
+ * @param {String} filePath - 图片路径
+ * @param {Boolean} compress - 是否压缩
+ * @param {Object} compressOptions - 压缩选项
+ * @returns {Promise<String>} 压缩后的路径
+ */
+async function compressImageSafely(filePath, compress, compressOptions) {
+  if (!compress) {
+    return filePath
+  }
+
+  try {
+    return await compressImage(filePath, compressOptions)
+  } catch (error) {
+    if (error instanceof Error) {
+      console.warn('图片压缩失败，使用原图上传:', error.message)
+    } else {
+      console.warn('图片压缩失败，使用原图上传:', String(error))
+    }
+    return filePath
+  }
+}
+
+/**
+ * 上传单张图片
+ * @param {String} imagePath - 图片路径
+ * @param {Boolean} compress - 是否压缩
+ * @param {Object} compressOptions - 压缩选项
+ * @param {Object} uploadOptions - 上传选项
+ * @returns {Promise<Object>} 上传结果
+ */
+async function uploadSingleImage(imagePath, compress, compressOptions, uploadOptions) {
+  const filePath = await compressImageSafely(imagePath, compress, compressOptions)
+  return uploadFile(filePath, uploadOptions)
 }
 
 /**
@@ -178,39 +267,14 @@ export async function uploadImage(imagePaths, options = {}) {
 
   // 处理单个图片
   if (typeof imagePaths === 'string') {
-    let filePath = imagePaths
-
-    // 压缩图片
-    if (compress) {
-      try {
-        filePath = await compressImage(filePath, compressOptions)
-      } catch (err) {
-        console.warn('图片压缩失败，使用原图上传:', err)
-      }
-    }
-
-    // 上传图片
-    return uploadFile(filePath, uploadOptions)
+    return uploadSingleImage(imagePaths, compress, compressOptions, uploadOptions)
   }
 
   // 处理多个图片
   if (Array.isArray(imagePaths)) {
-    const uploadPromises = imagePaths.map(async (path) => {
-      let filePath = path
-
-      // 压缩图片
-      if (compress) {
-        try {
-          filePath = await compressImage(filePath, compressOptions)
-        } catch (err) {
-          console.warn('图片压缩失败，使用原图上传:', err)
-        }
-      }
-
-      // 上传图片
-      return uploadFile(filePath, uploadOptions)
-    })
-
+    const uploadPromises = imagePaths.map(path =>
+      uploadSingleImage(path, compress, compressOptions, uploadOptions)
+    )
     return Promise.all(uploadPromises)
   }
 
@@ -232,9 +296,13 @@ export async function chooseAndUploadImage(chooseOptions = {}, uploadOptions = {
     const results = await uploadImage(tempFilePaths, uploadOptions)
 
     return Array.isArray(results) ? results : [results]
-  } catch (err) {
-    console.error('选择并上传图片失败:', err)
-    throw err
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error('选择并上传图片失败:', error.message)
+    } else {
+      console.error('选择并上传图片失败:', String(error))
+    }
+    throw error
   }
 }
 
@@ -262,6 +330,36 @@ export function previewImage(options = {}) {
 }
 
 /**
+ * 处理保存图片失败
+ * @param {Object} error - 错误对象
+ */
+function handleSaveImageError(error) {
+  if (error instanceof Error) {
+    console.error('保存图片失败:', error.message)
+  } else {
+    console.error('保存图片失败:', String(error))
+  }
+
+  const errMsg = typeof error === 'object' && error !== null ? error.errMsg : String(error)
+  if (errMsg.includes('auth deny')) {
+    uni.showModal({
+      title: '提示',
+      content: '需要您授权保存图片到相册',
+      success: (res) => {
+        if (res.confirm) {
+          uni.openSetting()
+        }
+      }
+    })
+  } else {
+    uni.showToast({
+      title: '保存失败',
+      icon: 'none'
+    })
+  }
+}
+
+/**
  * 保存图片到相册
  * @param {String} filePath - 图片路径
  * @returns {Promise}
@@ -277,25 +375,9 @@ export function saveImageToPhotosAlbum(filePath) {
         })
         resolve()
       },
-      fail: (err) => {
-        console.error('保存图片失败:', err)
-        if (err.errMsg.includes('auth deny')) {
-          uni.showModal({
-            title: '提示',
-            content: '需要您授权保存图片到相册',
-            success: (res) => {
-              if (res.confirm) {
-                uni.openSetting()
-              }
-            }
-          })
-        } else {
-          uni.showToast({
-            title: '保存失败',
-            icon: 'none'
-          })
-        }
-        reject(err)
+      fail: (error) => {
+        handleSaveImageError(error)
+        reject(error)
       }
     })
   })
@@ -308,7 +390,14 @@ export function saveImageToPhotosAlbum(filePath) {
  * @returns {Boolean}
  */
 export function validateFileType(fileName, type = 'image') {
-  const ext = fileName.split('.').pop().toLowerCase()
+  if (!fileName || typeof fileName !== 'string') {
+    return false
+  }
+  const parts = fileName.split('.')
+  if (parts.length < 2) {
+    return false
+  }
+  const ext = parts.pop().toLowerCase()
   const allowedTypes = FILE_TYPES[type] || []
   return allowedTypes.includes(ext)
 }
@@ -330,9 +419,23 @@ export function validateFileSize(fileSize, maxSize = COMPRESS_CONFIG.maxSize) {
  */
 export function formatFileSize(bytes) {
   if (bytes === 0) return '0 B'
+
+  // 边界检查：确保bytes是有效数字
+  if (typeof bytes !== 'number' || isNaN(bytes) || bytes < 0) {
+    console.warn('Invalid bytes value:', bytes)
+    return '0 B'
+  }
+
   const k = 1024
   const sizes = ['B', 'KB', 'MB', 'GB']
   const i = Math.floor(Math.log(bytes) / Math.log(k))
+
+  // 边界检查：确保索引在有效范围内
+  if (i < 0 || i >= sizes.length) {
+    console.warn('Size index out of bounds:', i)
+    return bytes + ' B'
+  }
+
   return (bytes / Math.pow(k, i)).toFixed(2) + ' ' + sizes[i]
 }
 
@@ -348,12 +451,12 @@ export function mockUpload(filePath, options = {}) {
     if (options.onProgress) {
       let progress = 0
       const timer = setInterval(() => {
-        progress += 10
+        progress += PROGRESS_INCREMENT
         options.onProgress({ progress })
         if (progress >= 100) {
           clearInterval(timer)
         }
-      }, 100)
+      }, PROGRESS_INTERVAL)
     }
 
     // 模拟上传延迟
@@ -364,7 +467,7 @@ export function mockUpload(filePath, options = {}) {
         fileSize: Math.floor(Math.random() * 1000000),
         uploadTime: new Date().toISOString()
       })
-    }, 1000)
+    }, MOCK_UPLOAD_DELAY)
   })
 }
 

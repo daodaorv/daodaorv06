@@ -19,7 +19,7 @@ export default {
         id: 1,
         plateNumber: '京A·12345',
         name: '上汽大通V90',
-        thumbnail: 'https://picsum.photos/200/150?random=1',
+        thumbnail: '/static/logo.png',
         status: 'renting',
         statusText: '出租中',
         todayIncome: 350.00,
@@ -33,7 +33,7 @@ export default {
         id: 2,
         plateNumber: '京B·67890',
         name: '览众勇士C7',
-        thumbnail: 'https://picsum.photos/200/150?random=2',
+        thumbnail: '/static/logo.png',
         status: 'idle',
         statusText: '空闲',
         todayIncome: 0,
@@ -47,7 +47,7 @@ export default {
         id: 3,
         plateNumber: '京C·11111',
         name: '隆翠房车',
-        thumbnail: 'https://picsum.photos/200/150?random=3',
+        thumbnail: '/static/logo.png',
         status: 'self-use',
         statusText: '自用中',
         todayIncome: 0,
@@ -138,7 +138,15 @@ export default {
   // 获取车辆详情
   getVehicleDetail(id: number) {
     const vehicles = this.getHostingVehicles()
-    return vehicles.find(v => v.id === id) || vehicles[0]
+    const vehicle = vehicles.find(v => v.id === id) || vehicles[0]
+    return {
+      ...vehicle,
+      defaultStoreId: 1,
+      blockedRanges: [
+        { start: '2024-12-10', end: '2024-12-13', type: 'executing' },
+        { start: '2024-12-18', end: '2024-12-20', type: 'reserved' }
+      ]
+    }
   },
 
   // 获取热门车型列表
@@ -148,7 +156,7 @@ export default {
         id: 1,
         name: '上汽大通V90',
         brand: '上汽大通',
-        image: 'https://picsum.photos/300/200?random=10',
+        image: '/static/logo.png',
         price: 458000,
         monthlyPayment: 4500,
         seats: 4,
@@ -159,7 +167,7 @@ export default {
         id: 2,
         name: '览众勇士C7',
         brand: '览众',
-        image: 'https://picsum.photos/300/200?random=11',
+        image: '/static/logo.png',
         price: 528000,
         monthlyPayment: 5200,
         seats: 4,
@@ -170,7 +178,7 @@ export default {
         id: 3,
         name: '隆翠房车',
         brand: '隆翠',
-        image: 'https://picsum.photos/300/200?random=12',
+        image: '/static/logo.png',
         price: 398000,
         monthlyPayment: 3900,
         seats: 4,

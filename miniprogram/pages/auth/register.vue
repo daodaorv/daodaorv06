@@ -33,7 +33,7 @@
 					<text class="required">*</text>
 				</view>
 				<view class="input-wrapper">
-					<u-icon name="chatboxes" size="20" color="#999999" />
+					<u-icon name="chat" size="20" color="#999999" />
 					<input
 						v-model="formData.code"
 						name="number"
@@ -58,7 +58,7 @@
 					<text class="optional">（可选）</text>
 				</view>
 				<view class="input-wrapper">
-					<u-icon name="locked" size="20" color="#999999" />
+					<u-icon name="lock" size="20" color="#999999" />
 					<input
 						v-model="formData.password"
 						:password="!showPassword"
@@ -66,7 +66,7 @@
 						class="input"
 					/>
 					<u-icon
-						:name="showPassword ? 'eye-filled' : 'eye-slash-filled'"
+						:name="showPassword ? 'eye-fill' : 'eye-off'"
 						size="20"
 						color="#999999"
 						@click="showPassword = !showPassword"
@@ -82,7 +82,7 @@
 					<text class="optional">（可选）</text>
 				</view>
 				<view class="input-wrapper">
-					<u-icon name="person" size="20" color="#999999" />
+					<u-icon name="account" size="20" color="#999999" />
 					<input
 						v-model="formData.nickname"
 						maxlength="20"

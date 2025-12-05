@@ -53,6 +53,12 @@
 <script>
 import { chooseImage, uploadImage, previewImage } from '@/utils/upload'
 
+// 常量配置
+const MAX_IMAGE_COUNT = 9
+const PROGRESS_INCREMENT = 10
+const PROGRESS_INTERVAL = 100
+const MOCK_UPLOAD_DELAY = 1000
+
 export default {
   name: 'ImageUploader',
 
@@ -65,7 +71,7 @@ export default {
     // 最大上传数量
     maxCount: {
       type: Number,
-      default: 9
+      default: MAX_IMAGE_COUNT
     },
     // 是否禁用
     disabled: {
@@ -123,6 +129,35 @@ export default {
   },
 
   methods: {
+    // 创建图片对象
+    createImageObject(path) {
+      return {
+        url: path,
+        uploading: true,
+        progress: 0,
+        error: false,
+        tempPath: path
+      }
+    },
+
+    // 处理选择图片错误
+    handleChooseError(err) {
+      if (err instanceof Error) {
+        console.error('选择图片失败:', err.message)
+      } else {
+        console.error('选择图片失败:', String(err))
+      }
+      if (err && typeof err === 'object' && 'errMsg' in err) {
+        const errMsg = (err as any).errMsg
+        if (errMsg && !errMsg.includes('cancel')) {
+          uni.showToast({
+            title: '选择图片失败',
+            icon: 'none'
+          })
+        }
+      }
+    },
+
     // 选择图片
     async handleChoose() {
       try {
@@ -136,76 +171,76 @@ export default {
 
         // 添加到列表并开始上传
         tempFilePaths.forEach(path => {
-          const image = {
-            url: path,
-            uploading: true,
-            progress: 0,
-            error: false,
-            tempPath: path
-          }
+          const image = this.createImageObject(path)
           this.imageList.push(image)
           this.uploadImage(image)
         })
-      } catch (err) {
-        console.error('选择图片失败:', err)
-        if (err.errMsg && !err.errMsg.includes('cancel')) {
-          uni.showToast({
-            title: '选择图片失败',
-            icon: 'none'
-          })
-        }
+      } catch (err: unknown) {
+        this.handleChooseError(err)
       }
+    },
+
+    // 执行上传
+    async performUpload(image) {
+      const progressCallback = (progress) => {
+        image.progress = progress.progress
+      }
+
+      if (this.useMock) {
+        return await this.mockUpload(image.tempPath, {
+          onProgress: progressCallback
+        })
+      } else {
+        return await uploadImage(image.tempPath, {
+          url: this.uploadUrl,
+          compress: this.compress,
+          onProgress: progressCallback
+        })
+      }
+    },
+
+    // 处理上传成功
+    handleUploadSuccess(image, result) {
+      image.url = result.url
+      image.uploading = false
+      image.progress = 100
+      image.error = false
+
+      this.emitChange()
+      this.$emit('upload-success', result)
+
+      uni.showToast({
+        title: '上传成功',
+        icon: 'success'
+      })
+    },
+
+    // 处理上传失败
+    handleUploadError(image, err) {
+      if (err instanceof Error) {
+        console.error('上传图片失败:', err.message)
+      } else {
+        console.error('上传图片失败:', String(err))
+      }
+
+      image.uploading = false
+      image.error = true
+
+      this.$emit('upload-error', err)
+
+      uni.showToast({
+        title: '上传失败',
+        icon: 'none'
+      })
     },
 
     // 上传图片
     async uploadImage(image) {
       try {
-        let result
-
-        if (this.useMock) {
-          // Mock上传
-          result = await this.mockUpload(image.tempPath, {
-            onProgress: (progress) => {
-              image.progress = progress.progress
-            }
-          })
-        } else {
-          // 真实上传
-          result = await uploadImage(image.tempPath, {
-            url: this.uploadUrl,
-            compress: this.compress,
-            onProgress: (progress) => {
-              image.progress = progress.progress
-            }
-          })
-        }
-
-        // 上传成功
-        image.url = result.url
-        image.uploading = false
-        image.progress = 100
-        image.error = false
-
-        this.emitChange()
-        this.$emit('upload-success', result)
-
-        uni.showToast({
-          title: '上传成功',
-          icon: 'success'
-        })
-      } catch (err) {
-        console.error('上传图片失败:', err)
-
-        // 上传失败
-        image.uploading = false
-        image.error = true
-
-        this.$emit('upload-error', err)
-
-        uni.showToast({
-          title: '上传失败',
-          icon: 'none'
-        })
+        const result = await this.performUpload(image)
+        this.handleUploadSuccess(image, result)
+      } catch (err: unknown) {
+        this.handleUploadError(image, err)
       }
     },
 
@@ -215,14 +250,14 @@ export default {
         // 模拟上传进度
         let progress = 0
         const timer = setInterval(() => {
-          progress += 10
+          progress += PROGRESS_INCREMENT
           if (options.onProgress) {
             options.onProgress({ progress })
           }
           if (progress >= 100) {
             clearInterval(timer)
           }
-        }, 100)
+        }, PROGRESS_INTERVAL)
 
         // 模拟上传延迟
         setTimeout(() => {
@@ -231,7 +266,7 @@ export default {
             fileName: filePath.split('/').pop(),
             fileSize: Math.floor(Math.random() * 1000000)
           })
-        }, 1000)
+        }, MOCK_UPLOAD_DELAY)
       })
     },
 

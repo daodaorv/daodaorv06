@@ -128,6 +128,7 @@
 
 <script>
 import { getVehicleList, updateVehicleStatus } from '@/api/vehicle'
+import logger from '@/utils/logger'
 
 export default {
   data() {
@@ -170,12 +171,17 @@ export default {
         }
 
         const data = await getVehicleList(params)
-        this.vehicleList = data.list
+        // 边界检查：确保返回的数据是数组
+        this.vehicleList = Array.isArray(data?.list) ? data.list : []
 
         // 更新状态计数
         this.updateStatusCount()
-      } catch (error) {
-        console.error('加载车辆失败:', error)
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          logger.error('Vehicle', '加载车辆失败:', error.message)
+        } else {
+          logger.error('Vehicle', '加载车辆失败:', String(error))
+        }
         uni.showToast({
           title: '加载失败，请重试',
           icon: 'none'
@@ -193,6 +199,11 @@ export default {
 
     changeStatus(e) {
       const index = e.index !== undefined ? e.index : e
+      // 边界检查：确保索引有效
+      if (index < 0 || index >= this.statusTabs.length) {
+        logger.error('Vehicle', 'Invalid tab index:', index)
+        return
+      }
       this.currentStatusIndex = index
       this.currentStatus = this.statusTabs[index].value
       this.loadVehicles()
@@ -218,24 +229,57 @@ export default {
     },
 
     viewDetail(id) {
+      // 空值检查：确保ID有效
+      if (!id) {
+        uni.showToast({
+          title: '车辆ID无效',
+          icon: 'none'
+        })
+        return
+      }
       uni.navigateTo({
         url: `/pages/vehicles/detail?id=${id}`
       })
     },
 
     rentVehicle(vehicle) {
+      // 空值检查：确保车辆对象有效
+      if (!vehicle || !vehicle.id) {
+        uni.showToast({
+          title: '车辆信息无效',
+          icon: 'none'
+        })
+        return
+      }
       uni.navigateTo({
         url: `/pages/orders/create?vehicleId=${vehicle.id}`
       })
     },
 
     viewMaintenance(vehicle) {
+      // 空值检查：确保车辆对象有效
+      if (!vehicle || !vehicle.id) {
+        uni.showToast({
+          title: '车辆信息无效',
+          icon: 'none'
+        })
+        return
+      }
       uni.navigateTo({
         url: `/pages/vehicles/detail?id=${vehicle.id}&tab=maintenance`
       })
     },
 
     updateStatus(vehicle) {
+      // 空值检查：确保车辆对象有效
+      if (!vehicle || !vehicle.id) {
+        uni.showToast({
+          title: '车辆信息无效',
+          icon: 'none'
+        })
+        return
+      }
+
       const statusOptions = [
         { text: '可用', value: 'available' },
         { text: '租用中', value: 'rented' },
@@ -246,6 +290,11 @@ export default {
       uni.showActionSheet({
         itemList: statusOptions.map(s => s.text),
         success: async (res) => {
+          // 边界检查：确保索引有效
+          if (res.tapIndex < 0 || res.tapIndex >= statusOptions.length) {
+            logger.error('Vehicle', 'Invalid status option index:', res.tapIndex)
+            return
+          }
           const newStatus = statusOptions[res.tapIndex].value
           if (newStatus !== vehicle.status) {
             try {
@@ -255,7 +304,12 @@ export default {
                 icon: 'success'
               })
               this.loadVehicles()
-            } catch (error) {
+            } catch (error: unknown) {
+              if (error instanceof Error) {
+                logger.error('Vehicle', '更新车辆状态失败:', error.message)
+              } else {
+                logger.error('Vehicle', '更新车辆状态失败:', String(error))
+              }
               uni.showToast({
                 title: '更新失败',
                 icon: 'none'

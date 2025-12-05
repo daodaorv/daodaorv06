@@ -34,10 +34,10 @@
 	/* #ifndef APP-NVUE */
 	@import '@/static/customicons.css';
 
-	/* 强制加载 uView Plus 本地字体 */
+	/* 强制加载 uView Plus 本地字体 - 使用相对路径 */
 	@font-face {
 		font-family: 'uicon-iconfont';
-		src: url('/static/uicon-iconfont.ttf') format('truetype');
+		src: url('~@/static/uicon-iconfont.ttf') format('truetype');
 	}
 	/* #endif */
 
@@ -46,7 +46,6 @@
 		background-color: #F5F7FA;
 		font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Segoe UI, Arial, Roboto, 'PingFang SC', 'miui', 'Hiragino Sans GB', 'Microsoft Yahei', sans-serif;
 	}
-	/* #endif */
 
 	.example-info {
 		font-size: 14px;

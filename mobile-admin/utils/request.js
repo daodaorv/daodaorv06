@@ -3,11 +3,21 @@
  * 统一处理请求拦截、响应拦截、错误处理
  */
 
+import logger from './logger'
+
+// 常量配置
+const REQUEST_TIMEOUT = 10000
+const HTTP_STATUS_OK = 200
+const BUSINESS_CODE_SUCCESS = 0
+const BUSINESS_CODE_OK = 200
+const BUSINESS_CODE_UNAUTHORIZED = 401
+const TOAST_DURATION = 2000
+
 // 配置
 const config = {
   // 开发环境使用Mock数据，不请求真实后端
   baseURL: '',
-  timeout: 10000,
+  timeout: REQUEST_TIMEOUT,
   useMock: true // 前端独立开发阶段使用Mock数据
 }
 
@@ -53,7 +63,7 @@ function responseInterceptor(response) {
   const { statusCode, data } = response
 
   // HTTP状态码检查
-  if (statusCode !== 200) {
+  if (statusCode !== HTTP_STATUS_OK) {
     handleError({
       code: statusCode,
       message: '网络请求失败'
@@ -62,9 +72,9 @@ function responseInterceptor(response) {
   }
 
   // 业务状态码检查
-  if (data.code !== 0 && data.code !== 200) {
+  if (data.code !== BUSINESS_CODE_SUCCESS && data.code !== BUSINESS_CODE_OK) {
     // Token过期处理
-    if (data.code === 401) {
+    if (data.code === BUSINESS_CODE_UNAUTHORIZED) {
       handleTokenExpired()
       return Promise.reject(data)
     }
@@ -80,15 +90,24 @@ function responseInterceptor(response) {
  * 错误处理
  */
 function handleError(error) {
-  const message = error.message || error.msg || '请求失败'
+  let message = '请求失败'
+
+  if (error instanceof Error) {
+    message = error.message
+  } else if (typeof error === 'object' && error !== null) {
+    message = error.message || error.msg || '请求失败'
+  } else if (typeof error === 'string') {
+    message = error
+  }
 
   uni.showToast({
     title: message,
     icon: 'none',
-    duration: 2000
+    duration: TOAST_DURATION
   })
 
-  console.error('[Request Error]', error)
+  // 使用统一日志工具
+  logger.error('Request', '请求失败:', error)
 }
 
 /**
@@ -100,7 +119,7 @@ function handleTokenExpired() {
   uni.showToast({
     title: '登录已过期，请重新登录',
     icon: 'none',
-    duration: 2000
+    duration: TOAST_DURATION
   })
 
   // 延迟跳转到登录页
@@ -108,7 +127,30 @@ function handleTokenExpired() {
     uni.reLaunch({
       url: '/pages/login/login'
     })
-  }, 2000)
+  }, TOAST_DURATION)
+}
+
+/**
+ * 显示加载提示
+ * @param {Object} options - 请求选项
+ */
+function showLoadingIfNeeded(options) {
+  if (options.showLoading !== false) {
+    uni.showLoading({
+      title: options.loadingText || '加载中...',
+      mask: true
+    })
+  }
+}
+
+/**
+ * 隐藏加载提示
+ * @param {Object} options - 请求选项
+ */
+function hideLoadingIfNeeded(options) {
+  if (options.showLoading !== false) {
+    uni.hideLoading()
+  }
 }
 
 /**
@@ -120,12 +162,7 @@ function request(options) {
     options = requestInterceptor(options)
 
     // 显示加载提示
-    if (options.showLoading !== false) {
-      uni.showLoading({
-        title: options.loadingText || '加载中...',
-        mask: true
-      })
-    }
+    showLoadingIfNeeded(options)
 
     // 发起请求
     uni.request({
@@ -133,7 +170,7 @@ function request(options) {
       method: options.method || 'GET',
       data: options.data || {},
       header: options.header || {},
-      timeout: options.timeout || config.timeout,
+      timeout: options.timeout || REQUEST_TIMEOUT,
       success: (res) => {
         // 响应拦截
         responseInterceptor(res)
@@ -148,9 +185,7 @@ function request(options) {
       },
       complete: () => {
         // 隐藏加载提示
-        if (options.showLoading !== false) {
-          uni.hideLoading()
-        }
+        hideLoadingIfNeeded(options)
       }
     })
   })
@@ -227,7 +262,7 @@ export function upload(url, filePath, options = {}) {
       },
       success: (res) => {
         const data = JSON.parse(res.data)
-        if (data.code === 0 || data.code === 200) {
+        if (data.code === BUSINESS_CODE_SUCCESS || data.code === BUSINESS_CODE_OK) {
           resolve(data.data)
         } else {
           handleError(data)

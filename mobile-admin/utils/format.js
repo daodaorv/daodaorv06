@@ -73,6 +73,11 @@ export function formatMoney(money, decimals = 2) {
  */
 export function formatPhone(phone) {
   if (!phone) return ''
+  // 验证手机号格式（11位数字）
+  if (!/^\d{11}$/.test(phone)) {
+    console.warn('Invalid phone format:', phone)
+    return phone
+  }
   return phone.replace(/(\d{3})(\d{4})(\d{4})/, '$1 $2 $3')
 }
 
@@ -81,6 +86,11 @@ export function formatPhone(phone) {
  */
 export function hidePhone(phone) {
   if (!phone) return ''
+  // 验证手机号格式（11位数字）
+  if (!/^\d{11}$/.test(phone)) {
+    console.warn('Invalid phone format:', phone)
+    return phone
+  }
   return phone.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2')
 }
 
@@ -89,6 +99,11 @@ export function hidePhone(phone) {
  */
 export function hideIdCard(idCard) {
   if (!idCard) return ''
+  // 验证身份证号格式（15位或18位）
+  if (!/^(\d{15}|\d{17}[\dXx])$/.test(idCard)) {
+    console.warn('Invalid ID card format:', idCard)
+    return idCard
+  }
   return idCard.replace(/(\d{6})\d+(\d{4})/, '$1********$2')
 }
 
@@ -98,9 +113,21 @@ export function hideIdCard(idCard) {
 export function formatFileSize(bytes) {
   if (bytes === 0) return '0 B'
 
+  // 边界检查：确保bytes是有效数字
+  if (typeof bytes !== 'number' || isNaN(bytes) || bytes < 0) {
+    console.warn('Invalid bytes value:', bytes)
+    return '0 B'
+  }
+
   const k = 1024
   const sizes = ['B', 'KB', 'MB', 'GB', 'TB']
   const i = Math.floor(Math.log(bytes) / Math.log(k))
+
+  // 边界检查：确保索引在有效范围内
+  if (i < 0 || i >= sizes.length) {
+    console.warn('Size index out of bounds:', i)
+    return bytes + ' B'
+  }
 
   return (bytes / Math.pow(k, i)).toFixed(2) + ' ' + sizes[i]
 }

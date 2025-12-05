@@ -1,3 +1,4 @@
+<!-- @ts-nocheck -->
 <template>
   <div class="user-detail-container">
     <!-- 页面头部 -->

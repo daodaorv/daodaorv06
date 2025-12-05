@@ -92,7 +92,7 @@
           <!-- 租赁信息 -->
           <view class="order-rental">
             <view class="rental-item">
-              <u-icon name="location" size="14" color="#999"></u-icon>
+              <u-icon name="map" size="14" color="#999"></u-icon>
               <text class="rental-text">{{ order.pickupStore.name }}</text>
             </view>
             <view class="rental-item">
@@ -102,7 +102,7 @@
               </text>
             </view>
             <view class="rental-item" v-if="order.returnStore.id !== order.pickupStore.id">
-              <u-icon name="flag" size="14" color="#4B91FF"></u-icon>
+              <u-icon name="pushpin" size="14" color="#4B91FF"></u-icon>
               <text class="rental-text">异地还车</text>
             </view>
           </view>
@@ -232,12 +232,19 @@ const loadStatusList = async () => {
     const result = await orderApi.getOrderStatusList();
     // 解析标准响应格式
     const statusData = result.data || result;
-    statusList.value = statusData.map(status => ({
-      ...status,
-      count: 0 // 这里应该调用API获取各状态订单数量
-    }));
+    // 确保 statusData 是数组
+    if (Array.isArray(statusData)) {
+      statusList.value = statusData.map(status => ({
+        ...status,
+        count: 0 // 这里应该调用API获取各状态订单数量
+      }));
+    } else {
+      console.warn('状态列表数据格式错误:', statusData);
+      statusList.value = [];
+    }
   } catch (error) {
     console.error('加载状态列表失败:', error);
+    statusList.value = [];
   }
 };
 
@@ -262,11 +269,12 @@ const loadOrders = async (isRefresh = false) => {
     const response = result.data || result;
 
     if (isRefresh) {
-      orders.value = response.orders || [];
+      orders.value = Array.isArray(response.orders) ? response.orders : [];
       page.value = 1;
       hasMore.value = response.pagination ? response.pagination.current < response.pagination.pages : false;
     } else {
-      orders.value.push(...(response.orders || []));
+      const newOrders = Array.isArray(response.orders) ? response.orders : [];
+      orders.value.push(...newOrders);
       hasMore.value = response.pagination ? response.pagination.current < response.pagination.pages : false;
     }
 

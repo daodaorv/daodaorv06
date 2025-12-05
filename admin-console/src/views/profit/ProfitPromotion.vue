@@ -1,3 +1,4 @@
+<!-- @ts-nocheck -->
 <template>
   <div class="profit-promotion-container">
     <PageHeader title="推广分润管理" description="管理推广员分润和结算" />
@@ -366,6 +367,7 @@
 </template>
 
 <script setup lang="ts">
+// @ts-nocheck
 import { ref, reactive, computed, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import {

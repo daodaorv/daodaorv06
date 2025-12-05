@@ -87,7 +87,7 @@
 		<!-- 使用说明 -->
 		<view class="section">
 			<view class="section-title">
-				<u-icon name="help" size="20" color="#FF9F29"></u-icon>
+				<u-icon name="question-circle" size="20" color="#FF9F29"></u-icon>
 				<text class="title-text">使用说明</text>
 			</view>
 			<view class="section-content">
@@ -126,7 +126,7 @@
 		<!-- 底部操作栏 -->
 		<view class="bottom-bar">
 			<button class="share-btn" @tap="handleShare">
-				<u-icon name="redo" size="20" color="#666"></u-icon>
+				<u-icon name="reload" size="20" color="#666"></u-icon>
 				<text class="share-text">分享</text>
 			</button>
 			<view class="bar-right">
@@ -151,13 +151,13 @@
 					</view>
 					<view class="share-option" @tap="shareToMoments">
 						<view class="option-icon moments">
-							<u-icon name="loop" size="28" color="#FFFFFF"></u-icon>
+							<u-icon name="reload" size="28" color="#FFFFFF"></u-icon>
 						</view>
 						<text class="option-text">朋友圈</text>
 					</view>
 					<view class="share-option" @tap="copyLink">
 						<view class="option-icon copy">
-							<u-icon name="paperclip" size="28" color="#FFFFFF"></u-icon>
+							<u-icon name="attach" size="28" color="#FFFFFF"></u-icon>
 						</view>
 						<text class="option-text">复制链接</text>
 					</view>

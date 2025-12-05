@@ -26,7 +26,7 @@ const mockOrders = [
         vehicle: {
             id: 'vehicle_001',
             name: '依维柯欧胜C型房车',
-            images: ['https://picsum.photos/400/300?random=1'],
+            images: ['/static/logo.png'],
             specifications: {
                 seats: 4,
                 fuelType: '柴油',
@@ -55,7 +55,7 @@ const mockOrders = [
         vehicle: {
             id: 'vehicle_002',
             name: '大通V90房车',
-            images: ['https://picsum.photos/400/300?random=2'],
+            images: ['/static/logo.png'],
             specifications: {
                 seats: 6,
                 fuelType: '柴油',
@@ -84,7 +84,7 @@ const mockOrders = [
         vehicle: {
             id: 'vehicle_003',
             name: '福特全顺B型房车',
-            images: ['https://picsum.photos/400/300?random=3'],
+            images: ['/static/logo.png'],
             specifications: {
                 seats: 4,
                 fuelType: '汽油',
@@ -113,7 +113,7 @@ const mockOrders = [
         vehicle: {
             id: 'vehicle_004',
             name: '奔驰斯宾特房车',
-            images: ['https://picsum.photos/400/300?random=4'],
+            images: ['/static/logo.png'],
             specifications: {
                 seats: 6,
                 fuelType: '柴油',
@@ -142,7 +142,7 @@ const mockOrders = [
         vehicle: {
             id: 'vehicle_005',
             name: '江铃特顺房车',
-            images: ['https://picsum.photos/400/300?random=5'],
+            images: ['/static/logo.png'],
             specifications: {
                 seats: 4,
                 fuelType: '柴油',

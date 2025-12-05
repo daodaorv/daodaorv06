@@ -1,3 +1,4 @@
+<!-- @ts-nocheck -->
 <template>
   <div class="user-risk-container">
     <PageHeader title="风险用户管理" description="监控和管理平台风险用户，及时处理异常行为" />

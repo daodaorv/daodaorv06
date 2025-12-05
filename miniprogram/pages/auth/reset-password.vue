@@ -25,7 +25,7 @@
 			<!-- 验证码 -->
 			<view class="form-item">
 				<view class="input-wrapper">
-					<u-icon name="chatboxes" size="20" color="#999999" />
+					<u-icon name="chat" size="20" color="#999999" />
 					<input
 						v-model="formData.code"
 						name="number"
@@ -46,7 +46,7 @@
 			<!-- 新密码 -->
 			<view class="form-item">
 				<view class="input-wrapper">
-					<u-icon name="locked" size="20" color="#999999" />
+					<u-icon name="lock" size="20" color="#999999" />
 					<input
 						v-model="formData.newPassword"
 						:password="!showPassword"
@@ -54,7 +54,7 @@
 						class="input"
 					/>
 					<u-icon
-						:name="showPassword ? 'eye-filled' : 'eye-slash-filled'"
+						:name="showPassword ? 'eye-fill' : 'eye-off'"
 						size="20"
 						color="#999999"
 						@click="showPassword = !showPassword"
@@ -65,7 +65,7 @@
 			<!-- 确认密码 -->
 			<view class="form-item">
 				<view class="input-wrapper">
-					<u-icon name="locked" size="20" color="#999999" />
+					<u-icon name="lock" size="20" color="#999999" />
 					<input
 						v-model="formData.confirmPassword"
 						:password="!showConfirmPassword"
@@ -73,7 +73,7 @@
 						class="input"
 					/>
 					<u-icon
-						:name="showConfirmPassword ? 'eye-filled' : 'eye-slash-filled'"
+						:name="showConfirmPassword ? 'eye-fill' : 'eye-off'"
 						size="20"
 						color="#999999"
 						@click="showConfirmPassword = !showConfirmPassword"

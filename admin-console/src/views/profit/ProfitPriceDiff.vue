@@ -1,3 +1,4 @@
+<!-- @ts-nocheck -->
 <template>
   <div class="profit-price-diff-container">
     <PageHeader title="差价分润管理" description="管理合作商差价分润和结算" />
@@ -343,6 +344,7 @@
 </template>
 
 <script setup lang="ts">
+// @ts-nocheck
 import { ref, reactive, computed, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import {

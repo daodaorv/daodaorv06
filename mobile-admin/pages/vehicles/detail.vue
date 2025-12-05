@@ -203,8 +203,12 @@ export default {
       try {
         const data = await getVehicleDetail(this.vehicleId)
         this.vehicle = data
-      } catch (error) {
-        console.error('加载车辆详情失败:', error)
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          console.error('加载车辆详情失败:', error.message)
+        } else {
+          console.error('加载车辆详情失败:', String(error))
+        }
         uni.showToast({
           title: '加载失败，请重试',
           icon: 'none'
@@ -218,8 +222,12 @@ export default {
       try {
         const data = await getMaintenanceRecords(this.vehicleId)
         this.maintenanceRecords = data.list || []
-      } catch (error) {
-        console.error('加载维保记录失败:', error)
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          console.error('加载维保记录失败:', error.message)
+        } else {
+          console.error('加载维保记录失败:', String(error))
+        }
       }
     },
 
@@ -246,7 +254,12 @@ export default {
         setTimeout(() => {
           this.loadVehicleDetail()
         }, 1000)
-      } catch (error) {
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          console.error('更新车辆状态失败:', error.message)
+        } else {
+          console.error('更新车辆状态失败:', String(error))
+        }
         uni.showToast({
           title: '更新失败',
           icon: 'none'

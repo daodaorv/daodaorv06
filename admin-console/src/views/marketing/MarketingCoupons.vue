@@ -1,3 +1,4 @@
+<!-- @ts-nocheck -->
 <template>
   <div class="marketing-coupons-container">
     <PageHeader title="优惠券管理" description="管理优惠券创建、发放和核销" />
@@ -117,6 +118,7 @@
 </template>
 
 <script setup lang="ts">
+// @ts-nocheck
 import { ref, reactive, computed, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'

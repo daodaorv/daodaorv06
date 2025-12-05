@@ -12,7 +12,7 @@
         </view>
         <view class="actions">
           <view class="action-btn edit" @tap="handleEdit(contact)">
-            <u-icon name="compose" size="20" color="#666"></u-icon>
+            <u-icon name="edit-pen" size="20" color="#666"></u-icon>
           </view>
           <view class="action-btn delete" @tap="handleDelete(contact)">
             <u-icon name="trash" size="20" color="#F44336"></u-icon>

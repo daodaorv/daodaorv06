@@ -17,7 +17,7 @@
       <view class="name-header">
         <text class="campsite-name">{{ campsiteDetail.name }}</text>
         <view v-if="campsiteDetail.isHot" class="hot-badge-wrapper">
-          <u-tag text="热门" type="error" shape="circle" size="mini" icon="fire-fill"></u-tag>
+          <u-tag text="热门" type="error" shape="checkmark-circle" size="mini" icon="star-fill"></u-tag>
         </view>
       </view>
 
@@ -60,7 +60,7 @@
             :text="feature" 
             plain 
             type="success" 
-            shape="circle" 
+            shape="checkmark-circle" 
             size="mini" 
             icon="checkmark-circle"
             style="margin-right: 16rpx; margin-bottom: 16rpx;"
@@ -87,7 +87,16 @@
         <text class="title-text">营位类型</text>
       </view>
       <view class="site-types">
-        <view class="site-type-card" v-for="siteType in (campsiteDetail.siteTypes || [])" :key="siteType.id">
+        <view
+          class="site-type-card"
+          v-for="siteType in (campsiteDetail.siteTypes || [])"
+          :key="siteType.id"
+          :class="{
+            selected: selectedSiteTypeId === siteType.id,
+            disabled: siteType.available === 0
+          }"
+          @click="selectSiteType(siteType)"
+        >
           <view class="site-type-header">
             <text class="site-type-name">{{ siteType.name }}</text>
             <u-tag 
@@ -109,11 +118,11 @@
             </view>
             <u-button 
                 :type="siteType.available > 0 ? 'primary' : 'info'" 
-                shape="circle" 
+                shape="checkmark-circle" 
                 size="small" 
-                :text="siteType.available > 0 ? '立即预订' : '已满'"
+                :text="siteType.available > 0 ? (selectedSiteTypeId === siteType.id ? '已选中' : '选择营位') : '已满'"
                 :disabled="siteType.available === 0"
-                @click="bookSite(siteType)"
+                @click.stop="selectSiteType(siteType)"
                 customStyle="width: 160rpx; height: 60rpx;"
             ></u-button>
           </view>
@@ -197,10 +206,10 @@
       </view>
       <view class="bar-actions">
         <view class="action-btn-wrapper">
-            <u-button shape="circle" plain type="warning" icon="chat" text="咨询" @click="contactService"></u-button>
+            <u-button shape="checkmark-circle" plain type="warning" icon="chat" text="咨询" @click="contactService"></u-button>
         </view>
         <view class="action-btn-wrapper">
-            <u-button shape="circle" type="primary" text="立即预订" @click="showBookingOptions"></u-button>
+            <u-button shape="checkmark-circle" type="primary" text="立即预订" @click="bookNow"></u-button>
         </view>
       </view>
     </view>
@@ -208,7 +217,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { onLoad } from '@dcloudio/uni-app';
 
 // 获取路由参数
@@ -262,13 +271,13 @@ const loadCampsiteDetail = async () => {
       isHot: true,
       features: ['湖景', '烧烤区', 'WiFi覆盖', '24小时热水', '儿童乐园', '宠物友好'],
       facilities: [
-        { name: '淋浴间', icon: 'fire' },
+        { name: '淋浴间', icon: 'star-fill' },
         { name: '卫生间', icon: 'home' },
-        { name: '洗衣房', icon: 'gear' },
-        { name: '充电桩', icon: 'bolt' },
-        { name: '烧烤区', icon: 'fire-filled' },
-        { name: '停车场', icon: 'navigate' },
-        { name: '便利店', icon: 'shop' },
+        { name: '洗衣房', icon: 'setting' },
+        { name: '充电桩', icon: 'plus-circle-fill' },
+        { name: '烧烤区', icon: 'star-fill' },
+        { name: '停车场', icon: 'map' },
+        { name: '便利店', icon: 'bag' },
         { name: 'WiFi', icon: 'wifi' }
       ],
       siteTypes: [
@@ -341,6 +350,8 @@ const loadCampsiteDetail = async () => {
     };
 
     campsiteDetail.value = mockDetail;
+    const firstAvailable = mockDetail.siteTypes.find((t: any) => t.available > 0);
+    selectedSiteTypeId.value = firstAvailable ? firstAvailable.id : '';
 
   } catch (error) {
     console.error('加载营地详情失败:', error);
@@ -369,7 +380,12 @@ const contactService = () => {
 };
 
 // 预订营位
-const bookSite = (siteType: any) => {
+const selectedSiteTypeId = ref('');
+const selectedSiteType = computed(() => {
+  return (campsiteDetail.value.siteTypes || []).find((t: any) => t.id === selectedSiteTypeId.value);
+});
+
+const selectSiteType = (siteType: any) => {
   if (siteType.available === 0) {
     uni.showToast({
       title: '该营位已满',
@@ -377,35 +393,27 @@ const bookSite = (siteType: any) => {
     });
     return;
   }
-
-  // 跳转到预订页面
-  uni.navigateTo({
-    url: `/pages/campsite/booking?campsiteId=${campsiteId.value}&siteTypeId=${siteType.id}`
-  });
+  selectedSiteTypeId.value = siteType.id;
 };
 
-// 显示预订选项
-const showBookingOptions = () => {
-  // 如果只有一个可用营位类型，直接跳转
-  const availableTypes = campsiteDetail.value.siteTypes.filter((t: any) => t.available > 0);
-
-  if (availableTypes.length === 0) {
-    uni.showToast({
-      title: '暂无可用营位',
-      icon: 'none'
-    });
-    return;
-  }
-
-  if (availableTypes.length === 1) {
-    bookSite(availableTypes[0]);
-  } else {
-    // 滚动到营位类型区域
+const bookNow = () => {
+  if (!selectedSiteType.value) {
     uni.showToast({
       title: '请选择营位类型',
       icon: 'none'
     });
+    return;
   }
+  if (selectedSiteType.value.available === 0) {
+    uni.showToast({
+      title: '该营位已满',
+      icon: 'none'
+    });
+    return;
+  }
+  uni.navigateTo({
+    url: `/pages/campsite/booking?campsiteId=${campsiteId.value}&siteTypeId=${selectedSiteType.value.id}`
+  });
 };
 </script>
 
@@ -584,6 +592,17 @@ const showBookingOptions = () => {
     border-radius: 12rpx;
     padding: 24rpx;
     margin-bottom: 16rpx;
+    border: 2rpx solid transparent;
+    transition: border-color 0.2s, background-color 0.2s;
+
+    &.selected {
+      border-color: #FF9F29;
+      background-color: rgba(255, 159, 41, 0.08);
+    }
+
+    &.disabled {
+      opacity: 0.6;
+    }
 
     &:last-child {
       margin-bottom: 0;

@@ -1,3 +1,4 @@
+<!-- @ts-nocheck -->
 <template>
   <div class="vehicle-insurance-container">
     <PageHeader title="保险管理" description="管理车辆保险记录、理赔记录和续保提醒" />

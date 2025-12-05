@@ -107,7 +107,7 @@
 		<!-- 购买协议 -->
 		<view class="agreement-section">
 			<view class="agreement-checkbox" @click="toggleAgreement">
-				<view class="checkbox" :class="agreedToTerms ? 'checked' : ''">
+				<view class="checkmark-circle" :class="agreedToTerms ? 'checked' : ''">
 					<text v-if="agreedToTerms" class="check-icon">✓</text>
 				</view>
 				<text class="agreement-text">

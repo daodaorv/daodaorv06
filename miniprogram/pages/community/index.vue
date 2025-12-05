@@ -3,14 +3,14 @@
     <!-- 业务推荐入口 -->
     <view class="business-section">
       <view class="business-card" @click="navigateTo('/pages/campsite/list')">
-        <image class="card-bg" src="https://picsum.photos/350/180?random=1" mode="aspectFill"></image>
+        <image class="card-bg" src="/static/logo.png" mode="aspectFill"></image>
         <view class="card-overlay">
           <text class="card-title">营地预订</text>
           <text class="card-subtitle">房车旅行好住处</text>
         </view>
       </view>
       <view class="business-card" @click="navigateTo('/pages/tour/list')">
-        <image class="card-bg" src="https://picsum.photos/350/180?random=2" mode="aspectFill"></image>
+        <image class="card-bg" src="/static/logo.png" mode="aspectFill"></image>
         <view class="card-overlay">
           <text class="card-title">房车旅游</text>
           <text class="card-subtitle">精选旅游路线</text>
@@ -99,12 +99,12 @@ const currentCategory = ref('all');
 
 // Mock数据
 const posts = ref([
-  { id: 1, title: '318国道房车自驾攻略', image: 'https://picsum.photos/300/400?random=11', avatar: 'https://picsum.photos/50/50?random=101', nickname: '旅行达人', likes: 128, category: 'guide' },
-  { id: 2, title: '房车露营装备清单', image: 'https://picsum.photos/300/300?random=12', avatar: 'https://picsum.photos/50/50?random=102', nickname: '露营爱好者', likes: 85, category: 'guide' },
-  { id: 3, title: '我的第一次房车之旅', image: 'https://picsum.photos/300/500?random=13', avatar: 'https://picsum.photos/50/50?random=103', nickname: '小白车友', likes: 256, category: 'experience' },
-  { id: 4, title: '带娃房车游攻略', image: 'https://picsum.photos/300/350?random=14', avatar: 'https://picsum.photos/50/50?random=104', nickname: '亲子旅行', likes: 99, category: 'experience' },
-  { id: 5, title: '房车自驾西藏准备', image: 'https://picsum.photos/300/450?random=15', avatar: 'https://picsum.photos/50/50?random=105', nickname: '在路上', likes: 342, category: 'guide' },
-  { id: 6, title: '房车美食分享', image: 'https://picsum.photos/300/320?random=16', avatar: 'https://picsum.photos/50/50?random=106', nickname: '美食家', likes: 67, category: 'experience' }
+  { id: 1, title: '318国道房车自驾攻略', image: '/static/logo.png', avatar: '/static/logo.png', nickname: '旅行达人', likes: 128, category: 'guide' },
+  { id: 2, title: '房车露营装备清单', image: '/static/logo.png', avatar: '/static/logo.png', nickname: '露营爱好者', likes: 85, category: 'guide' },
+  { id: 3, title: '我的第一次房车之旅', image: '/static/logo.png', avatar: '/static/logo.png', nickname: '小白车友', likes: 256, category: 'experience' },
+  { id: 4, title: '带娃房车游攻略', image: '/static/logo.png', avatar: '/static/logo.png', nickname: '亲子旅行', likes: 99, category: 'experience' },
+  { id: 5, title: '房车自驾西藏准备', image: '/static/logo.png', avatar: '/static/logo.png', nickname: '在路上', likes: 342, category: 'guide' },
+  { id: 6, title: '房车美食分享', image: '/static/logo.png', avatar: '/static/logo.png', nickname: '美食家', likes: 67, category: 'experience' }
 ]);
 
 const filteredPosts = computed(() => {

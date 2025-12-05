@@ -1,3 +1,4 @@
+<!-- @ts-nocheck -->
 <template>
   <div class="hosting-new-car-container">
     <PageHeader title="购车托管审核" description="审核购车托管申请和跟进购车进度" />

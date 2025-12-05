@@ -85,7 +85,7 @@
 					:key="index"
 					class="image-item"
 				>
-					<image :src="image" mode="aspectFill" class="image"></image>
+					<image :src="photo" mode="aspectFill" class="photo"></image>
 					<view class="image-delete" @click="deleteImage(index)">
 						<u-icon name="close" color="#FFFFFF" size="16" />
 					</view>

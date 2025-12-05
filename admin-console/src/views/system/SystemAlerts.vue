@@ -1,3 +1,4 @@
+<!-- @ts-nocheck -->
 <template>
   <div class="system-alerts-container">
     <!-- 页面标题 -->

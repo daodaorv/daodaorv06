@@ -9,7 +9,7 @@
 				<!-- 按门店分组 -->
 				<view v-for="(group, index) in groupedVehicles" :key="index" class="store-group">
 					<view class="store-header">
-						<u-icon name="shop-fill" size="18" color="#FF9F29"></u-icon>
+						<u-icon name="bag-fill" size="18" color="#FF9F29"></u-icon>
 						<text class="store-name">{{ group.storeName }}</text>
 						<text class="vehicle-count">{{ group.vehicles.length }}辆可租</text>
 					</view>

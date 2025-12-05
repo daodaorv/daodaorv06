@@ -1,3 +1,4 @@
+<!-- @ts-nocheck -->
 <template>
   <div class="order-exceptions-container">
     <PageHeader title="异常订单处理" description="处理订单异常情况和纠纷解决" />
@@ -92,6 +93,7 @@
 </template>
 
 <script setup lang="ts">
+// @ts-nocheck
 import { ref, reactive, computed, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'

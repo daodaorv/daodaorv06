@@ -21,7 +21,7 @@
 		<view class="hot-section">
 			<view class="section-header">
 				<text class="section-title">热门问题</text>
-				<u-icon name="fire" size="20" color="#FF9F29" />
+				<u-icon name="star-fill" size="20" color="#FF9F29" />
 			</view>
 			<view class="hot-list">
 				<view
@@ -31,14 +31,14 @@
 					@click="viewArticle(article.id)"
 				>
 					<view class="hot-icon">
-						<u-icon name="help" size="20" color="#FF9F29" />
+						<u-icon name="question-circle" size="20" color="#FF9F29" />
 					</view>
 					<view class="hot-content">
 						<text class="hot-title">{{ article.title }}</text>
 						<text class="hot-summary">{{ article.summary }}</text>
 					</view>
 					<view class="hot-arrow">
-						<u-icon name="right" size="16" color="#CCCCCC" />
+						<u-icon name="arrow-right" size="16" color="#CCCCCC" />
 					</view>
 				</view>
 			</view>
@@ -130,11 +130,11 @@ const getCategoryIcon = (icon: string) => {
 		car: 'car',
 		home: 'home',
 		map: 'map',
-		wallet: 'wallet',
-		vip: 'vip-filled',
-		help: 'help'
+		rmb: 'rmb',
+		level: 'level',
+		'question-circle': 'question-circle'
 	}
-	return iconMap[icon] || 'help'
+	return iconMap[icon] || icon || 'question-circle'
 }
 
 // 处理搜索

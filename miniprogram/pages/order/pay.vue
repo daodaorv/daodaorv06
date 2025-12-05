@@ -27,7 +27,7 @@
 			<view class="payment-item">
 				<view class="payment-info">
 					<view class="icon-box balance">
-						<u-icon name="wallet-fill" size="24" color="#FFFFFF"></u-icon>
+						<u-icon name="rmb-circle-fill" size="24" color="#FFFFFF"></u-icon>
 					</view>
 					<view class="payment-text">
 						<text class="name">余额支付</text>
@@ -64,7 +64,7 @@
 				</view>
 				<u-icon 
 					v-if="!isBalanceCovered"
-					:name="selectedPayment === 'wxpay' ? 'checkbox-filled' : 'circle'" 
+					:name="selectedPayment === 'wxpay' ? 'checkmark-circle-fill' : 'checkmark-circle'" 
 					size="24" 
 					:color="selectedPayment === 'wxpay' ? '#FF9F29' : '#DDD'">
 				</u-icon>
@@ -89,7 +89,7 @@
 				</view>
 				<u-icon 
 					v-if="!isBalanceCovered"
-					:name="selectedPayment === 'alipay' ? 'checkbox-filled' : 'circle'" 
+					:name="selectedPayment === 'alipay' ? 'checkmark-circle-fill' : 'checkmark-circle'" 
 					size="24" 
 					:color="selectedPayment === 'alipay' ? '#FF9F29' : '#DDD'">
 				</u-icon>

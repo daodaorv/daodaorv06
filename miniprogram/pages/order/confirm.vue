@@ -55,7 +55,7 @@
 								</view>
 								<view class="picker-value">
 									<text class="value-text">{{ orderData.pickupDate }}</text>
-									<u-icon name="right" size="16" color="#999"></u-icon>
+									<u-icon name="arrow-right" size="16" color="#999"></u-icon>
 								</view>
 							</view>
 						</picker>
@@ -73,7 +73,7 @@
 								</view>
 								<view class="picker-value">
 									<text class="value-text">{{ orderData.pickupTime }}</text>
-									<u-icon name="right" size="16" color="#999"></u-icon>
+									<u-icon name="arrow-right" size="16" color="#999"></u-icon>
 								</view>
 							</view>
 						</picker>
@@ -94,13 +94,13 @@
 							</view>
 							<view class="timeline-content">
 								<view class="timeline-header">
-									<u-icon name="flag-fill" size="18" color="#4CAF50"></u-icon>
+									<u-icon name="pushpin-fill" size="18" color="#4CAF50"></u-icon>
 									<text class="timeline-title">取车</text>
 									<text v-if="isSpecialOffer" class="timeline-badge">固定门店</text>
 								</view>
 								<view class="timeline-detail">
 									<view class="detail-item">
-										<u-icon name="location" size="14" color="#999"></u-icon>
+										<u-icon name="map" size="14" color="#999"></u-icon>
 										<text class="detail-text">{{ orderData.pickupLocation }}</text>
 									</view>
 									<view class="detail-item">
@@ -124,7 +124,7 @@
 								</view>
 								<view class="timeline-detail">
 									<view class="detail-item">
-										<u-icon name="location" size="14" color="#999"></u-icon>
+										<u-icon name="map" size="14" color="#999"></u-icon>
 										<text class="detail-text">{{ orderData.returnLocation }}</text>
 									</view>
 									<view class="detail-item">
@@ -155,18 +155,28 @@
 						:class="{ selected: selectedInsurance === index }"
 						@tap="selectInsurance(index)"
 					>
-						<view class="insurance-header">
+						<view class="insurance-select">
+							<u-icon 
+								:name="selectedInsurance === index ? 'checkmark-circle-fill' : 'checkmark-circle'" 
+								size="22" 
+								:color="selectedInsurance === index ? '#FF9F29' : '#DDD'">
+							</u-icon>
+						</view>
+						<view class="insurance-main">
 							<view class="insurance-name-box">
 								<text class="insurance-name">{{ plan.name }}</text>
 								<text class="insurance-price">+¥{{ plan.price }}/天</text>
 							</view>
-							<u-icon 
-								:name="selectedInsurance === index ? 'checkmarkempty' : 'circle'" 
-								size="20" 
-								:color="selectedInsurance === index ? '#FF9F29' : '#DDD'">
-							</u-icon>
+							<text class="insurance-desc">{{ plan.description }}</text>
 						</view>
-						<text class="insurance-desc">{{ plan.description }}</text>
+						<view class="insurance-detail-trigger" @tap.stop="openDetailPopup({
+							title: plan.name,
+							subtitle: `+¥${plan.price}/天`,
+							content: plan.description
+						})">
+							<u-icon name="info-circle" size="20" color="#999"></u-icon>
+							<text class="insurance-detail-text">详情</text>
+						</view>
 					</view>
 				</view>
 			</view>
@@ -181,26 +191,36 @@
 						class="service-item"
 						@tap="toggleService(index)"
 					>
+						<view class="service-select">
+							<u-icon 
+								:name="service.selected ? 'checkmark-circle-fill' : 'checkmark-circle'" 
+								size="22" 
+								:color="service.selected ? '#FF9F29' : '#DDD'">
+							</u-icon>
+						</view>
 						<view class="service-info">
 							<text class="service-name">{{ service.name }}</text>
 							<text class="service-price">+¥{{ service.price }}/{{ service.unit }}</text>
 						</view>
-						<u-icon 
-							:name="service.selected ? 'checkbox-filled' : 'checkbox'" 
-							size="20" 
-							:color="service.selected ? '#FF9F29' : '#DDD'">
-						</u-icon>
+						<view class="service-detail-trigger" @tap.stop="openDetailPopup({
+							title: service.name,
+							subtitle: `+¥${service.price}/${service.unit}`,
+							content: service.description || '暂无详情信息'
+						})">
+							<u-icon name="info-circle" size="20" color="#999"></u-icon>
+							<text class="service-detail-text">详情</text>
+						</view>
 					</view>
 				</view>
 			</view>
 
-			<!-- 优惠券 -->
-			<view class="section coupon-section" @tap="selectCoupon">
+			<!-- 优惠券（特惠套餐不支持） -->
+			<view v-if="!isSpecialOffer" class="section coupon-section" @tap="selectCoupon">
 				<view class="coupon-row">
 					<text class="section-title">优惠券</text>
 					<view class="coupon-value">
 						<text class="coupon-text">{{ selectedCoupon ? selectedCoupon.name : '请选择' }}</text>
-						<u-icon name="right" size="16" color="#999"></u-icon>
+						<u-icon name="arrow-right" size="16" color="#999"></u-icon>
 					</view>
 				</view>
 				<!-- 节省金额提示 -->
@@ -226,7 +246,7 @@
 						<text class="detail-label">附加服务</text>
 						<text class="detail-value">¥{{ servicesPrice }}</text>
 					</view>
-					<view v-if="selectedCoupon" class="detail-row discount">
+					<view v-if="!isSpecialOffer && selectedCoupon" class="detail-row discount">
 						<text class="detail-label">优惠券抵扣</text>
 						<text class="detail-value">-¥{{ couponDiscount }}</text>
 					</view>
@@ -240,6 +260,23 @@
 			<!-- 底部占位 -->
 			<view class="bottom-placeholder"></view>
 		</scroll-view>
+
+		<!-- 功能详情弹窗 -->
+		<view v-if="detailPopup.visible" class="detail-popup-overlay" @tap="closeDetailPopup">
+			<view class="detail-popup-container" @tap.stop>
+				<view class="detail-popup-header">
+					<view class="detail-popup-title">
+						<text class="popup-title-text">{{ detailPopup.title }}</text>
+						<text v-if="detailPopup.subtitle" class="popup-subtitle-text">{{ detailPopup.subtitle }}</text>
+					</view>
+					<u-icon name="close" size="22" color="#999" @tap="closeDetailPopup"></u-icon>
+				</view>
+				<scroll-view scroll-y class="detail-popup-body">
+					<text class="detail-popup-content">{{ detailPopup.content }}</text>
+				</scroll-view>
+				<button class="detail-popup-btn" @tap="closeDetailPopup">我知道了</button>
+			</view>
+		</view>
 
 		<!-- 底部操作栏 -->
 		<view class="bottom-bar">
@@ -315,14 +352,45 @@ const selectedInsurance = ref(0); // 默认选择基础险
 
 // 附加服务
 const additionalServices = ref([
-	{ name: 'GPS导航', price: 20, unit: '天', selected: false },
-	{ name: '儿童安全座椅', price: 30, unit: '天', selected: false },
-	{ name: '车载WiFi', price: 15, unit: '天', selected: false },
-	{ name: '异地还车', price: 500, unit: '次', selected: false }
+	{
+		name: 'GPS导航',
+		price: 20,
+		unit: '天',
+		selected: false,
+		description: 'Portable navigation with up-to-date maps and offline fallback.'
+	},
+	{
+		name: '儿童安全座椅',
+		price: 30,
+		unit: '天',
+		selected: false,
+		description: 'Certified child seat sized for 9-18kg with quick-latch harness.'
+	},
+	{
+		name: '车载WiFi',
+		price: 15,
+		unit: '天',
+		selected: false,
+		description: 'Unlimited in-vehicle Wi-Fi hotspot supporting up to five devices.'
+	},
+	{
+		name: '异地还车',
+		price: 500,
+		unit: '次',
+		selected: false,
+		description: 'Return the vehicle at a different city with concierge transfer.'
+	}
 ]);
 
 // 优惠券
 const selectedCoupon = ref<any>(null);
+// 详情弹窗
+const detailPopup = ref({
+	visible: false,
+	title: '',
+	subtitle: '',
+	content: ''
+});
 
 // 计算租赁天数
 const rentalDays = computed(() => {
@@ -363,8 +431,16 @@ const servicesPrice = computed(() => {
 
 // 计算优惠券抵扣
 const couponDiscount = computed(() => {
-	if (!selectedCoupon.value) return 0;
-	return selectedCoupon.value.discount || 0;
+	if (!selectedCoupon.value || isSpecialOffer.value) return 0;
+	// æŽ¥å—ç­¾çº¦é¥°ä¼˜æƒ åˆ¸æ—¶å¯èƒ½æŽ¨é€?discountæˆ–amount, å…ˆç”¨amountå?‡æ‹¹æ»?
+	const coupon = selectedCoupon.value;
+	if (typeof coupon.amount === 'number') {
+		return coupon.amount;
+	}
+	if (typeof coupon.discount === 'number') {
+		return coupon.discount;
+	}
+	return 0;
 });
 
 // 计算总价
@@ -394,6 +470,12 @@ const calculateReturnDateTime = () => {
 watch([() => orderData.value.pickupDate, () => orderData.value.pickupTime], () => {
 	if (isSpecialOffer.value) {
 		calculateReturnDateTime();
+	}
+});
+
+watch(() => isSpecialOffer.value, (val) => {
+	if (val) {
+		selectedCoupon.value = null;
 	}
 });
 
@@ -492,6 +574,7 @@ onLoad((options: any) => {
 	if (options.type === 'special-offer' && options.offerId) {
 		orderType.value = 'special-offer';
 		loadSpecialOfferData(options.offerId);
+		selectedCoupon.value = null;
 	} else if (options.vehicleId) {
 		orderType.value = 'normal';
 		orderData.value.vehicleId = options.vehicleId;
@@ -501,7 +584,8 @@ onLoad((options: any) => {
 
 	// 监听优惠券选择事件
 	uni.$on('couponSelected', (coupon: any) => {
-		selectedCoupon.value = coupon;
+		if (isSpecialOffer.value) return;
+		selectedCoupon.value = coupon || null;
 		console.log('选中优惠券:', coupon);
 	});
 });
@@ -519,10 +603,30 @@ const toggleService = (index: number) => {
 	additionalServices.value[index].selected = !additionalServices.value[index].selected;
 };
 
+const openDetailPopup = (payload: { title: string; subtitle?: string; content: string }) => {
+	detailPopup.value = {
+		visible: true,
+		title: payload.title,
+		subtitle: payload.subtitle || '',
+		content: payload.content || '暂无详情信息'
+	};
+};
+
+const closeDetailPopup = () => {
+	detailPopup.value.visible = false;
+};
+
 const selectCoupon = () => {
+	if (isSpecialOffer.value) {
+		uni.showToast({
+			title: '特惠套餐不支持使用优惠券',
+			icon: 'none'
+		});
+		return;
+	}
 	// 跳转到优惠券选择页面
 	uni.navigateTo({
-		url: `/pages/order/select-coupon?amount=${totalPrice.value}&selectedId=${selectedCoupon.value?.id || ''}`
+		url: `/pages/order/select-coupon?amount=${totalPrice.value}&selectedId=${selectedCoupon.value?.id || ''}&productType=vehicle`
 	});
 };
 
@@ -926,6 +1030,9 @@ const handleSubmit = () => {
 
 .insurance-item {
 	padding: 24rpx;
+	display: flex;
+	align-items: center;
+	gap: 16rpx;
 	border: 2rpx solid #E0E0E0;
 	border-radius: 12rpx;
 	background-color: #FFFFFF;
@@ -943,11 +1050,19 @@ const handleSubmit = () => {
 	}
 }
 
-.insurance-header {
+.insurance-select {
+	width: 48rpx;
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
-	margin-bottom: 8rpx;
+	justify-content: center;
+	flex-shrink: 0;
+}
+
+.insurance-main {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	gap: 8rpx;
 }
 
 .insurance-name-box {
@@ -975,6 +1090,19 @@ const handleSubmit = () => {
 	line-height: 1.6;
 }
 
+.insurance-detail-trigger {
+	display: flex;
+	align-items: center;
+	gap: 4rpx;
+	color: #999;
+	padding-left: 8rpx;
+}
+
+.insurance-detail-text {
+	font-size: 24rpx;
+	color: #999;
+}
+
 // 附加服务
 .services-list {
 	display: flex;
@@ -985,7 +1113,7 @@ const handleSubmit = () => {
 .service-item {
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
+	gap: 16rpx;
 	padding: 20rpx 0;
 	border-bottom: 1rpx solid #F5F5F5;
 	
@@ -994,10 +1122,19 @@ const handleSubmit = () => {
 	}
 }
 
+.service-select {
+	width: 48rpx;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+}
+
 .service-info {
 	display: flex;
 	flex-direction: column;
 	gap: 4rpx;
+	flex: 1;
 }
 
 .service-name {
@@ -1008,6 +1145,93 @@ const handleSubmit = () => {
 .service-price {
 	font-size: 24rpx;
 	color: #999;
+}
+
+.service-detail-trigger {
+	display: flex;
+	align-items: center;
+	gap: 4rpx;
+	color: #999;
+	padding-left: 12rpx;
+}
+
+.service-detail-text {
+	font-size: 24rpx;
+	color: #999;
+}
+
+// 功能详情弹窗
+.detail-popup-overlay {
+	position: fixed;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	background-color: rgba(0, 0, 0, 0.4);
+	display: flex;
+	align-items: flex-end;
+	justify-content: center;
+	padding: 40rpx 32rpx;
+	z-index: 200;
+}
+
+.detail-popup-container {
+	width: 100%;
+	background-color: #FFFFFF;
+	border-radius: 24rpx 24rpx 0 0;
+	padding: 32rpx;
+	box-shadow: 0 -12rpx 24rpx rgba(0, 0, 0, 0.1);
+}
+
+.detail-popup-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 16rpx;
+}
+
+.detail-popup-title {
+	display: flex;
+	flex-direction: column;
+	gap: 8rpx;
+}
+
+.popup-title-text {
+	font-size: 32rpx;
+	font-weight: bold;
+	color: #333;
+}
+
+.popup-subtitle-text {
+	font-size: 26rpx;
+	color: #FF9F29;
+}
+
+.detail-popup-body {
+	max-height: 300rpx;
+	margin-bottom: 24rpx;
+}
+
+.detail-popup-content {
+	font-size: 26rpx;
+	color: #666;
+	line-height: 1.6;
+}
+
+.detail-popup-btn {
+	width: 100%;
+	height: 80rpx;
+	line-height: 80rpx;
+	background: linear-gradient(135deg, #FF9F29 0%, #FFB84D 100%);
+	color: #FFFFFF;
+	border-radius: 40rpx;
+	font-size: 28rpx;
+	font-weight: bold;
+	border: none;
+	
+	&::after {
+		border: none;
+	}
 }
 
 // 优惠券

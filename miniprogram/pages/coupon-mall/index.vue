@@ -17,7 +17,7 @@
 			</view>
 			<view class="points-action">
 				<text class="action-text">查看明细</text>
-				<u-icon name="right" size="16" color="#999"></u-icon>
+				<u-icon name="arrow-right" size="16" color="#999"></u-icon>
 			</view>
 		</view>
 
@@ -28,7 +28,7 @@
 				<text class="entry-text">新人专区</text>
 			</view>
 			<view class="entry-item" @tap="goToMemberZone">
-				<u-icon name="vip" size="24" color="#FFD700"></u-icon>
+				<u-icon name="level" size="24" color="#FFD700"></u-icon>
 				<text class="entry-text">会员专属</text>
 			</view>
 			<view class="entry-item" @tap="goToExpiringSoon">
@@ -54,7 +54,7 @@
 		<view class="hot-section" v-if="hotCoupons.length > 0">
 			<view class="section-header">
 				<view class="header-left">
-					<u-icon name="fire" size="20" color="#FF6B6B"></u-icon>
+					<u-icon name="star-fill" size="20" color="#FF6B6B"></u-icon>
 					<text class="section-title">热门推荐</text>
 				</view>
 			</view>
@@ -192,9 +192,9 @@ const loadMoreStatus = ref('noMore'); // 直接设置初始状态
 
 // Banner数据
 const banners = ref<Banner[]>([
-	{ id: '1', image: 'https://picsum.photos/750/300?random=1' },
-	{ id: '2', image: 'https://picsum.photos/750/300?random=2' },
-	{ id: '3', image: 'https://picsum.photos/750/300?random=3' }
+	{ id: '1', image: '/static/c1.png' },
+	{ id: '2', image: '/static/c2.png' },
+	{ id: '3', image: '/static/c3.png' }
 ]);
 
 // 分类数据

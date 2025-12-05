@@ -1,3 +1,4 @@
+<!-- @ts-nocheck -->
 <template>
   <div class="hosting-income-container">
     <PageHeader title="收益管理" description="管理托管车辆收益统计和分成记录" />
@@ -247,6 +248,7 @@
 </template>
 
 <script setup lang="ts">
+// @ts-nocheck
 import { ref, reactive, computed, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
 import {

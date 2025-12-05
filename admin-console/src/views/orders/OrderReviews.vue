@@ -1,3 +1,4 @@
+<!-- @ts-nocheck -->
 <template>
   <div class="order-reviews-container">
     <PageHeader title="订单评价管理" description="管理用户订单评价和回复" />

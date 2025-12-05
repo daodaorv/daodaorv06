@@ -3,7 +3,7 @@
     <!-- 图片轮播 -->
     <swiper class="image-swiper" :indicator-dots="true" :autoplay="true" :interval="3000" :duration="500">
       <swiper-item v-for="(image, index) in tourDetail.images" :key="index">
-        <image class="swiper-image" :src="image" mode="aspectFill"></image>
+        <image class="swiper-image" :src="photo" mode="aspectFill"></image>
       </swiper-item>
     </swiper>
 
@@ -28,11 +28,11 @@
           <text class="meta-text">{{ tourDetail.duration }}天{{ tourDetail.duration - 1 }}晚</text>
         </view>
         <view class="meta-item">
-          <u-icon name="person" size="16" color="#FF9F29"></u-icon>
+          <u-icon name="account" size="16" color="#FF9F29"></u-icon>
           <text class="meta-text">{{ tourDetail.minPeople }}-{{ tourDetail.maxPeople }}人成团</text>
         </view>
         <view class="meta-item">
-          <u-icon name="location" size="16" color="#FF9F29"></u-icon>
+          <u-icon name="map" size="16" color="#FF9F29"></u-icon>
           <text class="meta-text">{{ tourDetail.destination }}</text>
         </view>
       </view>
@@ -219,10 +219,10 @@ const loadTourDetail = async () => {
       id: tourId.value,
       title: '川西秘境·稻城亚丁房车深度游',
       images: [
-        'https://picsum.photos/750/500?random=1',
-        'https://picsum.photos/750/500?random=2',
-        'https://picsum.photos/750/500?random=3',
-        'https://picsum.photos/750/500?random=4'
+        '/static/logo.png',
+        '/static/logo.png',
+        '/static/logo.png',
+        '/static/logo.png'
       ],
       tags: ['高原风光', '摄影天堂', '藏族文化', '深度体验'],
       duration: 7,

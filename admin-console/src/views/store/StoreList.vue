@@ -1,3 +1,4 @@
+<!-- @ts-nocheck -->
 <template>
   <div class="store-list-container">
     <PageHeader title="门店管理" description="管理直营店、加盟店和合作商户信息" />

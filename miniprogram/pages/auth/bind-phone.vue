@@ -34,7 +34,7 @@
 					<text class="required">*</text>
 				</view>
 				<view class="input-wrapper">
-					<u-icon name="chatboxes" size="20" color="#999999" />
+					<u-icon name="chat" size="20" color="#999999" />
 					<input
 						v-model="formData.code"
 						name="number"
@@ -76,7 +76,7 @@
 		<!-- 安全说明 -->
 		<view class="security-info">
 			<view class="info-title">
-				<u-icon name="locked" size="16" color="#4CAF50" />
+				<u-icon name="lock" size="16" color="#4CAF50" />
 				<text class="title-text">安全保障</text>
 			</view>
 			<view class="info-list">

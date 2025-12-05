@@ -61,7 +61,7 @@
 					:key="index"
 					class="image-item"
 				>
-					<image :src="image" class="image" mode="aspectFill" />
+					<image :src="photo" class="photo" mode="aspectFill" />
 					<view class="image-delete" @click="deleteImage(index)">
 						<u-icon name="close" size="16" color="#FFFFFF" />
 					</view>
@@ -117,9 +117,9 @@
 		<view class="location-section" @click="chooseLocation">
 			<view class="section-title">添加位置（可选）</view>
 			<view class="location-display">
-				<u-icon name="location" size="20" color="#999999" />
+				<u-icon name="map" size="20" color="#999999" />
 				<text class="location-text">{{ formData.location || '点击添加位置' }}</text>
-				<u-icon name="right" size="16" color="#CCCCCC" />
+				<u-icon name="arrow-right" size="16" color="#CCCCCC" />
 			</view>
 		</view>
 
@@ -160,8 +160,8 @@ const tagInput = ref('')
 const postTypes = [
 	{ value: PostType.GUIDE, label: '攻略', icon: 'map' },
 	{ value: PostType.EXPERIENCE, label: '体验', icon: 'heart' },
-	{ value: PostType.ACTIVITY, label: '活动', icon: 'flag' },
-	{ value: PostType.QA, label: '问答', icon: 'help' }
+	{ value: PostType.ACTIVITY, label: '活动', icon: 'pushpin' },
+	{ value: PostType.QA, label: '问答', icon: 'question-circle' }
 ]
 
 // 推荐标签
@@ -197,12 +197,16 @@ const chooseImage = () => {
 			uni.showLoading({ title: '上传中...' })
 
 			try {
+				// 确保 tempFilePaths 是数组
+				const tempFilePaths = Array.isArray(res.tempFilePaths) ? res.tempFilePaths : [];
+
 				// 上传所有选中的图片
-				const uploadPromises = res.tempFilePaths.map(filePath => uploadImage(filePath))
+				const uploadPromises = tempFilePaths.map(filePath => uploadImage(filePath))
 				const results = await Promise.all(uploadPromises)
 
 				// 添加到图片列表
-				formData.value.images.push(...results.map(r => r.url))
+				const urls = Array.isArray(results) ? results.map(r => r.url) : [];
+				formData.value.images.push(...urls)
 
 				uni.hideLoading()
 				uni.showToast({

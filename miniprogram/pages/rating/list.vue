@@ -61,9 +61,9 @@
 					<image
 						v-for="(image, index) in rating.images"
 						:key="index"
-						:src="image"
+						:src="photo"
 						mode="aspectFill"
-						class="image"
+						class="photo"
 						@click="previewImage(rating.images, index)"
 					/>
 				</view>
@@ -115,7 +115,7 @@
 
 			<!-- 加载状态 -->
 			<view v-if="loading" class="loading-state">
-				<u-icon name="spinner-cycle" size="32" color="#999999" />
+				<u-icon name="reload" size="32" color="#999999" />
 				<text class="loading-text">加载中...</text>
 			</view>
 

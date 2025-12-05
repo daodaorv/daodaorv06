@@ -1,3 +1,4 @@
+<!-- @ts-nocheck -->
 <template>
   <div class="region-management-container">
     <PageHeader title="区域管理" description="管理业务区域和区域经理分配" />

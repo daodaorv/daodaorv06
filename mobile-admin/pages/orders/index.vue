@@ -124,6 +124,7 @@
 
 <script>
 import { getOrderList, updateOrderStatus, confirmOrder as confirmOrderApi, cancelOrder as cancelOrderApi } from '@/api/order'
+import logger from '@/utils/logger'
 
 export default {
   data() {
@@ -166,12 +167,17 @@ export default {
         }
 
         const data = await getOrderList(params)
-        this.orderList = data.list
+        // 边界检查：确保返回的数据是数组
+        this.orderList = Array.isArray(data?.list) ? data.list : []
 
         // 更新状态计数
         this.updateStatusCount()
-      } catch (error) {
-        console.error('加载订单失败:', error)
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          logger.error('Order', '加载订单失败:', error.message)
+        } else {
+          logger.error('Order', '加载订单失败:', String(error))
+        }
         uni.showToast({
           title: '加载失败，请重试',
           icon: 'none'
@@ -182,6 +188,12 @@ export default {
     },
 
     updateStatusCount() {
+      // 边界检查：确保orderList是有效数组
+      if (!Array.isArray(this.orderList)) {
+        logger.warn('Order', 'orderList is not an array')
+        return
+      }
+
       // 这里应该从API获取各状态的数量，暂时使用模拟数据
       this.statusTabs[1].count = this.orderList.filter(o => o.status === 'pending').length
       this.statusTabs[2].count = this.orderList.filter(o => o.status === 'confirmed').length
@@ -190,6 +202,11 @@ export default {
 
     changeStatus(e) {
       const index = e.index !== undefined ? e.index : e
+      // 边界检查：确保索引有效
+      if (index < 0 || index >= this.statusTabs.length) {
+        logger.error('Order', 'Invalid tab index:', index)
+        return
+      }
       this.currentStatusIndex = index
       this.currentStatus = this.statusTabs[index].value
       this.loadOrders()
@@ -205,21 +222,45 @@ export default {
     },
 
     viewDetail(id) {
+      // 空值检查：确保ID有效
+      if (!id) {
+        uni.showToast({
+          title: '订单ID无效',
+          icon: 'none'
+        })
+        return
+      }
       uni.navigateTo({
         url: `/pages/orders/detail?id=${id}`
       })
     },
 
     callCustomer(phone) {
+      // 空值检查：确保电话号码有效
+      if (!phone) {
+        uni.showToast({
+          title: '电话号码无效',
+          icon: 'none'
+        })
+        return
+      }
       uni.makePhoneCall({
         phoneNumber: phone
       })
     },
 
     confirmOrder(order) {
+      // 空值检查：确保订单对象有效
+      if (!order || !order.id) {
+        uni.showToast({
+          title: '订单信息无效',
+          icon: 'none'
+        })
+        return
+      }
       uni.showModal({
         title: '确认订单',
-        content: `确认订单 ${order.orderNo}？`,
+        content: `确认订单 ${order.orderNo || ''}？`,
         success: async (res) => {
           if (res.confirm) {
             try {
@@ -229,7 +270,12 @@ export default {
                 icon: 'success'
               })
               this.loadOrders()
-            } catch (error) {
+            } catch (error: unknown) {
+              if (error instanceof Error) {
+                logger.error('Order', '确认订单失败:', error.message)
+              } else {
+                logger.error('Order', '确认订单失败:', String(error))
+              }
               uni.showToast({
                 title: '操作失败',
                 icon: 'none'
@@ -241,9 +287,17 @@ export default {
     },
 
     cancelOrder(order) {
+      // 空值检查：确保订单对象有效
+      if (!order || !order.id) {
+        uni.showToast({
+          title: '订单信息无效',
+          icon: 'none'
+        })
+        return
+      }
       uni.showModal({
         title: '取消订单',
-        content: `确认取消订单 ${order.orderNo}？`,
+        content: `确认取消订单 ${order.orderNo || ''}？`,
         success: async (res) => {
           if (res.confirm) {
             try {
@@ -253,7 +307,12 @@ export default {
                 icon: 'success'
               })
               this.loadOrders()
-            } catch (error) {
+            } catch (error: unknown) {
+              if (error instanceof Error) {
+                logger.error('Order', '取消订单失败:', error.message)
+              } else {
+                logger.error('Order', '取消订单失败:', String(error))
+              }
               uni.showToast({
                 title: '操作失败',
                 icon: 'none'
@@ -265,12 +324,28 @@ export default {
     },
 
     startOrder(order) {
+      // 空值检查：确保订单对象有效
+      if (!order || !order.id) {
+        uni.showToast({
+          title: '订单信息无效',
+          icon: 'none'
+        })
+        return
+      }
       uni.navigateTo({
         url: `/pages/orders/detail?id=${order.id}&action=start`
       })
     },
 
     completeOrder(order) {
+      // 空值检查：确保订单对象有效
+      if (!order || !order.id) {
+        uni.showToast({
+          title: '订单信息无效',
+          icon: 'none'
+        })
+        return
+      }
       uni.navigateTo({
         url: `/pages/orders/detail?id=${order.id}&action=complete`
       })

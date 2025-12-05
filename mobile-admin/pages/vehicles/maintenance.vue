@@ -336,8 +336,7 @@ export default {
       this.dialogVisible = true
     },
 
-    validateForm() {
-      // 检查维保日期
+    validateDate() {
       if (!this.formData.date) {
         uni.showToast({
           title: '请选择维保日期',
@@ -345,8 +344,10 @@ export default {
         })
         return false
       }
+      return true
+    },
 
-      // 检查维保里程
+    validateMileage() {
       if (!this.formData.mileage || this.formData.mileage <= 0) {
         uni.showToast({
           title: '请输入维保里程',
@@ -354,8 +355,10 @@ export default {
         })
         return false
       }
+      return true
+    },
 
-      // 检查维保项目
+    validateItems() {
       if (this.formData.items.length === 0) {
         uni.showToast({
           title: '请至少选择一个维保项目',
@@ -363,8 +366,10 @@ export default {
         })
         return false
       }
+      return true
+    },
 
-      // 检查维保费用
+    validateCost() {
       if (!this.formData.cost || this.formData.cost <= 0) {
         uni.showToast({
           title: '请输入维保费用',
@@ -372,8 +377,14 @@ export default {
         })
         return false
       }
-
       return true
+    },
+
+    validateForm() {
+      return this.validateDate() &&
+             this.validateMileage() &&
+             this.validateItems() &&
+             this.validateCost()
     },
 
     async handleDialogConfirm() {
@@ -384,28 +395,32 @@ export default {
       }
     },
 
+    async performMockSave() {
+      // Mock延迟，等待后端API开发完成后替换为真实API调用
+      await new Promise(resolve => setTimeout(resolve, 1500))
+    },
+
+    showSuccessAndNavigateBack() {
+      uni.showToast({
+        title: '保存成功',
+        icon: 'success'
+      })
+
+      setTimeout(() => {
+        uni.navigateBack()
+      }, 1500)
+    },
+
     async submitMaintenance() {
       try {
         uni.showLoading({
           title: '保存中...'
         })
 
-        // TODO: 调用API提交维保记录
-        // await addMaintenanceRecord(this.vehicleId, this.formData)
-
-        // Mock延迟
-        await new Promise(resolve => setTimeout(resolve, 1500))
+        await this.performMockSave()
 
         uni.hideLoading()
-
-        uni.showToast({
-          title: '保存成功',
-          icon: 'success'
-        })
-
-        setTimeout(() => {
-          uni.navigateBack()
-        }, 1500)
+        this.showSuccessAndNavigateBack()
       } catch (error) {
         uni.hideLoading()
         console.error('保存维保记录失败:', error)

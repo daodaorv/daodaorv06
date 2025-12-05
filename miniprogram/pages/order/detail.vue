@@ -53,7 +53,7 @@
               <text class="timeline-time">{{ formatDateTime(item.createdAt) }}</text>
             </view>
             <text class="timeline-desc" v-if="item.description">{{ item.description }}</text>
-            <view class="timeline-images" v-if="item.images && item.images.length > 0">
+            <view class="timeline-images" v-if="item.images && Array.isArray(item.images) && item.images.length > 0">
               <image
                 v-for="(image, idx) in item.images.slice(0, 3)"
                 :key="idx"
@@ -94,7 +94,7 @@
             <text class="meta-item">{{ order.vehicle.brand }} {{ order.vehicle.model }}</text>
             <text class="meta-item">{{ order.vehicle.plateNumber }}</text>
           </view>
-          <view class="vehicle-features" v-if="order.vehicle.features && order.vehicle.features.length > 0">
+          <view class="vehicle-features" v-if="order.vehicle.features && Array.isArray(order.vehicle.features) && order.vehicle.features.length > 0">
             <text
               v-for="feature in order.vehicle.features.slice(0, 3)"
               :key="feature"
@@ -115,7 +115,7 @@
       <view class="location-card">
         <view class="location-item">
           <view class="location-header">
-            <u-icon name="location" size="20" color="#FF9F29"></u-icon>
+            <u-icon name="map" size="20" color="#FF9F29"></u-icon>
             <text class="location-title">取车</text>
           </view>
           <view class="location-info">
@@ -127,12 +127,12 @@
 
         <view class="location-separator">
           <view class="separator-line"></view>
-          <u-icon name="right" size="16" color="#ccc"></u-icon>
+          <u-icon name="arrow-right" size="16" color="#ccc"></u-icon>
         </view>
 
         <view class="location-item">
           <view class="location-header">
-            <u-icon name="location-fill" size="20" color="#52C41A"></u-icon>
+            <u-icon name="map-fill" size="20" color="#52C41A"></u-icon>
             <text class="location-title">还车</text>
           </view>
           <view class="location-info">
@@ -352,16 +352,16 @@ const getStatusColor = (statusId) => {
 
 const getStatusIcon = (statusId) => {
   const icons = {
-    1: 'wallet',
+    1: 'rmb',
     2: 'clock',
-    3: 'checkmarkempty',
-    4: 'loop',
-    5: 'flag',
-    6: 'checkbox-filled',
+    3: 'checkmark-circle',
+    4: 'reload',
+    5: 'pushpin',
+    6: 'checkmark-circle-fill',
     7: 'close',
     8: 'refresh'
   };
-  return icons[statusId] || 'help';
+  return icons[statusId] || 'question-circle';
 };
 
 const getStatusText = (statusId) => {

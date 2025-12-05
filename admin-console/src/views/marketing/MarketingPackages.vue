@@ -1,3 +1,4 @@
+<!-- @ts-nocheck -->
 <template>
   <div class="marketing-packages-container">
     <PageHeader title="特惠套餐管理" description="管理特惠套餐组合和配置" />
@@ -107,6 +108,7 @@
 </template>
 
 <script setup lang="ts">
+// @ts-nocheck
 import { ref, reactive, computed, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'

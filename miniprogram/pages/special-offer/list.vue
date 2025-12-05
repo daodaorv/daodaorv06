@@ -74,7 +74,7 @@
             <text class="vehicle-name">{{ offer.vehicle.name }}</text>
 
             <!-- 车辆特点 -->
-            <view class="vehicle-features">
+            <view class="vehicle-features" v-if="offer.vehicle.features && Array.isArray(offer.vehicle.features)">
               <text class="feature-item" v-for="feature in offer.vehicle.features.slice(0, 3)" :key="feature">
                 {{ feature }}
               </text>
@@ -184,7 +184,7 @@ const loadOffers = async (isRefresh = false) => {
         },
         vehicle: {
           name: '依维柯欧胜C型房车',
-          image: 'https://picsum.photos/350/200?random=1',
+          image: '/static/logo.png',
           features: ['自动挡', '4-6人', '独立卫浴', '太阳能']
         },
         packagePrice: 1280,
@@ -205,7 +205,7 @@ const loadOffers = async (isRefresh = false) => {
         },
         vehicle: {
           name: '大通V90 B型房车',
-          image: 'https://picsum.photos/350/200?random=2',
+          image: '/static/logo.png',
           features: ['自动挡', '2-4人', '升顶设计', '智能系统']
         },
         packagePrice: 980,
@@ -226,7 +226,7 @@ const loadOffers = async (isRefresh = false) => {
         },
         vehicle: {
           name: '福特全顺C型房车',
-          image: 'https://picsum.photos/350/200?random=3',
+          image: '/static/logo.png',
           features: ['手自一体', '4-6人', '大额头床', '驻车空调']
         },
         packagePrice: 1580,
@@ -247,7 +247,7 @@ const loadOffers = async (isRefresh = false) => {
         },
         vehicle: {
           name: '奔驰斯宾特B型房车',
-          image: 'https://picsum.photos/350/200?random=4',
+          image: '/static/logo.png',
           features: ['自动挡', '2-4人', '豪华内饰', '智能驾驶']
         },
         packagePrice: 2280,

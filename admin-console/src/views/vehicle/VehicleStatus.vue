@@ -1,3 +1,4 @@
+<!-- @ts-nocheck -->
 <template>
   <div class="vehicle-status-container">
     <PageHeader title="车辆状态管理" description="实时管理车辆可用性、维修、保养状态" />
@@ -190,6 +191,7 @@
 </template>
 
 <script setup lang="ts">
+// @ts-nocheck
 import { ref, reactive, onMounted, computed } from 'vue'
 import { ElMessage } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'

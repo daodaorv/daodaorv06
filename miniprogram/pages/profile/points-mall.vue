@@ -8,7 +8,7 @@
 			</view>
 			<button class="records-btn" @click="goToRecords">
 				<text>兑换记录</text>
-				<u-icon name="right" size="14" color="#FF9F29" />
+				<u-icon name="arrow-right" size="14" color="#FF9F29" />
 			</button>
 		</view>
 
@@ -28,7 +28,7 @@
 		<!-- 商品列表 -->
 		<view class="items-list">
 			<view v-if="items.length === 0" class="empty-state">
-				<u-icon name="shop" size="60" color="#CCCCCC" />
+				<u-icon name="bag" size="60" color="#CCCCCC" />
 				<text class="empty-text">暂无可兑换商品</text>
 			</view>
 			<view v-else class="items-grid">

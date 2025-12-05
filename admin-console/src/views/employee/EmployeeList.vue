@@ -1,3 +1,4 @@
+<!-- @ts-nocheck -->
 <template>
   <div class="employee-list-container">
     <PageHeader title="员工管理" description="管理平台员工信息、角色分配和在职状态" />

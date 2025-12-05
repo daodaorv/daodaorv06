@@ -17,7 +17,7 @@
 		<view class="banner-swiper">
 			<u-swiper
 				:list="banners"
-				keyName="image"
+				keyName="photo"
 				:autoplay="true"
 				:circular="true"
 				radius="16"
@@ -30,7 +30,7 @@
 
 		<!-- 预订表单 -->
 		<view class="booking-section">
-			<BookingForm @search="handleSearch" />
+			<BookingForm ref="bookingFormRef" @search="handleSearch" @open-date-picker="handleOpenDatePicker" />
 		</view>
 
 		<!-- 服务入口 -->
@@ -50,7 +50,7 @@
 					<text class="promo-title">PLUS会员</text>
 					<text class="promo-desc">专属权益</text>
 				</view>
-				<u-icon name="vip-fill" size="40" color="#FF9F29"></u-icon>
+				<u-icon name="level" size="40" color="#FF9F29"></u-icon>
 			</view>
 		</view>
 
@@ -85,6 +85,8 @@
 				</view>
 			</view>
 		</view>
+		<!-- 根节点弹窗 -->
+		<RentDatePicker ref="rentDatePickerRef" @confirm="handleDateConfirm" />
 	</view>
 </template>
 
@@ -93,6 +95,7 @@ import { ref, onMounted } from 'vue';
 import NoticeBanner from '@/components/base/NoticeBanner.vue';
 import BookingForm from '@/components/business/BookingForm.vue';
 import ServiceGrid from '@/components/business/ServiceGrid.vue';
+import RentDatePicker from '@/components/business/RentDatePicker.vue';
 
 // 状态栏高度
 const statusBarHeight = ref(0);
@@ -108,6 +111,9 @@ const banners = ref([
 	{ id: '1', image: '/static/场景推荐2.jpg' },
 	{ id: '2', image: '/static/优惠政策.jpg' }
 ]);
+
+const bookingFormRef = ref();
+const rentDatePickerRef = ref();
 
 
 // 社区内容
@@ -212,6 +218,16 @@ const handleSearch = (params: any) => {
 	uni.navigateTo({
 		url: '/pages/vehicle/list'
 	});
+};
+
+const handleOpenDatePicker = (data: any) => {
+	console.log('Index received open-date-picker:', data);
+	rentDatePickerRef.value?.open(data.pickupDate, data.returnDate, data.time);
+};
+
+const handleDateConfirm = (data: any) => {
+	console.log('Index received date confirm:', data);
+	bookingFormRef.value?.onDateConfirm(data);
 };
 
 const navigateTo = (url: string) => {

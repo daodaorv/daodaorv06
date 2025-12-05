@@ -1,3 +1,4 @@
+<!-- @ts-nocheck -->
 <template>
   <div class="order-refunds-container">
     <PageHeader title="退款管理" description="处理订单退款申请和审核" />

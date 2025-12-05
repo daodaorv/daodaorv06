@@ -149,21 +149,21 @@ export const mockGetHelpCategories = (): Promise<HelpCategory[]> => {
         {
           id: 'cat_004',
           name: '支付问题',
-          icon: 'wallet',
+          icon: 'rmb',
           articleCount: 6,
           order: 4
         },
         {
           id: 'cat_005',
           name: '会员服务',
-          icon: 'vip',
+          icon: 'level',
           articleCount: 5,
           order: 5
         },
         {
           id: 'cat_006',
           name: '其他问题',
-          icon: 'help',
+          icon: 'question-circle',
           articleCount: 8,
           order: 6
         }

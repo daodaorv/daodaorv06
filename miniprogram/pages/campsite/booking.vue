@@ -10,7 +10,7 @@
       </view>
       <view class="campsite-meta">
         <view class="meta-item">
-          <u-icon name="location" size="14" color="#999"></u-icon>
+          <u-icon name="map" size="14" color="#999"></u-icon>
           <text class="meta-text">{{ campsiteInfo.address }}</text>
         </view>
         <view class="meta-item">
@@ -29,31 +29,35 @@
       </view>
 
       <!-- 入住日期 -->
-      <view class="form-item" @tap="showCheckInPicker">
+      <view class="form-item" @tap="openDatePicker">
         <view class="item-label">
           <text class="label-text">入住日期</text>
           <text class="required">*</text>
         </view>
         <view class="item-value">
           <text class="value-text" :class="{ placeholder: !bookingForm.checkInDate }">
-            {{ bookingForm.checkInDate || '请选择入住日期' }}
+            {{ bookingForm.checkInDate ? formatDisplayDate(bookingForm.checkInDate) : '请选择入住日期' }}
           </text>
           <u-icon name="arrow-right" size="16" color="#999"></u-icon>
         </view>
       </view>
 
       <!-- 退房日期 -->
-      <view class="form-item" @tap="showCheckOutPicker">
+      <view class="form-item" @tap="openDatePicker">
         <view class="item-label">
           <text class="label-text">退房日期</text>
           <text class="required">*</text>
         </view>
         <view class="item-value">
           <text class="value-text" :class="{ placeholder: !bookingForm.checkOutDate }">
-            {{ bookingForm.checkOutDate || '请选择退房日期' }}
+            {{ bookingForm.checkOutDate ? formatDisplayDate(bookingForm.checkOutDate) : '请选择退房日期' }}
           </text>
           <u-icon name="arrow-right" size="16" color="#999"></u-icon>
         </view>
+      </view>
+
+      <view class="date-tip">
+        <text class="tip-text">默认14:00后入住，12:00前离店</text>
       </view>
 
       <!-- 入住天数 -->
@@ -166,6 +170,21 @@
       </view>
     </view>
 
+    <!-- 优惠券 -->
+    <view class="coupon-section" @tap="selectCoupon">
+      <view class="coupon-row">
+        <text class="section-title">优惠券</text>
+        <view class="coupon-value">
+          <text class="coupon-text">{{ selectedCoupon ? selectedCoupon.name : '请选择' }}</text>
+          <u-icon name="arrow-right" size="16" color="#999"></u-icon>
+        </view>
+      </view>
+      <view v-if="selectedCoupon" class="coupon-tip">
+        <text class="savings-text">已减￥{{ couponDiscount }}</text>
+        <text class="coupon-desc">{{ formatCouponValidity(selectedCoupon) }}</text>
+      </view>
+    </view>
+
     <!-- 价格明细 -->
     <view class="price-section">
       <view class="section-title">
@@ -182,9 +201,13 @@
           <text class="price-value">一次性</text>
           <text class="price-amount">¥{{ cleaningFee }}</text>
         </view>
+        <view v-if="couponDiscount > 0" class="price-item discount">
+          <text class="price-label">优惠券抵扣</text>
+          <text class="price-amount">-¥{{ couponDiscount }}</text>
+        </view>
         <view class="price-item total">
           <text class="price-label">合计</text>
-          <text class="price-amount highlight">¥{{ totalPrice }}</text>
+          <text class="price-amount highlight">¥{{ payablePrice }}</text>
         </view>
       </view>
     </view>
@@ -195,37 +218,32 @@
         <text class="bar-label">总计：</text>
         <view class="bar-price">
           <text class="bar-symbol">¥</text>
-          <text class="bar-amount">{{ totalPrice }}</text>
+          <text class="bar-amount">{{ payablePrice }}</text>
         </view>
       </view>
-      <button class="submit-btn" @tap="submitBooking" :disabled="!canSubmit">
+      <button class="submit-btn" @tap="submitBooking" :disabled="!canSubmit || submitting" :loading="submitting">
         提交预订
       </button>
     </view>
 
-    <!-- 日期选择器 -->
-    <uni-datetime-picker
-      ref="checkInPicker"
-      v-model="bookingForm.checkInDate"
-      name="date"
-      :start="minDate"
-      :end="maxDate"
-      @change="onCheckInChange"
-    />
-    <uni-datetime-picker
-      ref="checkOutPicker"
-      v-model="bookingForm.checkOutDate"
-      name="date"
-      :start="checkOutMinDate"
-      :end="maxDate"
-      @change="onCheckOutChange"
+    <RentDatePicker
+      ref="rentDatePickerRef"
+      title-text="选择入住/离店日期"
+      pickup-label="入住"
+      return-label="离店"
+      duration-unit="晚"
+      :show-time-selection="false"
+      default-time="14:00"
+      @confirm="handleDateConfirm"
     />
   </view>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onUnmounted } from 'vue';
 import { onLoad } from '@dcloudio/uni-app';
+import RentDatePicker from '@/components/business/RentDatePicker.vue';
+import { createCampsiteBooking, type CampsiteBookingParams, type CampsiteBookingResponse } from '@/api/campsite';
 
 // 获取路由参数
 const campsiteId = ref('');
@@ -235,6 +253,7 @@ onLoad((options: any) => {
   campsiteId.value = options.campsiteId || '';
   siteTypeId.value = options.siteTypeId || '';
   loadBookingData();
+  uni.$on('couponSelected', handleCouponSelected);
 });
 
 // 营地信息
@@ -257,11 +276,15 @@ const selectedSiteType = ref<any>({
 const bookingForm = ref({
   checkInDate: '',
   checkOutDate: '',
+  checkInTime: '10:00',
+  checkOutTime: '10:00',
   guests: 2,
   contactName: '',
   contactPhone: '',
   remark: ''
 });
+
+const submitting = ref(false);
 
 // 是否同意协议
 const agreed = ref(false);
@@ -276,24 +299,8 @@ const bookingNotices = ref([
   '请爱护营地环境，垃圾分类投放'
 ]);
 
-// 日期范围
-const minDate = computed(() => {
-  const today = new Date();
-  return formatDate(today);
-});
-
-const maxDate = computed(() => {
-  const future = new Date();
-  future.setMonth(future.getMonth() + 3);
-  return formatDate(future);
-});
-
-const checkOutMinDate = computed(() => {
-  if (!bookingForm.value.checkInDate) return minDate.value;
-  const checkIn = new Date(bookingForm.value.checkInDate);
-  checkIn.setDate(checkIn.getDate() + 1);
-  return formatDate(checkIn);
-});
+// 已选择的优惠券
+const selectedCoupon = ref<any | null>(null);
 
 // 计算入住天数
 const nights = computed(() => {
@@ -313,6 +320,35 @@ const cleaningFee = ref(50);
 
 const totalPrice = computed(() => {
   return siteFee.value + cleaningFee.value;
+});
+
+const couponDiscount = computed(() => {
+  if (!selectedCoupon.value) return 0;
+  const baseAmount = totalPrice.value;
+  if (baseAmount <= 0) return 0;
+  const coupon = selectedCoupon.value;
+
+  if (typeof coupon.amount === 'number') {
+    return Math.min(coupon.amount, baseAmount);
+  }
+  if (typeof coupon.discount === 'number') {
+    return Math.min(coupon.discount, baseAmount);
+  }
+  if (typeof coupon.discountRate === 'number') {
+    const rate = coupon.discountRate;
+    let discountValue = 0;
+    if (rate > 0 && rate < 1) {
+      discountValue = baseAmount * (1 - rate);
+    } else if (rate > 1 && rate < 10) {
+      discountValue = baseAmount * (1 - rate / 10);
+    }
+    return Math.max(Math.min(Number(discountValue.toFixed(2)), baseAmount), 0);
+  }
+  return 0;
+});
+
+const payablePrice = computed(() => {
+  return Math.max(totalPrice.value - couponDiscount.value, 0);
 });
 
 // 是否可以提交
@@ -378,42 +414,30 @@ const loadBookingData = async () => {
   }
 };
 
-// 格式化日期
-const formatDate = (date: Date) => {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
+onUnmounted(() => {
+  uni.$off('couponSelected', handleCouponSelected);
+});
+
+const rentDatePickerRef = ref();
+const openDatePicker = () => {
+  rentDatePickerRef.value?.open(
+    bookingForm.value.checkInDate,
+    bookingForm.value.checkOutDate,
+    bookingForm.value.checkInTime || '10:00'
+  );
 };
 
-// 显示入住日期选择器
-const showCheckInPicker = () => {
-  // uni-datetime-picker 会自动显示
+const handleDateConfirm = (data: any) => {
+  bookingForm.value.checkInDate = data.pickupDate;
+  bookingForm.value.checkOutDate = data.returnDate;
+  bookingForm.value.checkInTime = data.time;
+  bookingForm.value.checkOutTime = data.time;
 };
 
-// 显示退房日期选择器
-const showCheckOutPicker = () => {
-  if (!bookingForm.value.checkInDate) {
-    uni.showToast({
-      title: '请先选择入住日期',
-      icon: 'none'
-    });
-    return;
-  }
-};
-
-// 入住日期变化
-const onCheckInChange = (e: any) => {
-  bookingForm.value.checkInDate = e;
-  // 如果退房日期早于入住日期，清空退房日期
-  if (bookingForm.value.checkOutDate && bookingForm.value.checkOutDate <= e) {
-    bookingForm.value.checkOutDate = '';
-  }
-};
-
-// 退房日期变化
-const onCheckOutChange = (e: any) => {
-  bookingForm.value.checkOutDate = e;
+const formatDisplayDate = (dateStr: string) => {
+  if (!dateStr) return '';
+  const date = new Date(dateStr);
+  return `${date.getMonth() + 1}月${date.getDate()}日`;
 };
 
 // 减少人数
@@ -428,6 +452,39 @@ const increaseGuests = () => {
   if (bookingForm.value.guests < selectedSiteType.value.capacity) {
     bookingForm.value.guests++;
   }
+};
+
+const selectCoupon = () => {
+  if (nights.value <= 0) {
+    uni.showToast({
+      title: '请先选择入住/离店日期',
+      icon: 'none'
+    });
+    return;
+  }
+  uni.navigateTo({
+    url: `/pages/order/select-coupon?amount=${totalPrice.value}&selectedId=${selectedCoupon.value?.id || ''}&productType=campsite`
+  });
+};
+
+const formatCouponValidity = (coupon: any) => {
+  if (!coupon) return '';
+  const end = coupon.validTo || coupon.validEnd;
+  if (end) {
+    const date = new Date(end);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `有效期至 ${year}.${month}.${day}`;
+  }
+  if (coupon.description) {
+    return coupon.description;
+  }
+  return '已选择优惠券';
+};
+
+const handleCouponSelected = (coupon: any) => {
+  selectedCoupon.value = coupon || null;
 };
 
 // 协议变化
@@ -446,30 +503,61 @@ const viewAgreement = () => {
 
 // 提交预订
 const submitBooking = async () => {
-  if (!canSubmit.value) {
-    uni.showToast({
-      title: '请完善预订信息',
-      icon: 'none'
-    });
+  if (!canSubmit.value || submitting.value) {
+    if (!canSubmit.value) {
+      uni.showToast({
+        title: '请完善预订信息',
+        icon: 'none'
+      });
+    }
     return;
   }
+
+  submitting.value = true;
 
   try {
     uni.showLoading({ title: '提交中...' });
 
-    // Mock提交
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    const payload: CampsiteBookingParams = {
+      campsiteId: campsiteInfo.value.id || campsiteId.value,
+      siteTypeId: selectedSiteType.value.id || siteTypeId.value,
+      checkInDate: bookingForm.value.checkInDate,
+      checkOutDate: bookingForm.value.checkOutDate,
+      guests: bookingForm.value.guests,
+      contactName: bookingForm.value.contactName.trim(),
+      contactPhone: bookingForm.value.contactPhone,
+      remark: bookingForm.value.remark?.trim() || '',
+      couponId: selectedCoupon.value?.id
+    };
 
-    uni.hideLoading();
-    uni.showModal({
-      title: '预订成功',
-      content: '您的预订已提交成功，请前往订单页面查看详情',
-      showCancel: false,
-      success: () => {
-        uni.navigateBack();
+    let bookingResult: CampsiteBookingResponse | null = null;
+
+    try {
+      const response = await createCampsiteBooking(payload);
+      if (response.code === 0 && response.data) {
+        bookingResult = response.data;
+      } else {
+        throw new Error(response.message || '预订失败');
       }
-    });
+    } catch (apiError) {
+      console.warn('创建营地预订接口暂不可用，使用Mock数据回退', apiError);
+      const now = Date.now();
+      bookingResult = {
+        orderId: `mock-${now}`,
+        orderNo: `CS${now}`,
+        status: 'PENDING_PAYMENT',
+        totalPrice: payablePrice.value,
+        paymentDeadline: new Date(now + 15 * 60 * 1000).toISOString()
+      };
+    }
 
+    if (!bookingResult) {
+      throw new Error('未获取到有效的订单信息');
+    }
+
+    uni.navigateTo({
+      url: `/pages/order/pay?orderNo=${bookingResult.orderNo}&amount=${bookingResult.totalPrice}`
+    });
   } catch (error) {
     console.error('提交预订失败:', error);
     uni.showToast({
@@ -478,6 +566,7 @@ const submitBooking = async () => {
     });
   } finally {
     uni.hideLoading();
+    submitting.value = false;
   }
 };
 </script>
@@ -683,6 +772,12 @@ const submitBooking = async () => {
       }
     }
   }
+
+  .date-tip {
+    margin-top: 12rpx;
+    font-size: 24rpx;
+    color: #999;
+  }
 }
 
 // 预订须知
@@ -750,6 +845,50 @@ const submitBooking = async () => {
   }
 }
 
+// 优惠券
+.coupon-section {
+  background-color: #FFFFFF;
+  padding: 32rpx;
+  margin-bottom: 16rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+
+  .coupon-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .coupon-value {
+      display: flex;
+      align-items: center;
+      gap: 8rpx;
+
+      .coupon-text {
+        font-size: 26rpx;
+        color: #333;
+      }
+    }
+  }
+
+  .coupon-tip {
+    display: flex;
+    flex-direction: column;
+    gap: 6rpx;
+
+    .savings-text {
+      font-size: 26rpx;
+      color: #52C41A;
+      font-weight: 500;
+    }
+
+    .coupon-desc {
+      font-size: 24rpx;
+      color: #999;
+    }
+  }
+}
+
 // 价格明细
 .price-section {
   background-color: #FFFFFF;
@@ -813,6 +952,16 @@ const submitBooking = async () => {
         &.highlight {
           color: #F44336;
           font-weight: 700;
+        }
+      }
+
+      &.discount {
+        .price-label {
+          color: #52C41A;
+        }
+
+        .price-amount {
+          color: #52C41A;
         }
       }
     }

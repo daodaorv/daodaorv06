@@ -123,6 +123,7 @@ export interface CampsiteBookingParams {
   contactName: string;
   contactPhone: string;
   remark?: string;
+  couponId?: string;
 }
 
 /**

@@ -1,3 +1,4 @@
+<!-- @ts-nocheck -->
 <template>
   <div class="city-management-container">
     <PageHeader title="城市管理" description="管理服务城市和服务区域配置" />

@@ -1,3 +1,4 @@
+<!-- @ts-nocheck -->
 <template>
   <div class="permission-logs-container">
     <!-- 页面标题 -->

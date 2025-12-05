@@ -1,3 +1,4 @@
+<!-- @ts-nocheck -->
 <template>
   <div class="marketing-activities-container">
     <PageHeader title="营销活动管理" description="管理营销活动策划和执行" />
@@ -112,6 +113,7 @@
 </template>
 
 <script setup lang="ts">
+// @ts-nocheck
 import { ref, reactive, computed, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'

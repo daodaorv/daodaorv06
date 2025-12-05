@@ -138,6 +138,13 @@
       ></u-button>
       <u-button
         v-if="order.status === 'in_use'"
+        text="处理还车流程"
+        type="warning"
+        plain
+        @click="goReturnFlow"
+      ></u-button>
+      <u-button
+        v-if="order.status === 'in_use'"
         text="完成订单"
         type="primary"
         @click="completeOrder"
@@ -241,6 +248,13 @@ export default {
       this.dialogType = 'default'
       this.dialogAction = 'start'
       this.dialogVisible = true
+    },
+
+    goReturnFlow() {
+      if (!this.orderId) return
+      uni.navigateTo({
+        url: `/pages/orders/return?id=${this.orderId}`
+      })
     },
 
     completeOrder() {

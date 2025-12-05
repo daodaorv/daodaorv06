@@ -41,7 +41,7 @@
 				</view>
 				<view class="code-right">
 					<button class="copy-btn" @tap="copyInviteCode">
-						<u-icon name="copy" size="16" color="#FF9F29"></u-icon>
+						<u-icon name="share" size="16" color="#FF9F29"></u-icon>
 						<text class="btn-text">复制</text>
 					</button>
 				</view>
@@ -50,7 +50,7 @@
 			<!-- 分享按钮 -->
 			<view class="share-buttons">
 				<button class="share-btn primary" @tap="generatePoster">
-					<u-icon name="image" size="20" color="#FFFFFF"></u-icon>
+					<u-icon name="photo" size="20" color="#FFFFFF"></u-icon>
 					<text class="btn-text">生成邀请海报</text>
 				</button>
 				<button class="share-btn" @tap="shareToWechat">
@@ -63,7 +63,7 @@
 		<!-- 奖励规则 -->
 		<view class="reward-rules">
 			<view class="section-title">
-				<u-icon name="help" size="20" color="#FF9F29"></u-icon>
+				<u-icon name="question-circle" size="20" color="#FF9F29"></u-icon>
 				<text class="title-text">奖励规则</text>
 			</view>
 			<view class="rules-content">
@@ -87,7 +87,7 @@
 			</view>
 
 			<view v-if="inviteRecords.length === 0" class="empty-state">
-				<u-icon name="person" size="80" color="#CCCCCC"></u-icon>
+				<u-icon name="account" size="80" color="#CCCCCC"></u-icon>
 				<text class="empty-text">暂无邀请记录</text>
 				<text class="empty-hint">快去邀请好友吧</text>
 			</view>
@@ -97,7 +97,7 @@
 					<view class="record-left">
 						<view class="user-avatar">
 							<image v-if="record.avatar" :src="record.avatar" mode="aspectFill"></image>
-							<u-icon v-else name="person" size="24" color="#999"></u-icon>
+							<u-icon v-else name="account" size="24" color="#999"></u-icon>
 						</view>
 						<view class="user-info">
 							<text class="user-name">{{ maskUsername(record.username) }}</text>

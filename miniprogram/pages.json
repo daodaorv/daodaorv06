@@ -64,6 +64,12 @@
 			}
 		},
 		{
+			"path": "pages/hosting/agreement/index",
+			"style": {
+				"navigationBarTitleText": "托管协议与帮助"
+			}
+		},
+		{
 			"path": "pages/hosting/vehicle-detail/index",
 			"style": {
 				"navigationBarTitleText": "车辆详情"

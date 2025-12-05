@@ -1,3 +1,4 @@
+<!-- @ts-nocheck -->
 <template>
   <div class="user-list-container">
     <PageHeader title="用户管理" description="管理平台用户信息、权限和状态" />

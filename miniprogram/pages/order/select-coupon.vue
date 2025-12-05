@@ -35,6 +35,7 @@
 				<view class="coupon-right">
 					<text class="coupon-name">{{ recommendedCoupon.name }}</text>
 					<text class="coupon-desc">{{ recommendedCoupon.description }}</text>
+					<text class="coupon-scope">适用：{{ getCouponScopeLabel(recommendedCoupon) }}</text>
 					<view class="recommend-reason">
 						<u-icon name="info" size="14" color="#52C41A"></u-icon>
 						<text class="reason-text">{{ recommendedCoupon.recommendReason }}</text>
@@ -42,7 +43,7 @@
 				</view>
 				<view class="coupon-check">
 					<u-icon
-						:name="selectedCouponId === recommendedCoupon.id ? 'checkmarkempty' : 'circle'"
+						:name="selectedCouponId === recommendedCoupon.id ? 'checkmark-circle' : 'checkmark-circle'"
 						size="24"
 						:color="selectedCouponId === recommendedCoupon.id ? '#FF9F29' : '#DDD'">
 					</u-icon>
@@ -76,11 +77,12 @@
 					<view class="coupon-right">
 						<text class="coupon-name">{{ coupon.name }}</text>
 						<text class="coupon-desc">{{ coupon.description }}</text>
+						<text class="coupon-scope">适用：{{ getCouponScopeLabel(coupon) }}</text>
 						<text class="coupon-time">有效期至 {{ formatDate(coupon.validTo) }}</text>
 					</view>
 					<view class="coupon-check">
 						<u-icon
-							:name="selectedCouponId === coupon.id ? 'checkmarkempty' : 'circle'"
+							:name="selectedCouponId === coupon.id ? 'checkmark-circle' : 'checkmark-circle'"
 							size="24"
 							:color="selectedCouponId === coupon.id ? '#FF9F29' : '#DDD'">
 						</u-icon>
@@ -108,6 +110,7 @@
 					<view class="coupon-right">
 						<text class="coupon-name">{{ coupon.name }}</text>
 						<text class="coupon-desc">{{ coupon.description }}</text>
+						<text class="coupon-scope">适用：{{ getCouponScopeLabel(coupon) }}</text>
 						<text class="coupon-reason">{{ coupon.unavailableReason }}</text>
 					</view>
 				</view>
@@ -130,13 +133,41 @@ import { getMyCoupons } from '@/api/coupon';
 // 页面参数
 const orderAmount = ref(0);
 const selectedCouponId = ref('');
+const productType = ref<'vehicle' | 'campsite' | 'tour'>('vehicle');
+
+const productTypeLabels: Record<string, string> = {
+	vehicle: '房车租赁订单',
+	campsite: '营地预订订单',
+	tour: '旅游线路订单'
+};
 
 // 优惠券列表
 const allCoupons = ref<any[]>([]);
 
+const getCouponScopeLabel = (coupon: any) => {
+	if (coupon.scope) return coupon.scope;
+	if (coupon.applicableProducts && coupon.applicableProducts.length > 0) {
+		return coupon.applicableProducts.map((key: string) => productTypeLabels[key] || key).join('、');
+	}
+	return '全品类';
+};
+
+const buildScopeReason = (coupon: any) => {
+	const scopeLabel = getCouponScopeLabel(coupon);
+	return scopeLabel ? `仅限${scopeLabel}` : '优惠券适用范围不匹配';
+};
+
+const isCouponApplicable = (coupon: any) => {
+	if (!coupon.applicableProducts || coupon.applicableProducts.length === 0) {
+		return true;
+	}
+	return coupon.applicableProducts.includes(productType.value);
+};
+
 // 可用优惠券
 const availableCoupons = computed(() => {
 	return allCoupons.value.filter(coupon => {
+		coupon.unavailableReason = '';
 		// 检查订单金额是否满足最低使用条件
 		if (orderAmount.value < coupon.minAmount) {
 			coupon.unavailableReason = `订单金额需满${coupon.minAmount}元`;
@@ -145,6 +176,11 @@ const availableCoupons = computed(() => {
 		// 检查优惠券状态
 		if (coupon.status !== 'available') {
 			coupon.unavailableReason = '优惠券已使用或过期';
+			return false;
+		}
+		// 检查适用范围
+		if (!isCouponApplicable(coupon)) {
+			coupon.unavailableReason = buildScopeReason(coupon);
 			return false;
 		}
 		return true;
@@ -191,12 +227,17 @@ const recommendedCoupon = computed(() => {
 // 不可用优惠券
 const unavailableCoupons = computed(() => {
 	return allCoupons.value.filter(coupon => {
+		coupon.unavailableReason = '';
 		if (orderAmount.value < coupon.minAmount) {
 			coupon.unavailableReason = `订单金额需满${coupon.minAmount}元`;
 			return true;
 		}
 		if (coupon.status !== 'available') {
 			coupon.unavailableReason = '优惠券已使用或过期';
+			return true;
+		}
+		if (!isCouponApplicable(coupon)) {
+			coupon.unavailableReason = buildScopeReason(coupon);
 			return true;
 		}
 		return false;
@@ -209,6 +250,9 @@ onLoad((options: any) => {
 	}
 	if (options.selectedId) {
 		selectedCouponId.value = options.selectedId;
+	}
+	if (options.productType && ['vehicle', 'campsite', 'tour'].includes(options.productType)) {
+		productType.value = options.productType;
 	}
 	loadCoupons();
 });
@@ -226,58 +270,81 @@ const loadCoupons = async () => {
 		allCoupons.value = [
 			{
 				id: 'CP001',
-				name: '租车满减券',
+				name: '房车租赁满减券',
 				description: '适用于所有房车租赁订单',
 				type: 'discount',
-				amount: 100,
-				minAmount: 500,
+				amount: 200,
+				minAmount: 800,
 				validFrom: '2025-11-01',
 				validTo: '2025-12-31',
-				status: 'available'
+				status: 'available',
+				applicableProducts: ['vehicle'],
+				scope: '房车租赁订单'
 			},
 			{
 				id: 'CP002',
-				name: '新用户专享券',
-				description: '首次下单专享优惠',
+				name: '房车新用户专享券',
+				description: '首次租车专享优惠',
 				type: 'discount',
-				amount: 200,
-				minAmount: 1000,
+				amount: 300,
+				minAmount: 1200,
 				validFrom: '2025-11-01',
 				validTo: '2025-12-31',
-				status: 'available'
+				status: 'available',
+				applicableProducts: ['vehicle'],
+				scope: '房车租赁订单'
 			},
 			{
 				id: 'CP003',
-				name: '周末特惠券',
-				description: '周末租车享优惠',
+				name: '营地预订立减券',
+				description: '指定营地预订可用',
 				type: 'discount',
-				amount: 50,
-				minAmount: 300,
+				amount: 120,
+				minAmount: 600,
 				validFrom: '2025-11-01',
 				validTo: '2025-12-31',
-				status: 'available'
+				status: 'available',
+				applicableProducts: ['campsite'],
+				scope: '营地预订'
 			},
 			{
 				id: 'CP004',
-				name: '大额满减券',
-				description: '大额订单专享',
+				name: '旅游线路优惠券',
+				description: '适用于旅游线路订单',
 				type: 'discount',
-				amount: 500,
-				minAmount: 5000,
+				amount: 400,
+				minAmount: 3000,
 				validFrom: '2025-11-01',
 				validTo: '2025-12-31',
-				status: 'available'
+				status: 'available',
+				applicableProducts: ['tour'],
+				scope: '旅游线路订单'
 			},
 			{
 				id: 'CP005',
-				name: '已使用券',
+				name: '营地周末券',
+				description: '限周末营地入住使用',
+				type: 'discount',
+				amount: 80,
+				minAmount: 500,
+				validFrom: '2025-11-15',
+				validTo: '2025-12-31',
+				status: 'available',
+				applicableProducts: ['campsite'],
+				scope: '营地预订'
+			},
+			{
+				id: 'CP006',
+				name: '已使用房车券',
 				description: '已使用的优惠券示例',
 				type: 'discount',
-				amount: 100,
-				minAmount: 500,
+				amount: 150,
+				minAmount: 700,
 				validFrom: '2025-10-01',
 				validTo: '2025-11-30',
-				status: 'used'
+				status: 'used',
+				applicableProducts: ['vehicle'],
+				scope: '房车租赁订单'
 			}
 		];
 
@@ -321,13 +388,8 @@ const goToCouponMall = () => {
 
 // 取消选择
 const handleCancel = () => {
-	// 返回上一页，不使用优惠券
-	const pages = getCurrentPages();
-	const prevPage = pages[pages.length - 2];
-	if (prevPage) {
-		// @ts-ignore
-		prevPage.$vm.selectedCoupon = null;
-	}
+	selectedCouponId.value = '';
+	uni.$emit('couponSelected', null);
 	uni.navigateBack();
 };
 
@@ -593,6 +655,11 @@ const handleConfirm = () => {
 .coupon-desc {
 	font-size: 24rpx;
 	color: #666;
+}
+
+.coupon-scope {
+	font-size: 22rpx;
+	color: #999;
 }
 
 .coupon-time {

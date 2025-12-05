@@ -72,7 +72,7 @@ const mockUser: UserInfo = {
 	id: 'user_001',
 	phone: '13800138000',
 	nickname: '叨叨用户',
-	avatar: 'https://picsum.photos/200/200?random=1',
+	avatar: '/static/default-avatar.png',
 	gender: 1,
 	userType: 'NORMAL',
 	status: 'ACTIVE'
@@ -188,7 +188,7 @@ export function wechatLogin(params: WechatLoginParams): Promise<LoginResponse> {
 				user: {
 					...mockUser,
 					nickname: '微信用户',
-					avatar: 'https://picsum.photos/200/200?random=wx'
+					avatar: '/static/default-avatar.png'
 				}
 			})
 		}, 1000)
@@ -208,7 +208,7 @@ export function alipayLogin(params: AlipayLoginParams): Promise<LoginResponse> {
 				user: {
 					...mockUser,
 					nickname: '支付宝用户',
-					avatar: 'https://picsum.photos/200/200?random=alipay'
+					avatar: '/static/default-avatar.png'
 				}
 			})
 		}, 1000)
@@ -228,7 +228,7 @@ export function douyinLogin(params: DouyinLoginParams): Promise<LoginResponse> {
 				user: {
 					...mockUser,
 					nickname: '抖音用户',
-					avatar: 'https://picsum.photos/200/200?random=douyin'
+					avatar: '/static/default-avatar.png'
 				}
 			})
 		}, 1000)

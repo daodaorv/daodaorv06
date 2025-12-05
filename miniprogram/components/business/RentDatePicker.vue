@@ -1,10 +1,10 @@
 <template>
-	<u-popup :show="show" @close="close" mode="bottom" :closeable="false" :z-index="10075" :safe-area-inset-bottom="true">
+	<u-popup :show="show" @close="close" mode="bottom" :closeable="false" :z-index="11000" :safe-area-inset-bottom="true" :safe-area-inset-top="true">
 		<view class="rent-date-picker">
 			<!-- 顶部标题栏 -->
 			<view class="popup-header">
 				<text class="cancel-text" @tap="close">取消</text>
-				<text class="popup-title">选择取还车时间</text>
+				<text class="popup-title">{{ props.titleText }}</text>
 				<text class="confirm-text" @tap="confirm">确定</text>
 			</view>
 
@@ -12,14 +12,14 @@
 				<!-- 日历选择区域 -->
 				<view class="calendar-header">
 					<view class="date-info">
-						<text class="label">取车</text>
+						<text class="label">{{ pickupLabelText }}</text>
 						<text class="value" :class="{ placeholder: !tempPickupDate }">{{ formatDate(tempPickupDate) || '选择日期' }}</text>
 					</view>
 					<view class="duration-info" v-if="duration > 0">
-						<text class="duration-tag">共{{ duration }}天</text>
+						<text class="duration-tag">共{{ duration }}{{ durationUnitText }}</text>
 					</view>
 					<view class="date-info right">
-						<text class="label">还车</text>
+						<text class="label">{{ returnLabelText }}</text>
 						<text class="value" :class="{ placeholder: !tempReturnDate }">{{ formatDate(tempReturnDate) || '选择日期' }}</text>
 					</view>
 				</view>
@@ -32,9 +32,9 @@
 								<text v-for="day in ['日','一','二','三','四','五','六']" :key="day" class="weekday">{{ day }}</text>
 							</view>
 							<view class="days-grid">
-								<view 
-									v-for="(day, dIndex) in month.days" 
-									:key="dIndex" 
+								<view
+									v-for="(day, dIndex) in month.days"
+									:key="dIndex"
 									class="day-cell"
 									:class="{
 										'empty': !day.date,
@@ -48,8 +48,8 @@
 								>
 									<view class="day-content" v-if="day.date">
 										<text class="day-number">{{ day.day }}</text>
-										<text v-if="isStartDate(day)" class="day-tag">取车</text>
-										<text v-if="isEndDate(day)" class="day-tag">还车</text>
+										<text v-if="isStartDate(day)" class="day-tag">{{ pickupLabelText }}</text>
+										<text v-if="isEndDate(day)" class="day-tag">{{ returnLabelText }}</text>
 									</view>
 								</view>
 							</view>
@@ -58,15 +58,15 @@
 				</scroll-view>
 
 				<!-- 时间选择区域 -->
-				<view class="time-section">
+				<view v-if="props.showTimeSelection" class="time-section">
 					<view class="section-header">
-						<text class="section-title">取车时间</text>
-						<text class="section-desc">还车时间将自动同步</text>
+						<text class="section-title">{{ pickupTimeTitle }}</text>
+						<text class="section-desc">{{ returnTimeDesc }}</text>
 					</view>
 					<scroll-view scroll-x class="time-scroll" show-scrollbar="false">
 						<view class="time-list">
-							<view 
-								v-for="(time, index) in timeList" 
+							<view
+								v-for="(time, index) in timeList"
 								:key="index"
 								class="time-chip"
 								:class="{ active: tempTime === time }"
@@ -84,7 +84,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, watch } from 'vue';
 import dayjs from 'dayjs';
 
 // 定义接口
@@ -100,6 +100,25 @@ interface Month {
 	days: Day[];
 }
 
+interface Props {
+	disabledDates?: string[];
+	titleText?: string;
+	pickupLabel?: string;
+	returnLabel?: string;
+	showTimeSelection?: boolean;
+	defaultTime?: string;
+	durationUnit?: string;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+	disabledDates: () => [],
+	titleText: '选择取还车时间',
+	pickupLabel: '取车',
+	returnLabel: '还车',
+	showTimeSelection: true,
+	defaultTime: '10:00',
+	durationUnit: '天'
+});
 const emit = defineEmits(['confirm']);
 const show = ref(false);
 const calendarData = ref<Month[]>([]);
@@ -108,11 +127,35 @@ const timeList = ref<string[]>([]);
 const tempPickupDate = ref('');
 const tempReturnDate = ref('');
 const tempTime = ref('');
+const disabledDateSet = computed(() => new Set(props.disabledDates || []));
+const pickupLabelText = computed(() => {
+	const label = props.pickupLabel?.trim();
+	return label && label.length > 0 ? label : '取车';
+});
+const returnLabelText = computed(() => {
+	const label = props.returnLabel?.trim();
+	return label && label.length > 0 ? label : '还车';
+});
+const durationUnitText = computed(() => {
+	const unit = props.durationUnit?.trim();
+	return unit && unit.length > 0 ? unit : '天';
+});
+const pickupTimeTitle = computed(() => `${pickupLabelText.value}时间`);
+const returnTimeDesc = computed(() => `${returnLabelText.value}时间将自动同步`);
+const minimumDurationText = computed(() => `1${durationUnitText.value}`);
 
 onMounted(() => {
 	initCalendar();
 	initTimeList();
 });
+
+watch(
+	() => props.disabledDates,
+	() => {
+		initCalendar();
+	},
+	{ deep: true }
+);
 
 const duration = computed(() => {
 	if (!tempPickupDate.value || !tempReturnDate.value) return 0;
@@ -124,14 +167,14 @@ const duration = computed(() => {
 const initCalendar = () => {
 	const today = dayjs();
 	const months: Month[] = [];
-	
+
 	for (let i = 0; i < 6; i++) {
 		const current = today.add(i, 'month');
 		const year = current.year();
 		const month = current.month() + 1;
 		const daysInMonth = current.daysInMonth();
 		const firstDayOfWeek = current.startOf('month').day();
-		
+
 		const days: Day[] = [];
 		// 填充空白日期
 		for (let j = 0; j < firstDayOfWeek; j++) {
@@ -144,11 +187,12 @@ const initCalendar = () => {
 			// 简单的字符串比较通常足够，因为格式是固定的 YYYY-MM-DD
 			// 但为了准确性，这里保留 dayjs 比较，只在初始化时运行一次，不影响渲染性能
 			const isBeforeToday = dateObj.isBefore(today, 'day');
-			
+
+			const isDisabledFromProps = disabledDateSet.value.has(dateStr);
 			days.push({
 				date: dateStr,
 				day: d,
-				disabled: isBeforeToday
+				disabled: isBeforeToday || isDisabledFromProps
 			});
 		}
 		months.push({ year, month, days });
@@ -193,9 +237,9 @@ const isInRange = (day: Day) => {
 
 const onDayClick = (day: Day) => {
 	if (!day.date || day.disabled) return;
-	
+
 	const date = day.date;
-	
+
 	if (!tempPickupDate.value || (tempPickupDate.value && tempReturnDate.value)) {
 		// 新的选择开始
 		tempPickupDate.value = date;
@@ -207,7 +251,7 @@ const onDayClick = (day: Day) => {
 			tempReturnDate.value = tempPickupDate.value;
 			tempPickupDate.value = date;
 		} else if (date === tempPickupDate.value) {
-			uni.showToast({ title: '最少租期1天', icon: 'none' });
+			uni.showToast({ title: `至少${minimumDurationText.value}`, icon: 'none' });
 			return;
 		} else {
 			tempReturnDate.value = date;
@@ -223,7 +267,7 @@ const open = (pickupDate?: string, returnDate?: string, time?: string) => {
 	console.log('🔍 RentDatePicker open 被调用:', pickupDate, returnDate, time);
 	tempPickupDate.value = pickupDate || '';
 	tempReturnDate.value = returnDate || '';
-	tempTime.value = time || '10:00';
+	tempTime.value = time || props.defaultTime;
 	show.value = true;
 	console.log('🔍 show.value 已设置为:', show.value);
 };
@@ -235,18 +279,18 @@ const close = () => {
 const confirm = () => {
 	console.log('Confirming selection:', tempPickupDate.value, tempReturnDate.value, tempTime.value);
 	if (!tempPickupDate.value) {
-		uni.showToast({ title: '请选择取车日期', icon: 'none' });
+		uni.showToast({ title: `请选择${pickupLabelText.value}日期`, icon: 'none' });
 		return;
 	}
 	if (!tempReturnDate.value) {
-		uni.showToast({ title: '请选择还车日期', icon: 'none' });
+		uni.showToast({ title: `请选择${returnLabelText.value}日期`, icon: 'none' });
 		return;
 	}
-	if (!tempTime.value) {
-		uni.showToast({ title: '请选择取车时间', icon: 'none' });
+	if (props.showTimeSelection && !tempTime.value) {
+		uni.showToast({ title: `请选择${pickupLabelText.value}时间`, icon: 'none' });
 		return;
 	}
-	
+
 	emit('confirm', {
 		pickupDate: tempPickupDate.value,
 		returnDate: tempReturnDate.value,
@@ -262,7 +306,7 @@ defineExpose({ open, close });
 .rent-date-picker {
 	background-color: #FFFFFF;
 	border-radius: 32rpx 32rpx 0 0;
-	max-height: 85vh;
+	max-height: 70vh;
 	display: flex;
 	flex-direction: column;
 	padding-bottom: env(safe-area-inset-bottom);
@@ -278,7 +322,7 @@ defineExpose({ open, close });
 	background-color: #FFFFFF;
 	position: sticky;
 	top: 0;
-	z-index: 100;
+	z-index: 10076;
 	flex-shrink: 0;
 	min-height: 96rpx;
 }
@@ -325,7 +369,7 @@ defineExpose({ open, close });
 .date-info {
 	display: flex;
 	flex-direction: column;
-	
+
 	&.right {
 		align-items: flex-end;
 	}
@@ -341,7 +385,7 @@ defineExpose({ open, close });
 	font-size: 32rpx;
 	font-weight: bold;
 	color: #333;
-	
+
 	&.placeholder {
 		color: #CCC;
 		font-weight: normal;
@@ -408,11 +452,11 @@ defineExpose({ open, close });
 	align-items: center;
 	justify-content: center;
 	position: relative;
-	
+
 	&.selected {
 		background-color: $uni-color-primary;
 		color: #FFF;
-		
+
 		&.start {
 			border-top-left-radius: 50%;
 			border-bottom-left-radius: 50%;
@@ -426,12 +470,12 @@ defineExpose({ open, close });
 			border-radius: 50%;
 		}
 	}
-	
+
 	&.in-range {
 		background-color: rgba(255, 159, 41, 0.1);
 		color: #333;
 	}
-	
+
 	&.disabled {
 		opacity: 0.3;
 	}
@@ -502,17 +546,17 @@ defineExpose({ open, close });
 	position: relative;
 	transition: all 0.2s;
 	box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.02);
-	
+
 	&:last-child {
 		margin-right: 32rpx; /* 右侧留白 */
 	}
-	
+
 	&.active {
 		background-color: $uni-color-primary;
 		border-color: $uni-color-primary;
 		box-shadow: 0 4rpx 12rpx rgba(255, 159, 41, 0.3);
 		transform: translateY(-2rpx);
-		
+
 		.time-text {
 			color: #FFFFFF;
 			font-weight: bold;

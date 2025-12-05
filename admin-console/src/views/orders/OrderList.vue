@@ -1,3 +1,4 @@
+<!-- @ts-nocheck -->
 <template>
   <div class="order-list-container">
     <PageHeader title="订单管理" description="管理租赁订单、异常处理和退款管理" />

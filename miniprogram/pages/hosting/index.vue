@@ -100,11 +100,6 @@
 
     <!-- 4. 收益明细 + 托管协议入口 -->
     <view class="quick-links">
-      <view class="link-item" @click="goToIncomeDetail">
-        <text class="link-icon">📊</text>
-        <text class="link-text">收益明细</text>
-        <text class="link-arrow">›</text>
-      </view>
       <view class="link-item" @click="goToAgreement">
         <text class="link-icon">📄</text>
         <text class="link-text">托管协议与帮助</text>
@@ -247,13 +242,6 @@ export default {
     goToVehicleDetail(vehicleId) {
       uni.navigateTo({
         url: `/pages/hosting/vehicle-detail/index?id=${vehicleId}`
-      })
-    },
-
-    // 跳转到收益明细
-    goToIncomeDetail() {
-      uni.navigateTo({
-        url: '/pages/hosting/income/index'
       })
     },
 

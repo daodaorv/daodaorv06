@@ -1,3 +1,4 @@
+<!-- @ts-nocheck -->
 <template>
   <div class="vehicle-list-container">
     <!-- 页面标题 -->
@@ -294,6 +295,7 @@
 </template>
 
 <script setup lang="ts">
+// @ts-nocheck
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'

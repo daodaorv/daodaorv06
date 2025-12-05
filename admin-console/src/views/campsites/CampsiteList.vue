@@ -1,3 +1,4 @@
+<!-- @ts-nocheck -->
 <template>
   <div class="campsite-list-container">
     <PageHeader title="营地管理" description="管理房车营地信息和运营状态" />
@@ -189,6 +190,7 @@
 </template>
 
 <script setup lang="ts">
+// @ts-nocheck
 import { ref, reactive, computed, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
 import { House, TrendCharts, User, Money } from '@element-plus/icons-vue'

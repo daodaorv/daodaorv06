@@ -4,7 +4,7 @@
 		<swiper class="image-swiper" :indicator-dots="true" :autoplay="false" :circular="true"
 			indicator-color="rgba(255,255,255,0.5)" indicator-active-color="#FF9F29">
 			<swiper-item v-for="(image, index) in vehicleImages" :key="index">
-				<image class="swiper-image" :src="image" mode="aspectFill"></image>
+				<image class="swiper-image" :src="photo" mode="aspectFill"></image>
 			</swiper-item>
 		</swiper>
 

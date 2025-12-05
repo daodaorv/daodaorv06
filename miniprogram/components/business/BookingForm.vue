@@ -5,7 +5,7 @@
 			<view class="form-item" @tap="openCityPicker('pickup')">
 				<view class="label">取车城市</view>
 				<view class="input-box">
-					<u-icon name="map-pin" size="18" color="#999"></u-icon>
+					<u-icon name="map" size="18" color="#999"></u-icon>
 					<text class="input-text">{{ pickupCity || '选择城市' }}</text>
 					<u-icon name="arrow-down" size="12" color="#999"></u-icon>
 				</view>
@@ -51,7 +51,7 @@
 		<!-- 第三行：异地还车 (紧凑布局) -->
 		<view class="checkbox-row compact">
 			<view class="checkbox-container" @tap="toggleDifferentLocation">
-				<view class="checkbox" :class="{ checked: isDifferentLocation }">
+				<view class="checkmark-circle" :class="{ checked: isDifferentLocation }">
 					<u-icon v-if="isDifferentLocation" name="checkbox-mark" size="12" color="#FFFFFF"></u-icon>
 				</view>
 				<text class="checkbox-text">异地还车</text>
@@ -63,7 +63,7 @@
 			<view class="form-item" @tap="openCityPicker('return')">
 				<view class="label">还车城市</view>
 				<view class="input-box">
-					<u-icon name="map-pin" size="18" color="#999"></u-icon>
+					<u-icon name="map" size="18" color="#999"></u-icon>
 					<text class="input-text">{{ returnCity || '选择城市' }}</text>
 					<u-icon name="arrow-down" size="12" color="#999"></u-icon>
 				</view>
@@ -98,10 +98,7 @@
 			@confirm="onPickerConfirm"
 		/>
 		
-		<RentDatePicker 
-			ref="rentDatePicker" 
-			@confirm="onDateConfirm"
-		/>
+
 	</view>
 </template>
 
@@ -109,9 +106,8 @@
 import { ref, computed, onMounted, watch } from 'vue';
 import dayjs from 'dayjs';
 import CityStorePicker from './CityStorePicker.vue';
-import RentDatePicker from './RentDatePicker.vue';
 
-const emit = defineEmits(['search']);
+const emit = defineEmits(['search', 'open-date-picker']);
 
 // --- Mock Data ---
 // --- Mock Data ---
@@ -183,7 +179,7 @@ const pickerData = ref<any[]>([]);
 const currentPickerTarget = ref<'pickup' | 'return'>('pickup');
 const currentSelectedId = ref('');
 
-const rentDatePicker = ref();
+
 
 // --- Computed ---
 const duration = computed(() => {
@@ -279,11 +275,12 @@ const onPickerConfirm = (item: any) => {
 
 // Date Picker Handlers
 const openDatePicker = () => {
-	console.log('🔍 openDatePicker 被调用');
-	console.log('🔍 rentDatePicker.value:', rentDatePicker.value);
-	console.log('🔍 当前日期数据:', pickupDate.value, returnDate.value, pickupTime.value);
-	rentDatePicker.value?.open(pickupDate.value, returnDate.value, pickupTime.value);
-	console.log('🔍 rentDatePicker.open() 已调用');
+	console.log('🔍 openDatePicker 被调用 (emitting event)');
+	emit('open-date-picker', {
+		pickupDate: pickupDate.value,
+		returnDate: returnDate.value,
+		time: pickupTime.value
+	});
 };
 
 const onDateConfirm = (data: any) => {
@@ -378,6 +375,7 @@ const loadFromStorage = () => {
 		returnStoreId.value = data.returnStoreId;
 	}
 };
+defineExpose({ onDateConfirm });
 </script>
 
 <style scoped lang="scss">

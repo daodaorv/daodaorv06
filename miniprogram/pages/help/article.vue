@@ -61,7 +61,7 @@
 					@click="viewArticle(item.id)"
 				>
 					<text class="related-title">{{ item.title }}</text>
-					<u-icon name="right" size="16" color="#CCCCCC" />
+					<u-icon name="arrow-right" size="16" color="#CCCCCC" />
 				</view>
 			</view>
 		</view>

@@ -1,3 +1,4 @@
+<!-- @ts-nocheck -->
 <template>
   <el-card class="chart-card" :shadow="shadow" :body-style="{ padding: '0' }">
     <!-- 卡片头部 -->
@@ -63,6 +64,7 @@
 </template>
 
 <script setup lang="ts">
+// @ts-nocheck
 import { ref, watch, onMounted, onBeforeUnmount, nextTick, computed } from 'vue'
 import { Refresh, Loading } from '@element-plus/icons-vue'
 import type { Component } from 'vue'

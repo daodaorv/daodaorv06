@@ -2,9 +2,7 @@
 	<view class="points-page">
 		<!-- 顶部积分卡片 -->
 		<view class="points-card">
-			<view class="card-bg">
-				<image class="bg-pattern" src="/static/images/points-bg.png" mode="aspectFill" />
-			</view>
+			<view class="card-bg"></view>
 			<view class="card-content">
 				<view class="balance-section">
 					<text class="label">当前积分</text>
@@ -15,7 +13,7 @@
 							<text>积分商城</text>
 						</button>
 						<button class="action-btn" @click="goToRules">
-							<u-icon name="help" size="16" color="#FFFFFF" />
+							<u-icon name="question-circle" size="16" color="#FFFFFF" />
 							<text>积分规则</text>
 						</button>
 					</view>
@@ -86,7 +84,7 @@
 				<picker mode="selector" :range="recordTypes" range-key="label" @change="handleTypeChange">
 					<view class="filter-btn">
 						<text class="filter-text">{{ selectedType.label }}</text>
-						<u-icon name="down" size="14" color="#999999" />
+						<u-icon name="arrow-down" size="14" color="#999999" />
 					</view>
 				</picker>
 			</view>
@@ -141,7 +139,7 @@
 						</view>
 					</view>
 					<text class="rule-desc">{{ rule.description }}</text>
-					<view v-if="rule.userTypeLimit && rule.userTypeLimit.length > 0" class="rule-limit">
+					<view v-if="rule.userTypeLimit && Array.isArray(rule.userTypeLimit) && rule.userTypeLimit.length > 0" class="rule-limit">
 						<u-icon name="info" size="14" color="#999999" />
 						<text class="limit-text">
 							仅限{{ rule.userTypeLimit.map(t => getUserTypeName(t)).join('、') }}
@@ -370,15 +368,15 @@ const goToRules = () => {
 // 获取记录图标
 const getRecordIcon = (type: PointsRecordType): string => {
 	const iconMap: Record<PointsRecordType, string> = {
-		HOSTING_INCOME: 'wallet',
+		HOSTING_INCOME: 'rmb',
 		RATING: 'star',
 		SIGN_IN: 'calendar',
 		ACTIVITY: 'gift',
-		REFERRAL: 'person-add',
-		RENTAL: 'cart',
-		EXCHANGE: 'shop',
-		EXPIRE: 'closeempty',
-		REFUND: 'undo'
+		REFERRAL: 'man-add',
+		RENTAL: 'shopping-cart',
+		EXCHANGE: 'bag',
+		EXPIRE: 'close-circle',
+		REFUND: 'reload'
 	}
 	return iconMap[type] || 'info'
 }
@@ -430,10 +428,16 @@ const getUserTypeName = (type: string): string => {
 		bottom: 0;
 		background: linear-gradient(135deg, #FF9F29 0%, #FF6B00 100%);
 
-		.bg-pattern {
-			width: 100%;
-			height: 100%;
-			opacity: 0.1;
+		/* 使用CSS创建装饰性图案 */
+		&::before {
+			content: '';
+			position: absolute;
+			top: -50%;
+			right: -20%;
+			width: 200%;
+			height: 200%;
+			background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+			opacity: 0.5;
 		}
 	}
 

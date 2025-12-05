@@ -37,7 +37,7 @@
 			<view class="section-title">现场照片</view>
 			<uni-file-picker 
 				v-model="imageValue" 
-				fileMedianame="image" 
+				fileMedianame="photo" 
 				mode="grid" 
 				:limit="9"
 				title="最多上传9张照片"
@@ -57,10 +57,10 @@
 			<view class="section-title">当前位置</view>
 			<view class="location-box" @tap="chooseLocation">
 				<view class="location-info">
-					<u-icon name="location-fill" size="20" color="#FF9F29"></u-icon>
+					<u-icon name="map-fill" size="20" color="#FF9F29"></u-icon>
 					<text class="address">{{ currentAddress || '点击获取当前位置' }}</text>
 				</view>
-				<u-icon name="right" size="16" color="#999"></u-icon>
+				<u-icon name="arrow-right" size="16" color="#999"></u-icon>
 			</view>
 		</view>
 

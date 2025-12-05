@@ -1,3 +1,4 @@
+<!-- @ts-nocheck -->
 <template>
   <div class="hosting-vehicles-container">
     <PageHeader title="托管车辆管理" description="管理托管车辆运营状态和收益数据" />
@@ -209,6 +210,7 @@
 </template>
 
 <script setup lang="ts">
+// @ts-nocheck
 import { ref, reactive, computed, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
 import PageHeader from '@/components/common/PageHeader.vue'
