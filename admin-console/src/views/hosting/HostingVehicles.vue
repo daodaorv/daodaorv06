@@ -276,7 +276,7 @@ const searchFields = computed<SearchField[]>(() => [
 ])
 
 // 表格列配置
-const tableColumns = computed<TableColumn[]>(() => [
+const tableColumns = computed(() => [
   { prop: 'vehicleNo', label: '车辆编号', width: 130, slot: true },
   { prop: 'vehicleInfo', label: '车辆信息', width: 180, slot: true },
   { prop: 'hostingType', label: '托管类型', width: 120, slot: true },
@@ -286,7 +286,7 @@ const tableColumns = computed<TableColumn[]>(() => [
   { prop: 'income', label: '收益统计', width: 150, slot: true },
   { prop: 'utilizationRate', label: '使用率', width: 150, slot: true },
   { prop: 'hostingStartDate', label: '托管开始日期', width: 120 }
-])
+]) as any
 
 // 表格操作配置
 const tableActions = computed<TableAction[]>(() => [

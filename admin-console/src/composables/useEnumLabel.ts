@@ -14,7 +14,9 @@ import {
   VEHICLE_TYPE_MAP,
   VIOLATION_STATUS_MAP,
   LOG_MODULE_MAP,
-  LOG_ACTION_MAP
+  LOG_ACTION_MAP,
+  ROLE_TYPE_MAP,
+  DATA_SCOPE_MAP
 } from '@/constants/enums'
 
 /**
@@ -146,6 +148,20 @@ export function useEnumLabel() {
   }
 
   /**
+   * 获取角色类型标签
+   */
+  const getRoleTypeLabel = (type: string): string => {
+    return ROLE_TYPE_MAP[type] || type
+  }
+
+  /**
+   * 获取数据权限范围标签
+   */
+  const getDataScopeLabel = (scope: string): string => {
+    return DATA_SCOPE_MAP[scope] || scope
+  }
+
+  /**
    * 通用枚举标签获取
    * @param value 枚举值
    * @param map 枚举映射对象
@@ -171,6 +187,8 @@ export function useEnumLabel() {
     getViolationStatusLabel,
     getLogModuleLabel,
     getLogActionLabel,
+    getRoleTypeLabel,
+    getDataScopeLabel,
     getEnumLabel
   }
 }

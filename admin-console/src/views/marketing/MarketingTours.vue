@@ -21,7 +21,7 @@
       @current-change="handleCurrentChange"
     >
       <template #status="{ row }">
-        <el-tag :type="getTourStatusTag(row.status)" size="small">
+        <el-tag :type="(getTourStatusTag(row.status)) as any" size="small">
           {{ getTourStatusLabel(row.status) }}
         </el-tag>
       </template>
@@ -74,7 +74,7 @@
         <el-descriptions-item label="路线ID">{{ currentTour.id }}</el-descriptions-item>
         <el-descriptions-item label="路线名称">{{ currentTour.name }}</el-descriptions-item>
         <el-descriptions-item label="路线状态">
-          <el-tag :type="getTourStatusTag(currentTour.status)" size="small">
+          <el-tag :type="(getTourStatusTag(currentTour.status)) as any" size="small">
             {{ getTourStatusLabel(currentTour.status) }}
           </el-tag>
         </el-descriptions-item>
@@ -249,7 +249,7 @@ const formData = reactive({
 })
 
 // 表单字段配置
-const formFields = computed<FormField[]>(() => [
+const formFields = computed(() => [
   {
     type: 'divider',
     label: '基本信息'
@@ -367,7 +367,7 @@ const formFields = computed<FormField[]>(() => [
     placeholder: '请输入路线描述',
     maxlength: 1000
   }
-])
+]) as any
 
 // 表单验证规则
 const formRules = {

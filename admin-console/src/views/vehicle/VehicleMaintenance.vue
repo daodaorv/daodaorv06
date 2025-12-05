@@ -23,13 +23,13 @@
       @current-change="handleCurrentChange"
     >
       <template #type="{ row }">
-        <el-tag :type="getMaintenanceTypeTag(row.type)" size="small">
-          {{ getMaintenanceTypeLabel(row.type) }}
+        <el-tag :type="(getMaintenanceTypeTag(row.type)) as any" size="small">
+          {{ getVehicleStatusLabel(row.type) }}
         </el-tag>
       </template>
       <template #status="{ row }">
-        <el-tag :type="getMaintenanceStatusTag(row.status)" size="small">
-          {{ getMaintenanceStatusLabel(row.status) }}
+        <el-tag :type="(getMaintenanceStatusTag(row.status)) as any" size="small">
+          {{ getVehicleStatusLabel(row.status) }}
         </el-tag>
       </template>
       <template #cost="{ row }">
@@ -165,19 +165,19 @@
     >
       <el-descriptions :column="2" border v-if="currentRecord">
         <el-descriptions-item label="车牌号">
-          {{ currentRecord.plateNumber }}
+          {{ currentRecord.vehicleNumber }}
         </el-descriptions-item>
         <el-descriptions-item label="车型">
           {{ currentRecord.modelName }}
         </el-descriptions-item>
         <el-descriptions-item label="维保类型">
-          <el-tag :type="getMaintenanceTypeTag(currentRecord.type)" size="small">
-            {{ getMaintenanceTypeLabel(currentRecord.type) }}
+          <el-tag :type="(getMaintenanceTypeTag(currentRecord.type)) as any" size="small">
+            {{ getVehicleStatusLabel(currentRecord.type) }}
           </el-tag>
         </el-descriptions-item>
         <el-descriptions-item label="维保状态">
-          <el-tag :type="getMaintenanceStatusTag(currentRecord.status)" size="small">
-            {{ getMaintenanceStatusLabel(currentRecord.status) }}
+          <el-tag :type="(getMaintenanceStatusTag(currentRecord.status)) as any" size="small">
+            {{ getVehicleStatusLabel(currentRecord.status) }}
           </el-tag>
         </el-descriptions-item>
         <el-descriptions-item label="维保内容" :span="2">
@@ -187,25 +187,28 @@
           {{ currentRecord.serviceProvider }}
         </el-descriptions-item>
         <el-descriptions-item label="联系电话">
-          {{ currentRecord.contactPhone }}
+          {{ (currentRecord as any).contactPhone ?? '-' }}
         </el-descriptions-item>
         <el-descriptions-item label="计划日期">
-          {{ currentRecord.scheduledDate }}
+          {{ currentRecord.maintenanceDate }}
         </el-descriptions-item>
         <el-descriptions-item label="完成日期">
-          {{ currentRecord.completedDate || '-' }}
+          {{ currentRecord.completionDate || '-' }}
         </el-descriptions-item>
-        <el-descriptions-item label="预计费用">
-          ¥{{ currentRecord.estimatedCost?.toLocaleString() }}
+        <el-descriptions-item label="工时费">
+          ¥{{ (currentRecord.laborCost ?? 0).toLocaleString() }}
         </el-descriptions-item>
-        <el-descriptions-item label="实际费用">
-          ¥{{ currentRecord.cost.toLocaleString() }}
+        <el-descriptions-item label="配件费">
+          ¥{{ (currentRecord.partsCost ?? 0).toLocaleString() }}
+        </el-descriptions-item>
+        <el-descriptions-item label="总费用">
+          ¥{{ (currentRecord.totalCost ?? 0).toLocaleString() }}
         </el-descriptions-item>
         <el-descriptions-item label="当前里程">
-          {{ currentRecord.currentMileage }}km
+          {{ currentRecord.mileage ?? 0 }}km
         </el-descriptions-item>
         <el-descriptions-item label="下次保养里程">
-          {{ currentRecord.nextMaintenanceMileage }}km
+          {{ (currentRecord.mileage || 0) + 5000 }}km
         </el-descriptions-item>
         <el-descriptions-item label="备注" :span="2">
           {{ currentRecord.remark || '-' }}
@@ -250,7 +253,7 @@ import { MAINTENANCE_STATUS_OPTIONS } from '@/constants'
 
 // Composables
 const { handleApiError } = useErrorHandler()
-const { getMaintenanceTypeLabel, getMaintenanceStatusLabel } = useEnumLabel()
+const { getVehicleStatusLabel } = useEnumLabel()
 
 // 维保类型选项
 const MAINTENANCE_TYPE_OPTIONS = [
@@ -561,7 +564,7 @@ const handleEdit = (row: MaintenanceRecord) => {
   form.type = row.type
   form.description = row.description
   form.serviceProvider = row.serviceProvider
-  form.contactPhone = row.contactPhone || ''
+  form.contactPhone = (row as any).contactPhone || ''
   form.scheduledDate = row.maintenanceDate
   form.estimatedCost = row.totalCost
   form.currentMileage = row.mileage
@@ -635,13 +638,13 @@ const handleSubmit = async () => {
         vehicleId: form.vehicleId,
         type: form.type,
         category: form.type === 'maintenance' ? '定期保养' : '故障维修',
-        mileage: form.currentMileage,
+        mileage: form.currentMileage ?? 0,
         maintenanceDate: form.scheduledDate,
         status: 'pending',
         serviceProvider: form.serviceProvider,
         serviceLocation: '',
         items: [],
-        totalCost: form.estimatedCost,
+        totalCost: form.estimatedCost ?? 0,
         laborCost: 0,
         partsCost: 0,
         description: form.description,

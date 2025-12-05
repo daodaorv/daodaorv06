@@ -21,12 +21,12 @@
       @current-change="handleCurrentChange"
     >
       <template #type="{ row }">
-        <el-tag :type="getExtraFeeTypeTag(row.type)" size="small">
+        <el-tag :type="(getExtraFeeTypeTag(row.type)) as any" size="small">
           {{ getExtraFeeTypeLabel(row.type) }}
         </el-tag>
       </template>
       <template #status="{ row }">
-        <el-tag :type="getExtraFeeStatusTag(row.status)" size="small">
+        <el-tag :type="(getExtraFeeStatusTag(row.status)) as any" size="small">
           {{ getExtraFeeStatusLabel(row.status) }}
         </el-tag>
       </template>
@@ -65,12 +65,12 @@
         <el-descriptions-item label="费用ID">{{ currentExtraFee.id }}</el-descriptions-item>
         <el-descriptions-item label="费用名称">{{ currentExtraFee.name }}</el-descriptions-item>
         <el-descriptions-item label="费用类型">
-          <el-tag :type="getExtraFeeTypeTag(currentExtraFee.type)" size="small">
+          <el-tag :type="(getExtraFeeTypeTag(currentExtraFee.type)) as any" size="small">
             {{ getExtraFeeTypeLabel(currentExtraFee.type) }}
           </el-tag>
         </el-descriptions-item>
         <el-descriptions-item label="费用状态">
-          <el-tag :type="getExtraFeeStatusTag(currentExtraFee.status)" size="small">
+          <el-tag :type="(getExtraFeeStatusTag(currentExtraFee.status)) as any" size="small">
             {{ getExtraFeeStatusLabel(currentExtraFee.status) }}
           </el-tag>
         </el-descriptions-item>
@@ -236,7 +236,7 @@ const formData = reactive({
 })
 
 // 表单字段配置
-const formFields = computed<FormField[]>(() => [
+const formFields = computed(() => [
   {
     type: 'divider',
     label: '基本信息'
@@ -314,7 +314,7 @@ const formFields = computed<FormField[]>(() => [
     placeholder: '请输入费用说明',
     maxlength: 500
   }
-])
+]) as any
 
 // 表单验证规则
 const formRules = {

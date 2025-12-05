@@ -40,7 +40,7 @@
             v-if="showSort"
             v-model="currentSort"
             size="small"
-            @change="handleSortChange"
+            @change="(val: any) => handleSortChange(String(val))"
           >
             <el-radio-button label="time">最新</el-radio-button>
             <el-radio-button label="hot">最热</el-radio-button>
@@ -237,11 +237,11 @@
 
             <!-- 展开更多回复 -->
             <div
-              v-if="comment.replyCount > comment.replies.length"
+              v-if="comment.replyCount ?? 0 > comment.replies.length"
               class="load-more-replies"
               @click="loadMoreReplies(comment)"
             >
-              展开更多回复（{{ comment.replyCount - comment.replies.length }}条）
+              展开更多回复（{{ comment.replyCount ?? 0 - comment.replies.length }}条）
             </div>
           </div>
         </div>

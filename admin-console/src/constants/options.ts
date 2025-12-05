@@ -36,7 +36,10 @@ import {
   NOTIFICATION_STATUS_MAP,
   BLACKLIST_REASON_MAP,
   VEHICLE_TYPE_MAP,
-  STORE_MAP
+  STORE_MAP,
+  ROLE_STATUS_MAP,
+  ROLE_TYPE_MAP,
+  DATA_SCOPE_MAP
 } from './enums'
 
 /**
@@ -223,19 +226,34 @@ export const STORE_OPTIONS: Option[] = Object.entries(STORE_MAP).map(([value, la
 }))
 
 /**
+ * 角色状态选项
+ */
+export const ROLE_STATUS_OPTIONS = mapToOptions(ROLE_STATUS_MAP)
+
+/**
+ * 角色类型选项
+ */
+export const ROLE_TYPE_OPTIONS = mapToOptions(ROLE_TYPE_MAP)
+
+/**
+ * 数据权限范围选项
+ */
+export const DATA_SCOPE_OPTIONS = mapToOptions(DATA_SCOPE_MAP)
+
+/**
  * 是/否选项
  */
 export const YES_NO_OPTIONS: Option[] = [
-  { label: '是', value: true },
-  { label: '否', value: false }
+  { label: '是', value: 1 },
+  { label: '否', value: 0 }
 ]
 
 /**
  * 启用/禁用选项
  */
 export const ENABLE_DISABLE_OPTIONS: Option[] = [
-  { label: '启用', value: true },
-  { label: '禁用', value: false }
+  { label: '启用', value: 1 },
+  { label: '禁用', value: 0 }
 ]
 
 /**

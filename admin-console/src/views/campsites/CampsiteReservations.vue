@@ -22,7 +22,7 @@
       @current-change="handleCurrentChange"
     >
       <template #status="{ row }">
-        <el-tag :type="getReservationStatusTag(row.status)" size="small">
+        <el-tag :type="(getReservationStatusTag(row.status)) as any" size="small">
           {{ getReservationStatusLabel(row.status) }}
         </el-tag>
       </template>
@@ -57,7 +57,7 @@
           {{ currentReservation?.id }}
         </el-descriptions-item>
         <el-descriptions-item label="预订状态">
-          <el-tag :type="getReservationStatusTag(currentReservation?.status || '')" size="small">
+          <el-tag :type="(getReservationStatusTag(currentReservation?.status || '')) as any" size="small">
             {{ getReservationStatusLabel(currentReservation?.status || '') }}
           </el-tag>
         </el-descriptions-item>

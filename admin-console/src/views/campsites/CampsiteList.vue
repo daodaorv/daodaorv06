@@ -22,12 +22,12 @@
       @current-change="handleCurrentChange"
     >
       <template #type="{ row }">
-        <el-tag :type="getCampsiteTypeTag(row.type)" size="small">
+        <el-tag :type="(getCampsiteTypeTag(row.type)) as any" size="small">
           {{ getCampsiteTypeLabel(row.type) }}
         </el-tag>
       </template>
       <template #status="{ row }">
-        <el-tag :type="getCampsiteStatusTag(row.status)" size="small">
+        <el-tag :type="(getCampsiteStatusTag(row.status)) as any" size="small">
           {{ getCampsiteStatusLabel(row.status) }}
         </el-tag>
       </template>
@@ -74,12 +74,12 @@
           {{ currentCampsite?.name }}
         </el-descriptions-item>
         <el-descriptions-item label="营地类型">
-          <el-tag :type="getCampsiteTypeTag(currentCampsite?.type || '')" size="small">
+          <el-tag :type="(getCampsiteTypeTag(currentCampsite?.type || '')) as any" size="small">
             {{ getCampsiteTypeLabel(currentCampsite?.type || '') }}
           </el-tag>
         </el-descriptions-item>
         <el-descriptions-item label="运营状态">
-          <el-tag :type="getCampsiteStatusTag(currentCampsite?.status || '')" size="small">
+          <el-tag :type="(getCampsiteStatusTag(currentCampsite?.status || '')) as any" size="small">
             {{ getCampsiteStatusLabel(currentCampsite?.status || '') }}
           </el-tag>
         </el-descriptions-item>
@@ -191,7 +191,8 @@
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
-import { Tent, TrendCharts, User, Money } from '@element-plus/icons-vue'
+import { House, TrendCharts, User, Money } from '@element-plus/icons-vue'
+
 import PageHeader from '@/components/common/PageHeader.vue'
 import StatsCard from '@/components/common/StatsCard.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
@@ -253,7 +254,7 @@ const statsConfig = computed<StatItem[]>(() => [
   {
     label: '营地总数',
     value: stats.totalCampsites,
-    icon: Tent,
+    icon: House,
     color: '#409eff'
   },
   {

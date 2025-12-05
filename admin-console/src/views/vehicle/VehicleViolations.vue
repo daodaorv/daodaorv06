@@ -26,7 +26,7 @@
       </template>
 
       <template #status="{ row }">
-        <el-tag :type="getViolationStatusTag(row.status)" size="small">
+        <el-tag :type="(getViolationStatusTag(row.status)) as any" size="small">
           {{ getViolationStatusLabel(row.status) }}
         </el-tag>
       </template>
@@ -173,7 +173,7 @@
           {{ currentRecord.violationDate }}
         </el-descriptions-item>
         <el-descriptions-item label="违章状态">
-          <el-tag :type="getViolationStatusTag(currentRecord.status)" size="small">
+          <el-tag :type="(getViolationStatusTag(currentRecord.status)) as any" size="small">
             {{ getViolationStatusLabel(currentRecord.status) }}
           </el-tag>
         </el-descriptions-item>

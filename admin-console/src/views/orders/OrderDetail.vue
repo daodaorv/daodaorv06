@@ -210,11 +210,20 @@ const formatDateTime = (dateString: string) => {
   return new Date(dateString).toLocaleString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })
 }
 
-const getOrderTypeTag = (type: string) => ({ hosting: 'primary', cooperative: 'success' }[type] || 'info')
+const getOrderTypeTag = (type: string): 'primary' | 'success' | 'warning' | 'info' | 'danger' => {
+  const map: Record<string, 'primary' | 'success' | 'warning' | 'info' | 'danger'> = { hosting: 'primary', cooperative: 'success' }
+  return map[type] || 'info'
+}
 const getOrderTypeLabel = (type: string) => ({ hosting: '托管订单', cooperative: '合作订单' }[type] || type)
-const getOrderStatusTag = (status: string) => ({ pending_payment: 'warning', pending_confirm: 'warning', confirmed: 'primary', in_use: 'success', completed: 'info', cancelled: 'danger', refunding: 'warning', refunded: 'info' }[status] || 'info')
+const getOrderStatusTag = (status: string): 'primary' | 'success' | 'warning' | 'info' | 'danger' => {
+  const map: Record<string, 'primary' | 'success' | 'warning' | 'info' | 'danger'> = { pending_payment: 'warning', pending_confirm: 'warning', confirmed: 'primary', in_use: 'success', completed: 'info', cancelled: 'danger', refunding: 'warning', refunded: 'info' }
+  return map[status] || 'info'
+}
 const getOrderStatusLabel = (status: string) => ({ pending_payment: '待支付', pending_confirm: '待确认', confirmed: '已确认', in_use: '使用中', completed: '已完成', cancelled: '已取消', refunding: '退款中', refunded: '已退款' }[status] || status)
-const getPaymentStatusTag = (status: string) => ({ unpaid: 'danger', paid: 'success', refunding: 'warning', refunded: 'info' }[status] || 'info')
+const getPaymentStatusTag = (status: string): 'primary' | 'success' | 'warning' | 'info' | 'danger' => {
+  const map: Record<string, 'primary' | 'success' | 'warning' | 'info' | 'danger'> = { unpaid: 'danger', paid: 'success', refunding: 'warning', refunded: 'info' }
+  return map[status] || 'info'
+}
 const getPaymentStatusLabel = (status: string) => ({ unpaid: '未支付', paid: '已支付', refunding: '退款中', refunded: '已退款' }[status] || status)
 
 onMounted(() => { loadOrderDetail() })

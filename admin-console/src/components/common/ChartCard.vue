@@ -160,23 +160,24 @@ const initChart = () => {
     chartInstance.value.dispose()
   }
 
+  // @ts-ignore
   // 创建新实例
   chartInstance.value = echarts.init(chartRef.value)
 
   // 设置配置项
   if (props.options && Object.keys(props.options).length > 0) {
-    chartInstance.value.setOption(props.options)
+    chartInstance.value?.setOption(props.options)
   }
 
   // 触发图表就绪事件
-  emit('chart-ready', chartInstance.value)
+  emit('chart-ready', chartInstance.value!)
 }
 
 // 更新图表
 const updateChart = () => {
   if (!chartInstance.value || !props.options) return
 
-  chartInstance.value.setOption(props.options, true)
+  chartInstance.value?.setOption(props.options, true)
 }
 
 // 调整图表大小

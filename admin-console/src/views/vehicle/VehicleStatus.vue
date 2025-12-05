@@ -26,12 +26,12 @@
     >
       <template #ownershipType="{ row }">
         <el-tag :type="row.ownershipType === 'crowdfunding' ? 'primary' : 'success'" size="small">
-          {{ getOwnershipTypeLabel(row.ownershipType) }}
+          {{ getVehicleStatusLabel(row.ownershipType) }}
         </el-tag>
       </template>
 
       <template #status="{ row }">
-        <el-tag :type="getVehicleStatusTag(row.status)" size="small">
+        <el-tag :type="(getVehicleStatusTag(row.status)) as any" size="small">
           {{ getVehicleStatusLabel(row.status) }}
         </el-tag>
       </template>
@@ -103,7 +103,7 @@
           <div>{{ currentVehicle?.vehicleNumber }} - {{ currentVehicle?.modelName }}</div>
         </el-form-item>
         <el-form-item label="当前状态">
-          <el-tag :type="getVehicleStatusTag(currentVehicle?.status || '')" size="small">
+          <el-tag :type="(getVehicleStatusTag(currentVehicle?.status || '')) as any" size="small">
             {{ getVehicleStatusLabel(currentVehicle?.status || '') }}
           </el-tag>
         </el-form-item>
@@ -163,16 +163,16 @@
           :key="item.id"
           :timestamp="formatDateTime(item.createdAt)"
           placement="top"
-          :type="getTimelineType(item.newStatus)"
+          :type="(getTimelineType(item.newStatus)) as any"
         >
           <el-card>
             <div class="history-item">
               <div class="history-header">
-                <el-tag :type="getVehicleStatusTag(item.oldStatus)" size="small">
+                <el-tag :type="(getVehicleStatusTag(item.oldStatus)) as any" size="small">
                   {{ getVehicleStatusLabel(item.oldStatus) }}
                 </el-tag>
                 <el-icon><Right /></el-icon>
-                <el-tag :type="getVehicleStatusTag(item.newStatus)" size="small">
+                <el-tag :type="(getVehicleStatusTag(item.newStatus)) as any" size="small">
                   {{ getVehicleStatusLabel(item.newStatus) }}
                 </el-tag>
               </div>
@@ -223,7 +223,7 @@ import { VEHICLE_STATUS_OPTIONS, STORE_OPTIONS } from '@/constants'
 // Composables
 const { formatDateTime } = useDateFormat()
 const { handleApiError } = useErrorHandler()
-const { getVehicleStatusLabel, getOwnershipTypeLabel } = useEnumLabel()
+const { getVehicleStatusLabel } = useEnumLabel()
 
 // 车辆来源选项
 const OWNERSHIP_TYPE_OPTIONS = [

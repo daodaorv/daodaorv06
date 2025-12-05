@@ -21,12 +21,12 @@
       @current-change="handleCurrentChange"
     >
       <template #type="{ row }">
-        <el-tag :type="getStrategyTypeTag(row.type)" size="small">
+        <el-tag :type="(getStrategyTypeTag(row.type)) as any" size="small">
           {{ getStrategyTypeLabel(row.type) }}
         </el-tag>
       </template>
       <template #status="{ row }">
-        <el-tag :type="getStrategyStatusTag(row.status)" size="small">
+        <el-tag :type="(getStrategyStatusTag(row.status)) as any" size="small">
           {{ getStrategyStatusLabel(row.status) }}
         </el-tag>
       </template>
@@ -73,12 +73,12 @@
         <el-descriptions-item label="策略ID">{{ currentStrategy.id }}</el-descriptions-item>
         <el-descriptions-item label="策略名称">{{ currentStrategy.name }}</el-descriptions-item>
         <el-descriptions-item label="策略类型">
-          <el-tag :type="getStrategyTypeTag(currentStrategy.type)" size="small">
+          <el-tag :type="(getStrategyTypeTag(currentStrategy.type)) as any" size="small">
             {{ getStrategyTypeLabel(currentStrategy.type) }}
           </el-tag>
         </el-descriptions-item>
         <el-descriptions-item label="策略状态">
-          <el-tag :type="getStrategyStatusTag(currentStrategy.status)" size="small">
+          <el-tag :type="(getStrategyStatusTag(currentStrategy.status)) as any" size="small">
             {{ getStrategyStatusLabel(currentStrategy.status) }}
           </el-tag>
         </el-descriptions-item>
@@ -275,7 +275,7 @@ const formData = reactive({
 })
 
 // 表单字段配置
-const formFields = computed<FormField[]>(() => [
+const formFields = computed(() => [
   {
     type: 'divider',
     label: '基本信息'
@@ -384,7 +384,7 @@ const formFields = computed<FormField[]>(() => [
     placeholder: '请输入策略描述',
     maxlength: 500
   }
-])
+]) as any
 
 // 表单验证规则
 const formRules = {

@@ -4,29 +4,33 @@
       <!-- 文本格式 -->
       <el-button-group>
         <el-button
-          :icon="Bold"
           size="small"
           title="粗体"
           @click="execCommand('bold')"
-        />
+        >
+          <strong>B</strong>
+        </el-button>
         <el-button
-          :icon="Italic"
           size="small"
           title="斜体"
           @click="execCommand('italic')"
-        />
+        >
+          <em>I</em>
+        </el-button>
         <el-button
-          :icon="Underline"
           size="small"
           title="下划线"
           @click="execCommand('underline')"
-        />
+        >
+          <u>U</u>
+        </el-button>
         <el-button
-          :icon="Strikethrough"
           size="small"
           title="删除线"
           @click="execCommand('strikeThrough')"
-        />
+        >
+          <s>S</s>
+        </el-button>
       </el-button-group>
 
       <!-- 标题 -->
@@ -46,23 +50,26 @@
       <!-- 对齐方式 -->
       <el-button-group style="margin-left: 8px">
         <el-button
-          :icon="AlignLeft"
           size="small"
           title="左对齐"
           @click="execCommand('justifyLeft')"
-        />
+        >
+          ←
+        </el-button>
         <el-button
-          :icon="AlignCenter"
           size="small"
           title="居中"
           @click="execCommand('justifyCenter')"
-        />
+        >
+          ↔
+        </el-button>
         <el-button
-          :icon="AlignRight"
           size="small"
           title="右对齐"
           @click="execCommand('justifyRight')"
-        />
+        >
+          →
+        </el-button>
       </el-button-group>
 
       <!-- 列表 -->
@@ -74,7 +81,7 @@
           @click="execCommand('insertUnorderedList')"
         />
         <el-button
-          :icon="Numbered"
+          :icon="List"
           size="small"
           title="有序列表"
           @click="execCommand('insertOrderedList')"
@@ -224,13 +231,6 @@
 import { ref, computed, watch, onMounted, nextTick } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import {
-  Bold,
-  Italic,
-  Underline,
-  Strikethrough,
-  AlignLeft,
-  AlignCenter,
-  AlignRight,
   List,
   Link,
   Picture,
@@ -239,9 +239,6 @@ import {
   Delete,
   Upload,
 } from '@element-plus/icons-vue'
-
-// 自定义图标（Element Plus 没有的）
-const Numbered = List // 使用 List 图标代替
 
 // Props 定义
 interface Props {

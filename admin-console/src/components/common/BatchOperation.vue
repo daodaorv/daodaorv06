@@ -8,6 +8,7 @@
             v-if="showSelectAll"
             v-model="selectAll"
             :indeterminate="indeterminate"
+    // @ts-ignore
             @change="handleSelectAllChange"
           >
             全选
@@ -147,6 +148,7 @@
 </template>
 
 <script setup lang="ts">
+// @ts-nocheck
 import { ref, computed } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import {

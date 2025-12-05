@@ -342,3 +342,30 @@ export const STORE_MAP: Record<number, string> = {
   2: '上海浦东店',
   3: '深圳南山店'
 } as const
+
+/**
+ * 角色状态映射
+ */
+export const ROLE_STATUS_MAP: Record<string, string> = {
+  active: '启用',
+  inactive: '禁用'
+} as const
+
+/**
+ * 角色类型映射
+ */
+export const ROLE_TYPE_MAP: Record<string, string> = {
+  system: '系统角色',
+  custom: '自定义角色'
+} as const
+
+/**
+ * 数据权限范围映射
+ */
+export const DATA_SCOPE_MAP: Record<string, string> = {
+  all: '全部数据',
+  custom: '自定义数据',
+  dept: '本部门数据',
+  dept_and_child: '本部门及下级数据',
+  self: '仅本人数据'
+} as const

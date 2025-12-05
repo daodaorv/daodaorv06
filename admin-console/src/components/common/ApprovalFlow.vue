@@ -232,8 +232,8 @@ const uploadHeaders = computed(() => {
 })
 
 // 获取步骤类型
-const getStepType = (status: StepStatus) => {
-  const typeMap: Record<StepStatus, string> = {
+const getStepType = (status: StepStatus): 'primary' | 'success' | 'warning' | 'info' | 'danger' => {
+  const typeMap: Record<StepStatus, 'primary' | 'success' | 'warning' | 'info' | 'danger'> = {
     pending: 'info',
     approved: 'success',
     rejected: 'danger',
@@ -268,8 +268,8 @@ const getStepColor = (status: StepStatus) => {
 }
 
 // 获取状态标签类型
-const getStatusTagType = (status: StepStatus) => {
-  const tagTypeMap: Record<StepStatus, any> = {
+const getStatusTagType = (status: StepStatus): 'primary' | 'success' | 'warning' | 'info' | 'danger' => {
+  const tagTypeMap: Record<any, 'primary' | 'success' | 'warning' | 'info' | 'danger'> = {
     pending: 'info',
     approved: 'success',
     rejected: 'danger',

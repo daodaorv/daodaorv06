@@ -74,6 +74,6 @@ export const operationLogApi = {
     if (USE_MOCK) {
       return mockCleanOperationLogs(beforeDate) as Promise<ApiResponse<{ cleanedCount: number }>>
     }
-    return request.delete<ApiResponse<{ cleanedCount: number }>>('/operation-logs/clean', { beforeDate })
+    return request.delete<ApiResponse<{ cleanedCount: number }>>('/operation-logs/clean', { params: { beforeDate } })
   },
 }

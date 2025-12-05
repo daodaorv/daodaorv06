@@ -384,8 +384,8 @@ const handleCurrentChange = (page: number) => {
 }
 
 // 获取异常类型标签类型
-const getExceptionTypeTag = (type: string) => {
-  const tagMap: Record<string, string> = {
+const getExceptionTypeTag = (type: string): 'primary' | 'success' | 'warning' | 'info' | 'danger' => {
+  const tagMap: Record<string, 'primary' | 'success' | 'warning' | 'info' | 'danger'> = {
     vehicle_damage: 'danger',
     late_return: 'warning',
     traffic_violation: 'warning',
@@ -412,8 +412,8 @@ const getExceptionTypeLabel = (type: string) => {
 }
 
 // 获取异常状态标签类型
-const getExceptionStatusTag = (status: string) => {
-  const tagMap: Record<string, string> = {
+const getExceptionStatusTag = (status: string): 'primary' | 'success' | 'warning' | 'info' | 'danger' => {
+  const tagMap: Record<string, 'primary' | 'success' | 'warning' | 'info' | 'danger'> = {
     pending: 'danger',
     processing: 'warning',
     resolved: 'success',
@@ -434,8 +434,8 @@ const getExceptionStatusLabel = (status: string) => {
 }
 
 // 获取优先级标签类型
-const getPriorityTag = (priority: string) => {
-  const tagMap: Record<string, string> = {
+const getPriorityTag = (priority: string): 'primary' | 'success' | 'warning' | 'info' | 'danger' => {
+  const tagMap: Record<string, 'primary' | 'success' | 'warning' | 'info' | 'danger'> = {
     low: 'info',
     medium: 'warning',
     high: 'danger',

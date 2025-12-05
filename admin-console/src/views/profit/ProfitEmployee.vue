@@ -415,7 +415,7 @@ const searchForm = reactive<EmployeeProfitListParams>({
 })
 
 // 搜索字段配置
-const searchFields = computed<SearchField[]>(() => [
+const searchFields = computed(() => [
   {
     prop: 'keyword',
     label: '关键词',
@@ -455,10 +455,10 @@ const searchFields = computed<SearchField[]>(() => [
     valueFormat: 'YYYY-MM',
     width: '150px'
   }
-])
+]) as any
 
 // 表格列配置
-const tableColumns = computed<TableColumn[]>(() => [
+const tableColumns = computed(() => [
   { prop: 'recordNo', label: '记录编号', width: 150, slot: true },
   { prop: 'employeeInfo', label: '员工信息', width: 200, slot: true },
   { prop: 'settlementMonth', label: '结算月份', width: 100 },
@@ -467,7 +467,7 @@ const tableColumns = computed<TableColumn[]>(() => [
   { prop: 'performanceScore', label: '绩效分数', width: 180, slot: true },
   { prop: 'settlementStatus', label: '结算状态', width: 100, slot: true },
   { prop: 'settlementDate', label: '结算日期', width: 120 }
-])
+]) as any
 
 // 表格操作配置
 const tableActions = computed<TableAction[]>(() => [

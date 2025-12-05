@@ -15,6 +15,7 @@ export type PermissionCode = string
 
 // 路由元信息
 export interface RouteMeta {
+  [key: string]: any
   title?: string // 页面标题
   icon?: string // 图标
   hidden?: boolean // 是否隐藏

@@ -611,9 +611,7 @@ export const mockVehicles: Vehicle[] = [
     modelName: 'RV80 C型房车',
     brandName: '大通',
     vehicleType: 'c_type',
-    ownershipType: 'crowdfunding',
-    crowdfundingProjectId: 1,
-    crowdfundingProjectName: '大通RV80众筹项目一期',
+    ownershipType: 'cooperative', // 'crowdfunding',
     storeId: 1,
     storeName: '北京朝阳店',
     status: 'available',
@@ -684,9 +682,10 @@ export const mockGetVehicles = (params: {
     filteredData = filteredData.filter(item => item.ownershipType === ownershipType)
   }
 
-  if (crowdfundingProjectId) {
-    filteredData = filteredData.filter(item => item.crowdfundingProjectId === crowdfundingProjectId)
-  }
+  // crowdfundingProjectId 已废弃，不再使用
+  // if (crowdfundingProjectId) {
+  //   filteredData = filteredData.filter(item => item.crowdfundingProjectId === crowdfundingProjectId)
+  // }
 
   // 分页
   const total = filteredData.length
@@ -737,10 +736,8 @@ export const mockCreateVehicle = (data: Partial<Vehicle>) => {
     modelName: mockVehicleModels.find(m => m.id === data.modelId)?.modelName || '',
     brandName: mockVehicleModels.find(m => m.id === data.modelId)?.brandName || '',
     vehicleType: mockVehicleModels.find(m => m.id === data.modelId)?.vehicleType || 'c_type',
-    ownershipType: data.ownershipType || 'crowdfunding',
-    crowdfundingProjectId: data.crowdfundingProjectId,
-    crowdfundingProjectName: data.crowdfundingProjectName,
-    storeId: data.storeId!,
+    ownershipType: data.ownershipType || 'cooperative',
+            storeId: data.storeId!,
     storeName: data.storeName || '',
     status: 'available',
     purchaseDate: data.purchaseDate!,

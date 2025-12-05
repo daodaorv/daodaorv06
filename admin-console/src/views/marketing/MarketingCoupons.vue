@@ -21,12 +21,12 @@
       @current-change="handleCurrentChange"
     >
       <template #type="{ row }">
-        <el-tag :type="getCouponTypeTag(row.type)" size="small">
+        <el-tag :type="(getCouponTypeTag(row.type)) as any" size="small">
           {{ getCouponTypeLabel(row.type) }}
         </el-tag>
       </template>
       <template #status="{ row }">
-        <el-tag :type="getCouponStatusTag(row.status)" size="small">
+        <el-tag :type="(getCouponStatusTag(row.status)) as any" size="small">
           {{ getCouponStatusLabel(row.status) }}
         </el-tag>
       </template>
@@ -74,12 +74,12 @@
         <el-descriptions-item label="优惠券名称">{{ currentCoupon.name }}</el-descriptions-item>
         <el-descriptions-item label="优惠码">{{ currentCoupon.code }}</el-descriptions-item>
         <el-descriptions-item label="优惠券类型">
-          <el-tag :type="getCouponTypeTag(currentCoupon.type)" size="small">
+          <el-tag :type="(getCouponTypeTag(currentCoupon.type)) as any" size="small">
             {{ getCouponTypeLabel(currentCoupon.type) }}
           </el-tag>
         </el-descriptions-item>
         <el-descriptions-item label="优惠券状态">
-          <el-tag :type="getCouponStatusTag(currentCoupon.status)" size="small">
+          <el-tag :type="(getCouponStatusTag(currentCoupon.status)) as any" size="small">
             {{ getCouponStatusLabel(currentCoupon.status) }}
           </el-tag>
         </el-descriptions-item>
@@ -283,7 +283,7 @@ const formData = reactive({
 })
 
 // 表单字段配置
-const formFields = computed<FormField[]>(() => [
+const formFields = computed(() => [
   {
     type: 'divider',
     label: '基本信息'
@@ -418,7 +418,7 @@ const formFields = computed<FormField[]>(() => [
     placeholder: '请输入优惠券描述',
     maxlength: 500
   }
-])
+]) as any
 
 // 表单验证规则
 const formRules = {

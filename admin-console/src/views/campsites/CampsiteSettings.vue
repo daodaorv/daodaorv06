@@ -292,11 +292,18 @@
 </template>
 
 <script setup lang="ts">
+
+// 营地设施类型
+interface CampsiteFacility {
+  id: string
+  name: string
+  icon: string
+  available: boolean
+}
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
 import PageHeader from '@/components/common/PageHeader.vue'
-import type { CampsiteFacility } from '@/api/campsite'
 import { useErrorHandler } from '@/composables'
 
 // Composables

@@ -21,7 +21,7 @@
       @current-change="handleCurrentChange"
     >
       <template #status="{ row }">
-        <el-tag :type="getPackageStatusTag(row.status)" size="small">
+        <el-tag :type="(getPackageStatusTag(row.status)) as any" size="small">
           {{ getPackageStatusLabel(row.status) }}
         </el-tag>
       </template>
@@ -74,7 +74,7 @@
         <el-descriptions-item label="套餐ID">{{ currentPackage.id }}</el-descriptions-item>
         <el-descriptions-item label="套餐名称">{{ currentPackage.name }}</el-descriptions-item>
         <el-descriptions-item label="套餐状态">
-          <el-tag :type="getPackageStatusTag(currentPackage.status)" size="small">
+          <el-tag :type="(getPackageStatusTag(currentPackage.status)) as any" size="small">
             {{ getPackageStatusLabel(currentPackage.status) }}
           </el-tag>
         </el-descriptions-item>
@@ -249,7 +249,7 @@ const formData = reactive({
 })
 
 // 表单字段配置
-const formFields = computed<FormField[]>(() => [
+const formFields = computed(() => [
   {
     type: 'divider',
     label: '基本信息'
@@ -376,7 +376,7 @@ const formFields = computed<FormField[]>(() => [
     placeholder: '请输入套餐描述',
     maxlength: 500
   }
-])
+]) as any
 
 // 表单验证规则
 const formRules = {

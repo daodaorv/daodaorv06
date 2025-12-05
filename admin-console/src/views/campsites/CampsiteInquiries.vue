@@ -22,7 +22,7 @@
       @current-change="handleCurrentChange"
     >
       <template #status="{ row }">
-        <el-tag :type="getInquiryStatusTag(row.status)" size="small">
+        <el-tag :type="(getInquiryStatusTag(row.status)) as any" size="small">
           {{ getInquiryStatusLabel(row.status) }}
         </el-tag>
       </template>
@@ -98,7 +98,7 @@
           {{ currentInquiry?.id }}
         </el-descriptions-item>
         <el-descriptions-item label="咨询状态">
-          <el-tag :type="getInquiryStatusTag(currentInquiry?.status || '')" size="small">
+          <el-tag :type="(getInquiryStatusTag(currentInquiry?.status || '')) as any" size="small">
             {{ getInquiryStatusLabel(currentInquiry?.status || '') }}
           </el-tag>
         </el-descriptions-item>

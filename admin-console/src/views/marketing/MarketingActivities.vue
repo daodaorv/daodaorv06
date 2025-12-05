@@ -21,12 +21,12 @@
       @current-change="handleCurrentChange"
     >
       <template #type="{ row }">
-        <el-tag :type="getActivityTypeTag(row.type)" size="small">
+        <el-tag :type="(getActivityTypeTag(row.type)) as any" size="small">
           {{ getActivityTypeLabel(row.type) }}
         </el-tag>
       </template>
       <template #status="{ row }">
-        <el-tag :type="getActivityStatusTag(row.status)" size="small">
+        <el-tag :type="(getActivityStatusTag(row.status)) as any" size="small">
           {{ getActivityStatusLabel(row.status) }}
         </el-tag>
       </template>
@@ -73,12 +73,12 @@
         <el-descriptions-item label="活动ID">{{ currentActivity.id }}</el-descriptions-item>
         <el-descriptions-item label="活动名称">{{ currentActivity.name }}</el-descriptions-item>
         <el-descriptions-item label="活动类型">
-          <el-tag :type="getActivityTypeTag(currentActivity.type)" size="small">
+          <el-tag :type="(getActivityTypeTag(currentActivity.type)) as any" size="small">
             {{ getActivityTypeLabel(currentActivity.type) }}
           </el-tag>
         </el-descriptions-item>
         <el-descriptions-item label="活动状态">
-          <el-tag :type="getActivityStatusTag(currentActivity.status)" size="small">
+          <el-tag :type="(getActivityStatusTag(currentActivity.status)) as any" size="small">
             {{ getActivityStatusLabel(currentActivity.status) }}
           </el-tag>
         </el-descriptions-item>
@@ -250,7 +250,7 @@ const formData = reactive({
 })
 
 // 表单字段配置
-const formFields = computed<FormField[]>(() => [
+const formFields = computed(() => [
   {
     type: 'divider',
     label: '基本信息'
@@ -347,7 +347,7 @@ const formFields = computed<FormField[]>(() => [
     placeholder: '请输入活动规则',
     maxlength: 2000
   }
-])
+]) as any
 
 // 表单验证规则
 const formRules = {

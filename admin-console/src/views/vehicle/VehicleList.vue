@@ -45,7 +45,7 @@
       <!-- 所有权类型列 -->
       <template #ownershipType="{ row }">
         <el-tag :type="getOwnershipTypeTag(row.ownershipType)" size="small">
-          {{ getOwnershipTypeLabel(row.ownershipType) }}
+          {{ getVehicleStatusLabel(row.ownershipType) }}
         </el-tag>
         <div v-if="row.ownershipType === 'hosting'" style="font-size: 12px; color: #909399; margin-top: 2px;">
           {{ row.hostingOwnerName }}
@@ -146,7 +146,7 @@
                 <el-form-item label="所有权类型" prop="ownershipType">
                   <el-select v-model="form.ownershipType" placeholder="请选择所有权类型" style="width: 100%">
                     <el-option
-                      v-for="option in OWNERSHIP_TYPE_OPTIONS"
+                      v-for="option in VEHICLE_STATUS_OPTIONS"
                       :key="option.value"
                       :label="option.label"
                       :value="option.value"
@@ -320,11 +320,11 @@ import {
   type VehicleModel,
 } from '@/api/vehicle'
 import { useErrorHandler, useEnumLabel } from '@/composables'
-import { VEHICLE_STATUS_OPTIONS, STORE_OPTIONS, OWNERSHIP_TYPE_OPTIONS } from '@/constants'
+import { VEHICLE_STATUS_OPTIONS, STORE_OPTIONS } from '@/constants'
 
 // Composables
 const { handleApiError } = useErrorHandler()
-const { getVehicleStatusLabel, getOwnershipTypeLabel } = useEnumLabel()
+const { getVehicleStatusLabel } = useEnumLabel()
 
 // 搜索表单
 const searchForm = reactive({
@@ -374,7 +374,7 @@ const searchFields: SearchField[] = [
     type: 'select',
     placeholder: '请选择类型',
     width: '150px',
-    options: OWNERSHIP_TYPE_OPTIONS,
+    options: VEHICLE_STATUS_OPTIONS,
   },
 ]
 
@@ -414,7 +414,7 @@ const toolbarButtons: ToolbarButton[] = [
 ]
 
 // 表格操作列配置 - 使用自定义插槽
-const tableActions = []
+const tableActions: any[] = []
 
 // 车辆列表
 const vehicleList = ref<Vehicle[]>([])

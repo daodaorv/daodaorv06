@@ -36,7 +36,7 @@
       </template>
 
       <template #vehicleType="{ row }">
-        <el-tag :type="getVehicleTypeTag(row.vehicleType)" size="small">
+        <el-tag :type="(getVehicleTypeTag(row.vehicleType)) as any" size="small">
           {{ getVehicleTypeLabel(row.vehicleType) }}
         </el-tag>
       </template>
