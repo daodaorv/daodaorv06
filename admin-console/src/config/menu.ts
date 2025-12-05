@@ -363,16 +363,19 @@ export const menuConfig: MenuItem[] = [
         path: '/community/review',
         name: 'CommunityReview',
         meta: { title: '内容审核' },
+        component: () => import('@/views/community/ContentReview.vue'),
       },
       {
         path: '/community/settings',
         name: 'CommunitySettings',
         meta: { title: '社区配置' },
+        component: () => import('@/views/community/CommunitySettings.vue'),
       },
       {
         path: '/community/reports',
         name: 'CommunityReports',
         meta: { title: '举报处理' },
+        component: () => import('@/views/community/ReportManagement.vue'),
       },
       {
         path: '/community/content',
@@ -395,11 +398,13 @@ export const menuConfig: MenuItem[] = [
         path: '/customer-service/config',
         name: 'CustomerServiceConfig',
         meta: { title: '客服配置' },
+        component: () => import('@/views/customer-service/ServiceConfig.vue'),
       },
       {
         path: '/customer-service/tickets',
         name: 'CustomerServiceTickets',
         meta: { title: '工单管理' },
+        component: () => import('@/views/customer-service/TicketManagement.vue'),
       },
       {
         path: '/customer-service/quality',
@@ -410,6 +415,7 @@ export const menuConfig: MenuItem[] = [
         path: '/customer-service/knowledge',
         name: 'CustomerServiceKnowledge',
         meta: { title: '知识库' },
+        component: () => import('@/views/customer-service/KnowledgeBase.vue'),
       },
     ],
   },
