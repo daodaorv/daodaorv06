@@ -10,7 +10,7 @@
 					<view class="balance-actions">
 						<button class="action-btn" @click="goToMall">
 							<u-icon name="gift" size="16" color="#FFFFFF" />
-							<text>积分商城</text>
+							<text>兑换优惠券</text>
 						</button>
 						<button class="action-btn" @click="goToRules">
 							<u-icon name="question-circle" size="16" color="#FFFFFF" />
@@ -157,7 +157,7 @@
 				<view class="info-list">
 					<view class="info-item">
 						<text class="dot">•</text>
-						<text class="info-text">1积分=1元，仅可在积分商城兑换优惠券</text>
+						<text class="info-text">1积分=1元，仅可在特惠商城兑换优惠券</text>
 					</view>
 					<view class="info-item">
 						<text class="dot">•</text>
@@ -353,10 +353,10 @@ const handleTypeChange = (e: any) => {
 	loadRecords()
 }
 
-// 跳转到积分商城
+// 跳转到特惠商城（积分兑换优惠券）
 const goToMall = () => {
 	uni.navigateTo({
-		url: '/pages/profile/points-mall'
+		url: '/pages/coupon-mall/index'
 	})
 }
 

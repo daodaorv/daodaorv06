@@ -393,6 +393,40 @@ const allCoupons = ref<Coupon[]>([
 		isNew: false,
 		isVip: false,
 		isHot: false
+	},
+	{
+		id: '9',
+		name: '房车租赁200元满减券',
+		type: 'discount',
+		amount: 200,
+		condition: '满2000元可用',
+		scope: '房车租赁',
+		validity: '领取后30天有效',
+		price: 19.9,
+		pointsPrice: 0,
+		stock: 200,
+		claimed: false,
+		soldOut: false,
+		isNew: false,
+		isVip: false,
+		isHot: true
+	},
+	{
+		id: '10',
+		name: '房车租赁150元满减券',
+		type: 'discount',
+		amount: 150,
+		condition: '满1500元可用',
+		scope: '房车租赁',
+		validity: '领取后30天有效',
+		price: 9.9,
+		pointsPrice: 100,
+		stock: 300,
+		claimed: false,
+		soldOut: false,
+		isNew: false,
+		isVip: false,
+		isHot: true
 	}
 ]);
 

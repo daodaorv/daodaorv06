@@ -1,19 +1,19 @@
 <template>
 	<view class="membership-page">
 		<!-- 会员状态卡片 -->
-		<view class="member-card" :class="memberInfo.memberLevel === 'PLUS' ? 'plus-member' : 'normal-member'">
+		<view class="member-card" :class="isPlusMember ? 'plus-member' : 'normal-member'">
 			<view class="card-bg">
-				<image v-if="memberInfo.memberLevel === 'PLUS'" src="/static/images/member-plus-bg.png" mode="aspectFill" class="bg-image"></image>
+				<image v-if="isPlusMember" src="/static/images/member-plus-bg.png" mode="aspectFill" class="bg-image"></image>
 			</view>
 
 			<view class="card-content">
 				<view class="member-info">
 					<view class="member-level">
-						<text class="level-text">{{ memberInfo.memberLevel === 'PLUS' ? 'PLUS会员' : '普通会员' }}</text>
-						<image v-if="memberInfo.memberLevel === 'PLUS'" src="/static/icons/crown.png" class="crown-icon"></image>
+						<text class="level-text">{{ isPlusMember ? 'PLUS会员' : '普通会员' }}</text>
+						<image v-if="isPlusMember" src="/static/icons/crown.png" class="crown-icon"></image>
 					</view>
 
-					<view v-if="memberInfo.memberLevel === 'PLUS'" class="member-validity">
+					<view v-if="isPlusMember" class="member-validity">
 						<text class="validity-label">有效期至：</text>
 						<text class="validity-date">{{ formatDate(memberInfo.endDate) }}</text>
 					</view>
@@ -24,7 +24,7 @@
 				</view>
 
 				<view class="member-action">
-					<button v-if="memberInfo.memberLevel === 'PLUS'" class="action-btn renew-btn" @click="handleRenew">
+					<button v-if="isPlusMember" class="action-btn renew-btn" @click="handleRenew">
 						续费
 					</button>
 					<button v-else class="action-btn upgrade-btn" @click="handleUpgrade">
@@ -38,7 +38,7 @@
 		<view class="benefits-section">
 			<view class="section-title">
 				<text class="title-text">会员权益</text>
-				<text class="title-desc">{{ memberInfo.memberLevel === 'PLUS' ? '您已享有以下权益' : '开通后即可享有' }}</text>
+				<text class="title-desc">{{ isPlusMember ? '您已享有以下权益' : '开通后即可享有' }}</text>
 			</view>
 
 			<view class="benefits-grid">
@@ -46,7 +46,7 @@
 					v-for="benefit in benefits"
 					:key="benefit.id"
 					class="benefit-item"
-					:class="memberInfo.memberLevel === 'PLUS' ? 'active' : 'inactive'"
+					:class="isPlusMember ? 'active' : 'inactive'"
 				>
 					<view class="benefit-icon">
 						<image :src="getBenefitIcon(benefit.icon)" mode="aspectFit"></image>
@@ -55,7 +55,7 @@
 						<text class="benefit-name">{{ benefit.name }}</text>
 						<text class="benefit-desc">{{ benefit.description }}</text>
 					</view>
-					<view v-if="memberInfo.memberLevel === 'PLUS'" class="benefit-badge">
+					<view v-if="isPlusMember" class="benefit-badge">
 						<text>已开通</text>
 					</view>
 				</view>
@@ -93,7 +93,7 @@
 					<view class="info-value-row">
 						<text class="info-value">{{ memberInfo.autoRenew ? '已开启' : '未开启' }}</text>
 						<switch
-							v-if="memberInfo.memberLevel === 'PLUS'"
+							v-if="isPlusMember"
 							:checked="memberInfo.autoRenew"
 							@change="handleAutoRenewChange"
 							color="#FF9F29"
@@ -136,7 +136,7 @@
 		</view>
 
 		<!-- 底部操作栏 -->
-		<view v-if="memberInfo.memberLevel !== 'PLUS'" class="bottom-bar">
+		<view v-if="!isPlusMember" class="bottom-bar">
 			<view class="price-info">
 				<text class="price-label">年费</text>
 				<text class="price-value">¥99</text>
@@ -150,14 +150,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { mockGetMembershipInfo, mockGetMembershipPackages, type MembershipInfo, type MemberBenefit } from '@/api/membership'
+import { useUserStore } from '@/stores/user'
+
+// 用户 Store
+const userStore = useUserStore()
+
+// 计算属性：是否为 PLUS 会员
+const isPlusMember = computed(() => userStore.isPlusMember)
 
 // 会员信息
 const memberInfo = ref<MembershipInfo>({
 	id: '',
 	userId: '',
-	memberLevel: 'NORMAL',
+	tagName: 'PLUS会员',
 	startDate: '',
 	endDate: '',
 	autoRenew: false,

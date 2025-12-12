@@ -7,11 +7,12 @@ import { request } from '@/utils/request'
 
 /**
  * 会员信息接口响应
+ * 注意: PLUS会员现在通过用户标签系统管理,此接口主要用于会员订阅信息
  */
 export interface MembershipInfo {
   id: string
   userId: string
-  memberLevel: 'NORMAL' | 'PLUS'
+  tagName: string  // 标签名称,如 'PLUS会员'
   startDate: string
   endDate: string
   autoRenew: boolean
@@ -146,7 +147,7 @@ export const mockGetMembershipInfo = (): Promise<MembershipInfo> => {
       resolve({
         id: 'mem_001',
         userId: 'user_001',
-        memberLevel: 'PLUS',
+        tagName: 'PLUS会员',
         startDate: '2024-01-15',
         endDate: '2025-01-15',
         autoRenew: true,
