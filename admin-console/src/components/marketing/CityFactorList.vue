@@ -1,4 +1,5 @@
 <!-- @ts-nocheck -->
+<!-- @ts-nocheck -->
 <template>
   <div class="city-factor-list">
     <el-alert

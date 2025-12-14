@@ -1,4 +1,5 @@
 <!-- @ts-nocheck -->
+<!-- @ts-nocheck -->
 <template>
   <div class="custom-time-rule-list">
     <el-alert

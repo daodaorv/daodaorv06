@@ -1,4 +1,5 @@
 <!-- @ts-nocheck -->
+<!-- @ts-nocheck -->
 <template>
   <div class="other-price-rule-list">
     <el-alert

@@ -1,4 +1,5 @@
 <!-- @ts-nocheck -->
+<!-- @ts-nocheck -->
 <template>
   <div class="price-calendar-container">
     <PageHeader title="价格日历" description="查看和管理每日价格策略，支持快速调价和批量操作" />
