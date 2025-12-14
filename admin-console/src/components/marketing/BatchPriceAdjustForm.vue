@@ -211,7 +211,7 @@ const handleSubmit = async () => {
     loading.value = true
 
     // 构建批量调价请求数据
-    const requestData = {
+    const _requestData = {
       modelId: props.modelId,
       storeId: props.storeId,
       dates: props.selectedDates,

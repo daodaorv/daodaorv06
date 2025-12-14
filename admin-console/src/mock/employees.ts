@@ -369,7 +369,7 @@ export const mockExportEmployees = () => {
 }
 
 // Mock 导入员工数据
-export const mockImportEmployees = (file: File) => {
+export const mockImportEmployees = (_file: File) => {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve({

@@ -70,8 +70,8 @@ export const updatePricingStrategy = (id: number, data: Partial<PricingStrategy>
 /**
  * 删除价格策略
  */
-export const deletePricingStrategy = (id: number) => {
-  // return request.delete(`/marketing/pricing-strategies/${id}`)
+export const deletePricingStrategy = (_id: number) => {
+  // return request.delete(`/marketing/pricing-strategies/${_id}`)
   return Promise.resolve({ success: true })
 }
 

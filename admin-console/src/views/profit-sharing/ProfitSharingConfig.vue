@@ -151,7 +151,7 @@ import { tagApi, type Tag } from '@/api/user'
 
 // 标签列表
 const tagList = ref<Tag[]>([])
-const tagOptions = computed(() =>
+const _tagOptions = computed(() =>
   tagList.value.map(tag => ({
     label: tag.name,
     value: tag.id

@@ -523,7 +523,7 @@ const handleDelete = async (row: any) => {
 }
 
 // 提交表单
-const handleSubmit = async (data: any) => {
+const handleSubmit = async (_data: any) => {
   submitLoading.value = true
   try {
     if (isEdit.value) {

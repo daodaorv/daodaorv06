@@ -582,7 +582,7 @@ export const mockCreateSystemBackup = (data: CreateSystemBackupParams) => {
   })
 }
 
-export const mockRestoreSystemBackup = (id: number) => {
+export const mockRestoreSystemBackup = (_id: number) => {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve({
@@ -613,7 +613,7 @@ export const mockDeleteSystemBackup = (id: number) => {
   })
 }
 
-export const mockVerifySystemBackup = (id: number) => {
+export const mockVerifySystemBackup = (_id: number) => {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve({

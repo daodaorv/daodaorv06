@@ -509,7 +509,7 @@ const handleDelete = async (row: MarketingActivity) => {
 }
 
 // 提交表单
-const handleSubmit = async (data: any) => {
+const handleSubmit = async (_data: any) => {
   submitLoading.value = true
   try {
     if (isEdit.value) {

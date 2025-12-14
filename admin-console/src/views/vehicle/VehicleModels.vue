@@ -1003,7 +1003,7 @@ const handleCreate = () => {
 }
 
 // 查看车型
-const handleView = (row: VehicleModel) => {
+const handleView = (_row: VehicleModel) => {
   ElMessage.info('查看功能开发中...')
 }
 

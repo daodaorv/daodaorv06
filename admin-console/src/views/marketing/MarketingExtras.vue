@@ -427,7 +427,7 @@ const handleDelete = async (row: ExtraFee) => {
 }
 
 // 提交表单
-const handleSubmit = async (data: any) => {
+const handleSubmit = async (_data: any) => {
   submitLoading.value = true
   try {
     if (isEdit.value) {
