@@ -171,30 +171,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { onLoad } from '@dcloudio/uni-app';
+import { getCouponById, type CouponData } from '@/mock/data/coupon';
 
 // 类型定义
-interface Coupon {
-	id: string;
-	name: string;
-	type: string;
-	amount: number;
-	condition: string;
-	scope: string;
-	validity: string;
-	description: string;
-	stackRule: string;
-	specialLimit?: string;
-	price: number;
-	pointsPrice: number;
-	stock?: number;
-	limitPerUser?: number;
-	claimed: boolean;
-	soldOut: boolean;
-	isNew: boolean;
-	isVip: boolean;
-	isHot: boolean;
-}
-
 interface FAQ {
 	question: string;
 	answer: string;
@@ -202,7 +181,7 @@ interface FAQ {
 
 // 响应式数据
 const couponId = ref('');
-const coupon = ref<Coupon>({
+const coupon = ref<CouponData>({
 	id: '1',
 	name: '房车租赁50元满减券',
 	type: 'discount',
@@ -357,9 +336,21 @@ const claimCoupon = () => {
 };
 
 const loadCouponDetail = (id: string) => {
-	// TODO: 调用API加载优惠券详情
-	// 这里使用Mock数据
-	console.log('加载优惠券详情:', id);
+	// 从统一的 Mock 数据源加载优惠券详情
+	const couponData = getCouponById(id);
+	if (couponData) {
+		coupon.value = couponData;
+		console.log('成功加载优惠券详情:', id, couponData);
+	} else {
+		console.warn('未找到优惠券:', id);
+		uni.showToast({
+			title: '优惠券不存在',
+			icon: 'none'
+		});
+		setTimeout(() => {
+			uni.navigateBack();
+		}, 1500);
+	}
 };
 
 // 分享弹窗引用

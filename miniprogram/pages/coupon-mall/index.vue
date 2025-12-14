@@ -151,8 +151,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { onReachBottom } from '@dcloudio/uni-app';
+import { mockCoupons, getHotCoupons, getCouponsByType, type CouponData } from '@/mock/data/coupon';
 
 // 类型定义
 interface Banner {
@@ -166,29 +167,10 @@ interface Category {
 	name: string;
 }
 
-interface Coupon {
-	id: string;
-	name: string;
-	type: string;
-	amount: number;
-	condition: string;
-	scope: string;
-	validity: string;
-	price: number;
-	pointsPrice: number;
-	stock?: number;
-	claimed: boolean;
-	soldOut: boolean;
-	isNew: boolean;
-	isVip: boolean;
-	isHot: boolean;
-	badge?: string;
-}
-
 // 响应式数据
 const userPoints = ref(1580);
 const currentCategory = ref('all');
-const loadMoreStatus = ref('noMore'); // 直接设置初始状态
+const loadMoreStatus = ref('noMore');
 
 // Banner数据
 const banners = ref<Banner[]>([
@@ -207,235 +189,22 @@ const categories = ref<Category[]>([
 	{ id: 'special', name: '特殊券种' }
 ]);
 
-// 热门推荐优惠券
-const hotCoupons = ref<Coupon[]>([
-	{
-		id: '1',
-		name: '房车租赁50元满减券',
-		type: 'discount',
-		amount: 50,
-		condition: '满500元可用',
-		scope: '房车租赁',
-		validity: '领取后30天有效',
-		price: 0,
-		pointsPrice: 0,
-		claimed: false,
-		soldOut: false,
-		isNew: true,
-		isVip: false,
-		isHot: true,
-		badge: '新人专享'
-	},
-	{
-		id: '2',
-		name: '9折优惠券',
-		type: 'rate',
-		amount: 9,
-		condition: '全场通用',
-		scope: '所有订单',
-		validity: '领取后15天有效',
-		price: 0,
-		pointsPrice: 200,
-		claimed: false,
-		soldOut: false,
-		isNew: false,
-		isVip: true,
-		isHot: true,
-		badge: '会员专属'
-	},
-	{
-		id: '3',
-		name: '日租抵扣券',
-		type: 'daily',
-		amount: 30,
-		condition: '每日租金抵扣',
-		scope: '房车租赁',
-		validity: '领取后60天有效',
-		price: 0,
-		pointsPrice: 150,
-		claimed: false,
-		soldOut: false,
-		isNew: false,
-		isVip: false,
-		isHot: true,
-		badge: '热门'
-	}
-]);
+// 使用统一的 Mock 数据源
+const hotCoupons = ref<CouponData[]>([]);
+const allCoupons = ref<CouponData[]>([]);
 
-// 所有优惠券列表
-const allCoupons = ref<Coupon[]>([
-	{
-		id: '1',
-		name: '房车租赁50元满减券',
-		type: 'discount',
-		amount: 50,
-		condition: '满500元可用',
-		scope: '房车租赁',
-		validity: '领取后30天有效',
-		price: 0,
-		pointsPrice: 0,
-		stock: 1000,
-		claimed: false,
-		soldOut: false,
-		isNew: true,
-		isVip: false,
-		isHot: true
-	},
-	{
-		id: '2',
-		name: '房车租赁100元满减券',
-		type: 'discount',
-		amount: 100,
-		condition: '满1000元可用',
-		scope: '房车租赁',
-		validity: '领取后30天有效',
-		price: 0,
-		pointsPrice: 300,
-		stock: 500,
-		claimed: false,
-		soldOut: false,
-		isNew: false,
-		isVip: false,
-		isHot: true
-	},
-	{
-		id: '3',
-		name: '9折优惠券',
-		type: 'rate',
-		amount: 9,
-		condition: '全场通用',
-		scope: '所有订单',
-		validity: '领取后15天有效',
-		price: 0,
-		pointsPrice: 200,
-		claimed: false,
-		soldOut: false,
-		isNew: false,
-		isVip: true,
-		isHot: true
-	},
-	{
-		id: '4',
-		name: '8.5折优惠券',
-		type: 'rate',
-		amount: 8.5,
-		condition: '全场通用',
-		scope: '所有订单',
-		validity: '领取后15天有效',
-		price: 0,
-		pointsPrice: 500,
-		claimed: false,
-		soldOut: false,
-		isNew: false,
-		isVip: true,
-		isHot: false
-	},
-	{
-		id: '5',
-		name: '日租抵扣券30元',
-		type: 'daily',
-		amount: 30,
-		condition: '每日租金抵扣',
-		scope: '房车租赁',
-		validity: '领取后60天有效',
-		price: 0,
-		pointsPrice: 150,
-		claimed: false,
-		soldOut: false,
-		isNew: false,
-		isVip: false,
-		isHot: true
-	},
-	{
-		id: '6',
-		name: '门店服务费减免券',
-		type: 'service',
-		amount: 200,
-		condition: '减免门店服务费',
-		scope: '房车租赁',
-		validity: '领取后90天有效',
-		price: 0,
-		pointsPrice: 400,
-		claimed: false,
-		soldOut: false,
-		isNew: false,
-		isVip: false,
-		isHot: false
-	},
-	{
-		id: '7',
-		name: '异地还车费减免券',
-		type: 'service',
-		amount: 300,
-		condition: '减免异地还车费',
-		scope: '房车租赁',
-		validity: '领取后90天有效',
-		price: 0,
-		pointsPrice: 600,
-		claimed: false,
-		soldOut: false,
-		isNew: false,
-		isVip: false,
-		isHot: false
-	},
-	{
-		id: '8',
-		name: '生日特权券',
-		type: 'special',
-		amount: 8,
-		condition: '生日当月专属',
-		scope: '所有订单',
-		validity: '生日当月有效',
-		price: 0,
-		pointsPrice: 0,
-		claimed: false,
-		soldOut: false,
-		isNew: false,
-		isVip: false,
-		isHot: false
-	},
-	{
-		id: '9',
-		name: '房车租赁200元满减券',
-		type: 'discount',
-		amount: 200,
-		condition: '满2000元可用',
-		scope: '房车租赁',
-		validity: '领取后30天有效',
-		price: 19.9,
-		pointsPrice: 0,
-		stock: 200,
-		claimed: false,
-		soldOut: false,
-		isNew: false,
-		isVip: false,
-		isHot: true
-	},
-	{
-		id: '10',
-		name: '房车租赁150元满减券',
-		type: 'discount',
-		amount: 150,
-		condition: '满1500元可用',
-		scope: '房车租赁',
-		validity: '领取后30天有效',
-		price: 9.9,
-		pointsPrice: 100,
-		stock: 300,
-		claimed: false,
-		soldOut: false,
-		isNew: false,
-		isVip: false,
-		isHot: true
-	}
-]);
+// 初始化数据
+onMounted(() => {
+	hotCoupons.value = getHotCoupons();
+	allCoupons.value = [...mockCoupons];
+});
 
 // 计算属性：筛选后的优惠券列表
 const filteredCoupons = computed(() => {
 	if (currentCategory.value === 'all') {
 		return allCoupons.value;
 	}
-	return allCoupons.value.filter((coupon: Coupon) => coupon.type === currentCategory.value);
+	return allCoupons.value.filter((coupon: CouponData) => coupon.type === currentCategory.value);
 });
 
 // 方法
@@ -479,7 +248,7 @@ const goToCouponDetail = (couponId: string) => {
 	});
 };
 
-const handleCouponAction = (coupon: Coupon) => {
+const handleCouponAction = (coupon: CouponData) => {
 	if (coupon.claimed) {
 		uni.showToast({
 			title: '已领取该优惠券',
@@ -519,7 +288,7 @@ const handleCouponAction = (coupon: Coupon) => {
 	});
 };
 
-const claimCoupon = (coupon: Coupon) => {
+const claimCoupon = (coupon: CouponData) => {
 	// TODO: 调用API领取优惠券
 	uni.showLoading({
 		title: '领取中...'

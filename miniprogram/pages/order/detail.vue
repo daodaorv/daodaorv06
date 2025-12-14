@@ -147,6 +147,7 @@
 import { ref, computed } from 'vue';
 import { onLoad } from '@dcloudio/uni-app';
 import dayjs from 'dayjs';
+import { getOrderDetail } from '@/api/order';
 
 const statusBarHeight = ref(0);
 const order = ref<any>({
@@ -169,13 +170,48 @@ const order = ref<any>({
 	contactPhone: '13800138000'
 });
 
-onLoad((options: any) => {
+onLoad(async (options: any) => {
 	const sys = uni.getSystemInfoSync();
 	statusBarHeight.value = sys.statusBarHeight || 0;
-	
+
 	if (options.id) {
-		// TODO: Load order detail
-		console.log('Order ID:', options.id);
+		// 从 Mock 数据加载订单详情
+		try {
+			const res: any = await getOrderDetail(options.id);
+			if (res.code === 0 && res.data) {
+				// 映射数据结构
+				const orderData = res.data;
+				order.value = {
+					id: orderData.id,
+					orderNo: orderData.orderNo,
+					status: orderData.status.code,
+					vehicleName: orderData.vehicle?.name || '未知车辆',
+					vehicleImage: orderData.vehicle?.images?.[0] || '/static/logo.png',
+					vehicleSpec: `${orderData.vehicle?.specifications?.transmission || ''} | ${orderData.vehicle?.specifications?.seats || ''}座 | ${orderData.vehicle?.specifications?.fuelType || ''}`,
+					pickupTime: orderData.pickupTime,
+					returnTime: orderData.returnTime,
+					pickupStoreName: orderData.pickupStore?.name || '未知门店',
+					returnStoreName: orderData.returnStore?.name || '未知门店',
+					rentalFee: orderData.totalAmount - (orderData.actualAmount - orderData.totalAmount),
+					serviceFee: 160,
+					discountAmount: orderData.totalAmount - orderData.actualAmount,
+					totalAmount: orderData.actualAmount,
+					createdAt: dayjs(orderData.createdAt).format('YYYY-MM-DD HH:mm:ss'),
+					contactName: '张三',
+					contactPhone: '138****0000'
+				};
+				console.log('成功加载订单详情:', options.id, order.value);
+			}
+		} catch (error) {
+			console.error('加载订单详情失败:', error);
+			uni.showToast({
+				title: '订单不存在',
+				icon: 'none'
+			});
+			setTimeout(() => {
+				uni.navigateBack();
+			}, 1500);
+		}
 	}
 });
 
@@ -188,11 +224,29 @@ const statusMeta = computed(() => {
 			icon: 'clock',
 			bgGradient: 'linear-gradient(135deg, #FF9F29 0%, #FFB84D 100%)'
 		},
-		renting: {
+		pending_confirmation: {
+			title: '待确认',
+			desc: '订单已提交，等待商家确认',
+			icon: 'hourglass',
+			bgGradient: 'linear-gradient(135deg, #FFB84D 0%, #FFC966 100%)'
+		},
+		pending_pickup: {
+			title: '待取车',
+			desc: '订单已确认，请按时到店取车',
+			icon: 'calendar',
+			bgGradient: 'linear-gradient(135deg, #52C41A 0%, #73D13D 100%)'
+		},
+		in_progress: {
 			title: '租赁中',
 			desc: '祝您旅途愉快，注意行车安全',
 			icon: 'car-fill',
 			bgGradient: 'linear-gradient(135deg, #00B578 0%, #4CAF50 100%)'
+		},
+		pending_return: {
+			title: '待还车',
+			desc: '请按时到店还车，感谢您的使用',
+			icon: 'map',
+			bgGradient: 'linear-gradient(135deg, #1890FF 0%, #40A9FF 100%)'
 		},
 		completed: {
 			title: '已完成',
