@@ -8,6 +8,9 @@ export type CampsiteStatus = 'active' | 'inactive' | 'maintenance'
 // 营地类型
 export type CampsiteType = 'scenic' | 'forest' | 'lakeside' | 'mountain' | 'desert' | 'grassland'
 
+// 预订模式
+export type BookingMode = 'instant' | 'approval' | 'inquiry'
+
 // 营地设施
 export interface CampsiteFacility {
   id: string
@@ -22,6 +25,7 @@ export interface Campsite {
   name: string
   type: CampsiteType
   status: CampsiteStatus
+  bookingMode: BookingMode
   address: string
   province: string
   city: string
@@ -112,6 +116,7 @@ let mockCampsites: Campsite[] = [
     name: '北京怀柔雁栖湖房车营地',
     type: 'lakeside',
     status: 'active',
+    bookingMode: 'instant',
     address: '北京市怀柔区雁栖湖畔',
     province: '北京市',
     city: '北京市',
@@ -155,6 +160,7 @@ let mockCampsites: Campsite[] = [
     name: '上海崇明东滩湿地营地',
     type: 'grassland',
     status: 'active',
+    bookingMode: 'approval',
     address: '上海市崇明区东滩湿地公园',
     province: '上海市',
     city: '上海市',
@@ -197,6 +203,7 @@ let mockCampsites: Campsite[] = [
     name: '杭州千岛湖森林营地',
     type: 'forest',
     status: 'active',
+    bookingMode: 'instant',
     address: '浙江省杭州市淳安县千岛湖镇',
     province: '浙江省',
     city: '杭州市',
@@ -241,6 +248,7 @@ let mockCampsites: Campsite[] = [
     name: '成都青城山营地',
     type: 'mountain',
     status: 'maintenance',
+    bookingMode: 'inquiry',
     address: '四川省成都市都江堰市青城山镇',
     province: '四川省',
     city: '成都市',

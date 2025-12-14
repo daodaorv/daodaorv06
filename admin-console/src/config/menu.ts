@@ -100,6 +100,12 @@ export const menuConfig: MenuItem[] = [
         component: () => import('@/views/vehicle/VehicleModels.vue'),
       },
       {
+        path: '/vehicles/price-groups',
+        name: 'VehicleModelPriceGroups',
+        meta: { title: '价格分组管理' },
+        component: () => import('@/views/vehicle/VehicleModelPriceGroups.vue'),
+      },
+      {
         path: '/vehicles/list',
         name: 'VehicleList',
         meta: { title: '车辆列表' },
@@ -368,6 +374,12 @@ export const menuConfig: MenuItem[] = [
         name: 'MarketingPricing',
         meta: { title: '价格策略' },
         component: () => import('@/views/marketing/MarketingPricing.vue'),
+      },
+      {
+        path: '/marketing/price-calculation',
+        name: 'PriceCalculationDemo',
+        meta: { title: '价格计算演示' },
+        component: () => import('@/views/marketing/PriceCalculationDemo.vue'),
       },
       {
         path: '/marketing/coupons',

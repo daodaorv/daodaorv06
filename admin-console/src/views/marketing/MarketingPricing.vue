@@ -42,6 +42,19 @@
           <div>{{ row.endDate }}</div>
         </div>
       </template>
+      <template #targetUserTags="{ row }">
+        <el-tag
+          v-for="tagId in row.targetUserTags"
+          :key="tagId"
+          size="small"
+          style="margin-right: 4px"
+        >
+          {{ getTagName(tagId) }}
+        </el-tag>
+        <span v-if="!row.targetUserTags || row.targetUserTags.length === 0" style="color: #909399">
+          全部用户
+        </span>
+      </template>
       <template #vehicleTypes="{ row }">
         <div style="display: flex; flex-wrap: wrap; gap: 4px">
           <el-tag v-for="(type, index) in row.vehicleTypes" :key="index" size="small" type="info">
@@ -95,6 +108,14 @@
         <el-descriptions-item label="结束时间">{{ currentStrategy.endDate }}</el-descriptions-item>
         <el-descriptions-item label="优先级">{{ currentStrategy.priority }}</el-descriptions-item>
         <el-descriptions-item label="创建人">{{ currentStrategy.createdBy }}</el-descriptions-item>
+        <el-descriptions-item label="目标用户标签" :span="2">
+          <el-tag v-for="tagId in currentStrategy.targetUserTags" :key="tagId" size="small" style="margin-right: 8px">
+            {{ getTagName(tagId) }}
+          </el-tag>
+          <span v-if="!currentStrategy.targetUserTags || currentStrategy.targetUserTags.length === 0" style="color: #909399">
+            全部用户
+          </span>
+        </el-descriptions-item>
         <el-descriptions-item label="适用车型" :span="2">
           <el-tag v-for="(type, index) in currentStrategy.vehicleTypes" :key="index" size="small" type="info" style="margin-right: 8px">
             {{ type }}
@@ -129,10 +150,20 @@ import {
   type PricingStrategy,
   type PricingStrategyListParams
 } from '@/api/marketing'
+import { tagApi, type Tag } from '@/api/user'
 import { useErrorHandler } from '@/composables'
 
 // Composables
 const { handleApiError } = useErrorHandler()
+
+// 标签列表
+const tagList = ref<Tag[]>([])
+const tagOptions = computed(() =>
+  tagList.value.map(tag => ({
+    label: tag.name,
+    value: tag.id
+  }))
+)
 
 // 策略类型选项
 const STRATEGY_TYPE_OPTIONS = [
@@ -168,7 +199,8 @@ const VEHICLE_TYPE_OPTIONS = [
 const searchForm = reactive<PricingStrategyListParams>({
   keyword: '',
   type: undefined,
-  status: undefined
+  status: undefined,
+  tagId: undefined
 })
 
 // 搜索字段配置
@@ -195,6 +227,14 @@ const searchFields = computed<SearchField[]>(() => [
     placeholder: '请选择状态',
     width: '150px',
     options: STRATEGY_STATUS_OPTIONS
+  },
+  {
+    prop: 'tagId',
+    label: '用户标签',
+    type: 'select',
+    placeholder: '请选择标签',
+    width: '150px',
+    options: tagOptions.value
   }
 ])
 
@@ -205,6 +245,7 @@ const tableColumns: TableColumn[] = [
   { prop: 'type', label: '类型', width: 100, slot: 'type' },
   { prop: 'status', label: '状态', width: 100, slot: 'status' },
   { prop: 'adjustment', label: '价格调整', width: 120, slot: 'adjustment' },
+  { prop: 'targetUserTags', label: '目标用户标签', width: 150, slot: 'targetUserTags' },
   { prop: 'dateRange', label: '生效时间', width: 180, slot: 'dateRange' },
   { prop: 'priority', label: '优先级', width: 80 },
   { prop: 'vehicleTypes', label: '适用车型', minWidth: 200, slot: 'vehicleTypes' },
@@ -272,6 +313,7 @@ const formData = reactive({
   startDate: '',
   endDate: '',
   priority: 1,
+  targetUserTags: [] as number[],
   vehicleTypes: [] as string[],
   description: ''
 })
@@ -373,6 +415,15 @@ const formFields = computed(() => [
     label: '适用范围'
   },
   {
+    prop: 'targetUserTags',
+    label: '目标用户标签',
+    type: 'select',
+    multiple: true,
+    options: tagOptions.value,
+    placeholder: '请选择目标用户标签（不选则全部用户可用）',
+    tip: '选择可使用此价格策略的用户标签，不选则全部用户可用'
+  },
+  {
     prop: 'vehicleTypes',
     label: '适用车型',
     type: 'checkbox',
@@ -432,6 +483,7 @@ const handleReset = () => {
   searchForm.keyword = ''
   searchForm.type = undefined
   searchForm.status = undefined
+  searchForm.tagId = undefined
   pagination.page = 1
   loadStrategyList()
 }
@@ -446,6 +498,7 @@ const resetForm = () => {
   formData.startDate = ''
   formData.endDate = ''
   formData.priority = 1
+  formData.targetUserTags = []
   formData.vehicleTypes = []
   formData.description = ''
 }
@@ -475,6 +528,7 @@ const handleEdit = (row: PricingStrategy) => {
   formData.startDate = row.startDate
   formData.endDate = row.endDate
   formData.priority = row.priority
+  formData.targetUserTags = row.targetUserTags ? [...row.targetUserTags] : []
   formData.vehicleTypes = [...row.vehicleTypes]
   formData.description = row.description
 
@@ -584,8 +638,39 @@ const getStrategyStatusLabel = (status: string) => {
   return labelMap[status] || status
 }
 
+// 获取标签名称
+const getTagName = (tagId: number) => {
+  const tag = tagList.value.find(t => t.id === tagId)
+  return tag ? tag.name : `标签${tagId}`
+}
+
+// 加载标签列表
+const loadTagList = async () => {
+  try {
+    const res = await tagApi.getTagList({
+      page: 1,
+      pageSize: 100,
+      status: 'active'
+    }) as any
+
+    // 安全地访问数据
+    if (res && res.data) {
+      tagList.value = res.data.list || res.data || []
+    } else if (res && res.list) {
+      tagList.value = res.list
+    } else {
+      tagList.value = []
+    }
+  } catch (error) {
+    console.error('加载标签列表失败:', error)
+    tagList.value = []
+    // handleApiError(error, '加载标签列表失败')
+  }
+}
+
 // 页面加载
 onMounted(() => {
+  loadTagList()
   loadStrategyList()
 })
 </script>

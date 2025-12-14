@@ -1,5 +1,5 @@
 import type { Tag } from '@/api/user'
-import { TagType, TagCategory, TagTriggerType } from '@/api/user'
+import { TagType, TagCategory, TagTriggerType } from '@/types/tag'
 
 // 标签 Mock 数据（重构版：包含完整的业务字段）
 export const mockTags: Tag[] = [

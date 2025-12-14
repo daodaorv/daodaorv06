@@ -43,6 +43,19 @@
           <div style="color: #409eff">剩余: {{ row.remainingQuantity }}</div>
         </div>
       </template>
+      <template #targetUserTags="{ row }">
+        <el-tag
+          v-for="tagId in row.targetUserTags"
+          :key="tagId"
+          size="small"
+          style="margin-right: 4px"
+        >
+          {{ getTagName(tagId) }}
+        </el-tag>
+        <span v-if="!row.targetUserTags || row.targetUserTags.length === 0" style="color: #909399">
+          全部用户
+        </span>
+      </template>
       <template #dateRange="{ row }">
         <div style="font-size: 12px">
           <div>{{ row.startDate }}</div>
@@ -100,6 +113,14 @@
         <el-descriptions-item label="开始日期">{{ currentCoupon.startDate }}</el-descriptions-item>
         <el-descriptions-item label="结束日期">{{ currentCoupon.endDate }}</el-descriptions-item>
         <el-descriptions-item label="创建人">{{ currentCoupon.createdBy }}</el-descriptions-item>
+        <el-descriptions-item label="目标用户标签" :span="2">
+          <el-tag v-for="tagId in currentCoupon.targetUserTags" :key="tagId" size="small" style="margin-right: 8px">
+            {{ getTagName(tagId) }}
+          </el-tag>
+          <span v-if="!currentCoupon.targetUserTags || currentCoupon.targetUserTags.length === 0" style="color: #909399">
+            全部用户
+          </span>
+        </el-descriptions-item>
         <el-descriptions-item label="适用车型" :span="2">
           <el-tag v-for="(type, index) in currentCoupon.applicableVehicles" :key="index" size="small" type="info" style="margin-right: 8px">
             {{ type }}
@@ -134,10 +155,20 @@ import {
   type Coupon,
   type CouponListParams
 } from '@/api/marketing'
+import { tagApi, type Tag } from '@/api/user'
 import { useErrorHandler } from '@/composables'
 
 // Composables
 const { handleApiError } = useErrorHandler()
+
+// 标签列表
+const tagList = ref<Tag[]>([])
+const tagOptions = computed(() =>
+  tagList.value.map(tag => ({
+    label: tag.name,
+    value: tag.id
+  }))
+)
 
 // 优惠券类型选项
 const COUPON_TYPE_OPTIONS = [
@@ -172,7 +203,8 @@ const VEHICLE_TYPE_OPTIONS = [
 const searchForm = reactive<CouponListParams>({
   keyword: '',
   type: undefined,
-  status: undefined
+  status: undefined,
+  tagId: undefined
 })
 
 // 搜索字段配置
@@ -199,6 +231,14 @@ const searchFields = computed<SearchField[]>(() => [
     placeholder: '请选择状态',
     width: '150px',
     options: COUPON_STATUS_OPTIONS
+  },
+  {
+    prop: 'tagId',
+    label: '用户标签',
+    type: 'select',
+    placeholder: '请选择标签',
+    width: '150px',
+    options: tagOptions.value
   }
 ])
 
@@ -211,6 +251,7 @@ const tableColumns: TableColumn[] = [
   { prop: 'status', label: '状态', width: 100, slot: 'status' },
   { prop: 'discount', label: '优惠额度', width: 100, slot: 'discount' },
   { prop: 'minAmount', label: '最低消费', width: 100 },
+  { prop: 'targetUserTags', label: '目标用户标签', width: 150, slot: 'targetUserTags' },
   { prop: 'quantity', label: '数量统计', width: 120, slot: 'quantity' },
   { prop: 'dateRange', label: '有效期', width: 180, slot: 'dateRange' },
   { prop: 'createdBy', label: '创建人', width: 120 }
@@ -280,6 +321,7 @@ const formData = reactive({
   totalQuantity: 0,
   startDate: '',
   endDate: '',
+  targetUserTags: [] as number[],
   applicableVehicles: [] as string[],
   description: ''
 })
@@ -407,6 +449,15 @@ const formFields = computed(() => [
     label: '适用范围'
   },
   {
+    prop: 'targetUserTags',
+    label: '目标用户标签',
+    type: 'select',
+    multiple: true,
+    options: tagOptions.value,
+    placeholder: '请选择目标用户标签（不选则全部用户可用）',
+    tip: '选择可使用此优惠券的用户标签，不选则全部用户可用'
+  },
+  {
     prop: 'applicableVehicles',
     label: '适用车型',
     type: 'checkbox',
@@ -469,6 +520,7 @@ const handleReset = () => {
   searchForm.keyword = ''
   searchForm.type = undefined
   searchForm.status = undefined
+  searchForm.tagId = undefined
   pagination.page = 1
   loadCouponList()
 }
@@ -486,6 +538,7 @@ const resetForm = () => {
   formData.totalQuantity = 0
   formData.startDate = ''
   formData.endDate = ''
+  formData.targetUserTags = []
   formData.applicableVehicles = []
   formData.description = ''
 }
@@ -518,6 +571,7 @@ const handleEdit = (row: Coupon) => {
   formData.totalQuantity = row.totalQuantity
   formData.startDate = row.startDate
   formData.endDate = row.endDate
+  formData.targetUserTags = row.targetUserTags ? [...row.targetUserTags] : []
   formData.applicableVehicles = [...row.applicableVehicles]
   formData.description = row.description
 
@@ -625,8 +679,29 @@ const getCouponStatusLabel = (status: string) => {
   return labelMap[status] || status
 }
 
+// 获取标签名称
+const getTagName = (tagId: number) => {
+  const tag = tagList.value.find(t => t.id === tagId)
+  return tag ? tag.name : `标签${tagId}`
+}
+
+// 加载标签列表
+const loadTagList = async () => {
+  try {
+    const res = await tagApi.getTagList({
+      page: 1,
+      pageSize: 100,
+      status: 'active'
+    }) as any
+    tagList.value = res.data.list
+  } catch (error) {
+    handleApiError(error, '加载标签列表失败')
+  }
+}
+
 // 页面加载
 onMounted(() => {
+  loadTagList()
   loadCouponList()
 })
 </script>

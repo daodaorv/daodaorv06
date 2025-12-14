@@ -32,6 +32,11 @@
           {{ getCampsiteStatusLabel(row.status) }}
         </el-tag>
       </template>
+      <template #bookingMode="{ row }">
+        <el-tag :type="(getBookingModeTag(row.bookingMode)) as any" size="small">
+          {{ getBookingModeLabel(row.bookingMode) }}
+        </el-tag>
+      </template>
       <template #location="{ row }">
         <div>{{ row.province }} {{ row.city }} {{ row.district }}</div>
       </template>
@@ -232,6 +237,13 @@ const CAMPSITE_STATUS_OPTIONS = [
   { label: '维护中', value: 'maintenance' }
 ]
 
+// 预订模式选项
+const BOOKING_MODE_OPTIONS = [
+  { label: '即时预订', value: 'instant' },
+  { label: '审核预订', value: 'approval' },
+  { label: '咨询预订', value: 'inquiry' }
+]
+
 // 搜索表单
 const searchForm = reactive<CampsiteListParams>({
   keyword: '',
@@ -332,6 +344,14 @@ const searchFields = computed<SearchField[]>(() => [
     type: 'input',
     placeholder: '请输入城市',
     width: '120px'
+  },
+  {
+    prop: 'bookingMode',
+    label: '预订模式',
+    type: 'select',
+    placeholder: '请选择预订模式',
+    width: '150px',
+    options: BOOKING_MODE_OPTIONS
   }
 ])
 
@@ -341,6 +361,7 @@ const tableColumns: TableColumn[] = [
   { prop: 'name', label: '营地名称', minWidth: 200 },
   { prop: 'type', label: '类型', width: 100, slot: 'type' },
   { prop: 'status', label: '状态', width: 100, slot: 'status' },
+  { prop: 'bookingMode', label: '预订模式', width: 120, slot: 'bookingMode' },
   { prop: 'location', label: '位置', width: 200, slot: 'location' },
   { prop: 'capacity', label: '车位(可用/总数)', width: 140, slot: 'capacity' },
   { prop: 'pricing', label: '价格(元/晚)', width: 120, slot: 'pricing' },
@@ -511,6 +532,26 @@ const getCampsiteStatusLabel = (status: string) => {
     maintenance: '维护中'
   }
   return labelMap[status] || status
+}
+
+// 获取预订模式标签类型
+const getBookingModeTag = (mode: string) => {
+  const tagMap: Record<string, string> = {
+    instant: 'success',
+    approval: 'warning',
+    inquiry: 'info'
+  }
+  return tagMap[mode] || 'info'
+}
+
+// 获取预订模式标签文本
+const getBookingModeLabel = (mode: string) => {
+  const labelMap: Record<string, string> = {
+    instant: '即时预订',
+    approval: '审核预订',
+    inquiry: '咨询预订'
+  }
+  return labelMap[mode] || mode
 }
 
 // 页面加载

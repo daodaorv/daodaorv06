@@ -92,12 +92,24 @@
             <el-row :gutter="20">
               <el-col :span="12">
                 <el-form-item label="车牌号" prop="vehicleNumber">
-                  <el-input v-model="form.vehicleNumber" placeholder="请输入车牌号" />
+                  <el-input v-model="form.vehicleNumber" placeholder="请输入车牌号或生成虚拟牌照">
+                    <template #append>
+                      <el-button @click="handleGenerateVirtualPlate">生成虚拟牌照</el-button>
+                    </template>
+                  </el-input>
+                  <div v-if="form.vehicleNumber" style="margin-top: 4px; font-size: 12px; color: #909399">
+                    {{ formatPlateDisplay(form.vehicleNumber) }}
+                  </div>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
                 <el-form-item label="车型" prop="modelId">
-                  <el-select v-model="form.modelId" placeholder="请选择车型" style="width: 100%">
+                  <el-select
+                    v-model="form.modelId"
+                    placeholder="请选择车型"
+                    style="width: 100%"
+                    @change="handleModelChange"
+                  >
                     <el-option
                       v-for="model in vehicleModelsList"
                       :key="model.id"
@@ -105,6 +117,9 @@
                       :value="model.id"
                     />
                   </el-select>
+                  <div v-if="selectedModelPriceInfo" style="margin-top: 4px; font-size: 12px; color: #909399">
+                    建议租金范围: {{ selectedModelPriceInfo.formattedRange }}
+                  </div>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -176,6 +191,12 @@
                     :step="50"
                     style="width: 100%"
                   />
+                  <div v-if="suggestedPrice > 0" style="margin-top: 4px; font-size: 12px; color: #67c23a">
+                    建议租金: ¥{{ suggestedPrice }}
+                    <el-button link type="primary" size="small" @click="applySuggestedPrice">
+                      应用
+                    </el-button>
+                  </div>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -290,6 +311,18 @@ import {
 import { useErrorHandler, useEnumLabel } from '@/composables'
 import { VEHICLE_STATUS_OPTIONS, STORE_OPTIONS } from '@/constants'
 import { exportToCSV } from '@/utils/export'
+import {
+  generateVirtualPlate,
+  isValidVirtualPlate,
+  formatPlateDisplay,
+  isVirtualPlate
+} from '@/utils/vehicleHelper'
+import {
+  getBasePrice,
+  getPriceRange,
+  calculateSuggestedPrice,
+  getVehicleTypePriceInfo
+} from '@/utils/pricingHelper'
 
 // Composables
 const { handleApiError } = useErrorHandler()
@@ -440,6 +473,11 @@ const form = reactive({
   nextMaintenanceDate: '',
   remark: '',
 })
+
+// 车型价格信息
+const selectedModelPriceInfo = ref<ReturnType<typeof getVehicleTypePriceInfo> | null>(null)
+// 建议租金
+const suggestedPrice = ref(0)
 
 const formRules: FormRules = {
   vehicleNumber: [
@@ -700,6 +738,57 @@ const getOwnershipTypeTag = (type: string) => {
     cooperative: 'warning',
   }
   return tagMap[type] || 'info'
+}
+
+// 生成虚拟牌照
+const handleGenerateVirtualPlate = () => {
+  // 获取所有已存在的虚拟牌照
+  const existingPlates = vehicleList.value
+    .map(v => v.vehicleNumber)
+    .filter(plate => isVirtualPlate(plate))
+
+  // 生成新的虚拟牌照
+  const newPlate = generateVirtualPlate(form.ownershipType, existingPlates)
+  form.vehicleNumber = newPlate
+
+  ElMessage.success(`已生成虚拟牌照: ${newPlate}`)
+}
+
+// 车型变更处理
+const handleModelChange = (modelId: number) => {
+  const selectedModel = vehicleModelsList.value.find(m => m.id === modelId)
+  if (!selectedModel) {
+    selectedModelPriceInfo.value = null
+    suggestedPrice.value = 0
+    return
+  }
+
+  // 获取车型价格信息
+  selectedModelPriceInfo.value = getVehicleTypePriceInfo(selectedModel.vehicleType)
+
+  // 计算建议租金
+  const purchaseYear = form.purchaseDate ? new Date(form.purchaseDate).getFullYear() : new Date().getFullYear()
+  const currentYear = new Date().getFullYear()
+  const vehicleAge = currentYear - purchaseYear
+
+  suggestedPrice.value = calculateSuggestedPrice({
+    vehicleType: selectedModel.vehicleType,
+    ownershipType: form.ownershipType,
+    condition: 'good', // 默认良好
+    mileage: form.currentMileage,
+    age: vehicleAge
+  })
+
+  // 如果当前日租金为0,自动应用建议租金
+  if (form.dailyPrice === 0) {
+    form.dailyPrice = suggestedPrice.value
+  }
+}
+
+// 应用建议租金
+const applySuggestedPrice = () => {
+  form.dailyPrice = suggestedPrice.value
+  ElMessage.success('已应用建议租金')
 }
 
 // 页面加载

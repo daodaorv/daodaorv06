@@ -24,6 +24,11 @@ export interface VehicleModel {
   status: 'active' | 'inactive'
   createdAt: string
   updatedAt: string
+
+  // 🆕 车型分组相关
+  priceGroupId?: number // 所属价格分组ID（可为空）
+  priceGroupName?: string // 所属价格分组名称
+  isCustomPrice?: boolean // 是否自定义价格（true=独立价格，false=继承分组价格）
 }
 
 // 品牌数据

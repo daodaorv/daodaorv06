@@ -36,8 +36,12 @@
             :key="tag.id"
             :type="tag.color"
             size="small"
+            :effect="tag.name === 'PLUS会员' ? 'dark' : 'light'"
             style="margin-right: 4px"
           >
+            <el-icon v-if="tag.name === 'PLUS会员'" style="margin-right: 2px">
+              <Star />
+            </el-icon>
             {{ tag.name }}
           </el-tag>
           <el-button
@@ -92,7 +96,7 @@
     <el-dialog
       v-model="tagManageDialogVisible"
       title="管理用户标签"
-      width="500px"
+      width="600px"
     >
       <div v-if="currentUser">
         <h4>当前标签</h4>
@@ -101,15 +105,52 @@
             v-for="tag in currentUser.tags"
             :key="tag.id"
             :type="tag.color"
+            :effect="tag.name === 'PLUS会员' ? 'dark' : 'light'"
             closable
             @close="handleRemoveTag(currentUser, tag.id)"
             style="margin-right: 8px; margin-bottom: 8px"
           >
+            <el-icon v-if="tag.name === 'PLUS会员'" style="margin-right: 2px">
+              <Star />
+            </el-icon>
             {{ tag.name }}
           </el-tag>
           <span v-if="!currentUser.tags || currentUser.tags.length === 0">
             暂无标签
           </span>
+        </div>
+
+        <!-- PLUS会员权益信息 -->
+        <div v-if="getPlusMemberTag(currentUser)" class="plus-member-benefits">
+          <el-divider content-position="left">
+            <el-icon><Star /></el-icon>
+            PLUS会员专属权益
+          </el-divider>
+          <el-descriptions :column="1" border size="small">
+            <el-descriptions-item label="积分倍率">
+              <el-tag type="success" size="small">
+                {{ getPlusMemberTag(currentUser)?.benefits?.pointsMultiplier }}倍积分
+              </el-tag>
+            </el-descriptions-item>
+            <el-descriptions-item label="价格折扣">
+              <el-tag type="warning" size="small">
+                {{ (getPlusMemberTag(currentUser)?.benefits?.priceDiscount * 100).toFixed(0) }}折优惠
+              </el-tag>
+            </el-descriptions-item>
+            <el-descriptions-item label="专属优惠券">
+              <el-tag type="primary" size="small">
+                {{ getPlusMemberTag(currentUser)?.benefits?.exclusiveCoupons?.length || 0 }}张专属券
+              </el-tag>
+            </el-descriptions-item>
+            <el-descriptions-item label="增值服务">
+              <el-tag v-if="getPlusMemberTag(currentUser)?.benefits?.priorityService" type="info" size="small" style="margin-right: 4px">
+                优先服务
+              </el-tag>
+              <el-tag v-if="getPlusMemberTag(currentUser)?.benefits?.freeInsurance" type="info" size="small">
+                免费保险
+              </el-tag>
+            </el-descriptions-item>
+          </el-descriptions>
         </div>
 
         <el-divider />
@@ -223,7 +264,7 @@
 import { ref, reactive, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { Plus, Download, Upload, ArrowDown, UploadFilled } from '@element-plus/icons-vue'
+import { Plus, Download, Upload, ArrowDown, UploadFilled, Star } from '@element-plus/icons-vue'
 import PageHeader from '@/components/common/PageHeader.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'
@@ -762,6 +803,11 @@ function getStatusTag(status: string) {
   return tagMap[status] || 'info'
 }
 
+// 获取用户的PLUS会员标签
+function getPlusMemberTag(user: UserInfo): Tag | undefined {
+  return user.tags?.find(tag => tag.name === 'PLUS会员')
+}
+
 // 组件挂载时加载标签
 onMounted(() => {
   loadTags()
@@ -786,6 +832,26 @@ onMounted(() => {
   background-color: #f5f7fa;
   border-radius: 4px;
   margin-bottom: 16px;
+}
+
+.plus-member-benefits {
+  margin-top: 16px;
+  padding: 12px;
+  background-color: #fff7e6;
+  border-radius: 4px;
+  border: 1px solid #ffd666;
+
+  :deep(.el-divider__text) {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #e6a23c;
+    font-weight: bold;
+  }
+
+  :deep(.el-descriptions) {
+    margin-top: 12px;
+  }
 }
 
 .import-container {

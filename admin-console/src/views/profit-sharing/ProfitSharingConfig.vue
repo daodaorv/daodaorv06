@@ -33,6 +33,14 @@
         <el-descriptions-item label="最大金额">
           ¥{{ config.maxAmount.toLocaleString() }}
         </el-descriptions-item>
+        <el-descriptions-item label="适用用户标签" :span="2">
+          <el-tag v-for="tagId in config.targetUserTags" :key="tagId" size="small" style="margin-right: 8px">
+            {{ getTagName(tagId) }}
+          </el-tag>
+          <span v-if="!config.targetUserTags || config.targetUserTags.length === 0" style="color: #909399">
+            全部用户
+          </span>
+        </el-descriptions-item>
         <el-descriptions-item label="配置说明" :span="2">
           {{ config.description }}
         </el-descriptions-item>
@@ -90,6 +98,24 @@
           />
           <span style="margin-left: 10px">元</span>
         </el-form-item>
+        <el-form-item label="适用用户标签">
+          <el-select
+            v-model="formData.targetUserTags"
+            multiple
+            placeholder="请选择适用用户标签（不选则全部用户适用）"
+            style="width: 100%"
+          >
+            <el-option
+              v-for="tag in tagList"
+              :key="tag.id"
+              :label="tag.name"
+              :value="tag.id"
+            />
+          </el-select>
+          <div style="color: #909399; font-size: 12px; margin-top: 4px">
+            选择可享受此分润规则的用户标签，不选则全部用户适用
+          </div>
+        </el-form-item>
         <el-form-item label="配置说明" prop="description">
           <el-input
             v-model="formData.description"
@@ -114,11 +140,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, computed, onMounted } from 'vue'
 import { ElMessage, ElMessageBox, type FormInstance, type FormRules } from 'element-plus'
 import PageHeader from '@/components/common/PageHeader.vue'
 import { profitSharingApi } from '@/api/profitSharing'
 import type { ProfitConfig } from '@/api/profitSharing'
+import { tagApi, type Tag } from '@/api/user'
+
+// 标签列表
+const tagList = ref<Tag[]>([])
+const tagOptions = computed(() =>
+  tagList.value.map(tag => ({
+    label: tag.name,
+    value: tag.id
+  }))
+)
 
 // 配置列表
 const configList = ref<ProfitConfig[]>([])
@@ -137,6 +173,7 @@ const formData = reactive({
   shareRatio: 0,
   minAmount: 0,
   maxAmount: 0,
+  targetUserTags: [] as number[],
   description: '',
   enabled: true,
 })
@@ -194,6 +231,7 @@ const handleEdit = (config: ProfitConfig) => {
     shareRatio: config.shareRatio,
     minAmount: config.minAmount,
     maxAmount: config.maxAmount,
+    targetUserTags: config.targetUserTags ? [...config.targetUserTags] : [],
     description: config.description,
     enabled: config.enabled,
   })
@@ -215,6 +253,7 @@ const handleSubmit = async () => {
         shareRatio: formData.shareRatio,
         minAmount: formData.minAmount,
         maxAmount: formData.maxAmount,
+        targetUserTags: formData.targetUserTags,
         description: formData.description,
         enabled: formData.enabled,
       })
@@ -235,8 +274,29 @@ const handleDialogClose = () => {
   formRef.value?.resetFields()
 }
 
+// 获取标签名称
+const getTagName = (tagId: number) => {
+  const tag = tagList.value.find(t => t.id === tagId)
+  return tag ? tag.name : `标签${tagId}`
+}
+
+// 加载标签列表
+const loadTagList = async () => {
+  try {
+    const res = await tagApi.getTagList({
+      page: 1,
+      pageSize: 100,
+      status: 'active'
+    }) as any
+    tagList.value = res.data.list
+  } catch (error) {
+    console.error('加载标签列表失败:', error)
+  }
+}
+
 // 初始化
 onMounted(() => {
+  loadTagList()
   fetchConfigList()
 })
 </script>
