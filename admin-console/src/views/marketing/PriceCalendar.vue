@@ -243,9 +243,7 @@ import PriceCalendarCell from '@/components/marketing/PriceCalendarCell.vue'
 import BatchPriceAdjustForm from '@/components/marketing/BatchPriceAdjustForm.vue'
 import { getPriceCalendar, type PriceCalendarResponse } from '@/api/priceCalendar'
 import { getVehicleModels } from '@/api/vehicle'
-import { getStores } from '@/api/store'
-import type { VehicleModel } from '@/types/vehicle'
-import type { Store } from '@/types/store'
+import { getStoreList } from '@/api/store'
 
 // 筛选条件
 const filters = reactive({
@@ -400,7 +398,7 @@ const loadVehicleModels = async () => {
 // 加载门店列表
 const loadStores = async () => {
   try {
-    const res = await getStores({ page: 1, pageSize: 100, status: 'active' })
+    const res = await getStoreList({ page: 1, pageSize: 100, status: 'active' })
     stores.value = res.data.list
     if (stores.value.length > 0 && !filters.storeId) {
       filters.storeId = stores.value[0].id

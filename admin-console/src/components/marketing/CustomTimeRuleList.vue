@@ -1,5 +1,4 @@
 <!-- @ts-nocheck -->
-<!-- @ts-nocheck -->
 <template>
   <div class="custom-time-rule-list">
     <el-alert
@@ -9,7 +8,7 @@
     >
       <template #title>
         <div style="font-size: 13px">
-          自定义时间规则用于设置特定日期或周期的价格调整，优先级低于法定节假日（优先级 < 90）
+          自定义时间规则用于设置特定日期或周期的价格调整，优先级低于法定节假日（优先级 &lt; 90）
         </div>
       </template>
     </el-alert>

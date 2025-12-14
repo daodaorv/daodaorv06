@@ -9,7 +9,6 @@
             v-if="showSelectAll"
             v-model="selectAll"
             :indeterminate="indeterminate"
-    // @ts-ignore
             @change="handleSelectAllChange"
           >
             全选
