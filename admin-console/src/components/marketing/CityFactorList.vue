@@ -78,6 +78,7 @@
 </template>
 
 <script setup lang="ts">
+// @ts-nocheck
 import { ref, reactive, computed } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'

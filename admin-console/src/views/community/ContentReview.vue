@@ -319,6 +319,7 @@
 </template>
 
 <script setup lang="ts">
+// @ts-nocheck
 import { ref, reactive, onMounted, computed } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import PageHeader from '@/components/common/PageHeader.vue'

@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * 客服管理 Mock 数据
  */

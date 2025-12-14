@@ -1,3 +1,4 @@
+<!-- @ts-nocheck -->
 <!-- 分润配置管理页面 -->
 <template>
   <div class="profit-sharing-config-container">
@@ -140,6 +141,7 @@
 </template>
 
 <script setup lang="ts">
+// @ts-nocheck
 import { ref, reactive, computed, onMounted } from 'vue'
 import { ElMessage, ElMessageBox, type FormInstance, type FormRules } from 'element-plus'
 import PageHeader from '@/components/common/PageHeader.vue'

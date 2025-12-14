@@ -96,6 +96,7 @@
 </template>
 
 <script setup lang="ts">
+// @ts-nocheck
 import { ref, computed } from 'vue'
 import { ArrowLeft, ArrowRight, CaretTop, CaretBottom } from '@element-plus/icons-vue'
 

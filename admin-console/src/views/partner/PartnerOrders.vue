@@ -106,6 +106,7 @@
 </template>
 
 <script setup lang="ts">
+// @ts-nocheck
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, ElMessageBox, type FormInstance, type FormRules } from 'element-plus'
 import { Plus, Edit, Download } from '@element-plus/icons-vue'

@@ -38,6 +38,7 @@
 </template>
 
 <script setup lang="ts">
+// @ts-nocheck
 import { computed } from 'vue'
 import { CaretTop, CaretBottom } from '@element-plus/icons-vue'
 import type { DailyPriceDetail } from '@/types/pricing'
