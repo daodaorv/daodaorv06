@@ -39,7 +39,11 @@
       "Bash(timeout /t 3 /nobreak)",
       "Bash(git add:*)",
       "Bash(node scripts/quality-check.js:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(gh --version:*)",
+      "Bash(winget install:*)",
+      "Bash(scoop --version:*)"
     ],
     "deny": [],
     "ask": []
