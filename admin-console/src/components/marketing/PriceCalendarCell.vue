@@ -3,9 +3,14 @@
   <div
     class="price-cell"
     :class="cellClass"
-    @click="handleClick"
+    @click="handleClick($event)"
   >
-    <div class="cell-date">{{ dayOfMonth }}</div>
+    <div class="cell-date">
+      {{ dayOfMonth }}
+      <el-tag v-if="priceInfo?.isHoliday" size="small" type="danger" class="holiday-tag">
+        {{ priceInfo.holidayName || '节假日' }}
+      </el-tag>
+    </div>
     <div v-if="priceInfo" class="cell-content">
       <div class="cell-price">¥{{ priceInfo.dailyRental }}</div>
       <div v-if="priceInfo.factors && priceInfo.factors.length > 0" class="cell-factors">
@@ -38,7 +43,6 @@
 </template>
 
 <script setup lang="ts">
-// @ts-nocheck
 import { computed } from 'vue'
 import { CaretTop, CaretBottom } from '@element-plus/icons-vue'
 import type { DailyPriceDetail } from '@/types/pricing'
@@ -59,7 +63,7 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const emit = defineEmits<{
-  click: [date: string]
+  click: [date: string, event: MouseEvent]
 }>()
 
 // 提取日期中的日
@@ -94,8 +98,8 @@ const isToday = computed(() => {
 })
 
 // 获取因子标签类型
-const getFactorTagType = (factor: { type: string }) => {
-  const typeMap: Record<string, string> = {
+const getFactorTagType = (factor: { type: string }): 'primary' | 'success' | 'warning' | 'info' | 'danger' => {
+  const typeMap: Record<string, 'primary' | 'success' | 'warning' | 'info' | 'danger'> = {
     city: 'primary',
     time: 'danger',
     other: 'warning'
@@ -104,9 +108,9 @@ const getFactorTagType = (factor: { type: string }) => {
 }
 
 // 处理点击
-const handleClick = () => {
+const handleClick = (event: MouseEvent) => {
   if (!props.disabled) {
-    emit('click', props.date)
+    emit('click', props.date, event)
   }
 }
 </script>
@@ -164,6 +168,17 @@ const handleClick = () => {
     font-size: 12px;
     color: #909399;
     margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-wrap: wrap;
+
+    .holiday-tag {
+      font-size: 10px;
+      height: 16px;
+      line-height: 16px;
+      padding: 0 4px;
+    }
   }
 
   .cell-content {

@@ -1,5 +1,4 @@
 <!-- @ts-nocheck -->
-<!-- @ts-nocheck -->
 <template>
   <div class="national-holiday-list">
     <el-alert
@@ -13,6 +12,63 @@
         </div>
       </template>
     </el-alert>
+
+    <!-- 同步状态卡片 -->
+    <el-card class="sync-status-card" shadow="never" style="margin-bottom: 16px">
+      <template #header>
+        <div class="card-header">
+          <span style="font-weight: 600">节假日自动同步</span>
+          <el-button
+            type="primary"
+            size="small"
+            :loading="syncLoading"
+            :disabled="syncLoading"
+            @click="handleManualSync"
+          >
+            {{ syncLoading ? '同步中...' : '立即同步' }}
+          </el-button>
+        </div>
+      </template>
+
+      <el-row :gutter="20">
+        <el-col :span="6">
+          <div class="status-item">
+            <div class="status-label">最后同步时间</div>
+            <div class="status-value">{{ lastSyncTime || '从未同步' }}</div>
+          </div>
+        </el-col>
+        <el-col :span="6">
+          <div class="status-item">
+            <div class="status-label">已获取年份范围</div>
+            <div class="status-value">{{ syncedYearsRange }}</div>
+          </div>
+        </el-col>
+        <el-col :span="6">
+          <div class="status-item">
+            <div class="status-label">已获取节假日总数</div>
+            <div class="status-value">{{ totalHolidaysCount }}个</div>
+          </div>
+        </el-col>
+        <el-col :span="6">
+          <div class="status-item">
+            <div class="status-label">下次自动同步时间</div>
+            <div class="status-value">{{ nextSyncTime }}</div>
+          </div>
+        </el-col>
+      </el-row>
+
+      <!-- 同步进度 -->
+      <el-progress
+        v-if="syncLoading"
+        :percentage="syncProgress"
+        :status="syncProgress === 100 ? 'success' : undefined"
+        style="margin-top: 16px"
+      >
+        <template #default="{ percentage }">
+          <span style="font-size: 12px">{{ syncProgressMessage }} ({{ percentage }}%)</span>
+        </template>
+      </el-progress>
+    </el-card>
 
     <SearchForm
       v-model="searchForm"
@@ -65,7 +121,7 @@
 
 <script setup lang="ts">
 // @ts-nocheck
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive, computed, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
 import SearchForm from '@/components/common/SearchForm.vue'
@@ -74,6 +130,20 @@ import FormDialog from '@/components/common/FormDialog.vue'
 import type { SearchField } from '@/components/common/SearchForm.vue'
 import type { TableColumn, TableAction, ToolbarButton } from '@/components/common/DataTable.vue'
 import type { FormField } from '@/components/common/FormDialog.vue'
+import {
+  syncNationalHolidays,
+  getLastSyncTime,
+  saveLastSyncTime,
+  saveSyncLog,
+  formatNextSyncTime
+} from '@/services/holidaySyncService'
+import { calculateSyncYears } from '@/utils/timorApi'
+import { getNationalHolidayList } from '@/api/timeFactor'
+
+// 开发环境下加载调试工具
+if (import.meta.env.DEV) {
+  import('@/utils/debugTimorApi')
+}
 
 // 搜索表单
 const searchForm = reactive({
@@ -139,71 +209,19 @@ const tableActions: TableAction[] = [
   }
 ]
 
-// Mock 数据
-const holidayList = ref([
-  {
-    id: 1,
-    name: '春节',
-    startDate: '2025-01-28',
-    endDate: '2025-02-03',
-    adjustmentType: 'percentage',
-    adjustmentValue: 50,
-    priority: 90,
-    description: '2025年春节假期，价格上涨50%'
-  },
-  {
-    id: 2,
-    name: '清明节',
-    startDate: '2025-04-04',
-    endDate: '2025-04-06',
-    adjustmentType: 'percentage',
-    adjustmentValue: 30,
-    priority: 90,
-    description: '2025年清明节假期，价格上涨30%'
-  },
-  {
-    id: 3,
-    name: '劳动节',
-    startDate: '2025-05-01',
-    endDate: '2025-05-05',
-    adjustmentType: 'percentage',
-    adjustmentValue: 40,
-    priority: 90,
-    description: '2025年劳动节假期，价格上涨40%'
-  },
-  {
-    id: 4,
-    name: '端午节',
-    startDate: '2025-05-31',
-    endDate: '2025-06-02',
-    adjustmentType: 'percentage',
-    adjustmentValue: 30,
-    priority: 90,
-    description: '2025年端午节假期，价格上涨30%'
-  },
-  {
-    id: 5,
-    name: '中秋节',
-    startDate: '2025-10-06',
-    endDate: '2025-10-08',
-    adjustmentType: 'percentage',
-    adjustmentValue: 35,
-    priority: 90,
-    description: '2025年中秋节假期，价格上涨35%'
-  },
-  {
-    id: 6,
-    name: '国庆节',
-    startDate: '2025-10-01',
-    endDate: '2025-10-07',
-    adjustmentType: 'percentage',
-    adjustmentValue: 50,
-    priority: 90,
-    description: '2025年国庆节假期，价格上涨50%'
-  }
-])
+// 节假日列表数据
+const holidayList = ref([])
 
 const loading = ref(false)
+
+// 同步状态
+const syncLoading = ref(false)
+const syncProgress = ref(0)
+const syncProgressMessage = ref('')
+const lastSyncTime = ref<string | null>(null)
+const nextSyncTime = ref('')
+const syncedYearsRange = ref('')
+const totalHolidaysCount = ref(0)
 
 // 分页
 const pagination = reactive({
@@ -297,10 +315,35 @@ const formRules = {
   adjustmentValue: [{ required: true, message: '请输入调整值', trigger: 'blur' }]
 }
 
+// 加载节假日列表
+const loadHolidayList = async () => {
+  loading.value = true
+  try {
+    const response = await getNationalHolidayList({
+      page: pagination.page,
+      pageSize: pagination.pageSize,
+      type: 'national',
+      keyword: searchForm.keyword,
+      year: searchForm.year
+    })
+
+    holidayList.value = response.list
+    pagination.total = response.total
+
+    // 更新统计信息
+    updateSyncStatus()
+  } catch (error) {
+    console.error('加载节假日列表失败:', error)
+    ElMessage.error('加载节假日列表失败')
+  } finally {
+    loading.value = false
+  }
+}
+
 // 搜索
 const handleSearch = () => {
   pagination.page = 1
-  // TODO: 调用搜索API
+  loadHolidayList()
 }
 
 // 重置
@@ -308,7 +351,7 @@ const handleReset = () => {
   searchForm.keyword = ''
   searchForm.year = new Date().getFullYear()
   pagination.page = 1
-  // TODO: 重新加载数据
+  loadHolidayList()
 }
 
 // 重置表单
@@ -391,17 +434,140 @@ const handleSubmit = async (_data: any) => {
 // 分页
 const handleSizeChange = (size: number) => {
   pagination.pageSize = size
-  // TODO: 重新加载数据
+  loadHolidayList()
 }
 
 const handleCurrentChange = (page: number) => {
   pagination.page = page
-  // TODO: 重新加载数据
+  loadHolidayList()
 }
+
+// 手动同步节假日
+const handleManualSync = async () => {
+  try {
+    await ElMessageBox.confirm(
+      '确认同步当前日期向后1年的法定节假日数据？',
+      '同步确认',
+      {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'info'
+      }
+    )
+
+    syncLoading.value = true
+    syncProgress.value = 0
+    syncProgressMessage.value = '准备同步...'
+
+    const result = await syncNationalHolidays({
+      defaultAdjustmentValue: 30,
+      onProgress: (progress) => {
+        syncProgress.value = Math.round((progress.current / progress.total) * 100)
+        syncProgressMessage.value = progress.message
+      }
+    })
+
+    if (result.success) {
+      // 保存同步时间
+      const now = new Date().toISOString().replace('T', ' ').substring(0, 19)
+      saveLastSyncTime(now)
+      lastSyncTime.value = now
+
+      // 保存同步日志
+      if (result.syncLog) {
+        saveSyncLog(result.syncLog)
+      }
+
+      // 更新统计信息
+      updateSyncStatus()
+
+      // 重新加载节假日列表
+      await loadHolidayList()
+
+      // 显示同步结果
+      ElMessageBox.alert(
+        `<div style="line-height: 1.8">
+          <p><strong>同步年份：</strong>${result.syncedYears.join('、')}</p>
+          <p><strong>获取节假日：</strong>${result.totalHolidays}个</p>
+          <p><strong>新增：</strong>${result.newCount}个</p>
+          <p><strong>更新：</strong>${result.updatedCount}个</p>
+          <p><strong>跳过：</strong>${result.skippedCount}个</p>
+          ${result.errors.length > 0 ? `<p style="color: #f56c6c"><strong>失败：</strong>${result.errors.length}个年份</p>` : ''}
+        </div>`,
+        '同步完成',
+        {
+          dangerouslyUseHTMLString: true,
+          confirmButtonText: '确定'
+        }
+      )
+    } else {
+      ElMessage.error(result.message || '同步失败')
+    }
+  } catch (error) {
+    if (error !== 'cancel') {
+      console.error('同步失败:', error)
+      ElMessage.error('同步失败，请稍后重试')
+    }
+  } finally {
+    syncLoading.value = false
+    syncProgress.value = 0
+    syncProgressMessage.value = ''
+  }
+}
+
+// 更新同步状态信息
+const updateSyncStatus = () => {
+  // 最后同步时间
+  lastSyncTime.value = getLastSyncTime()
+
+  // 下次同步时间
+  nextSyncTime.value = formatNextSyncTime()
+
+  // 已获取年份范围
+  const years = calculateSyncYears()
+  syncedYearsRange.value = years.length > 1 ? `${years[0]}-${years[years.length - 1]}` : `${years[0]}`
+
+  // 已获取节假日总数
+  totalHolidaysCount.value = holidayList.value.length
+}
+
+// 组件挂载时初始化
+onMounted(() => {
+  updateSyncStatus()
+  loadHolidayList()
+})
 </script>
 
 <style scoped lang="scss">
 .national-holiday-list {
-  // 组件样式
+  .sync-status-card {
+    :deep(.el-card__header) {
+      padding: 16px 20px;
+      background-color: #f5f7fa;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .status-item {
+      text-align: center;
+      padding: 8px 0;
+
+      .status-label {
+        font-size: 12px;
+        color: #909399;
+        margin-bottom: 8px;
+      }
+
+      .status-value {
+        font-size: 16px;
+        font-weight: 600;
+        color: #303133;
+      }
+    }
+  }
 }
 </style>

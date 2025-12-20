@@ -211,24 +211,31 @@ const handleSubmit = async () => {
     loading.value = true
 
     // 构建批量调价请求数据
-    const _requestData = {
-      modelId: props.modelId,
-      storeId: props.storeId,
+    const requestData = {
+      modelId: props.modelId!,
+      storeId: props.storeId!,
       dates: props.selectedDates,
-      adjustmentType: formData.adjustmentType,
-      adjustmentValue: formData.adjustmentValue,
-      reason: formData.reason
+      adjustType: 'add_factor' as const,
+      factorConfig: {
+        factorName: `批量调价-${new Date().toISOString().split('T')[0]}`,
+        adjustmentType: formData.adjustmentType,
+        adjustmentValue: formData.adjustmentValue,
+        priority: 50
+      },
+      changeReason: formData.reason || '批量调价'
     }
 
-    // TODO: 调用批量调价API
-    // await batchAdjustPrice(requestData)
+    // 调用批量调价API
+    const { batchAdjustPrice } = await import('@/api/priceCalendar')
+    const result = await batchAdjustPrice(requestData)
 
-    // 模拟API调用
-    await new Promise(resolve => setTimeout(resolve, 1000))
-
-    ElMessage.success(`成功调整 ${props.selectedDates.length} 个日期的价格`)
-    emit('success')
-    handleClose()
+    if (result.success) {
+      ElMessage.success(`成功调整 ${result.data.affectedCount} 个日期的价格`)
+      emit('success')
+      handleClose()
+    } else {
+      ElMessage.error(result.message || '批量调价失败')
+    }
   } catch (error) {
     if (error !== 'cancel') {
       console.error('批量调价失败:', error)
