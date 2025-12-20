@@ -1,7 +1,7 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="finance-income-container">
-    <PageHeader title="收入统计" description="查看和分析平台收入数据" />
+    
 
     <!-- 统计卡片 -->
     <el-row :gutter="16" class="stats-row">
@@ -174,7 +174,6 @@
 import { ref, reactive, computed, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
 import { Download } from '@element-plus/icons-vue'
-import PageHeader from '@/components/common/PageHeader.vue'
 import StatsCard from '@/components/common/StatsCard.vue'
 import ChartCard from '@/components/common/ChartCard.vue'
 import SearchForm from '@/components/common/SearchForm.vue'

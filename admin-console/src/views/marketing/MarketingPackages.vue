@@ -1,7 +1,7 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="marketing-packages-container">
-    <PageHeader title="特惠套餐管理" description="管理特惠套餐组合和配置" />
+    
 
     <SearchForm
       v-model="searchForm"
@@ -112,7 +112,6 @@
 import { ref, reactive, computed, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
-import PageHeader from '@/components/common/PageHeader.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'
 import FormDialog from '@/components/common/FormDialog.vue'

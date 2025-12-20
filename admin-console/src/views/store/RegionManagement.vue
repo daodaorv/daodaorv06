@@ -1,7 +1,7 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="region-management-container">
-    <PageHeader title="区域管理" description="管理业务区域和区域经理分配" />
+    
 
     <DataTable
       :data="regionList"
@@ -106,7 +106,6 @@ import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
 import { Plus, Edit, Delete } from '@element-plus/icons-vue'
-import PageHeader from '@/components/common/PageHeader.vue'
 import DataTable from '@/components/common/DataTable.vue'
 import type { TableColumn, TableAction, ToolbarButton } from '@/components/common/DataTable.vue'
 import { getRegionList, getCityList, type Region, type City } from '@/api/store'

@@ -1,7 +1,7 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="hosting-income-container">
-    <PageHeader title="收益管理" description="管理托管车辆收益统计和分成记录" />
+    
 
     <!-- 统计卡片 -->
     <el-row :gutter="20" class="stats-row">
@@ -261,7 +261,6 @@ import {
   DataLine,
   Download
 } from '@element-plus/icons-vue'
-import PageHeader from '@/components/common/PageHeader.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'
 import type { SearchField } from '@/components/common/SearchForm.vue'

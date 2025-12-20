@@ -1,6 +1,6 @@
 <template>
   <div class="user-blacklist-container">
-    <PageHeader title="黑名单管理" description="管理平台黑名单用户，防范风险行为" />
+    
 
     <SearchForm
       v-model="searchForm"
@@ -132,7 +132,6 @@
 import { ref, reactive } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Plus, Download } from '@element-plus/icons-vue'
-import PageHeader from '@/components/common/PageHeader.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'
 import FormDialog from '@/components/common/FormDialog.vue'

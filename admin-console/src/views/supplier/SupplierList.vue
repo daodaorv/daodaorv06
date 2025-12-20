@@ -1,7 +1,7 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="supplier-list-container">
-    <PageHeader :title="pageTitle" :description="pageDescription" />
+    
 
     <StatsCard v-if="showStats" :stats="statsConfig" />
 
@@ -122,7 +122,6 @@
 import { ref, reactive, computed, onMounted } from 'vue'
 import { ElMessage, ElMessageBox, type FormInstance, type FormRules } from 'element-plus'
 import { Plus, Edit, Delete } from '@element-plus/icons-vue'
-import PageHeader from '@/components/common/PageHeader.vue'
 import StatsCard from '@/components/common/StatsCard.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'

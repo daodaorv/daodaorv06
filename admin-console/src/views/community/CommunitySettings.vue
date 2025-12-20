@@ -1,7 +1,7 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="community-settings-container">
-    <PageHeader title="社区配置" description="管理社区版块和系统配置" />
+    
 
     <el-tabs v-model="activeTab" class="settings-tabs">
       <!-- 版块管理 -->
@@ -273,7 +273,6 @@
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Search, Plus } from '@element-plus/icons-vue'
-import PageHeader from '@/components/common/PageHeader.vue'
 import {
   getCommunitySections,
   createCommunitySection,

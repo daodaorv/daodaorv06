@@ -1,7 +1,7 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="vehicle-violations-container">
-    <PageHeader title="违章管理" description="管理车辆违章记录、违章处理和罚款缴纳" />
+    
 
     <StatsCard :stats="statsConfig" />
 
@@ -232,7 +232,6 @@ import {
   getViolationStats,
   type ViolationRecord,
 } from '@/api/vehicle'
-import PageHeader from '@/components/common/PageHeader.vue'
 import StatsCard from '@/components/common/StatsCard.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'

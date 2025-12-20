@@ -1,7 +1,7 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="finance-invoices-container">
-    <PageHeader title="发票管理" description="管理订单发票开具和状态" />
+    
 
     <!-- 搜索和操作 -->
     <div class="toolbar">
@@ -206,7 +206,6 @@
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
-import PageHeader from '@/components/common/PageHeader.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'
 import {

@@ -1,7 +1,7 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="hosting-vehicles-container">
-    <PageHeader title="托管车辆管理" description="管理托管车辆运营状态和收益数据" />
+    
 
     <SearchForm
       v-model="searchForm"
@@ -213,7 +213,6 @@
 // @ts-nocheck
 import { ref, reactive, computed, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
-import PageHeader from '@/components/common/PageHeader.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'
 import type { SearchField } from '@/components/common/SearchForm.vue'

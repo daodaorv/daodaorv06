@@ -1,7 +1,7 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="employee-list-container">
-    <PageHeader title="员工管理" description="管理平台员工信息、角色分配和在职状态" />
+    
 
     <SearchForm
       v-model="searchForm"
@@ -121,7 +121,6 @@ import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Plus, Download, Upload } from '@element-plus/icons-vue'
-import PageHeader from '@/components/common/PageHeader.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'
 import FormDialog from '@/components/common/FormDialog.vue'

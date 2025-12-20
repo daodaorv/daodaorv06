@@ -1,7 +1,7 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="campsite-settings-container">
-    <PageHeader title="营地设置" description="配置营地基本信息和设施" />
+    
 
     <el-card class="settings-card">
       <template #header>
@@ -305,7 +305,6 @@ interface CampsiteFacility {
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
-import PageHeader from '@/components/common/PageHeader.vue'
 import { useErrorHandler } from '@/composables'
 
 // Composables

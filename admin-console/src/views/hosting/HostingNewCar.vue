@@ -1,7 +1,7 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="hosting-new-car-container">
-    <PageHeader title="购车托管审核" description="审核购车托管申请和跟进购车进度" />
+    
 
     <SearchForm
       v-model="searchForm"
@@ -273,7 +273,6 @@
 import { ref, reactive, computed, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Select, Close, Calendar } from '@element-plus/icons-vue'
-import PageHeader from '@/components/common/PageHeader.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'
 import type { SearchField } from '@/components/common/SearchForm.vue'

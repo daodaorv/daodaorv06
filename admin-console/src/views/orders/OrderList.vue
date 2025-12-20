@@ -1,7 +1,7 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="order-list-container">
-    <PageHeader title="订单管理" description="管理租赁订单、异常处理和退款管理" />
+    
 
     <StatsCard :stats="statsConfig" />
 
@@ -97,7 +97,6 @@ import {
   CircleCheck,
   Money
 } from '@element-plus/icons-vue'
-import PageHeader from '@/components/common/PageHeader.vue'
 import StatsCard from '@/components/common/StatsCard.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'

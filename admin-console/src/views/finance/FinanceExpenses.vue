@@ -1,7 +1,7 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="finance-expenses-container">
-    <PageHeader title="支出管理" description="管理和分析平台支出数据" />
+    
 
     <!-- 搜索和操作 -->
     <div class="toolbar">
@@ -118,7 +118,6 @@
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
-import PageHeader from '@/components/common/PageHeader.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'
 import {

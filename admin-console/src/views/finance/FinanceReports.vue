@@ -1,7 +1,7 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="finance-reports-container">
-    <PageHeader title="财务报表" description="查看和分析财务报表数据" />
+    
 
     <!-- 报表筛选 -->
     <div class="page-card filter-card">
@@ -179,7 +179,6 @@
 import { ref, reactive, computed, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
 import { Document, Download } from '@element-plus/icons-vue'
-import PageHeader from '@/components/common/PageHeader.vue'
 import StatsCard from '@/components/common/StatsCard.vue'
 import ChartCard from '@/components/common/ChartCard.vue'
 import {

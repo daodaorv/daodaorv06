@@ -1,7 +1,7 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="user-risk-container">
-    <PageHeader title="风险用户管理" description="监控和管理平台风险用户，及时处理异常行为" />
+    
 
     <StatsCard :stats="statsConfig" />
 
@@ -126,7 +126,6 @@ import {
   InfoFilled,
   User,
 } from '@element-plus/icons-vue'
-import PageHeader from '@/components/common/PageHeader.vue'
 import StatsCard from '@/components/common/StatsCard.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'

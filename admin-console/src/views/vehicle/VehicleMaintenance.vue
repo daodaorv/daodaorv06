@@ -1,7 +1,7 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="vehicle-maintenance-container">
-    <PageHeader title="维保管理" description="管理车辆维修保养计划、记录和成本" />
+    
 
     <StatsCard :stats="statsConfig" />
 
@@ -233,7 +233,6 @@ import {
   Money,
   DocumentCopy,
 } from '@element-plus/icons-vue'
-import PageHeader from '@/components/common/PageHeader.vue'
 import StatsCard from '@/components/common/StatsCard.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'

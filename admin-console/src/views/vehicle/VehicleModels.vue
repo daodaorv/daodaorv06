@@ -1,7 +1,7 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="vehicle-models-container">
-    <PageHeader title="车型库管理" description="管理车辆品牌、型号和配置参数" />
+    
 
     <SearchForm
       v-model="searchForm"
@@ -623,6 +623,7 @@
 <script setup lang="ts">
 // @ts-nocheck
 import { ref, reactive, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
 import {
@@ -631,7 +632,6 @@ import {
   Upload,
   Picture,
 } from '@element-plus/icons-vue'
-import PageHeader from '@/components/common/PageHeader.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'
 import type { SearchField } from '@/components/common/SearchForm.vue'
@@ -651,6 +651,7 @@ import { useErrorHandler, useEnumLabel } from '@/composables'
 import { exportToCSV } from '@/utils/export'
 
 // Composables
+const router = useRouter()
 const { handleApiError } = useErrorHandler()
 const { getVehicleTypeLabel } = useEnumLabel()
 
@@ -1478,7 +1479,7 @@ function handleExport() {
 
   const columns = tableColumns
     .filter(col => col.prop && col.prop !== 'actions')
-    .map(col => ({ key: col.prop, label: col.label }))
+    .map(col => ({ key: col.prop!, label: col.label }))
 
   exportToCSV(modelsList.value, columns, '车型列表')
 }

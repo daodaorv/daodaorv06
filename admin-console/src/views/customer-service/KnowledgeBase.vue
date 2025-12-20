@@ -1,7 +1,7 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="knowledge-base-container">
-    <PageHeader title="知识库管理" description="管理客服知识库，提升服务效率" />
+    
 
     <!-- 统计卡片 -->
     <el-row :gutter="16" class="stats-row">
@@ -208,7 +208,6 @@
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Plus, View, Star } from '@element-plus/icons-vue'
-import PageHeader from '@/components/common/PageHeader.vue'
 import StatsCard from '@/components/common/StatsCard.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'

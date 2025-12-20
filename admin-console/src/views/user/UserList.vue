@@ -1,8 +1,6 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="user-list-container">
-    <PageHeader title="用户列表" description="管理小程序注册用户信息和状态" />
-
     <SearchForm
       v-model="searchForm"
       :fields="searchFields"
@@ -265,7 +263,6 @@ import { ref, reactive, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Plus, Download, Upload,  UploadFilled, Star } from '@element-plus/icons-vue'
-import PageHeader from '@/components/common/PageHeader.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'
 import FormDialog from '@/components/common/FormDialog.vue'

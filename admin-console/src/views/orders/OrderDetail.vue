@@ -1,11 +1,7 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="order-detail-container">
-    <PageHeader
-      :title="`订单详情 - ${order?.orderNo || 'info'}`"
-      :description="`${order?.userName || 'info'} - ${order?.userPhone || 'info'}`"
-      show-back
-    />
+    
 
     <el-card v-if="order" class="detail-card">
       <template #header>
@@ -116,7 +112,6 @@ import { ref, reactive, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
-import PageHeader from '@/components/common/PageHeader.vue'
 import { getOrderDetail, confirmOrder, completeOrder, cancelOrder, type Order } from '@/api/order'
 import { useErrorHandler } from '@/composables'
 

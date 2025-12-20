@@ -1,10 +1,7 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="marketing-pricing-container">
-    <PageHeader
-      title="价格策略配置中心"
-      description="统一管理价格日历、时间因子、城市因子和其他价格规则"
-    />
+    
 
     <el-tabs v-model="activeTab" type="border-card" class="pricing-tabs">
       <!-- Tab 1: 价格日历 -->
@@ -73,21 +70,7 @@
       <!-- Tab 5: 价格计算演示 -->
       <el-tab-pane label="价格计算演示" name="calculator">
         <div class="tab-content">
-          <el-alert
-            type="info"
-            :closable="false"
-            style="margin-bottom: 16px"
-          >
-            <template #title>
-              <div style="font-size: 13px">
-                价格计算演示工具可以帮助您理解价格计算逻辑:最终价格 = 基础价 + 城市因子 + 时间因子 + 其他因子
-              </div>
-            </template>
-          </el-alert>
-
-          <div style="text-align: center; padding: 40px 0">
-            <el-empty description="价格计算演示功能开发中" />
-          </div>
+          <PriceCalculator />
         </div>
       </el-tab-pane>
     </el-tabs>
@@ -95,14 +78,13 @@
 </template>
 
 <script setup lang="ts">
-// @ts-nocheck
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import PageHeader from '@/components/common/PageHeader.vue'
 import NationalHolidayList from '@/components/marketing/NationalHolidayList.vue'
 import CustomTimeRuleList from '@/components/marketing/CustomTimeRuleList.vue'
 import CityFactorList from '@/components/marketing/CityFactorList.vue'
 import OtherPriceRuleList from '@/components/marketing/OtherPriceRuleList.vue'
+import PriceCalculator from '@/components/marketing/PriceCalculator.vue'
 
 // Router
 const router = useRouter()

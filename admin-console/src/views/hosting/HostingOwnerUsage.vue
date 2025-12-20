@@ -1,7 +1,7 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="hosting-owner-usage-container">
-    <PageHeader title="车主自用审核" description="审核车主自用申请和管理自用记录" />
+    
 
     <SearchForm
       v-model="searchForm"
@@ -257,7 +257,6 @@
 import { ref, reactive, computed, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Select, Close } from '@element-plus/icons-vue'
-import PageHeader from '@/components/common/PageHeader.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'
 import type { SearchField } from '@/components/common/SearchForm.vue'

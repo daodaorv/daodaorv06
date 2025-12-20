@@ -1,6 +1,6 @@
 <template>
   <div class="campsite-reservations-container">
-    <PageHeader title="营地预订管理" description="管理营地预订和入住信息" />
+    
 
     <StatsCard :stats="statsConfig" />
 
@@ -113,7 +113,6 @@
 import { ref, reactive, computed, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Document, Clock, CircleCheck } from '@element-plus/icons-vue'
-import PageHeader from '@/components/common/PageHeader.vue'
 import StatsCard from '@/components/common/StatsCard.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'

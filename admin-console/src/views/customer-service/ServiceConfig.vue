@@ -1,7 +1,7 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="service-config-container">
-    <PageHeader title="智能客服配置" description="配置智能路由和客服人员管理" />
+    
 
     <el-tabs v-model="activeTab" class="config-tabs">
       <!-- 智能路由配置 -->
@@ -178,7 +178,6 @@
 // @ts-nocheck
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
-import PageHeader from '@/components/common/PageHeader.vue'
 import {
   getRoutingConfig,
   updateRoutingConfig,

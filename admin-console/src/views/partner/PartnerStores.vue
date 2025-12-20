@@ -1,7 +1,7 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="partner-stores-container">
-    <PageHeader title="合作商门店" description="查看和管理合作商的门店信息" />
+    
 
     <SearchForm
       v-model="searchForm"
@@ -33,7 +33,6 @@
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
 import { Download } from '@element-plus/icons-vue'
-import PageHeader from '@/components/common/PageHeader.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'
 import type { SearchField } from '@/components/common/SearchForm.vue'
