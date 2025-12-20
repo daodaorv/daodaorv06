@@ -1,7 +1,7 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="partner-list-container">
-    <PageHeader title="合作商列表" description="管理房车租赁合作商信息和合作状态" />
+    
 
     <StatsCard :stats="statsConfig" />
 
@@ -137,7 +137,6 @@ import { ref, reactive, computed, onMounted } from 'vue'
 import { ElMessage, ElMessageBox, type FormInstance, type FormRules } from 'element-plus'
 import { Plus, Edit, Delete, View } from '@element-plus/icons-vue'
 import { useRouter } from 'vue-router'
-import PageHeader from '@/components/common/PageHeader.vue'
 import StatsCard from '@/components/common/StatsCard.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'

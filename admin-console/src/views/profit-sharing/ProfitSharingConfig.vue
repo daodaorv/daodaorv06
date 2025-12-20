@@ -2,7 +2,7 @@
 <!-- 分润配置管理页面 -->
 <template>
   <div class="profit-sharing-config-container">
-    <PageHeader title="分润配置" description="管理各类分润比例和规则配置" />
+    
 
     <!-- 配置列表 -->
     <el-card v-for="config in configList" :key="config.id" class="config-card" shadow="hover">
@@ -144,7 +144,6 @@
 // @ts-nocheck
 import { ref, reactive, computed, onMounted } from 'vue'
 import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
-import PageHeader from '@/components/common/PageHeader.vue'
 import { profitSharingApi } from '@/api/profitSharing'
 import type { ProfitConfig } from '@/api/profitSharing'
 import { tagApi, type Tag } from '@/api/user'

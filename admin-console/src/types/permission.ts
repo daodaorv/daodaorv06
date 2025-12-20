@@ -17,6 +17,8 @@ export type PermissionCode = string
 export interface RouteMeta {
   [key: string]: any
   title?: string // 页面标题
+  description?: string // 页面描述
+  hidePageHeader?: boolean // 是否隐藏页面标题（用于Dashboard等特殊页面）
   icon?: string // 图标
   hidden?: boolean // 是否隐藏
   roles?: UserRole[] // 允许访问的角色

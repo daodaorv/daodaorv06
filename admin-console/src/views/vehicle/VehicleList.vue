@@ -2,10 +2,7 @@
 <template>
   <div class="vehicle-list-container">
     <!-- 页面标题 -->
-    <PageHeader
-      title="车辆列表"
-      description="管理平台所有车辆档案、状态跟踪和位置管理(包含平台自有、托管、合作车辆)"
-    />
+    
 
     <!-- 搜索表单 -->
     <SearchForm
@@ -293,7 +290,6 @@ import {
   Picture,
   
 } from '@element-plus/icons-vue'
-import PageHeader from '@/components/common/PageHeader.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'
 import type { SearchField } from '@/components/common/SearchForm.vue'
@@ -313,13 +309,13 @@ import { VEHICLE_STATUS_OPTIONS, STORE_OPTIONS } from '@/constants'
 import { exportToCSV } from '@/utils/export'
 import {
   generateVirtualPlate,
-  _isValidVirtualPlate,
+  isValidVirtualPlate,
   formatPlateDisplay,
   isVirtualPlate
 } from '@/utils/vehicleHelper'
 import {
-  _getBasePrice,
-  _getPriceRange,
+  getBasePrice,
+  getPriceRange,
   calculateSuggestedPrice,
   getVehicleTypePriceInfo
 } from '@/utils/pricingHelper'

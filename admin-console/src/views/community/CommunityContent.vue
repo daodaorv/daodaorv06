@@ -1,7 +1,7 @@
 <!-- 社区内容管理页面 -->
 <template>
   <div class="community-content-container">
-    <PageHeader title="内容管理" description="管理社区已发布的帖子、评论等内容" />
+    
 
     <!-- 统计卡片 -->
     <StatsCard :stats="statsCards" />
@@ -171,7 +171,6 @@
 import { ref, reactive, onMounted, computed } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Document, ChatDotRound, TrendCharts, Star } from '@element-plus/icons-vue'
-import PageHeader from '@/components/common/PageHeader.vue'
 import StatsCard from '@/components/common/StatsCard.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'

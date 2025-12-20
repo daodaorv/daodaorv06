@@ -2,7 +2,7 @@
 <!-- 提现审核管理页面 -->
 <template>
   <div class="profit-sharing-withdrawals-container">
-    <PageHeader title="提现审核" description="管理用户提现申请审核和处理" />
+    
 
     <!-- 统计卡片 -->
     <el-row :gutter="20" class="stats-row">
@@ -126,7 +126,6 @@
 // @ts-nocheck
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, ElMessageBox, type FormInstance, type FormRules } from 'element-plus'
-import PageHeader from '@/components/common/PageHeader.vue'
 import StatsCard from '@/components/common/StatsCard.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'

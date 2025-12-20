@@ -2,7 +2,7 @@
 <template>
   <div class="permission-logs-container">
     <!-- 页面标题 -->
-    <PageHeader title="操作日志" description="查看和管理系统操作日志记录" />
+    
 
     <!-- 搜索表单 -->
     <SearchForm
@@ -137,7 +137,6 @@
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
 import { Download, Delete } from '@element-plus/icons-vue'
-import PageHeader from '@/components/common/PageHeader.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'
 import type { SearchField } from '@/components/common/SearchForm.vue'

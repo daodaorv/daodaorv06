@@ -1,7 +1,7 @@
 <!-- 数据权限管理页面 -->
 <template>
   <div class="permission-data-container">
-    <PageHeader title="数据权限" description="管理角色的数据访问范围和条件" />
+    
 
     <!-- 搜索表单 -->
     <SearchForm v-model="searchParams" :fields="searchFields" @search="handleSearch" @reset="handleReset" />
@@ -94,7 +94,6 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, type FormInstance } from 'element-plus'
-import PageHeader from '@/components/common/PageHeader.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'
 import type { SearchField } from '@/components/common/SearchForm.vue'

@@ -2,7 +2,7 @@
 <!-- 员工激励管理页面 -->
 <template>
   <div class="profit-sharing-staff-container">
-    <PageHeader title="员工激励" description="管理员工业绩激励统计和发放" />
+    
 
     <!-- 统计卡片 -->
     <el-row :gutter="20" class="stats-row">
@@ -60,7 +60,6 @@
 // @ts-nocheck
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
-import PageHeader from '@/components/common/PageHeader.vue'
 import StatsCard from '@/components/common/StatsCard.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'

@@ -1,7 +1,7 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="ticket-management-container">
-    <PageHeader title="工单管理" description="管理客服工单，提升服务质量" />
+    
 
     <!-- 统计卡片 -->
     <el-row :gutter="16" class="stats-row">
@@ -293,7 +293,6 @@
 // @ts-nocheck
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import PageHeader from '@/components/common/PageHeader.vue'
 import StatsCard from '@/components/common/StatsCard.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'

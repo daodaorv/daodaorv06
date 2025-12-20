@@ -1,18 +1,14 @@
-// @ts-nocheck
 /**
  * 价格日历 API
  * 提供价格日历查询、单日价格详情、批量调价等功能
- *
- * TODO: 修复 TypeScript 类型错误（7个错误）
- * 参考: docs/TypeScript类型修复计划.md
- * - Line 117: storeRes 类型为 unknown
- * - Line 141, 219: PriceCalculationRequest 类型不匹配
- * - Line 147, 148, 151, 223: PriceCalculationResult 缺少字段
  */
 
 import type {
   PriceCalculationRequest,
-  PriceCalculationResult,
+  PriceCalculationResult
+} from '@/utils/pricingHelper'
+
+import type {
   DailyPriceDetail
 } from '@/types/pricing'
 
@@ -68,7 +64,7 @@ export interface DayPriceDetailQuery {
  */
 export interface BatchAdjustRequest {
   modelId: number
-  cityId: number
+  storeId: number // 门店ID（通过门店获取cityId）
   dates: string[] // 日期数组
   adjustType: 'add_factor' | 'override_price' // 调整方式
   factorConfig?: {
@@ -112,6 +108,7 @@ export async function getPriceCalendar(query: PriceCalendarQuery): Promise<Price
   // 模拟从其他 API 获取数据
   const { getVehicleModelDetail } = await import('./vehicle')
   const { getStoreDetail } = await import('./store')
+  const { getTimeFactorCalendar } = await import('./timeFactor')
   const { calculateMultiFactorPrice } = await import('@/utils/pricingHelper')
 
   try {
@@ -120,8 +117,12 @@ export async function getPriceCalendar(query: PriceCalendarQuery): Promise<Price
     const model = modelRes.data
 
     // 获取门店信息
-    const storeRes = await getStoreDetail(storeId)
+    const storeRes = await getStoreDetail(storeId) as any
     const store = storeRes.data
+
+    // 获取时间因子日历（包括法定节假日和自定义规则）
+    const timeFactorRes = await getTimeFactorCalendar({ startDate, endDate })
+    const timeFactorCalendar = timeFactorRes.calendar
 
     // 生成日期范围
     const dates: string[] = []
@@ -137,25 +138,51 @@ export async function getPriceCalendar(query: PriceCalendarQuery): Promise<Price
     let totalPrice = 0
 
     for (const date of dates) {
+      // 获取当日的时间因子
+      const timeFactorItem = timeFactorCalendar.find(item => item.date === date)
+
+      // 构建时间因子数组
+      const timeFactors = timeFactorItem?.appliedRules
+        .filter(rule => rule.ruleType === 'holiday' || rule.ruleType === 'custom')
+        .map(rule => ({
+          id: rule.ruleId,
+          name: rule.ruleName,
+          date,
+          adjustmentType: rule.adjustmentType,
+          adjustmentValue: rule.adjustmentValue,
+          priority: rule.priority
+        })) || []
+
       const request: PriceCalculationRequest = {
         modelId,
+        modelName: model.modelName,
+        basePrice: model.dailyPrice,
         cityId: store.cityId,
+        cityName: store.cityName,
         startDate: date,
-        endDate: date
+        endDate: date,
+        timeFactors
       }
 
       // 调用价格计算引擎
       const result = calculateMultiFactorPrice(request)
 
+      // 从 dailyDetails 中获取当日价格
+      const dailyDetail = result.timeFactorSummary.dailyDetails[0]
+
       calendar.push({
         date,
         basePrice: model.dailyPrice,
         cityFactor: result.cityFactor,
-        timeFactor: result.timeFactor?.dailyDetails?.[0]?.timeFactor,
-        dailyRental: result.dailyRental
+        timeFactor: dailyDetail?.timeFactor,
+        otherFactors: dailyDetail?.otherFactors || [],
+        dailyRental: dailyDetail?.dailyRental || model.dailyPrice,
+        // 添加节假日信息
+        isHoliday: timeFactorItem?.isHoliday || false,
+        holidayName: timeFactorItem?.holidayName
       })
 
-      totalPrice += result.dailyRental
+      totalPrice += dailyDetail?.dailyRental || model.dailyPrice
     }
 
     // 计算统计数据
@@ -214,11 +241,25 @@ export async function getDayPriceDetail(query: DayPriceDetailQuery): Promise<{
   const { modelId, cityId, date } = query
 
   const { calculateMultiFactorPrice } = await import('@/utils/pricingHelper')
+  const { getVehicleModelDetail } = await import('./vehicle')
+  const { getStoreList } = await import('./store')
 
   try {
+    // 获取车型信息
+    const modelRes = await getVehicleModelDetail(modelId)
+    const model = modelRes.data
+
+    // 通过门店列表获取城市信息
+    const storesRes = await getStoreList({ page: 1, pageSize: 100 }) as any
+    const store = storesRes.data.list.find((s: any) => s.cityId === cityId)
+    const cityName = store?.cityName || '未知城市'
+
     const request: PriceCalculationRequest = {
       modelId,
+      modelName: model.modelName,
+      basePrice: model.dailyPrice,
       cityId,
+      cityName,
       startDate: date,
       endDate: date
     }

@@ -2,7 +2,7 @@
 <template>
   <div class="permission-roles-container">
     <!-- 页面标题 -->
-    <PageHeader title="角色管理" description="管理系统角色、权限配置和数据权限范围" />
+    
 
     <!-- 搜索表单 -->
     <SearchForm
@@ -215,7 +215,6 @@ import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
 import { Plus, Download } from '@element-plus/icons-vue'
-import PageHeader from '@/components/common/PageHeader.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'
 import type { SearchField } from '@/components/common/SearchForm.vue'

@@ -1,7 +1,7 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="vehicle-status-container">
-    <PageHeader title="车辆状态管理" description="实时管理车辆可用性、维修、保养状态" />
+    
 
     <StatsCard :stats="statsConfig" />
 
@@ -204,7 +204,6 @@ import {
   Van,
   Right,
 } from '@element-plus/icons-vue'
-import PageHeader from '@/components/common/PageHeader.vue'
 import StatsCard from '@/components/common/StatsCard.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'

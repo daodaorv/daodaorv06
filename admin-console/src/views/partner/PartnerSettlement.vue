@@ -1,7 +1,7 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="partner-settlement-container">
-    <PageHeader title="合作商结算" description="查看合作商订单结算统计和分润明细" />
+    
 
     <SearchForm
       v-model="searchForm"
@@ -89,7 +89,6 @@
 import { ref, reactive, computed, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
 import { Download } from '@element-plus/icons-vue'
-import PageHeader from '@/components/common/PageHeader.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'
 import type { SearchField } from '@/components/common/SearchForm.vue'

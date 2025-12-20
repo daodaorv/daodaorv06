@@ -230,6 +230,16 @@ export const mockGetNationalHolidayList = (params: NationalHolidayListParams): P
     setTimeout(() => {
       let filteredList = [...mockNationalHolidays]
 
+      // 过滤已过期的节假日（只保留当前日期向后1年的数据）
+      const now = new Date()
+      const oneYearLater = new Date(now.getTime() + 365 * 24 * 60 * 60 * 1000)
+
+      filteredList = filteredList.filter(item => {
+        const endDate = new Date(item.endDate)
+        // 只保留结束日期在今天之后的节假日
+        return endDate >= now
+      })
+
       // 年份筛选
       if (params.year) {
         filteredList = filteredList.filter(item => item.year === params.year)
@@ -291,8 +301,12 @@ export const mockGetNationalHolidayDetail = (id: number): Promise<NationalHolida
 export const mockCreateNationalHoliday = (data: NationalHolidayFormData): Promise<NationalHoliday> => {
   return new Promise((resolve) => {
     setTimeout(() => {
-      const startDate = new Date(data.startDate)
-      const endDate = new Date(data.endDate)
+      // 使用安全的日期解析方式
+      const [startYear, startMonth, startDay] = data.startDate.split('-').map(Number)
+      const [endYear, endMonth, endDay] = data.endDate.split('-').map(Number)
+
+      const startDate = new Date(startYear, startMonth - 1, startDay)
+      const endDate = new Date(endYear, endMonth - 1, endDay)
       const daysCount = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)) + 1
 
       const newHoliday: NationalHolidayListItem = {
@@ -325,8 +339,12 @@ export const mockUpdateNationalHoliday = (id: number, data: NationalHolidayFormD
     setTimeout(() => {
       const holiday = mockNationalHolidays.find(item => item.id === id)
       if (holiday) {
-        const startDate = new Date(data.startDate)
-        const endDate = new Date(data.endDate)
+        // 使用安全的日期解析方式
+        const [startYear, startMonth, startDay] = data.startDate.split('-').map(Number)
+        const [endYear, endMonth, endDay] = data.endDate.split('-').map(Number)
+
+        const startDate = new Date(startYear, startMonth - 1, startDay)
+        const endDate = new Date(endYear, endMonth - 1, endDay)
         const daysCount = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)) + 1
 
         holiday.name = data.name

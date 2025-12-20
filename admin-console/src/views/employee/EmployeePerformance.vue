@@ -1,7 +1,7 @@
 <!-- 员工绩效管理页面 -->
 <template>
   <div class="employee-performance-container">
-    <PageHeader title="员工绩效管理" description="查看和管理员工绩效数据、评分和奖金发放" />
+    
 
     <!-- 统计卡片 -->
     <StatsCard :stats="statsCards" />
@@ -44,7 +44,6 @@
 import { ref, reactive, onMounted, computed } from 'vue'
 import { ElMessage } from 'element-plus'
 import { User, TrendCharts, Money, Trophy } from '@element-plus/icons-vue'
-import PageHeader from '@/components/common/PageHeader.vue'
 import StatsCard from '@/components/common/StatsCard.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'

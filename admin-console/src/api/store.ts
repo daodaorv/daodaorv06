@@ -16,7 +16,8 @@ import {
   type UpdateStoreParams,
   type StoreStats,
   type City,
-  type Region
+  type Region,
+  type CityListParams
 } from '@/mock/stores'
 
 // 导出类型
@@ -27,7 +28,8 @@ export type {
   UpdateStoreParams,
   StoreStats,
   City,
-  Region
+  Region,
+  CityListParams
 }
 
 /**
@@ -81,9 +83,9 @@ export const getStoreStats = () => {
 /**
  * 获取城市列表
  */
-export const getCityList = () => {
-  // return request.get('/cities')
-  return mockGetCityList()
+export const getCityList = (params?: CityListParams) => {
+  // return request.get('/cities', { params })
+  return mockGetCityList(params)
 }
 
 /**

@@ -1,7 +1,7 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="profit-price-diff-container">
-    <PageHeader title="差价分润管理" description="管理合作商差价分润和结算" />
+    
 
     <!-- 统计卡片 -->
     <el-row :gutter="20" class="stats-row">
@@ -357,7 +357,6 @@ import {
   CircleCheck,
   Download
 } from '@element-plus/icons-vue'
-import PageHeader from '@/components/common/PageHeader.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'
 import type { TableAction } from '@/components/common/DataTable.vue'

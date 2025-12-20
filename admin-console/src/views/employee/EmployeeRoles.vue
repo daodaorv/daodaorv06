@@ -1,7 +1,7 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="employee-roles-container">
-    <PageHeader title="员工角色分配" description="为员工分配系统角色，控制其访问权限和数据范围" />
+    
 
     <SearchForm
       v-model="searchForm"
@@ -94,7 +94,6 @@
 // @ts-nocheck
 import { ref, reactive } from 'vue'
 import { ElMessage } from 'element-plus'
-import PageHeader from '@/components/common/PageHeader.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'
 import FormDialog from '@/components/common/FormDialog.vue'

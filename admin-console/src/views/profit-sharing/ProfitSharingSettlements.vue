@@ -2,7 +2,7 @@
 <!-- 结算管理页面 -->
 <template>
   <div class="profit-sharing-settlements-container">
-    <PageHeader title="结算管理" description="管理各类分润结算记录和状态" />
+    
 
     <!-- 统计卡片 -->
     <el-row :gutter="20" class="stats-row">
@@ -133,7 +133,6 @@
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
-import PageHeader from '@/components/common/PageHeader.vue'
 import StatsCard from '@/components/common/StatsCard.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'

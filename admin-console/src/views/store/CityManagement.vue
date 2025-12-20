@@ -1,7 +1,7 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="city-management-container">
-    <PageHeader title="城市管理" description="管理服务城市和服务区域配置" />
+    
 
     <DataTable
       :data="cityList"
@@ -94,7 +94,6 @@ import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
 import { Plus, Edit, Delete } from '@element-plus/icons-vue'
-import PageHeader from '@/components/common/PageHeader.vue'
 import DataTable from '@/components/common/DataTable.vue'
 import type { TableColumn, TableAction, ToolbarButton } from '@/components/common/DataTable.vue'
 import { getCityList, type City } from '@/api/store'

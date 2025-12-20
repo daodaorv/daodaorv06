@@ -1,7 +1,7 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="partner-orders-container">
-    <PageHeader title="合作商订单" description="管理合作商订单信息，填写订单号和价格，自动计算差价和分润" />
+    
 
     <SearchForm
       v-model="searchForm"
@@ -110,7 +110,6 @@
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
 import { Plus, Edit, Download } from '@element-plus/icons-vue'
-import PageHeader from '@/components/common/PageHeader.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'
 import type { SearchField } from '@/components/common/SearchForm.vue'

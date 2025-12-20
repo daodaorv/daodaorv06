@@ -1,7 +1,7 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="finance-reconciliation-container">
-    <PageHeader title="对账结算" description="管理门店对账和结算流程" />
+    
 
     <!-- 搜索和操作 -->
     <div class="toolbar">
@@ -193,7 +193,6 @@
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
-import PageHeader from '@/components/common/PageHeader.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'
 import {

@@ -2,7 +2,7 @@
 <!-- 客服质量监控页面 -->
 <template>
   <div class="customer-service-quality-container">
-    <PageHeader title="客服质量监控" description="实时监控客服人员服务质量和绩效指标" />
+    
 
     <!-- 统计卡片 -->
     <StatsCard :stats="statsCards" />
@@ -258,7 +258,6 @@
 import { ref, reactive, onMounted, computed } from 'vue'
 import { ElMessage } from 'element-plus'
 import { User, TrendCharts, Timer, Star } from '@element-plus/icons-vue'
-import PageHeader from '@/components/common/PageHeader.vue'
 import StatsCard from '@/components/common/StatsCard.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'

@@ -1,8 +1,7 @@
 <!-- @ts-nocheck -->
-<!-- @ts-nocheck -->
 <template>
   <div class="price-calendar-container">
-    <PageHeader title="价格日历" description="查看和管理每日价格策略，支持快速调价和批量操作" />
+    
 
     <!-- 筛选器 -->
     <el-card class="filter-card">
@@ -133,7 +132,7 @@
             :date="date"
             :price-info="getPriceInfo(date)"
             :selected="selectedDates.includes(date)"
-            @click="handleDateClick"
+            @click="(clickedDate, event) => handleDateClick(clickedDate, event)"
           />
         </div>
       </div>
@@ -181,7 +180,7 @@
         </el-table-column>
         <el-table-column label="价格变化" width="100">
           <template #default="{ row, $index }">
-            <div v-if="$index > 0" class="price-change">
+            <div v-if="$index > 0 && calendarData" class="price-change">
               <template v-if="row.dailyRental > calendarData.calendar[$index - 1].dailyRental">
                 <el-icon color="#f56c6c"><CaretTop /></el-icon>
                 <span style="color: #f56c6c">
@@ -216,10 +215,15 @@
       size="600px"
       :close-on-click-modal="false"
     >
-      <div v-if="selectedDate">
-        <p>选中日期：{{ selectedDate }}</p>
-        <p>功能开发中...</p>
-      </div>
+      <PriceDayDetail
+        v-if="selectedDate && filters.modelId && filters.storeId"
+        :date="selectedDate"
+        :model-id="filters.modelId"
+        :city-id="getCityId()"
+        @adjust="handleAdjustPrice"
+        @view-history="handleViewHistory"
+        @copy-to-other-dates="handleCopyToOtherDates"
+      />
     </el-drawer>
 
     <!-- 批量调价对话框 -->
@@ -234,16 +238,15 @@
 </template>
 
 <script setup lang="ts">
-// @ts-nocheck
 import { ref, reactive, computed, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
 import { ArrowLeft, ArrowRight, CaretTop, CaretBottom } from '@element-plus/icons-vue'
-import PageHeader from '@/components/common/PageHeader.vue'
 import PriceCalendarCell from '@/components/marketing/PriceCalendarCell.vue'
+import PriceDayDetail from '@/components/marketing/PriceDayDetail.vue'
 import BatchPriceAdjustForm from '@/components/marketing/BatchPriceAdjustForm.vue'
 import { getPriceCalendar, type PriceCalendarResponse } from '@/api/priceCalendar'
-import { getVehicleModels } from '@/api/vehicle'
-import { getStoreList } from '@/api/store'
+import { getVehicleModels, type VehicleModel } from '@/api/vehicle'
+import { getStoreList, type Store } from '@/api/store'
 
 // 筛选条件
 const filters = reactive({
@@ -398,7 +401,7 @@ const loadVehicleModels = async () => {
 // 加载门店列表
 const loadStores = async () => {
   try {
-    const res = await getStoreList({ page: 1, pageSize: 100, status: 'active' })
+    const res = await getStoreList({ page: 1, pageSize: 100, status: 'active' }) as any
     stores.value = res.data.list
     if (stores.value.length > 0 && !filters.storeId) {
       filters.storeId = stores.value[0].id
@@ -468,9 +471,22 @@ const goToToday = () => {
 }
 
 // 点击日期
-const handleDateClick = (date: string) => {
-  selectedDate.value = date
-  drawerVisible.value = true
+const handleDateClick = (date: string, event?: MouseEvent) => {
+  // 如果按住 Ctrl/Cmd 键，则进行多选
+  if (event && (event.ctrlKey || event.metaKey)) {
+    const index = selectedDates.value.indexOf(date)
+    if (index > -1) {
+      // 已选中，取消选择
+      selectedDates.value.splice(index, 1)
+    } else {
+      // 未选中，添加到选择列表
+      selectedDates.value.push(date)
+    }
+  } else {
+    // 单击查看详情
+    selectedDate.value = date
+    drawerVisible.value = true
+  }
 }
 
 // 查看详情
@@ -501,6 +517,29 @@ const handleBatchAdjustSuccess = () => {
 // 清空选择
 const clearSelection = () => {
   selectedDates.value = []
+}
+
+// 获取城市ID
+const getCityId = () => {
+  const store = stores.value.find(s => s.id === filters.storeId)
+  return store?.cityId || 0
+}
+
+// 调整价格
+const handleAdjustPrice = (date: string) => {
+  selectedDates.value = [date]
+  drawerVisible.value = false
+  batchAdjustVisible.value = true
+}
+
+// 查看历史
+const handleViewHistory = (date: string) => {
+  ElMessage.info(`查看 ${date} 的价格历史记录功能开发中`)
+}
+
+// 复制到其他日期
+const handleCopyToOtherDates = (date: string) => {
+  ElMessage.info(`复制 ${date} 的价格到其他日期功能开发中`)
 }
 
 // 初始化

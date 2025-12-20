@@ -1,7 +1,7 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="campsite-list-container">
-    <PageHeader title="营地管理" description="管理房车营地信息和运营状态" />
+    
 
     <StatsCard :stats="statsConfig" />
 
@@ -200,7 +200,6 @@ import { ref, reactive, computed, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
 import { House, TrendCharts, User, Money } from '@element-plus/icons-vue'
 
-import PageHeader from '@/components/common/PageHeader.vue'
 import StatsCard from '@/components/common/StatsCard.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'
