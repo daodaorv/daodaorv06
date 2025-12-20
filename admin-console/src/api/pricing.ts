@@ -1,5 +1,6 @@
 /**
- * 城市因子相关API
+ * 价格策略相关API
+ * 包含：城市因子、时间因子等价格策略相关的API
  */
 
 import type {
@@ -10,10 +11,8 @@ import type {
   CityFactorListParams,
   CityFactorListResponse,
   CityFactor,
-  CityFactorFormData,
-  CityListParams,
-  CityListResponse
-} from '@/types/cityFactor'
+  CityFactorFormData
+} from '@/types/pricing'
 
 import {
   mockGetCityTierList,
@@ -23,9 +22,10 @@ import {
   mockGetCityFactorDetail,
   mockCreateCityFactor,
   mockUpdateCityFactor,
-  mockDeleteCityFactor,
-  mockGetCityList
-} from '@/mock/cityFactor'
+  mockDeleteCityFactor
+} from '@/mock/pricing'
+
+// ==================== 城市分级相关API ====================
 
 /**
  * 获取城市分级列表
@@ -47,6 +47,8 @@ export const getCityTierDetail = (id: number): Promise<CityTier> => {
 export const updateCityTier = (id: number, data: UpdateCityTierRequest): Promise<CityTier> => {
   return mockUpdateCityTier(id, data)
 }
+
+// ==================== 自定义城市因子相关API ====================
 
 /**
  * 获取自定义城市因子列表
@@ -81,11 +83,4 @@ export const updateCityFactor = (id: number, data: CityFactorFormData): Promise<
  */
 export const deleteCityFactor = (id: number): Promise<void> => {
   return mockDeleteCityFactor(id)
-}
-
-/**
- * 获取城市列表
- */
-export const getCityList = (params: CityListParams): Promise<CityListResponse> => {
-  return mockGetCityList(params)
 }

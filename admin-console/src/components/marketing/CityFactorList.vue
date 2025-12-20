@@ -79,7 +79,7 @@
 
 <script setup lang="ts">
 // @ts-nocheck
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive, computed, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
 import SearchForm from '@/components/common/SearchForm.vue'
@@ -88,6 +88,7 @@ import FormDialog from '@/components/common/FormDialog.vue'
 import type { SearchField } from '@/components/common/SearchForm.vue'
 import type { TableColumn, TableAction, ToolbarButton } from '@/components/common/DataTable.vue'
 import type { FormField } from '@/components/common/FormDialog.vue'
+import { getCityList } from '@/api/store'
 
 // 城市分级选项
 const CITY_TIER_OPTIONS = [
@@ -98,19 +99,26 @@ const CITY_TIER_OPTIONS = [
   { label: '四线城市', value: 'tier4' }
 ]
 
-// 城市选项（示例）
-const CITY_OPTIONS = [
-  { label: '北京', value: '北京' },
-  { label: '上海', value: '上海' },
-  { label: '广州', value: '广州' },
-  { label: '深圳', value: '深圳' },
-  { label: '成都', value: '成都' },
-  { label: '杭州', value: '杭州' },
-  { label: '重庆', value: '重庆' },
-  { label: '西安', value: '西安' },
-  { label: '武汉', value: '武汉' },
-  { label: '南京', value: '南京' }
-]
+// 城市选项（动态加载）
+const cityOptions = ref<Array<{ label: string; value: number }>>([])
+const loadingCities = ref(false)
+
+// 加载城市列表
+const loadCityOptions = async () => {
+  loadingCities.value = true
+  try {
+    const res = await getCityList({ status: 'active' })
+    cityOptions.value = res.data.map((city: any) => ({
+      label: city.name,
+      value: city.id
+    }))
+  } catch (error) {
+    console.error('加载城市列表失败:', error)
+    ElMessage.error('加载城市列表失败')
+  } finally {
+    loadingCities.value = false
+  }
+}
 
 // 搜索表单
 const searchForm = reactive({
@@ -255,7 +263,7 @@ const formData = reactive({
   name: '',
   cityTier: 'tier1',
   status: 'inactive',
-  cities: [] as string[],
+  cityIds: [] as number[], // 改为使用城市ID数组
   adjustmentType: 'percentage',
   adjustmentValue: 0,
   priority: 50,
@@ -312,12 +320,13 @@ const formFields = computed<FormField[]>(() => [
     ]
   },
   {
-    prop: 'cities',
+    prop: 'cityIds',
     label: '适用城市',
     type: 'select',
     multiple: true,
-    options: CITY_OPTIONS,
+    options: cityOptions.value,
     placeholder: '请选择适用城市',
+    loading: loadingCities.value,
     tip: '选择该因子适用的城市列表'
   },
   {
@@ -361,7 +370,7 @@ const formRules = {
   name: [{ required: true, message: '请输入因子名称', trigger: 'blur' }],
   cityTier: [{ required: true, message: '请选择城市分级', trigger: 'change' }],
   status: [{ required: true, message: '请选择状态', trigger: 'change' }],
-  cities: [{ required: true, message: '请选择适用城市', trigger: 'change' }],
+  cityIds: [{ required: true, message: '请选择适用城市', trigger: 'change' }],
   adjustmentType: [{ required: true, message: '请选择调整类型', trigger: 'change' }],
   adjustmentValue: [{ required: true, message: '请输入调整值', trigger: 'blur' }],
   priority: [{ required: true, message: '请输入优先级', trigger: 'blur' }]
@@ -411,7 +420,7 @@ const resetForm = () => {
   formData.name = ''
   formData.cityTier = 'tier1'
   formData.status = 'inactive'
-  formData.cities = []
+  formData.cityIds = []
   formData.adjustmentType = 'percentage'
   formData.adjustmentValue = 0
   formData.priority = 50
@@ -437,7 +446,7 @@ const handleEdit = (row: any) => {
   formData.name = row.name
   formData.cityTier = row.cityTier
   formData.status = row.status
-  formData.cities = [...row.cities]
+  formData.cityIds = [...row.cityIds]
   formData.adjustmentType = row.adjustmentType
   formData.adjustmentValue = row.adjustmentValue
   formData.priority = row.priority
@@ -497,6 +506,11 @@ const handleCurrentChange = (page: number) => {
   pagination.page = page
   // TODO: 重新加载数据
 }
+
+// 组件挂载时加载城市列表
+onMounted(() => {
+  loadCityOptions()
+})
 </script>
 
 <style scoped lang="scss">

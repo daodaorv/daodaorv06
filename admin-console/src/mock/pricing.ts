@@ -1,5 +1,6 @@
 /**
- * 城市因子Mock数据
+ * 价格策略Mock数据
+ * 包含：城市因子、时间因子等价格策略相关的Mock数据
  */
 
 import type {
@@ -8,48 +9,13 @@ import type {
   CityTierListParams,
   CityTierListResponse,
   UpdateCityTierRequest,
-  City,
-  CityListParams,
-  CityListResponse,
   CityFactor,
   CityFactorListItem,
   CityFactorListParams,
   CityFactorListResponse,
   CityFactorFormData
-} from '@/types/cityFactor'
-
-/**
- * Mock城市数据
- */
-export const mockCities: City[] = [
-  // 一线城市
-  { id: 1, name: '北京', provinceId: 1, provinceName: '北京市', tierId: 1, tierName: '一线城市', isHot: true, sortOrder: 1 },
-  { id: 2, name: '上海', provinceId: 2, provinceName: '上海市', tierId: 1, tierName: '一线城市', isHot: true, sortOrder: 2 },
-  { id: 3, name: '广州', provinceId: 3, provinceName: '广东省', tierId: 1, tierName: '一线城市', isHot: true, sortOrder: 3 },
-  { id: 4, name: '深圳', provinceId: 3, provinceName: '广东省', tierId: 1, tierName: '一线城市', isHot: true, sortOrder: 4 },
-
-  // 新一线城市
-  { id: 5, name: '成都', provinceId: 4, provinceName: '四川省', tierId: 2, tierName: '新一线城市', isHot: true, sortOrder: 5 },
-  { id: 6, name: '杭州', provinceId: 5, provinceName: '浙江省', tierId: 2, tierName: '新一线城市', isHot: true, sortOrder: 6 },
-  { id: 7, name: '重庆', provinceId: 6, provinceName: '重庆市', tierId: 2, tierName: '新一线城市', isHot: true, sortOrder: 7 },
-  { id: 8, name: '西安', provinceId: 7, provinceName: '陕西省', tierId: 2, tierName: '新一线城市', isHot: true, sortOrder: 8 },
-  { id: 9, name: '武汉', provinceId: 8, provinceName: '湖北省', tierId: 2, tierName: '新一线城市', isHot: true, sortOrder: 9 },
-  { id: 10, name: '南京', provinceId: 9, provinceName: '江苏省', tierId: 2, tierName: '新一线城市', isHot: true, sortOrder: 10 },
-
-  // 二线城市
-  { id: 11, name: '苏州', provinceId: 9, provinceName: '江苏省', tierId: 3, tierName: '二线城市', isHot: false, sortOrder: 11 },
-  { id: 12, name: '天津', provinceId: 10, provinceName: '天津市', tierId: 3, tierName: '二线城市', isHot: false, sortOrder: 12 },
-  { id: 13, name: '郑州', provinceId: 11, provinceName: '河南省', tierId: 3, tierName: '二线城市', isHot: false, sortOrder: 13 },
-  { id: 14, name: '长沙', provinceId: 12, provinceName: '湖南省', tierId: 3, tierName: '二线城市', isHot: false, sortOrder: 14 },
-  { id: 15, name: '沈阳', provinceId: 13, provinceName: '辽宁省', tierId: 3, tierName: '二线城市', isHot: false, sortOrder: 15 },
-
-  // 三线城市
-  { id: 16, name: '昆明', provinceId: 14, provinceName: '云南省', tierId: 4, tierName: '三线城市', isHot: false, sortOrder: 16 },
-  { id: 17, name: '大连', provinceId: 13, provinceName: '辽宁省', tierId: 4, tierName: '三线城市', isHot: false, sortOrder: 17 },
-  { id: 18, name: '厦门', provinceId: 15, provinceName: '福建省', tierId: 4, tierName: '三线城市', isHot: false, sortOrder: 18 },
-  { id: 19, name: '合肥', provinceId: 16, provinceName: '安徽省', tierId: 4, tierName: '三线城市', isHot: false, sortOrder: 19 },
-  { id: 20, name: '石家庄', provinceId: 17, provinceName: '河北省', tierId: 4, tierName: '三线城市', isHot: false, sortOrder: 20 }
-]
+} from '@/types/pricing'
+import { mockCities } from './stores'
 
 /**
  * Mock城市分级数据
@@ -145,8 +111,8 @@ export const mockCityFactors: CityFactorListItem[] = [
   {
     id: 2,
     factorName: '冬季冰雪城市加价',
-    cityIds: [11, 15, 17],
-    cityNames: ['哈尔滨', '沈阳', '大连'],
+    cityIds: [15, 17], // 修正：沈阳、大连（移除不存在的哈尔滨）
+    cityNames: ['沈阳', '大连'],
     priority: 7,
     adjustmentType: 'percentage',
     adjustmentValue: 30,
@@ -252,53 +218,6 @@ export const mockUpdateCityTier = (id: number, data: UpdateCityTierRequest): Pro
       } else {
         reject(new Error('城市分级不存在'))
       }
-    }, 300)
-  })
-}
-
-/**
- * 获取城市列表
- */
-export const mockGetCityList = (params: CityListParams): Promise<CityListResponse> => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      let filteredList = [...mockCities]
-
-      // 省份筛选
-      if (params.provinceId) {
-        filteredList = filteredList.filter(item => item.provinceId === params.provinceId)
-      }
-
-      // 分级筛选
-      if (params.tierId) {
-        filteredList = filteredList.filter(item => item.tierId === params.tierId)
-      }
-
-      // 热门城市筛选
-      if (params.isHot !== undefined) {
-        filteredList = filteredList.filter(item => item.isHot === params.isHot)
-      }
-
-      // 关键词搜索
-      if (params.keyword) {
-        filteredList = filteredList.filter(item =>
-          item.name.includes(params.keyword!) ||
-          item.provinceName.includes(params.keyword!)
-        )
-      }
-
-      const total = filteredList.length
-      const page = params.page || 1
-      const pageSize = params.pageSize || 20
-      const start = (page - 1) * pageSize
-      const end = start + pageSize
-
-      resolve({
-        list: filteredList.slice(start, end),
-        total,
-        page,
-        pageSize
-      })
     }, 300)
   })
 }

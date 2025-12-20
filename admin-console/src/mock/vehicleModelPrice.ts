@@ -9,11 +9,17 @@ import type {
   VehicleModelPriceGroupListParams,
   VehicleModelPriceHistoryListParams,
   UpdateModelPriceRequest,
+  UpdateModelPriceResponse,
   BatchUpdatePriceRequest,
+  BatchUpdatePriceResponse,
   CreatePriceGroupRequest,
+  CreatePriceGroupResponse,
   JoinPriceGroupRequest,
+  JoinPriceGroupResponse,
   UpdateGroupPriceRequest,
+  UpdateGroupPriceResponse,
   LeaveGroupRequest,
+  LeaveGroupResponse,
 } from '../types/vehicleModel'
 
 // 车型价格分组 Mock 数据
