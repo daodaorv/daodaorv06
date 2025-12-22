@@ -423,7 +423,7 @@ const handleConfirm = () => {
 <style scoped lang="scss">
 .select-coupon-page {
 	min-height: 100vh;
-	background-color: #F5F5F5;
+	background-color: $uni-bg-color;
 	padding-bottom: 180rpx;
 }
 
@@ -431,15 +431,15 @@ const handleConfirm = () => {
 .tip-section {
 	display: flex;
 	align-items: center;
-	gap: 12rpx;
-	padding: 24rpx 32rpx;
-	background-color: #FFF9F0;
-	border-bottom: 1rpx solid #FFE8CC;
+	gap: $uni-spacing-sm;
+	padding: $uni-spacing-lg $uni-spacing-lg;
+	background-color: rgba(255, 159, 41, 0.08);
+	border-bottom: 1rpx solid rgba(255, 159, 41, 0.2);
 }
 
 .tip-text {
-	font-size: 26rpx;
-	color: #666;
+	font-size: $uni-font-size-sm;
+	color: $uni-text-color-secondary;
 }
 
 // 订单金额信息
@@ -447,61 +447,63 @@ const handleConfirm = () => {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	padding: 32rpx;
-	background-color: #FFFFFF;
-	margin-bottom: 16rpx;
+	padding: $uni-spacing-lg;
+	background-color: $uni-bg-color-card;
+	margin-bottom: $uni-spacing-md;
+	box-shadow: $uni-shadow-card;
 }
 
 .info-label {
-	font-size: 28rpx;
-	color: #666;
+	font-size: $uni-font-size-base;
+	color: $uni-text-color-secondary;
 }
 
 .info-value {
-	font-size: 36rpx;
+	font-size: 40rpx;
 	font-weight: bold;
-	color: #FF9F29;
+	color: $uni-color-primary;
+	font-family: 'DIN Alternate', sans-serif;
 }
 
 // 智能推荐区域
 .recommend-section {
-	margin: 0 24rpx 24rpx;
-	padding: 24rpx;
-	background: linear-gradient(135deg, #FFF9F0 0%, #FFF5E6 100%);
-	border-radius: 24rpx;
-	border: 2rpx solid #FFE8CC;
+	margin: 0 $uni-spacing-lg $uni-spacing-lg;
+	padding: $uni-spacing-lg;
+	background: linear-gradient(135deg, rgba(255, 159, 41, 0.08) 0%, rgba(255, 184, 77, 0.12) 100%);
+	border-radius: $uni-radius-lg;
+	border: 2rpx solid rgba(255, 159, 41, 0.2);
 }
 
 .recommend-header {
 	display: flex;
 	align-items: center;
-	gap: 8rpx;
-	margin-bottom: 16rpx;
+	gap: $uni-spacing-xs;
+	margin-bottom: $uni-spacing-md;
 }
 
 .recommend-title {
-	font-size: 30rpx;
+	font-size: $uni-font-size-md;
 	font-weight: bold;
-	color: #FF9F29;
+	color: $uni-color-primary;
 }
 
 .recommend-subtitle {
-	font-size: 24rpx;
-	color: #999;
+	font-size: $uni-font-size-xs;
+	color: $uni-text-color-placeholder;
 	margin-left: auto;
 }
 
 .recommend-card {
 	position: relative;
 	display: flex;
-	background-color: #FFFFFF;
-	border-radius: 16rpx;
+	background-color: $uni-bg-color-card;
+	border-radius: $uni-radius-md;
 	overflow: hidden;
 	box-shadow: 0 4rpx 12rpx rgba(255, 159, 41, 0.15);
 	transition: all 0.3s ease;
 
 	&.selected {
-		border: 2rpx solid #FF9F29;
+		border: 2rpx solid $uni-color-primary;
 		box-shadow: 0 4rpx 16rpx rgba(255, 159, 41, 0.3);
 	}
 }
@@ -511,11 +513,11 @@ const handleConfirm = () => {
 	top: 0;
 	left: 0;
 	padding: 6rpx 16rpx;
-	background: linear-gradient(135deg, #FF9F29 0%, #FFB84D 100%);
-	color: #FFFFFF;
-	font-size: 20rpx;
+	background: $uni-color-primary-gradient;
+	color: $uni-text-color-inverse;
+	font-size: $uni-font-size-xs;
 	font-weight: bold;
-	border-radius: 16rpx 0 16rpx 0;
+	border-radius: $uni-radius-md 0 $uni-radius-md 0;
 	z-index: 1;
 }
 
@@ -523,25 +525,25 @@ const handleConfirm = () => {
 	display: flex;
 	align-items: center;
 	gap: 6rpx;
-	margin-top: 8rpx;
+	margin-top: $uni-spacing-xs;
 }
 
 .reason-text {
-	font-size: 22rpx;
-	color: #52C41A;
+	font-size: $uni-font-size-xs;
+	color: $uni-color-success;
 	font-weight: 500;
 }
 
 // 优惠券区域
 .coupon-section {
-	margin-bottom: 24rpx;
+	margin-bottom: $uni-spacing-lg;
 }
 
 .section-title {
-	padding: 24rpx 32rpx 16rpx;
-	font-size: 28rpx;
+	padding: $uni-spacing-lg $uni-spacing-lg $uni-spacing-md;
+	font-size: $uni-font-size-base;
 	font-weight: bold;
-	color: #333;
+	color: $uni-text-color;
 }
 
 // 空状态
@@ -551,41 +553,55 @@ const handleConfirm = () => {
 	align-items: center;
 	justify-content: center;
 	padding: 80rpx 0;
-	background-color: #FFFFFF;
+	background-color: $uni-bg-color-card;
+	margin: 0 $uni-spacing-lg;
+	border-radius: $uni-radius-lg;
 }
 
 .empty-text {
-	font-size: 28rpx;
-	color: #999;
-	margin: 24rpx 0 32rpx;
+	font-size: $uni-font-size-base;
+	color: $uni-text-color-placeholder;
+	margin: $uni-spacing-lg 0 $uni-spacing-xl;
 }
 
 .go-mall-btn {
-	padding: 16rpx 48rpx;
-	background: linear-gradient(135deg, #FF9F29 0%, #FFB84D 100%);
-	color: #FFFFFF;
-	border-radius: 48rpx;
-	font-size: 28rpx;
+	padding: $uni-spacing-md $uni-spacing-xl;
+	background: $uni-color-primary-gradient;
+	color: $uni-text-color-inverse;
+	border-radius: $uni-radius-btn;
+	font-size: $uni-font-size-base;
+	font-weight: 500;
 	border: none;
+	box-shadow: $uni-shadow-glow;
+	transition: all 0.2s ease;
+
+	&:active {
+		transform: scale(0.98);
+		opacity: 0.9;
+	}
+
+	&::after {
+		border: none;
+	}
 }
 
 // 优惠券列表
 .coupon-list {
-	padding: 0 24rpx;
+	padding: 0 $uni-spacing-lg;
 }
 
 .coupon-card {
 	display: flex;
-	background-color: #FFFFFF;
-	border-radius: 16rpx;
-	margin-bottom: 24rpx;
+	background-color: $uni-bg-color-card;
+	border-radius: $uni-radius-lg;
+	margin-bottom: $uni-spacing-lg;
 	overflow: hidden;
-	box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
+	box-shadow: $uni-shadow-card;
 	position: relative;
 	transition: all 0.3s ease;
 
 	&.selected {
-		border: 2rpx solid #FF9F29;
+		border: 2rpx solid $uni-color-primary;
 		box-shadow: 0 4rpx 16rpx rgba(255, 159, 41, 0.2);
 	}
 
@@ -596,12 +612,12 @@ const handleConfirm = () => {
 
 .coupon-left {
 	width: 200rpx;
-	background: linear-gradient(135deg, #FF9F29 0%, #FFB84D 100%);
+	background: $uni-color-primary-gradient;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	padding: 32rpx 24rpx;
+	padding: $uni-spacing-lg $uni-spacing-lg;
 	position: relative;
 
 	&::after {
@@ -612,72 +628,73 @@ const handleConfirm = () => {
 		transform: translateY(-50%);
 		width: 24rpx;
 		height: 24rpx;
-		background-color: #F5F5F5;
+		background-color: $uni-bg-color;
 		border-radius: 50%;
 	}
 }
 
 .coupon-amount {
-	color: #FFFFFF;
+	color: $uni-text-color-inverse;
 	display: flex;
 	align-items: baseline;
-	margin-bottom: 8rpx;
+	margin-bottom: $uni-spacing-xs;
 }
 
 .amount-symbol {
-	font-size: 28rpx;
+	font-size: $uni-font-size-base;
 	font-weight: 600;
 }
 
 .amount-value {
 	font-size: 56rpx;
 	font-weight: bold;
+	font-family: 'DIN Alternate', sans-serif;
 }
 
 .coupon-condition {
 	color: rgba(255, 255, 255, 0.9);
-	font-size: 22rpx;
+	font-size: $uni-font-size-xs;
 }
 
 .coupon-right {
 	flex: 1;
-	padding: 24rpx;
+	padding: $uni-spacing-lg;
 	display: flex;
 	flex-direction: column;
-	gap: 8rpx;
+	gap: $uni-spacing-xs;
 }
 
 .coupon-name {
-	font-size: 30rpx;
+	font-size: $uni-font-size-md;
 	font-weight: 600;
-	color: #333;
+	color: $uni-text-color;
 }
 
 .coupon-desc {
-	font-size: 24rpx;
-	color: #666;
+	font-size: $uni-font-size-xs;
+	color: $uni-text-color-secondary;
 }
 
 .coupon-scope {
-	font-size: 22rpx;
-	color: #999;
+	font-size: $uni-font-size-xs;
+	color: $uni-text-color-placeholder;
 }
 
 .coupon-time {
-	font-size: 22rpx;
-	color: #999;
-	margin-top: 8rpx;
+	font-size: $uni-font-size-xs;
+	color: $uni-text-color-placeholder;
+	margin-top: $uni-spacing-xs;
 }
 
 .coupon-reason {
-	font-size: 22rpx;
-	color: #FF4D4F;
-	margin-top: 8rpx;
+	font-size: $uni-font-size-xs;
+	color: $uni-color-error;
+	margin-top: $uni-spacing-xs;
 }
 
 .coupon-check {
 	position: absolute;
-	right: 24rpx;
+	right: $uni-spacing-lg;
 	top: 50%;
 	transform: translateY(-50%);
 }
@@ -689,25 +706,30 @@ const handleConfirm = () => {
 	left: 0;
 	right: 0;
 	display: flex;
-	gap: 24rpx;
-	padding: 20rpx 32rpx;
-	padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
+	gap: $uni-spacing-lg;
+	padding: $uni-spacing-md $uni-spacing-lg;
+	padding-bottom: calc(#{$uni-spacing-md} + env(safe-area-inset-bottom));
 	background: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 1) 100%);
 	backdrop-filter: blur(20rpx);
-	border-top: 1rpx solid rgba(0, 0, 0, 0.05);
-	box-shadow: 0 -8rpx 24rpx rgba(0, 0, 0, 0.08);
+	border-top: 1rpx solid $uni-border-color-light;
+	box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.05);
 	z-index: 100;
 }
 
 .cancel-btn {
 	flex: 1;
-	height: 88rpx;
-	line-height: 88rpx;
-	font-size: 32rpx;
-	background-color: #F5F5F5;
-	color: #666;
-	border-radius: 44rpx;
+	height: 96rpx;
+	line-height: 96rpx;
+	font-size: $uni-font-size-md;
+	background-color: $uni-bg-color-grey;
+	color: $uni-text-color-secondary;
+	border-radius: $uni-radius-btn;
 	border: none;
+	transition: all 0.2s ease;
+
+	&:active {
+		background-color: $uni-border-color;
+	}
 
 	&::after {
 		border: none;
@@ -716,15 +738,21 @@ const handleConfirm = () => {
 
 .confirm-btn {
 	flex: 1;
-	height: 88rpx;
-	line-height: 88rpx;
-	font-size: 32rpx;
-	background: linear-gradient(135deg, #FF9F29 0%, #FFB84D 100%);
-	color: #FFFFFF;
-	border-radius: 44rpx;
-	font-weight: bold;
-	box-shadow: 0 8rpx 24rpx rgba(255, 159, 41, 0.35);
+	height: 96rpx;
+	line-height: 96rpx;
+	font-size: $uni-font-size-md;
+	background: $uni-color-primary-gradient;
+	color: $uni-text-color-inverse;
+	border-radius: $uni-radius-btn;
+	font-weight: 600;
+	box-shadow: $uni-shadow-glow;
 	border: none;
+	transition: all 0.2s ease;
+
+	&:active {
+		transform: scale(0.98);
+		opacity: 0.9;
+	}
 
 	&::after {
 		border: none;
@@ -732,6 +760,7 @@ const handleConfirm = () => {
 
 	&:disabled {
 		opacity: 0.5;
+		box-shadow: none;
 	}
 }
 </style>

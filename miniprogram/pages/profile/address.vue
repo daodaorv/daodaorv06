@@ -35,14 +35,24 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { onShow } from '@dcloudio/uni-app'
+import { onLoad, onShow } from '@dcloudio/uni-app'
 import { useAddressStore } from '@/stores/address'
+import { requireLogin, isLoggedIn, buildRedirectUrl } from '@/utils/auth'
 
 const addressStore = useAddressStore()
 const addressList = ref<any[]>([])
 const loading = ref(true)
+const pageReady = ref(false)
+const redirectUrl = ref('/pages/profile/address')
+let cachedRouteParams: Record<string, any> | null = null
 
 const loadAddresses = async () => {
+  // 检查登录状态
+  if (!isLoggedIn()) {
+    addressList.value = []
+    return
+  }
+
   loading.value = true
   const res = await addressStore.fetchAddresses()
   if (res) {
@@ -51,8 +61,39 @@ const loadAddresses = async () => {
   loading.value = false
 }
 
-onShow(() => {
+// 页面初始化设置
+const setupAddressPage = (options: any) => {
+  pageReady.value = true
   loadAddresses()
+}
+
+// 确保用户已登录
+const ensureAuth = (options: any) => {
+  redirectUrl.value = buildRedirectUrl('/pages/profile/address', options || {})
+  if (isLoggedIn()) {
+    return true
+  }
+  return requireLogin(redirectUrl.value)
+}
+
+// 页面加载时检查登录状态
+onLoad((options: any) => {
+  cachedRouteParams = options || {}
+  pageReady.value = false
+  if (!ensureAuth(cachedRouteParams)) {
+    return
+  }
+  setupAddressPage(cachedRouteParams)
+})
+
+// 页面显示时检查登录状态（从登录页返回时）
+onShow(() => {
+  if (!pageReady.value && cachedRouteParams && isLoggedIn()) {
+    setupAddressPage(cachedRouteParams)
+  } else if (pageReady.value && isLoggedIn()) {
+    // 页面已初始化且已登录，刷新数据
+    loadAddresses()
+  }
 })
 
 const handleAdd = () => {
@@ -93,82 +134,92 @@ const formatAddress = (address: any) => {
 <style scoped lang="scss">
 .address-page {
   min-height: 100vh;
-  background-color: #f8f8f8;
+  background-color: $uni-bg-color;
   padding-bottom: 120rpx;
 }
 
 .address-list {
-  padding: 24rpx;
+  padding: $uni-spacing-xl;
   display: flex;
   flex-direction: column;
-  gap: 24rpx;
+  gap: $uni-spacing-xl;
 }
 
 .address-card {
-  background-color: #fff;
-  border-radius: 16rpx;
-  padding: 32rpx;
-  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.03);
+  background-color: $uni-bg-color-card;
+  border-radius: $uni-radius-lg;
+  padding: $uni-spacing-xl;
+  box-shadow: $uni-shadow-card;
   display: flex;
   flex-direction: column;
-  gap: 12rpx;
+  gap: $uni-spacing-md;
+  transition: all 0.2s ease;
+
+  &:active {
+    transform: scale(0.99);
+  }
 }
 
 .card-header {
   display: flex;
   align-items: center;
-  gap: 12rpx;
+  gap: $uni-spacing-md;
 }
 
 .name {
-  font-size: 32rpx;
+  font-size: $uni-font-size-lg;
   font-weight: 600;
-  color: #333;
+  color: $uni-text-color;
 }
 
 .tag {
   font-size: 20rpx;
-  color: #FF9F29;
-  background-color: rgba(255, 159, 41, 0.12);
-  padding: 4rpx 12rpx;
-  border-radius: 12rpx;
+  color: $uni-color-primary;
+  background-color: rgba($uni-color-primary, 0.12);
+  padding: 4rpx $uni-spacing-md;
+  border-radius: $uni-radius-md;
 }
 
 .default-tag {
   font-size: 20rpx;
-  color: #fff;
-  background-color: #FF9F29;
-  padding: 4rpx 12rpx;
-  border-radius: 12rpx;
+  color: $uni-text-color-inverse;
+  background-color: $uni-color-primary;
+  padding: 4rpx $uni-spacing-md;
+  border-radius: $uni-radius-md;
 }
 
 .phone {
-  font-size: 28rpx;
-  color: #666;
+  font-size: $uni-font-size-base;
+  color: $uni-text-color-secondary;
 }
 
 .full-address {
-  font-size: 26rpx;
-  color: #999;
+  font-size: $uni-font-size-sm;
+  color: $uni-text-color-placeholder;
   line-height: 1.5;
 }
 
 .card-actions {
   display: flex;
-  gap: 32rpx;
-  margin-top: 12rpx;
+  gap: $uni-spacing-xl;
+  margin-top: $uni-spacing-md;
 }
 
 .action {
   display: flex;
   align-items: center;
-  gap: 8rpx;
-  font-size: 26rpx;
-  color: #666;
-}
+  gap: $uni-spacing-sm;
+  font-size: $uni-font-size-sm;
+  color: $uni-text-color-secondary;
+  transition: all 0.2s ease;
 
-.action.delete {
-  color: #F56C6C;
+  &:active {
+    opacity: 0.7;
+  }
+
+  &.delete {
+    color: $uni-color-error;
+  }
 }
 
 .empty-state {
@@ -177,7 +228,7 @@ const formatAddress = (address: any) => {
   align-items: center;
   justify-content: center;
   padding-top: 200rpx;
-  gap: 24rpx;
+  gap: $uni-spacing-xl;
 }
 
 .empty-image {
@@ -186,8 +237,8 @@ const formatAddress = (address: any) => {
 }
 
 .empty-text {
-  font-size: 28rpx;
-  color: #999;
+  font-size: $uni-font-size-base;
+  color: $uni-text-color-placeholder;
 }
 
 .footer-btn {
@@ -195,19 +246,26 @@ const formatAddress = (address: any) => {
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 24rpx 32rpx;
-  padding-bottom: calc(24rpx + env(safe-area-inset-bottom));
-  background-color: #fff;
+  padding: $uni-spacing-xl $uni-spacing-xl;
+  padding-bottom: calc(#{$uni-spacing-xl} + env(safe-area-inset-bottom));
+  background-color: $uni-bg-color-card;
   box-shadow: 0 -2rpx 10rpx rgba(0, 0, 0, 0.05);
 }
 
 .add-btn {
-  background: linear-gradient(135deg, #FF9F29 0%, #FFB84D 100%);
-  color: #fff;
-  font-size: 32rpx;
-  border-radius: 44rpx;
+  background: $uni-color-primary-gradient;
+  color: $uni-text-color-inverse;
+  font-size: $uni-font-size-lg;
+  border-radius: $uni-radius-btn;
   height: 88rpx;
   line-height: 88rpx;
+  box-shadow: $uni-shadow-glow;
+  transition: all 0.2s ease;
+
+  &:active {
+    transform: scale(0.98);
+    opacity: 0.9;
+  }
 
   &::after {
     border: none;

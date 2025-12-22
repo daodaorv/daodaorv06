@@ -239,19 +239,23 @@ export interface PriceCalculationResult {
   modelId: number
   modelName: string
   basePrice: number // 车型基础价
+  cityId: number
+  cityName: string
+  startDate: string
+  endDate: string
+  rentalDays: number // 租期天数
 
   // 城市因子
   cityFactor?: FactorDetail
 
-  // 时间因子
-  timeFactor: TimeFactorDetail
+  // 时间因子（使用 timeFactorSummary 以保持向后兼容）
+  timeFactorSummary: TimeFactorDetail
 
   // 其他因子
   otherFactors: FactorDetail[]
 
   // 计算结果
-  dailyRental: number // 每日租金（平均值）
-  rentalDays: number // 租期天数
+  averageDailyRental: number // 平均每日租金
   totalPrice: number // 订单总价
 
   // 计算说明

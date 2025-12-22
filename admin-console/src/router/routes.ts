@@ -68,6 +68,27 @@ export const asyncRoutes: RouteRecordRaw[] = [
           requiresAuth: true,
           permissions: ['store:view']
         }
+      },
+      // 车型编辑页面（不在菜单中，但需要路由）
+      {
+        path: '/vehicles/models/create',
+        name: 'VehicleModelCreate',
+        component: () => import('@/views/vehicle/VehicleModelEdit.vue'),
+        meta: {
+          title: '新增车型',
+          requiresAuth: true,
+          permissions: ['vehicle:create']
+        }
+      },
+      {
+        path: '/vehicles/models/edit/:id',
+        name: 'VehicleModelEdit',
+        component: () => import('@/views/vehicle/VehicleModelEdit.vue'),
+        meta: {
+          title: '编辑车型',
+          requiresAuth: true,
+          permissions: ['vehicle:edit']
+        }
       }
     ],
   },

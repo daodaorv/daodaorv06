@@ -489,6 +489,9 @@ const orderType = ref<'normal' | 'special-offer'>('normal');
 const isSpecialOffer = computed(() => orderType.value === 'special-offer');
 const pageReady = ref(false);
 const redirectUrl = ref('/pages/order/confirm');
+
+// 防重复提交状态
+const isSubmitting = ref(false);
 let cachedRouteParams: Record<string, any> | null = null;
 let couponListener: ((coupon: any) => void) | null = null;
 
@@ -1219,6 +1222,10 @@ const handleSubmit = async () => {
 		}
 	}
 
+	// 防重复提交
+	if (isSubmitting.value) return;
+	isSubmitting.value = true;
+
 	const contactId = await persistContactIfNeeded();
 	const renterInfo = {
 		id: contactId,
@@ -1263,6 +1270,7 @@ const handleSubmit = async () => {
 
 	setTimeout(() => {
 		uni.hideLoading();
+		isSubmitting.value = false;
 
 		// 跳转到支付页面
 		uni.navigateTo({

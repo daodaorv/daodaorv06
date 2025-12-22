@@ -308,17 +308,17 @@ onMounted(() => {
 <style lang="scss" scoped>
 .membership-page {
 	min-height: 100vh;
-	background: #F5F5F5;
+	background: $uni-bg-color;
 	padding-bottom: 120rpx;
 }
 
 // 会员卡片
 .member-card {
 	position: relative;
-	margin: 32rpx;
-	border-radius: 24rpx;
+	margin: $uni-spacing-xl;
+	border-radius: $uni-radius-lg;
 	overflow: hidden;
-	box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.08);
+	box-shadow: $uni-shadow-float;
 
 	&.plus-member {
 		background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
@@ -344,7 +344,7 @@ onMounted(() => {
 
 	.card-content {
 		position: relative;
-		padding: 48rpx 32rpx;
+		padding: $uni-spacing-xl $uni-spacing-xl;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
@@ -356,37 +356,37 @@ onMounted(() => {
 		.member-level {
 			display: flex;
 			align-items: center;
-			margin-bottom: 16rpx;
+			margin-bottom: $uni-spacing-md;
 
 			.level-text {
 				font-size: 40rpx;
 				font-weight: bold;
-				color: #FFFFFF;
+				color: $uni-text-color-inverse;
 			}
 
 			.crown-icon {
 				width: 48rpx;
 				height: 48rpx;
-				margin-left: 16rpx;
+				margin-left: $uni-spacing-md;
 			}
 		}
 
 		.member-validity {
 			.validity-label {
-				font-size: 24rpx;
+				font-size: $uni-font-size-sm;
 				color: rgba(255, 255, 255, 0.8);
 			}
 
 			.validity-date {
-				font-size: 28rpx;
-				color: #FFFFFF;
-				margin-left: 8rpx;
+				font-size: $uni-font-size-base;
+				color: $uni-text-color-inverse;
+				margin-left: $uni-spacing-sm;
 			}
 		}
 
 		.upgrade-tip {
 			text {
-				font-size: 24rpx;
+				font-size: $uni-font-size-sm;
 				color: rgba(255, 255, 255, 0.9);
 			}
 		}
@@ -394,19 +394,29 @@ onMounted(() => {
 
 	.member-action {
 		.action-btn {
-			padding: 16rpx 40rpx;
-			border-radius: 48rpx;
-			font-size: 28rpx;
+			padding: $uni-spacing-md $uni-spacing-xl;
+			border-radius: $uni-radius-btn;
+			font-size: $uni-font-size-base;
 			border: none;
+			transition: all 0.2s ease;
+
+			&:active {
+				transform: scale(0.98);
+				opacity: 0.9;
+			}
+
+			&::after {
+				border: none;
+			}
 
 			&.renew-btn {
 				background: rgba(255, 255, 255, 0.3);
-				color: #FFFFFF;
+				color: $uni-text-color-inverse;
 			}
 
 			&.upgrade-btn {
-				background: #FFFFFF;
-				color: #FF9F29;
+				background: $uni-bg-color-card;
+				color: $uni-color-primary;
 			}
 		}
 	}
@@ -414,25 +424,26 @@ onMounted(() => {
 
 // 权益区域
 .benefits-section {
-	margin: 32rpx;
-	background: #FFFFFF;
-	border-radius: 24rpx;
-	padding: 32rpx;
+	margin: $uni-spacing-xl;
+	background: $uni-bg-color-card;
+	border-radius: $uni-radius-lg;
+	padding: $uni-spacing-xl;
+	box-shadow: $uni-shadow-card;
 }
 
 .section-title {
-	margin-bottom: 32rpx;
+	margin-bottom: $uni-spacing-xl;
 
 	.title-text {
-		font-size: 32rpx;
+		font-size: $uni-font-size-lg;
 		font-weight: bold;
-		color: #333333;
+		color: $uni-text-color;
 	}
 
 	.title-desc {
-		font-size: 24rpx;
-		color: #999999;
-		margin-left: 16rpx;
+		font-size: $uni-font-size-sm;
+		color: $uni-text-color-placeholder;
+		margin-left: $uni-spacing-md;
 	}
 }
 
@@ -440,8 +451,9 @@ onMounted(() => {
 	.benefit-item {
 		display: flex;
 		align-items: flex-start;
-		padding: 24rpx 0;
-		border-bottom: 1rpx solid #F0F0F0;
+		padding: $uni-spacing-lg 0;
+		border-bottom: 1rpx solid $uni-border-color-light;
+		transition: all 0.2s ease;
 
 		&:last-child {
 			border-bottom: none;
@@ -451,15 +463,19 @@ onMounted(() => {
 			opacity: 0.5;
 		}
 
+		&:active {
+			background-color: $uni-bg-color-grey;
+		}
+
 		.benefit-icon {
 			width: 64rpx;
 			height: 64rpx;
-			margin-right: 24rpx;
+			margin-right: $uni-spacing-lg;
 			display: flex;
 			align-items: center;
 			justify-content: center;
 			background: rgba(255, 159, 41, 0.1);
-			border-radius: 50%;
+			border-radius: $uni-radius-circle;
 		}
 
 		.benefit-info {
@@ -467,28 +483,28 @@ onMounted(() => {
 
 			.benefit-name {
 				display: block;
-				font-size: 28rpx;
+				font-size: $uni-font-size-base;
 				font-weight: 500;
-				color: #333333;
-				margin-bottom: 8rpx;
+				color: $uni-text-color;
+				margin-bottom: $uni-spacing-sm;
 			}
 
 			.benefit-desc {
 				display: block;
-				font-size: 24rpx;
-				color: #999999;
+				font-size: $uni-font-size-sm;
+				color: $uni-text-color-placeholder;
 				line-height: 1.5;
 			}
 		}
 
 		.benefit-badge {
-			padding: 4rpx 16rpx;
-			background: #E8F5E9;
-			border-radius: 8rpx;
+			padding: 4rpx $uni-spacing-md;
+			background: rgba(76, 175, 80, 0.1);
+			border-radius: $uni-radius-xs;
 
 			text {
-				font-size: 20rpx;
-				color: #4CAF50;
+				font-size: $uni-font-size-xs;
+				color: $uni-color-success;
 			}
 		}
 	}
@@ -496,10 +512,11 @@ onMounted(() => {
 
 // 会员说明
 .info-section {
-	margin: 32rpx;
-	background: #FFFFFF;
-	border-radius: 24rpx;
-	padding: 32rpx;
+	margin: $uni-spacing-xl;
+	background: $uni-bg-color-card;
+	border-radius: $uni-radius-lg;
+	padding: $uni-spacing-xl;
+	box-shadow: $uni-shadow-card;
 }
 
 .info-list {
@@ -507,8 +524,8 @@ onMounted(() => {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		padding: 24rpx 0;
-		border-bottom: 1rpx solid #F0F0F0;
+		padding: $uni-spacing-lg 0;
+		border-bottom: 1rpx solid $uni-border-color-light;
 
 		&:last-child {
 			border-bottom: none;
@@ -519,42 +536,43 @@ onMounted(() => {
 			align-items: center;
 
 			.label-icon {
-				font-size: 32rpx;
-				color: #FF9F29;
-				margin-right: 16rpx;
+				font-size: $uni-font-size-lg;
+				color: $uni-color-primary;
+				margin-right: $uni-spacing-md;
 			}
 
 			.label-text {
-				font-size: 28rpx;
-				color: #333333;
+				font-size: $uni-font-size-base;
+				color: $uni-text-color;
 			}
 		}
 
 		.info-value {
-			font-size: 28rpx;
-			color: #666666;
+			font-size: $uni-font-size-base;
+			color: $uni-text-color-secondary;
 		}
 
 		.info-value-row {
 			display: flex;
 			align-items: center;
-			gap: 16rpx;
+			gap: $uni-spacing-md;
 		}
 	}
 }
 
 // 常见问题
 .faq-section {
-	margin: 32rpx;
-	background: #FFFFFF;
-	border-radius: 24rpx;
-	padding: 32rpx;
+	margin: $uni-spacing-xl;
+	background: $uni-bg-color-card;
+	border-radius: $uni-radius-lg;
+	padding: $uni-spacing-xl;
+	box-shadow: $uni-shadow-card;
 }
 
 .faq-list {
 	.faq-item {
-		padding: 24rpx 0;
-		border-bottom: 1rpx solid #F0F0F0;
+		padding: $uni-spacing-lg 0;
+		border-bottom: 1rpx solid $uni-border-color-light;
 
 		&:last-child {
 			border-bottom: none;
@@ -567,16 +585,16 @@ onMounted(() => {
 
 			.question-text {
 				flex: 1;
-				font-size: 28rpx;
+				font-size: $uni-font-size-base;
 				font-weight: 500;
-				color: #333333;
+				color: $uni-text-color;
 			}
 
 			.arrow-icon {
 				font-size: 40rpx;
-				color: #999999;
+				color: $uni-text-color-placeholder;
 				transform: rotate(0deg);
-				transition: transform 0.3s;
+				transition: transform 0.3s ease;
 
 				&.expanded {
 					transform: rotate(90deg);
@@ -585,14 +603,14 @@ onMounted(() => {
 		}
 
 		.faq-answer {
-			margin-top: 16rpx;
-			padding: 16rpx;
-			background: #F8F8F8;
-			border-radius: 12rpx;
+			margin-top: $uni-spacing-md;
+			padding: $uni-spacing-md;
+			background: $uni-bg-color-grey;
+			border-radius: $uni-radius-md;
 
 			text {
-				font-size: 24rpx;
-				color: #666666;
+				font-size: $uni-font-size-sm;
+				color: $uni-text-color-secondary;
 				line-height: 1.6;
 			}
 		}
@@ -605,9 +623,10 @@ onMounted(() => {
 	bottom: 0;
 	left: 0;
 	right: 0;
-	background: #FFFFFF;
-	padding: 24rpx 32rpx;
-	box-shadow: 0 -4rpx 16rpx rgba(0, 0, 0, 0.08);
+	background: $uni-bg-color-card;
+	padding: $uni-spacing-lg $uni-spacing-xl;
+	padding-bottom: calc(#{$uni-spacing-lg} + env(safe-area-inset-bottom));
+	box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.05);
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -618,33 +637,45 @@ onMounted(() => {
 		align-items: baseline;
 
 		.price-label {
-			font-size: 24rpx;
-			color: #999999;
-			margin-right: 8rpx;
+			font-size: $uni-font-size-sm;
+			color: $uni-text-color-placeholder;
+			margin-right: $uni-spacing-sm;
 		}
 
 		.price-value {
 			font-size: 40rpx;
 			font-weight: bold;
-			color: #FF9F29;
+			color: $uni-color-primary;
+			font-family: 'DIN Alternate', sans-serif;
 		}
 
 		.price-original {
-			font-size: 24rpx;
-			color: #999999;
+			font-size: $uni-font-size-sm;
+			color: $uni-text-color-placeholder;
 			text-decoration: line-through;
-			margin-left: 16rpx;
+			margin-left: $uni-spacing-md;
 		}
 	}
 
 	.purchase-btn {
-		padding: 24rpx 64rpx;
-		background: linear-gradient(135deg, #FF9F29 0%, #FF6B00 100%);
-		color: #FFFFFF;
-		border-radius: 48rpx;
-		font-size: 32rpx;
+		padding: $uni-spacing-lg $uni-spacing-xl;
+		background: $uni-color-primary-gradient;
+		color: $uni-text-color-inverse;
+		border-radius: $uni-radius-btn;
+		font-size: $uni-font-size-lg;
 		font-weight: bold;
 		border: none;
+		box-shadow: $uni-shadow-glow;
+		transition: all 0.2s ease;
+
+		&:active {
+			transform: scale(0.98);
+			opacity: 0.9;
+		}
+
+		&::after {
+			border: none;
+		}
 	}
 }
 </style>

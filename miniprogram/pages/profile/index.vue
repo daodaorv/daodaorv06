@@ -138,14 +138,12 @@
 import { ref, computed } from 'vue';
 import { onShow } from '@dcloudio/uni-app';
 import { isLoggedIn, getCurrentUser, logout as logoutUtil } from '@/utils/auth';
+import { getWindowInfo } from '@/utils/system';
 
 // 获取系统状态栏高度
 const statusBarHeight = ref(0);
-uni.getSystemInfo({
-	success: (res) => {
-		statusBarHeight.value = res.statusBarHeight || 0;
-	}
-});
+const windowInfo = getWindowInfo();
+statusBarHeight.value = windowInfo.statusBarHeight || 0;
 
 // 登录状态
 const isLogin = ref(false);
@@ -233,10 +231,6 @@ const navigateToOrders = (status: number) => {
 
 const handleMenuClick = (item: any) => {
 	if (item.path) {
-		if (item.path === '/pages/profile/address') {
-			uni.showToast({ title: '该功能开发中', icon: 'none' });
-			return;
-		}
 		uni.navigateTo({ url: item.path });
 	}
 };

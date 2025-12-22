@@ -289,35 +289,36 @@ onMounted(() => {
 <style lang="scss" scoped>
 .rating-create-page {
 	min-height: 100vh;
-	background: #F5F5F5;
+	background: $uni-bg-color;
 	padding-bottom: 120rpx;
 }
 
 // 订单信息
 .order-info {
-	margin: 32rpx;
-	background: #FFFFFF;
-	border-radius: 24rpx;
-	padding: 32rpx;
+	margin: $uni-spacing-xl;
+	background: $uni-bg-color-card;
+	border-radius: $uni-radius-lg;
+	padding: $uni-spacing-xl;
+	box-shadow: $uni-shadow-card;
 
 	.info-row {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		padding: 16rpx 0;
+		padding: $uni-spacing-lg 0;
 
 		&:not(:last-child) {
-			border-bottom: 1rpx solid #F0F0F0;
+			border-bottom: 1rpx solid $uni-border-color-light;
 		}
 
 		.label {
-			font-size: 28rpx;
-			color: #999999;
+			font-size: $uni-font-size-base;
+			color: $uni-text-color-placeholder;
 		}
 
 		.value {
-			font-size: 28rpx;
-			color: #333333;
+			font-size: $uni-font-size-base;
+			color: $uni-text-color;
 			font-weight: 500;
 		}
 	}
@@ -329,28 +330,29 @@ onMounted(() => {
 .content-section,
 .images-section,
 .reward-section {
-	margin: 32rpx;
-	background: #FFFFFF;
-	border-radius: 24rpx;
-	padding: 32rpx;
+	margin: $uni-spacing-xl;
+	background: $uni-bg-color-card;
+	border-radius: $uni-radius-lg;
+	padding: $uni-spacing-xl;
+	box-shadow: $uni-shadow-card;
 }
 
 .section-title {
-	font-size: 32rpx;
+	font-size: $uni-font-size-lg;
 	font-weight: bold;
-	color: #333333;
-	margin-bottom: 24rpx;
+	color: $uni-text-color;
+	margin-bottom: $uni-spacing-xl;
 
 	.required {
-		color: #FF4444;
-		margin-left: 8rpx;
+		color: $uni-color-error;
+		margin-left: $uni-spacing-sm;
 	}
 
 	.tip {
-		font-size: 24rpx;
-		color: #999999;
+		font-size: $uni-font-size-xs;
+		color: $uni-text-color-placeholder;
 		font-weight: normal;
-		margin-left: 16rpx;
+		margin-left: $uni-spacing-lg;
 	}
 }
 
@@ -358,11 +360,16 @@ onMounted(() => {
 .star-rating {
 	display: flex;
 	justify-content: center;
-	gap: 24rpx;
-	padding: 32rpx 0;
+	gap: $uni-spacing-xl;
+	padding: $uni-spacing-xl 0;
 
 	.star-item {
 		cursor: pointer;
+		transition: all 0.2s ease;
+
+		&:active {
+			transform: scale(1.1);
+		}
 	}
 }
 
@@ -370,8 +377,8 @@ onMounted(() => {
 	text-align: center;
 
 	text {
-		font-size: 28rpx;
-		color: #FF9F29;
+		font-size: $uni-font-size-base;
+		color: $uni-color-primary;
 		font-weight: 500;
 	}
 }
@@ -380,26 +387,26 @@ onMounted(() => {
 .tags-list {
 	display: flex;
 	flex-wrap: wrap;
-	gap: 16rpx;
+	gap: $uni-spacing-lg;
 
 	.tag-item {
-		padding: 16rpx 32rpx;
-		background: #F5F5F5;
-		border-radius: 48rpx;
+		padding: $uni-spacing-lg $uni-spacing-xl;
+		background: $uni-bg-color-grey;
+		border-radius: $uni-radius-btn;
 		border: 2rpx solid transparent;
 		transition: all 0.3s;
 
 		text {
-			font-size: 26rpx;
-			color: #666666;
+			font-size: $uni-font-size-sm;
+			color: $uni-text-color-secondary;
 		}
 
 		&.selected {
-			background: #FFF8F0;
-			border-color: #FF9F29;
+			background: rgba($uni-color-primary, 0.08);
+			border-color: $uni-color-primary;
 
 			text {
-				color: #FF9F29;
+				color: $uni-color-primary;
 			}
 		}
 	}
@@ -409,21 +416,21 @@ onMounted(() => {
 .content-textarea {
 	width: 100%;
 	min-height: 300rpx;
-	padding: 24rpx;
-	background: #F8F8F8;
-	border-radius: 16rpx;
-	font-size: 28rpx;
-	color: #333333;
+	padding: $uni-spacing-xl;
+	background: $uni-bg-color-grey;
+	border-radius: $uni-radius-lg;
+	font-size: $uni-font-size-base;
+	color: $uni-text-color;
 	line-height: 1.6;
 }
 
 .char-count {
 	text-align: right;
-	margin-top: 16rpx;
+	margin-top: $uni-spacing-lg;
 
 	text {
-		font-size: 24rpx;
-		color: #999999;
+		font-size: $uni-font-size-xs;
+		color: $uni-text-color-placeholder;
 	}
 }
 
@@ -431,13 +438,13 @@ onMounted(() => {
 .images-grid {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
-	gap: 16rpx;
+	gap: $uni-spacing-lg;
 
 	.image-item {
 		position: relative;
 		width: 100%;
 		padding-bottom: 100%;
-		border-radius: 16rpx;
+		border-radius: $uni-radius-lg;
 		overflow: hidden;
 
 		.image {
@@ -450,15 +457,20 @@ onMounted(() => {
 
 		.image-delete {
 			position: absolute;
-			top: 8rpx;
-			right: 8rpx;
+			top: $uni-spacing-sm;
+			right: $uni-spacing-sm;
 			width: 48rpx;
 			height: 48rpx;
 			background: rgba(0, 0, 0, 0.5);
-			border-radius: 50%;
+			border-radius: $uni-radius-circle;
 			display: flex;
 			align-items: center;
 			justify-content: center;
+			transition: all 0.2s ease;
+
+			&:active {
+				transform: scale(0.9);
+			}
 		}
 	}
 
@@ -466,13 +478,18 @@ onMounted(() => {
 		width: 100%;
 		padding-bottom: 100%;
 		position: relative;
-		background: #F8F8F8;
-		border: 2rpx dashed #E0E0E0;
-		border-radius: 16rpx;
+		background: $uni-bg-color-grey;
+		border: 2rpx dashed $uni-border-color;
+		border-radius: $uni-radius-lg;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
+		transition: all 0.2s ease;
+
+		&:active {
+			border-color: $uni-color-primary;
+		}
 
 		&::before {
 			content: '';
@@ -490,8 +507,8 @@ onMounted(() => {
 		.upload-text {
 			position: absolute;
 			bottom: 30%;
-			font-size: 24rpx;
-			color: #999999;
+			font-size: $uni-font-size-xs;
+			color: $uni-text-color-placeholder;
 		}
 	}
 }
@@ -500,19 +517,19 @@ onMounted(() => {
 .reward-card {
 	display: flex;
 	align-items: center;
-	padding: 24rpx;
-	background: linear-gradient(135deg, #FFF8F0 0%, #FFEFE0 100%);
-	border-radius: 16rpx;
+	padding: $uni-spacing-xl;
+	background: linear-gradient(135deg, rgba($uni-color-primary, 0.08) 0%, rgba($uni-color-primary, 0.15) 100%);
+	border-radius: $uni-radius-lg;
 
 	.reward-icon {
 		width: 64rpx;
 		height: 64rpx;
-		background: #FFFFFF;
-		border-radius: 50%;
+		background: $uni-bg-color-card;
+		border-radius: $uni-radius-circle;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		margin-right: 24rpx;
+		margin-right: $uni-spacing-xl;
 	}
 
 	.reward-content {
@@ -520,16 +537,16 @@ onMounted(() => {
 
 		.reward-title {
 			display: block;
-			font-size: 28rpx;
+			font-size: $uni-font-size-base;
 			font-weight: 500;
-			color: #333333;
-			margin-bottom: 8rpx;
+			color: $uni-text-color;
+			margin-bottom: $uni-spacing-sm;
 		}
 
 		.reward-desc {
 			display: block;
-			font-size: 24rpx;
-			color: #FF9F29;
+			font-size: $uni-font-size-xs;
+			color: $uni-color-primary;
 		}
 	}
 }
@@ -540,23 +557,31 @@ onMounted(() => {
 	bottom: 0;
 	left: 0;
 	right: 0;
-	background: #FFFFFF;
-	padding: 24rpx 32rpx;
+	background: $uni-bg-color-card;
+	padding: $uni-spacing-xl $uni-spacing-xl;
 	box-shadow: 0 -4rpx 16rpx rgba(0, 0, 0, 0.08);
 	z-index: 100;
 
 	.submit-btn {
 		width: 100%;
 		padding: 28rpx;
-		background: linear-gradient(135deg, #FF9F29 0%, #FF6B00 100%);
-		color: #FFFFFF;
-		border-radius: 48rpx;
-		font-size: 32rpx;
+		background: $uni-color-primary-gradient;
+		color: $uni-text-color-inverse;
+		border-radius: $uni-radius-btn;
+		font-size: $uni-font-size-lg;
 		font-weight: bold;
 		border: none;
+		box-shadow: $uni-shadow-glow;
+		transition: all 0.2s ease;
+
+		&:active {
+			transform: scale(0.98);
+			opacity: 0.9;
+		}
 
 		&[disabled] {
 			opacity: 0.5;
+			box-shadow: none;
 		}
 	}
 }

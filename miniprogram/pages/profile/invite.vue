@@ -345,78 +345,79 @@ onMounted(() => {
 <style scoped lang="scss">
 .invite-center {
 	min-height: 100vh;
-	background-color: #F5F5F5;
-	padding-bottom: 24rpx;
+	background-color: $uni-bg-color;
+	padding-bottom: $uni-spacing-xl;
 }
 
 // 统计卡片
 .stats-card {
-	margin: 24rpx;
-	padding: 32rpx;
-	background: linear-gradient(135deg, #FF9F29 0%, #FFB84D 100%);
-	border-radius: 24rpx;
-	box-shadow: 0 8rpx 24rpx rgba(255, 159, 41, 0.3);
+	margin: $uni-spacing-xl;
+	padding: $uni-spacing-xl;
+	background: $uni-color-primary-gradient;
+	border-radius: $uni-radius-lg;
+	box-shadow: $uni-shadow-glow;
 }
 
 .card-header {
 	display: flex;
 	flex-direction: column;
-	gap: 8rpx;
-	margin-bottom: 32rpx;
+	gap: $uni-spacing-sm;
+	margin-bottom: $uni-spacing-xl;
 }
 
 .header-title {
 	font-size: 36rpx;
 	font-weight: bold;
-	color: #FFFFFF;
+	color: $uni-text-color-inverse;
 }
 
 .header-subtitle {
-	font-size: 26rpx;
+	font-size: $uni-font-size-sm;
 	color: rgba(255, 255, 255, 0.9);
 }
 
 .stats-grid {
 	display: grid;
 	grid-template-columns: repeat(4, 1fr);
-	gap: 24rpx;
+	gap: $uni-spacing-xl;
 }
 
 .stat-item {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	gap: 12rpx;
+	gap: $uni-spacing-md;
 }
 
 .stat-value {
 	font-size: 48rpx;
 	font-weight: bold;
-	color: #FFFFFF;
+	color: $uni-text-color-inverse;
 }
 
 .stat-label {
-	font-size: 24rpx;
+	font-size: $uni-font-size-xs;
 	color: rgba(255, 255, 255, 0.9);
 }
 
 // 邀请方式
 .invite-methods {
-	margin: 0 24rpx 24rpx;
-	padding: 32rpx;
-	background-color: #FFFFFF;
-	border-radius: 24rpx;
+	margin: 0 $uni-spacing-xl $uni-spacing-xl;
+	padding: $uni-spacing-xl;
+	background-color: $uni-bg-color-card;
+	border-radius: $uni-radius-lg;
+	box-shadow: $uni-shadow-card;
 }
 
 .section-title {
 	display: flex;
 	align-items: center;
-	gap: 12rpx;
-	margin-bottom: 24rpx;
+	gap: $uni-spacing-md;
+	margin-bottom: $uni-spacing-xl;
 }
 
 .title-text {
-	font-size: 32rpx;
+	font-size: $uni-font-size-lg;
 	font-weight: bold;
 	color: $uni-text-color;
 }
@@ -425,27 +426,27 @@ onMounted(() => {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	padding: 24rpx;
-	background-color: #F5F5F5;
-	border-radius: 16rpx;
-	margin-bottom: 24rpx;
+	padding: $uni-spacing-xl;
+	background-color: $uni-bg-color-grey;
+	border-radius: $uni-radius-lg;
+	margin-bottom: $uni-spacing-xl;
 }
 
 .code-left {
 	display: flex;
 	flex-direction: column;
-	gap: 8rpx;
+	gap: $uni-spacing-sm;
 }
 
 .code-label {
-	font-size: 24rpx;
+	font-size: $uni-font-size-xs;
 	color: $uni-text-color-secondary;
 }
 
 .code-value {
 	font-size: 36rpx;
 	font-weight: bold;
-	color: #FF9F29;
+	color: $uni-color-primary;
 	letter-spacing: 4rpx;
 }
 
@@ -456,13 +457,18 @@ onMounted(() => {
 .copy-btn {
 	display: flex;
 	align-items: center;
-	gap: 8rpx;
-	padding: 16rpx 24rpx;
-	background-color: #FFFFFF;
-	border: 2rpx solid #FF9F29;
-	border-radius: 48rpx;
-	font-size: 26rpx;
-	color: #FF9F29;
+	gap: $uni-spacing-sm;
+	padding: $uni-spacing-lg $uni-spacing-xl;
+	background-color: $uni-bg-color-card;
+	border: 2rpx solid $uni-color-primary;
+	border-radius: $uni-radius-btn;
+	font-size: $uni-font-size-sm;
+	color: $uni-color-primary;
+	transition: all 0.2s ease;
+
+	&:active {
+		opacity: 0.7;
+	}
 
 	&::after {
 		border: none;
@@ -471,7 +477,7 @@ onMounted(() => {
 
 .share-buttons {
 	display: flex;
-	gap: 16rpx;
+	gap: $uni-spacing-lg;
 }
 
 .share-btn {
@@ -479,17 +485,24 @@ onMounted(() => {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	gap: 12rpx;
-	padding: 24rpx;
-	background-color: #F5F5F5;
+	gap: $uni-spacing-md;
+	padding: $uni-spacing-xl;
+	background-color: $uni-bg-color-grey;
 	border: none;
-	border-radius: 16rpx;
-	font-size: 28rpx;
-	color: #FF9F29;
+	border-radius: $uni-radius-lg;
+	font-size: $uni-font-size-base;
+	color: $uni-color-primary;
+	transition: all 0.2s ease;
 
 	&.primary {
-		background: linear-gradient(135deg, #FF9F29 0%, #FFB84D 100%);
-		color: #FFFFFF;
+		background: $uni-color-primary-gradient;
+		color: $uni-text-color-inverse;
+		box-shadow: $uni-shadow-glow;
+	}
+
+	&:active {
+		transform: scale(0.98);
+		opacity: 0.9;
 	}
 
 	&::after {
@@ -503,21 +516,22 @@ onMounted(() => {
 
 // 奖励规则
 .reward-rules {
-	margin: 0 24rpx 24rpx;
-	padding: 32rpx;
-	background-color: #FFFFFF;
-	border-radius: 24rpx;
+	margin: 0 $uni-spacing-xl $uni-spacing-xl;
+	padding: $uni-spacing-xl;
+	background-color: $uni-bg-color-card;
+	border-radius: $uni-radius-lg;
+	box-shadow: $uni-shadow-card;
 }
 
 .rules-content {
 	display: flex;
 	flex-direction: column;
-	gap: 24rpx;
+	gap: $uni-spacing-xl;
 }
 
 .rule-item {
 	display: flex;
-	gap: 16rpx;
+	gap: $uni-spacing-lg;
 }
 
 .rule-icon {
@@ -527,41 +541,42 @@ onMounted(() => {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background-color: #FF9F29;
-	border-radius: 50%;
+	background-color: $uni-color-primary;
+	border-radius: $uni-radius-circle;
 }
 
 .icon-number {
-	font-size: 24rpx;
+	font-size: $uni-font-size-xs;
 	font-weight: bold;
-	color: #FFFFFF;
+	color: $uni-text-color-inverse;
 }
 
 .rule-text {
 	flex: 1;
 	display: flex;
 	flex-direction: column;
-	gap: 8rpx;
+	gap: $uni-spacing-sm;
 }
 
 .rule-title {
-	font-size: 28rpx;
+	font-size: $uni-font-size-base;
 	font-weight: 500;
 	color: $uni-text-color;
 }
 
 .rule-desc {
-	font-size: 26rpx;
+	font-size: $uni-font-size-sm;
 	color: $uni-text-color-secondary;
 	line-height: 1.6;
 }
 
 // 邀请记录
 .invite-records {
-	margin: 0 24rpx 24rpx;
-	padding: 32rpx;
-	background-color: #FFFFFF;
-	border-radius: 24rpx;
+	margin: 0 $uni-spacing-xl $uni-spacing-xl;
+	padding: $uni-spacing-xl;
+	background-color: $uni-bg-color-card;
+	border-radius: $uni-radius-lg;
+	box-shadow: $uni-shadow-card;
 }
 
 .empty-state {
@@ -570,38 +585,43 @@ onMounted(() => {
 	align-items: center;
 	justify-content: center;
 	padding: 80rpx 0;
-	gap: 16rpx;
+	gap: $uni-spacing-lg;
 }
 
 .empty-text {
-	font-size: 28rpx;
+	font-size: $uni-font-size-base;
 	color: $uni-text-color-secondary;
 }
 
 .empty-hint {
-	font-size: 24rpx;
+	font-size: $uni-font-size-xs;
 	color: $uni-text-color-secondary;
 }
 
 .records-list {
 	display: flex;
 	flex-direction: column;
-	gap: 24rpx;
+	gap: $uni-spacing-xl;
 }
 
 .record-item {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	padding: 24rpx;
-	background-color: #F5F5F5;
-	border-radius: 16rpx;
+	padding: $uni-spacing-xl;
+	background-color: $uni-bg-color-grey;
+	border-radius: $uni-radius-lg;
+	transition: all 0.2s ease;
+
+	&:active {
+		transform: scale(0.99);
+	}
 }
 
 .record-left {
 	display: flex;
 	align-items: center;
-	gap: 16rpx;
+	gap: $uni-spacing-lg;
 	flex: 1;
 }
 
@@ -611,8 +631,8 @@ onMounted(() => {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background-color: #E0E0E0;
-	border-radius: 50%;
+	background-color: $uni-border-color;
+	border-radius: $uni-radius-circle;
 	overflow: hidden;
 
 	image {
@@ -624,17 +644,17 @@ onMounted(() => {
 .user-info {
 	display: flex;
 	flex-direction: column;
-	gap: 8rpx;
+	gap: $uni-spacing-sm;
 }
 
 .user-name {
-	font-size: 28rpx;
+	font-size: $uni-font-size-base;
 	font-weight: 500;
 	color: $uni-text-color;
 }
 
 .register-time {
-	font-size: 24rpx;
+	font-size: $uni-font-size-xs;
 	color: $uni-text-color-secondary;
 }
 
@@ -642,22 +662,22 @@ onMounted(() => {
 	display: flex;
 	flex-direction: column;
 	align-items: flex-end;
-	gap: 8rpx;
+	gap: $uni-spacing-sm;
 }
 
 .status-badge {
-	padding: 8rpx 16rpx;
-	border-radius: 24rpx;
+	padding: $uni-spacing-sm $uni-spacing-lg;
+	border-radius: $uni-radius-btn;
 	font-size: 22rpx;
 
 	&.registered {
-		background-color: rgba(255, 159, 41, 0.1);
-		color: #FF9F29;
+		background-color: rgba($uni-color-primary, 0.1);
+		color: $uni-color-primary;
 	}
 
 	&.completed {
-		background-color: rgba(82, 196, 26, 0.1);
-		color: #52C41A;
+		background-color: rgba($uni-color-success, 0.1);
+		color: $uni-color-success;
 	}
 }
 
@@ -670,10 +690,10 @@ onMounted(() => {
 	align-items: center;
 	gap: 4rpx;
 	font-size: 22rpx;
-	color: #52C41A;
+	color: $uni-color-success;
 
 	&.pending {
-		color: #FF9F29;
+		color: $uni-color-primary;
 	}
 }
 
@@ -684,8 +704,8 @@ onMounted(() => {
 // 海报弹窗
 .poster-dialog {
 	width: 600rpx;
-	background-color: #FFFFFF;
-	border-radius: 24rpx;
+	background-color: $uni-bg-color-card;
+	border-radius: $uni-radius-lg;
 	overflow: hidden;
 }
 
@@ -693,30 +713,35 @@ onMounted(() => {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	padding: 32rpx;
-	border-bottom: 1rpx solid #F0F0F0;
+	padding: $uni-spacing-xl;
+	border-bottom: 1rpx solid $uni-border-color-light;
 }
 
 .poster-title {
-	font-size: 32rpx;
+	font-size: $uni-font-size-lg;
 	font-weight: bold;
 	color: $uni-text-color;
 }
 
 .close-btn {
-	padding: 8rpx;
+	padding: $uni-spacing-sm;
+	transition: all 0.2s ease;
+
+	&:active {
+		opacity: 0.7;
+	}
 }
 
 .poster-content {
-	padding: 32rpx;
+	padding: $uni-spacing-xl;
 }
 
 .poster-preview {
 	position: relative;
 	width: 100%;
 	aspect-ratio: 3/4;
-	background-color: #F5F5F5;
-	border-radius: 16rpx;
+	background-color: $uni-bg-color-grey;
+	border-radius: $uni-radius-lg;
 	overflow: hidden;
 }
 
@@ -727,22 +752,22 @@ onMounted(() => {
 
 .poster-code {
 	position: absolute;
-	bottom: 32rpx;
+	bottom: $uni-spacing-xl;
 	left: 50%;
 	transform: translateX(-50%);
-	padding: 16rpx 32rpx;
+	padding: $uni-spacing-lg $uni-spacing-xl;
 	background-color: rgba(255, 255, 255, 0.95);
-	border-radius: 48rpx;
+	border-radius: $uni-radius-btn;
 }
 
 .code-text {
-	font-size: 28rpx;
+	font-size: $uni-font-size-base;
 	font-weight: bold;
-	color: #FF9F29;
+	color: $uni-color-primary;
 }
 
 .poster-actions {
-	padding: 0 32rpx 32rpx;
+	padding: 0 $uni-spacing-xl $uni-spacing-xl;
 }
 
 .action-btn {
@@ -750,14 +775,21 @@ onMounted(() => {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	gap: 12rpx;
-	padding: 24rpx;
-	background: linear-gradient(135deg, #FF9F29 0%, #FFB84D 100%);
-	color: #FFFFFF;
+	gap: $uni-spacing-md;
+	padding: $uni-spacing-xl;
+	background: $uni-color-primary-gradient;
+	color: $uni-text-color-inverse;
 	font-size: 30rpx;
 	font-weight: 500;
-	border-radius: 48rpx;
+	border-radius: $uni-radius-btn;
 	border: none;
+	box-shadow: $uni-shadow-glow;
+	transition: all 0.2s ease;
+
+	&:active {
+		transform: scale(0.98);
+		opacity: 0.9;
+	}
 
 	&::after {
 		border: none;

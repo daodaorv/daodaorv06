@@ -29,10 +29,17 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
+import { onLoad, onShow } from '@dcloudio/uni-app'
 import { useUserStore } from '@/stores/user'
+import { requireLogin, isLoggedIn, buildRedirectUrl } from '@/utils/auth'
 
 const userStore = useUserStore()
 const cacheSize = ref('0KB')
+
+// 登录状态管理
+const pageReady = ref(false)
+const redirectUrl = ref('/pages/profile/settings')
+let cachedRouteParams: Record<string, any> | null = null
 
 const phoneLabel = computed(() => {
   const mobile = userStore.userInfo?.mobile
@@ -156,6 +163,53 @@ const handleLogout = () => {
     }
   })
 }
+
+/**
+ * 页面初始化设置
+ */
+const setupSettingsPage = (options: any) => {
+  calculateCacheSize()
+  pageReady.value = true
+}
+
+/**
+ * 确保用户已登录
+ */
+const ensureAuth = (options: any) => {
+  redirectUrl.value = buildRedirectUrl('/pages/profile/settings', options || {})
+  if (isLoggedIn()) {
+    return true
+  }
+  return requireLogin(redirectUrl.value)
+}
+
+/**
+ * 页面加载时检查登录状态
+ */
+onLoad((options: any) => {
+  cachedRouteParams = options || {}
+  pageReady.value = false
+  if (!ensureAuth(cachedRouteParams)) {
+    return
+  }
+  setupSettingsPage(cachedRouteParams)
+})
+
+/**
+ * 页面显示时检查登录状态（从登录页返回时）
+ */
+onShow(() => {
+  if (!pageReady.value && cachedRouteParams && isLoggedIn()) {
+    setupSettingsPage(cachedRouteParams)
+  }
+})
+
+/**
+ * 初始化（保留用于其他初始化逻辑）
+ */
+onMounted(() => {
+  // 其他初始化逻辑可以放在这里
+})
 </script>
 
 <style scoped lang="scss">

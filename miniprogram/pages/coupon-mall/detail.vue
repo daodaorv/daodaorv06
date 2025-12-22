@@ -138,41 +138,30 @@
 			</view>
 		</view>
 
-		<!-- 分享弹窗 -->
-		<uni-popup ref="sharePopup" name="bottom">
-			<view class="share-panel">
-				<view class="share-title">分享优惠券</view>
-				<view class="share-options">
-					<view class="share-option" @tap="shareToFriend">
-						<view class="option-icon wechat">
-							<u-icon name="chat" size="28" color="#FFFFFF"></u-icon>
-						</view>
-						<text class="option-text">微信好友</text>
-					</view>
-					<view class="share-option" @tap="shareToMoments">
-						<view class="option-icon moments">
-							<u-icon name="reload" size="28" color="#FFFFFF"></u-icon>
-						</view>
-						<text class="option-text">朋友圈</text>
-					</view>
-					<view class="share-option" @tap="copyLink">
-						<view class="option-icon copy">
-							<u-icon name="attach" size="28" color="#FFFFFF"></u-icon>
-						</view>
-						<text class="option-text">复制链接</text>
-					</view>
-				</view>
-				<button class="cancel-btn" @tap="closeSharePanel">取消</button>
-			</view>
-		</uni-popup>
+		<!-- 分享面板 -->
+		<ShareSheet
+			v-model:show="showShareSheet"
+			@select="handleShareSelect"
+		/>
+
+		<!-- 海报预览 -->
+		<PosterPreview
+			v-model:show="showPosterPopup"
+			:poster-image="posterImage"
+			@save="savePoster"
+		/>
 	</view>
 </template>
 
 <script setup lang="ts">
 import { logger } from '@/utils/logger';
 import { ref } from 'vue';
-import { onLoad } from '@dcloudio/uni-app';
+import { onLoad, onShareAppMessage } from '@dcloudio/uni-app';
 import { getCouponById, type CouponData } from '@/mock/data/coupon';
+import { useShare } from '@/composables/useShare';
+import { ShareScene } from '@/types/share';
+import ShareSheet from '@/components/share/ShareSheet.vue';
+import PosterPreview from '@/components/share/PosterPreview.vue';
 
 // 类型定义
 interface FAQ {
@@ -354,55 +343,35 @@ const loadCouponDetail = (id: string) => {
 	}
 };
 
-// 分享弹窗引用
-const sharePopup = ref(null);
+// 分享功能
+const {
+	showShareSheet,
+	showPosterPopup,
+	posterImage,
+	openShareSheet,
+	handleShareSelect,
+	savePoster,
+	getShareContent
+} = useShare({
+	title: `【叨叨房车】${coupon.value.name}`,
+	desc: coupon.value.description,
+	imageUrl: '/static/优惠政策.jpg',
+	path: '/pages/coupon-mall/detail',
+	scene: ShareScene.SPECIAL_OFFER,
+	businessId: couponId.value || 'demo_coupon',
+	query: {
+		id: couponId.value || 'demo_coupon'
+	}
+});
 
-// 处理分享
+// 配置微信分享
+onShareAppMessage(() => {
+	return getShareContent();
+});
+
+// 打开分享面板
 const handleShare = () => {
-	sharePopup.value?.open();
-};
-
-// 关闭分享面板
-const closeSharePanel = () => {
-	sharePopup.value?.close();
-};
-
-// 分享给好友
-const shareToFriend = () => {
-	uni.showShareMenu({
-		withShareTicket: true,
-		success: () => {
-			uni.showToast({
-				title: '请点击右上角分享',
-				icon: 'none'
-			});
-		}
-	});
-	closeSharePanel();
-};
-
-// 分享到朋友圈
-const shareToMoments = () => {
-	uni.showToast({
-		title: '请点击右上角分享到朋友圈',
-		icon: 'none'
-	});
-	closeSharePanel();
-};
-
-// 复制链接
-const copyLink = () => {
-	const shareUrl = `https://example.com/coupon/${couponId.value}`;
-	uni.setClipboardData({
-		data: shareUrl,
-		success: () => {
-			uni.showToast({
-				title: '链接已复制',
-				icon: 'success'
-			});
-			closeSharePanel();
-		}
-	});
+	openShareSheet();
 };
 
 // 生命周期
@@ -417,20 +386,20 @@ onLoad((options) => {
 <style scoped lang="scss">
 .coupon-detail {
 	min-height: 100vh;
-	background-color: #F5F5F5;
+	background-color: $uni-bg-color;
 	padding-bottom: 120rpx;
 }
 
 // 券面卡片
 .coupon-card {
-	margin: 24rpx;
-	border-radius: 24rpx;
+	margin: $uni-spacing-lg;
+	border-radius: $uni-radius-lg;
 	overflow: hidden;
-	box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.1);
+	box-shadow: $uni-shadow-float;
 }
 
 .card-bg {
-	padding: 48rpx 32rpx;
+	padding: $uni-spacing-xl $uni-spacing-xl;
 	position: relative;
 
 	&.type-discount {
@@ -442,11 +411,11 @@ onLoad((options) => {
 	}
 
 	&.type-daily {
-		background: linear-gradient(135deg, #FF9F29 0%, #FFB84D 100%);
+		background: $uni-color-primary-gradient;
 	}
 
 	&.type-service {
-		background: linear-gradient(135deg, #52C41A 0%, #73D13D 100%);
+		background: linear-gradient(135deg, $uni-color-success 0%, #73D13D 100%);
 	}
 
 	&.type-special {
@@ -457,20 +426,20 @@ onLoad((options) => {
 .card-header {
 	display: flex;
 	justify-content: flex-end;
-	margin-bottom: 32rpx;
+	margin-bottom: $uni-spacing-xl;
 }
 
 .coupon-tags {
 	display: flex;
-	gap: 12rpx;
+	gap: $uni-spacing-md;
 }
 
 .tag {
-	padding: 8rpx 16rpx;
-	font-size: 22rpx;
-	color: #FFFFFF;
+	padding: $uni-spacing-sm $uni-spacing-md;
+	font-size: $uni-font-size-xs;
+	color: $uni-text-color-inverse;
 	background-color: rgba(255, 255, 255, 0.3);
-	border-radius: 24rpx;
+	border-radius: $uni-radius-btn;
 	backdrop-filter: blur(10rpx);
 }
 
@@ -478,13 +447,13 @@ onLoad((options) => {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	gap: 16rpx;
+	gap: $uni-spacing-md;
 }
 
 .coupon-amount {
 	display: flex;
 	align-items: baseline;
-	color: #FFFFFF;
+	color: $uni-text-color-inverse;
 }
 
 .amount-symbol {
@@ -495,38 +464,40 @@ onLoad((options) => {
 .amount-value {
 	font-size: 96rpx;
 	font-weight: bold;
+	font-family: 'DIN Alternate', sans-serif;
 }
 
 .coupon-name {
 	font-size: 36rpx;
 	font-weight: 500;
-	color: #FFFFFF;
+	color: $uni-text-color-inverse;
 	text-align: center;
 }
 
 .coupon-condition {
-	font-size: 28rpx;
+	font-size: $uni-font-size-base;
 	color: rgba(255, 255, 255, 0.9);
 	text-align: center;
 }
 
 // 内容区块
 .section {
-	margin: 24rpx;
-	padding: 32rpx;
-	background-color: #FFFFFF;
-	border-radius: 24rpx;
+	margin: $uni-spacing-lg;
+	padding: $uni-spacing-xl;
+	background-color: $uni-bg-color-card;
+	border-radius: $uni-radius-lg;
+	box-shadow: $uni-shadow-card;
 }
 
 .section-title {
 	display: flex;
 	align-items: center;
-	gap: 12rpx;
-	margin-bottom: 24rpx;
+	gap: $uni-spacing-md;
+	margin-bottom: $uni-spacing-lg;
 }
 
 .title-text {
-	font-size: 32rpx;
+	font-size: $uni-font-size-lg;
 	font-weight: bold;
 	color: $uni-text-color;
 }
@@ -534,11 +505,11 @@ onLoad((options) => {
 .section-content {
 	display: flex;
 	flex-direction: column;
-	gap: 16rpx;
+	gap: $uni-spacing-md;
 }
 
 .content-text {
-	font-size: 28rpx;
+	font-size: $uni-font-size-base;
 	color: $uni-text-color-secondary;
 	line-height: 1.6;
 }
@@ -546,8 +517,8 @@ onLoad((options) => {
 // 规则项
 .rule-item {
 	display: flex;
-	padding: 16rpx 0;
-	border-bottom: 1rpx solid #F0F0F0;
+	padding: $uni-spacing-md 0;
+	border-bottom: 1rpx solid $uni-border-color-light;
 
 	&:last-child {
 		border-bottom: none;
@@ -557,13 +528,13 @@ onLoad((options) => {
 .rule-label {
 	flex-shrink: 0;
 	width: 180rpx;
-	font-size: 28rpx;
+	font-size: $uni-font-size-base;
 	color: $uni-text-color-secondary;
 }
 
 .rule-value {
 	flex: 1;
-	font-size: 28rpx;
+	font-size: $uni-font-size-base;
 	color: $uni-text-color;
 	line-height: 1.5;
 }
@@ -571,8 +542,8 @@ onLoad((options) => {
 // 信息项
 .info-item {
 	display: flex;
-	padding: 16rpx 0;
-	border-bottom: 1rpx solid #F0F0F0;
+	padding: $uni-spacing-md 0;
+	border-bottom: 1rpx solid $uni-border-color-light;
 
 	&:last-child {
 		border-bottom: none;
@@ -582,17 +553,17 @@ onLoad((options) => {
 .info-label {
 	flex-shrink: 0;
 	width: 180rpx;
-	font-size: 28rpx;
+	font-size: $uni-font-size-base;
 	color: $uni-text-color-secondary;
 }
 
 .info-value {
 	flex: 1;
-	font-size: 28rpx;
+	font-size: $uni-font-size-base;
 	color: $uni-text-color;
 
 	&.stock {
-		color: #FF9F29;
+		color: $uni-color-primary;
 		font-weight: 500;
 	}
 }
@@ -601,13 +572,13 @@ onLoad((options) => {
 .usage-steps {
 	display: flex;
 	flex-direction: column;
-	gap: 24rpx;
+	gap: $uni-spacing-lg;
 }
 
 .step-item {
 	display: flex;
 	align-items: flex-start;
-	gap: 16rpx;
+	gap: $uni-spacing-md;
 }
 
 .step-number {
@@ -617,24 +588,24 @@ onLoad((options) => {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background-color: #FF9F29;
-	color: #FFFFFF;
-	font-size: 24rpx;
+	background-color: $uni-color-primary;
+	color: $uni-text-color-inverse;
+	font-size: $uni-font-size-sm;
 	font-weight: bold;
-	border-radius: 50%;
+	border-radius: $uni-radius-circle;
 }
 
 .step-text {
 	flex: 1;
-	font-size: 28rpx;
+	font-size: $uni-font-size-base;
 	color: $uni-text-color;
 	line-height: 48rpx;
 }
 
 // FAQ
 .faq-item {
-	padding: 24rpx 0;
-	border-bottom: 1rpx solid #F0F0F0;
+	padding: $uni-spacing-lg 0;
+	border-bottom: 1rpx solid $uni-border-color-light;
 
 	&:last-child {
 		border-bottom: none;
@@ -643,19 +614,19 @@ onLoad((options) => {
 
 .faq-question {
 	display: flex;
-	margin-bottom: 12rpx;
+	margin-bottom: $uni-spacing-md;
 }
 
 .question-mark {
 	flex-shrink: 0;
-	font-size: 28rpx;
+	font-size: $uni-font-size-base;
 	font-weight: bold;
-	color: #FF9F29;
+	color: $uni-color-primary;
 }
 
 .question-text {
 	flex: 1;
-	font-size: 28rpx;
+	font-size: $uni-font-size-base;
 	font-weight: 500;
 	color: $uni-text-color;
 	line-height: 1.5;
@@ -663,18 +634,18 @@ onLoad((options) => {
 
 .faq-answer {
 	display: flex;
-	padding-left: 48rpx;
+	padding-left: $uni-spacing-xl;
 }
 
 .answer-mark {
 	flex-shrink: 0;
-	font-size: 28rpx;
+	font-size: $uni-font-size-base;
 	color: $uni-text-color-secondary;
 }
 
 .answer-text {
 	flex: 1;
-	font-size: 28rpx;
+	font-size: $uni-font-size-base;
 	color: $uni-text-color-secondary;
 	line-height: 1.6;
 }
@@ -692,12 +663,12 @@ onLoad((options) => {
 	right: 0;
 	display: flex;
 	align-items: center;
-	gap: 24rpx;
-	padding: 24rpx;
-	padding-bottom: calc(24rpx + env(safe-area-inset-bottom));
-	background-color: #FFFFFF;
-	border-top: 1rpx solid #F0F0F0;
-	box-shadow: 0 -4rpx 12rpx rgba(0, 0, 0, 0.05);
+	gap: $uni-spacing-lg;
+	padding: $uni-spacing-lg;
+	padding-bottom: calc(#{$uni-spacing-lg} + env(safe-area-inset-bottom));
+	background-color: $uni-bg-color-card;
+	border-top: 1rpx solid $uni-border-color-light;
+	box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.05);
 	z-index: 100;
 }
 
@@ -709,9 +680,14 @@ onLoad((options) => {
 	align-items: center;
 	justify-content: center;
 	gap: 4rpx;
-	background-color: #F5F5F5;
-	border-radius: 44rpx;
+	background-color: $uni-bg-color-grey;
+	border-radius: $uni-radius-btn;
 	border: none;
+	transition: all 0.2s ease;
+
+	&:active {
+		background-color: $uni-border-color;
+	}
 
 	&::after {
 		border: none;
@@ -719,8 +695,8 @@ onLoad((options) => {
 }
 
 .share-text {
-	font-size: 24rpx;
-	color: #666;
+	font-size: $uni-font-size-sm;
+	color: $uni-text-color-secondary;
 }
 
 .bar-right {
@@ -731,87 +707,25 @@ onLoad((options) => {
 	width: 100%;
 	height: 88rpx;
 	line-height: 88rpx;
-	background: linear-gradient(135deg, #FF9F29 0%, #FFB84D 100%);
-	color: #FFFFFF;
-	font-size: 32rpx;
+	background: $uni-color-primary-gradient;
+	color: $uni-text-color-inverse;
+	font-size: $uni-font-size-lg;
 	font-weight: 500;
-	border-radius: 44rpx;
+	border-radius: $uni-radius-btn;
 	border: none;
+	box-shadow: $uni-shadow-glow;
+	transition: all 0.2s ease;
+
+	&:active {
+		transform: scale(0.98);
+		opacity: 0.9;
+	}
 
 	&[disabled] {
-		background: #E0E0E0;
-		color: #999999;
+		background: $uni-bg-color-grey;
+		color: $uni-text-color-placeholder;
+		box-shadow: none;
 	}
-
-	&::after {
-		border: none;
-	}
-}
-
-// 分享面板
-.share-panel {
-	background-color: #FFFFFF;
-	border-radius: 32rpx 32rpx 0 0;
-	padding: 48rpx 32rpx;
-	padding-bottom: calc(32rpx + env(safe-area-inset-bottom));
-}
-
-.share-title {
-	font-size: 32rpx;
-	font-weight: bold;
-	color: #333;
-	text-align: center;
-	margin-bottom: 48rpx;
-}
-
-.share-options {
-	display: flex;
-	justify-content: space-around;
-	margin-bottom: 48rpx;
-}
-
-.share-option {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	gap: 16rpx;
-}
-
-.option-icon {
-	width: 96rpx;
-	height: 96rpx;
-	border-radius: 50%;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-
-	&.wechat {
-		background: linear-gradient(135deg, #07C160 0%, #2DD47E 100%);
-	}
-
-	&.moments {
-		background: linear-gradient(135deg, #4C8BF5 0%, #6FA3FF 100%);
-	}
-
-	&.copy {
-		background: linear-gradient(135deg, #FF9F29 0%, #FFB84D 100%);
-	}
-}
-
-.option-text {
-	font-size: 26rpx;
-	color: #666;
-}
-
-.cancel-btn {
-	width: 100%;
-	height: 88rpx;
-	line-height: 88rpx;
-	font-size: 32rpx;
-	background-color: #F5F5F5;
-	color: #666;
-	border-radius: 44rpx;
-	border: none;
 
 	&::after {
 		border: none;

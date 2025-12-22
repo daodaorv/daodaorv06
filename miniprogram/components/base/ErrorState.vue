@@ -4,10 +4,10 @@
 			mode="data"
 			:icon="customIcon || 'error-circle'"
 			:text="message || '加载失败'"
-			textColor="#FF4D4F"
+			:textColor="errorColor"
 			:textSize="textSize"
 			:iconSize="iconSize"
-			iconColor="#FF4D4F"
+			:iconColor="errorColor"
 		>
 			<!-- 重试按钮 -->
 			<template #bottom>
@@ -20,7 +20,7 @@
 						borderRadius: '50rpx',
 						fontSize: '28rpx',
 						marginTop: '32rpx',
-						background: '#FF4D4F'
+						background: errorColor
 					}"
 					@click="handleRetry"
 				></u-button>
@@ -30,6 +30,9 @@
 </template>
 
 <script setup lang="ts">
+// 错误颜色常量（与 uni.scss 中 $uni-color-error 保持一致）
+const errorColor = '#FF4D4F';
+
 interface Props {
 	customIcon?: string;
 	message?: string;
@@ -38,7 +41,7 @@ interface Props {
 	iconSize?: string | number;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<Props>(), {
 	message: '加载失败，请重试',
 	retryText: '重新加载',
 	textSize: 28,

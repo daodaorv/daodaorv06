@@ -25,7 +25,7 @@
 		<view v-if="post.images && post.images.length > 0" class="media-section">
 			<swiper class="image-swiper" :indicator-dots="post.images.length > 1" indicator-active-color="#FF9F29" :autoplay="false" :circular="true">
 				<swiper-item v-for="(image, index) in post.images" :key="index" @click="previewImage(index)">
-					<image :src="photo" class="swiper-image" mode="aspectFill" />
+					<image :src="image" class="swiper-image" mode="aspectFill" />
 				</swiper-item>
 			</swiper>
 		</view>
@@ -378,13 +378,9 @@ onMounted(() => {
 	const options = currentPage.options || {}
 	postId.value = options.id || 'post_001'
 
-	// 处理分享来源
+	// 处理分享来源（静默处理，用于统计）
 	if (options.share_from) {
-		console.log('来自分享', {
-			scene: options.share_scene,
-			from: options.share_from,
-			businessId: options.share_id
-		})
+		// 分享来源信息可用于后续统计上报
 	}
 
 	loadPost()
@@ -394,13 +390,13 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .detail-page {
-	background-color: #FFFFFF;
+	background-color: $uni-bg-color-card;
 	min-height: 100vh;
 	padding-bottom: 120rpx;
 }
 
 .header-section {
-	padding: 20rpx $uni-spacing-lg;
+	padding: $uni-spacing-md $uni-spacing-lg;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -415,9 +411,9 @@ onMounted(() => {
 .avatar {
 	width: 80rpx;
 	height: 80rpx;
-	border-radius: 50%;
-	margin-right: 20rpx;
-	border: 1rpx solid #F0F0F0;
+	border-radius: $uni-radius-circle;
+	margin-right: $uni-spacing-md;
+	border: 1rpx solid $uni-border-color-light;
 }
 
 .author-info {
@@ -427,7 +423,7 @@ onMounted(() => {
 }
 
 .author-name {
-	font-size: 30rpx;
+	font-size: $uni-font-size-md;
 	font-weight: 600;
 	color: $uni-text-color;
 	margin-bottom: 4rpx;
@@ -436,7 +432,7 @@ onMounted(() => {
 .meta-row {
 	display: flex;
 	align-items: center;
-	font-size: 24rpx;
+	font-size: $uni-font-size-xs;
 	color: $uni-text-color-placeholder;
 }
 
@@ -445,19 +441,24 @@ onMounted(() => {
 }
 
 .follow-btn {
-	padding: 10rpx 30rpx;
-	border-radius: 30rpx;
-	font-size: 26rpx;
+	padding: $uni-spacing-xs $uni-spacing-lg;
+	border-radius: $uni-radius-btn;
+	font-size: $uni-font-size-sm;
 	font-weight: 500;
 	background-color: $uni-color-primary;
-	color: #FFF;
+	color: $uni-text-color-inverse;
 	line-height: 1.2;
 	transition: all 0.2s ease;
 
 	&.following {
-		background-color: #F5F5F5;
+		background-color: $uni-bg-color-grey;
 		color: $uni-text-color-placeholder;
-		border: 1rpx solid #EEE;
+		border: 1rpx solid $uni-border-color-light;
+	}
+
+	&:active {
+		transform: scale(0.98);
+		opacity: 0.9;
 	}
 
 	&::after { border: none; }
@@ -466,7 +467,7 @@ onMounted(() => {
 .media-section {
 	width: 100%;
 	height: 500rpx;
-	background-color: #F5F5F5;
+	background-color: $uni-bg-color-grey;
 }
 
 .image-swiper {
@@ -501,18 +502,18 @@ onMounted(() => {
 .share-btn {
 	width: 56rpx;
 	height: 56rpx;
-	border-radius: 50%;
-	background-color: #F5F5F5;
+	border-radius: $uni-radius-circle;
+	background-color: $uni-bg-color-grey;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	flex-shrink: 0;
-	margin-left: 16rpx;
+	margin-left: $uni-spacing-md;
 	cursor: pointer;
 	transition: all 0.3s;
 
 	&:active {
-		background-color: #E0E0E0;
+		background-color: $uni-border-color;
 		transform: scale(0.95);
 	}
 }
@@ -529,19 +530,19 @@ onMounted(() => {
 }
 
 .tag-chip {
-	font-size: 26rpx;
+	font-size: $uni-font-size-sm;
 	color: #576B95;
-	background-color: #F2F5FF;
-	padding: $uni-spacing-xs 20rpx;
+	background-color: rgba(87, 107, 149, 0.1);
+	padding: $uni-spacing-xs $uni-spacing-md;
 	border-radius: $uni-radius-xs;
 }
 
 .stats-row {
-	font-size: 24rpx;
+	font-size: $uni-font-size-xs;
 	color: $uni-text-color-placeholder;
 	margin-top: $uni-spacing-lg;
 	padding-bottom: $uni-spacing-lg;
-	border-bottom: 1rpx solid #F5F5F5;
+	border-bottom: 1rpx solid $uni-border-color-light;
 }
 
 .comments-section {
@@ -553,7 +554,7 @@ onMounted(() => {
 }
 
 .section-title {
-	font-size: 30rpx;
+	font-size: $uni-font-size-md;
 	font-weight: 600;
 	color: $uni-text-color;
 }
@@ -566,8 +567,8 @@ onMounted(() => {
 .comment-avatar {
 	width: 64rpx;
 	height: 64rpx;
-	border-radius: 50%;
-	margin-right: 20rpx;
+	border-radius: $uni-radius-circle;
+	margin-right: $uni-spacing-md;
 	flex-shrink: 0;
 }
 
@@ -583,7 +584,7 @@ onMounted(() => {
 }
 
 .username {
-	font-size: 26rpx;
+	font-size: $uni-font-size-sm;
 	color: $uni-text-color-secondary;
 	font-weight: 500;
 }
@@ -594,13 +595,13 @@ onMounted(() => {
 	gap: 4rpx;
 
 	.count {
-		font-size: 24rpx;
+		font-size: $uni-font-size-xs;
 		color: $uni-text-color-placeholder;
 	}
 }
 
 .comment-content {
-	font-size: 28rpx;
+	font-size: $uni-font-size-base;
 	color: $uni-text-color;
 	line-height: 1.6;
 	display: block;
@@ -615,24 +616,24 @@ onMounted(() => {
 }
 
 .time {
-	font-size: 24rpx;
-	color: #CCC;
+	font-size: $uni-font-size-xs;
+	color: $uni-border-color;
 }
 
 .reply-btn {
-	font-size: 24rpx;
+	font-size: $uni-font-size-xs;
 	color: #576B95;
 	font-weight: 500;
 }
 
 .sub-comments {
-	background-color: #F9F9F9;
+	background-color: $uni-bg-color-grey;
 	padding: $uni-spacing-md;
 	border-radius: $uni-radius-xs;
 }
 
 .sub-comment-item {
-	font-size: 26rpx;
+	font-size: $uni-font-size-sm;
 	line-height: 1.6;
 	margin-bottom: $uni-spacing-xs;
 
@@ -653,7 +654,7 @@ onMounted(() => {
 	padding: 60rpx 0;
 	text-align: center;
 	color: $uni-text-color-placeholder;
-	font-size: 26rpx;
+	font-size: $uni-font-size-sm;
 }
 
 .bottom-action-bar {
@@ -662,8 +663,8 @@ onMounted(() => {
 	left: 0;
 	right: 0;
 	height: 100rpx;
-	background-color: #FFF;
-	border-top: 1rpx solid #F0F0F0;
+	background-color: $uni-bg-color-card;
+	border-top: 1rpx solid $uni-border-color-light;
 	display: flex;
 	align-items: center;
 	padding: 0 $uni-spacing-lg;
@@ -674,15 +675,15 @@ onMounted(() => {
 .input-box {
 	flex: 1;
 	height: 72rpx;
-	background-color: #F5F5F5;
-	border-radius: 36rpx;
+	background-color: $uni-bg-color-grey;
+	border-radius: $uni-radius-btn;
 	display: flex;
 	align-items: center;
 	padding: 0 $uni-spacing-md;
 	margin-right: $uni-spacing-lg;
 
 	.placeholder {
-		font-size: 28rpx;
+		font-size: $uni-font-size-base;
 		color: $uni-text-color-placeholder;
 		margin-left: $uni-spacing-sm;
 	}
@@ -704,9 +705,9 @@ onMounted(() => {
 		position: absolute;
 		top: -8rpx;
 		right: -10rpx;
-		font-size: 20rpx;
+		font-size: $uni-font-size-xs;
 		color: $uni-text-color-secondary;
-		background-color: #FFF;
+		background-color: $uni-bg-color-card;
 		padding: 0 4rpx;
 	}
 }
@@ -725,20 +726,20 @@ onMounted(() => {
 }
 
 .input-panel {
-	background-color: #FFF;
+	background-color: $uni-bg-color-card;
 	padding: $uni-spacing-lg;
-	padding-bottom: calc($uni-spacing-lg + env(safe-area-inset-bottom));
+	padding-bottom: calc(#{$uni-spacing-lg} + env(safe-area-inset-bottom));
 	border-radius: $uni-radius-lg $uni-radius-lg 0 0;
 }
 
 .comment-textarea {
 	width: 100%;
 	height: 200rpx;
-	background-color: #F5F5F5;
+	background-color: $uni-bg-color-grey;
 	border-radius: $uni-radius-sm;
-	padding: 20rpx;
-	font-size: 28rpx;
-	margin-bottom: 20rpx;
+	padding: $uni-spacing-md;
+	font-size: $uni-font-size-base;
+	margin-bottom: $uni-spacing-md;
 }
 
 .panel-footer {
@@ -748,12 +749,12 @@ onMounted(() => {
 
 .send-btn {
 	background-color: $uni-color-primary;
-	color: #FFF;
-	font-size: 28rpx;
+	color: $uni-text-color-inverse;
+	font-size: $uni-font-size-base;
 	padding: 0 40rpx;
 	height: 64rpx;
 	line-height: 64rpx;
-	border-radius: 32rpx;
+	border-radius: $uni-radius-btn;
 	margin: 0;
 	transition: all 0.2s ease;
 

@@ -95,7 +95,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onUnmounted } from 'vue'
 import { sendCode } from '@/api/auth'
 
 // 表单数据
@@ -112,6 +112,9 @@ const codeSending = ref(false)
 const countdown = ref(0)
 const showPassword = ref(false)
 const showConfirmPassword = ref(false)
+
+// 定时器引用（用于页面卸载时清理）
+let countdownTimer: ReturnType<typeof setInterval> | null = null
 
 // 验证码按钮文本
 const codeButtonText = computed(() => {
@@ -151,10 +154,13 @@ const handleSendCode = async () => {
 
 		// 开始倒计时
 		countdown.value = 60
-		const timer = setInterval(() => {
+		countdownTimer = setInterval(() => {
 			countdown.value--
 			if (countdown.value <= 0) {
-				clearInterval(timer)
+				if (countdownTimer) {
+					clearInterval(countdownTimer)
+					countdownTimer = null
+				}
 			}
 		}, 1000)
 	} catch (error: any) {
@@ -207,13 +213,21 @@ const handleSubmit = async () => {
 const goToLogin = () => {
 	uni.navigateBack()
 }
+
+// 页面卸载时清理定时器
+onUnmounted(() => {
+	if (countdownTimer) {
+		clearInterval(countdownTimer)
+		countdownTimer = null
+	}
+})
 </script>
 
 <style lang="scss" scoped>
 .reset-password-page {
 	min-height: 100vh;
-	background: linear-gradient(180deg, #FFF5E6 0%, #FFFFFF 50%);
-	padding: 0 48rpx;
+	background: linear-gradient(180deg, #FFF8E1 0%, $uni-bg-color 50%);
+	padding: 0 $uni-spacing-lg;
 }
 
 .header {
@@ -221,49 +235,61 @@ const goToLogin = () => {
 
 	.title {
 		display: block;
-		font-size: 48rpx;
-		font-weight: bold;
-		color: #333333;
-		margin-bottom: 16rpx;
+		font-size: $uni-font-size-xxl;
+		font-weight: 800;
+		color: $uni-text-color;
+		margin-bottom: $uni-spacing-sm;
 	}
 
 	.subtitle {
 		display: block;
-		font-size: 24rpx;
-		color: #999999;
+		font-size: $uni-font-size-sm;
+		color: $uni-text-color-placeholder;
 	}
 }
 
 .reset-form {
 	.form-item {
-		margin-bottom: 32rpx;
+		margin-bottom: $uni-spacing-md;
 
 		.input-wrapper {
 			display: flex;
 			align-items: center;
-			gap: 16rpx;
-			padding: 24rpx 32rpx;
-			background: #FFFFFF;
-			border-radius: 16rpx;
-			box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.04);
+			gap: $uni-spacing-sm;
+			padding: $uni-spacing-md $uni-spacing-lg;
+			background: $uni-bg-color-card;
+			border-radius: $uni-radius-lg;
+			box-shadow: $uni-shadow-card;
+			transition: box-shadow 0.2s ease;
+
+			&:focus-within {
+				box-shadow: $uni-shadow-float;
+			}
 
 			.input {
 				flex: 1;
-				font-size: 28rpx;
-				color: #333333;
+				font-size: $uni-font-size-base;
+				color: $uni-text-color;
 			}
 
 			.code-btn {
-				padding: 8rpx 24rpx;
-				background: #FF9F29;
-				color: #FFFFFF;
-				font-size: 24rpx;
-				border-radius: 8rpx;
+				padding: $uni-spacing-xs $uni-spacing-md;
+				background: $uni-color-primary;
+				color: $uni-text-color-inverse;
+				font-size: $uni-font-size-sm;
+				border-radius: $uni-radius-sm;
 				border: none;
-				line-height: 1;
+				line-height: 1.5;
+				font-weight: 500;
+				transition: opacity 0.2s ease;
+
+				&:active {
+					opacity: 0.8;
+				}
 
 				&[disabled] {
-					background: #CCCCCC;
+					background: $uni-border-color;
+					color: $uni-text-color-placeholder;
 				}
 			}
 		}
@@ -271,29 +297,37 @@ const goToLogin = () => {
 
 	.submit-btn {
 		width: 100%;
-		height: 88rpx;
-		background: linear-gradient(135deg, #FF9F29 0%, #FF6B00 100%);
-		color: #FFFFFF;
-		font-size: 32rpx;
-		font-weight: 500;
-		border-radius: 44rpx;
+		height: 96rpx;
+		background: $uni-color-primary-gradient;
+		color: $uni-text-color-inverse;
+		font-size: $uni-font-size-md;
+		font-weight: 600;
+		border-radius: $uni-radius-btn;
 		border: none;
-		margin-top: 16rpx;
-		margin-bottom: 32rpx;
+		margin-top: $uni-spacing-sm;
+		margin-bottom: $uni-spacing-lg;
+		box-shadow: $uni-shadow-glow;
+		transition: transform 0.2s ease, opacity 0.2s ease;
+
+		&:active {
+			transform: scale(0.98);
+			opacity: 0.9;
+		}
 
 		&[disabled] {
-			background: #CCCCCC;
+			background: $uni-border-color;
+			box-shadow: none;
 		}
 	}
 
 	.back-tip {
 		text-align: center;
-		font-size: 24rpx;
+		font-size: $uni-font-size-sm;
 	}
 }
 
 .link-text {
-	color: #FF9F29;
-	cursor: pointer;
+	color: $uni-color-primary;
+	font-weight: 500;
 }
 </style>

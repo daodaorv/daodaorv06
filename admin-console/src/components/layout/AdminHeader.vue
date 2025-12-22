@@ -3,7 +3,7 @@
     <!-- 左侧 -->
     <div class="header-left">
       <el-button
-        type="text"
+        link
         @click="toggleSidebar"
         class="menu-toggle"
       >
@@ -17,7 +17,7 @@
     <!-- 右侧 -->
     <div class="header-right">
       <!-- 主题切换 -->
-      <el-button type="text" @click="toggleTheme" class="theme-toggle">
+      <el-button link @click="toggleTheme" class="theme-toggle">
         <el-icon size="18">
           <Sunny v-if="isDark" />
           <Moon v-else />
@@ -26,7 +26,7 @@
 
       <!-- 通知 -->
       <el-badge :value="notificationCount" :hidden="notificationCount === 0">
-        <el-button type="text" class="notification-btn">
+        <el-button link class="notification-btn">
           <el-icon size="18">
             <Bell />
           </el-icon>
@@ -34,7 +34,7 @@
       </el-badge>
 
       <!-- 全屏 -->
-      <el-button type="text" @click="toggleFullscreen" class="fullscreen-btn">
+      <el-button link @click="toggleFullscreen" class="fullscreen-btn">
         <el-icon size="18">
           <FullScreen />
         </el-icon>

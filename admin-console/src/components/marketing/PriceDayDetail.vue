@@ -28,13 +28,13 @@
         <el-tag size="small" type="primary">优先级: {{ priceDetail.cityFactor.priority }}</el-tag>
       </div>
 
-      <div v-if="priceDetail.timeFactor" class="breakdown-item">
-        <span class="label">时间因子【{{ priceDetail.timeFactor.averageAmount ? '多日平均' : priceDetail.timeFactor.dailyDetails?.[0]?.timeFactor?.factorName || '无' }}】：</span>
-        <span v-if="priceDetail.timeFactor.dailyDetails?.[0]?.timeFactor" class="value" :class="getValueClass(priceDetail.timeFactor.dailyDetails[0].timeFactor.calculatedAmount)">
-          {{ formatAmount(priceDetail.timeFactor.dailyDetails[0].timeFactor.calculatedAmount) }}
+      <div v-if="priceDetail.timeFactorSummary" class="breakdown-item">
+        <span class="label">时间因子【{{ priceDetail.timeFactorSummary.averageAmount ? '多日平均' : priceDetail.timeFactorSummary.dailyDetails?.[0]?.timeFactor?.factorName || '无' }}】：</span>
+        <span v-if="priceDetail.timeFactorSummary.dailyDetails?.[0]?.timeFactor" class="value" :class="getValueClass(priceDetail.timeFactorSummary.dailyDetails[0].timeFactor.calculatedAmount)">
+          {{ formatAmount(priceDetail.timeFactorSummary.dailyDetails[0].timeFactor.calculatedAmount) }}
         </span>
-        <el-tag v-if="priceDetail.timeFactor.dailyDetails?.[0]?.timeFactor" size="small" type="danger">
-          优先级: {{ priceDetail.timeFactor.dailyDetails[0].timeFactor.priority }}
+        <el-tag v-if="priceDetail.timeFactorSummary.dailyDetails?.[0]?.timeFactor" size="small" type="danger">
+          优先级: {{ priceDetail.timeFactorSummary.dailyDetails[0].timeFactor.priority }}
         </el-tag>
       </div>
 
@@ -49,7 +49,7 @@
 
       <div class="breakdown-item final">
         <span class="label">最终日租价：</span>
-        <span class="value final-price">¥{{ priceDetail.dailyRental }}</span>
+        <span class="value final-price">¥{{ priceDetail.averageDailyRental }}</span>
       </div>
 
       <div class="calculation-explanation">

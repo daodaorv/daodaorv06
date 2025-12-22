@@ -503,23 +503,23 @@ onMounted(() => {
 <style lang="scss" scoped>
 .purchase-page {
 	min-height: 100vh;
-	background: #F5F5F5;
+	background: $uni-bg-color;
 	padding-bottom: 160rpx;
 }
 
 // 套餐卡片
 .package-card {
-	margin: 32rpx;
+	margin: $uni-spacing-xl;
 	background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-	border-radius: 24rpx;
-	padding: 32rpx;
-	box-shadow: 0 8rpx 24rpx rgba(255, 159, 41, 0.3);
+	border-radius: $uni-radius-lg;
+	padding: $uni-spacing-xl;
+	box-shadow: $uni-shadow-glow;
 
 	.card-header {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		margin-bottom: 32rpx;
+		margin-bottom: $uni-spacing-xl;
 
 		.package-name {
 			display: flex;
@@ -528,24 +528,24 @@ onMounted(() => {
 			.name-text {
 				font-size: 36rpx;
 				font-weight: bold;
-				color: #FFFFFF;
+				color: $uni-text-color-inverse;
 			}
 
 			.crown-icon {
 				width: 48rpx;
 				height: 48rpx;
-				margin-left: 16rpx;
+				margin-left: $uni-spacing-md;
 			}
 		}
 
 		.package-tag {
-			padding: 8rpx 16rpx;
+			padding: $uni-spacing-sm $uni-spacing-md;
 			background: rgba(255, 255, 255, 0.3);
-			border-radius: 8rpx;
+			border-radius: $uni-radius-xs;
 
 			text {
-				font-size: 20rpx;
-				color: #FFFFFF;
+				font-size: $uni-font-size-xs;
+				color: $uni-text-color-inverse;
 			}
 		}
 	}
@@ -554,35 +554,36 @@ onMounted(() => {
 		.price-section {
 			display: flex;
 			align-items: baseline;
-			margin-bottom: 16rpx;
+			margin-bottom: $uni-spacing-md;
 
 			.current-price {
 				display: flex;
 				align-items: baseline;
 
 				.currency {
-					font-size: 32rpx;
-					color: #FFFFFF;
+					font-size: $uni-font-size-lg;
+					color: $uni-text-color-inverse;
 				}
 
 				.price {
 					font-size: 72rpx;
 					font-weight: bold;
-					color: #FFFFFF;
+					color: $uni-text-color-inverse;
+					font-family: 'DIN Alternate', sans-serif;
 				}
 
 				.unit {
-					font-size: 28rpx;
+					font-size: $uni-font-size-base;
 					color: rgba(255, 255, 255, 0.9);
-					margin-left: 8rpx;
+					margin-left: $uni-spacing-sm;
 				}
 			}
 
 			.original-price {
-				margin-left: 24rpx;
+				margin-left: $uni-spacing-lg;
 
 				text {
-					font-size: 24rpx;
+					font-size: $uni-font-size-sm;
 					color: rgba(255, 255, 255, 0.7);
 					text-decoration: line-through;
 				}
@@ -592,15 +593,15 @@ onMounted(() => {
 		.validity-info {
 			display: flex;
 			align-items: center;
-			gap: 16rpx;
+			gap: $uni-spacing-md;
 
 			.validity-text {
-				font-size: 24rpx;
+				font-size: $uni-font-size-sm;
 				color: rgba(255, 255, 255, 0.9);
 			}
 
 			.validity-desc {
-				font-size: 20rpx;
+				font-size: $uni-font-size-xs;
 				color: rgba(255, 255, 255, 0.7);
 			}
 		}
@@ -610,19 +611,20 @@ onMounted(() => {
 // 通用区块样式
 .benefits-section,
 .payment-section {
-	margin: 32rpx;
-	background: #FFFFFF;
-	border-radius: 24rpx;
-	padding: 32rpx;
+	margin: $uni-spacing-xl;
+	background: $uni-bg-color-card;
+	border-radius: $uni-radius-lg;
+	padding: $uni-spacing-xl;
+	box-shadow: $uni-shadow-card;
 }
 
 .section-title {
-	margin-bottom: 24rpx;
+	margin-bottom: $uni-spacing-lg;
 
 	text {
-		font-size: 32rpx;
+		font-size: $uni-font-size-lg;
 		font-weight: bold;
-		color: #333333;
+		color: $uni-text-color;
 	}
 }
 
@@ -631,8 +633,8 @@ onMounted(() => {
 	.benefit-item {
 		display: flex;
 		align-items: center;
-		padding: 24rpx 0;
-		border-bottom: 1rpx solid #F0F0F0;
+		padding: $uni-spacing-lg 0;
+		border-bottom: 1rpx solid $uni-border-color-light;
 
 		&:last-child {
 			border-bottom: none;
@@ -641,12 +643,12 @@ onMounted(() => {
 		.benefit-icon {
 			width: 56rpx;
 			height: 56rpx;
-			margin-right: 24rpx;
+			margin-right: $uni-spacing-lg;
 			display: flex;
 			align-items: center;
 			justify-content: center;
 			background: rgba(255, 159, 41, 0.1);
-			border-radius: 50%;
+			border-radius: $uni-radius-circle;
 		}
 
 		.benefit-content {
@@ -654,16 +656,16 @@ onMounted(() => {
 
 			.benefit-name {
 				display: block;
-				font-size: 28rpx;
+				font-size: $uni-font-size-base;
 				font-weight: 500;
-				color: #333333;
-				margin-bottom: 8rpx;
+				color: $uni-text-color;
+				margin-bottom: $uni-spacing-sm;
 			}
 
 			.benefit-desc {
 				display: block;
-				font-size: 24rpx;
-				color: #999999;
+				font-size: $uni-font-size-sm;
+				color: $uni-text-color-placeholder;
 				line-height: 1.4;
 			}
 		}
@@ -671,15 +673,15 @@ onMounted(() => {
 		.benefit-check {
 			width: 40rpx;
 			height: 40rpx;
-			background: #4CAF50;
-			border-radius: 50%;
+			background: $uni-color-success;
+			border-radius: $uni-radius-circle;
 			display: flex;
 			align-items: center;
 			justify-content: center;
 
 			.check-icon {
-				font-size: 24rpx;
-				color: #FFFFFF;
+				font-size: $uni-font-size-sm;
+				color: $uni-text-color-inverse;
 			}
 		}
 	}
@@ -687,19 +689,24 @@ onMounted(() => {
 
 // 支付方式
 .payment-list {
-	background-color: #FFFFFF;
-	border-radius: 16rpx;
+	background-color: $uni-bg-color-card;
+	border-radius: $uni-radius-lg;
 }
 
 .payment-item {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	padding: 24rpx 0;
-	border-bottom: 1rpx solid #F5F5F5;
+	padding: $uni-spacing-lg 0;
+	border-bottom: 1rpx solid $uni-bg-color-grey;
+	transition: all 0.2s ease;
 
 	&:last-child {
 		border-bottom: none;
+	}
+
+	&:active {
+		background-color: $uni-bg-color-grey;
 	}
 
 	&.disabled {
@@ -711,19 +718,19 @@ onMounted(() => {
 .payment-info {
 	display: flex;
 	align-items: center;
-	gap: 24rpx;
+	gap: $uni-spacing-lg;
 }
 
 .icon-box {
 	width: 64rpx;
 	height: 64rpx;
-	border-radius: 12rpx;
+	border-radius: $uni-radius-md;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 
 	&.balance {
-		background: linear-gradient(135deg, #FF9F29 0%, #FFB84D 100%);
+		background: $uni-color-primary-gradient;
 	}
 
 	&.wechat {
@@ -736,43 +743,43 @@ onMounted(() => {
 }
 
 .alipay-text {
-	font-size: 28rpx;
-	color: #FFFFFF;
+	font-size: $uni-font-size-base;
+	color: $uni-text-color-inverse;
 	font-weight: bold;
 }
 
 .payment-text {
 	display: flex;
 	flex-direction: column;
-	gap: 6rpx;
+	gap: $uni-spacing-xs;
 
 	.name {
-		font-size: 30rpx;
+		font-size: $uni-font-size-md;
 		font-weight: 500;
-		color: #333333;
+		color: $uni-text-color;
 	}
 
 	.desc {
-		font-size: 24rpx;
-		color: #999999;
+		font-size: $uni-font-size-sm;
+		color: $uni-text-color-placeholder;
 	}
 }
 
 .action-box {
 	display: flex;
 	align-items: center;
-	gap: 16rpx;
+	gap: $uni-spacing-md;
 }
 
 .deduction-text {
-	font-size: 28rpx;
-	color: #FF9F29;
+	font-size: $uni-font-size-base;
+	color: $uni-color-primary;
 	font-weight: 500;
 }
 
 // 购买协议
 .agreement-section {
-	margin: 32rpx;
+	margin: $uni-spacing-xl;
 
 	.agreement-checkbox {
 		display: flex;
@@ -781,31 +788,31 @@ onMounted(() => {
 		.checkbox {
 			width: 36rpx;
 			height: 36rpx;
-			border: 2rpx solid #E0E0E0;
-			border-radius: 8rpx;
+			border: 2rpx solid $uni-border-color;
+			border-radius: $uni-radius-xs;
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			margin-right: 16rpx;
-			transition: all 0.3s;
+			margin-right: $uni-spacing-md;
+			transition: all 0.3s ease;
 
 			&.checked {
-				background: #FF9F29;
-				border-color: #FF9F29;
+				background: $uni-color-primary;
+				border-color: $uni-color-primary;
 
 				.check-icon {
-					font-size: 20rpx;
-					color: #FFFFFF;
+					font-size: $uni-font-size-xs;
+					color: $uni-text-color-inverse;
 				}
 			}
 		}
 
 		.agreement-text {
-			font-size: 24rpx;
-			color: #666666;
+			font-size: $uni-font-size-sm;
+			color: $uni-text-color-secondary;
 
 			.link-text {
-				color: #FF9F29;
+				color: $uni-color-primary;
 			}
 		}
 	}
@@ -817,9 +824,10 @@ onMounted(() => {
 	bottom: 0;
 	left: 0;
 	right: 0;
-	background: #FFFFFF;
-	padding: 24rpx 32rpx;
-	box-shadow: 0 -4rpx 16rpx rgba(0, 0, 0, 0.08);
+	background: $uni-bg-color-card;
+	padding: $uni-spacing-lg $uni-spacing-xl;
+	padding-bottom: calc(#{$uni-spacing-lg} + env(safe-area-inset-bottom));
+	box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.05);
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -830,29 +838,42 @@ onMounted(() => {
 		flex-direction: column;
 
 		.label {
-			font-size: 24rpx;
-			color: #999999;
-			margin-bottom: 8rpx;
+			font-size: $uni-font-size-sm;
+			color: $uni-text-color-placeholder;
+			margin-bottom: $uni-spacing-sm;
 		}
 
 		.price {
 			font-size: 40rpx;
 			font-weight: bold;
-			color: #FF9F29;
+			color: $uni-color-primary;
+			font-family: 'DIN Alternate', sans-serif;
 		}
 	}
 
 	.purchase-btn {
-		padding: 24rpx 64rpx;
-		background: linear-gradient(135deg, #FF9F29 0%, #FF6B00 100%);
-		color: #FFFFFF;
-		border-radius: 48rpx;
-		font-size: 32rpx;
+		padding: $uni-spacing-lg $uni-spacing-xl;
+		background: $uni-color-primary-gradient;
+		color: $uni-text-color-inverse;
+		border-radius: $uni-radius-btn;
+		font-size: $uni-font-size-lg;
 		font-weight: bold;
 		border: none;
+		box-shadow: $uni-shadow-glow;
+		transition: all 0.2s ease;
+
+		&:active {
+			transform: scale(0.98);
+			opacity: 0.9;
+		}
+
+		&::after {
+			border: none;
+		}
 
 		&[disabled] {
 			opacity: 0.5;
+			box-shadow: none;
 		}
 	}
 }

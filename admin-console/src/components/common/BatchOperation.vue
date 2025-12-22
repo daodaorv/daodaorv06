@@ -18,7 +18,7 @@
           </span>
           <el-button
             v-if="showClearSelection && selectedCount > 0"
-            type="text"
+            link
             size="small"
             @click="handleClearSelection"
           >

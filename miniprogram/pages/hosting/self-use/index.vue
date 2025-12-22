@@ -363,113 +363,148 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .self-use {
   min-height: 100vh;
-  background: #F5F5F5;
-  padding: 24rpx 32rpx 120rpx;
+  background: $uni-bg-color;
+  padding: $uni-spacing-xl $uni-spacing-xl 120rpx;
 }
+
 .info-card {
-  background: #FFF;
-  border-radius: 16rpx;
-  padding: 32rpx;
-  margin-bottom: 24rpx;
-  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.05);
+  background: $uni-bg-color-card;
+  border-radius: $uni-radius-lg;
+  padding: $uni-spacing-xl;
+  margin-bottom: $uni-spacing-xl;
+  box-shadow: $uni-shadow-card;
 }
+
 .vehicle-name {
   display: block;
-  font-size: 32rpx;
+  font-size: $uni-font-size-lg;
   font-weight: 600;
-  margin-bottom: 8rpx;
+  color: $uni-text-color;
+  margin-bottom: $uni-spacing-sm;
 }
+
 .plate {
   display: block;
-  font-size: 24rpx;
-  color: #999;
+  font-size: $uni-font-size-xs;
+  color: $uni-text-color-placeholder;
 }
+
 .form {
-  background: #FFF;
-  border-radius: 16rpx;
-  padding: 32rpx;
-  margin-bottom: 24rpx;
+  background: $uni-bg-color-card;
+  border-radius: $uni-radius-lg;
+  padding: $uni-spacing-xl;
+  margin-bottom: $uni-spacing-xl;
+  box-shadow: $uni-shadow-card;
 }
+
 .form-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 24rpx 0;
-  border-bottom: 1rpx solid #F5F5F5;
+  padding: $uni-spacing-xl 0;
+  border-bottom: 1rpx solid $uni-border-color-light;
+  transition: all 0.2s ease;
+
+  &:last-child {
+    border-bottom: none;
+  }
 }
-.form-item:last-child {
-  border-bottom: none;
-}
+
 .label {
-  font-size: 28rpx;
-  color: #333;
+  font-size: $uni-font-size-base;
+  color: $uni-text-color;
 }
+
 .value {
-  font-size: 28rpx;
-  color: #666;
+  font-size: $uni-font-size-base;
+  color: $uni-text-color-secondary;
 }
+
 .picker {
-  font-size: 28rpx;
-  color: #333;
+  font-size: $uni-font-size-base;
+  color: $uni-text-color;
 }
+
 .switch-item {
   padding-top: 0;
 }
+
 .different-block {
-  background: #FFF9F0;
-  border-radius: 12rpx;
-  padding: 24rpx 24rpx 8rpx;
-  margin-bottom: 8rpx;
+  background: rgba($uni-color-primary, 0.08);
+  border-radius: $uni-radius-md;
+  padding: $uni-spacing-xl $uni-spacing-xl $uni-spacing-sm;
+  margin-bottom: $uni-spacing-sm;
+
+  .form-item {
+    border-bottom: none;
+    padding: $uni-spacing-lg 0;
+  }
 }
-.different-block .form-item {
-  border-bottom: none;
-  padding: 16rpx 0;
-}
+
 .fee-section {
-  background: #FFF;
-  border-radius: 16rpx;
-  padding: 32rpx;
+  background: $uni-bg-color-card;
+  border-radius: $uni-radius-lg;
+  padding: $uni-spacing-xl;
+  box-shadow: $uni-shadow-card;
 }
+
 .section-title {
-  font-size: 32rpx;
+  font-size: $uni-font-size-lg;
   font-weight: 600;
-  margin-bottom: 24rpx;
+  color: $uni-text-color;
+  margin-bottom: $uni-spacing-xl;
 }
+
 .fee-item {
   display: flex;
   justify-content: space-between;
-  padding: 16rpx 0;
-  font-size: 28rpx;
+  padding: $uni-spacing-lg 0;
+  font-size: $uni-font-size-base;
+  color: $uni-text-color-secondary;
 }
+
 .free {
-  color: #4CAF50;
+  color: $uni-color-success;
+  font-weight: 500;
 }
+
 .fee-total {
   display: flex;
   justify-content: space-between;
-  padding-top: 24rpx;
-  margin-top: 24rpx;
-  border-top: 1rpx solid #F5F5F5;
-  font-size: 32rpx;
+  padding-top: $uni-spacing-xl;
+  margin-top: $uni-spacing-xl;
+  border-top: 1rpx solid $uni-border-color-light;
+  font-size: $uni-font-size-lg;
   font-weight: 600;
+  color: $uni-text-color;
 }
+
 .total {
-  color: #FF9F29;
+  color: $uni-color-primary;
+  font-family: 'DIN Alternate', sans-serif;
 }
+
 .submit-btn {
   position: fixed;
-  bottom: 32rpx;
-  left: 32rpx;
-  right: 32rpx;
+  bottom: $uni-spacing-xl;
+  left: $uni-spacing-xl;
+  right: $uni-spacing-xl;
   height: 88rpx;
-  background: linear-gradient(135deg, #FF9F29 0%, #FFB84D 100%);
-  color: #FFF;
-  border-radius: 48rpx;
-  font-size: 32rpx;
+  background: $uni-color-primary-gradient;
+  color: $uni-text-color-inverse;
+  border-radius: $uni-radius-btn;
+  font-size: $uni-font-size-lg;
   font-weight: 600;
   border: none;
+  box-shadow: $uni-shadow-glow;
+  transition: all 0.2s ease;
+
+  &:active {
+    transform: scale(0.98);
+    opacity: 0.9;
+  }
 }
 </style>

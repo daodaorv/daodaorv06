@@ -219,14 +219,15 @@ const handleSubmit = () => {
 <style scoped lang="scss">
 .contact-edit-page {
   min-height: 100vh;
-  background-color: #F8F8F8;
-  padding: 24rpx;
+  background-color: $uni-bg-color;
+  padding: $uni-spacing-xl;
 }
 
 .form-container {
-  background-color: #FFFFFF;
-  border-radius: 16rpx;
-  padding: 32rpx;
+  background-color: $uni-bg-color-card;
+  border-radius: $uni-radius-lg;
+  padding: $uni-spacing-xl;
+  box-shadow: $uni-shadow-card;
 }
 
 .footer-btn {
@@ -234,13 +235,20 @@ const handleSubmit = () => {
 }
 
 .submit-btn {
-  background: linear-gradient(135deg, #FF9F29 0%, #FFB84D 100%);
-  color: #FFFFFF;
-  font-size: 32rpx;
-  border-radius: 44rpx;
+  background: $uni-color-primary-gradient;
+  color: $uni-text-color-inverse;
+  font-size: $uni-font-size-lg;
+  border-radius: $uni-radius-btn;
   height: 88rpx;
   line-height: 88rpx;
-  
+  box-shadow: $uni-shadow-glow;
+  transition: all 0.2s ease;
+
+  &:active {
+    transform: scale(0.98);
+    opacity: 0.9;
+  }
+
   &::after {
     border: none;
   }

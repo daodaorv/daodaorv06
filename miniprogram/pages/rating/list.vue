@@ -61,7 +61,7 @@
 					<image
 						v-for="(image, index) in rating.images"
 						:key="index"
-						:src="photo"
+						:src="image"
 						mode="aspectFill"
 						class="photo"
 						@click="previewImage(rating.images, index)"
@@ -315,7 +315,7 @@ onMounted(() => {
 <style lang="scss" scoped>
 .rating-list-page {
 	min-height: 100vh;
-	background: #F5F5F5;
+	background: $uni-bg-color;
 }
 
 // 筛选标签
@@ -324,27 +324,27 @@ onMounted(() => {
 	top: 0;
 	z-index: 10;
 	display: flex;
-	background: #FFFFFF;
-	padding: 24rpx 32rpx;
-	box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+	background: $uni-bg-color-card;
+	padding: $uni-spacing-xl $uni-spacing-xl;
+	box-shadow: $uni-shadow-sm;
 
 	.tab-item {
 		flex: 1;
 		text-align: center;
-		padding: 16rpx 0;
-		border-radius: 48rpx;
+		padding: $uni-spacing-lg 0;
+		border-radius: $uni-radius-btn;
 		transition: all 0.3s;
 
 		text {
-			font-size: 28rpx;
-			color: #666666;
+			font-size: $uni-font-size-base;
+			color: $uni-text-color-secondary;
 		}
 
 		&.active {
-			background: linear-gradient(135deg, #FF9F29 0%, #FF6B00 100%);
+			background: $uni-color-primary-gradient;
 
 			text {
-				color: #FFFFFF;
+				color: $uni-text-color-inverse;
 				font-weight: 500;
 			}
 		}
@@ -353,13 +353,14 @@ onMounted(() => {
 
 // 评价列表
 .rating-list {
-	padding: 32rpx;
+	padding: $uni-spacing-xl;
 
 	.rating-item {
-		background: #FFFFFF;
-		border-radius: 24rpx;
-		padding: 32rpx;
-		margin-bottom: 24rpx;
+		background: $uni-bg-color-card;
+		border-radius: $uni-radius-lg;
+		padding: $uni-spacing-xl;
+		margin-bottom: $uni-spacing-xl;
+		box-shadow: $uni-shadow-card;
 
 		&:last-child {
 			margin-bottom: 0;
@@ -372,47 +373,47 @@ onMounted(() => {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	margin-bottom: 24rpx;
+	margin-bottom: $uni-spacing-xl;
 
 	.order-info {
 		flex: 1;
 		display: flex;
 		align-items: center;
-		gap: 16rpx;
+		gap: $uni-spacing-lg;
 
 		.type-tag {
-			padding: 4rpx 16rpx;
-			background: #E8F5E9;
-			color: #4CAF50;
+			padding: 4rpx $uni-spacing-lg;
+			background: rgba($uni-color-success, 0.12);
+			color: $uni-color-success;
 			font-size: 20rpx;
-			border-radius: 8rpx;
+			border-radius: $uni-radius-sm;
 		}
 
 		.target-name {
-			font-size: 28rpx;
-			color: #333333;
+			font-size: $uni-font-size-base;
+			color: $uni-text-color;
 			font-weight: 500;
 		}
 	}
 
 	.rating-status {
-		padding: 4rpx 16rpx;
-		border-radius: 8rpx;
+		padding: 4rpx $uni-spacing-lg;
+		border-radius: $uni-radius-sm;
 		font-size: 20rpx;
 
 		&.status-pending {
-			background: #FFF3E0;
-			color: #FF9800;
+			background: rgba($uni-color-warning, 0.1);
+			color: $uni-color-warning;
 		}
 
 		&.status-published {
-			background: #E8F5E9;
-			color: #4CAF50;
+			background: rgba($uni-color-success, 0.12);
+			color: $uni-color-success;
 		}
 
 		&.status-rejected {
-			background: #FFEBEE;
-			color: #F44336;
+			background: rgba($uni-color-error, 0.1);
+			color: $uni-color-error;
 		}
 	}
 }
@@ -421,36 +422,36 @@ onMounted(() => {
 .rating-score {
 	display: flex;
 	align-items: center;
-	gap: 24rpx;
-	margin-bottom: 16rpx;
+	gap: $uni-spacing-xl;
+	margin-bottom: $uni-spacing-xl;
 
 	.stars {
 		display: flex;
-		gap: 8rpx;
+		gap: $uni-spacing-md;
 	}
 
 	.tags {
 		display: flex;
-		gap: 12rpx;
+		gap: $uni-spacing-lg;
 		flex-wrap: wrap;
 
 		.tag {
-			padding: 4rpx 12rpx;
-			background: #FFF8F0;
-			color: #FF9F29;
+			padding: 4rpx $uni-spacing-lg;
+			background: rgba($uni-color-primary, 0.08);
+			color: $uni-color-primary;
 			font-size: 20rpx;
-			border-radius: 8rpx;
+			border-radius: $uni-radius-sm;
 		}
 	}
 }
 
 // 评价内容
 .rating-content {
-	margin-bottom: 16rpx;
+	margin-bottom: $uni-spacing-xl;
 
 	text {
-		font-size: 28rpx;
-		color: #333333;
+		font-size: $uni-font-size-base;
+		color: $uni-text-color;
 		line-height: 1.6;
 	}
 }
@@ -459,47 +460,47 @@ onMounted(() => {
 .rating-images {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
-	gap: 16rpx;
-	margin-bottom: 16rpx;
+	gap: $uni-spacing-xl;
+	margin-bottom: $uni-spacing-xl;
 
 	.image {
 		width: 100%;
 		height: 200rpx;
-		border-radius: 12rpx;
+		border-radius: $uni-radius-lg;
 	}
 }
 
 // 商家回复
 .rating-reply {
-	margin-top: 16rpx;
-	padding: 24rpx;
-	background: #F8F8F8;
-	border-radius: 12rpx;
+	margin-top: $uni-spacing-xl;
+	padding: $uni-spacing-xl;
+	background: $uni-bg-color-grey;
+	border-radius: $uni-radius-lg;
 
 	.reply-header {
-		margin-bottom: 12rpx;
+		margin-bottom: $uni-spacing-lg;
 
 		.reply-label {
-			font-size: 24rpx;
-			color: #FF9F29;
+			font-size: $uni-font-size-sm;
+			color: $uni-color-primary;
 			font-weight: 500;
 		}
 	}
 
 	.reply-content {
-		margin-bottom: 12rpx;
+		margin-bottom: $uni-spacing-lg;
 
 		text {
-			font-size: 26rpx;
-			color: #666666;
+			font-size: $uni-font-size-sm;
+			color: $uni-text-color-secondary;
 			line-height: 1.5;
 		}
 	}
 
 	.reply-time {
 		text {
-			font-size: 20rpx;
-			color: #999999;
+			font-size: $uni-font-size-xs;
+			color: $uni-text-color-placeholder;
 		}
 	}
 }
@@ -509,44 +510,49 @@ onMounted(() => {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	margin-top: 24rpx;
-	padding-top: 24rpx;
-	border-top: 1rpx solid #F0F0F0;
+	margin-top: $uni-spacing-xl;
+	padding-top: $uni-spacing-xl;
+	border-top: 1rpx solid $uni-border-color-light;
 
 	.footer-left {
 		display: flex;
 		align-items: center;
-		gap: 16rpx;
+		gap: $uni-spacing-xl;
 
 		.time {
-			font-size: 24rpx;
-			color: #999999;
+			font-size: $uni-font-size-sm;
+			color: $uni-text-color-placeholder;
 		}
 
 		.reward {
-			font-size: 24rpx;
-			color: #FF9F29;
+			font-size: $uni-font-size-sm;
+			color: $uni-color-primary;
 		}
 	}
 
 	.footer-actions {
 		display: flex;
-		gap: 16rpx;
+		gap: $uni-spacing-xl;
 
 		.action-btn {
-			padding: 8rpx 24rpx;
-			font-size: 24rpx;
-			border-radius: 48rpx;
+			padding: $uni-spacing-md $uni-spacing-xl;
+			font-size: $uni-font-size-sm;
+			border-radius: $uni-radius-btn;
 			border: none;
+			transition: all 0.2s ease;
+
+			&:active {
+				transform: scale(0.95);
+			}
 
 			&.edit-btn {
-				background: #FFF8F0;
-				color: #FF9F29;
+				background: rgba($uni-color-primary, 0.08);
+				color: $uni-color-primary;
 			}
 
 			&.delete-btn {
-				background: #F5F5F5;
-				color: #999999;
+				background: $uni-bg-color-grey;
+				color: $uni-text-color-placeholder;
 			}
 		}
 	}
@@ -563,12 +569,12 @@ onMounted(() => {
 	.empty-image {
 		width: 320rpx;
 		height: 320rpx;
-		margin-bottom: 32rpx;
+		margin-bottom: $uni-spacing-xl;
 	}
 
 	.empty-text {
-		font-size: 28rpx;
-		color: #999999;
+		font-size: $uni-font-size-base;
+		color: $uni-text-color-placeholder;
 	}
 }
 
@@ -581,9 +587,9 @@ onMounted(() => {
 	padding: 60rpx 0;
 
 	.loading-text {
-		font-size: 24rpx;
-		color: #999999;
-		margin-top: 16rpx;
+		font-size: $uni-font-size-sm;
+		color: $uni-text-color-placeholder;
+		margin-top: $uni-spacing-xl;
 	}
 }
 
@@ -591,10 +597,15 @@ onMounted(() => {
 .load-more {
 	text-align: center;
 	padding: 40rpx 0;
+	transition: all 0.2s ease;
+
+	&:active {
+		opacity: 0.7;
+	}
 
 	text {
-		font-size: 28rpx;
-		color: #FF9F29;
+		font-size: $uni-font-size-base;
+		color: $uni-color-primary;
 	}
 }
 
@@ -604,8 +615,8 @@ onMounted(() => {
 	padding: 40rpx 0;
 
 	text {
-		font-size: 24rpx;
-		color: #999999;
+		font-size: $uni-font-size-sm;
+		color: $uni-text-color-placeholder;
 	}
 }
 </style>

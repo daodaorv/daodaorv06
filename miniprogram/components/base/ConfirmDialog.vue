@@ -35,7 +35,10 @@ const props = withDefaults(defineProps<Props>(), {
 	placeholder: ''
 });
 
-const emit = defineEmits(['confirm', 'close']);
+const emit = defineEmits<{
+	(e: 'confirm', value?: string): void;
+	(e: 'close'): void;
+}>();
 
 const show = ref(false);
 const inputValue = ref('');
@@ -68,7 +71,7 @@ defineExpose({
 <style scoped lang="scss">
 .dialog-container {
 	background-color: #FFFFFF;
-	border-radius: $uni-border-radius-lg;
+	border-radius: $uni-radius-lg;
 	width: 560rpx;
 	overflow: hidden;
 }
@@ -100,7 +103,7 @@ defineExpose({
 	width: 100%;
 	padding: 16rpx;
 	border: 1rpx solid $uni-border-color;
-	border-radius: $uni-border-radius-sm;
+	border-radius: $uni-radius-sm;
 	font-size: 28rpx;
 }
 

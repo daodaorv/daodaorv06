@@ -226,7 +226,7 @@
 
 <script setup lang="ts">
 import { logger } from '@/utils/logger';
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import {
 	login,
 	loginWithCode,
@@ -270,6 +270,9 @@ const codeSending = ref(false)
 const countdown = ref(0)
 const showPassword = ref(false)
 const agreed = ref(false)
+
+// 定时器引用（用于页面卸载时清理）
+let countdownTimer: ReturnType<typeof setInterval> | null = null
 
 // 平台图标和文案
 const platformIcon = computed(() => {
@@ -354,10 +357,13 @@ const handleSendCode = async () => {
 
 		// 开始倒计时
 		countdown.value = 60
-		const timer = setInterval(() => {
+		countdownTimer = setInterval(() => {
 			countdown.value--
 			if (countdown.value <= 0) {
-				clearInterval(timer)
+				if (countdownTimer) {
+					clearInterval(countdownTimer)
+					countdownTimer = null
+				}
 			}
 		}, 1000)
 	} catch (error: any) {
@@ -725,13 +731,21 @@ const viewAgreement = (type: 'user' | 'privacy') => {
 	})
 	// 功能开发中 - 协议页面待实现
 }
+
+// 页面卸载时清理定时器
+onUnmounted(() => {
+	if (countdownTimer) {
+		clearInterval(countdownTimer)
+		countdownTimer = null
+	}
+})
 </script>
 
 <style lang="scss" scoped>
 .login-page {
 	min-height: 100vh;
-	background: linear-gradient(180deg, #FFF5E6 0%, #FFFFFF 50%);
-	padding: 0 48rpx;
+	background: linear-gradient(180deg, #FFF8E1 0%, $uni-bg-color 50%);
+	padding: 0 $uni-spacing-lg;
 }
 
 // Logo区域
@@ -744,40 +758,49 @@ const viewAgreement = (type: 'user' | 'privacy') => {
 	.logo {
 		width: 160rpx;
 		height: 160rpx;
-		margin-bottom: 32rpx;
+		margin-bottom: $uni-spacing-lg;
+		border-radius: $uni-radius-lg;
+		box-shadow: $uni-shadow-card;
 	}
 
 	.app-name {
-		font-size: 48rpx;
-		font-weight: bold;
-		color: #333333;
-		margin-bottom: 16rpx;
+		font-size: $uni-font-size-xxl;
+		font-weight: 800;
+		color: $uni-text-color;
+		margin-bottom: $uni-spacing-sm;
 	}
 
 	.slogan {
-		font-size: 24rpx;
-		color: #999999;
+		font-size: $uni-font-size-sm;
+		color: $uni-text-color-placeholder;
 	}
 }
 
 // 一键登录
 .oneclick-section {
-	margin-bottom: 32rpx;
+	margin-bottom: $uni-spacing-lg;
 
 	.oneclick-btn {
 		width: 100%;
-		height: 88rpx;
-		background: linear-gradient(135deg, #FF9F29 0%, #FF6B00 100%);
-		color: #FFFFFF;
-		font-size: 32rpx;
-		font-weight: 500;
-		border-radius: 44rpx;
+		height: 96rpx;
+		background: $uni-color-primary-gradient;
+		color: $uni-text-color-inverse;
+		font-size: $uni-font-size-md;
+		font-weight: 600;
+		border-radius: $uni-radius-btn;
 		border: none;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		gap: 16rpx;
-		margin-bottom: 32rpx;
+		gap: $uni-spacing-sm;
+		margin-bottom: $uni-spacing-lg;
+		box-shadow: $uni-shadow-glow;
+		transition: transform 0.2s ease, opacity 0.2s ease;
+
+		&:active {
+			transform: scale(0.98);
+			opacity: 0.9;
+		}
 
 		.platform-icon {
 			width: 40rpx;
@@ -788,17 +811,17 @@ const viewAgreement = (type: 'user' | 'privacy') => {
 	.divider {
 		display: flex;
 		align-items: center;
-		gap: 16rpx;
+		gap: $uni-spacing-sm;
 
 		.line {
 			flex: 1;
 			height: 1rpx;
-			background: #E5E5E5;
+			background: $uni-border-color;
 		}
 
 		.text {
-			font-size: 24rpx;
-			color: #999999;
+			font-size: $uni-font-size-sm;
+			color: $uni-text-color-placeholder;
 		}
 	}
 }
@@ -806,19 +829,19 @@ const viewAgreement = (type: 'user' | 'privacy') => {
 // 登录方式切换
 .login-tabs {
 	display: flex;
-	gap: 48rpx;
-	margin-bottom: 32rpx;
+	gap: $uni-spacing-xl;
+	margin-bottom: $uni-spacing-lg;
 
 	.tab-item {
-		font-size: 32rpx;
-		color: #999999;
-		padding-bottom: 16rpx;
+		font-size: $uni-font-size-md;
+		color: $uni-text-color-placeholder;
+		padding-bottom: $uni-spacing-sm;
 		position: relative;
-		cursor: pointer;
+		transition: color 0.3s ease;
 
 		&.active {
-			color: #333333;
-			font-weight: 500;
+			color: $uni-text-color;
+			font-weight: 600;
 
 			&::after {
 				content: '';
@@ -826,9 +849,9 @@ const viewAgreement = (type: 'user' | 'privacy') => {
 				bottom: 0;
 				left: 0;
 				right: 0;
-				height: 4rpx;
-				background: #FF9F29;
-				border-radius: 2rpx;
+				height: 6rpx;
+				background: $uni-color-primary;
+				border-radius: 3rpx;
 			}
 		}
 	}
@@ -837,19 +860,20 @@ const viewAgreement = (type: 'user' | 'privacy') => {
 // 子标签切换
 .sub-tabs {
 	display: flex;
-	gap: 32rpx;
-	margin-bottom: 24rpx;
+	gap: $uni-spacing-lg;
+	margin-bottom: $uni-spacing-md;
 
 	.sub-tab {
-		font-size: 28rpx;
-		color: #999999;
-		padding: 8rpx 24rpx;
-		border-radius: 8rpx;
-		cursor: pointer;
+		font-size: $uni-font-size-base;
+		color: $uni-text-color-placeholder;
+		padding: $uni-spacing-xs $uni-spacing-md;
+		border-radius: $uni-radius-sm;
+		transition: all 0.2s ease;
 
 		&.active {
-			color: #FF9F29;
-			background: #FFF5E6;
+			color: $uni-color-primary;
+			background: rgba(255, 159, 41, 0.1);
+			font-weight: 500;
 		}
 	}
 }
@@ -857,34 +881,46 @@ const viewAgreement = (type: 'user' | 'privacy') => {
 // 登录表单
 .login-form {
 	.form-item {
-		margin-bottom: 32rpx;
+		margin-bottom: $uni-spacing-md;
 
 		.input-wrapper {
 			display: flex;
 			align-items: center;
-			gap: 16rpx;
-			padding: 24rpx 32rpx;
-			background: #FFFFFF;
-			border-radius: 16rpx;
-			box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.04);
+			gap: $uni-spacing-sm;
+			padding: $uni-spacing-md $uni-spacing-lg;
+			background: $uni-bg-color-card;
+			border-radius: $uni-radius-lg;
+			box-shadow: $uni-shadow-card;
+			transition: box-shadow 0.2s ease;
+
+			&:focus-within {
+				box-shadow: $uni-shadow-float;
+			}
 
 			.input {
 				flex: 1;
-				font-size: 28rpx;
-				color: #333333;
+				font-size: $uni-font-size-base;
+				color: $uni-text-color;
 			}
 
 			.code-btn {
-				padding: 8rpx 24rpx;
-				background: #FF9F29;
-				color: #FFFFFF;
-				font-size: 24rpx;
-				border-radius: 8rpx;
+				padding: $uni-spacing-xs $uni-spacing-md;
+				background: $uni-color-primary;
+				color: $uni-text-color-inverse;
+				font-size: $uni-font-size-sm;
+				border-radius: $uni-radius-sm;
 				border: none;
-				line-height: 1;
+				line-height: 1.5;
+				font-weight: 500;
+				transition: opacity 0.2s ease;
+
+				&:active {
+					opacity: 0.8;
+				}
 
 				&[disabled] {
-					background: #CCCCCC;
+					background: $uni-border-color;
+					color: $uni-text-color-placeholder;
 				}
 			}
 		}
@@ -893,31 +929,39 @@ const viewAgreement = (type: 'user' | 'privacy') => {
 	.form-extra {
 		display: flex;
 		justify-content: flex-end;
-		margin-bottom: 32rpx;
+		margin-bottom: $uni-spacing-lg;
 	}
 
 	.login-btn {
 		width: 100%;
-		height: 88rpx;
-		background: linear-gradient(135deg, #FF9F29 0%, #FF6B00 100%);
-		color: #FFFFFF;
-		font-size: 32rpx;
-		font-weight: 500;
-		border-radius: 44rpx;
+		height: 96rpx;
+		background: $uni-color-primary-gradient;
+		color: $uni-text-color-inverse;
+		font-size: $uni-font-size-md;
+		font-weight: 600;
+		border-radius: $uni-radius-btn;
 		border: none;
-		margin-bottom: 32rpx;
+		margin-bottom: $uni-spacing-lg;
+		box-shadow: $uni-shadow-glow;
+		transition: transform 0.2s ease, opacity 0.2s ease;
+
+		&:active {
+			transform: scale(0.98);
+			opacity: 0.9;
+		}
 
 		&[disabled] {
-			background: #CCCCCC;
+			background: $uni-border-color;
+			box-shadow: none;
 		}
 	}
 
 	.register-tip {
 		text-align: center;
-		font-size: 24rpx;
+		font-size: $uni-font-size-sm;
 
 		.tip-text {
-			color: #999999;
+			color: $uni-text-color-placeholder;
 		}
 	}
 }
@@ -929,40 +973,47 @@ const viewAgreement = (type: 'user' | 'privacy') => {
 	.divider {
 		display: flex;
 		align-items: center;
-		gap: 16rpx;
-		margin-bottom: 48rpx;
+		gap: $uni-spacing-sm;
+		margin-bottom: $uni-spacing-xl;
 
 		.line {
 			flex: 1;
 			height: 1rpx;
-			background: #E5E5E5;
+			background: $uni-border-color;
 		}
 
 		.text {
-			font-size: 24rpx;
-			color: #999999;
+			font-size: $uni-font-size-sm;
+			color: $uni-text-color-placeholder;
 		}
 	}
 
 	.login-methods {
 		display: flex;
 		justify-content: center;
-		gap: 64rpx;
+		gap: 80rpx;
 
 		.method-item {
 			display: flex;
 			flex-direction: column;
 			align-items: center;
-			gap: 16rpx;
+			gap: $uni-spacing-sm;
+			transition: transform 0.2s ease;
+
+			&:active {
+				transform: scale(0.95);
+			}
 
 			.method-icon {
-				width: 80rpx;
-				height: 80rpx;
+				width: 88rpx;
+				height: 88rpx;
+				border-radius: $uni-radius-circle;
+				box-shadow: $uni-shadow-sm;
 			}
 
 			.method-text {
-				font-size: 24rpx;
-				color: #666666;
+				font-size: $uni-font-size-sm;
+				color: $uni-text-color-secondary;
 			}
 		}
 	}
@@ -971,19 +1022,19 @@ const viewAgreement = (type: 'user' | 'privacy') => {
 // 用户协议
 .agreement {
 	position: fixed;
-	bottom: 48rpx;
-	left: 48rpx;
-	right: 48rpx;
+	bottom: $uni-spacing-xl;
+	left: $uni-spacing-lg;
+	right: $uni-spacing-lg;
 
 	.agreement-label {
 		display: flex;
 		align-items: flex-start;
-		gap: 8rpx;
+		gap: $uni-spacing-xs;
 
 		.agreement-text {
 			flex: 1;
-			font-size: 22rpx;
-			color: #999999;
+			font-size: $uni-font-size-xs;
+			color: $uni-text-color-placeholder;
 			line-height: 1.6;
 		}
 	}
@@ -991,7 +1042,7 @@ const viewAgreement = (type: 'user' | 'privacy') => {
 
 // 链接文本
 .link-text {
-	color: #FF9F29;
-	cursor: pointer;
+	color: $uni-color-primary;
+	font-weight: 500;
 }
 </style>

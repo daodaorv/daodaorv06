@@ -2,27 +2,35 @@
 	<view class="community-page">
 		<!-- 沉浸式头部背景 -->
 		<view class="header-bg"></view>
-		
+
 		<!-- 顶部占位 / 标题栏 -->
 		<view class="custom-header" :style="{ paddingTop: statusBarHeight + 'px' }">
 			<text class="page-title">社区</text>
 		</view>
 
-		<!-- 业务入口 (改为更现代的 Glassmorphism 卡片) -->
+		<!-- 业务入口 (沉浸式卡片) -->
 		<view class="business-grid">
-			<view class="biz-card campsite" @click="navigateTo('/pages/campsite/list')">
+			<view class="biz-card" @click="navigateTo('/pages/campsite/list')">
+				<image class="card-bg" src="/static/campsite-bg.png" mode="aspectFill"></image>
+				<view class="card-overlay"></view>
 				<view class="biz-content">
-					<text class="biz-title">营地预订</text>
+					<view class="biz-header">
+						<text class="biz-title">营地预订</text>
+						<u-icon name="arrow-right" color="#FFFFFF" :size="14"></u-icon>
+					</view>
 					<text class="biz-desc">精选全国 200+ 优质营地</text>
 				</view>
-				<image class="biz-icon" src="/static/logo.png" mode="aspectFit"></image> <!-- 替换为合适的插图 -->
 			</view>
-			<view class="biz-card tour" @click="navigateTo('/pages/tour/list')">
+			<view class="biz-card" @click="navigateTo('/pages/tour/list')">
+				<image class="card-bg" src="/static/tour-bg.png" mode="aspectFill"></image>
+				<view class="card-overlay"></view>
 				<view class="biz-content">
-					<text class="biz-title">房车旅游</text>
+					<view class="biz-header">
+						<text class="biz-title">房车旅游</text>
+						<u-icon name="arrow-right" color="#FFFFFF" :size="14"></u-icon>
+					</view>
 					<text class="biz-desc">跟团自驾 · 深度体验</text>
 				</view>
-				<image class="biz-icon" src="/static/logo.png" mode="aspectFit"></image> <!-- 替换为合适的插图 -->
 			</view>
 		</view>
 
@@ -30,8 +38,8 @@
 		<view class="sticky-tabs">
 			<scroll-view scroll-x class="tabs-scroll" :show-scrollbar="false">
 				<view class="tabs-wrapper">
-					<view 
-						v-for="item in categories" 
+					<view
+						v-for="item in categories"
 						:key="item.id"
 						class="tab-pill"
 						:class="{ active: currentCategory === item.id }"
@@ -45,50 +53,48 @@
 
 		<!-- 瀑布流内容 -->
 		<view class="waterfall-container">
-			<!-- 左列 -->
 			<view class="column">
-				<view 
-					v-for="post in leftPosts" 
-					:key="post.id" 
+				<view
+					v-for="post in leftPosts"
+					:key="post.id"
 					class="post-card"
-					@click="viewDetail(post)"
+					@click="goToDetail(post.id)"
 				>
-					<image class="post-img" :src="post.image" mode="widthFix"></image>
+					<image :src="post.cover" class="post-img" mode="widthFix"></image>
 					<view class="post-body">
 						<text class="post-title">{{ post.title }}</text>
 						<view class="post-footer">
 							<view class="user-box">
-								<image class="avatar" :src="post.avatar" mode="aspectFill"></image>
-								<text class="username">{{ post.nickname }}</text>
+								<image :src="post.userAvatar" class="avatar" mode="aspectFill"></image>
+								<text class="username">{{ post.userName }}</text>
 							</view>
 							<view class="like-box">
-								<u-icon name="heart" size="12" color="#999"></u-icon>
-								<text class="count">{{ post.likes }}</text>
+								<u-icon name="heart" :size="16" color="#999"></u-icon>
+								<text class="count">{{ post.likeCount }}</text>
 							</view>
 						</view>
 					</view>
 				</view>
 			</view>
-			
-			<!-- 右列 -->
+
 			<view class="column">
-				<view 
-					v-for="post in rightPosts" 
-					:key="post.id" 
+				<view
+					v-for="post in rightPosts"
+					:key="post.id"
 					class="post-card"
-					@click="viewDetail(post)"
+					@click="goToDetail(post.id)"
 				>
-					<image class="post-img" :src="post.image" mode="widthFix"></image>
+					<image :src="post.cover" class="post-img" mode="widthFix"></image>
 					<view class="post-body">
 						<text class="post-title">{{ post.title }}</text>
 						<view class="post-footer">
 							<view class="user-box">
-								<image class="avatar" :src="post.avatar" mode="aspectFill"></image>
-								<text class="username">{{ post.nickname }}</text>
+								<image :src="post.userAvatar" class="avatar" mode="aspectFill"></image>
+								<text class="username">{{ post.userName }}</text>
 							</view>
 							<view class="like-box">
-								<u-icon name="heart" size="12" color="#999"></u-icon>
-								<text class="count">{{ post.likes }}</text>
+								<u-icon name="heart" :size="16" color="#999"></u-icon>
+								<text class="count">{{ post.likeCount }}</text>
 							</view>
 						</view>
 					</view>
@@ -96,59 +102,137 @@
 			</view>
 		</view>
 
-		<!-- 悬浮发布按钮 -->
-		<view class="fab-btn" @click="handlePublish">
-			<u-icon name="plus" size="24" color="#FFFFFF"></u-icon>
+		<!-- 发布按钮 (FAB) -->
+		<view class="fab-btn" @click="goToPublish">
+			<u-icon name="plus" :size="20" color="#FFFFFF"></u-icon>
 			<text class="fab-text">发布</text>
 		</view>
 	</view>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue'
+import { logger } from '@/utils/logger'
 
-const statusBarHeight = ref(0);
+// 状态栏高度
+const statusBarHeight = ref(0)
 
-// Categories
+// 分类数据
 const categories = ref([
-	{ id: 'all', name: '推荐' },
-	{ id: 'guide', name: '攻略' },
-	{ id: 'experience', name: '游记' },
-	{ id: 'activity', name: '活动' },
-	{ id: 'qa', name: '问答' }
-]);
+	{ id: 'all', name: '全部' },
+	{ id: 'travel', name: '旅行日记' },
+	{ id: 'guide', name: '攻略分享' },
+	{ id: 'equipment', name: '装备测评' },
+	{ id: 'camping', name: '露营生活' },
+	{ id: 'food', name: '美食推荐' }
+])
 
-const currentCategory = ref('all');
+// 当前分类
+const currentCategory = ref('all')
 
-onMounted(() => {
-	const sys = uni.getSystemInfoSync();
-	statusBarHeight.value = sys.statusBarHeight || 0;
-});
-
-// Mock Data
+// Mock 帖子数据
 const posts = ref([
-	{ id: 1, title: '318国道房车自驾攻略，避坑指南！', image: '/static/场景推荐2.jpg', avatar: '/static/default-avatar.png', nickname: '旅行达人', likes: 128, category: 'guide' },
-	{ id: 2, title: '带娃房车游，这些装备一定要带', image: '/static/优惠政策.jpg', avatar: '/static/default-avatar.png', nickname: '亲子旅行', likes: 99, category: 'experience' },
-	{ id: 3, title: '我的第一次房车之旅，太震撼了', image: '/static/场景推荐2.jpg', avatar: '/static/default-avatar.png', nickname: '小白车友', likes: 256, category: 'experience' },
-	{ id: 4, title: '川西小环线，7天6晚完美路线', image: '/static/优惠政策.jpg', avatar: '/static/default-avatar.png', nickname: '自驾狂人', likes: 342, category: 'guide' },
-	{ id: 5, title: '房车露营美食大赏', image: '/static/场景推荐2.jpg', avatar: '/static/default-avatar.png', nickname: '美食家', likes: 67, category: 'experience' }
-]);
+	{
+		id: 1,
+		cover: 'https://placehold.co/300x400/FF9F29/FFFFFF?text=Post1',
+		title: '川西秋色 | 房车自驾7天深度游记',
+		userName: '旅行达人',
+		userAvatar: '/static/default-avatar.png',
+		likeCount: 128
+	},
+	{
+		id: 2,
+		cover: 'https://placehold.co/300x300/2196F3/FFFFFF?text=Post2',
+		title: '新手必看！房车露营装备清单',
+		userName: '露营玩家',
+		userAvatar: '/static/default-avatar.png',
+		likeCount: 256
+	},
+	{
+		id: 3,
+		cover: 'https://placehold.co/300x500/4CAF50/FFFFFF?text=Post3',
+		title: '西藏阿里大环线 | 21天房车旅行攻略',
+		userName: '自驾游侠',
+		userAvatar: '/static/default-avatar.png',
+		likeCount: 512
+	},
+	{
+		id: 4,
+		cover: 'https://placehold.co/300x350/FF5722/FFFFFF?text=Post4',
+		title: '房车上的美食 | 10道简单快手菜',
+		userName: '美食博主',
+		userAvatar: '/static/default-avatar.png',
+		likeCount: 89
+	},
+	{
+		id: 5,
+		cover: 'https://placehold.co/300x450/9C27B0/FFFFFF?text=Post5',
+		title: '新疆独库公路 | 最美自驾路线推荐',
+		userName: '风景摄影师',
+		userAvatar: '/static/default-avatar.png',
+		likeCount: 342
+	},
+	{
+		id: 6,
+		cover: 'https://placehold.co/300x320/FF9800/FFFFFF?text=Post6',
+		title: '房车改装日记 | 打造温馨移动小家',
+		userName: '改装达人',
+		userAvatar: '/static/default-avatar.png',
+		likeCount: 167
+	}
+])
 
-const filteredPosts = computed(() => {
-	if (currentCategory.value === 'all') return posts.value;
-	return posts.value.filter(p => p.category === currentCategory.value);
-});
+// 瀑布流分栏
+const leftPosts = computed(() => {
+	return posts.value.filter((_, index) => index % 2 === 0)
+})
 
-const leftPosts = computed(() => filteredPosts.value.filter((_, i) => i % 2 === 0));
-const rightPosts = computed(() => filteredPosts.value.filter((_, i) => i % 2 === 1));
+const rightPosts = computed(() => {
+	return posts.value.filter((_, index) => index % 2 === 1)
+})
 
-const switchCategory = (id: string) => {
-	currentCategory.value = id;
-};
+// 页面加载
+onMounted(() => {
+	// 获取状态栏高度
+	const systemInfo = uni.getSystemInfoSync()
+	statusBarHeight.value = systemInfo.statusBarHeight || 0
 
-const navigateTo = (url: string) => uni.navigateTo({ url });
-const viewDetail = (post: any) => uni.navigateTo({ url: `/pages/community/detail?id=${post.id}` });
-const handlePublish = () => uni.navigateTo({ url: '/pages/community/publish' });
+	// 加载帖子数据
+	loadPosts()
+})
+
+// 切换分类
+const switchCategory = (categoryId: string) => {
+	currentCategory.value = categoryId
+	logger.debug('切换分类', { categoryId })
+	// TODO: 根据分类加载数据
+	loadPosts()
+}
+
+// 加载帖子数据
+const loadPosts = () => {
+	logger.debug('加载帖子数据', { category: currentCategory.value })
+	// TODO: 调用API加载数据
+}
+
+// 跳转到帖子详情
+const goToDetail = (postId: number) => {
+	uni.navigateTo({
+		url: `/pages/community/detail?id=${postId}`
+	})
+}
+
+// 跳转到发布页面
+const goToPublish = () => {
+	uni.navigateTo({
+		url: '/pages/community/publish'
+	})
+}
+
+// 页面跳转
+const navigateTo = (url: string) => {
+	uni.navigateTo({ url })
+}
 </script>
 
 <style scoped lang="scss">
@@ -156,31 +240,30 @@ const handlePublish = () => uni.navigateTo({ url: '/pages/community/publish' });
 	min-height: 100vh;
 	background-color: $uni-bg-color;
 	padding-bottom: 120rpx;
-	position: relative;
 }
 
+/* 头部背景 */
 .header-bg {
 	position: absolute;
 	top: 0;
 	left: 0;
 	width: 100%;
 	height: 400rpx;
-	background: linear-gradient(180deg, #FFF8E1 0%, $uni-bg-color 100%);
+	background: linear-gradient(180deg, rgba(255, 159, 41, 0.08) 0%, transparent 100%);
 	z-index: 0;
 }
 
+/* 自定义标题栏 */
 .custom-header {
 	position: relative;
-	z-index: 1;
-	height: 44px;
-	display: flex;
-	align-items: center;
-	padding-left: $uni-spacing-lg;
+	z-index: 10;
+	padding: 20rpx $uni-spacing-lg;
+	text-align: center;
 }
 
 .page-title {
 	font-size: 36rpx;
-	font-weight: 800;
+	font-weight: bold;
 	color: $uni-text-color;
 }
 
@@ -191,59 +274,66 @@ const handlePublish = () => uni.navigateTo({ url: '/pages/community/publish' });
 	padding: $uni-spacing-md $uni-spacing-lg $uni-spacing-lg;
 	display: grid;
 	grid-template-columns: 1fr 1fr;
-	gap: $uni-spacing-md;
+	gap: 20rpx;
 }
 
 .biz-card {
-	background-color: #FFFFFF;
-	border-radius: $uni-radius-lg;
-	padding: $uni-spacing-md;
-	height: 160rpx;
 	position: relative;
+	height: 220rpx;
+	border-radius: 24rpx;
 	overflow: hidden;
-	box-shadow: $uni-shadow-card;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
+	background-color: #E0E0E0;
+	box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.08);
 	transition: transform 0.2s ease;
-
-	&.campsite {
-		background: linear-gradient(135deg, #E8F5E9 0%, #FFFFFF 100%);
-	}
-
-	&.tour {
-		background: linear-gradient(135deg, #E3F2FD 0%, #FFFFFF 100%);
-	}
 
 	&:active { transform: scale(0.98); }
 }
 
+.card-bg {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.card-overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.6) 100%);
+}
+
 .biz-content {
-	position: relative;
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	padding: 24rpx;
 	z-index: 2;
+	box-sizing: border-box;
+}
+
+.biz-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 8rpx;
 }
 
 .biz-title {
-	font-size: 30rpx;
+	font-size: 32rpx;
 	font-weight: bold;
-	color: $uni-text-color;
-	display: block;
-	margin-bottom: 4rpx;
+	color: #FFFFFF;
+	text-shadow: 0 2rpx 4rpx rgba(0,0,0,0.2);
 }
 
 .biz-desc {
 	font-size: 22rpx;
-	color: $uni-text-color-secondary;
-}
-
-.biz-icon {
-	position: absolute;
-	right: -20rpx;
-	bottom: -20rpx;
-	width: 100rpx;
-	height: 100rpx;
-	opacity: 0.2;
-	z-index: 1;
+	color: rgba(255, 255, 255, 0.9);
+	display: block;
 }
 
 /* Sticky Tabs */
@@ -358,7 +448,7 @@ const handlePublish = () => uni.navigateTo({ url: '/pages/community/publish' });
 	display: flex;
 	align-items: center;
 	gap: 4rpx;
-	
+
 	.count {
 		font-size: 22rpx;
 		color: $uni-text-color-secondary;

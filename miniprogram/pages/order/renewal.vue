@@ -224,16 +224,17 @@ const formatDateTime = (value?: string) => {
 <style scoped lang="scss">
 .renewal-page {
   min-height: 100vh;
-  background-color: #f8f8f8;
-  padding: 24rpx;
-  padding-bottom: 140rpx;
+  background-color: $uni-bg-color;
+  padding: $uni-spacing-lg;
+  padding-bottom: 160rpx;
 }
 
 .card {
-  background-color: #ffffff;
-  border-radius: 16rpx;
-  padding: 28rpx;
-  margin-bottom: 20rpx;
+  background-color: $uni-bg-color-card;
+  border-radius: $uni-radius-lg;
+  padding: $uni-spacing-lg;
+  margin-bottom: $uni-spacing-md;
+  box-shadow: $uni-shadow-card;
 }
 
 .info-row,
@@ -242,9 +243,9 @@ const formatDateTime = (value?: string) => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 28rpx;
-  color: #333333;
-  margin-bottom: 24rpx;
+  font-size: $uni-font-size-base;
+  color: $uni-text-color;
+  margin-bottom: $uni-spacing-lg;
 }
 
 .info-row:last-child,
@@ -254,35 +255,60 @@ const formatDateTime = (value?: string) => {
 }
 
 .label {
-  color: #999999;
+  color: $uni-text-color-placeholder;
 }
 
 .value {
   font-weight: 600;
+  color: $uni-text-color;
 }
 
 .section-title {
-  font-size: 32rpx;
+  font-size: $uni-font-size-lg;
   font-weight: 600;
-  margin-bottom: 24rpx;
-  color: #333333;
+  margin-bottom: $uni-spacing-lg;
+  color: $uni-text-color;
+  position: relative;
+  padding-left: $uni-spacing-md;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 8rpx;
+    height: 28rpx;
+    background-color: $uni-color-primary;
+    border-radius: 4rpx;
+  }
 }
 
 .number-input {
   display: flex;
   align-items: center;
-  gap: 16rpx;
+  gap: $uni-spacing-md;
 }
 
 .num-btn {
   width: 64rpx;
   height: 64rpx;
-  border-radius: 12rpx;
-  background-color: #f1f1f1;
-  font-size: 32rpx;
-  color: #333333;
+  border-radius: $uni-radius-md;
+  background-color: $uni-bg-color-grey;
+  font-size: $uni-font-size-lg;
+  color: $uni-text-color;
   padding: 0;
   line-height: 64rpx;
+  transition: all 0.2s ease;
+
+  &:active {
+    transform: scale(0.95);
+    background-color: $uni-border-color;
+  }
+
+  &[disabled] {
+    opacity: 0.5;
+  }
 }
 
 .num-btn::after {
@@ -292,33 +318,40 @@ const formatDateTime = (value?: string) => {
 .num-value {
   width: 80rpx;
   text-align: center;
-  font-size: 30rpx;
+  font-size: $uni-font-size-md;
+  font-weight: 600;
+  color: $uni-text-color;
 }
 
 .time-value {
-  color: #ff9f29;
+  color: $uni-color-primary;
   font-weight: 600;
 }
 
 .price-section .total {
-  border-top: 1rpx solid #f0f0f0;
-  padding-top: 20rpx;
-  margin-top: 12rpx;
+  border-top: 1rpx solid $uni-border-color-light;
+  padding-top: $uni-spacing-md;
+  margin-top: $uni-spacing-sm;
 }
 
 .amount {
-  font-size: 36rpx;
+  font-size: 40rpx;
   font-weight: 700;
-  color: #f5222d;
+  color: $uni-color-error;
+  font-family: 'DIN Alternate', sans-serif;
 }
 
 .tip {
-  margin-top: 16rpx;
+  margin-top: $uni-spacing-md;
   display: flex;
-  align-items: center;
-  gap: 8rpx;
-  font-size: 24rpx;
-  color: #999999;
+  align-items: flex-start;
+  gap: $uni-spacing-xs;
+  font-size: $uni-font-size-xs;
+  color: $uni-text-color-placeholder;
+  line-height: 1.5;
+  padding: $uni-spacing-sm $uni-spacing-md;
+  background-color: rgba(255, 159, 41, 0.08);
+  border-radius: $uni-radius-sm;
 }
 
 .bottom-actions {
@@ -326,31 +359,47 @@ const formatDateTime = (value?: string) => {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ffffff;
-  padding: 20rpx 32rpx;
-  padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
-  box-shadow: 0 -6rpx 20rpx rgba(0, 0, 0, 0.05);
+  background-color: $uni-bg-color-card;
+  padding: $uni-spacing-md $uni-spacing-lg;
+  padding-bottom: calc(#{$uni-spacing-md} + env(safe-area-inset-bottom));
+  box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.05);
   display: flex;
-  gap: 20rpx;
+  gap: $uni-spacing-md;
+  z-index: 99;
 }
 
 .primary-btn,
 .ghost-btn {
   flex: 1;
-  height: 88rpx;
-  border-radius: 44rpx;
-  font-size: 30rpx;
+  height: 96rpx;
+  border-radius: $uni-radius-btn;
+  font-size: $uni-font-size-md;
   font-weight: 600;
+  transition: all 0.2s ease;
+
+  &::after {
+    border: none;
+  }
+
+  &:active {
+    transform: scale(0.98);
+    opacity: 0.9;
+  }
 }
 
 .primary-btn {
-  background: linear-gradient(135deg, #ff9f29 0%, #ffb84d 100%);
-  color: #ffffff;
+  background: $uni-color-primary-gradient;
+  color: $uni-text-color-inverse;
+  box-shadow: $uni-shadow-glow;
 }
 
 .ghost-btn {
-  background-color: #ffffff;
-  color: #ff9f29;
+  background-color: $uni-bg-color-card;
+  color: $uni-color-primary;
   border: 2rpx solid rgba(255, 159, 41, 0.4);
+
+  &:active {
+    background-color: rgba(255, 159, 41, 0.08);
+  }
 }
 </style>

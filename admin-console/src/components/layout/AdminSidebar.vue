@@ -11,10 +11,10 @@
       :default-active="activeMenu"
       :collapse="collapsed"
       :unique-opened="true"
-      :router="true"
       background-color="#fff"
       text-color="#303133"
       active-text-color="#409eff"
+      @select="handleMenuSelect"
     >
       <template v-for="menuItem in menuRoutes" :key="menuItem.path">
         <el-sub-menu
@@ -53,7 +53,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useAppStore } from '@/stores/app'
 import { useUserStore } from '@/stores/user'
 import { menuConfig } from '@/config/menu'
@@ -61,6 +61,7 @@ import { filterMenuByPermission } from '@/utils/permission'
 import type { MenuItem } from '@/types/permission'
 
 const route = useRoute()
+const router = useRouter()
 const appStore = useAppStore()
 const userStore = useUserStore()
 
@@ -77,6 +78,34 @@ const menuRoutes = computed<MenuItem[]>(() => {
   const user = userStore.user
   return filterMenuByPermission(menuConfig, user)
 })
+
+// 处理菜单选择
+const handleMenuSelect = (index: string) => {
+  // 只有叶子节点（没有子菜单的菜单项）才进行路由导航
+  // 父级菜单项会自动展开/收起，不需要导航
+  const findMenuItem = (items: MenuItem[], path: string): MenuItem | undefined => {
+    for (const item of items) {
+      if (item.path === path) {
+        return item
+      }
+      if (item.children) {
+        const found = findMenuItem(item.children, path)
+        if (found) return found
+      }
+    }
+    return undefined
+  }
+
+  const menuItem = findMenuItem(menuRoutes.value, index)
+
+  // 只有没有子菜单的菜单项才进行路由导航
+  if (menuItem && (!menuItem.children || menuItem.children.length === 0)) {
+    router.push(index).catch((err) => {
+      // 捕获导航错误，避免控制台警告
+      console.warn('Navigation error:', err)
+    })
+  }
+}
 </script>
 
 <style scoped lang="scss">

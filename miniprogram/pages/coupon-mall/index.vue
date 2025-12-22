@@ -342,14 +342,14 @@ onReachBottom(() => {
 <style scoped lang="scss">
 .coupon-mall {
 	min-height: 100vh;
-	background-color: #F5F5F5;
+	background-color: $uni-bg-color;
 }
 
 // Banner区域
 .banner-section {
 	width: 100%;
 	height: 320rpx;
-	background-color: #FFFFFF;
+	background-color: $uni-bg-color-card;
 }
 
 .banner-swiper {
@@ -364,41 +364,48 @@ onReachBottom(() => {
 
 // 积分卡片
 .points-card {
-	margin: 24rpx;
-	padding: 32rpx;
-	background: linear-gradient(135deg, #FF9F29 0%, #FFB84D 100%);
-	border-radius: 24rpx;
+	margin: $uni-spacing-lg;
+	padding: $uni-spacing-xl;
+	background: $uni-color-primary-gradient;
+	border-radius: $uni-radius-lg;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	box-shadow: 0 8rpx 24rpx rgba(255, 159, 41, 0.2);
+	box-shadow: $uni-shadow-glow;
+	transition: all 0.3s ease;
+
+	&:active {
+		transform: scale(0.98);
+		opacity: 0.9;
+	}
 }
 
 .points-info {
 	display: flex;
 	flex-direction: column;
-	gap: 8rpx;
+	gap: $uni-spacing-sm;
 }
 
 .points-label {
-	font-size: 28rpx;
+	font-size: $uni-font-size-base;
 	color: rgba(255, 255, 255, 0.9);
 }
 
 .points-value {
 	font-size: 48rpx;
 	font-weight: bold;
-	color: #FFFFFF;
+	color: $uni-text-color-inverse;
+	font-family: 'DIN Alternate', sans-serif;
 }
 
 .points-action {
 	display: flex;
 	align-items: center;
-	gap: 8rpx;
+	gap: $uni-spacing-sm;
 }
 
 .action-text {
-	font-size: 28rpx;
+	font-size: $uni-font-size-base;
 	color: rgba(255, 255, 255, 0.9);
 }
 
@@ -406,68 +413,75 @@ onReachBottom(() => {
 .quick-entry {
 	display: flex;
 	justify-content: space-around;
-	padding: 32rpx 24rpx;
-	background-color: #FFFFFF;
-	margin: 0 24rpx 24rpx;
-	border-radius: 24rpx;
+	padding: $uni-spacing-xl $uni-spacing-lg;
+	background-color: $uni-bg-color-card;
+	margin: 0 $uni-spacing-lg $uni-spacing-lg;
+	border-radius: $uni-radius-lg;
+	box-shadow: $uni-shadow-card;
 }
 
 .entry-item {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	gap: 16rpx;
+	gap: $uni-spacing-md;
+	transition: all 0.2s ease;
+
+	&:active {
+		transform: scale(0.95);
+		opacity: 0.8;
+	}
 }
 
 .entry-text {
-	font-size: 26rpx;
+	font-size: $uni-font-size-sm;
 	color: $uni-text-color;
 }
 
 // 分类导航
 .category-nav {
 	white-space: nowrap;
-	padding: 24rpx 24rpx 24rpx 0;
-	background-color: #FFFFFF;
-	margin-bottom: 24rpx;
+	padding: $uni-spacing-lg $uni-spacing-lg $uni-spacing-lg 0;
+	background-color: $uni-bg-color-card;
+	margin-bottom: $uni-spacing-lg;
 }
 
 .category-item {
 	display: inline-block;
-	padding: 16rpx 32rpx;
-	margin-left: 24rpx;
-	font-size: 28rpx;
+	padding: $uni-spacing-md $uni-spacing-xl;
+	margin-left: $uni-spacing-lg;
+	font-size: $uni-font-size-base;
 	color: $uni-text-color-secondary;
-	border-radius: 48rpx;
-	transition: all 0.3s;
+	border-radius: $uni-radius-btn;
+	transition: all 0.3s ease;
 
 	&.active {
-		background-color: #FF9F29;
-		color: #FFFFFF;
+		background-color: $uni-color-primary;
+		color: $uni-text-color-inverse;
 		font-weight: 500;
 	}
 }
 
 // 热门推荐区
 .hot-section {
-	margin-bottom: 24rpx;
+	margin-bottom: $uni-spacing-lg;
 }
 
 .section-header {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	padding: 24rpx;
+	padding: $uni-spacing-lg;
 }
 
 .header-left {
 	display: flex;
 	align-items: center;
-	gap: 12rpx;
+	gap: $uni-spacing-md;
 }
 
 .section-title {
-	font-size: 32rpx;
+	font-size: $uni-font-size-lg;
 	font-weight: bold;
 	color: $uni-text-color;
 }
@@ -478,98 +492,114 @@ onReachBottom(() => {
 
 .hot-list {
 	display: inline-flex;
-	gap: 24rpx;
-	padding: 0 24rpx 24rpx;
+	gap: $uni-spacing-lg;
+	padding: 0 $uni-spacing-lg $uni-spacing-lg;
 }
 
 .hot-coupon-card {
 	position: relative;
 	width: 280rpx;
-	padding: 32rpx 24rpx;
-	background: linear-gradient(135deg, #FFF5E9 0%, #FFF0E0 100%);
-	border-radius: 24rpx;
+	padding: $uni-spacing-xl $uni-spacing-lg;
+	background: linear-gradient(135deg, rgba(255, 159, 41, 0.08) 0%, rgba(255, 159, 41, 0.15) 100%);
+	border-radius: $uni-radius-lg;
 	display: inline-flex;
 	flex-direction: column;
 	align-items: center;
-	gap: 16rpx;
-	box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
+	gap: $uni-spacing-md;
+	box-shadow: $uni-shadow-card;
+	transition: all 0.3s ease;
+
+	&:active {
+		transform: scale(0.98);
+	}
 }
 
 .coupon-badge {
 	position: absolute;
-	top: 16rpx;
-	right: 16rpx;
-	padding: 8rpx 16rpx;
-	background-color: #FF6B6B;
-	color: #FFFFFF;
-	font-size: 20rpx;
-	border-radius: 24rpx;
+	top: $uni-spacing-md;
+	right: $uni-spacing-md;
+	padding: $uni-spacing-xs $uni-spacing-md;
+	background-color: $uni-color-error;
+	color: $uni-text-color-inverse;
+	font-size: $uni-font-size-xs;
+	border-radius: $uni-radius-btn;
 }
 
 .coupon-amount {
 	display: flex;
 	align-items: baseline;
-	color: #FF9F29;
+	color: $uni-color-primary;
 }
 
 .amount-symbol {
-	font-size: 32rpx;
+	font-size: $uni-font-size-lg;
 	font-weight: bold;
 }
 
 .amount-value {
 	font-size: 56rpx;
 	font-weight: bold;
+	font-family: 'DIN Alternate', sans-serif;
 }
 
 .coupon-name {
-	font-size: 28rpx;
+	font-size: $uni-font-size-base;
 	color: $uni-text-color;
 	text-align: center;
 }
 
 .coupon-condition {
-	font-size: 24rpx;
+	font-size: $uni-font-size-sm;
 	color: $uni-text-color-secondary;
 	text-align: center;
 }
 
 .coupon-action {
-	margin-top: 16rpx;
-	padding: 16rpx 32rpx;
-	background-color: #FF9F29;
-	color: #FFFFFF;
-	font-size: 26rpx;
-	border-radius: 48rpx;
+	margin-top: $uni-spacing-md;
+	padding: $uni-spacing-md $uni-spacing-xl;
+	background-color: $uni-color-primary;
+	color: $uni-text-color-inverse;
+	font-size: $uni-font-size-sm;
+	border-radius: $uni-radius-btn;
+	transition: all 0.2s ease;
+
+	&:active {
+		opacity: 0.8;
+	}
 }
 
 .action-price {
-	color: #FFFFFF;
+	color: $uni-text-color-inverse;
 }
 
 // 优惠券列表
 .coupon-list {
-	padding: 0 24rpx 24rpx;
+	padding: 0 $uni-spacing-lg $uni-spacing-lg;
 }
 
 .coupon-item {
 	position: relative;
 	display: flex;
-	background-color: #FFFFFF;
-	border-radius: 24rpx;
-	margin-bottom: 24rpx;
+	background-color: $uni-bg-color-card;
+	border-radius: $uni-radius-lg;
+	margin-bottom: $uni-spacing-lg;
 	overflow: hidden;
-	box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
+	box-shadow: $uni-shadow-card;
+	transition: all 0.3s ease;
+
+	&:active {
+		transform: scale(0.99);
+	}
 }
 
 .coupon-left {
 	width: 200rpx;
-	padding: 32rpx 24rpx;
+	padding: $uni-spacing-xl $uni-spacing-lg;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	gap: 12rpx;
+	gap: $uni-spacing-md;
 	position: relative;
 
 	&::after {
@@ -580,58 +610,59 @@ onReachBottom(() => {
 		transform: translateY(-50%);
 		width: 2rpx;
 		height: 80%;
-		background: linear-gradient(to bottom, transparent 0%, transparent 45%, #E0E0E0 45%, #E0E0E0 55%, transparent 55%, transparent 100%);
+		background: linear-gradient(to bottom, transparent 0%, transparent 45%, $uni-border-color-light 45%, $uni-border-color-light 55%, transparent 55%, transparent 100%);
 		background-size: 2rpx 20rpx;
 	}
 
 	&.type-discount {
-		background: linear-gradient(135deg, #FFE5E5 0%, #FFD5D5 100%);
+		background: linear-gradient(135deg, rgba(255, 107, 107, 0.1) 0%, rgba(255, 107, 107, 0.2) 100%);
 	}
 
 	&.type-rate {
-		background: linear-gradient(135deg, #E5F5FF 0%, #D5EBFF 100%);
+		background: linear-gradient(135deg, rgba(64, 158, 255, 0.1) 0%, rgba(64, 158, 255, 0.2) 100%);
 	}
 
 	&.type-daily {
-		background: linear-gradient(135deg, #FFF5E5 0%, #FFEBD5 100%);
+		background: linear-gradient(135deg, rgba(255, 159, 41, 0.1) 0%, rgba(255, 159, 41, 0.2) 100%);
 	}
 
 	&.type-service {
-		background: linear-gradient(135deg, #E5FFE5 0%, #D5FFD5 100%);
+		background: linear-gradient(135deg, rgba(103, 194, 58, 0.1) 0%, rgba(103, 194, 58, 0.2) 100%);
 	}
 
 	&.type-special {
-		background: linear-gradient(135deg, #F5E5FF 0%, #EBD5FF 100%);
+		background: linear-gradient(135deg, rgba(155, 89, 182, 0.1) 0%, rgba(155, 89, 182, 0.2) 100%);
 	}
 }
 
 .coupon-amount-large {
 	display: flex;
 	align-items: baseline;
-	color: #FF6B6B;
+	color: $uni-color-error;
 
 	.amount-symbol {
-		font-size: 32rpx;
+		font-size: $uni-font-size-lg;
 		font-weight: bold;
 	}
 
 	.amount-value {
 		font-size: 64rpx;
 		font-weight: bold;
+		font-family: 'DIN Alternate', sans-serif;
 	}
 }
 
 .coupon-type-label {
-	font-size: 24rpx;
+	font-size: $uni-font-size-sm;
 	color: $uni-text-color-secondary;
 }
 
 .coupon-right {
 	flex: 1;
-	padding: 24rpx;
+	padding: $uni-spacing-lg;
 	display: flex;
 	flex-direction: column;
-	gap: 12rpx;
+	gap: $uni-spacing-md;
 }
 
 .coupon-header {
@@ -641,7 +672,7 @@ onReachBottom(() => {
 }
 
 .coupon-name {
-	font-size: 30rpx;
+	font-size: $uni-font-size-md;
 	font-weight: 500;
 	color: $uni-text-color;
 	flex: 1;
@@ -649,16 +680,16 @@ onReachBottom(() => {
 
 .coupon-tags {
 	display: flex;
-	gap: 8rpx;
+	gap: $uni-spacing-sm;
 	flex-shrink: 0;
 }
 
 .tag {
-	padding: 4rpx 12rpx;
-	font-size: 20rpx;
-	color: #FF6B6B;
+	padding: 4rpx $uni-spacing-md;
+	font-size: $uni-font-size-xs;
+	color: $uni-color-error;
 	background-color: rgba(255, 107, 107, 0.1);
-	border-radius: 8rpx;
+	border-radius: $uni-radius-xs;
 
 	&.vip {
 		color: #FFD700;
@@ -666,56 +697,61 @@ onReachBottom(() => {
 	}
 
 	&.hot {
-		color: #FF9F29;
+		color: $uni-color-primary;
 		background-color: rgba(255, 159, 41, 0.1);
 	}
 }
 
 .coupon-info {
-	font-size: 26rpx;
+	font-size: $uni-font-size-sm;
 	color: $uni-text-color-secondary;
 }
 
 .coupon-scope {
-	font-size: 24rpx;
-	color: $uni-text-color-secondary;
+	font-size: $uni-font-size-sm;
+	color: $uni-text-color-placeholder;
 }
 
 .coupon-footer {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	margin-top: 8rpx;
+	margin-top: $uni-spacing-sm;
 }
 
 .coupon-validity {
 	display: flex;
 	align-items: center;
-	gap: 8rpx;
+	gap: $uni-spacing-sm;
 }
 
 .validity-text {
-	font-size: 24rpx;
-	color: $uni-text-color-secondary;
+	font-size: $uni-font-size-sm;
+	color: $uni-text-color-placeholder;
 }
 
 .coupon-stock {
-	font-size: 24rpx;
-	color: #FF9F29;
+	font-size: $uni-font-size-sm;
+	color: $uni-color-primary;
 }
 
 .coupon-action-btn {
 	position: absolute;
-	right: 24rpx;
-	bottom: 24rpx;
-	padding: 12rpx 24rpx;
-	background-color: #F5F5F5;
-	border-radius: 48rpx;
-	font-size: 24rpx;
+	right: $uni-spacing-lg;
+	bottom: $uni-spacing-lg;
+	padding: $uni-spacing-md $uni-spacing-lg;
+	background-color: $uni-bg-color-grey;
+	border-radius: $uni-radius-btn;
+	font-size: $uni-font-size-sm;
 	color: $uni-text-color-secondary;
+	transition: all 0.2s ease;
+
+	&:active {
+		background-color: $uni-border-color;
+	}
 
 	.btn-text.active {
-		color: #FF9F29;
+		color: $uni-color-primary;
 		font-weight: 500;
 	}
 }

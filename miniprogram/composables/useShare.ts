@@ -24,20 +24,17 @@ export function useShare(config: ShareConfig) {
 
   /**
    * 分享选项配置（用于 u-action-sheet）
+   * 注意：微信小程序限制，无法通过 JS 直接触发分享，只能通过右上角菜单或 button 的 open-type="share"
    */
   const shareActions = computed(() => [
     {
-      name: '分享给朋友',
-      icon: 'share',
-      color: '#FF9F29',
-      openType: 'share' // 微信原生分享
-    },
-    {
+      id: 'poster',
       name: '生成海报',
       icon: 'photo',
       color: '#FFB84D'
     },
     {
+      id: 'copy',
       name: '复制链接',
       icon: 'copy',
       color: '#999'
@@ -80,14 +77,10 @@ export function useShare(config: ShareConfig) {
     try {
       switch (index) {
         case 0:
-          // 分享给朋友（微信原生分享）
-          await handleMiniProgramShare()
-          break
-        case 1:
           // 生成海报
           await handlePosterShare()
           break
-        case 2:
+        case 1:
           // 复制链接
           await handleCopyLink()
           break
@@ -104,26 +97,18 @@ export function useShare(config: ShareConfig) {
   }
 
   /**
-   * 处理小程序卡片分享
+   * 注意：微信小程序的分享功能
+   *
+   * 微信小程序限制，无法通过 JS 直接触发分享对话框。
+   * 分享功能只能通过以下两种方式实现：
+   * 1. 用户点击右上角菜单的"转发"按钮
+   * 2. 使用 button 组件的 open-type="share" 属性
+   *
+   * 因此，我们提供以下分享方式：
+   * - 生成海报：用户可以保存海报图片，分享到朋友圈或其他平台
+   * - 复制链接：用户可以复制小程序路径，手动分享
+   * - 右上角分享：通过 onShareAppMessage 配置分享内容
    */
-  const handleMiniProgramShare = async () => {
-    try {
-      // 记录分享行为
-      await recordShare(config, 'mini_program' as ShareMethod)
-
-      uni.showToast({
-        title: '请点击右上角分享',
-        icon: 'none',
-        duration: 2000
-      })
-    } catch (error) {
-      logger.error('小程序分享失败', error)
-      uni.showToast({
-        title: '分享失败',
-        icon: 'none'
-      })
-    }
-  }
 
   /**
    * 处理海报分享

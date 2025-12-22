@@ -230,6 +230,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
+import { onLoad, onShow } from '@dcloudio/uni-app'
 import type { InviteRecord, InviteStats } from '@/types/share'
 import { ShareScene } from '@/types/share'
 import { useInvite } from '@/composables/useShare'
@@ -238,6 +239,7 @@ import { shareApi } from '@/api/share'
 import { shareRewardRules } from '@/config/share-config'
 import { generatePoster, savePosterToAlbum } from '@/utils/poster'
 import { logger } from '@/utils/logger'
+import { requireLogin, isLoggedIn, buildRedirectUrl } from '@/utils/auth'
 import InviteSheet from '@/components/share/InviteSheet.vue'
 import PosterPreview from '@/components/share/PosterPreview.vue'
 
@@ -245,6 +247,11 @@ import PosterPreview from '@/components/share/PosterPreview.vue'
  * 推广中心页面
  * @description 整合所有分享推广功能的中心页面
  */
+
+// 登录状态管理
+const pageReady = ref(false)
+const redirectUrl = ref('/pages/profile/promotion-center')
+let cachedRouteParams: Record<string, any> | null = null
 
 // 状态
 const loading = ref(false)
@@ -486,50 +493,100 @@ const getStatusType = (status: string) => {
 }
 
 /**
- * 初始化
+ * 初始化页面数据
  */
-onMounted(() => {
+const initPageData = () => {
   if (!inviteCode.value) {
     generateInviteCode()
   }
   loadInviteStats()
   loadRecentRecords()
+}
+
+/**
+ * 页面初始化设置
+ */
+const setupPromotionCenterPage = (options: any) => {
+  pageReady.value = true
+  initPageData()
+}
+
+/**
+ * 确保用户已登录
+ */
+const ensureAuth = (options: any) => {
+  redirectUrl.value = buildRedirectUrl('/pages/profile/promotion-center', options || {})
+  if (isLoggedIn()) {
+    return true
+  }
+  return requireLogin(redirectUrl.value)
+}
+
+/**
+ * 页面加载时检查登录状态
+ */
+onLoad((options: any) => {
+  cachedRouteParams = options || {}
+  pageReady.value = false
+  if (!ensureAuth(cachedRouteParams)) {
+    return
+  }
+  setupPromotionCenterPage(cachedRouteParams)
+})
+
+/**
+ * 页面显示时检查登录状态（从登录页返回时）
+ */
+onShow(() => {
+  if (!pageReady.value && cachedRouteParams && isLoggedIn()) {
+    setupPromotionCenterPage(cachedRouteParams)
+  } else if (pageReady.value && isLoggedIn()) {
+    // 页面已初始化且已登录，刷新数据
+    handleRefresh()
+  }
+})
+
+/**
+ * 初始化（保留用于其他初始化逻辑）
+ */
+onMounted(() => {
+  // 其他初始化逻辑可以放在这里
 })
 </script>
 
 <style lang="scss" scoped>
 .promotion-center-page {
   min-height: 100vh;
-  background: #f5f5f5;
+  background: $uni-bg-color;
 }
 
 .page-content {
-  padding: 20rpx;
+  padding: $uni-spacing-lg;
 }
 
 // 统计卡片
 .stats-card {
-  background: linear-gradient(135deg, #FF9F29 0%, #FFB84D 100%);
-  border-radius: 16rpx;
-  padding: 30rpx;
-  margin-bottom: 20rpx;
-  box-shadow: 0 8rpx 20rpx rgba(255, 159, 41, 0.3);
+  background: $uni-color-primary-gradient;
+  border-radius: $uni-radius-lg;
+  padding: $uni-spacing-xl;
+  margin-bottom: $uni-spacing-lg;
+  box-shadow: $uni-shadow-glow;
 
   .stats-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 30rpx;
+    margin-bottom: $uni-spacing-xl;
 
     .header-left {
       display: flex;
       align-items: center;
-      gap: 12rpx;
+      gap: $uni-spacing-md;
 
       .header-title {
-        font-size: 32rpx;
+        font-size: $uni-font-size-lg;
         font-weight: bold;
-        color: #FFFFFF;
+        color: $uni-text-color-inverse;
       }
     }
   }
@@ -537,25 +594,25 @@ onMounted(() => {
   .stats-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 30rpx;
+    gap: $uni-spacing-xl;
 
     .stat-item {
       display: flex;
       flex-direction: column;
       align-items: center;
       background: rgba(255, 255, 255, 0.2);
-      border-radius: 12rpx;
-      padding: 20rpx;
+      border-radius: $uni-radius-md;
+      padding: $uni-spacing-lg;
 
       .stat-value {
         font-size: 40rpx;
         font-weight: bold;
-        color: #FFFFFF;
-        margin-bottom: 8rpx;
+        color: $uni-text-color-inverse;
+        margin-bottom: $uni-spacing-sm;
       }
 
       .stat-label {
-        font-size: 24rpx;
+        font-size: $uni-font-size-xs;
         color: rgba(255, 255, 255, 0.9);
       }
     }
@@ -564,26 +621,27 @@ onMounted(() => {
 
 // 邀请统计卡片
 .invite-stats-card {
-  background: #FFFFFF;
-  border-radius: 16rpx;
-  padding: 30rpx;
-  margin-bottom: 20rpx;
+  background: $uni-bg-color-card;
+  border-radius: $uni-radius-lg;
+  padding: $uni-spacing-xl;
+  margin-bottom: $uni-spacing-lg;
+  box-shadow: $uni-shadow-card;
 
   .card-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 30rpx;
+    margin-bottom: $uni-spacing-xl;
 
     .header-left {
       display: flex;
       align-items: center;
-      gap: 12rpx;
+      gap: $uni-spacing-md;
 
       .header-title {
         font-size: 30rpx;
         font-weight: bold;
-        color: #303133;
+        color: $uni-text-color;
       }
     }
 
@@ -591,10 +649,15 @@ onMounted(() => {
       display: flex;
       align-items: center;
       gap: 4rpx;
+      transition: all 0.2s ease;
+
+      &:active {
+        opacity: 0.7;
+      }
 
       .more-text {
-        font-size: 24rpx;
-        color: #909399;
+        font-size: $uni-font-size-xs;
+        color: $uni-text-color-placeholder;
       }
     }
   }
@@ -602,7 +665,7 @@ onMounted(() => {
   .invite-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 30rpx;
+    gap: $uni-spacing-xl;
 
     .invite-item {
       display: flex;
@@ -612,17 +675,17 @@ onMounted(() => {
       .invite-value {
         font-size: 40rpx;
         font-weight: bold;
-        color: #303133;
-        margin-bottom: 8rpx;
+        color: $uni-text-color;
+        margin-bottom: $uni-spacing-sm;
 
         &.highlight {
-          color: #FF9F29;
+          color: $uni-color-primary;
         }
       }
 
       .invite-label {
-        font-size: 24rpx;
-        color: #909399;
+        font-size: $uni-font-size-xs;
+        color: $uni-text-color-placeholder;
       }
     }
   }
@@ -630,45 +693,51 @@ onMounted(() => {
 
 // 快捷操作卡片
 .quick-actions-card {
-  background: #FFFFFF;
-  border-radius: 16rpx;
-  padding: 30rpx;
-  margin-bottom: 20rpx;
+  background: $uni-bg-color-card;
+  border-radius: $uni-radius-lg;
+  padding: $uni-spacing-xl;
+  margin-bottom: $uni-spacing-lg;
+  box-shadow: $uni-shadow-card;
 
   .card-header {
-    margin-bottom: 30rpx;
+    margin-bottom: $uni-spacing-xl;
 
     .header-title {
       font-size: 30rpx;
       font-weight: bold;
-      color: #303133;
+      color: $uni-text-color;
     }
   }
 
   .actions-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 20rpx;
+    gap: $uni-spacing-lg;
 
     .action-item {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 12rpx;
+      gap: $uni-spacing-md;
+      transition: all 0.2s ease;
+
+      &:active {
+        transform: scale(0.95);
+      }
 
       .action-icon-box {
         width: 100rpx;
         height: 100rpx;
-        border-radius: 20rpx;
+        border-radius: $uni-radius-lg;
         display: flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.1);
+        box-shadow: $uni-shadow-card;
       }
 
       .action-name {
-        font-size: 24rpx;
-        color: #606266;
+        font-size: $uni-font-size-xs;
+        color: $uni-text-color-secondary;
       }
     }
   }
@@ -676,18 +745,19 @@ onMounted(() => {
 
 // 邀请码卡片
 .invite-code-card {
-  background: #FFFFFF;
-  border-radius: 16rpx;
-  padding: 30rpx;
-  margin-bottom: 20rpx;
+  background: $uni-bg-color-card;
+  border-radius: $uni-radius-lg;
+  padding: $uni-spacing-xl;
+  margin-bottom: $uni-spacing-lg;
+  box-shadow: $uni-shadow-card;
 
   .card-header {
-    margin-bottom: 20rpx;
+    margin-bottom: $uni-spacing-lg;
 
     .header-title {
       font-size: 30rpx;
       font-weight: bold;
-      color: #303133;
+      color: $uni-text-color;
     }
   }
 
@@ -695,15 +765,16 @@ onMounted(() => {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 24rpx 30rpx;
-    background: linear-gradient(135deg, #FF9F29 0%, #FFB84D 100%);
-    border-radius: 16rpx;
-    margin-bottom: 20rpx;
+    padding: $uni-spacing-xl $uni-spacing-xl;
+    background: $uni-color-primary-gradient;
+    border-radius: $uni-radius-lg;
+    margin-bottom: $uni-spacing-lg;
+    box-shadow: $uni-shadow-glow;
 
     .invite-code-text {
       font-size: 40rpx;
       font-weight: bold;
-      color: #FFFFFF;
+      color: $uni-text-color-inverse;
       letter-spacing: 4rpx;
     }
   }
@@ -711,31 +782,32 @@ onMounted(() => {
   .invite-code-tip {
     display: flex;
     align-items: center;
-    gap: 8rpx;
-    font-size: 24rpx;
-    color: #909399;
+    gap: $uni-spacing-sm;
+    font-size: $uni-font-size-xs;
+    color: $uni-text-color-placeholder;
   }
 }
 
 // 奖励规则卡片
 .reward-rules-card {
-  background: #FFFFFF;
-  border-radius: 16rpx;
-  padding: 30rpx;
-  margin-bottom: 20rpx;
+  background: $uni-bg-color-card;
+  border-radius: $uni-radius-lg;
+  padding: $uni-spacing-xl;
+  margin-bottom: $uni-spacing-lg;
+  box-shadow: $uni-shadow-card;
 
   .card-header {
-    margin-bottom: 20rpx;
+    margin-bottom: $uni-spacing-lg;
 
     .header-left {
       display: flex;
       align-items: center;
-      gap: 12rpx;
+      gap: $uni-spacing-md;
 
       .header-title {
         font-size: 30rpx;
         font-weight: bold;
-        color: #303133;
+        color: $uni-text-color;
       }
     }
   }
@@ -744,15 +816,15 @@ onMounted(() => {
     .rule-item {
       display: flex;
       align-items: flex-start;
-      margin-bottom: 20rpx;
+      margin-bottom: $uni-spacing-lg;
 
       &:last-child {
         margin-bottom: 0;
       }
 
       .rule-icon {
-        font-size: 32rpx;
-        margin-right: 16rpx;
+        font-size: $uni-font-size-lg;
+        margin-right: $uni-spacing-lg;
         flex-shrink: 0;
       }
 
@@ -762,14 +834,14 @@ onMounted(() => {
         flex-direction: column;
 
         .rule-title {
-          font-size: 28rpx;
-          color: #303133;
+          font-size: $uni-font-size-base;
+          color: $uni-text-color;
           margin-bottom: 4rpx;
         }
 
         .rule-desc {
-          font-size: 24rpx;
-          color: #909399;
+          font-size: $uni-font-size-xs;
+          color: $uni-text-color-placeholder;
         }
       }
     }
@@ -778,31 +850,37 @@ onMounted(() => {
 
 // 推广记录卡片
 .promotion-records-card {
-  background: #FFFFFF;
-  border-radius: 16rpx;
-  padding: 30rpx;
-  margin-bottom: 20rpx;
+  background: $uni-bg-color-card;
+  border-radius: $uni-radius-lg;
+  padding: $uni-spacing-xl;
+  margin-bottom: $uni-spacing-lg;
+  box-shadow: $uni-shadow-card;
 
   .card-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 20rpx;
+    margin-bottom: $uni-spacing-lg;
 
     .header-title {
       font-size: 30rpx;
       font-weight: bold;
-      color: #303133;
+      color: $uni-text-color;
     }
 
     .header-right {
       display: flex;
       align-items: center;
       gap: 4rpx;
+      transition: all 0.2s ease;
+
+      &:active {
+        opacity: 0.7;
+      }
 
       .more-text {
-        font-size: 24rpx;
-        color: #909399;
+        font-size: $uni-font-size-xs;
+        color: $uni-text-color-placeholder;
       }
     }
   }
@@ -811,26 +889,31 @@ onMounted(() => {
     .record-item {
       display: flex;
       align-items: center;
-      padding: 20rpx 0;
-      border-bottom: 1rpx solid #f5f5f5;
+      padding: $uni-spacing-lg 0;
+      border-bottom: 1rpx solid $uni-border-color-light;
+      transition: all 0.2s ease;
 
       &:last-child {
         border-bottom: none;
       }
 
+      &:active {
+        opacity: 0.7;
+      }
+
       .record-info {
         flex: 1;
-        margin-left: 20rpx;
+        margin-left: $uni-spacing-lg;
 
         .record-name {
-          font-size: 28rpx;
-          color: #303133;
-          margin-bottom: 8rpx;
+          font-size: $uni-font-size-base;
+          color: $uni-text-color;
+          margin-bottom: $uni-spacing-sm;
         }
 
         .record-time {
-          font-size: 24rpx;
-          color: #909399;
+          font-size: $uni-font-size-xs;
+          color: $uni-text-color-placeholder;
         }
       }
 
@@ -855,9 +938,9 @@ onMounted(() => {
   z-index: 9999;
 
   .loading-text {
-    margin-top: 20rpx;
-    font-size: 28rpx;
-    color: #909399;
+    margin-top: $uni-spacing-lg;
+    font-size: $uni-font-size-base;
+    color: $uni-text-color-placeholder;
   }
 }
 </style>

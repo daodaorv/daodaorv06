@@ -1,14 +1,14 @@
 <template>
 	<view v-if="notices.length > 0" class="notice-banner">
 		<view class="icon-box">
-			<u-icon name="volume-fill" size="16" color="#FF9F29"></u-icon>
+			<u-icon name="volume-fill" size="16" :color="primaryColor"></u-icon>
 		</view>
 		<view class="notice-content">
-			<swiper 
-				class="notice-swiper" 
-				:vertical="true" 
-				:autoplay="autoplay" 
-				:interval="interval" 
+			<swiper
+				class="notice-swiper"
+				:vertical="true"
+				:autoplay="autoplay"
+				:interval="interval"
 				:circular="true"
 				:duration="500"
 			>
@@ -19,11 +19,14 @@
 				</swiper-item>
 			</swiper>
 		</view>
-		<u-icon name="arrow-right" size="12" color="#FF9F29" style="opacity: 0.6;"></u-icon>
+		<u-icon name="arrow-right" size="12" :color="primaryColor" style="opacity: 0.6;"></u-icon>
 	</view>
 </template>
 
 <script setup lang="ts">
+// 主题色常量（与 uni.scss 中 $uni-color-primary 保持一致）
+const primaryColor = '#FF9F29';
+
 interface Notice {
 	id: string;
 	content: string;
@@ -42,7 +45,9 @@ withDefaults(defineProps<Props>(), {
 	interval: 3000
 });
 
-const emit = defineEmits(['click']);
+const emit = defineEmits<{
+	(e: 'click', notice: Notice): void;
+}>();
 
 const handleNoticeClick = (notice: Notice) => {
 	emit('click', notice);
@@ -58,7 +63,7 @@ const handleNoticeClick = (notice: Notice) => {
 	align-items: center;
 	height: 80rpx;
 	padding: 0 24rpx;
-	background-color: #FFFFFF; // 改为白色背景更通透，或者保持浅橙色
+	background-color: $uni-bg-color-card;
 	border-radius: $uni-radius-lg;
 	box-shadow: $uni-shadow-sm;
 	gap: 16rpx;
@@ -81,7 +86,7 @@ const handleNoticeClick = (notice: Notice) => {
 
 .notice-text {
 	font-size: 26rpx;
-	color: #333; // 深色文字
+	color: $uni-text-color;
 	line-height: 80rpx;
 	white-space: nowrap;
 	overflow: hidden;

@@ -27,7 +27,7 @@
     >
       <!-- 空状态 -->
       <view v-if="tours.length === 0 && !loading" class="empty-state">
-        <u-empty mode="list" text="暂无旅游线路" icon="http://cdn.uviewui.com/uview/empty/list.png">
+        <u-empty mode="list" text="暂无旅游线路">
         </u-empty>
       </view>
 
@@ -390,7 +390,7 @@ const viewDetail = (item: any) => {
 <style scoped lang="scss">
 .tour-list-page {
   min-height: 100vh;
-  background-color: #F8F8F8;
+  background-color: $uni-bg-color;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -399,11 +399,11 @@ const viewDetail = (item: any) => {
 
 // 筛选栏
 .filter-bar {
-  background-color: #FFFFFF;
+  background-color: $uni-bg-color-card;
   display: flex;
-  padding: 24rpx 32rpx;
-  gap: 48rpx;
-  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+  padding: $uni-spacing-lg $uni-spacing-xl;
+  gap: $uni-spacing-xl;
+  box-shadow: $uni-shadow-sm;
   position: sticky;
   top: 0;
   z-index: 10;
@@ -412,18 +412,23 @@ const viewDetail = (item: any) => {
 .filter-item {
   display: flex;
   align-items: center;
-  gap: 8rpx;
+  gap: $uni-spacing-sm;
+  transition: all 0.2s ease;
+
+  &:active {
+    opacity: 0.7;
+  }
 
   .filter-text {
-    font-size: 28rpx;
-    color: #333;
+    font-size: $uni-font-size-base;
+    color: $uni-text-color;
   }
 }
 
 // 线路列表
 .tour-list {
   flex: 1;
-  padding: 24rpx;
+  padding: $uni-spacing-lg;
   width: 100%;
   box-sizing: border-box;
 }
@@ -439,30 +444,35 @@ const viewDetail = (item: any) => {
   .empty-image {
     width: 200rpx;
     height: 200rpx;
-    margin-bottom: 32rpx;
+    margin-bottom: $uni-spacing-xl;
     opacity: 0.6;
   }
 
   .empty-text {
-    font-size: 28rpx;
-    color: rgba(0, 0, 0, 0.6);
-    margin-bottom: 16rpx;
+    font-size: $uni-font-size-base;
+    color: $uni-text-color-secondary;
+    margin-bottom: $uni-spacing-md;
   }
 
   .empty-tip {
-    font-size: 24rpx;
-    color: rgba(0, 0, 0, 0.4);
+    font-size: $uni-font-size-sm;
+    color: $uni-text-color-placeholder;
   }
 }
 
 // 线路卡片
 .tour-card {
-  background-color: #FFFFFF;
-  border-radius: 16rpx;
+  background-color: $uni-bg-color-card;
+  border-radius: $uni-radius-lg;
   overflow: hidden;
-  margin-bottom: 24rpx;
-  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
+  margin-bottom: $uni-spacing-lg;
+  box-shadow: $uni-shadow-card;
   position: relative;
+  transition: all 0.3s ease;
+
+  &:active {
+    transform: scale(0.99);
+  }
 }
 
 .image-wrapper {
@@ -474,28 +484,28 @@ const viewDetail = (item: any) => {
 // 状态标签
 .tour-badge-wrapper {
   position: absolute;
-  top: 24rpx;
-  right: 24rpx;
+  top: $uni-spacing-lg;
+  right: $uni-spacing-lg;
   z-index: 1;
 }
 
 // 热门标签
 .hot-tag-wrapper {
   position: absolute;
-  top: 24rpx;
+  top: $uni-spacing-lg;
   left: 0;
   z-index: 1;
 }
 
 .tour-info {
-  padding: 24rpx;
+  padding: $uni-spacing-lg;
 }
 
 .tour-title {
-  font-size: 32rpx;
+  font-size: $uni-font-size-lg;
   font-weight: 600;
-  color: #333;
-  margin-bottom: 16rpx;
+  color: $uni-text-color;
+  margin-bottom: $uni-spacing-md;
   display: block;
   line-height: 1.4;
 }
@@ -503,59 +513,59 @@ const viewDetail = (item: any) => {
 // 线路标签
 .tour-tags {
   display: flex;
-  gap: 12rpx;
-  margin-bottom: 16rpx;
+  gap: $uni-spacing-md;
+  margin-bottom: $uni-spacing-md;
   flex-wrap: wrap;
 
   .tag-item {
-    font-size: 22rpx;
-    color: #FF9F29;
+    font-size: $uni-font-size-xs;
+    color: $uni-color-primary;
     background-color: rgba(255, 159, 41, 0.1);
-    padding: 6rpx 12rpx;
-    border-radius: 6rpx;
+    padding: $uni-spacing-xs $uni-spacing-md;
+    border-radius: $uni-radius-xs;
   }
 }
 
 .tour-details {
   display: flex;
-  gap: 24rpx;
-  margin-bottom: 16rpx;
+  gap: $uni-spacing-lg;
+  margin-bottom: $uni-spacing-md;
 
   .detail-item {
     display: flex;
     align-items: center;
-    gap: 8rpx;
+    gap: $uni-spacing-sm;
 
     .detail-text {
-      font-size: 24rpx;
-      color: #999;
+      font-size: $uni-font-size-sm;
+      color: $uni-text-color-placeholder;
     }
   }
 }
 
 // 成团进度
 .group-progress {
-  margin-bottom: 20rpx;
+  margin-bottom: $uni-spacing-lg;
 
   .progress-bar {
     width: 100%;
     height: 8rpx;
-    background-color: #F0F0F0;
+    background-color: $uni-border-color-light;
     border-radius: 4rpx;
     overflow: hidden;
-    margin-bottom: 12rpx;
+    margin-bottom: $uni-spacing-md;
 
     .progress-fill {
       height: 100%;
-      background: linear-gradient(90deg, #67C23A 0%, #85CE61 100%);
+      background: linear-gradient(90deg, $uni-color-success 0%, #85CE61 100%);
       border-radius: 4rpx;
       transition: width 0.3s ease;
     }
   }
 
   .progress-text {
-    font-size: 24rpx;
-    color: #67C23A;
+    font-size: $uni-font-size-sm;
+    color: $uni-color-success;
   }
 }
 
@@ -568,39 +578,46 @@ const viewDetail = (item: any) => {
 .price-box {
   display: flex;
   flex-direction: column;
-  gap: 8rpx;
+  gap: $uni-spacing-sm;
 
   .price {
     font-size: 48rpx;
     font-weight: 700;
-    color: #F44336;
+    color: $uni-color-error;
+    font-family: 'DIN Alternate', sans-serif;
   }
 
   .unit {
-    font-size: 24rpx;
-    color: #999;
+    font-size: $uni-font-size-sm;
+    color: $uni-text-color-placeholder;
     margin-left: 4rpx;
   }
 
   .child-price {
-    font-size: 22rpx;
-    color: #999;
+    font-size: $uni-font-size-xs;
+    color: $uni-text-color-placeholder;
   }
 }
 
 .action-btn {
-  background: linear-gradient(135deg, #FF9F29 0%, #FFB84D 100%);
-  color: #FFFFFF;
-  padding: 20rpx 48rpx;
-  border-radius: 44rpx;
+  background: $uni-color-primary-gradient;
+  color: $uni-text-color-inverse;
+  padding: $uni-spacing-lg $uni-spacing-xl;
+  border-radius: $uni-radius-btn;
+  transition: all 0.2s ease;
+
+  &:active {
+    transform: scale(0.98);
+    opacity: 0.9;
+  }
 
   &.disabled {
-    background: #E0E0E0;
-    color: #999;
+    background: $uni-bg-color-grey;
+    color: $uni-text-color-placeholder;
   }
 
   .btn-text {
-    font-size: 28rpx;
+    font-size: $uni-font-size-base;
     font-weight: 500;
   }
 }
@@ -608,41 +625,41 @@ const viewDetail = (item: any) => {
 // 加载状态
 .load-more {
   text-align: center;
-  padding: 32rpx 0;
+  padding: $uni-spacing-xl 0;
 
   .load-text {
-    font-size: 26rpx;
-    color: rgba(0, 0, 0, 0.6);
+    font-size: $uni-font-size-sm;
+    color: $uni-text-color-secondary;
   }
 }
 
 // 没有更多
 .no-more {
   text-align: center;
-  padding: 32rpx 0;
+  padding: $uni-spacing-xl 0;
 
   .no-more-text {
-    font-size: 26rpx;
-    color: rgba(0, 0, 0, 0.4);
+    font-size: $uni-font-size-sm;
+    color: $uni-text-color-placeholder;
   }
 }
 
 // 筛选弹窗
 .filter-popup {
-  background-color: #FFFFFF;
-  border-radius: 24rpx 24rpx 0 0;
+  background-color: $uni-bg-color-card;
+  border-radius: $uni-radius-lg $uni-radius-lg 0 0;
 
   .popup-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 32rpx;
-    border-bottom: 2rpx solid #F0F0F0;
+    padding: $uni-spacing-xl;
+    border-bottom: 2rpx solid $uni-border-color-light;
 
     .popup-title {
-      font-size: 32rpx;
+      font-size: $uni-font-size-lg;
       font-weight: 600;
-      color: #333;
+      color: $uni-text-color;
     }
   }
 
@@ -654,21 +671,26 @@ const viewDetail = (item: any) => {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 32rpx;
-      border-bottom: 2rpx solid #F8F8F8;
+      padding: $uni-spacing-xl;
+      border-bottom: 2rpx solid $uni-bg-color-grey;
+      transition: all 0.2s ease;
 
       &:last-child {
         border-bottom: none;
       }
 
+      &:active {
+        background-color: $uni-bg-color-grey;
+      }
+
       .option-text {
-        font-size: 28rpx;
-        color: #333;
+        font-size: $uni-font-size-base;
+        color: $uni-text-color;
       }
 
       &.active {
         .option-text {
-          color: #FF9F29;
+          color: $uni-color-primary;
           font-weight: 500;
         }
       }

@@ -75,7 +75,7 @@
 
             <!-- 车辆特点 -->
             <view class="vehicle-features" v-if="offer.vehicle.features && Array.isArray(offer.vehicle.features)">
-              <text class="feature-item" v-for="feature in offer.vehicle.features.slice(0, 3)" :key="feature">
+              <text class="feature-item" v-for="(feature, index) in offer.vehicle.features.slice(0, 3)" :key="`${offer.id}-feature-${index}`">
                 {{ feature }}
               </text>
             </view>
@@ -382,18 +382,18 @@ const goToDetail = (offerId: string) => {
 <style scoped lang="scss">
 .special-offer-page {
   min-height: 100vh;
-  background-color: #F8F8F8;
+  background-color: $uni-bg-color;
   display: flex;
   flex-direction: column;
 }
 
 // 筛选栏
 .filter-bar {
-  background-color: #FFFFFF;
+  background-color: $uni-bg-color-card;
   display: flex;
-  padding: 24rpx 32rpx;
+  padding: $uni-spacing-xl $uni-spacing-xl;
   gap: 48rpx;
-  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+  box-shadow: $uni-shadow-sm;
   position: sticky;
   top: 0;
   z-index: 10;
@@ -402,18 +402,24 @@ const goToDetail = (offerId: string) => {
 .filter-item {
   display: flex;
   align-items: center;
-  gap: 8rpx;
+  gap: $uni-spacing-md;
+  transition: all 0.2s ease;
+
+  &:active {
+    opacity: 0.7;
+  }
 
   .filter-text {
-    font-size: 28rpx;
-    color: #333;
+    font-size: $uni-font-size-base;
+    color: $uni-text-color;
   }
 }
 
 // 套餐列表
 .offer-list {
   flex: 1;
-  padding: 24rpx;
+  padding: $uni-spacing-xl;
+  box-sizing: border-box;
 }
 
 // 空状态
@@ -427,30 +433,40 @@ const goToDetail = (offerId: string) => {
   .empty-image {
     width: 200rpx;
     height: 200rpx;
-    margin-bottom: 32rpx;
+    margin-bottom: $uni-spacing-xl;
     opacity: 0.6;
   }
 
   .empty-text {
-    font-size: 28rpx;
-    color: rgba(0, 0, 0, 0.6);
-    margin-bottom: 16rpx;
+    font-size: $uni-font-size-base;
+    color: $uni-text-color-secondary;
+    margin-bottom: $uni-spacing-xl;
   }
 
   .empty-tip {
-    font-size: 24rpx;
-    color: rgba(0, 0, 0, 0.4);
+    font-size: $uni-font-size-sm;
+    color: $uni-text-color-placeholder;
   }
 }
 
 // 套餐卡片
 .offer-cards {
+  width: 100%;
+  box-sizing: border-box;
+
   .offer-card {
-    background-color: #FFFFFF;
-    border-radius: 16rpx;
+    width: 100%;
+    background-color: $uni-bg-color-card;
+    border-radius: $uni-radius-lg;
     overflow: hidden;
-    margin-bottom: 24rpx;
-    box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
+    margin-bottom: $uni-spacing-xl;
+    box-shadow: $uni-shadow-card;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+
+    &:active {
+      transform: scale(0.99);
+    }
 
     .card-image-wrapper {
       position: relative;
@@ -465,16 +481,16 @@ const goToDetail = (offerId: string) => {
       // 限量标签
       .quota-badge {
         position: absolute;
-        top: 24rpx;
-        right: 24rpx;
-        background-color: rgba(255, 159, 41, 0.9);
-        color: #FFFFFF;
+        top: $uni-spacing-xl;
+        right: $uni-spacing-xl;
+        background-color: rgba($uni-color-primary, 0.9);
+        color: $uni-text-color-inverse;
         font-size: 22rpx;
-        padding: 8rpx 16rpx;
-        border-radius: 20rpx;
+        padding: $uni-spacing-md $uni-spacing-xl;
+        border-radius: $uni-radius-btn;
 
         &.hot {
-          background-color: rgba(244, 67, 54, 0.9);
+          background-color: rgba($uni-color-error, 0.9);
           animation: pulse 1.5s ease-in-out infinite;
         }
       }
@@ -482,42 +498,42 @@ const goToDetail = (offerId: string) => {
       // 特惠标签
       .special-tag {
         position: absolute;
-        top: 24rpx;
+        top: $uni-spacing-xl;
         left: 0;
-        background: linear-gradient(135deg, #FF9F29 0%, #FFB84D 100%);
-        color: #FFFFFF;
-        padding: 8rpx 24rpx 8rpx 16rpx;
-        border-radius: 0 20rpx 20rpx 0;
+        background: $uni-color-primary-gradient;
+        color: $uni-text-color-inverse;
+        padding: $uni-spacing-md $uni-spacing-xl $uni-spacing-md $uni-spacing-xl;
+        border-radius: 0 $uni-radius-btn $uni-radius-btn 0;
 
         .tag-text {
-          font-size: 24rpx;
+          font-size: $uni-font-size-sm;
           font-weight: 600;
         }
       }
     }
 
     .card-content {
-      padding: 24rpx;
+      padding: $uni-spacing-xl;
 
       // 路线信息
       .route-info {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 16rpx;
+        margin-bottom: $uni-spacing-xl;
 
         .route-text {
-          font-size: 32rpx;
+          font-size: $uni-font-size-lg;
           font-weight: 600;
-          color: #333;
+          color: $uni-text-color;
         }
 
         .route-badge {
           background-color: rgba(75, 145, 255, 0.1);
           color: #4B91FF;
           font-size: 22rpx;
-          padding: 6rpx 12rpx;
-          border-radius: 8rpx;
+          padding: 6rpx $uni-spacing-lg;
+          border-radius: $uni-radius-sm;
 
           .badge-text {
             font-weight: 500;
@@ -528,24 +544,24 @@ const goToDetail = (offerId: string) => {
       // 车辆名称
       .vehicle-name {
         display: block;
-        font-size: 28rpx;
-        color: #666;
-        margin-bottom: 16rpx;
+        font-size: $uni-font-size-base;
+        color: $uni-text-color-secondary;
+        margin-bottom: $uni-spacing-xl;
       }
 
       // 车辆特点
       .vehicle-features {
         display: flex;
-        gap: 12rpx;
-        margin-bottom: 16rpx;
+        gap: $uni-spacing-lg;
+        margin-bottom: $uni-spacing-xl;
         flex-wrap: wrap;
 
         .feature-item {
-          font-size: 22rpx;
-          color: #999;
-          background-color: #F8F8F8;
-          padding: 6rpx 12rpx;
-          border-radius: 6rpx;
+          font-size: $uni-font-size-xs;
+          color: $uni-text-color-placeholder;
+          background-color: $uni-bg-color-grey;
+          padding: 6rpx $uni-spacing-lg;
+          border-radius: $uni-radius-sm;
         }
       }
 
@@ -553,12 +569,12 @@ const goToDetail = (offerId: string) => {
       .time-info {
         display: flex;
         align-items: center;
-        gap: 8rpx;
-        margin-bottom: 24rpx;
+        gap: $uni-spacing-md;
+        margin-bottom: $uni-spacing-xl;
 
         .time-text {
-          font-size: 24rpx;
-          color: #999;
+          font-size: $uni-font-size-sm;
+          color: $uni-text-color-placeholder;
         }
       }
 
@@ -572,42 +588,49 @@ const goToDetail = (offerId: string) => {
           .price-main {
             display: flex;
             align-items: baseline;
-            margin-bottom: 8rpx;
+            margin-bottom: $uni-spacing-md;
 
             .price-symbol {
-              font-size: 28rpx;
-              color: #F44336;
+              font-size: $uni-font-size-base;
+              color: $uni-color-error;
               font-weight: 600;
             }
 
             .price-amount {
               font-size: 48rpx;
-              color: #F44336;
+              color: $uni-color-error;
               font-weight: 700;
               margin: 0 4rpx;
             }
 
             .price-unit {
-              font-size: 24rpx;
-              color: #999;
+              font-size: $uni-font-size-sm;
+              color: $uni-text-color-placeholder;
             }
           }
 
           .price-original {
-            font-size: 22rpx;
-            color: #999;
+            font-size: $uni-font-size-xs;
+            color: $uni-text-color-placeholder;
             text-decoration: line-through;
           }
         }
 
         .action-btn {
-          background: linear-gradient(135deg, #FF9F29 0%, #FFB84D 100%);
-          color: #FFFFFF;
-          padding: 20rpx 48rpx;
-          border-radius: 44rpx;
+          background: $uni-color-primary-gradient;
+          color: $uni-text-color-inverse;
+          padding: $uni-spacing-xl 48rpx;
+          border-radius: $uni-radius-btn;
+          box-shadow: $uni-shadow-glow;
+          transition: all 0.2s ease;
+
+          &:active {
+            transform: scale(0.98);
+            opacity: 0.9;
+          }
 
           .btn-text {
-            font-size: 28rpx;
+            font-size: $uni-font-size-base;
             font-weight: 500;
           }
         }
@@ -619,41 +642,41 @@ const goToDetail = (offerId: string) => {
 // 加载状态
 .load-more {
   text-align: center;
-  padding: 32rpx 0;
+  padding: $uni-spacing-xl 0;
 
   .load-text {
-    font-size: 26rpx;
-    color: rgba(0, 0, 0, 0.6);
+    font-size: $uni-font-size-sm;
+    color: $uni-text-color-secondary;
   }
 }
 
 // 没有更多
 .no-more {
   text-align: center;
-  padding: 32rpx 0;
+  padding: $uni-spacing-xl 0;
 
   .no-more-text {
-    font-size: 26rpx;
-    color: rgba(0, 0, 0, 0.4);
+    font-size: $uni-font-size-sm;
+    color: $uni-text-color-placeholder;
   }
 }
 
 // 筛选弹窗
 .filter-popup {
-  background-color: #FFFFFF;
-  border-radius: 24rpx 24rpx 0 0;
+  background-color: $uni-bg-color-card;
+  border-radius: $uni-radius-lg $uni-radius-lg 0 0;
 
   .popup-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 32rpx;
-    border-bottom: 2rpx solid #F0F0F0;
+    padding: $uni-spacing-xl;
+    border-bottom: 2rpx solid $uni-border-color-light;
 
     .popup-title {
-      font-size: 32rpx;
+      font-size: $uni-font-size-lg;
       font-weight: 600;
-      color: #333;
+      color: $uni-text-color;
     }
   }
 
@@ -665,21 +688,26 @@ const goToDetail = (offerId: string) => {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 32rpx;
-      border-bottom: 2rpx solid #F8F8F8;
+      padding: $uni-spacing-xl;
+      border-bottom: 2rpx solid $uni-bg-color-grey;
+      transition: all 0.2s ease;
 
       &:last-child {
         border-bottom: none;
       }
 
+      &:active {
+        background-color: $uni-bg-color-grey;
+      }
+
       .option-text {
-        font-size: 28rpx;
-        color: #333;
+        font-size: $uni-font-size-base;
+        color: $uni-text-color;
       }
 
       &.active {
         .option-text {
-          color: #FF9F29;
+          color: $uni-color-primary;
           font-weight: 500;
         }
       }

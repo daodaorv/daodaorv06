@@ -85,21 +85,136 @@ export default {
 }
 </script>
 
-<style scoped>
-.new-car-hosting { min-height: 100vh; background: #F5F5F5; padding-bottom: 40rpx; }
-.banner { background: linear-gradient(135deg, #FF9F29 0%, #FF7A00 100%); padding: 48rpx 32rpx; text-align: center; color: #FFF; }
-.banner .title { display: block; font-size: 36rpx; font-weight: 600; margin-bottom: 16rpx; }
-.banner .desc { display: block; font-size: 24rpx; opacity: 0.9; }
-.models-section, .form-section { margin: 24rpx 32rpx; background: #FFF; border-radius: 16rpx; padding: 32rpx; }
-.section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24rpx; }
-.section-title { font-size: 32rpx; font-weight: 600; }
-.more-btn { display: flex; align-items: center; font-size: 28rpx; color: #999; }
-.more-btn .arrow { font-size: 36rpx; margin-left: 4rpx; }
-.model-card { display: flex; margin-bottom: 24rpx; border: 1rpx solid #EEE; border-radius: 12rpx; overflow: hidden; }
-.model-img { width: 200rpx; height: 150rpx; }
-.model-info { flex: 1; padding: 24rpx; }
-.model-name { display: block; font-size: 28rpx; font-weight: 600; margin-bottom: 8rpx; }
-.model-price { display: block; font-size: 24rpx; color: #FF9F29; }
-.input { height: 88rpx; background: #F5F5F5; border-radius: 12rpx; padding: 0 24rpx; margin-bottom: 24rpx; }
-.submit-btn { width: calc(100% - 64rpx); height: 88rpx; background: #FF9F29; color: #FFF; border-radius: 48rpx; font-size: 32rpx; font-weight: 600; border: none; margin: 0 32rpx; }
+<style scoped lang="scss">
+.new-car-hosting {
+  min-height: 100vh;
+  background: $uni-bg-color;
+  padding-bottom: 40rpx;
+}
+
+.banner {
+  background: $uni-color-primary-gradient;
+  padding: 48rpx $uni-spacing-xl;
+  text-align: center;
+  color: $uni-text-color-inverse;
+
+  .title {
+    display: block;
+    font-size: 36rpx;
+    font-weight: 600;
+    margin-bottom: $uni-spacing-lg;
+  }
+
+  .desc {
+    display: block;
+    font-size: $uni-font-size-xs;
+    opacity: 0.9;
+  }
+}
+
+.models-section,
+.form-section {
+  margin: $uni-spacing-xl $uni-spacing-xl;
+  background: $uni-bg-color-card;
+  border-radius: $uni-radius-lg;
+  padding: $uni-spacing-xl;
+  box-shadow: $uni-shadow-card;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $uni-spacing-xl;
+}
+
+.section-title {
+  font-size: $uni-font-size-lg;
+  font-weight: 600;
+  color: $uni-text-color;
+}
+
+.more-btn {
+  display: flex;
+  align-items: center;
+  font-size: $uni-font-size-base;
+  color: $uni-text-color-placeholder;
+  transition: all 0.2s ease;
+
+  &:active {
+    opacity: 0.7;
+  }
+
+  .arrow {
+    font-size: 36rpx;
+    margin-left: 4rpx;
+  }
+}
+
+.model-card {
+  display: flex;
+  margin-bottom: $uni-spacing-xl;
+  border: 1rpx solid $uni-border-color-light;
+  border-radius: $uni-radius-md;
+  overflow: hidden;
+  transition: all 0.2s ease;
+
+  &:active {
+    transform: scale(0.99);
+    background-color: $uni-bg-color-grey;
+  }
+}
+
+.model-img {
+  width: 200rpx;
+  height: 150rpx;
+}
+
+.model-info {
+  flex: 1;
+  padding: $uni-spacing-xl;
+}
+
+.model-name {
+  display: block;
+  font-size: $uni-font-size-base;
+  font-weight: 600;
+  color: $uni-text-color;
+  margin-bottom: $uni-spacing-sm;
+}
+
+.model-price {
+  display: block;
+  font-size: $uni-font-size-xs;
+  color: $uni-color-primary;
+}
+
+.input {
+  height: 88rpx;
+  background: $uni-bg-color-grey;
+  border-radius: $uni-radius-md;
+  padding: 0 $uni-spacing-xl;
+  margin-bottom: $uni-spacing-xl;
+  font-size: $uni-font-size-base;
+  color: $uni-text-color;
+}
+
+.submit-btn {
+  width: calc(100% - 64rpx);
+  height: 88rpx;
+  background: $uni-color-primary-gradient;
+  color: $uni-text-color-inverse;
+  border-radius: $uni-radius-btn;
+  font-size: $uni-font-size-lg;
+  font-weight: 600;
+  border: none;
+  margin: 0 $uni-spacing-xl;
+  box-shadow: $uni-shadow-glow;
+  transition: all 0.2s ease;
+
+  &:active {
+    transform: scale(0.98);
+    opacity: 0.9;
+  }
+}
 </style>

@@ -54,6 +54,9 @@
 					</view>
 				</view>
 
+				<!-- 公告栏 -->
+				<AnnouncementBar :content="vehicle.announcement" />
+
 				<!-- 核心规格 (Grid) -->
 				<view class="specs-grid">
 					<view class="spec-box">
@@ -194,6 +197,7 @@ import { useShare } from '@/composables/useShare';
 import { ShareScene } from '@/types/share';
 import ShareSheet from '@/components/share/ShareSheet.vue';
 import PosterPreview from '@/components/share/PosterPreview.vue';
+import AnnouncementBar from '@/components/common/AnnouncementBar.vue';
 
 const statusBarHeight = ref(0);
 
@@ -210,6 +214,7 @@ const vehicle = ref({
 	rating: 4.8,
 	storeName: '深圳宝安店',
 	storeAddress: '深圳市宝安区XX路XX号',
+	announcement: '【重要提醒】本车辆配备全新升级的智能驾驶辅助系统，首次租用客户可享受免费驾驶培训服务。春节期间租期需满7天，请提前规划行程。车辆已投保全险，但请注意高速公路限速要求。',
 	features: [
 		'独立卫浴', '冷暖空调', '车载冰箱', '微波炉',
 		'燃气灶', '太阳能板', '倒车影像', '定速巡航'
@@ -299,7 +304,7 @@ const handleBook = () => {
 <style scoped lang="scss">
 .vehicle-detail-page {
 	min-height: 100vh;
-	background-color: #F8F9FC;
+	background-color: $uni-bg-color;
 	display: flex;
 	flex-direction: column;
 }
@@ -308,7 +313,7 @@ const handleBook = () => {
 .image-swiper {
 	width: 100%;
 	height: 600rpx;
-	background-color: #EEE;
+	background-color: $uni-bg-color-grey;
 }
 
 .swiper-image {
@@ -318,58 +323,63 @@ const handleBook = () => {
 
 .back-btn {
 	position: fixed;
-	left: 32rpx;
+	left: $uni-spacing-lg;
 	z-index: 100;
-	width: 64rpx;
-	height: 64rpx;
-	background-color: rgba(0,0,0,0.4);
-	backdrop-filter: blur(4px);
-	border-radius: 50%;
+	width: 72rpx;
+	height: 72rpx;
+	background-color: rgba(0, 0, 0, 0.35);
+	backdrop-filter: blur(8px);
+	border-radius: $uni-radius-circle;
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	transition: transform 0.2s ease;
+
+	&:active {
+		transform: scale(0.95);
+	}
 }
 
 .detail-scroll {
 	flex: 1;
 	height: 0;
-	margin-top: -40rpx; // 上拉遮挡图片底部
+	margin-top: -48rpx;
 	position: relative;
 	z-index: 10;
 }
 
 .content-container {
-	padding: 0 32rpx;
+	padding: 0 $uni-spacing-lg;
 }
 
 /* 信息卡片 */
 .info-card {
-	background-color: #FFFFFF;
-	border-radius: 32rpx;
-	padding: 40rpx 32rpx;
-	box-shadow: 0 8rpx 24rpx rgba(0,0,0,0.05);
-	margin-bottom: 24rpx;
+	background-color: $uni-bg-color-card;
+	border-radius: $uni-radius-lg;
+	padding: $uni-spacing-xl $uni-spacing-lg;
+	box-shadow: $uni-shadow-float;
+	margin-bottom: $uni-spacing-md;
 }
 
 .header-row {
 	display: flex;
 	justify-content: space-between;
 	align-items: flex-start;
-	margin-bottom: 20rpx;
+	margin-bottom: $uni-spacing-md;
 }
 
 .title-wrap {
 	flex: 1;
-	margin-right: 24rpx;
+	margin-right: $uni-spacing-md;
 }
 
 .vehicle-name {
-	font-size: 40rpx;
+	font-size: $uni-font-size-xl;
 	font-weight: 800;
-	color: #1D2129;
+	color: $uni-text-color;
 	line-height: 1.3;
 	display: block;
-	margin-bottom: 12rpx;
+	margin-bottom: $uni-spacing-sm;
 }
 
 .store-tag {
@@ -377,45 +387,50 @@ const handleBook = () => {
 	align-items: center;
 	gap: 6rpx;
 	background-color: rgba(255, 159, 41, 0.1);
-	padding: 4rpx 12rpx;
-	border-radius: 8rpx;
-	
+	padding: 6rpx 16rpx;
+	border-radius: $uni-radius-xs;
+
 	text {
-		font-size: 22rpx;
-		color: #FF9F29;
+		font-size: $uni-font-size-xs;
+		color: $uni-color-primary;
 		font-weight: 500;
 	}
 }
 
 .share-btn {
-	width: 64rpx;
-	height: 64rpx;
-	background-color: #F2F3F5;
-	border-radius: 50%;
+	width: 72rpx;
+	height: 72rpx;
+	background-color: $uni-bg-color-grey;
+	border-radius: $uni-radius-circle;
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	transition: transform 0.2s ease;
+
+	&:active {
+		transform: scale(0.95);
+	}
 }
 
 .tags-row {
 	display: flex;
 	flex-wrap: wrap;
-	gap: 16rpx;
-	margin-bottom: 24rpx;
+	gap: $uni-spacing-sm;
+	margin-bottom: $uni-spacing-md;
 }
 
 .tag {
-	font-size: 22rpx;
-	color: #4E5969;
-	background-color: #F7F8FA;
-	padding: 6rpx 16rpx;
-	border-radius: 8rpx;
+	font-size: $uni-font-size-xs;
+	color: $uni-text-color-secondary;
+	background-color: $uni-bg-color-grey;
+	padding: 8rpx 20rpx;
+	border-radius: $uni-radius-xs;
 }
 
 .divider {
 	height: 1rpx;
-	background-color: #F2F3F5;
-	margin-bottom: 24rpx;
+	background-color: $uni-border-color-light;
+	margin-bottom: $uni-spacing-md;
 }
 
 .price-row {
@@ -427,12 +442,25 @@ const handleBook = () => {
 .price-left {
 	display: flex;
 	align-items: baseline;
-	color: #FF4D4F;
+	color: $uni-color-error;
 }
 
-.currency { font-size: 28rpx; font-weight: bold; }
-.price { font-size: 56rpx; font-weight: 800; font-family: 'DIN Alternate', sans-serif; margin: 0 4rpx; }
-.unit { font-size: 24rpx; color: #86909C; }
+.currency {
+	font-size: $uni-font-size-base;
+	font-weight: bold;
+}
+
+.price {
+	font-size: 56rpx;
+	font-weight: 800;
+	font-family: 'DIN Alternate', sans-serif;
+	margin: 0 4rpx;
+}
+
+.unit {
+	font-size: $uni-font-size-sm;
+	color: $uni-text-color-placeholder;
+}
 
 .rating-right {
 	display: flex;
@@ -440,68 +468,101 @@ const handleBook = () => {
 	gap: 6rpx;
 }
 
-.rating-score { font-size: 32rpx; font-weight: bold; color: #1D2129; }
-.rating-count { font-size: 24rpx; color: #86909C; }
+.rating-score {
+	font-size: $uni-font-size-md;
+	font-weight: bold;
+	color: $uni-text-color;
+}
+
+.rating-count {
+	font-size: $uni-font-size-sm;
+	color: $uni-text-color-placeholder;
+}
 
 /* 规格 Grid */
 .specs-grid {
 	display: grid;
 	grid-template-columns: repeat(4, 1fr);
-	gap: 20rpx;
-	margin-bottom: 24rpx;
+	gap: $uni-spacing-md;
+	margin-bottom: $uni-spacing-md;
 }
 
 .spec-box {
-	background-color: #FFFFFF;
-	border-radius: 24rpx;
-	padding: 24rpx 0;
+	background-color: $uni-bg-color-card;
+	border-radius: $uni-radius-lg;
+	padding: $uni-spacing-md 0;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	box-shadow: 0 4rpx 16rpx rgba(0,0,0,0.03);
+	box-shadow: $uni-shadow-card;
+	transition: transform 0.2s ease;
+
+	&:active {
+		transform: scale(0.98);
+	}
 }
 
 .spec-icon {
 	width: 80rpx;
 	height: 80rpx;
-	border-radius: 50%;
+	border-radius: $uni-radius-circle;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	margin-bottom: 12rpx;
-	
-	&.bg-blue { background-color: rgba(33, 150, 243, 0.1); }
-	&.bg-green { background-color: rgba(76, 175, 80, 0.1); }
-	&.bg-orange { background-color: rgba(255, 152, 0, 0.1); }
-	&.bg-purple { background-color: rgba(156, 39, 176, 0.1); }
+	margin-bottom: $uni-spacing-sm;
+
+	&.bg-blue {
+		background-color: rgba(33, 150, 243, 0.1);
+	}
+
+	&.bg-green {
+		background-color: rgba(76, 175, 80, 0.1);
+	}
+
+	&.bg-orange {
+		background-color: rgba(255, 152, 0, 0.1);
+	}
+
+	&.bg-purple {
+		background-color: rgba(156, 39, 176, 0.1);
+	}
 }
 
-.spec-val { font-size: 26rpx; font-weight: bold; color: #1D2129; margin-bottom: 4rpx; }
-.spec-label { font-size: 22rpx; color: #86909C; }
+.spec-val {
+	font-size: $uni-font-size-sm;
+	font-weight: bold;
+	color: $uni-text-color;
+	margin-bottom: 4rpx;
+}
+
+.spec-label {
+	font-size: $uni-font-size-xs;
+	color: $uni-text-color-placeholder;
+}
 
 /* 通用 Section */
 .section-card {
-	background-color: #FFFFFF;
-	border-radius: 24rpx;
-	padding: 32rpx;
-	margin-bottom: 24rpx;
-	box-shadow: 0 4rpx 16rpx rgba(0,0,0,0.03);
+	background-color: $uni-bg-color-card;
+	border-radius: $uni-radius-lg;
+	padding: $uni-spacing-lg;
+	margin-bottom: $uni-spacing-md;
+	box-shadow: $uni-shadow-card;
 }
 
 .section-header {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	margin-bottom: 32rpx;
+	margin-bottom: $uni-spacing-lg;
 }
 
 .section-title {
-	font-size: 32rpx;
+	font-size: $uni-font-size-md;
 	font-weight: bold;
-	color: #1D2129;
+	color: $uni-text-color;
 	position: relative;
-	padding-left: 20rpx;
-	
+	padding-left: $uni-spacing-md;
+
 	&::before {
 		content: '';
 		position: absolute;
@@ -510,26 +571,29 @@ const handleBook = () => {
 		transform: translateY(-50%);
 		width: 8rpx;
 		height: 28rpx;
-		background-color: #FF9F29;
+		background-color: $uni-color-primary;
 		border-radius: 4rpx;
 	}
 }
 
-.more-link { font-size: 26rpx; color: #86909C; }
+.more-link {
+	font-size: $uni-font-size-sm;
+	color: $uni-text-color-placeholder;
+}
 
 /* 配置列表 */
 .features-grid {
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
-	gap: 24rpx;
+	gap: $uni-spacing-md;
 }
 
 .feature-item {
 	display: flex;
 	align-items: center;
-	gap: 12rpx;
-	font-size: 28rpx;
-	color: #4E5969;
+	gap: $uni-spacing-sm;
+	font-size: $uni-font-size-base;
+	color: $uni-text-color-secondary;
 }
 
 /* 评价 */
@@ -537,36 +601,48 @@ const handleBook = () => {
 	display: flex;
 	align-items: baseline;
 	gap: 4rpx;
-	
-	.score { font-size: 40rpx; font-weight: bold; color: #FFB400; font-family: 'DIN Alternate', sans-serif; }
-	.total { font-size: 24rpx; color: #86909C; }
+
+	.score {
+		font-size: $uni-font-size-xl;
+		font-weight: bold;
+		color: #FFB400;
+		font-family: 'DIN Alternate', sans-serif;
+	}
+
+	.total {
+		font-size: $uni-font-size-sm;
+		color: $uni-text-color-placeholder;
+	}
 }
 
 .reviews-list {
 	display: flex;
 	flex-direction: column;
-	gap: 32rpx;
+	gap: $uni-spacing-lg;
 }
 
 .review-item {
-	border-bottom: 1rpx solid #F5F5F5;
-	padding-bottom: 32rpx;
-	
-	&:last-child { border-bottom: none; padding-bottom: 0; }
+	border-bottom: 1rpx solid $uni-border-color-light;
+	padding-bottom: $uni-spacing-lg;
+
+	&:last-child {
+		border-bottom: none;
+		padding-bottom: 0;
+	}
 }
 
 .review-user {
 	display: flex;
 	align-items: center;
-	margin-bottom: 16rpx;
+	margin-bottom: $uni-spacing-sm;
 }
 
 .user-avatar {
-	width: 64rpx;
-	height: 64rpx;
-	border-radius: 50%;
-	margin-right: 16rpx;
-	background-color: #EEE;
+	width: 72rpx;
+	height: 72rpx;
+	border-radius: $uni-radius-circle;
+	margin-right: $uni-spacing-sm;
+	background-color: $uni-bg-color-grey;
 }
 
 .user-info {
@@ -575,31 +651,55 @@ const handleBook = () => {
 	flex-direction: column;
 }
 
-.user-name { font-size: 26rpx; color: #1D2129; font-weight: 500; }
-.review-date { font-size: 22rpx; color: #86909C; }
-.user-rating { display: flex; gap: 4rpx; }
+.user-name {
+	font-size: $uni-font-size-sm;
+	color: $uni-text-color;
+	font-weight: 500;
+}
+
+.review-date {
+	font-size: $uni-font-size-xs;
+	color: $uni-text-color-placeholder;
+}
+
+.user-rating {
+	display: flex;
+	gap: 4rpx;
+}
 
 .review-content {
-	font-size: 28rpx;
-	color: #4E5969;
+	font-size: $uni-font-size-base;
+	color: $uni-text-color-secondary;
 	line-height: 1.6;
 }
 
+.empty-reviews {
+	padding: $uni-spacing-xl 0;
+	text-align: center;
+	color: $uni-text-color-placeholder;
+	font-size: $uni-font-size-base;
+}
+
 .view-all-btn {
-	margin-top: 32rpx;
-	height: 80rpx;
-	background-color: #F7F8FA;
-	border-radius: 40rpx;
+	margin-top: $uni-spacing-lg;
+	height: 88rpx;
+	background-color: $uni-bg-color-grey;
+	border-radius: $uni-radius-btn;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	gap: 8rpx;
-	font-size: 26rpx;
-	color: #4E5969;
+	gap: $uni-spacing-xs;
+	font-size: $uni-font-size-sm;
+	color: $uni-text-color-secondary;
+	transition: background-color 0.2s ease;
+
+	&:active {
+		background-color: $uni-border-color;
+	}
 }
 
 .safe-area-placeholder {
-	height: 180rpx;
+	height: 200rpx;
 }
 
 /* 底部栏 */
@@ -608,19 +708,20 @@ const handleBook = () => {
 	bottom: 0;
 	left: 0;
 	width: 100%;
-	background-color: #FFFFFF;
-	padding: 20rpx 32rpx;
-	padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
-	box-shadow: 0 -4rpx 20rpx rgba(0,0,0,0.05);
+	background-color: $uni-bg-color-card;
+	padding: $uni-spacing-md $uni-spacing-lg;
+	padding-bottom: calc(#{$uni-spacing-md} + env(safe-area-inset-bottom));
+	box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.05);
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	z-index: 99;
+	box-sizing: border-box;
 }
 
 .bottom-left {
 	display: flex;
-	gap: 40rpx;
+	gap: $uni-spacing-xl;
 }
 
 .action-item {
@@ -628,25 +729,38 @@ const handleBook = () => {
 	flex-direction: column;
 	align-items: center;
 	gap: 4rpx;
-	font-size: 20rpx;
-	color: #4E5969;
+	font-size: $uni-font-size-xs;
+	color: $uni-text-color-secondary;
+	transition: opacity 0.2s ease;
+
+	&:active {
+		opacity: 0.7;
+	}
 }
 
 .book-btn {
 	margin: 0;
 	flex: 1;
-	margin-left: 48rpx;
-	height: 88rpx;
-	background: linear-gradient(135deg, #FF9F29 0%, #FFB84D 100%);
-	border-radius: 44rpx;
-	color: #FFFFFF;
-	font-size: 32rpx;
-	font-weight: bold;
+	margin-left: $uni-spacing-xl;
+	height: 96rpx;
+	background: $uni-color-primary-gradient;
+	border-radius: $uni-radius-btn;
+	color: $uni-text-color-inverse;
+	font-size: $uni-font-size-md;
+	font-weight: 600;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	box-shadow: 0 8rpx 24rpx rgba(255, 159, 41, 0.3);
-	
-	&::after { border: none; }
+	box-shadow: $uni-shadow-glow;
+	transition: transform 0.2s ease, opacity 0.2s ease;
+
+	&:active {
+		transform: scale(0.98);
+		opacity: 0.9;
+	}
+
+	&::after {
+		border: none;
+	}
 }
 </style>

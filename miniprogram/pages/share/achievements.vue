@@ -201,36 +201,37 @@ const formatTime = (time?: string) => {
 <style lang="scss" scoped>
 .share-achievements-page {
   min-height: 100vh;
-  background: #f5f5f5;
+  background: $uni-bg-color;
 }
 
 .page-content {
-  padding: 20rpx;
+  padding: $uni-spacing-xl;
 }
 
 .stats-card {
-  background: #fff;
-  border-radius: 16rpx;
-  padding: 30rpx;
-  margin-bottom: 20rpx;
+  background: $uni-bg-color-card;
+  border-radius: $uni-radius-lg;
+  padding: $uni-spacing-xl;
+  margin-bottom: $uni-spacing-xl;
+  box-shadow: $uni-shadow-card;
 
   .stats-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 30rpx;
+    margin-bottom: $uni-spacing-xl;
 
     .stats-title {
-      font-size: 32rpx;
+      font-size: $uni-font-size-lg;
       font-weight: bold;
-      color: #303133;
+      color: $uni-text-color;
     }
   }
 
   .stats-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 30rpx;
+    gap: $uni-spacing-xl;
 
     .stat-item {
       display: flex;
@@ -240,104 +241,108 @@ const formatTime = (time?: string) => {
       .stat-value {
         font-size: 40rpx;
         font-weight: bold;
-        color: #FF9F29;
-        margin-bottom: 8rpx;
+        color: $uni-color-primary;
+        margin-bottom: $uni-spacing-md;
       }
 
       .stat-label {
-        font-size: 24rpx;
-        color: #909399;
+        font-size: $uni-font-size-sm;
+        color: $uni-text-color-placeholder;
       }
     }
   }
 }
 
 .completion-card {
-  background: #fff;
-  border-radius: 16rpx;
-  padding: 30rpx;
-  margin-bottom: 20rpx;
+  background: $uni-bg-color-card;
+  border-radius: $uni-radius-lg;
+  padding: $uni-spacing-xl;
+  margin-bottom: $uni-spacing-xl;
+  box-shadow: $uni-shadow-card;
 
   .completion-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 20rpx;
+    margin-bottom: $uni-spacing-xl;
 
     .completion-title {
-      font-size: 28rpx;
+      font-size: $uni-font-size-base;
       font-weight: bold;
-      color: #303133;
+      color: $uni-text-color;
     }
 
     .completion-rate {
-      font-size: 32rpx;
+      font-size: $uni-font-size-lg;
       font-weight: bold;
-      color: #FF9F29;
+      color: $uni-color-primary;
     }
   }
 
   .completion-info {
-    margin-top: 16rpx;
-    font-size: 24rpx;
-    color: #909399;
+    margin-top: $uni-spacing-xl;
+    font-size: $uni-font-size-sm;
+    color: $uni-text-color-placeholder;
     text-align: center;
   }
 }
 
 .next-achievement-card {
-  background: linear-gradient(135deg, #FF9F29 0%, #FFB84D 100%);
-  border-radius: 16rpx;
-  padding: 30rpx;
-  margin-bottom: 20rpx;
+  background: $uni-color-primary-gradient;
+  border-radius: $uni-radius-lg;
+  padding: $uni-spacing-xl;
+  margin-bottom: $uni-spacing-xl;
+  box-shadow: $uni-shadow-glow;
 
   .next-achievement-header {
     display: flex;
     align-items: center;
-    margin-bottom: 20rpx;
+    margin-bottom: $uni-spacing-xl;
 
     .next-achievement-title {
-      margin-left: 8rpx;
-      font-size: 28rpx;
+      margin-left: $uni-spacing-md;
+      font-size: $uni-font-size-base;
       font-weight: bold;
-      color: #fff;
+      color: $uni-text-color-inverse;
     }
   }
 
   .achievement-item {
     background: rgba(255, 255, 255, 0.2);
-    border-radius: 12rpx;
-    padding: 20rpx;
+    border-radius: $uni-radius-lg;
+    padding: $uni-spacing-xl;
   }
 }
 
 .achievements-section {
   .achievement-group {
-    margin-bottom: 20rpx;
+    margin-bottom: $uni-spacing-xl;
 
     .group-header {
       display: flex;
       align-items: center;
-      padding: 20rpx 0;
+      padding: $uni-spacing-xl 0;
 
       .group-title {
-        font-size: 28rpx;
+        font-size: $uni-font-size-base;
         font-weight: bold;
-        color: #303133;
-        margin-right: 12rpx;
+        color: $uni-text-color;
+        margin-right: $uni-spacing-lg;
       }
     }
 
     .achievement-list {
-      background: #fff;
-      border-radius: 16rpx;
+      background: $uni-bg-color-card;
+      border-radius: $uni-radius-lg;
       overflow: hidden;
+      box-shadow: $uni-shadow-card;
 
       .achievement-item {
         display: flex;
         align-items: flex-start;
-        padding: 30rpx;
-        border-bottom: 1rpx solid #f5f5f5;
+        padding: $uni-spacing-xl;
+        border-bottom: 1rpx solid $uni-bg-color-grey;
+        transition: all 0.2s ease;
 
         &:last-child {
           border-bottom: none;
@@ -345,7 +350,7 @@ const formatTime = (time?: string) => {
 
         .achievement-icon {
           font-size: 60rpx;
-          margin-right: 20rpx;
+          margin-right: $uni-spacing-xl;
           flex-shrink: 0;
 
           &.grayscale {
@@ -358,33 +363,33 @@ const formatTime = (time?: string) => {
           flex: 1;
 
           .achievement-name {
-            font-size: 28rpx;
+            font-size: $uni-font-size-base;
             font-weight: bold;
-            color: #303133;
-            margin-bottom: 8rpx;
+            color: $uni-text-color;
+            margin-bottom: $uni-spacing-md;
             display: flex;
             align-items: center;
           }
 
           .achievement-desc {
-            font-size: 24rpx;
-            color: #909399;
-            margin-bottom: 12rpx;
+            font-size: $uni-font-size-sm;
+            color: $uni-text-color-placeholder;
+            margin-bottom: $uni-spacing-lg;
           }
 
           .achievement-time {
-            font-size: 22rpx;
-            color: #c0c4cc;
+            font-size: $uni-font-size-xs;
+            color: $uni-text-color-placeholder;
           }
 
           .achievement-progress {
             display: flex;
             align-items: center;
-            gap: 16rpx;
+            gap: $uni-spacing-xl;
 
             .progress-text {
-              font-size: 24rpx;
-              color: #606266;
+              font-size: $uni-font-size-sm;
+              color: $uni-text-color-secondary;
               white-space: nowrap;
             }
           }
@@ -412,9 +417,9 @@ const formatTime = (time?: string) => {
   z-index: 9999;
 
   .loading-text {
-    margin-top: 20rpx;
-    font-size: 28rpx;
-    color: #909399;
+    margin-top: $uni-spacing-xl;
+    font-size: $uni-font-size-base;
+    color: $uni-text-color-placeholder;
   }
 }
 </style>

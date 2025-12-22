@@ -1047,23 +1047,24 @@ const submitBooking = async () => {
 <style scoped lang="scss">
 .tour-booking {
   min-height: 100vh;
-  background-color: #F8F8F8;
+  background-color: $uni-bg-color;
   padding-bottom: 140rpx;
 }
 
 // 线路信息卡片
 .tour-card {
-  background-color: #FFFFFF;
-  padding: 32rpx;
-  margin-bottom: 16rpx;
+  background-color: $uni-bg-color-card;
+  padding: $uni-spacing-xl;
+  margin-bottom: $uni-spacing-lg;
+  box-shadow: $uni-shadow-card;
 
   .tour-header {
-    margin-bottom: 16rpx;
+    margin-bottom: $uni-spacing-lg;
 
     .tour-title {
-      font-size: 32rpx;
+      font-size: $uni-font-size-lg;
       font-weight: 600;
-      color: #333;
+      color: $uni-text-color;
       line-height: 1.4;
     }
   }
@@ -1071,16 +1072,16 @@ const submitBooking = async () => {
   .tour-meta {
     display: flex;
     flex-wrap: wrap;
-    gap: 24rpx;
+    gap: $uni-spacing-xl;
 
     .meta-item {
       display: flex;
       align-items: center;
-      gap: 8rpx;
+      gap: $uni-spacing-sm;
 
       .meta-text {
-        font-size: 24rpx;
-        color: #666;
+        font-size: $uni-font-size-xs;
+        color: $uni-text-color-secondary;
       }
     }
   }
@@ -1088,25 +1089,26 @@ const submitBooking = async () => {
 
 // 表单区域
 .form-section {
-  background-color: #FFFFFF;
-  padding: 32rpx;
-  margin-bottom: 16rpx;
+  background-color: $uni-bg-color-card;
+  padding: $uni-spacing-xl;
+  margin-bottom: $uni-spacing-lg;
+  box-shadow: $uni-shadow-card;
 
   .section-title {
     display: flex;
     align-items: baseline;
-    margin-bottom: 24rpx;
+    margin-bottom: $uni-spacing-xl;
 
     .title-text {
-      font-size: 32rpx;
+      font-size: $uni-font-size-lg;
       font-weight: 600;
-      color: #333;
+      color: $uni-text-color;
     }
 
     .title-tip {
-      font-size: 24rpx;
-      color: #999;
-      margin-left: 12rpx;
+      font-size: $uni-font-size-xs;
+      color: $uni-text-color-placeholder;
+      margin-left: $uni-spacing-md;
     }
   }
 
@@ -1114,11 +1116,16 @@ const submitBooking = async () => {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 24rpx 0;
-    border-bottom: 2rpx solid #F0F0F0;
+    padding: $uni-spacing-xl 0;
+    border-bottom: 2rpx solid $uni-border-color-light;
+    transition: all 0.2s ease;
 
     &:last-child {
       border-bottom: none;
+    }
+
+    &:active {
+      background-color: $uni-bg-color-grey;
     }
 
     &.textarea-item {
@@ -1132,65 +1139,65 @@ const submitBooking = async () => {
       gap: 4rpx;
 
       .label-text {
-        font-size: 28rpx;
-        color: #333;
+        font-size: $uni-font-size-base;
+        color: $uni-text-color;
       }
 
       .label-tip {
-        font-size: 22rpx;
-        color: #999;
+        font-size: $uni-font-size-xs;
+        color: $uni-text-color-placeholder;
       }
 
       .required {
-        color: #F44336;
-        font-size: 28rpx;
+        color: $uni-color-error;
+        font-size: $uni-font-size-base;
       }
     }
 
     .item-value {
       display: flex;
       align-items: center;
-      gap: 16rpx;
+      gap: $uni-spacing-lg;
 
       &.full-width {
         width: 100%;
-        margin-top: 16rpx;
+        margin-top: $uni-spacing-lg;
         flex-direction: column;
         align-items: flex-end;
       }
 
       .input-field {
         flex: 1;
-        font-size: 28rpx;
-        color: #333;
+        font-size: $uni-font-size-base;
+        color: $uni-text-color;
         text-align: right;
         min-width: 200rpx;
       }
 
       .input-placeholder {
-        color: #999;
+        color: $uni-text-color-placeholder;
       }
 
       .textarea-field {
         width: 100%;
         min-height: 160rpx;
-        font-size: 28rpx;
-        color: #333;
-        padding: 16rpx;
-        background-color: #F8F8F8;
-        border-radius: 8rpx;
+        font-size: $uni-font-size-base;
+        color: $uni-text-color;
+        padding: $uni-spacing-lg;
+        background-color: $uni-bg-color-grey;
+        border-radius: $uni-radius-md;
       }
 
       .char-count {
-        font-size: 24rpx;
-        color: #999;
-        margin-top: 8rpx;
+        font-size: $uni-font-size-xs;
+        color: $uni-text-color-placeholder;
+        margin-top: $uni-spacing-sm;
       }
 
       .stepper {
         display: flex;
         align-items: center;
-        gap: 24rpx;
+        gap: $uni-spacing-xl;
 
         .stepper-btn {
           width: 56rpx;
@@ -1198,13 +1205,19 @@ const submitBooking = async () => {
           display: flex;
           align-items: center;
           justify-content: center;
-          background-color: #F8F8F8;
-          border-radius: 8rpx;
+          background-color: $uni-bg-color-grey;
+          border-radius: $uni-radius-md;
           border: none;
           padding: 0;
+          transition: all 0.2s ease;
 
           &::after {
             border: none;
+          }
+
+          &:active:not(:disabled) {
+            background-color: $uni-border-color;
+            transform: scale(0.95);
           }
 
           &:disabled {
@@ -1213,8 +1226,8 @@ const submitBooking = async () => {
         }
 
         .stepper-value {
-          font-size: 28rpx;
-          color: #333;
+          font-size: $uni-font-size-base;
+          color: $uni-text-color;
           font-weight: 500;
           min-width: 80rpx;
           text-align: center;
@@ -1222,21 +1235,21 @@ const submitBooking = async () => {
       }
 
       .price-text {
-        font-size: 24rpx;
-        color: #FF9F29;
+        font-size: $uni-font-size-xs;
+        color: $uni-color-primary;
       }
     }
   }
 
   .people-tip {
-    padding: 16rpx;
-    background-color: rgba(255, 159, 41, 0.1);
-    border-radius: 8rpx;
-    margin-top: 16rpx;
+    padding: $uni-spacing-lg;
+    background-color: rgba($uni-color-primary, 0.1);
+    border-radius: $uni-radius-md;
+    margin-top: $uni-spacing-lg;
 
     .tip-text {
-      font-size: 24rpx;
-      color: #FF9F29;
+      font-size: $uni-font-size-xs;
+      color: $uni-color-primary;
     }
   }
 }
@@ -1245,17 +1258,22 @@ const submitBooking = async () => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: 16rpx;
-  border-bottom: 2rpx solid #F0F0F0;
+  padding-bottom: $uni-spacing-lg;
+  border-bottom: 2rpx solid $uni-border-color-light;
+  transition: all 0.2s ease;
+
+  &:active {
+    opacity: 0.7;
+  }
 
   .selector-left {
     display: flex;
     align-items: center;
-    gap: 12rpx;
+    gap: $uni-spacing-md;
 
     .selector-label {
-      font-size: 28rpx;
-      color: #333;
+      font-size: $uni-font-size-base;
+      color: $uni-text-color;
       font-weight: 500;
     }
   }
@@ -1263,9 +1281,9 @@ const submitBooking = async () => {
   .selector-action {
     display: flex;
     align-items: center;
-    gap: 8rpx;
-    font-size: 26rpx;
-    color: #666;
+    gap: $uni-spacing-sm;
+    font-size: $uni-font-size-sm;
+    color: $uni-text-color-secondary;
   }
 }
 
@@ -1273,35 +1291,36 @@ const submitBooking = async () => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 16rpx 0 8rpx;
-  font-size: 24rpx;
-  color: #999;
+  margin: $uni-spacing-lg 0 $uni-spacing-sm;
+  font-size: $uni-font-size-xs;
+  color: $uni-text-color-placeholder;
 
   .helper-link {
-    color: #FF9F29;
+    color: $uni-color-primary;
   }
 }
 
 .selection-section {
-  background-color: #FFFFFF;
-  padding: 32rpx;
-  margin-bottom: 16rpx;
+  background-color: $uni-bg-color-card;
+  padding: $uni-spacing-xl;
+  margin-bottom: $uni-spacing-lg;
+  box-shadow: $uni-shadow-card;
 
   .selection-title {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
-    margin-bottom: 24rpx;
+    margin-bottom: $uni-spacing-xl;
 
     .title-text {
-      font-size: 32rpx;
+      font-size: $uni-font-size-lg;
       font-weight: 600;
-      color: #333;
+      color: $uni-text-color;
     }
 
     .title-tip {
-      font-size: 24rpx;
-      color: #999;
+      font-size: $uni-font-size-xs;
+      color: $uni-text-color-placeholder;
     }
   }
 }
@@ -1310,20 +1329,24 @@ const submitBooking = async () => {
 .service-list {
   display: flex;
   flex-direction: column;
-  gap: 16rpx;
+  gap: $uni-spacing-lg;
 }
 
 .option-card,
 .service-card {
-  border: 2rpx solid #F0F0F0;
-  border-radius: 16rpx;
-  padding: 24rpx;
-  background-color: #FFF;
-  transition: all 0.2s;
+  border: 2rpx solid $uni-border-color-light;
+  border-radius: $uni-radius-lg;
+  padding: $uni-spacing-xl;
+  background-color: $uni-bg-color-card;
+  transition: all 0.2s ease;
+
+  &:active {
+    transform: scale(0.99);
+  }
 
   &.active {
-    border-color: #FF9F29;
-    background-color: rgba(255, 159, 41, 0.08);
+    border-color: $uni-color-primary;
+    background-color: rgba($uni-color-primary, 0.08);
   }
 }
 
@@ -1332,52 +1355,53 @@ const submitBooking = async () => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 12rpx;
+  margin-bottom: $uni-spacing-md;
 
   .option-name,
   .service-name {
-    font-size: 28rpx;
-    color: #333;
+    font-size: $uni-font-size-base;
+    color: $uni-text-color;
     font-weight: 600;
   }
 
   .option-price,
   .service-price {
-    font-size: 26rpx;
-    color: #FF9F29;
+    font-size: $uni-font-size-sm;
+    color: $uni-color-primary;
   }
 }
 
 .option-desc,
 .service-desc {
-  font-size: 24rpx;
-  color: #666;
+  font-size: $uni-font-size-xs;
+  color: $uni-text-color-secondary;
   line-height: 1.5;
 }
 
 // 预订须知
 .notice-section {
-  background-color: #FFFFFF;
-  padding: 32rpx;
-  margin-bottom: 16rpx;
+  background-color: $uni-bg-color-card;
+  padding: $uni-spacing-xl;
+  margin-bottom: $uni-spacing-lg;
+  box-shadow: $uni-shadow-card;
 
   .section-title {
-    margin-bottom: 24rpx;
+    margin-bottom: $uni-spacing-xl;
 
     .title-text {
-      font-size: 32rpx;
+      font-size: $uni-font-size-lg;
       font-weight: 600;
-      color: #333;
+      color: $uni-text-color;
     }
   }
 
   .notice-list {
-    margin-bottom: 24rpx;
+    margin-bottom: $uni-spacing-xl;
 
     .notice-item {
       display: flex;
-      gap: 12rpx;
-      margin-bottom: 16rpx;
+      gap: $uni-spacing-md;
+      margin-bottom: $uni-spacing-lg;
       line-height: 1.6;
 
       &:last-child {
@@ -1385,36 +1409,36 @@ const submitBooking = async () => {
       }
 
       .notice-dot {
-        font-size: 26rpx;
-        color: #FF9F29;
+        font-size: $uni-font-size-sm;
+        color: $uni-color-primary;
         flex-shrink: 0;
       }
 
       .notice-text {
         flex: 1;
-        font-size: 26rpx;
-        color: #666;
+        font-size: $uni-font-size-sm;
+        color: $uni-text-color-secondary;
       }
     }
   }
 
   .agreement-box {
-    padding-top: 24rpx;
-    border-top: 2rpx solid #F0F0F0;
+    padding-top: $uni-spacing-xl;
+    border-top: 2rpx solid $uni-border-color-light;
 
     .agreement-label {
       display: flex;
       align-items: center;
-      gap: 12rpx;
+      gap: $uni-spacing-md;
 
       .agreement-text {
-        font-size: 26rpx;
-        color: #666;
+        font-size: $uni-font-size-sm;
+        color: $uni-text-color-secondary;
       }
 
       .agreement-link {
-        font-size: 26rpx;
-        color: #FF9F29;
+        font-size: $uni-font-size-sm;
+        color: $uni-color-primary;
       }
     }
   }
@@ -1422,17 +1446,18 @@ const submitBooking = async () => {
 
 // 价格明细
 .price-section {
-  background-color: #FFFFFF;
-  padding: 32rpx;
-  margin-bottom: 16rpx;
+  background-color: $uni-bg-color-card;
+  padding: $uni-spacing-xl;
+  margin-bottom: $uni-spacing-lg;
+  box-shadow: $uni-shadow-card;
 
   .section-title {
-    margin-bottom: 24rpx;
+    margin-bottom: $uni-spacing-xl;
 
     .title-text {
-      font-size: 32rpx;
+      font-size: $uni-font-size-lg;
       font-weight: 600;
-      color: #333;
+      color: $uni-text-color;
     }
   }
 
@@ -1441,20 +1466,20 @@ const submitBooking = async () => {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 20rpx 0;
-      border-bottom: 2rpx solid #F0F0F0;
+      padding: $uni-spacing-lg 0;
+      border-bottom: 2rpx solid $uni-border-color-light;
 
       &:last-child {
         border-bottom: none;
       }
 
       &.total {
-        padding-top: 24rpx;
-        margin-top: 8rpx;
-        border-top: 2rpx solid #E0E0E0;
+        padding-top: $uni-spacing-xl;
+        margin-top: $uni-spacing-sm;
+        border-top: 2rpx solid $uni-border-color;
 
         .price-label {
-          font-size: 30rpx;
+          font-size: $uni-font-size-lg;
           font-weight: 600;
         }
 
@@ -1464,25 +1489,25 @@ const submitBooking = async () => {
       }
 
       .price-label {
-        font-size: 28rpx;
-        color: #333;
+        font-size: $uni-font-size-base;
+        color: $uni-text-color;
         min-width: 120rpx;
       }
 
       .price-value {
         flex: 1;
-        font-size: 24rpx;
-        color: #999;
+        font-size: $uni-font-size-xs;
+        color: $uni-text-color-placeholder;
         text-align: center;
       }
 
       .price-amount {
-        font-size: 28rpx;
-        color: #333;
+        font-size: $uni-font-size-base;
+        color: $uni-text-color;
         font-weight: 500;
 
         &.highlight {
-          color: #F44336;
+          color: $uni-color-error;
           font-weight: 700;
         }
       }
@@ -1490,7 +1515,7 @@ const submitBooking = async () => {
       &.discount {
         .price-label,
         .price-amount {
-          color: #52C41A;
+          color: $uni-color-success;
           font-weight: 600;
         }
       }
@@ -1500,12 +1525,18 @@ const submitBooking = async () => {
 
 // 优惠券区域
 .coupon-section {
-  background-color: #FFFFFF;
-  padding: 32rpx;
-  margin-bottom: 16rpx;
+  background-color: $uni-bg-color-card;
+  padding: $uni-spacing-xl;
+  margin-bottom: $uni-spacing-lg;
   display: flex;
   flex-direction: column;
-  gap: 16rpx;
+  gap: $uni-spacing-lg;
+  box-shadow: $uni-shadow-card;
+  transition: all 0.2s ease;
+
+  &:active {
+    background-color: $uni-bg-color-grey;
+  }
 
   .coupon-row {
     display: flex;
@@ -1515,11 +1546,11 @@ const submitBooking = async () => {
     .coupon-value {
       display: flex;
       align-items: center;
-      gap: 8rpx;
+      gap: $uni-spacing-sm;
 
       .coupon-text {
-        font-size: 26rpx;
-        color: #333;
+        font-size: $uni-font-size-sm;
+        color: $uni-text-color;
       }
     }
   }
@@ -1527,17 +1558,17 @@ const submitBooking = async () => {
   .coupon-tip {
     display: flex;
     flex-direction: column;
-    gap: 6rpx;
+    gap: $uni-spacing-xs;
 
     .savings-text {
-      font-size: 26rpx;
-      color: #52C41A;
+      font-size: $uni-font-size-sm;
+      color: $uni-color-success;
       font-weight: 500;
     }
 
     .coupon-desc {
-      font-size: 24rpx;
-      color: #999;
+      font-size: $uni-font-size-xs;
+      color: $uni-text-color-placeholder;
     }
   }
 }
@@ -1548,10 +1579,10 @@ const submitBooking = async () => {
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: #FFFFFF;
-  padding: 16rpx 32rpx;
-  padding-bottom: calc(16rpx + env(safe-area-inset-bottom));
-  box-shadow: 0 -4rpx 12rpx rgba(0, 0, 0, 0.08);
+  background-color: $uni-bg-color-card;
+  padding: $uni-spacing-lg $uni-spacing-xl;
+  padding-bottom: calc(#{$uni-spacing-lg} + env(safe-area-inset-bottom));
+  box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.05);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1560,11 +1591,11 @@ const submitBooking = async () => {
   .bar-left {
     display: flex;
     align-items: baseline;
-    gap: 8rpx;
+    gap: $uni-spacing-sm;
 
     .bar-label {
-      font-size: 26rpx;
-      color: #666;
+      font-size: $uni-font-size-sm;
+      color: $uni-text-color-secondary;
     }
 
     .bar-price {
@@ -1572,36 +1603,45 @@ const submitBooking = async () => {
       align-items: baseline;
 
       .bar-symbol {
-        font-size: 24rpx;
-        color: #F44336;
+        font-size: $uni-font-size-xs;
+        color: $uni-color-error;
         font-weight: 600;
       }
 
       .bar-amount {
-        font-size: 40rpx;
-        color: #F44336;
+        font-size: 44rpx;
+        color: $uni-color-error;
         font-weight: 700;
         margin-left: 4rpx;
+        font-family: 'DIN Alternate', sans-serif;
       }
     }
   }
 
   .submit-btn {
-    padding: 20rpx 64rpx;
-    background: linear-gradient(135deg, #FF9F29 0%, #FFB84D 100%);
-    color: #FFFFFF;
-    border-radius: 44rpx;
-    font-size: 28rpx;
+    padding: $uni-spacing-lg $uni-spacing-xl;
+    background: $uni-color-primary-gradient;
+    color: $uni-text-color-inverse;
+    border-radius: $uni-radius-btn;
+    font-size: $uni-font-size-base;
     font-weight: 600;
     border: none;
+    box-shadow: $uni-shadow-glow;
+    transition: all 0.2s ease;
 
     &::after {
       border: none;
     }
 
+    &:active:not(.disabled) {
+      transform: scale(0.98);
+      opacity: 0.9;
+    }
+
     &.disabled {
-      background: #E0E0E0;
-      color: #999;
+      background: $uni-bg-color-grey;
+      color: $uni-text-color-placeholder;
+      box-shadow: none;
     }
   }
 }

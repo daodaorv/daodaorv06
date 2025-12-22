@@ -381,101 +381,109 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .old-car-hosting {
   min-height: 100vh;
-  background: #F5F5F5;
+  background: $uni-bg-color;
   padding-bottom: 200rpx;
 }
 
 .info-banner {
-  background: linear-gradient(135deg, #FF9F29 0%, #FF7A00 100%);
-  padding: 48rpx 32rpx;
+  background: $uni-color-primary-gradient;
+  padding: 48rpx $uni-spacing-xl;
   text-align: center;
-  color: #FFFFFF;
+  color: $uni-text-color-inverse;
 }
 
 .banner-title {
   display: block;
   font-size: 36rpx;
   font-weight: 600;
-  margin-bottom: 16rpx;
+  margin-bottom: $uni-spacing-lg;
 }
 
 .banner-desc {
   display: block;
-  font-size: 24rpx;
+  font-size: $uni-font-size-xs;
   opacity: 0.9;
 }
 
 .process-section,
 .form-section,
 .income-section {
-  margin: 24rpx 32rpx;
-  background: #FFFFFF;
-  border-radius: 16rpx;
-  padding: 32rpx;
+  margin: $uni-spacing-xl $uni-spacing-xl;
+  background: $uni-bg-color-card;
+  border-radius: $uni-radius-lg;
+  padding: $uni-spacing-xl;
+  box-shadow: $uni-shadow-card;
 }
 
 .section-title {
-  font-size: 32rpx;
+  font-size: $uni-font-size-lg;
   font-weight: 600;
-  color: #333333;
-  margin-bottom: 24rpx;
+  color: $uni-text-color;
+  margin-bottom: $uni-spacing-xl;
 }
 
 .process-steps {
   display: flex;
   flex-direction: column;
-  gap: 24rpx;
+  gap: $uni-spacing-xl;
 }
 
 .step-item {
   display: flex;
   align-items: center;
+  transition: all 0.2s ease;
 }
 
 .step-number {
   width: 48rpx;
   height: 48rpx;
-  background: #FF9F29;
-  color: #FFFFFF;
-  border-radius: 50%;
+  background: $uni-color-primary;
+  color: $uni-text-color-inverse;
+  border-radius: $uni-radius-circle;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 24rpx;
+  font-size: $uni-font-size-xs;
   font-weight: 600;
-  margin-right: 16rpx;
+  margin-right: $uni-spacing-lg;
   flex-shrink: 0;
 }
 
 .step-text {
-  font-size: 28rpx;
-  color: #666666;
+  font-size: $uni-font-size-base;
+  color: $uni-text-color-secondary;
 }
 
 .form-item {
-  margin-bottom: 32rpx;
+  margin-bottom: $uni-spacing-xl;
 }
 
 .form-label {
   display: block;
-  font-size: 28rpx;
-  color: #333333;
-  margin-bottom: 16rpx;
+  font-size: $uni-font-size-base;
+  color: $uni-text-color;
+  margin-bottom: $uni-spacing-lg;
 }
 
 .required {
-  color: #FF4444;
+  color: $uni-color-error;
 }
 
 .upload-area {
   width: 100%;
   height: 300rpx;
-  border: 2rpx dashed #DDDDDD;
-  border-radius: 12rpx;
+  border: 2rpx dashed $uni-border-color;
+  border-radius: $uni-radius-md;
   overflow: hidden;
+  transition: all 0.2s ease;
+
+  &:active {
+    border-color: $uni-color-primary;
+    background: rgba($uni-color-primary, 0.05);
+  }
 }
 
 .uploaded-img {
@@ -493,18 +501,18 @@ export default {
 
 .upload-icon {
   font-size: 80rpx;
-  margin-bottom: 16rpx;
+  margin-bottom: $uni-spacing-lg;
 }
 
 .upload-text {
-  font-size: 24rpx;
-  color: #999999;
+  font-size: $uni-font-size-xs;
+  color: $uni-text-color-placeholder;
 }
 
 .photo-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 16rpx;
+  gap: $uni-spacing-lg;
 }
 
 .photo-item {
@@ -516,33 +524,44 @@ export default {
   position: absolute;
   width: 100%;
   height: 100%;
-  border-radius: 8rpx;
+  border-radius: $uni-radius-sm;
 }
 
 .photo-delete {
   position: absolute;
-  top: 8rpx;
-  right: 8rpx;
+  top: $uni-spacing-sm;
+  right: $uni-spacing-sm;
   width: 40rpx;
   height: 40rpx;
   background: rgba(0, 0, 0, 0.6);
-  color: #FFFFFF;
-  border-radius: 50%;
+  color: $uni-text-color-inverse;
+  border-radius: $uni-radius-circle;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 32rpx;
+  font-size: $uni-font-size-lg;
+  transition: all 0.2s ease;
+
+  &:active {
+    transform: scale(0.9);
+  }
 }
 
 .photo-add {
   padding-bottom: 100%;
-  border: 2rpx dashed #DDDDDD;
-  border-radius: 8rpx;
+  border: 2rpx dashed $uni-border-color;
+  border-radius: $uni-radius-sm;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   position: relative;
+  transition: all 0.2s ease;
+
+  &:active {
+    border-color: $uni-color-primary;
+    background: rgba($uni-color-primary, 0.05);
+  }
 }
 
 .add-icon {
@@ -551,7 +570,7 @@ export default {
   left: 50%;
   transform: translate(-50%, -70%);
   font-size: 48rpx;
-  color: #CCCCCC;
+  color: $uni-border-color;
 }
 
 .add-text {
@@ -560,23 +579,26 @@ export default {
   left: 50%;
   transform: translate(-50%, 50%);
   font-size: 20rpx;
-  color: #999999;
+  color: $uni-text-color-placeholder;
 }
 
 .form-tip {
   display: block;
-  font-size: 24rpx;
-  color: #999999;
-  margin-top: 16rpx;
+  font-size: $uni-font-size-xs;
+  color: $uni-text-color-placeholder;
+  margin-top: $uni-spacing-lg;
+  line-height: 1.5;
 }
 
 .form-input {
   width: 100%;
   height: 88rpx;
-  background: #F5F5F5;
-  border-radius: 12rpx;
-  padding: 0 24rpx;
-  font-size: 28rpx;
+  background: $uni-bg-color-grey;
+  border-radius: $uni-radius-md;
+  padding: 0 $uni-spacing-xl;
+  font-size: $uni-font-size-base;
+  color: $uni-text-color;
+  box-sizing: border-box;
 }
 
 .picker-input {
@@ -584,46 +606,55 @@ export default {
   justify-content: space-between;
   align-items: center;
   height: 88rpx;
-  background: #F5F5F5;
-  border-radius: 12rpx;
-  padding: 0 24rpx;
-  font-size: 28rpx;
+  background: $uni-bg-color-grey;
+  border-radius: $uni-radius-md;
+  padding: 0 $uni-spacing-xl;
+  font-size: $uni-font-size-base;
+  color: $uni-text-color;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+
+  &:active {
+    background: $uni-border-color-light;
+  }
+
+  &.disabled {
+    opacity: 0.5;
+  }
 }
 
 .placeholder {
-  color: #CCCCCC;
+  color: $uni-border-color;
 }
 
 .picker-arrow {
-  font-size: 32rpx;
-  color: #CCCCCC;
-}
-
-.picker-input.disabled {
-  opacity: 0.5;
+  font-size: $uni-font-size-lg;
+  color: $uni-border-color;
 }
 
 .income-card {
   display: flex;
   justify-content: space-around;
-  padding: 32rpx 0;
+  padding: $uni-spacing-xl 0;
 }
 
 .income-item {
+  flex: 1;
   text-align: center;
+  padding: 0 4rpx;
 }
 
 .income-label {
   display: block;
-  font-size: 24rpx;
-  color: #999999;
-  margin-bottom: 16rpx;
+  font-size: $uni-font-size-xs;
+  color: $uni-text-color-placeholder;
+  margin-bottom: $uni-spacing-lg;
 }
 
 .income-value {
   display: block;
-  font-size: 32rpx;
-  color: #FF9F29;
+  font-size: $uni-font-size-lg;
+  color: $uni-color-primary;
   font-weight: 600;
 }
 
@@ -632,31 +663,38 @@ export default {
   bottom: 0;
   left: 0;
   right: 0;
-  background: #FFFFFF;
-  padding: 24rpx 32rpx;
-  padding-bottom: calc(24rpx + env(safe-area-inset-bottom));
+  background: $uni-bg-color-card;
+  padding: $uni-spacing-xl $uni-spacing-xl;
+  padding-bottom: calc(#{$uni-spacing-xl} + env(safe-area-inset-bottom));
   box-shadow: 0 -4rpx 16rpx rgba(0, 0, 0, 0.05);
 }
 
 .submit-btn {
   width: 100%;
   height: 88rpx;
-  background: #FF9F29;
-  color: #FFFFFF;
-  border-radius: 48rpx;
-  font-size: 32rpx;
+  background: $uni-color-primary;
+  color: $uni-text-color-inverse;
+  border-radius: $uni-radius-btn;
+  font-size: $uni-font-size-lg;
   font-weight: 600;
   border: none;
-  margin-bottom: 16rpx;
+  margin-bottom: $uni-spacing-lg;
+  box-shadow: $uni-shadow-glow;
+  transition: all 0.2s ease;
+
+  &:active {
+    transform: scale(0.98);
+    opacity: 0.9;
+  }
 }
 
 .agreement {
   text-align: center;
-  font-size: 24rpx;
-  color: #999999;
+  font-size: $uni-font-size-xs;
+  color: $uni-text-color-placeholder;
 }
 
 .link {
-  color: #FF9F29;
+  color: $uni-color-primary;
 }
 </style>

@@ -83,24 +83,32 @@ export function request<T = unknown>(options: RequestOptions): Promise<ResponseD
 				...header
 			},
 			success: (res: UniRequestResponse) => {
-				const response = res.data as ResponseData<T>;
+				// 验证响应数据结构
+				const rawData = res.data
+				if (!rawData || typeof rawData !== 'object') {
+					logger.error('响应数据格式错误', { statusCode: res.statusCode, data: rawData })
+					reject(new Error('响应数据格式错误'))
+					return
+				}
+
+				const response = rawData as ResponseData<T>
 
 				// 记录响应日志
-				logger.logResponse(method, url, res.statusCode, response);
+				logger.logResponse(method, url, res.statusCode, response)
 
 				if (response.code === 0) {
-					resolve(response);
+					resolve(response)
 				} else {
 					// 业务错误处理
-					handleBusinessError(response);
-					reject(response);
+					handleBusinessError(response)
+					reject(response)
 				}
 			},
 			fail: (error: unknown) => {
 				// 网络错误处理
-				logger.error('网络请求失败', error);
-				handleNetworkError(error);
-				reject(error);
+				logger.error('网络请求失败', error)
+				handleNetworkError(error)
+				reject(error instanceof Error ? error : new Error('网络请求失败'))
 			}
 		});
 	});

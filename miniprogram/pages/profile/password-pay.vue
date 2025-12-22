@@ -74,38 +74,46 @@ const handleSubmit = () => {
 <style scoped lang="scss">
 .password-page {
   min-height: 100vh;
-  background-color: #F8F8F8;
-  padding: 24rpx;
+  background-color: $uni-bg-color;
+  padding: $uni-spacing-xl;
 }
 
 .tips {
-  background-color: #E8F5E9;
-  color: #2E7D32;
-  padding: 20rpx 24rpx;
-  border-radius: 12rpx;
-  font-size: 26rpx;
+  background-color: rgba($uni-color-success, 0.1);
+  color: $uni-color-success;
+  padding: $uni-spacing-lg $uni-spacing-xl;
+  border-radius: $uni-radius-md;
+  font-size: $uni-font-size-sm;
   line-height: 1.6;
 }
 
 .form-box {
-  margin-top: 24rpx;
-  background-color: #FFFFFF;
-  border-radius: 16rpx;
-  padding: 24rpx;
+  margin-top: $uni-spacing-xl;
+  background-color: $uni-bg-color-card;
+  border-radius: $uni-radius-lg;
+  padding: $uni-spacing-xl;
+  box-shadow: $uni-shadow-card;
 }
 
 .btn-box {
-  margin: 60rpx 24rpx;
+  margin: 60rpx $uni-spacing-xl;
 }
 
 .submit-btn {
-  background: linear-gradient(135deg, #FF9F29 0%, #FFB84D 100%);
-  color: #FFFFFF;
-  font-size: 32rpx;
-  border-radius: 44rpx;
+  background: $uni-color-primary-gradient;
+  color: $uni-text-color-inverse;
+  font-size: $uni-font-size-lg;
+  border-radius: $uni-radius-btn;
   height: 88rpx;
   line-height: 88rpx;
-  
+  box-shadow: $uni-shadow-glow;
+  transition: all 0.2s ease;
+
+  &:active {
+    transform: scale(0.98);
+    opacity: 0.9;
+  }
+
   &::after {
     border: none;
   }

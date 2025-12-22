@@ -33,6 +33,7 @@ $uni-spacing-sm: 16rpx;
 $uni-spacing-md: 24rpx;
 $uni-spacing-lg: 32rpx;
 $uni-spacing-xl: 48rpx;
+$uni-spacing-xxl: 64rpx;
 
 /* 圆角 */
 $uni-radius-xs: 8rpx; // 小卡片、标签等专用微圆角
@@ -50,6 +51,11 @@ $uni-font-size-md: 32rpx;
 $uni-font-size-lg: 36rpx;
 $uni-font-size-xl: 40rpx;
 $uni-font-size-xxl: 48rpx;
+
+/* 行高 */
+$uni-line-height-tight: 1.2;
+$uni-line-height-base: 1.5;
+$uni-line-height-relaxed: 1.8;
 
 /* 阴影 (Diffuse Shadows) */
 $uni-shadow-sm: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);

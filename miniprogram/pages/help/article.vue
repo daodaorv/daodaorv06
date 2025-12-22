@@ -214,47 +214,47 @@ onMounted(() => {
 <style lang="scss" scoped>
 .article-page {
 	min-height: 100vh;
-	background: #F5F5F5;
-	padding-bottom: 32rpx;
+	background: $uni-bg-color;
+	padding-bottom: $uni-spacing-xl;
 }
 
 // 文章头部
 .article-header {
-	background: #FFFFFF;
-	padding: 32rpx;
-	margin-bottom: 16rpx;
+	background: $uni-bg-color-card;
+	padding: $uni-spacing-xl;
+	margin-bottom: $uni-spacing-xl;
 
 	.category-tag {
 		display: inline-block;
-		padding: 4rpx 16rpx;
-		background: #E8F5E9;
-		color: #4CAF50;
-		font-size: 20rpx;
-		border-radius: 8rpx;
-		margin-bottom: 16rpx;
+		padding: 4rpx $uni-spacing-xl;
+		background: rgba($uni-color-success, 0.12);
+		color: $uni-color-success;
+		font-size: $uni-font-size-xs;
+		border-radius: $uni-radius-sm;
+		margin-bottom: $uni-spacing-xl;
 	}
 
 	.article-title {
 		display: block;
 		font-size: 36rpx;
 		font-weight: bold;
-		color: #333333;
+		color: $uni-text-color;
 		line-height: 1.5;
-		margin-bottom: 16rpx;
+		margin-bottom: $uni-spacing-xl;
 	}
 
 	.article-meta {
 		display: flex;
-		gap: 32rpx;
+		gap: $uni-spacing-xl;
 
 		.meta-item {
 			display: flex;
 			align-items: center;
-			gap: 8rpx;
+			gap: $uni-spacing-md;
 
 			.meta-text {
-				font-size: 24rpx;
-				color: #999999;
+				font-size: $uni-font-size-sm;
+				color: $uni-text-color-placeholder;
 			}
 		}
 	}
@@ -262,89 +262,93 @@ onMounted(() => {
 
 // 文章内容
 .article-content {
-	background: #FFFFFF;
-	padding: 32rpx;
-	margin-bottom: 16rpx;
+	background: $uni-bg-color-card;
+	padding: $uni-spacing-xl;
+	margin-bottom: $uni-spacing-xl;
 	line-height: 1.8;
 
 	:deep(h1) {
 		font-size: 36rpx;
 		font-weight: bold;
-		color: #333333;
-		margin: 32rpx 0 24rpx;
+		color: $uni-text-color;
+		margin: $uni-spacing-xl 0 $uni-spacing-xl;
 	}
 
 	:deep(h2) {
-		font-size: 32rpx;
+		font-size: $uni-font-size-lg;
 		font-weight: bold;
-		color: #333333;
-		margin: 24rpx 0 16rpx;
+		color: $uni-text-color;
+		margin: $uni-spacing-xl 0 $uni-spacing-xl;
 	}
 
 	:deep(h3) {
-		font-size: 28rpx;
+		font-size: $uni-font-size-base;
 		font-weight: bold;
-		color: #333333;
-		margin: 20rpx 0 12rpx;
+		color: $uni-text-color;
+		margin: $uni-spacing-xl 0 $uni-spacing-lg;
 	}
 
 	:deep(p) {
-		font-size: 28rpx;
-		color: #666666;
+		font-size: $uni-font-size-base;
+		color: $uni-text-color-secondary;
 		line-height: 1.8;
-		margin: 16rpx 0;
+		margin: $uni-spacing-xl 0;
 	}
 
 	:deep(li) {
-		font-size: 28rpx;
-		color: #666666;
+		font-size: $uni-font-size-base;
+		color: $uni-text-color-secondary;
 		line-height: 1.8;
-		margin: 8rpx 0;
+		margin: $uni-spacing-md 0;
 	}
 
 	:deep(strong) {
 		font-weight: bold;
-		color: #333333;
+		color: $uni-text-color;
 	}
 }
 
 // 反馈区域
 .feedback-section {
-	background: #FFFFFF;
-	padding: 32rpx;
-	margin-bottom: 16rpx;
+	background: $uni-bg-color-card;
+	padding: $uni-spacing-xl;
+	margin-bottom: $uni-spacing-xl;
 
 	.feedback-title {
 		text-align: center;
-		margin-bottom: 24rpx;
+		margin-bottom: $uni-spacing-xl;
 
 		text {
-			font-size: 28rpx;
-			color: #333333;
+			font-size: $uni-font-size-base;
+			color: $uni-text-color;
 		}
 	}
 
 	.feedback-buttons {
 		display: flex;
 		justify-content: center;
-		gap: 24rpx;
+		gap: $uni-spacing-xl;
 
 		.feedback-btn {
 			display: flex;
 			align-items: center;
-			gap: 12rpx;
-			padding: 16rpx 32rpx;
-			background: #F5F5F5;
+			gap: $uni-spacing-lg;
+			padding: $uni-spacing-xl $uni-spacing-xl;
+			background: $uni-bg-color-grey;
 			border: 2rpx solid transparent;
-			border-radius: 48rpx;
-			font-size: 26rpx;
-			color: #666666;
+			border-radius: $uni-radius-btn;
+			font-size: $uni-font-size-sm;
+			color: $uni-text-color-secondary;
 			transition: all 0.3s;
 
+			&:active {
+				opacity: 0.8;
+			}
+
 			&.active {
-				background: linear-gradient(135deg, #FF9F29 0%, #FF6B00 100%);
-				border-color: #FF9F29;
-				color: #FFFFFF;
+				background: $uni-color-primary-gradient;
+				border-color: $uni-color-primary;
+				color: $uni-text-color-inverse;
 			}
 		}
 	}
@@ -352,17 +356,17 @@ onMounted(() => {
 
 // 相关文章
 .related-section {
-	background: #FFFFFF;
-	padding: 32rpx;
-	margin-bottom: 16rpx;
+	background: $uni-bg-color-card;
+	padding: $uni-spacing-xl;
+	margin-bottom: $uni-spacing-xl;
 
 	.section-title {
-		margin-bottom: 24rpx;
+		margin-bottom: $uni-spacing-xl;
 
 		text {
-			font-size: 32rpx;
+			font-size: $uni-font-size-lg;
 			font-weight: bold;
-			color: #333333;
+			color: $uni-text-color;
 		}
 	}
 
@@ -371,17 +375,22 @@ onMounted(() => {
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
-			padding: 24rpx 0;
-			border-bottom: 1rpx solid #F0F0F0;
+			padding: $uni-spacing-xl 0;
+			border-bottom: 1rpx solid $uni-border-color-light;
+			transition: all 0.2s ease;
 
 			&:last-child {
 				border-bottom: none;
 			}
 
+			&:active {
+				opacity: 0.7;
+			}
+
 			.related-title {
 				flex: 1;
-				font-size: 28rpx;
-				color: #333333;
+				font-size: $uni-font-size-base;
+				color: $uni-text-color;
 			}
 		}
 	}
@@ -389,41 +398,48 @@ onMounted(() => {
 
 // 联系客服
 .contact-section {
-	margin: 0 32rpx;
+	margin: 0 $uni-spacing-xl;
 
 	.contact-card {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		padding: 32rpx;
-		background: linear-gradient(135deg, #FFF8F0 0%, #FFEFE0 100%);
-		border-radius: 16rpx;
+		padding: $uni-spacing-xl;
+		background: linear-gradient(135deg, rgba($uni-color-primary, 0.08) 0%, rgba($uni-color-primary, 0.15) 100%);
+		border-radius: $uni-radius-lg;
 
 		.contact-content {
 			flex: 1;
 
 			.contact-title {
 				display: block;
-				font-size: 28rpx;
+				font-size: $uni-font-size-base;
 				font-weight: 500;
-				color: #333333;
-				margin-bottom: 8rpx;
+				color: $uni-text-color;
+				margin-bottom: $uni-spacing-md;
 			}
 
 			.contact-desc {
 				display: block;
-				font-size: 24rpx;
-				color: #999999;
+				font-size: $uni-font-size-sm;
+				color: $uni-text-color-placeholder;
 			}
 		}
 
 		.contact-btn {
-			padding: 16rpx 32rpx;
-			background: linear-gradient(135deg, #FF9F29 0%, #FF6B00 100%);
-			color: #FFFFFF;
-			border-radius: 48rpx;
-			font-size: 26rpx;
+			padding: $uni-spacing-xl $uni-spacing-xl;
+			background: $uni-color-primary-gradient;
+			color: $uni-text-color-inverse;
+			border-radius: $uni-radius-btn;
+			font-size: $uni-font-size-sm;
 			border: none;
+			box-shadow: $uni-shadow-glow;
+			transition: all 0.2s ease;
+
+			&:active {
+				transform: scale(0.98);
+				opacity: 0.9;
+			}
 		}
 	}
 }

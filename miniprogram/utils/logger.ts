@@ -57,8 +57,15 @@ let config: LoggerConfig = { ...defaultConfig }
  * 判断是否为开发环境
  */
 const isDevelopment = (): boolean => {
-  // @ts-ignore
-  return process.env.NODE_ENV === 'development'
+  try {
+    // uni-app 环境下使用条件编译或 process.env
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const env = (process as any)?.env?.NODE_ENV
+    return env === 'development' || env === undefined
+  } catch {
+    // 如果 process 不存在，默认为开发环境
+    return true
+  }
 }
 
 /**

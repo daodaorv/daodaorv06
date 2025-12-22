@@ -21,8 +21,10 @@
       :toolbar-buttons="toolbarButtons"
       :pagination="pagination"
       :actions-width="280"
+      :selectable="true"
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
+      @selection-change="handleSelectionChange"
     >
       <!-- 车辆图片列 -->
       <template #images="{ row }">
@@ -181,6 +183,24 @@
                 </el-form-item>
               </el-col>
               <el-col :span="12">
+                <el-form-item label="车况评级" prop="conditionGrade">
+                  <el-select
+                    v-model="form.conditionGrade"
+                    placeholder="请选择车况评级"
+                    style="width: 100%"
+                  >
+                    <el-option
+                      v-for="grade in CONDITION_GRADE_OPTIONS"
+                      :key="grade.value"
+                      :label="grade.label"
+                      :value="grade.value"
+                    />
+                  </el-select>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="24">
                 <el-form-item label="日租金" prop="dailyPrice">
                   <el-input-number
                     v-model="form.dailyPrice"
@@ -188,15 +208,25 @@
                     :step="50"
                     style="width: 100%"
                   />
-                  <div v-if="suggestedPrice > 0" style="margin-top: 4px; font-size: 12px; color: #67c23a">
-                    建议租金: ¥{{ suggestedPrice }}
-                    <el-button link type="primary" size="small" @click="applySuggestedPrice">
-                      应用
-                    </el-button>
+                  <div v-if="form.priceSource" style="margin-top: 4px; font-size: 12px; color: #909399">
+                    价格来源:
+                    <el-tag size="small" :type="getPriceSourceTagType(form.priceSource)">
+                      {{ getPriceSourceLabel(form.priceSource) }}
+                    </el-tag>
                   </div>
                 </el-form-item>
               </el-col>
             </el-row>
+
+            <!-- 基础租金计算器 -->
+            <el-divider content-position="left">基础租金计算器</el-divider>
+            <BaseRentalCalculator
+              :purchase-price="form.purchasePrice"
+              :purchase-date="form.purchaseDate"
+              :condition-grade="form.conditionGrade"
+              @apply="handleApplyCalculatedPrice"
+            />
+
             <el-form-item label="当前位置" prop="location">
               <el-input v-model="form.location" placeholder="请输入当前位置" />
             </el-form-item>
@@ -266,6 +296,14 @@
               </el-col>
             </el-row>
           </el-tab-pane>
+
+          <el-tab-pane label="价格历史" name="priceHistory" v-if="isEdit">
+            <VehiclePriceHistory
+              v-if="activeTab === 'priceHistory' && form.id"
+              :vehicle-id="form.id"
+              ref="priceHistoryRef"
+            />
+          </el-tab-pane>
         </el-tabs>
       </el-form>
       <template #footer>
@@ -275,6 +313,13 @@
         </el-button>
       </template>
     </el-dialog>
+
+    <!-- 批量计算器 -->
+    <BatchRentalCalculator
+      v-model="batchCalculatorVisible"
+      :selected-vehicles="selectedVehicles"
+      @success="handleBatchApplySuccess"
+    />
   </div>
 </template>
 
@@ -288,12 +333,17 @@ import {
   Download,
   Upload,
   Picture,
-  
+  Operation,
 } from '@element-plus/icons-vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'
+import BaseRentalCalculator from '@/components/vehicle/BaseRentalCalculator.vue'
+import BatchRentalCalculator from '@/components/vehicle/BatchRentalCalculator.vue'
+import VehiclePriceHistory from '@/components/vehicle/VehiclePriceHistory.vue'
 import type { SearchField } from '@/components/common/SearchForm.vue'
 import type { TableColumn, ToolbarButton } from '@/components/common/DataTable.vue'
+import type { CalculationResult } from '@/types/system'
+import { CONDITION_GRADES } from '@/constants/conditionGrades'
 import {
   getVehicles,
   getVehicleModels,
@@ -305,20 +355,18 @@ import {
   type VehicleModel,
 } from '@/api/vehicle'
 import { useErrorHandler, useEnumLabel } from '@/composables'
-import { VEHICLE_STATUS_OPTIONS, STORE_OPTIONS } from '@/constants'
+import { VEHICLE_STATUS_OPTIONS, VEHICLE_OWNERSHIP_TYPE_OPTIONS, STORE_OPTIONS } from '@/constants'
 import { exportToCSV } from '@/utils/export'
 import {
   generateVirtualPlate,
-  isValidVirtualPlate,
   formatPlateDisplay,
   isVirtualPlate
 } from '@/utils/vehicleHelper'
 import {
-  getBasePrice,
-  getPriceRange,
   calculateSuggestedPrice,
   getVehicleTypePriceInfo
 } from '@/utils/pricingHelper'
+import { createPriceHistory, batchCreatePriceHistory } from '@/api/vehiclePriceHistory'
 
 // Composables
 const { handleApiError } = useErrorHandler()
@@ -372,7 +420,7 @@ const searchFields: SearchField[] = [
     type: 'select',
     placeholder: '请选择类型',
     width: '150px',
-    options: VEHICLE_STATUS_OPTIONS,
+    options: VEHICLE_OWNERSHIP_TYPE_OPTIONS,
   },
 ]
 
@@ -400,9 +448,15 @@ const toolbarButtons: ToolbarButton[] = [
     onClick: () => handleCreate(),
   },
   {
+    label: '批量计算租金',
+    type: 'success',
+    icon: Operation,
+    onClick: () => handleBatchCalculate(),
+  },
+  {
     label: '导出车辆',
     icon: Download,
-    onClick: handleExport,
+    onClick: () => handleExport(),
   },
   {
     label: '导入车辆',
@@ -435,6 +489,10 @@ const vehicleList = ref<Vehicle[]>([])
 const vehicleModelsList = ref<VehicleModel[]>([])
 const loading = ref(false)
 
+// 批量选择
+const selectedVehicles = ref<Vehicle[]>([])
+const batchCalculatorVisible = ref(false)
+
 // 分页
 const pagination = reactive({
   page: 1,
@@ -448,6 +506,7 @@ const dialogTitle = ref('新增车辆')
 const isEdit = ref(false)
 const submitLoading = ref(false)
 const formRef = ref<FormInstance>()
+const priceHistoryRef = ref()
 const activeTab = ref('basic')
 
 const form = reactive({
@@ -460,7 +519,9 @@ const form = reactive({
   purchaseDate: '',
   purchasePrice: 0,
   currentMileage: 0,
+  conditionGrade: 'B' as 'A' | 'B' | 'C' | 'D', // 🆕 车况评级
   dailyPrice: 0,
+  priceSource: 'manual' as 'calculated' | 'manual' | 'inherited', // 🆕 价格来源
   location: '',
   insuranceCompany: '',
   insuranceExpireDate: '',
@@ -470,10 +531,14 @@ const form = reactive({
   remark: '',
 })
 
+// 车况评级选项
+const CONDITION_GRADE_OPTIONS = CONDITION_GRADES.map(grade => ({
+  value: grade.grade,
+  label: `${grade.name}(${grade.grade}级) - ${grade.description}`,
+}))
+
 // 车型价格信息
 const selectedModelPriceInfo = ref<ReturnType<typeof getVehicleTypePriceInfo> | null>(null)
-// 建议租金
-const suggestedPrice = ref(0)
 
 const formRules: FormRules = {
   vehicleNumber: [
@@ -666,7 +731,40 @@ const handleSubmit = async () => {
       }
 
       if (isEdit.value) {
+        // 获取原车辆信息
+        const oldVehicle = vehicleList.value.find(v => v.id === form.id)
+        const oldPrice = oldVehicle?.dailyPrice || 0
+
+        // 更新车辆
         await updateVehicle(form.id, data)
+
+        // 如果价格发生变化，创建历史记录
+        if (oldPrice !== form.dailyPrice) {
+          const priceChange = form.dailyPrice - oldPrice
+          const priceChangePercent = oldPrice > 0
+            ? Math.round((priceChange / oldPrice) * 100)
+            : 0
+
+          try {
+            await createPriceHistory({
+              vehicleId: form.id,
+              vehicleNumber: form.vehicleNumber,
+              oldPrice,
+              newPrice: form.dailyPrice,
+              priceChange,
+              priceChangePercent,
+              changeReason: 'manual',
+              changeReasonText: '手动调整价格',
+              priceSource: form.priceSource || 'manual',
+              calculationParams: form.calculationParams,
+              operatorName: '管理员', // TODO: 从用户上下文获取
+            })
+          } catch (error) {
+            console.error('创建价格历史记录失败:', error)
+            // 不影响主流程，仅记录错误
+          }
+        }
+
         ElMessage.success('更新成功')
       } else {
         await createVehicle(data)
@@ -776,15 +874,74 @@ const handleModelChange = (modelId: number) => {
   })
 
   // 如果当前日租金为0,自动应用建议租金
-  if (form.dailyPrice === 0) {
-    form.dailyPrice = suggestedPrice.value
+  if (form.dailyPrice === 0 && selectedModelPriceInfo.value) {
+    form.dailyPrice = selectedModelPriceInfo.value.suggestedPrice
   }
 }
 
-// 应用建议租金
-const applySuggestedPrice = () => {
-  form.dailyPrice = suggestedPrice.value
-  ElMessage.success('已应用建议租金')
+// 应用计算器生成的价格
+const handleApplyCalculatedPrice = async (price: number, result: CalculationResult) => {
+  const oldPrice = form.dailyPrice
+  const priceChange = price - oldPrice
+  const priceChangePercent = oldPrice > 0
+    ? Math.round((priceChange / oldPrice) * 100)
+    : 0
+
+  form.dailyPrice = price
+  form.priceSource = 'calculated'
+  // 保存计算参数用于追溯
+  form.calculationParams = {
+    targetAnnualReturn: result.breakdown.conditionPremium, // 这里应该保存完整的计算参数
+    residualValueRate: 0,
+    annualOperatingRate: 0,
+    operatingCostRate: 0,
+    conditionPremium: result.breakdown.conditionPremium,
+    calculatedAt: new Date().toISOString(),
+  }
+
+  // 如果是编辑模式且价格发生变化，创建历史记录
+  if (isEdit.value && oldPrice !== price) {
+    try {
+      await createPriceHistory({
+        vehicleId: form.id,
+        vehicleNumber: form.vehicleNumber,
+        oldPrice,
+        newPrice: price,
+        priceChange,
+        priceChangePercent,
+        changeReason: 'calculator',
+        changeReasonText: '使用基础租金计算器计算',
+        priceSource: 'calculated',
+        calculationParams: form.calculationParams,
+        operatorName: '管理员', // TODO: 从用户上下文获取
+      })
+    } catch (error) {
+      console.error('创建价格历史记录失败:', error)
+      // 不影响主流程，仅记录错误
+    }
+  }
+
+  ElMessage.success('已应用计算器建议价格')
+}
+
+// 获取价格来源标签
+const getPriceSourceLabel = (source: string) => {
+  const labels: Record<string, string> = {
+    calculated: '计算器生成',
+    manual: '手动设置',
+    inherited: '继承车型',
+  }
+  return labels[source] || '未知'
+}
+
+// 获取价格来源标签类型
+const getPriceSourceTagType = (source: string) => {
+  const types: Record<string, string> = {
+    calculated: 'success',
+    manual: 'info',
+    inherited: 'warning',
+  }
+  return types[source] || 'info'
 }
 
 // 页面加载
@@ -805,6 +962,85 @@ function handleExport() {
     .map(col => ({ key: col.prop, label: col.label }))
 
   exportToCSV(vehicleList.value, columns, '车辆列表')
+}
+
+// 批量选择变化
+const handleSelectionChange = (selection: Vehicle[]) => {
+  selectedVehicles.value = selection
+}
+
+// 批量计算
+const handleBatchCalculate = () => {
+  if (selectedVehicles.value.length === 0) {
+    ElMessage.warning('请先选择要计算的车辆')
+    return
+  }
+  batchCalculatorVisible.value = true
+}
+
+// 批量应用成功
+const handleBatchApplySuccess = async (results: Array<{ vehicleId: number; dailyPrice: number; calculationParams: any }>) => {
+  try {
+    const priceHistoryRecords = []
+
+    // 更新车辆价格并收集历史记录
+    for (const result of results) {
+      const vehicle = vehicleList.value.find(v => v.id === result.vehicleId)
+      if (vehicle) {
+        const oldPrice = vehicle.dailyPrice
+        const priceChange = result.dailyPrice - oldPrice
+        const priceChangePercent = oldPrice > 0
+          ? Math.round((priceChange / oldPrice) * 100)
+          : 0
+
+        // 更新车辆
+        await updateVehicle(result.vehicleId, {
+          ...vehicle,
+          dailyPrice: result.dailyPrice,
+          priceSource: 'calculated',
+          calculationParams: result.calculationParams,
+        })
+
+        // 收集价格历史记录
+        if (oldPrice !== result.dailyPrice) {
+          priceHistoryRecords.push({
+            vehicleId: result.vehicleId,
+            vehicleNumber: vehicle.vehicleNumber,
+            oldPrice,
+            newPrice: result.dailyPrice,
+            priceChange,
+            priceChangePercent,
+            changeReason: 'batch_calculator' as const,
+            changeReasonText: '批量计算器计算',
+            priceSource: 'calculated' as const,
+            calculationParams: result.calculationParams,
+            operatorName: '管理员', // TODO: 从用户上下文获取
+          })
+        }
+      }
+    }
+
+    // 批量创建价格历史记录
+    if (priceHistoryRecords.length > 0) {
+      try {
+        await batchCreatePriceHistory(priceHistoryRecords)
+      } catch (error) {
+        console.error('批量创建价格历史记录失败:', error)
+        // 不影响主流程，仅记录错误
+      }
+    }
+
+    ElMessage.success(`成功更新 ${results.length} 辆车的租金`)
+
+    // 重新加载列表
+    await loadVehicles()
+
+    // 清空选择
+    selectedVehicles.value = []
+  } catch (error) {
+    console.error('批量更新失败:', error)
+    ElMessage.error('批量更新失败')
+  }
 }
 </script>
 

@@ -260,33 +260,34 @@ onMounted(() => {
 <style lang="scss" scoped>
 .invite-records-page {
   min-height: 100vh;
-  background: #f5f5f5;
+  background: $uni-bg-color;
 }
 
 .page-content {
-  padding: 20rpx;
+  padding: $uni-spacing-xl;
 }
 
 .stats-card {
-  background: #fff;
-  border-radius: 16rpx;
-  padding: 30rpx;
-  margin-bottom: 20rpx;
+  background: $uni-bg-color-card;
+  border-radius: $uni-radius-lg;
+  padding: $uni-spacing-xl;
+  margin-bottom: $uni-spacing-xl;
+  box-shadow: $uni-shadow-card;
 
   .stats-header {
-    margin-bottom: 30rpx;
+    margin-bottom: $uni-spacing-xl;
 
     .stats-title {
-      font-size: 32rpx;
+      font-size: $uni-font-size-lg;
       font-weight: bold;
-      color: #303133;
+      color: $uni-text-color;
     }
   }
 
   .stats-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 30rpx;
+    gap: $uni-spacing-xl;
 
     .stat-item {
       display: flex;
@@ -296,51 +297,58 @@ onMounted(() => {
       .stat-value {
         font-size: 40rpx;
         font-weight: bold;
-        color: #FF9F29;
-        margin-bottom: 8rpx;
+        color: $uni-color-primary;
+        margin-bottom: $uni-spacing-md;
       }
 
       .stat-label {
-        font-size: 24rpx;
-        color: #909399;
+        font-size: $uni-font-size-sm;
+        color: $uni-text-color-placeholder;
       }
     }
   }
 }
 
 .filter-bar {
-  background: #fff;
-  border-radius: 16rpx;
-  padding: 20rpx;
-  margin-bottom: 20rpx;
+  background: $uni-bg-color-card;
+  border-radius: $uni-radius-lg;
+  padding: $uni-spacing-xl;
+  margin-bottom: $uni-spacing-xl;
+  box-shadow: $uni-shadow-card;
 }
 
 .records-list {
   .record-item {
-    background: #fff;
-    border-radius: 16rpx;
-    padding: 30rpx;
-    margin-bottom: 20rpx;
+    background: $uni-bg-color-card;
+    border-radius: $uni-radius-lg;
+    padding: $uni-spacing-xl;
+    margin-bottom: $uni-spacing-xl;
+    box-shadow: $uni-shadow-card;
+    transition: all 0.2s ease;
+
+    &:active {
+      transform: scale(0.99);
+    }
 
     .record-user {
       display: flex;
       align-items: center;
-      margin-bottom: 20rpx;
+      margin-bottom: $uni-spacing-xl;
 
       .user-info {
         flex: 1;
-        margin-left: 20rpx;
+        margin-left: $uni-spacing-xl;
 
         .user-name {
-          font-size: 28rpx;
+          font-size: $uni-font-size-base;
           font-weight: bold;
-          color: #303133;
-          margin-bottom: 8rpx;
+          color: $uni-text-color;
+          margin-bottom: $uni-spacing-md;
         }
 
         .register-time {
-          font-size: 24rpx;
-          color: #909399;
+          font-size: $uni-font-size-sm;
+          color: $uni-text-color-placeholder;
         }
       }
     }
@@ -349,23 +357,23 @@ onMounted(() => {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding-top: 20rpx;
-      border-top: 1rpx solid #f5f5f5;
+      padding-top: $uni-spacing-xl;
+      border-top: 1rpx solid $uni-bg-color-grey;
 
       .reward-info {
         display: flex;
         align-items: center;
 
         .reward-label {
-          font-size: 24rpx;
-          color: #909399;
+          font-size: $uni-font-size-sm;
+          color: $uni-text-color-placeholder;
         }
 
         .reward-amount {
-          font-size: 28rpx;
+          font-size: $uni-font-size-base;
           font-weight: bold;
-          color: #FF9F29;
-          margin: 0 8rpx;
+          color: $uni-color-primary;
+          margin: 0 $uni-spacing-md;
         }
       }
     }
@@ -377,8 +385,13 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   padding: 40rpx 0;
-  font-size: 28rpx;
-  color: #909399;
+  font-size: $uni-font-size-base;
+  color: $uni-text-color-placeholder;
+  transition: all 0.2s ease;
+
+  &:active {
+    opacity: 0.7;
+  }
 }
 
 .loading-overlay {
@@ -395,9 +408,9 @@ onMounted(() => {
   z-index: 9999;
 
   .loading-text {
-    margin-top: 20rpx;
-    font-size: 28rpx;
-    color: #909399;
+    margin-top: $uni-spacing-xl;
+    font-size: $uni-font-size-base;
+    color: $uni-text-color-placeholder;
   }
 }
 </style>

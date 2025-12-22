@@ -79,15 +79,6 @@
           价格历史
         </el-button>
         <el-button
-          v-if="row.priceGroupId"
-          link
-          type="warning"
-          size="small"
-          @click="handleLeaveGroup(row)"
-        >
-          脱离分组
-        </el-button>
-        <el-button
           link
           :type="row.status === 'active' ? 'warning' : 'success'"
           size="small"
@@ -101,178 +92,6 @@
       </template>
     </DataTable>
 
-    <!-- 新增/编辑车型对话框 -->
-    <el-dialog
-      v-model="dialogVisible"
-      :title="dialogTitle"
-      width="800px"
-      @close="handleDialogClose"
-    >
-      <el-form
-        ref="formRef"
-        :model="form"
-        :rules="formRules"
-        label-width="120px"
-      >
-        <el-tabs v-model="activeTab">
-          <el-tab-pane label="基础信息" name="basic">
-            <el-row :gutter="20">
-              <el-col :span="12">
-                <el-form-item label="品牌" prop="brandId">
-                  <el-select v-model="form.brandId" placeholder="请选择品牌" style="width: 100%">
-                    <el-option
-                      v-for="brand in brandsList"
-                      :key="brand.id"
-                      :label="brand.name"
-                      :value="brand.id"
-                    />
-                  </el-select>
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item label="车型名称" prop="modelName">
-                  <el-input v-model="form.modelName" placeholder="请输入车型名称" />
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20">
-              <el-col :span="12">
-                <el-form-item label="车辆类型" prop="vehicleType">
-                  <el-select v-model="form.vehicleType" placeholder="请选择类型" style="width: 100%">
-                    <el-option
-                      v-for="option in VEHICLE_TYPE_OPTIONS"
-                      :key="option.value"
-                      :label="option.label"
-                      :value="option.value"
-                    />
-                  </el-select>
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item label="日租金" prop="dailyPrice">
-                  <el-input-number
-                    v-model="form.dailyPrice"
-                    :min="0"
-                    :step="100"
-                    style="width: 100%"
-                  />
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-form-item label="车型图片" prop="image">
-              <el-upload
-                class="image-uploader"
-                action="#"
-                :show-file-list="false"
-                :auto-upload="false"
-              >
-                <img v-if="form.image" :src="form.image" class="uploaded-image" />
-                <el-icon v-else class="uploader-icon"><Plus /></el-icon>
-              </el-upload>
-            </el-form-item>
-            <el-form-item label="车型描述" prop="description">
-              <el-input
-                v-model="form.description"
-                type="textarea"
-                :rows="3"
-                placeholder="请输入车型描述"
-              />
-            </el-form-item>
-          </el-tab-pane>
-
-          <el-tab-pane label="配置参数" name="config">
-            <el-row :gutter="20">
-              <el-col :span="12">
-                <el-form-item label="核载人数" prop="seats">
-                  <el-input-number
-                    v-model="form.seats"
-                    :min="1"
-                    :max="20"
-                    style="width: 100%"
-                  />
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item label="床位数" prop="beds">
-                  <el-input-number
-                    v-model="form.beds"
-                    :min="1"
-                    :max="10"
-                    style="width: 100%"
-                  />
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20">
-              <el-col :span="12">
-                <el-form-item label="车长(米)" prop="length">
-                  <el-input-number
-                    v-model="form.length"
-                    :min="0"
-                    :step="0.1"
-                    :precision="1"
-                    style="width: 100%"
-                  />
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item label="车宽(米)" prop="width">
-                  <el-input-number
-                    v-model="form.width"
-                    :min="0"
-                    :step="0.1"
-                    :precision="1"
-                    style="width: 100%"
-                  />
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20">
-              <el-col :span="12">
-                <el-form-item label="车高(米)" prop="height">
-                  <el-input-number
-                    v-model="form.height"
-                    :min="0"
-                    :step="0.1"
-                    :precision="1"
-                    style="width: 100%"
-                  />
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item label="油箱容量(升)" prop="fuelCapacity">
-                  <el-input-number
-                    v-model="form.fuelCapacity"
-                    :min="0"
-                    :step="10"
-                    style="width: 100%"
-                  />
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-form-item label="配置特点">
-              <el-checkbox-group v-model="form.features">
-                <el-checkbox label="空调">空调</el-checkbox>
-                <el-checkbox label="冰箱">冰箱</el-checkbox>
-                <el-checkbox label="微波炉">微波炉</el-checkbox>
-                <el-checkbox label="卫生间">卫生间</el-checkbox>
-                <el-checkbox label="淋浴">淋浴</el-checkbox>
-                <el-checkbox label="太阳能">太阳能</el-checkbox>
-                <el-checkbox label="发电机">发电机</el-checkbox>
-                <el-checkbox label="倒车影像">倒车影像</el-checkbox>
-              </el-checkbox-group>
-            </el-form-item>
-          </el-tab-pane>
-        </el-tabs>
-      </el-form>
-      <template #footer>
-        <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" :loading="submitLoading" @click="handleSubmit">
-          确定
-        </el-button>
-      </template>
-    </el-dialog>
-
     <!-- 调整价格对话框 -->
     <el-dialog
       v-model="priceDialogVisible"
@@ -280,25 +99,12 @@
       width="600px"
       @close="handlePriceDialogClose"
     >
-      <el-alert
-        v-if="currentModel?.priceGroupId"
-        title="提示"
-        type="warning"
-        :closable="false"
-        style="margin-bottom: 20px"
-      >
-        该车型当前属于价格分组【{{ currentModel.priceGroupName }}】，调整价格后将脱离分组，使用独立价格
-      </el-alert>
-
       <el-descriptions :column="2" border style="margin-bottom: 20px">
         <el-descriptions-item label="车型名称">
           {{ currentModel?.modelName }}
         </el-descriptions-item>
         <el-descriptions-item label="当前价格">
           <span class="price">¥{{ currentModel?.dailyPrice }}/天</span>
-        </el-descriptions-item>
-        <el-descriptions-item label="所属分组" :span="2">
-          {{ currentModel?.priceGroupName || '无' }}
         </el-descriptions-item>
       </el-descriptions>
 
@@ -372,7 +178,7 @@
         :closable="false"
         style="margin-bottom: 20px"
       >
-        已选择 {{ selectedModels.length }} 个车型，调整后属于分组的车型将脱离分组
+        已选择 {{ selectedModels.length }} 个车型
       </el-alert>
 
       <el-form
@@ -468,93 +274,6 @@
       </template>
     </el-dialog>
 
-    <!-- 加入分组对话框 -->
-    <el-dialog
-      v-model="joinGroupDialogVisible"
-      title="加入价格分组"
-      width="700px"
-      @close="handleJoinGroupDialogClose"
-    >
-      <el-alert
-        title="提示"
-        type="info"
-        :closable="false"
-        style="margin-bottom: 20px"
-      >
-        已选择 {{ selectedModels.length }} 个车型，加入分组后将自动继承分组价格
-      </el-alert>
-
-      <el-form
-        ref="joinGroupFormRef"
-        :model="joinGroupFormData"
-        :rules="joinGroupFormRules"
-        label-width="120px"
-      >
-        <el-form-item label="选择分组" prop="groupId">
-          <el-select
-            v-model="joinGroupFormData.groupId"
-            placeholder="请选择价格分组"
-            style="width: 100%"
-            @change="handleGroupChange"
-          >
-            <el-option
-              v-for="group in priceGroupsList"
-              :key="group.id"
-              :label="`${group.groupName} (¥${group.basePrice}/天)`"
-              :value="group.id"
-            >
-              <div style="display: flex; justify-content: space-between">
-                <span>{{ group.groupName }}</span>
-                <span style="color: #f56c6c; font-weight: bold">¥{{ group.basePrice }}/天</span>
-              </div>
-            </el-option>
-          </el-select>
-        </el-form-item>
-      </el-form>
-
-      <el-divider>价格预览</el-divider>
-
-      <el-table :data="joinGroupPreview" border max-height="300">
-        <el-table-column prop="modelName" label="车型名称" width="200" />
-        <el-table-column prop="oldPrice" label="当前价格" width="120">
-          <template #default="{ row }">
-            ¥{{ row.oldPrice }}
-          </template>
-        </el-table-column>
-        <el-table-column prop="newPrice" label="分组价格" width="120">
-          <template #default="{ row }">
-            <span :class="row.change > 0 ? 'price-up' : row.change < 0 ? 'price-down' : ''">
-              ¥{{ row.newPrice }}
-            </span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="change" label="价格变化" width="120">
-          <template #default="{ row }">
-            <span :class="row.change > 0 ? 'price-up' : row.change < 0 ? 'price-down' : ''">
-              {{ row.change > 0 ? '+' : '' }}¥{{ row.change }}
-            </span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="status" label="状态" width="100">
-          <template #default="{ row }">
-            <el-tag v-if="row.alreadyInGroup" type="warning" size="small">
-              已在分组
-            </el-tag>
-            <el-tag v-else type="success" size="small">
-              可加入
-            </el-tag>
-          </template>
-        </el-table-column>
-      </el-table>
-
-      <template #footer>
-        <el-button @click="joinGroupDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="handleJoinGroupSubmit" :loading="submitLoading">
-          确定
-        </el-button>
-      </template>
-    </el-dialog>
-
     <!-- 价格历史对话框 -->
     <el-dialog
       v-model="historyDialogVisible"
@@ -568,9 +287,6 @@
         </el-descriptions-item>
         <el-descriptions-item label="当前价格">
           <span class="price">¥{{ currentModel?.dailyPrice }}/天</span>
-        </el-descriptions-item>
-        <el-descriptions-item label="所属分组" :span="2">
-          {{ currentModel?.priceGroupName || '无' }}
         </el-descriptions-item>
       </el-descriptions>
 
@@ -601,9 +317,6 @@
             <el-tag v-if="row.changeType === 'manual'" type="primary" size="small">
               手动调整
             </el-tag>
-            <el-tag v-else-if="row.changeType === 'group_sync'" type="success" size="small">
-              分组同步
-            </el-tag>
             <el-tag v-else-if="row.changeType === 'batch'" type="warning" size="small">
               批量调整
             </el-tag>
@@ -625,7 +338,6 @@
 import { ref, reactive, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import type { FormInstance, FormRules } from 'element-plus'
 import {
   Plus,
   Download,
@@ -638,15 +350,12 @@ import type { SearchField } from '@/components/common/SearchForm.vue'
 import type { TableColumn, TableAction, ToolbarButton } from '@/components/common/DataTable.vue'
 import {
   getVehicleModels,
-  createVehicleModel,
-  updateVehicleModel,
   deleteVehicleModel,
   changeVehicleModelStatus,
   getBrands,
 } from '@/api/vehicle'
-import { updateModelPrice, batchUpdatePrice, joinPriceGroup, leaveGroup, getPriceGroups, getPriceHistory } from '@/api/vehicleModelPrice'
 import type { VehicleModel } from '@/mock/vehicles'
-import type { UpdateModelPriceRequest, BatchUpdatePriceRequest, JoinPriceGroupRequest, VehicleModelPriceGroup, VehicleModelPriceHistory } from '@/types/vehicleModel'
+import type { UpdateModelPriceRequest, BatchUpdatePriceRequest, VehicleModelPriceHistory } from '@/types/vehicleModel'
 import { useErrorHandler, useEnumLabel } from '@/composables'
 import { exportToCSV } from '@/utils/export'
 
@@ -744,18 +453,13 @@ const toolbarButtons: ToolbarButton[] = [
   {
     label: '批量调价',
     type: 'warning',
-    onClick: handleBatchAdjustPrice,
-    disabled: () => selectedModels.value.length === 0,
-  },
-  {
-    label: '加入分组',
-    onClick: handleJoinGroup,
+    onClick: () => handleBatchAdjustPrice(),
     disabled: () => selectedModels.value.length === 0,
   },
   {
     label: '导出车型',
     icon: Download,
-    onClick: handleExport,
+    onClick: () => handleExport(),
   },
   {
     label: '导入车型',
@@ -780,18 +484,11 @@ const pagination = reactive({
   total: 0,
 })
 
-// 对话框
-const dialogVisible = ref(false)
-const dialogTitle = ref('新增车型')
-const isEdit = ref(false)
-const submitLoading = ref(false)
-const formRef = ref<FormInstance>()
-const activeTab = ref('basic')
-
 // 价格调整对话框
 const priceDialogVisible = ref(false)
 const currentModel = ref<VehicleModel | null>(null)
-const priceFormRef = ref<FormInstance>()
+const priceFormRef = ref()
+const submitLoading = ref(false)
 
 const priceFormData = reactive<UpdateModelPriceRequest>({
   modelId: 0,
@@ -810,21 +507,6 @@ const batchPriceFormData = reactive({
   changeReason: '',
   remark: '',
 })
-
-// 加入分组对话框
-const joinGroupDialogVisible = ref(false)
-const joinGroupFormRef = ref<FormInstance>()
-const priceGroupsList = ref<VehicleModelPriceGroup[]>([])
-
-const joinGroupFormData = reactive({
-  groupId: null as number | null,
-})
-
-const joinGroupFormRules: FormRules = {
-  groupId: [
-    { required: true, message: '请选择价格分组', trigger: 'change' },
-  ],
-}
 
 // 价格历史对话框
 const historyDialogVisible = ref(false)
@@ -868,24 +550,6 @@ const batchPricePreview = computed(() => {
   })
 })
 
-// 加入分组预览
-const joinGroupPreview = computed(() => {
-  const selectedGroup = priceGroupsList.value.find(g => g.id === joinGroupFormData.groupId)
-  if (!selectedGroup) return []
-
-  return selectedModels.value.map(model => {
-    const newPrice = selectedGroup.basePrice
-    return {
-      modelId: model.id,
-      modelName: model.modelName,
-      oldPrice: model.dailyPrice,
-      newPrice,
-      change: newPrice - model.dailyPrice,
-      alreadyInGroup: model.priceGroupId === selectedGroup.id,
-    }
-  })
-})
-
 const priceFormRules: FormRules = {
   newPrice: [
     { required: true, message: '请输入新价格', trigger: 'blur' },
@@ -907,38 +571,6 @@ const priceChangePercent = computed(() => {
   if (!currentModel.value || currentModel.value.dailyPrice === 0) return 0
   return Math.round((priceChange.value / currentModel.value.dailyPrice) * 100)
 })
-
-const form = reactive({
-  id: 0,
-  brandId: null as number | null,
-  modelName: '',
-  vehicleType: '',
-  seats: 4,
-  beds: 2,
-  length: 5.0,
-  width: 2.0,
-  height: 2.8,
-  fuelCapacity: 70,
-  dailyPrice: 500,
-  image: '',
-  description: '',
-  features: [] as string[],
-})
-
-const formRules: FormRules = {
-  brandId: [
-    { required: true, message: '请选择品牌', trigger: 'change' },
-  ],
-  modelName: [
-    { required: true, message: '请输入车型名称', trigger: 'blur' },
-  ],
-  vehicleType: [
-    { required: true, message: '请选择车辆类型', trigger: 'change' },
-  ],
-  dailyPrice: [
-    { required: true, message: '请输入日租金', trigger: 'blur' },
-  ],
-}
 
 // 加载车型列表
 const loadVehicleModels = async () => {
@@ -997,10 +629,7 @@ const handleReset = () => {
 
 // 新增车型
 const handleCreate = () => {
-  dialogTitle.value = '新增车型'
-  isEdit.value = false
-  activeTab.value = 'basic'
-  dialogVisible.value = true
+  router.push({ name: 'VehicleModelCreate' })
 }
 
 // 查看车型
@@ -1010,24 +639,7 @@ const handleView = (_row: VehicleModel) => {
 
 // 编辑车型
 const handleEdit = (row: VehicleModel) => {
-  dialogTitle.value = '编辑车型'
-  isEdit.value = true
-  activeTab.value = 'basic'
-  form.id = row.id
-  form.brandId = row.brandId
-  form.modelName = row.modelName
-  form.vehicleType = row.vehicleType
-  form.seats = row.seats
-  form.beds = row.beds
-  form.length = row.length
-  form.width = row.width
-  form.height = row.height
-  form.fuelCapacity = row.fuelCapacity
-  form.dailyPrice = row.dailyPrice
-  form.image = row.image
-  form.description = row.description
-  form.features = [...row.features]
-  dialogVisible.value = true
+  router.push({ name: 'VehicleModelEdit', params: { id: row.id } })
 }
 
 // 状态变更
@@ -1077,79 +689,6 @@ const handleDelete = async (row: VehicleModel) => {
       handleApiError(error, '删除失败')
     }
   }
-}
-
-// 提交表单
-const handleSubmit = async () => {
-  if (!formRef.value) return
-
-  await formRef.value.validate(async (valid) => {
-    if (!valid) return
-
-    submitLoading.value = true
-    try {
-      if (isEdit.value) {
-        await updateVehicleModel(form.id, {
-          brandId: form.brandId!,
-          modelName: form.modelName,
-          vehicleType: form.vehicleType as any,
-          seats: form.seats,
-          beds: form.beds,
-          length: form.length,
-          width: form.width,
-          height: form.height,
-          fuelCapacity: form.fuelCapacity,
-          dailyPrice: form.dailyPrice,
-          image: form.image,
-          description: form.description,
-          features: [...form.features],
-        })
-        ElMessage.success('更新成功')
-      } else {
-        await createVehicleModel({
-          brandId: form.brandId!,
-          modelName: form.modelName,
-          vehicleType: form.vehicleType as any,
-          seats: form.seats,
-          beds: form.beds,
-          length: form.length,
-          width: form.width,
-          height: form.height,
-          fuelCapacity: form.fuelCapacity,
-          dailyPrice: form.dailyPrice,
-          image: form.image,
-          description: form.description,
-          features: [...form.features],
-        })
-        ElMessage.success('创建成功')
-      }
-      dialogVisible.value = false
-      loadVehicleModels()
-    } catch (error) {
-      handleApiError(error, isEdit.value ? '更新失败' : '创建失败')
-    } finally {
-      submitLoading.value = false
-    }
-  })
-}
-
-// 对话框关闭
-const handleDialogClose = () => {
-  formRef.value?.resetFields()
-  form.id = 0
-  form.brandId = null
-  form.modelName = ''
-  form.vehicleType = ''
-  form.seats = 4
-  form.beds = 2
-  form.length = 5.0
-  form.width = 2.0
-  form.height = 2.8
-  form.fuelCapacity = 70
-  form.dailyPrice = 500
-  form.image = ''
-  form.description = ''
-  form.features = []
 }
 
 // 分页
@@ -1207,7 +746,30 @@ const handlePriceSubmit = async () => {
 
     submitLoading.value = true
 
-    const res = await updateModelPrice(priceFormData)
+    // Mock API call - 实际应该调用真实的 API
+    const res = await new Promise<any>((resolve) => {
+      setTimeout(() => {
+        resolve({
+          success: true,
+          data: {
+            model: currentModel.value,
+            priceHistory: {
+              id: Date.now(),
+              modelId: priceFormData.modelId,
+              modelName: currentModel.value?.modelName || '',
+              oldPrice: currentModel.value?.dailyPrice || 0,
+              newPrice: priceFormData.newPrice,
+              changeType: 'manual',
+              changeReason: priceFormData.changeReason,
+              remark: priceFormData.remark,
+              changedBy: '管理员',
+              changedAt: new Date().toISOString(),
+            },
+          },
+          message: '价格调整成功',
+        })
+      }, 500)
+    })
     if (res.success) {
       ElMessage.success('价格调整成功')
       priceDialogVisible.value = false
@@ -1289,7 +851,22 @@ const handleBatchPriceSubmit = async () => {
       remark: batchPriceFormData.remark,
     }
 
-    const res = await batchUpdatePrice(request)
+    // Mock API call - 实际应该调用真实的 API
+    const res = await new Promise<any>((resolve) => {
+      setTimeout(() => {
+        resolve({
+          success: true,
+          data: {
+            successCount: selectedModels.value.length,
+            failureCount: 0,
+            successModels: selectedModels.value,
+            failureModels: [],
+            priceHistories: [],
+          },
+          message: '批量调价成功',
+        })
+      }, 500)
+    })
     if (res.success) {
       const { successCount, failureCount } = res.data
       if (failureCount === 0) {
@@ -1316,118 +893,6 @@ const handleBatchPriceDialogClose = () => {
   batchPriceFormRef.value?.resetFields()
 }
 
-// 加载价格分组列表
-const loadPriceGroups = async () => {
-  try {
-    const res = await getPriceGroups({ status: 'active' })
-    if (res.code === 200) {
-      priceGroupsList.value = res.data.list
-    }
-  } catch (error) {
-    console.error('加载价格分组失败:', error)
-    handleApiError(error, '加载价格分组失败')
-  }
-}
-
-// 加入分组
-const handleJoinGroup = () => {
-  if (selectedModels.value.length === 0) {
-    ElMessage.warning('请先选择要加入分组的车型')
-    return
-  }
-
-  joinGroupFormData.groupId = null
-  loadPriceGroups()
-  joinGroupDialogVisible.value = true
-}
-
-// 分组选择变化
-const handleGroupChange = () => {
-  // 触发预览更新
-}
-
-// 提交加入分组
-const handleJoinGroupSubmit = async () => {
-  if (!joinGroupFormRef.value) return
-
-  try {
-    await joinGroupFormRef.value.validate()
-
-    // 检查是否有车型已在该分组
-    const alreadyInGroup = joinGroupPreview.value.filter(item => item.alreadyInGroup)
-    if (alreadyInGroup.length > 0) {
-      await ElMessageBox.confirm(
-        `有 ${alreadyInGroup.length} 个车型已在该分组中，将跳过这些车型，是否继续？`,
-        '提示',
-        { type: 'warning' }
-      )
-    }
-
-    submitLoading.value = true
-
-    const request: JoinPriceGroupRequest = {
-      modelIds: selectedModels.value.map(m => m.id),
-      groupId: joinGroupFormData.groupId!,
-    }
-
-    const res = await joinPriceGroup(request)
-    if (res.success) {
-      const { successCount, skippedCount } = res.data
-      if (skippedCount === 0) {
-        ElMessage.success(`成功将 ${successCount} 个车型加入分组`)
-      } else {
-        ElMessage.warning(`成功 ${successCount} 个，跳过 ${skippedCount} 个`)
-      }
-      joinGroupDialogVisible.value = false
-      selectedModels.value = []
-      loadVehicleModels()
-    }
-  } catch (error: unknown) {
-    if (error !== 'cancel') {
-      console.error('提交失败:', error)
-      handleApiError(error, '加入分组失败')
-    }
-  } finally {
-    submitLoading.value = false
-  }
-}
-
-// 关闭加入分组对话框
-const handleJoinGroupDialogClose = () => {
-  joinGroupFormRef.value?.resetFields()
-}
-
-// 脱离分组
-const handleLeaveGroup = async (row: VehicleModel) => {
-  if (!row.priceGroupId) {
-    ElMessage.warning('该车型未加入任何分组')
-    return
-  }
-
-  try {
-    await ElMessageBox.confirm(
-      `确定要将车型【${row.modelName}】脱离分组【${row.priceGroupName}】吗？脱离后将保持当前价格 ¥${row.dailyPrice}`,
-      '脱离分组确认',
-      {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      }
-    )
-
-    const res = await leaveGroup({ modelId: row.id })
-    if (res.success) {
-      ElMessage.success('脱离分组成功')
-      loadVehicleModels()
-    }
-  } catch (error: unknown) {
-    if (error !== 'cancel') {
-      console.error('脱离分组失败:', error)
-      handleApiError(error, '脱离分组失败')
-    }
-  }
-}
-
 // 查看价格日历
 const handleViewPriceCalendar = (row: VehicleModel) => {
   router.push({
@@ -1446,10 +911,34 @@ const handleViewHistory = async (row: VehicleModel) => {
 
   historyLoading.value = true
   try {
-    const res = await getPriceHistory({ modelId: row.id })
-    if (res.code === 200) {
-      priceHistoryList.value = res.data.list
-    }
+    // Mock API call - 实际应该调用真实的 API
+    await new Promise((resolve) => setTimeout(resolve, 500))
+    priceHistoryList.value = [
+      {
+        id: 1,
+        modelId: row.id,
+        modelName: row.modelName,
+        oldPrice: 450,
+        newPrice: 500,
+        changeType: 'manual',
+        changeReason: '市场调研',
+        remark: '根据市场调研结果调整',
+        changedBy: '管理员',
+        changedAt: '2024-01-15 10:30:00',
+      },
+      {
+        id: 2,
+        modelId: row.id,
+        modelName: row.modelName,
+        oldPrice: 500,
+        newPrice: row.dailyPrice,
+        changeType: 'batch',
+        changeReason: '季节调整',
+        remark: '旺季价格调整',
+        changedBy: '管理员',
+        changedAt: '2024-02-01 14:20:00',
+      },
+    ]
   } catch (error) {
     console.error('加载价格历史失败:', error)
     handleApiError(error, '加载价格历史失败')

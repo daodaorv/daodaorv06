@@ -1,35 +1,63 @@
 <script>
 import { useUserStore } from '@/stores/user';
 import { checkAndUpdateLoginStatus } from '@/utils/auth';
+import { logger } from '@/utils/logger';
 
 	export default {
 		async onLaunch() {
 			const userStore = useUserStore();
 			userStore.init();
-			checkAndUpdateLoginStatus();
 
-			console.warn('当前组件仅支持 uni_modules 目录结构 ，请升级 HBuilderX 到 3.1.0 版本以上！')
-			console.log('App Launch')
-
-			// 添加字体加载检查
-			console.log('🔍 ========== uView Plus 字体配置检查 ==========');
-			uni.getSystemInfo({
-				success: (res) => {
-					console.log('🔍 当前平台:', res.platform);
-					console.log('🔍 微信版本:', res.version);
-					console.log('🔍 基础库版本:', res.SDKVersion);
-				}
+			// 异步检查登录状态，不阻塞启动流程
+			checkAndUpdateLoginStatus().catch((error) => {
+				logger.error('检查登录状态失败', error);
 			});
 
-			// 检查字体文件是否存在
-			console.log('🔍 字体文件路径: /static/uicon-iconfont.ttf');
-			console.log('🔍 ========================================');
+			logger.info('App Launch');
+
+			// #ifdef MP-WEIXIN
+			// 仅在开发环境输出系统信息
+			if (process.env.NODE_ENV === 'development') {
+				const deviceInfo = uni.getDeviceInfo();
+				const windowInfo = uni.getWindowInfo();
+				const appBaseInfo = uni.getAppBaseInfo();
+
+				logger.debug('系统信息检查', {
+					device: {
+						platform: deviceInfo.platform,
+						system: deviceInfo.system
+					},
+					app: {
+						version: appBaseInfo.version,
+						SDKVersion: appBaseInfo.SDKVersion
+					},
+					window: {
+						screenWidth: windowInfo.screenWidth,
+						screenHeight: windowInfo.screenHeight
+					}
+				});
+			}
+			// #endif
+
+			// #ifndef MP-WEIXIN
+			// 非微信小程序环境使用旧 API
+			if (process.env.NODE_ENV === 'development') {
+				uni.getSystemInfo({
+					success: (res) => {
+						logger.debug('系统信息', {
+							platform: res.platform,
+							system: res.system
+						});
+					}
+				});
+			}
+			// #endif
 		},
 		onShow: function() {
-			console.log('App Show')
+			logger.debug('App Show');
 		},
 		onHide: function() {
-			console.log('App Hide')
+			logger.debug('App Hide');
 		}
 	}
 </script>
@@ -45,12 +73,13 @@ import { checkAndUpdateLoginStatus } from '@/utils/auth';
 	@font-face {
 		font-family: 'uicon-iconfont';
 		src: url('~@/static/uicon-iconfont.ttf') format('truetype');
+		font-display: swap; /* 优化字体加载性能 */
 	}
 	/* #endif */
 
-	// 设置整个项目的背景色
+	// 设置整个项目的背景色（与 uni.scss 中 $uni-bg-color 保持一致）
 	page {
-		background-color: #F5F7FA;
+		background-color: #F8F9FC;
 		font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Segoe UI, Arial, Roboto, 'PingFang SC', 'miui', 'Hiragino Sans GB', 'Microsoft Yahei', sans-serif;
 	}
 

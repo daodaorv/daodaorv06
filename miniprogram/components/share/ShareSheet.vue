@@ -42,16 +42,12 @@ const emit = defineEmits<Emits>()
 
 /**
  * 分享选项配置
+ * 注意：微信小程序限制，无法通过 JS 直接触发分享，只能通过右上角菜单或 button 的 open-type="share"
  */
 const actions = computed(() => {
   const baseActions = [
     {
-      name: '分享给朋友',
-      subname: '分享小程序卡片',
-      icon: 'share-fill',
-      color: '#FF9F29'
-    },
-    {
+      id: 'poster',
       name: '生成海报',
       subname: '保存图片分享到朋友圈',
       icon: 'photo-fill',
@@ -61,6 +57,7 @@ const actions = computed(() => {
 
   if (props.showCopyLink) {
     baseActions.push({
+      id: 'copy',
       name: '复制链接',
       subname: '复制小程序路径',
       icon: 'copy-fill',
@@ -74,9 +71,7 @@ const actions = computed(() => {
 /**
  * 处理选项选择
  */
-const handleSelect = (item: any) => {
-  console.log('ShareSheet handleSelect 被调用', item)
-
+const handleSelect = (item: unknown) => {
   let index: number
 
   // 如果直接是数字索引
@@ -85,22 +80,20 @@ const handleSelect = (item: any) => {
   }
   // 如果是对象，通过匹配 name 和 icon 找到索引
   else if (item && typeof item === 'object') {
+    const itemObj = item as { name?: string; icon?: string }
     index = actions.value.findIndex(action =>
-      action.name === item.name && action.icon === item.icon
+      action.name === itemObj.name && action.icon === itemObj.icon
     )
 
     if (index === -1) {
-      console.error('无法找到匹配的分享选项', item)
       return
     }
   }
   // 其他情况
   else {
-    console.error('无法解析分享选项', item)
     return
   }
 
-  console.log('解析后的索引', index)
   emit('select', index)
   emit('update:show', false)
 }

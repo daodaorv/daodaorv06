@@ -101,11 +101,11 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .hosting-agreement-page {
   min-height: 100vh;
-  background: #F5F5F5;
-  padding: 24rpx 32rpx 80rpx;
+  background: $uni-bg-color;
+  padding: $uni-spacing-xl $uni-spacing-xl 80rpx;
   box-sizing: border-box;
 }
 
@@ -113,24 +113,24 @@ export default {
 .section-card,
 .faq-card,
 .contact-card {
-  background: #FFFFFF;
-  border-radius: 16rpx;
-  padding: 32rpx;
-  margin-bottom: 24rpx;
-  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
+  background: $uni-bg-color-card;
+  border-radius: $uni-radius-lg;
+  padding: $uni-spacing-xl;
+  margin-bottom: $uni-spacing-xl;
+  box-shadow: $uni-shadow-card;
 }
 
 .title {
-  font-size: 32rpx;
+  font-size: $uni-font-size-lg;
   font-weight: 600;
-  color: #333;
-  margin-bottom: 12rpx;
+  color: $uni-text-color;
+  margin-bottom: $uni-spacing-md;
   display: block;
 }
 
 .desc {
-  font-size: 26rpx;
-  color: #666;
+  font-size: $uni-font-size-sm;
+  color: $uni-text-color-secondary;
   line-height: 1.6;
 }
 
@@ -138,80 +138,82 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16rpx;
+  margin-bottom: $uni-spacing-lg;
 }
 
 .section-title {
-  font-size: 30rpx;
+  font-size: $uni-font-size-lg;
   font-weight: 600;
-  color: #333;
+  color: $uni-text-color;
 }
 
 .section-tag {
-  font-size: 24rpx;
-  color: #FF9F29;
-  background: rgba(255, 159, 41, 0.1);
-  padding: 6rpx 18rpx;
-  border-radius: 24rpx;
+  font-size: $uni-font-size-xs;
+  color: $uni-color-primary;
+  background: rgba($uni-color-primary, 0.1);
+  padding: $uni-spacing-xs $uni-spacing-lg;
+  border-radius: $uni-radius-btn;
 }
 
 .section-item {
   display: flex;
   justify-content: space-between;
-  padding: 16rpx 0;
-  border-bottom: 1rpx solid #F5F5F5;
-}
+  padding: $uni-spacing-lg 0;
+  border-bottom: 1rpx solid $uni-border-color-light;
+  transition: all 0.2s ease;
 
-.section-item:last-child {
-  border-bottom: none;
+  &:last-child {
+    border-bottom: none;
+  }
 }
 
 .item-label {
-  font-size: 26rpx;
-  color: #999;
+  font-size: $uni-font-size-sm;
+  color: $uni-text-color-placeholder;
 }
 
 .item-value {
-  font-size: 26rpx;
-  color: #333;
+  font-size: $uni-font-size-sm;
+  color: $uni-text-color;
   width: 60%;
   text-align: right;
 }
 
 .faq-card .faq-item {
-  margin-bottom: 24rpx;
-}
+  margin-bottom: $uni-spacing-xl;
 
-.faq-card .faq-item:last-child {
-  margin-bottom: 0;
+  &:last-child {
+    margin-bottom: 0;
+  }
 }
 
 .faq-question {
-  font-size: 26rpx;
+  font-size: $uni-font-size-sm;
   font-weight: 600;
-  color: #444;
-  margin-bottom: 8rpx;
+  color: $uni-text-color;
+  margin-bottom: $uni-spacing-sm;
+  display: block;
 }
 
 .faq-answer {
-  font-size: 26rpx;
-  color: #666;
+  font-size: $uni-font-size-sm;
+  color: $uni-text-color-secondary;
   line-height: 1.6;
 }
 
 .contact-card .contact-row {
   display: flex;
   justify-content: space-between;
-  padding: 12rpx 0;
-  font-size: 26rpx;
+  padding: $uni-spacing-md 0;
+  font-size: $uni-font-size-sm;
 }
 
 .contact-label {
-  color: #999;
+  color: $uni-text-color-placeholder;
 }
 
 .contact-value {
-  color: #333;
+  color: $uni-text-color;
   font-weight: 500;
 }
 </style>

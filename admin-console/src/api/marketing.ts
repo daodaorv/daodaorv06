@@ -9,6 +9,7 @@ import {
   mockGetTourList,
   mockGetExtraFeeList,
   mockGetMarketingStats,
+  mockGetCouponRecordList,
   type PricingStrategy,
   type PricingStrategyListParams,
   type Coupon,
@@ -21,7 +22,12 @@ import {
   type TourListParams,
   type ExtraFee,
   type ExtraFeeListParams,
-  type MarketingStats
+  type MarketingStats,
+  type CouponRecord,
+  type CouponRecordListParams,
+  type CouponRecordType,
+  type CouponRecordSource,
+  type ApplicableProductType
 } from '@/mock/marketing'
 
 // 导出类型
@@ -38,7 +44,12 @@ export type {
   TourListParams,
   ExtraFee,
   ExtraFeeListParams,
-  MarketingStats
+  MarketingStats,
+  CouponRecord,
+  CouponRecordListParams,
+  CouponRecordType,
+  CouponRecordSource,
+  ApplicableProductType
 }
 
 // ==================== 价格策略管理 ====================
@@ -83,6 +94,76 @@ export const deletePricingStrategy = (_id: number) => {
 export const getCouponList = (params: CouponListParams) => {
   // return request.get('/marketing/coupons', { params })
   return mockGetCouponList(params)
+}
+
+/**
+ * 创建优惠券
+ */
+export const createCoupon = (data: Partial<Coupon>) => {
+  // return request.post('/marketing/coupons', data)
+  return Promise.resolve({ success: true, data })
+}
+
+/**
+ * 更新优惠券
+ */
+export const updateCoupon = (id: number, data: Partial<Coupon>) => {
+  // return request.put(`/marketing/coupons/${id}`, data)
+  return Promise.resolve({ success: true, data })
+}
+
+/**
+ * 删除优惠券
+ */
+export const deleteCoupon = (id: number) => {
+  // return request.delete(`/marketing/coupons/${id}`)
+  return Promise.resolve({ success: true })
+}
+
+/**
+ * 检查优惠码是否存在
+ */
+export const checkCouponCodeExists = (code: string) => {
+  // return request.get('/marketing/coupons/check-code', { params: { code } })
+  return Promise.resolve({ exists: false })
+}
+
+/**
+ * 批量生成优惠码
+ */
+export const generateCouponCodes = (params: {
+  prefix: string
+  count: number
+  randomLength: number
+}) => {
+  // return request.post('/marketing/coupons/generate-codes', params)
+  return Promise.resolve({ codes: [] })
+}
+
+// ==================== 优惠券记录管理 ====================
+
+/**
+ * 获取优惠券记录列表
+ */
+export const getCouponRecordList = (params: CouponRecordListParams) => {
+  // return request.get('/marketing/coupon-records', { params })
+  return mockGetCouponRecordList(params)
+}
+
+/**
+ * 获取优惠券记录详情
+ */
+export const getCouponRecordDetail = (id: number) => {
+  // return request.get(`/marketing/coupon-records/${id}`)
+  return Promise.resolve({ data: {} })
+}
+
+/**
+ * 导出优惠券记录
+ */
+export const exportCouponRecords = (params: CouponRecordListParams) => {
+  // return request.get('/marketing/coupon-records/export', { params, responseType: 'blob' })
+  return Promise.resolve()
 }
 
 // ==================== 营销活动管理 ====================

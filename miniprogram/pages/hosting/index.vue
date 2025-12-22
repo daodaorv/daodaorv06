@@ -1,69 +1,85 @@
 <template>
   <view class="hosting-center">
-    <!-- 1. 顶部公告栏 -->
+    <!-- 1. 顶部公告栏 (通透设计) -->
     <view class="notice-banner" v-if="notices.length > 0">
       <swiper class="notice-swiper" vertical :autoplay="true" :interval="3000" :circular="true">
         <swiper-item v-for="notice in notices" :key="notice.id">
           <view class="notice-item" @click="handleNoticeClick(notice)">
-            <text class="notice-icon">📢</text>
+            <view class="notice-tag">公告</view>
             <text class="notice-text">{{ notice.content }}</text>
+            <text class="notice-arrow">›</text>
           </view>
         </swiper-item>
       </swiper>
     </view>
 
-    <!-- 2. 我的托管收益卡片 -->
-    <view class="income-card">
-      <!-- 未登录状态 -->
-      <view v-if="!isLogin" class="login-prompt">
-        <view class="prompt-title">开启托管，让闲置房车为您赚钱</view>
-        <button class="start-hosting-btn" @click="scrollToFeatures">立即托管赚租金</button>
-      </view>
-
-      <!-- 已登录且有托管车辆 -->
-      <view v-else-if="hasHostingVehicles" class="income-info">
-        <view class="income-header">
-          <text class="header-title">我的托管收益</text>
-          <text class="header-tip">数据实时更新</text>
+    <!-- 2. 我的托管收益卡片 (沉浸式卡片) -->
+    <view class="income-section">
+      <view class="income-card">
+        <!-- 未登录状态 -->
+        <view v-if="!isLogin" class="login-prompt">
+          <view class="prompt-content">
+            <text class="prompt-title">开启托管新生活</text>
+            <text class="prompt-subtitle">让闲置房车为您创造持续收益</text>
+          </view>
+          <button class="start-hosting-btn-glass" @click="scrollToFeatures">立即开启</button>
         </view>
-        <view class="income-grid">
-          <view class="income-item">
-            <text class="income-label">累计收益</text>
-            <text class="income-value">¥{{ incomeData.totalIncome }}</text>
+
+        <!-- 已登录且有托管车辆 -->
+        <view v-else-if="hasHostingVehicles" class="income-info">
+          <view class="income-header">
+            <view class="header-left">
+              <text class="header-title">我的托管收益</text>
+              <view class="live-tag">
+                <view class="live-dot"></view>实时更新
+              </view>
+            </view>
+            <button
+              class="withdraw-btn-glass"
+              :disabled="incomeData.totalIncome < 100"
+              @click="handleWithdraw"
+            >
+              {{ incomeData.totalIncome < 100 ? '满100提现' : '立即提现' }}
+            </button>
           </view>
-          <view class="income-item">
-            <text class="income-label">今日待结算</text>
-            <text class="income-value">¥{{ incomeData.todayPending }}</text>
+          
+          <view class="income-main">
+            <text class="currency-symbol">¥</text>
+            <text class="total-amount">{{ incomeData.totalIncome }}</text>
+            <text class="label">累计总收益</text>
           </view>
-          <view class="income-item">
-            <text class="income-label">本月预估收益</text>
-            <text class="income-value">¥{{ incomeData.monthEstimate }}</text>
+
+          <view class="income-grid">
+            <view class="income-item">
+              <text class="item-value">¥{{ incomeData.todayPending }}</text>
+              <text class="item-label">今日待结算</text>
+            </view>
+            <view class="vertical-divider"></view>
+            <view class="income-item">
+              <text class="item-value">¥{{ incomeData.monthEstimate }}</text>
+              <text class="item-label">本月预估</text>
+            </view>
           </view>
         </view>
-        <button
-          class="withdraw-btn"
-          :disabled="incomeData.totalIncome < 100"
-          @click="handleWithdraw"
-        >
-          {{ incomeData.totalIncome < 100 ? '满100元可提现' : '立即提现' }}
-        </button>
-      </view>
 
-      <!-- 已登录但无托管车辆 -->
-      <view v-else class="no-vehicle-prompt">
-        <image class="prompt-icon" src="/static/images/empty-vehicle.png" mode="aspectFit"></image>
-        <text class="prompt-text">您还没有托管车辆</text>
-        <button class="start-hosting-btn" @click="scrollToFeatures">立即托管</button>
+        <!-- 已登录但无托管车辆 -->
+        <view v-else class="no-vehicle-prompt">
+          <view class="glass-container">
+            <image class="prompt-icon" src="/static/images/empty-vehicle.png" mode="aspectFit"></image>
+            <text class="prompt-text">您还没有托管车辆</text>
+            <button class="start-hosting-btn-light" @click="scrollToFeatures">立即托管</button>
+          </view>
+        </view>
       </view>
     </view>
 
-    <!-- 3. 我的托管车辆 -->
+    <!-- 3. 我的托管车辆 (大卡片布局) -->
     <view v-if="isLogin && hasHostingVehicles" class="my-vehicles">
       <view class="section-header">
-        <text class="section-title">我的托管车辆</text>
-        <text v-if="vehicles.length > 3" class="view-all" @click="viewAllVehicles">
-          查看全部 <text class="arrow">›</text>
-        </text>
+        <text class="section-title">托管车辆</text>
+        <view v-if="vehicles.length > 3" class="view-all" @click="viewAllVehicles">
+          全部 <text class="arrow">›</text>
+        </view>
       </view>
       <view class="vehicle-list">
         <view
@@ -72,66 +88,92 @@
           class="vehicle-card"
           @click="goToVehicleDetail(vehicle.id)"
         >
-          <image :src="vehicle.thumbnail" class="vehicle-img" mode="aspectFill"></image>
-          <view class="vehicle-info">
-            <view class="vehicle-header">
-              <text class="plate-number">{{ vehicle.plateNumber }}</text>
-              <view class="status-badge" :class="'status-' + vehicle.status">
-                {{ vehicle.statusText }}
-              </view>
+          <view class="vehicle-image-wrapper">
+            <image :src="vehicle.thumbnail" class="vehicle-img" mode="aspectFill"></image>
+            <view class="vehicle-status-tag" :class="'status-' + vehicle.status">
+              {{ vehicle.statusText }}
             </view>
-            <view class="vehicle-income">
-              <view class="income-row">
-                <text class="label">今日收益</text>
-                <text class="value">¥{{ vehicle.todayIncome }}</text>
+          </view>
+          
+          <view class="vehicle-info">
+            <view class="vehicle-base">
+              <text class="plate-number">{{ vehicle.plateNumber }}</text>
+              <button class="action-btn" @click.stop="applySelfUse(vehicle)">自用</button>
+            </view>
+            
+            <view class="vehicle-data-grid">
+              <view class="data-item">
+                <text class="data-label">今日收益</text>
+                <text class="data-value">¥{{ vehicle.todayIncome.toFixed(2) }}</text>
               </view>
-              <view class="income-row">
-                <text class="label">本月收益</text>
-                <text class="value">¥{{ vehicle.monthIncome }}</text>
+              <view class="data-item">
+                <text class="data-label">本月收益</text>
+                <text class="data-value">¥{{ vehicle.monthIncome.toFixed(2) }}</text>
               </view>
             </view>
           </view>
-          <button class="self-use-btn" @click.stop="applySelfUse(vehicle)">
-            自用申请
-          </button>
         </view>
       </view>
     </view>
 
-    <!-- 4. 收益明细 + 托管协议入口 -->
-    <view class="quick-links">
-      <view class="link-item" @click="goToAgreement">
-        <text class="link-icon">📄</text>
-        <text class="link-text">托管协议与帮助</text>
-        <text class="link-arrow">›</text>
+    <!-- 4. 核心功能区 (Idle & New Car) -->
+    <view class="feature-section core-features" id="features">
+      <view class="section-header">
+        <text class="section-title">托管服务</text>
+      </view>
+      <view class="feature-grid-core">
+        <!-- 自有车托管 -->
+        <view class="feature-card-core" @click="goToOldCarHosting">
+          <view class="core-content">
+            <text class="core-title">闲置托管</text>
+            <text class="core-subtitle">自有车入驻赚收益</text>
+            <view class="core-badge orange">车主70%分成</view>
+          </view>
+          <image class="core-icon" src="/static/images/old-car-icon.png" mode="aspectFit"></image>
+        </view>
+
+        <!-- 购车托管 -->
+        <view class="feature-card-core" @click="goToNewCarHosting">
+          <view class="core-content">
+            <text class="core-title">购车托管</text>
+            <text class="core-subtitle">保底收益+高分成</text>
+            <view class="core-badge blue">保底3500/月</view>
+          </view>
+          <image class="core-icon" src="/static/images/new-car-icon.png" mode="aspectFit"></image>
+        </view>
       </view>
     </view>
 
-    <!-- 5. 主要功能区（2×2网格） -->
-    <view class="feature-grid" id="features">
-      <view class="feature-item" @click="handleShare">
-        <image class="feature-icon" src="/static/images/share-icon.png" mode="aspectFit"></image>
-        <text class="feature-title">分享托管服务</text>
-        <text class="feature-subtitle">邀请好友了解</text>
-        <view class="feature-badge">推广有奖</view>
-      </view>
-      <view class="feature-item" @click="goToOldCarHosting">
-        <image class="feature-icon" src="/static/images/old-car-icon.png" mode="aspectFit"></image>
-        <text class="feature-title">我要托管闲置房车</text>
-        <text class="feature-subtitle">自有车免费入驻</text>
-        <view class="feature-badge">车主70%分成</view>
-      </view>
-      <view class="feature-item" @click="goToNewCarHosting">
-        <image class="feature-icon" src="/static/images/new-car-icon.png" mode="aspectFit"></image>
-        <text class="feature-title">购车托管</text>
-        <text class="feature-subtitle">保底+高分成</text>
-        <view class="feature-badge">保底3500元/月</view>
-      </view>
-      <view class="feature-item" @click="goToAgreement">
-        <image class="feature-icon" src="/static/images/agreement-icon.png" mode="aspectFit"></image>
-        <text class="feature-title">托管协议与帮助</text>
-        <text class="feature-subtitle">了解详细政策</text>
-        <view class="feature-badge">查看详情</view>
+    <!-- 5. 辅助功能区 (Share & Guide) -->
+    <view class="feature-section aux-features">
+       <view class="feature-grid-aux">
+        <!-- 分享 -->
+        <view class="feature-card-aux" @click="handleShare">
+          <view class="aux-left">
+            <view class="aux-icon-wrapper share-icon">
+              <u-icon name="share" size="32" color="#FF9F29"></u-icon>
+            </view>
+            <view class="aux-info">
+              <text class="aux-title">分享服务</text>
+              <text class="aux-desc">邀请好友推广有奖</text>
+            </view>
+          </view>
+          <text class="aux-arrow">›</text>
+        </view>
+
+        <!-- 协议与帮助 -->
+        <view class="feature-card-aux" @click="goToAgreement">
+           <view class="aux-left">
+            <view class="aux-icon-wrapper agreement-icon">
+              <u-icon name="file-text" size="32" color="#2196F3"></u-icon>
+            </view>
+            <view class="aux-info">
+              <text class="aux-title">服务指南</text>
+              <text class="aux-desc">了解托管协议与帮助</text>
+            </view>
+          </view>
+          <text class="aux-arrow">›</text>
+        </view>
       </view>
     </view>
 
@@ -153,9 +195,10 @@
 <script setup lang="ts">
 import { logger } from '@/utils/logger';
 import { ref, computed } from 'vue';
-import { onLoad, onShareAppMessage } from '@dcloudio/uni-app';
+import { onLoad, onShow, onShareAppMessage } from '@dcloudio/uni-app';
 import { useShare } from '@/composables/useShare';
 import { ShareScene } from '@/types/share';
+import { isLoggedIn } from '@/utils/auth';
 import ShareSheet from '@/components/share/ShareSheet.vue';
 import PosterPreview from '@/components/share/PosterPreview.vue';
 
@@ -194,8 +237,14 @@ const {
   query: {}
 });
 
+/**
+ * 页面加载时初始化
+ */
 onLoad((options: any) => {
+  // 检查登录状态（不强制登录）
   checkLoginStatus();
+
+  // 如果已登录，加载托管数据
   if (isLogin.value) {
     loadHostingData();
   }
@@ -207,6 +256,19 @@ onLoad((options: any) => {
       from: options.share_from,
       businessId: options.share_id
     });
+  }
+});
+
+/**
+ * 页面显示时刷新登录状态
+ */
+onShow(() => {
+  // 刷新登录状态
+  checkLoginStatus();
+
+  // 如果已登录，刷新托管数据
+  if (isLogin.value) {
+    loadHostingData();
   }
 });
 
@@ -222,9 +284,15 @@ const handleShare = () => {
 
 // 方法定义
 const checkLoginStatus = () => {
-  // Mock数据：模拟已登录状态
-  isLogin.value = true;
-  hasHostingVehicles.value = true;
+  // 检查真实登录状态
+  isLogin.value = isLoggedIn();
+
+  // Mock数据：模拟托管车辆状态（实际应该从API获取）
+  if (isLogin.value) {
+    hasHostingVehicles.value = true;
+  } else {
+    hasHostingVehicles.value = false;
+  }
 };
 
 const loadHostingData = () => {
@@ -328,50 +396,29 @@ const handleNoticeClick = (notice: any) => {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+// Design Tokens - Modern Journey Theme
+$hosting-bg-color: #F8F9FC;
+$card-bg-color: #FFFFFF;
+$primary-gradient: linear-gradient(135deg, #FF9F29 0%, #FFB84D 100%);
+$shadow-sm: 0 4rpx 16rpx rgba(0, 0, 0, 0.04);
+$shadow-md: 0 8rpx 24rpx rgba(0, 0, 0, 0.08);
+$shadow-glow: 0 12rpx 32rpx rgba(255, 159, 41, 0.15);
+$font-family-num: 'DIN Alternate', -apple-system, sans-serif;
+
 .hosting-center {
   min-height: 100vh;
-  background: #F5F5F5;
-  padding-bottom: 40rpx;
+  background-color: $hosting-bg-color;
+  padding-bottom: 60rpx;
 }
 
-/* 顶部标题栏 */
-.page-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 24rpx 32rpx;
-  background: #FFFFFF;
-}
-
-.page-title {
-  font-size: 36rpx;
-  font-weight: 700;
-  color: #333;
-}
-
-.share-btn {
-  width: 56rpx;
-  height: 56rpx;
-  border-radius: 50%;
-  background-color: #F5F5F5;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.share-btn:active {
-  background-color: #E0E0E0;
-  transform: scale(0.95);
-}
-
-/* 公告栏 */
+// 1. 公告栏
 .notice-banner {
   height: 80rpx;
-  background: #FFF7E6;
-  border-bottom: 1rpx solid #FFE7BA;
+  background: rgba(255, 159, 41, 0.08);
+  margin: 20rpx 32rpx;
+  border-radius: 40rpx; // 全圆角
+  overflow: hidden;
 }
 
 .notice-swiper {
@@ -381,130 +428,260 @@ const handleNoticeClick = (notice: any) => {
 .notice-item {
   display: flex;
   align-items: center;
-  justify-content: center;
   height: 100%;
-  padding: 0 32rpx;
+  padding: 0 24rpx;
 }
 
-.notice-icon {
-  font-size: 28rpx;
+.notice-tag {
+  background: #FF9F29;
+  color: #fff;
+  font-size: 20rpx;
+  padding: 4rpx 12rpx;
+  border-radius: 8rpx;
   margin-right: 16rpx;
+  flex-shrink: 0;
 }
 
 .notice-text {
   font-size: 24rpx;
-  color: #FF9800;
+  color: #555;
   flex: 1;
+  width: 0; // 配合 text-ellipsis
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
-/* 收益卡片 */
+.notice-arrow {
+  color: #ccc;
+  font-size: 32rpx;
+  margin-left: 16rpx;
+}
+
+// 2. 收益卡片区
+.income-section {
+  padding: 0 32rpx;
+  margin-bottom: 40rpx;
+}
+
 .income-card {
-  margin: 24rpx 32rpx;
-  background: linear-gradient(135deg, #FF9F29 0%, #FF7A00 100%);
-  border-radius: 24rpx;
-  padding: 40rpx 32rpx;
-  box-shadow: 0 8rpx 24rpx rgba(255, 159, 41, 0.3);
+  position: relative;
+  background: $primary-gradient;
+  border-radius: 32rpx;
+  padding: 40rpx;
+  box-shadow: $shadow-glow;
+  color: #fff;
+  overflow: hidden;
+  
+  // 装饰纹理
+  &::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 400rpx;
+    height: 400rpx;
+    background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 70%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
 }
 
-.login-prompt,
-.no-vehicle-prompt {
+// 未登录引导
+.login-prompt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
+  padding: 20rpx 0;
+}
+
+.prompt-content {
+  margin-bottom: 40rpx;
 }
 
 .prompt-title {
-  font-size: 32rpx;
-  color: #FFFFFF;
+  font-size: 36rpx;
   font-weight: 600;
-  margin-bottom: 32rpx;
-}
-
-.prompt-icon {
-  width: 200rpx;
-  height: 200rpx;
-  margin-bottom: 24rpx;
-}
-
-.prompt-text {
+  margin-bottom: 12rpx;
   display: block;
-  font-size: 28rpx;
-  color: rgba(255, 255, 255, 0.9);
-  margin-bottom: 32rpx;
 }
 
-.start-hosting-btn {
-  background: #FFFFFF;
-  color: #FF9F29;
-  border-radius: 48rpx;
-  height: 88rpx;
-  line-height: 88rpx;
-  font-size: 32rpx;
+.prompt-subtitle {
+  font-size: 26rpx;
+  opacity: 0.9;
+  display: block;
+}
+
+.start-hosting-btn-glass {
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: #fff;
+  font-size: 30rpx;
   font-weight: 600;
-  border: none;
+  padding: 0 60rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  border-radius: 40rpx;
+  
+  &:active {
+    background: rgba(255, 255, 255, 0.35);
+  }
 }
 
+.glass-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.start-hosting-btn-light {
+  background: #fff;
+  color: #FF9F29;
+  font-size: 30rpx;
+  font-weight: 600;
+  padding: 0 60rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  border-radius: 40rpx;
+  margin-top: 32rpx;
+  
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+}
+
+// 收益详情
 .income-info {
-  color: #FFFFFF;
+  position: relative;
+  z-index: 1;
 }
 
 .income-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 32rpx;
+  align-items: flex-start;
+  margin-bottom: 40rpx;
+
+  .header-title {
+    font-size: 32rpx;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 8rpx;
+  }
+
+  .live-tag {
+    display: flex;
+    align-items: center;
+    font-size: 20rpx;
+    opacity: 0.8;
+    
+    .live-dot {
+      width: 10rpx;
+      height: 10rpx;
+      background: #fff; 
+      border-radius: 50%;
+      margin-right: 8rpx;
+      animation: blink 2s infinite;
+    }
+  }
 }
 
-.header-title {
-  font-size: 32rpx;
-  font-weight: 600;
+@keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 0.4; }
+  100% { opacity: 1; }
 }
 
-.header-tip {
+.withdraw-btn-glass {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
   font-size: 24rpx;
-  opacity: 0.8;
+  padding: 0 24rpx;
+  height: 56rpx;
+  line-height: 56rpx;
+  border-radius: 28rpx;
+  margin: 0;
+
+  &[disabled] {
+    opacity: 0.6;
+  }
+}
+
+.income-main {
+  text-align: center;
+  margin-bottom: 48rpx;
+  
+  .currency-symbol {
+    font-size: 40rpx;
+    font-family: $font-family-num;
+    margin-right: 8rpx;
+  }
+  
+  .total-amount {
+    font-size: 80rpx;
+    font-family: $font-family-num;
+    line-height: 1;
+    font-weight: 700;
+    text-shadow: 0 4rpx 10rpx rgba(0,0,0,0.1);
+  }
+  
+  .label {
+    display: block;
+    font-size: 24rpx;
+    opacity: 0.8;
+    margin-top: 16rpx;
+  }
 }
 
 .income-grid {
   display: flex;
-  justify-content: space-between;
-  margin-bottom: 32rpx;
+  justify-content: space-around;
+  align-items: center;
+  background: rgba(0,0,0,0.05);
+  border-radius: 24rpx;
+  padding: 24rpx;
+
+  .income-item {
+    text-align: center;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .item-value {
+    font-size: 36rpx;
+    font-family: $font-family-num;
+    font-weight: 600;
+    margin-bottom: 8rpx;
+  }
+
+  .item-label {
+    font-size: 22rpx;
+    opacity: 0.8;
+  }
+
+  .vertical-divider {
+    width: 2rpx;
+    height: 40rpx;
+    background: rgba(255,255,255,0.2);
+  }
 }
 
-.income-item {
-  flex: 1;
-  text-align: center;
-}
-
-.income-label {
-  display: block;
-  font-size: 24rpx;
+.no-vehicle-prompt .prompt-icon {
+  width: 240rpx;
+  height: 240rpx;
   opacity: 0.9;
-  margin-bottom: 16rpx;
+  margin-bottom: 24rpx;
 }
 
-.income-value {
-  display: block;
-  font-size: 40rpx;
-  font-weight: 600;
-}
-
-.withdraw-btn {
-  background: #FFFFFF;
-  color: #FF9F29;
-  border-radius: 48rpx;
-  height: 88rpx;
-  line-height: 88rpx;
-  font-size: 32rpx;
-  font-weight: 600;
-  border: none;
-}
-
-.withdraw-btn[disabled] {
-  opacity: 0.6;
-}
-
-/* 我的托管车辆 */
+// 3. 车辆列表
 .my-vehicles {
-  margin: 24rpx 32rpx;
+  padding: 0 32rpx;
+  margin-bottom: 40rpx;
 }
 
 .section-header {
@@ -515,18 +692,22 @@ const handleNoticeClick = (notice: any) => {
 }
 
 .section-title {
-  font-size: 32rpx;
-  font-weight: 600;
-  color: #333333;
+  font-size: 34rpx;
+  font-weight: 700;
+  color: #1A1A1A;
 }
 
 .view-all {
-  font-size: 28rpx;
-  color: #FF9F29;
-}
-
-.arrow {
-  font-size: 32rpx;
+  font-size: 26rpx;
+  color: #888;
+  display: flex;
+  align-items: center;
+  
+  .arrow {
+    margin-left: 8rpx;
+    font-size: 32rpx;
+    margin-top: -4rpx;
+  }
 }
 
 .vehicle-list {
@@ -536,169 +717,262 @@ const handleNoticeClick = (notice: any) => {
 }
 
 .vehicle-card {
-  display: flex;
-  background: #FFFFFF;
-  border-radius: 16rpx;
-  padding: 24rpx;
-  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+  background: $card-bg-color;
+  border-radius: 24rpx;
+  overflow: hidden;
+  box-shadow: $shadow-sm;
+  transition: transform 0.1s;
+  
+  &:active {
+    transform: scale(0.99);
+  }
+}
+
+// 大卡片样式
+.vehicle-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 300rpx; // 大图展示
+  background: #f0f0f0;
 }
 
 .vehicle-img {
-  width: 160rpx;
-  height: 120rpx;
-  border-radius: 12rpx;
-  margin-right: 24rpx;
-  flex-shrink: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.vehicle-status-tag {
+  position: absolute;
+  top: 24rpx;
+  right: 24rpx;
+  padding: 6rpx 16rpx;
+  border-radius: 8rpx;
+  font-size: 22rpx;
+  font-weight: 500;
+  backdrop-filter: blur(4px);
+  
+  &.status-renting {
+    background: rgba(0, 181, 120, 0.9);
+    color: #fff;
+  }
+  
+  &.status-idle {
+    background: rgba(25, 118, 210, 0.9);
+    color: #fff;
+  }
+  
+  &.status-maintenance {
+    background: rgba(255, 125, 0, 0.9);
+    color: #fff;
+  }
 }
 
 .vehicle-info {
-  flex: 1;
+  padding: 24rpx;
 }
 
-.vehicle-header {
+.vehicle-base {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16rpx;
+  margin-bottom: 24rpx;
+  
+  .plate-number {
+    font-size: 32rpx;
+    font-weight: 700;
+    color: #1A1A1A;
+  }
+  
+  .action-btn {
+    margin: 0;
+    font-size: 24rpx;
+    background: #F2F3F5;
+    color: #4E5969;
+    padding: 0 24rpx;
+    height: 52rpx;
+    line-height: 52rpx;
+    border-radius: 26rpx;
+    &::after { border: none; }
+  }
 }
 
-.plate-number {
-  font-size: 28rpx;
-  font-weight: 600;
-  color: #333333;
+.vehicle-data-grid {
+  display: flex;
+  background: #F8F9FC;
+  border-radius: 16rpx;
+  padding: 16rpx 24rpx;
+  
+  .data-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    
+    &:first-child {
+      border-right: 1rpx solid #E5E6EB;
+    }
+    
+    &:last-child {
+      padding-left: 32rpx;
+    }
+  }
+  
+  .data-label {
+    font-size: 22rpx;
+    color: #86909C;
+    margin-bottom: 4rpx;
+  }
+  
+  .data-value {
+    font-size: 30rpx;
+    font-family: $font-family-num;
+    font-weight: 600;
+    color: #FF9F29;
+  }
 }
 
-.status-badge {
-  padding: 4rpx 16rpx;
-  border-radius: 8rpx;
-  font-size: 20rpx;
+// 4. 服务网格 (Core & Aux)
+.feature-section {
+  padding: 0 32rpx;
+  margin-bottom: 32rpx;
 }
 
-.status-renting {
-  background: #E8F5E9;
-  color: #4CAF50;
+.feature-grid-core {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24rpx;
+  margin-bottom: 32rpx;
 }
 
-.status-idle {
-  background: #E3F2FD;
-  color: #2196F3;
-}
-
-.vehicle-income {
+.feature-card-core {
+  background: $card-bg-color;
+  border-radius: 24rpx;
+  padding: 32rpx 24rpx;
+  height: 220rpx;
+  position: relative;
+  overflow: hidden;
+  box-shadow: $shadow-md; // Elevated for core
   display: flex;
   flex-direction: column;
-  gap: 8rpx;
-}
-
-.income-row {
-  display: flex;
   justify-content: space-between;
-  font-size: 24rpx;
+  
+  &:active {
+    transform: scale(0.98);
+  }
+  
+  // 核心图标
+  .core-icon {
+    position: absolute;
+    right: -10rpx;
+    bottom: -10rpx;
+    width: 140rpx;
+    height: 140rpx;
+    opacity: 0.15;
+    transform: rotate(-10deg);
+  }
+
+  .core-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .core-title {
+    font-size: 32rpx;
+    font-weight: 700;
+    color: #1D2129;
+    margin-bottom: 8rpx;
+  }
+
+  .core-subtitle {
+    font-size: 22rpx;
+    color: #86909C;
+    margin-bottom: 24rpx;
+    line-height: 1.3;
+  }
+
+  .core-badge {
+    font-size: 20rpx;
+    padding: 6rpx 16rpx;
+    border-radius: 100rpx;
+    font-weight: 600;
+    
+    &.orange {
+      background: rgba(255, 159, 41, 0.15);
+      color: #FF9F29;
+    }
+    
+    &.blue {
+      background: rgba(33, 150, 243, 0.15);
+      color: #2196F3;
+    }
+  }
 }
 
-.income-row .label {
-  color: #999999;
-}
-
-.income-row .value {
-  color: #FF9F29;
-  font-weight: 600;
-}
-
-.self-use-btn {
-  align-self: center;
-  background: #FF9F29;
-  color: #FFFFFF;
-  border-radius: 8rpx;
-  padding: 16rpx 24rpx;
-  font-size: 24rpx;
-  border: none;
-  height: auto;
-  line-height: normal;
-  flex-shrink: 0;
-  margin-left: 16rpx;
-}
-
-/* 快捷链接 */
-.quick-links {
-  margin: 24rpx 32rpx;
-  background: #FFFFFF;
-  border-radius: 16rpx;
-  overflow: hidden;
-}
-
-.link-item {
-  display: flex;
-  align-items: center;
-  padding: 32rpx;
-  border-bottom: 1rpx solid #F5F5F5;
-}
-
-.link-item:last-child {
-  border-bottom: none;
-}
-
-.link-icon {
-  font-size: 40rpx;
-  margin-right: 24rpx;
-}
-
-.link-text {
-  flex: 1;
-  font-size: 28rpx;
-  color: #333333;
-}
-
-.link-arrow {
-  font-size: 32rpx;
-  color: #CCCCCC;
-}
-
-/* 功能网格 */
-.feature-grid {
-  margin: 24rpx 32rpx;
+// 辅助功能
+.feature-grid-aux {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, 1fr);
   gap: 24rpx;
 }
 
-.feature-item {
-  background: #FFFFFF;
-  border-radius: 16rpx;
-  padding: 40rpx 24rpx;
-  text-align: center;
-  position: relative;
-  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
-}
+.feature-card-aux {
+  background: #FFF;
+  border-radius: 20rpx;
+  padding: 24rpx;
+  box-shadow: $shadow-sm; // Lower elevation
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  
+  &:active {
+    background: #F7F8FA;
+  }
+  
+  .aux-left {
+    display: flex;
+    align-items: center;
+  }
 
-.feature-icon {
-  width: 120rpx;
-  height: 120rpx;
-  margin-bottom: 24rpx;
-}
+  .aux-icon-wrapper {
+    width: 64rpx;
+    height: 64rpx;
+    margin-right: 16rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16rpx;
 
-.feature-title {
-  display: block;
-  font-size: 28rpx;
-  font-weight: 600;
-  color: #333333;
-  margin-bottom: 8rpx;
-}
+    &.share-icon {
+      background: rgba(255, 159, 41, 0.1);
+    }
 
-.feature-subtitle {
-  display: block;
-  font-size: 24rpx;
-  color: #999999;
-  margin-bottom: 16rpx;
-}
+    &.agreement-icon {
+      background: rgba(33, 150, 243, 0.1);
+    }
+  }
 
-.feature-badge {
-  display: inline-block;
-  background: #FFF7E6;
-  color: #FF9F29;
-  padding: 8rpx 16rpx;
-  border-radius: 8rpx;
-  font-size: 20rpx;
-  font-weight: 600;
+  .aux-info {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .aux-title {
+    font-size: 28rpx;
+    font-weight: 600;
+    color: #1D2129;
+    margin-bottom: 4rpx;
+  }
+  
+  .aux-desc {
+    font-size: 20rpx;
+    color: #C9CDD4;
+  }
+  
+  .aux-arrow {
+    font-size: 32rpx;
+    color: #E5E6EB;
+  }
 }
 </style>

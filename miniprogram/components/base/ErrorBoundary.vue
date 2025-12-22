@@ -85,7 +85,7 @@ defineExpose({
 	padding: 16rpx 48rpx;
 	background-color: $uni-color-primary;
 	color: #FFFFFF;
-	border-radius: $uni-border-radius-md;
+	border-radius: $uni-radius-md;
 	font-size: 28rpx;
 	border: none;
 }

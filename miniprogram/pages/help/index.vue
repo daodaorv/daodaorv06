@@ -304,27 +304,27 @@ onMounted(() => {
 <style lang="scss" scoped>
 .help-page {
 	min-height: 100vh;
-	background: #F5F5F5;
-	padding-bottom: 32rpx;
+	background: $uni-bg-color;
+	padding-bottom: $uni-spacing-xl;
 }
 
 // 搜索区域
 .search-section {
-	padding: 32rpx;
-	background: #FFFFFF;
+	padding: $uni-spacing-xl;
+	background: $uni-bg-color-card;
 
 	.search-box {
 		display: flex;
 		align-items: center;
-		padding: 20rpx 24rpx;
-		background: #F5F5F5;
-		border-radius: 48rpx;
+		padding: $uni-spacing-xl $uni-spacing-xl;
+		background: $uni-bg-color-grey;
+		border-radius: $uni-radius-btn;
 
 		.search-input {
 			flex: 1;
-			margin: 0 16rpx;
-			font-size: 28rpx;
-			color: #333333;
+			margin: 0 $uni-spacing-xl;
+			font-size: $uni-font-size-base;
+			color: $uni-text-color;
 		}
 
 		.clear-btn {
@@ -333,6 +333,11 @@ onMounted(() => {
 			display: flex;
 			align-items: center;
 			justify-content: center;
+			transition: all 0.2s ease;
+
+			&:active {
+				opacity: 0.7;
+			}
 		}
 	}
 }
@@ -343,22 +348,23 @@ onMounted(() => {
 .article-section,
 .service-section,
 .contact-section {
-	margin: 32rpx;
-	background: #FFFFFF;
-	border-radius: 24rpx;
-	padding: 32rpx;
+	margin: $uni-spacing-xl;
+	background: $uni-bg-color-card;
+	border-radius: $uni-radius-lg;
+	padding: $uni-spacing-xl;
+	box-shadow: $uni-shadow-card;
 }
 
 .section-header {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	margin-bottom: 24rpx;
+	margin-bottom: $uni-spacing-xl;
 
 	.section-title {
-		font-size: 32rpx;
+		font-size: $uni-font-size-lg;
 		font-weight: bold;
-		color: #333333;
+		color: $uni-text-color;
 	}
 }
 
@@ -366,8 +372,8 @@ onMounted(() => {
 	align-items: center;
 
 	.service-hours {
-		font-size: 24rpx;
-		color: #999999;
+		font-size: $uni-font-size-sm;
+		color: $uni-text-color-placeholder;
 	}
 }
 
@@ -378,40 +384,44 @@ onMounted(() => {
 	.service-item {
 		display: flex;
 		align-items: center;
-		padding: 24rpx 0;
-		border-bottom: 1rpx solid #F5F5F5;
+		padding: $uni-spacing-xl 0;
+		border-bottom: 1rpx solid $uni-bg-color-grey;
+		transition: all 0.2s ease;
 
 		&:last-child {
 			border-bottom: none;
 		}
 
+		&:active {
+			opacity: 0.7;
+		}
+
 		.service-icon {
 			width: 72rpx;
 			height: 72rpx;
-			border-radius: 16rpx;
-			background: #FFF8F0;
-
+			border-radius: $uni-radius-lg;
+			background: rgba($uni-color-primary, 0.08);
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			margin-right: 24rpx;
+			margin-right: $uni-spacing-xl;
 		}
 
 		.service-info {
 			flex: 1;
 			display: flex;
 			flex-direction: column;
-			gap: 8rpx;
+			gap: $uni-spacing-md;
 
 			.service-title {
 				font-size: 30rpx;
-				color: #333333;
+				color: $uni-text-color;
 				font-weight: 500;
 			}
 
 			.service-desc {
-				font-size: 24rpx;
-				color: #999999;
+				font-size: $uni-font-size-sm;
+				color: $uni-text-color-placeholder;
 			}
 		}
 	}
@@ -422,22 +432,27 @@ onMounted(() => {
 	.hot-item {
 		display: flex;
 		align-items: center;
-		padding: 24rpx 0;
-		border-bottom: 1rpx solid #F0F0F0;
+		padding: $uni-spacing-xl 0;
+		border-bottom: 1rpx solid $uni-border-color-light;
+		transition: all 0.2s ease;
 
 		&:last-child {
 			border-bottom: none;
 		}
 
+		&:active {
+			opacity: 0.7;
+		}
+
 		.hot-icon {
 			width: 56rpx;
 			height: 56rpx;
-			background: #FFF8F0;
-			border-radius: 50%;
+			background: rgba($uni-color-primary, 0.08);
+			border-radius: $uni-radius-circle;
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			margin-right: 24rpx;
+			margin-right: $uni-spacing-xl;
 		}
 
 		.hot-content {
@@ -445,16 +460,16 @@ onMounted(() => {
 
 			.hot-title {
 				display: block;
-				font-size: 28rpx;
+				font-size: $uni-font-size-base;
 				font-weight: 500;
-				color: #333333;
-				margin-bottom: 8rpx;
+				color: $uni-text-color;
+				margin-bottom: $uni-spacing-md;
 			}
 
 			.hot-summary {
 				display: block;
-				font-size: 24rpx;
-				color: #999999;
+				font-size: $uni-font-size-sm;
+				color: $uni-text-color-placeholder;
 				overflow: hidden;
 				text-overflow: ellipsis;
 				white-space: nowrap;
@@ -462,7 +477,7 @@ onMounted(() => {
 		}
 
 		.hot-arrow {
-			margin-left: 16rpx;
+			margin-left: $uni-spacing-xl;
 		}
 	}
 }
@@ -471,42 +486,43 @@ onMounted(() => {
 .category-grid {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
-	gap: 24rpx;
+	gap: $uni-spacing-xl;
 
 	.category-item {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		padding: 32rpx 16rpx;
-		background: #F8F8F8;
-		border-radius: 16rpx;
+		padding: $uni-spacing-xl $uni-spacing-xl;
+		background: $uni-bg-color-grey;
+		border-radius: $uni-radius-lg;
 		transition: all 0.3s;
 
 		&:active {
-			background: #F0F0F0;
+			background: $uni-border-color-light;
+			transform: scale(0.98);
 		}
 
 		.category-icon {
 			width: 80rpx;
 			height: 80rpx;
-			background: #FFF8F0;
-			border-radius: 50%;
+			background: rgba($uni-color-primary, 0.08);
+			border-radius: $uni-radius-circle;
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			margin-bottom: 16rpx;
+			margin-bottom: $uni-spacing-xl;
 		}
 
 		.category-name {
-			font-size: 26rpx;
+			font-size: $uni-font-size-sm;
 			font-weight: 500;
-			color: #333333;
-			margin-bottom: 8rpx;
+			color: $uni-text-color;
+			margin-bottom: $uni-spacing-md;
 		}
 
 		.category-count {
-			font-size: 20rpx;
-			color: #999999;
+			font-size: $uni-font-size-xs;
+			color: $uni-text-color-placeholder;
 		}
 	}
 }
@@ -514,51 +530,56 @@ onMounted(() => {
 // 最近文章
 .article-list {
 	.article-item {
-		padding: 24rpx 0;
-		border-bottom: 1rpx solid #F0F0F0;
+		padding: $uni-spacing-xl 0;
+		border-bottom: 1rpx solid $uni-border-color-light;
+		transition: all 0.2s ease;
 
 		&:last-child {
 			border-bottom: none;
+		}
+
+		&:active {
+			opacity: 0.7;
 		}
 
 		.article-header {
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
-			margin-bottom: 12rpx;
+			margin-bottom: $uni-spacing-lg;
 
 			.article-category {
-				padding: 4rpx 16rpx;
-				background: #E8F5E9;
-				color: #4CAF50;
-				font-size: 20rpx;
-				border-radius: 8rpx;
+				padding: 4rpx $uni-spacing-xl;
+				background: rgba($uni-color-success, 0.12);
+				color: $uni-color-success;
+				font-size: $uni-font-size-xs;
+				border-radius: $uni-radius-sm;
 			}
 
 			.article-stats {
 				display: flex;
 				align-items: center;
-				gap: 8rpx;
+				gap: $uni-spacing-md;
 
 				.stat-text {
-					font-size: 20rpx;
-					color: #999999;
+					font-size: $uni-font-size-xs;
+					color: $uni-text-color-placeholder;
 				}
 			}
 		}
 
 		.article-title {
 			display: block;
-			font-size: 28rpx;
+			font-size: $uni-font-size-base;
 			font-weight: 500;
-			color: #333333;
-			margin-bottom: 8rpx;
+			color: $uni-text-color;
+			margin-bottom: $uni-spacing-md;
 		}
 
 		.article-summary {
 			display: block;
-			font-size: 24rpx;
-			color: #999999;
+			font-size: $uni-font-size-sm;
+			color: $uni-text-color-placeholder;
 			line-height: 1.5;
 			overflow: hidden;
 			text-overflow: ellipsis;
@@ -573,19 +594,19 @@ onMounted(() => {
 .contact-card {
 	display: flex;
 	align-items: center;
-	padding: 32rpx;
-	background: linear-gradient(135deg, #FFF8F0 0%, #FFEFE0 100%);
-	border-radius: 16rpx;
+	padding: $uni-spacing-xl;
+	background: linear-gradient(135deg, rgba($uni-color-primary, 0.08) 0%, rgba($uni-color-primary, 0.15) 100%);
+	border-radius: $uni-radius-lg;
 
 	.contact-icon {
 		width: 80rpx;
 		height: 80rpx;
-		background: #FFFFFF;
-		border-radius: 50%;
+		background: $uni-bg-color-card;
+		border-radius: $uni-radius-circle;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		margin-right: 24rpx;
+		margin-right: $uni-spacing-xl;
 	}
 
 	.contact-content {
@@ -593,26 +614,33 @@ onMounted(() => {
 
 		.contact-title {
 			display: block;
-			font-size: 28rpx;
+			font-size: $uni-font-size-base;
 			font-weight: 500;
-			color: #333333;
-			margin-bottom: 8rpx;
+			color: $uni-text-color;
+			margin-bottom: $uni-spacing-md;
 		}
 
 		.contact-desc {
 			display: block;
-			font-size: 24rpx;
-			color: #999999;
+			font-size: $uni-font-size-sm;
+			color: $uni-text-color-placeholder;
 		}
 	}
 
 	.contact-btn {
-		padding: 16rpx 32rpx;
-		background: linear-gradient(135deg, #FF9F29 0%, #FF6B00 100%);
-		color: #FFFFFF;
-		border-radius: 48rpx;
-		font-size: 26rpx;
+		padding: $uni-spacing-xl $uni-spacing-xl;
+		background: $uni-color-primary-gradient;
+		color: $uni-text-color-inverse;
+		border-radius: $uni-radius-btn;
+		font-size: $uni-font-size-sm;
 		border: none;
+		box-shadow: $uni-shadow-glow;
+		transition: all 0.2s ease;
+
+		&:active {
+			transform: scale(0.98);
+			opacity: 0.9;
+		}
 	}
 }
 </style>

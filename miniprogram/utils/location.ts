@@ -1,6 +1,11 @@
 /**
  * 定位工具类
  * 提供完整的微信小程序定位功能，包括权限检查、授权引导、定位获取等
+ *
+ * 优化特性：
+ * - 定位缓存机制（5分钟有效期）
+ * - 防抖机制避免重复调用
+ * - 统一错误处理
  */
 
 import { logger } from './logger'
@@ -31,6 +36,16 @@ export interface LocationError {
 	message: string;
 	code?: number;
 }
+
+// 定位缓存接口
+interface LocationCache {
+	location: LocationResult;
+	timestamp: number;
+}
+
+// 缓存配置
+const LOCATION_CACHE_KEY = 'user_location_cache';
+const CACHE_DURATION = 5 * 60 * 1000; // 5分钟缓存有效期
 
 // Mock 城市坐标数据
 const CITY_COORDINATES: Record<string, { lat: number; lng: number }> = {
@@ -227,7 +242,64 @@ export function guideToSettingPage(): Promise<boolean> {
 }
 
 /**
- * 获取用户位置（完整版本）
+ * 获取缓存的定位信息
+ * @returns 缓存的定位结果，如果缓存不存在或已过期则返回 null
+ */
+function getCachedLocation(): LocationResult | null {
+	try {
+		const cached = uni.getStorageSync(LOCATION_CACHE_KEY) as LocationCache;
+		if (!cached || !cached.location || !cached.timestamp) {
+			return null;
+		}
+
+		// 检查缓存是否过期
+		const now = Date.now();
+		if (now - cached.timestamp > CACHE_DURATION) {
+			// 缓存已过期，清除
+			uni.removeStorageSync(LOCATION_CACHE_KEY);
+			return null;
+		}
+
+		// 移除缓存日志：避免重复输出（多个组件可能同时使用缓存）
+
+		return cached.location;
+	} catch (error) {
+		logger.error('[定位缓存] 读取缓存失败', error);
+		return null;
+	}
+}
+
+/**
+ * 保存定位信息到缓存
+ * @param location 定位结果
+ */
+function setCachedLocation(location: LocationResult): void {
+	try {
+		const cache: LocationCache = {
+			location,
+			timestamp: Date.now()
+		};
+		uni.setStorageSync(LOCATION_CACHE_KEY, cache);
+		// 移除日志：避免重复输出
+	} catch (error) {
+		logger.error('[定位缓存] 保存缓存失败', error);
+	}
+}
+
+/**
+ * 清除定位缓存
+ */
+export function clearLocationCache(): void {
+	try {
+		uni.removeStorageSync(LOCATION_CACHE_KEY);
+		logger.debug('[定位缓存] 缓存已清除');
+	} catch (error) {
+		logger.error('[定位缓存] 清除缓存失败', error);
+	}
+}
+
+/**
+ * 获取用户位置（完整版本，支持缓存）
  * @param options 配置选项
  * @returns Promise<LocationResult>
  */
@@ -237,18 +309,28 @@ export async function getUserLocation(options?: {
 	highAccuracyExpireTime?: number;
 	timeout?: number;
 	showLoading?: boolean;
+	useCache?: boolean; // 是否使用缓存（默认 true）
 }): Promise<LocationResult> {
 	const {
 		type = 'gcj02',
 		altitude = false,
 		highAccuracyExpireTime = 3000,
 		timeout = 10000,
-		showLoading = false
+		showLoading = false,
+		useCache = true // 默认启用缓存
 	} = options || {};
+
+	// 0. 尝试从缓存读取（如果启用缓存）
+	if (useCache) {
+		const cachedLocation = getCachedLocation();
+		if (cachedLocation) {
+			return cachedLocation;
+		}
+	}
 
 	// 1. 检查权限状态
 	const permissionStatus = await checkLocationPermission();
-	logger.debug('定位权限状态', { permissionStatus });
+	// 移除日志：由业务层统一记录，避免重复
 
 	// 2. 如果已拒绝，引导用户去设置
 	if (permissionStatus === 'denied') {
@@ -292,9 +374,9 @@ export async function getUserLocation(options?: {
 					uni.hideLoading();
 				}
 
-				logger.debug('获取位置成功', res);
+				// 移除日志：由业务层统一记录，避免重复
 
-				resolve({
+				const location: LocationResult = {
 					latitude: res.latitude,
 					longitude: res.longitude,
 					speed: res.speed,
@@ -302,7 +384,14 @@ export async function getUserLocation(options?: {
 					altitude: res.altitude,
 					verticalAccuracy: res.verticalAccuracy,
 					horizontalAccuracy: res.horizontalAccuracy
-				});
+				};
+
+				// 保存到缓存（如果启用缓存）
+				if (useCache) {
+					setCachedLocation(location);
+				}
+
+				resolve(location);
 			},
 			fail(err) {
 				clearTimeout(timer);

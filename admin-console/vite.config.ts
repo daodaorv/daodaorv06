@@ -24,6 +24,9 @@ export default defineConfig({
     port: 5174,
     strictPort: true,  // 端口被占用时报错，不自动切换
     host: true,
+    hmr: {
+      overlay: true,
+    },
     proxy: {
       '/api': {
         target: 'http://localhost:3000',

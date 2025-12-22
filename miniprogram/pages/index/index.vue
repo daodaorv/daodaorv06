@@ -115,6 +115,40 @@ import BookingForm from '@/components/business/BookingForm.vue';
 import ServiceGrid from '@/components/business/ServiceGrid.vue';
 import RentDatePicker from '@/components/business/RentDatePicker.vue';
 import { getUserLocation, reverseGeocode, type LocationResult, type LocationError, LocationErrorType } from '@/utils/location';
+import { getWindowInfo } from '@/utils/system';
+
+// 类型定义
+interface Notice {
+	id: string;
+	content: string;
+}
+
+interface Banner {
+	id: string;
+	image: string;
+}
+
+interface CommunityItem {
+	id: string;
+	title: string;
+	description: string;
+	author: string;
+	likes: string;
+	image: string;
+}
+
+interface DatePickerData {
+	pickupDate: string;
+	returnDate: string;
+	time?: string;
+}
+
+interface DateConfirmData {
+	pickupDate: string;
+	returnDate: string;
+	pickupTime?: string;
+	returnTime?: string;
+}
 
 // 状态栏高度
 const statusBarHeight = ref(0);
@@ -123,22 +157,23 @@ const navbarBackground = ref('rgba(255, 255, 255, 0)');
 const navbarColor = ref('#FFFFFF');
 
 // 公告数据
-const notices = ref([
+const notices = ref<Notice[]>([
 	{ id: '1', content: '国庆假期房车火热预订中,部分车型已售罄!' },
 	{ id: '2', content: '新用户注册即送100元优惠券!' }
 ]);
 
 // 轮播图数据 (使用更宽幅的图片展示)
-const banners = ref([
+const banners = ref<Banner[]>([
 	{ id: '1', image: '/static/场景推荐2.jpg' },
 	{ id: '2', image: '/static/优惠政策.jpg' }
 ]);
 
-const bookingFormRef = ref();
-const rentDatePickerRef = ref();
+// 组件引用（使用正确的类型）
+const bookingFormRef = ref<InstanceType<typeof BookingForm> | null>(null);
+const rentDatePickerRef = ref<InstanceType<typeof RentDatePicker> | null>(null);
 
 // 社区内容
-const communityList = ref([
+const communityList = ref<CommunityItem[]>([
 	{
 		id: '1',
 		title: '我们最爱的海滨营地，拥有绝美海景的完美度假地',
@@ -177,9 +212,12 @@ const communityList = ref([
 const userLocation = ref<LocationResult | null>(null);
 const userCity = ref<string>('');
 
+// 防抖标志：使用响应式数据避免竞态条件
+const isLocating = ref(false);
+
 onMounted(() => {
-	const systemInfo = uni.getSystemInfoSync();
-	statusBarHeight.value = systemInfo.statusBarHeight || 0;
+	const windowInfo = getWindowInfo();
+	statusBarHeight.value = windowInfo.statusBarHeight || 0;
 
 	// 初始化定位
 	initLocation();
@@ -206,6 +244,14 @@ onPageScroll((e) => {
  * 初始化定位
  */
 const initLocation = async () => {
+	// 防抖：避免重复调用
+	if (isLocating.value) {
+		logger.debug('[首页] 定位正在进行中，跳过重复调用');
+		return;
+	}
+
+	isLocating.value = true;
+
 	try {
 		logger.debug('[首页] 开始获取用户位置');
 
@@ -217,12 +263,17 @@ const initLocation = async () => {
 		});
 
 		userLocation.value = location;
-		logger.debug('[首页] 获取位置成功:', location);
 
 		// 逆地理编码获取城市
 		const city = await reverseGeocode(location.latitude, location.longitude);
 		userCity.value = city;
-		logger.debug('[首页] 当前城市:', city);
+
+		// 统一日志输出：简化信息，避免重复
+		logger.debug('[首页] 定位成功', {
+			city,
+			lat: location.latitude,
+			lng: location.longitude
+		});
 
 		// 显示成功提示
 		uni.showToast({
@@ -231,25 +282,28 @@ const initLocation = async () => {
 			duration: 2000
 		});
 
-	} catch (error) {
+	} catch (error: unknown) {
+		// 类型安全的错误处理
 		const locationError = error as LocationError;
 		logger.error('[首页] 获取位置失败:', locationError);
 
 		// 根据错误类型显示不同提示
 		let errorMessage = '定位失败';
 
-		switch (locationError.type) {
-			case LocationErrorType.PERMISSION_DENIED:
-				errorMessage = '定位权限被拒绝，部分功能可能无法使用';
-				break;
-			case LocationErrorType.TIMEOUT:
-				errorMessage = '定位超时，请检查网络连接';
-				break;
-			case LocationErrorType.LOCATION_UNAVAILABLE:
-				errorMessage = '定位服务不可用，请检查手机定位设置';
-				break;
-			default:
-				errorMessage = locationError.message || '定位失败';
+		if (locationError && typeof locationError === 'object' && 'type' in locationError) {
+			switch (locationError.type) {
+				case LocationErrorType.PERMISSION_DENIED:
+					errorMessage = '定位权限被拒绝，部分功能可能无法使用';
+					break;
+				case LocationErrorType.TIMEOUT:
+					errorMessage = '定位超时，请检查网络连接';
+					break;
+				case LocationErrorType.LOCATION_UNAVAILABLE:
+					errorMessage = '定位服务不可用，请检查手机定位设置';
+					break;
+				default:
+					errorMessage = locationError.message || '定位失败';
+			}
 		}
 
 		uni.showToast({
@@ -261,22 +315,24 @@ const initLocation = async () => {
 		// 使用默认城市
 		userCity.value = '北京';
 		logger.debug('[首页] 使用默认城市:', userCity.value);
+	} finally {
+		isLocating.value = false;
 	}
 };
 
-const handleNoticeClick = (notice: any) => {
+const handleNoticeClick = (notice: Notice) => {
 	logger.debug('点击公告:', notice);
 };
 
-const handleSearch = (params: any) => {
+const handleSearch = (_params: Record<string, unknown>) => {
 	uni.navigateTo({ url: '/pages/vehicle/list' });
 };
 
-const handleOpenDatePicker = (data: any) => {
+const handleOpenDatePicker = (data: DatePickerData) => {
 	rentDatePickerRef.value?.open(data.pickupDate, data.returnDate, data.time);
 };
 
-const handleDateConfirm = (data: any) => {
+const handleDateConfirm = (data: DateConfirmData) => {
 	bookingFormRef.value?.onDateConfirm(data);
 };
 

@@ -140,7 +140,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onUnmounted } from 'vue'
 import { register, sendCode, type RegisterParams } from '@/api/auth'
 import { saveLoginInfo, handleLoginSuccess } from '@/utils/auth'
 
@@ -159,6 +159,9 @@ const codeSending = ref(false)
 const countdown = ref(0)
 const showPassword = ref(false)
 const agreed = ref(false)
+
+// 定时器引用（用于页面卸载时清理）
+let countdownTimer: ReturnType<typeof setInterval> | null = null
 
 // 验证码按钮文本
 const codeButtonText = computed(() => {
@@ -198,10 +201,13 @@ const handleSendCode = async () => {
 
 		// 开始倒计时
 		countdown.value = 60
-		const timer = setInterval(() => {
+		countdownTimer = setInterval(() => {
 			countdown.value--
 			if (countdown.value <= 0) {
-				clearInterval(timer)
+				if (countdownTimer) {
+					clearInterval(countdownTimer)
+					countdownTimer = null
+				}
 			}
 		}, 1000)
 	} catch (error: any) {
@@ -297,13 +303,22 @@ const viewAgreement = (type: 'user' | 'privacy') => {
 	})
 	// 功能开发中 - 协议页面待实现
 }
+
+// 页面卸载时清理定时器
+onUnmounted(() => {
+	if (countdownTimer) {
+		clearInterval(countdownTimer)
+		countdownTimer = null
+	}
+})
 </script>
 
 <style lang="scss" scoped>
 .register-page {
 	min-height: 100vh;
-	background: linear-gradient(180deg, #FFF5E6 0%, #FFFFFF 50%);
-	padding: 0 48rpx;
+	background: linear-gradient(180deg, #FFF8E1 0%, $uni-bg-color 50%);
+	padding: 0 $uni-spacing-lg;
+	padding-bottom: $uni-spacing-xl;
 }
 
 // 顶部标题
@@ -312,96 +327,109 @@ const viewAgreement = (type: 'user' | 'privacy') => {
 
 	.title {
 		display: block;
-		font-size: 48rpx;
-		font-weight: bold;
-		color: #333333;
-		margin-bottom: 16rpx;
+		font-size: $uni-font-size-xxl;
+		font-weight: 800;
+		color: $uni-text-color;
+		margin-bottom: $uni-spacing-sm;
 	}
 
 	.subtitle {
 		display: block;
-		font-size: 24rpx;
-		color: #999999;
+		font-size: $uni-font-size-sm;
+		color: $uni-text-color-placeholder;
 	}
 }
 
 // 注册表单
 .register-form {
 	.form-item {
-		margin-bottom: 32rpx;
+		margin-bottom: $uni-spacing-md;
 
 		.label {
 			display: flex;
 			align-items: center;
-			margin-bottom: 16rpx;
+			margin-bottom: $uni-spacing-sm;
 
 			.label-text {
-				font-size: 28rpx;
-				color: #333333;
+				font-size: $uni-font-size-base;
+				color: $uni-text-color;
+				font-weight: 500;
 			}
 
 			.required {
-				color: #FF4D4F;
+				color: $uni-color-error;
 				margin-left: 4rpx;
 			}
 
 			.optional {
-				font-size: 24rpx;
-				color: #999999;
-				margin-left: 8rpx;
+				font-size: $uni-font-size-sm;
+				color: $uni-text-color-placeholder;
+				margin-left: $uni-spacing-xs;
 			}
 		}
 
 		.input-wrapper {
 			display: flex;
 			align-items: center;
-			gap: 16rpx;
-			padding: 24rpx 32rpx;
-			background: #FFFFFF;
-			border-radius: 16rpx;
-			box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.04);
+			gap: $uni-spacing-sm;
+			padding: $uni-spacing-md $uni-spacing-lg;
+			background: $uni-bg-color-card;
+			border-radius: $uni-radius-lg;
+			box-shadow: $uni-shadow-card;
+			transition: box-shadow 0.2s ease;
+
+			&:focus-within {
+				box-shadow: $uni-shadow-float;
+			}
 
 			.input {
 				flex: 1;
-				font-size: 28rpx;
-				color: #333333;
+				font-size: $uni-font-size-base;
+				color: $uni-text-color;
 			}
 
 			.code-btn {
-				padding: 8rpx 24rpx;
-				background: #FF9F29;
-				color: #FFFFFF;
-				font-size: 24rpx;
-				border-radius: 8rpx;
+				padding: $uni-spacing-xs $uni-spacing-md;
+				background: $uni-color-primary;
+				color: $uni-text-color-inverse;
+				font-size: $uni-font-size-sm;
+				border-radius: $uni-radius-sm;
 				border: none;
-				line-height: 1;
+				line-height: 1.5;
+				font-weight: 500;
+				transition: opacity 0.2s ease;
+
+				&:active {
+					opacity: 0.8;
+				}
 
 				&[disabled] {
-					background: #CCCCCC;
+					background: $uni-border-color;
+					color: $uni-text-color-placeholder;
 				}
 			}
 		}
 
 		.hint {
-			margin-top: 12rpx;
-			font-size: 22rpx;
-			color: #999999;
-			padding-left: 16rpx;
+			margin-top: $uni-spacing-xs;
+			font-size: $uni-font-size-xs;
+			color: $uni-text-color-placeholder;
+			padding-left: $uni-spacing-sm;
 		}
 	}
 
 	.agreement {
-		margin: 48rpx 0 32rpx;
+		margin: $uni-spacing-xl 0 $uni-spacing-lg;
 
 		.agreement-label {
 			display: flex;
 			align-items: flex-start;
-			gap: 8rpx;
+			gap: $uni-spacing-xs;
 
 			.agreement-text {
 				flex: 1;
-				font-size: 22rpx;
-				color: #999999;
+				font-size: $uni-font-size-xs;
+				color: $uni-text-color-placeholder;
 				line-height: 1.6;
 			}
 		}
@@ -409,33 +437,41 @@ const viewAgreement = (type: 'user' | 'privacy') => {
 
 	.register-btn {
 		width: 100%;
-		height: 88rpx;
-		background: linear-gradient(135deg, #FF9F29 0%, #FF6B00 100%);
-		color: #FFFFFF;
-		font-size: 32rpx;
-		font-weight: 500;
-		border-radius: 44rpx;
+		height: 96rpx;
+		background: $uni-color-primary-gradient;
+		color: $uni-text-color-inverse;
+		font-size: $uni-font-size-md;
+		font-weight: 600;
+		border-radius: $uni-radius-btn;
 		border: none;
-		margin-bottom: 32rpx;
+		margin-bottom: $uni-spacing-lg;
+		box-shadow: $uni-shadow-glow;
+		transition: transform 0.2s ease, opacity 0.2s ease;
+
+		&:active {
+			transform: scale(0.98);
+			opacity: 0.9;
+		}
 
 		&[disabled] {
-			background: #CCCCCC;
+			background: $uni-border-color;
+			box-shadow: none;
 		}
 	}
 
 	.login-tip {
 		text-align: center;
-		font-size: 24rpx;
+		font-size: $uni-font-size-sm;
 
 		.tip-text {
-			color: #999999;
+			color: $uni-text-color-placeholder;
 		}
 	}
 }
 
 // 链接文本
 .link-text {
-	color: #FF9F29;
-	cursor: pointer;
+	color: $uni-color-primary;
+	font-weight: 500;
 }
 </style>

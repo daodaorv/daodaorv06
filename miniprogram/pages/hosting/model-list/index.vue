@@ -111,56 +111,187 @@ export default {
 }
 </script>
 
-<style scoped>
-.model-list-page { min-height: 100vh; background: #F5F5F5; }
-
-/* 列表滚动容器 */
-.list-scroll { height: 100vh; }
-.list-container { padding: 24rpx 32rpx; }
-
-/* 骨架屏 */
-.skeleton-list { }
-.skeleton-card { background: #FFF; border-radius: 16rpx; margin-bottom: 24rpx; overflow: hidden; }
-.skeleton-image { width: 100%; height: 360rpx; background: linear-gradient(90deg, #F0F0F0 25%, #E0E0E0 50%, #F0F0F0 75%); background-size: 200% 100%; animation: skeleton-loading 1.5s infinite; }
-.skeleton-content { padding: 24rpx; }
-.skeleton-line { height: 32rpx; background: linear-gradient(90deg, #F0F0F0 25%, #E0E0E0 50%, #F0F0F0 75%); background-size: 200% 100%; animation: skeleton-loading 1.5s infinite; border-radius: 8rpx; margin-bottom: 16rpx; }
-.skeleton-line.short { width: 60%; }
-
-@keyframes skeleton-loading {
-	0% { background-position: 200% 0; }
-	100% { background-position: -200% 0; }
+<style scoped lang="scss">
+.model-list-page {
+  min-height: 100vh;
+  background: $uni-bg-color;
 }
 
-/* 空状态 */
-.empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 160rpx 0; }
-.empty-text { font-size: 28rpx; color: #999; margin-top: 24rpx; }
+// 列表滚动容器
+.list-scroll {
+  height: 100vh;
+}
 
-/* 车型卡片 */
-.model-card { background: #FFF; border-radius: 16rpx; margin-bottom: 24rpx; overflow: hidden; }
-.model-image { width: 100%; height: 360rpx; }
-.model-content { padding: 24rpx; }
+.list-container {
+  padding: $uni-spacing-xl $uni-spacing-xl;
+}
 
-/* 车型头部 */
-.model-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16rpx; }
-.model-name { font-size: 32rpx; font-weight: 600; color: #333; }
-.brand-tag { padding: 6rpx 16rpx; background: #FFF3E0; color: #FF9F29; font-size: 22rpx; border-radius: 8rpx; }
+// 骨架屏
+.skeleton-card {
+  background: $uni-bg-color-card;
+  border-radius: $uni-radius-lg;
+  margin-bottom: $uni-spacing-xl;
+  overflow: hidden;
+}
 
-/* 价格信息 */
-.model-price { display: flex; align-items: center; padding: 20rpx 0; margin-bottom: 16rpx; border-top: 1rpx solid #F5F5F5; border-bottom: 1rpx solid #F5F5F5; }
-.price-item { flex: 1; }
-.price-label { display: block; font-size: 24rpx; color: #999; margin-bottom: 8rpx; }
-.price-value { display: block; font-size: 28rpx; font-weight: 600; color: #FF9F29; }
-.price-divider { width: 1rpx; height: 60rpx; background: #F5F5F5; }
+.skeleton-image {
+  width: 100%;
+  height: 360rpx;
+  background: linear-gradient(90deg, $uni-border-color-light 25%, $uni-border-color 50%, $uni-border-color-light 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+}
 
-/* 规格信息 */
-.model-specs { display: flex; align-items: center; margin-bottom: 16rpx; }
-.spec-item { font-size: 26rpx; color: #666; }
-.spec-divider { margin: 0 16rpx; color: #DDD; }
+.skeleton-content {
+  padding: $uni-spacing-xl;
+}
 
-/* 特色标签 */
-.model-features { display: flex; flex-wrap: wrap; gap: 12rpx; }
-.feature-tag { padding: 8rpx 16rpx; background: #F5F5F5; color: #666; font-size: 24rpx; border-radius: 8rpx; }
+.skeleton-line {
+  height: 32rpx;
+  background: linear-gradient(90deg, $uni-border-color-light 25%, $uni-border-color 50%, $uni-border-color-light 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+  border-radius: $uni-radius-sm;
+  margin-bottom: $uni-spacing-lg;
 
-/* 底部安全区 */
-.safe-area-bottom { height: 40rpx; }
+  &.short {
+    width: 60%;
+  }
+}
+
+@keyframes skeleton-loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+// 空状态
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 160rpx 0;
+}
+
+.empty-text {
+  font-size: $uni-font-size-base;
+  color: $uni-text-color-placeholder;
+  margin-top: $uni-spacing-xl;
+}
+
+// 车型卡片
+.model-card {
+  background: $uni-bg-color-card;
+  border-radius: $uni-radius-lg;
+  margin-bottom: $uni-spacing-xl;
+  overflow: hidden;
+  box-shadow: $uni-shadow-card;
+  transition: all 0.2s ease;
+
+  &:active {
+    transform: scale(0.99);
+  }
+}
+
+.model-image {
+  width: 100%;
+  height: 360rpx;
+}
+
+.model-content {
+  padding: $uni-spacing-xl;
+}
+
+// 车型头部
+.model-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $uni-spacing-lg;
+}
+
+.model-name {
+  font-size: $uni-font-size-lg;
+  font-weight: 600;
+  color: $uni-text-color;
+}
+
+.brand-tag {
+  padding: $uni-spacing-xs $uni-spacing-lg;
+  background: rgba($uni-color-primary, 0.1);
+  color: $uni-color-primary;
+  font-size: $uni-font-size-xs;
+  border-radius: $uni-radius-sm;
+}
+
+// 价格信息
+.model-price {
+  display: flex;
+  align-items: center;
+  padding: $uni-spacing-lg 0;
+  margin-bottom: $uni-spacing-lg;
+  border-top: 1rpx solid $uni-border-color-light;
+  border-bottom: 1rpx solid $uni-border-color-light;
+}
+
+.price-item {
+  flex: 1;
+}
+
+.price-label {
+  display: block;
+  font-size: $uni-font-size-xs;
+  color: $uni-text-color-placeholder;
+  margin-bottom: $uni-spacing-sm;
+}
+
+.price-value {
+  display: block;
+  font-size: $uni-font-size-base;
+  font-weight: 600;
+  color: $uni-color-primary;
+}
+
+.price-divider {
+  width: 1rpx;
+  height: 60rpx;
+  background: $uni-border-color-light;
+}
+
+// 规格信息
+.model-specs {
+  display: flex;
+  align-items: center;
+  margin-bottom: $uni-spacing-lg;
+}
+
+.spec-item {
+  font-size: $uni-font-size-sm;
+  color: $uni-text-color-secondary;
+}
+
+.spec-divider {
+  margin: 0 $uni-spacing-lg;
+  color: $uni-border-color;
+}
+
+// 特色标签
+.model-features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $uni-spacing-md;
+}
+
+.feature-tag {
+  padding: $uni-spacing-sm $uni-spacing-lg;
+  background: $uni-bg-color-grey;
+  color: $uni-text-color-secondary;
+  font-size: $uni-font-size-xs;
+  border-radius: $uni-radius-sm;
+}
+
+// 底部安全区
+.safe-area-bottom {
+  height: 40rpx;
+}
 </style>

@@ -355,7 +355,7 @@ const viewDetail = (item: any) => {
 <style scoped lang="scss">
 .campsite-list-page {
   min-height: 100vh;
-  background-color: #F8F8F8;
+  background-color: $uni-bg-color;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -364,11 +364,11 @@ const viewDetail = (item: any) => {
 
 // 筛选栏
 .filter-bar {
-  background-color: #FFFFFF;
+  background-color: $uni-bg-color-card;
   display: flex;
-  padding: 24rpx 32rpx;
-  gap: 48rpx;
-  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+  padding: $uni-spacing-lg $uni-spacing-xl;
+  gap: $uni-spacing-xl;
+  box-shadow: $uni-shadow-sm;
   position: sticky;
   top: 0;
   z-index: 10;
@@ -377,19 +377,24 @@ const viewDetail = (item: any) => {
 .filter-item {
   display: flex;
   align-items: center;
-  gap: 8rpx;
-  font-size: 28rpx;
-  color: #333;
+  gap: $uni-spacing-sm;
+  font-size: $uni-font-size-base;
+  color: $uni-text-color;
+  transition: all 0.2s ease;
 
   &.active {
-    color: #FF9F29;
+    color: $uni-color-primary;
+  }
+
+  &:active {
+    opacity: 0.7;
   }
 }
 
 // 营地列表
 .campsite-list {
   flex: 1;
-  padding: 24rpx;
+  padding: $uni-spacing-lg;
   width: 100%;
   box-sizing: border-box;
 }
@@ -405,24 +410,35 @@ const viewDetail = (item: any) => {
   .empty-image {
     width: 200rpx;
     height: 200rpx;
-    margin-bottom: 32rpx;
+    margin-bottom: $uni-spacing-xl;
     opacity: 0.6;
   }
 
   .empty-text {
-    font-size: 28rpx;
-    color: rgba(0, 0, 0, 0.6);
+    font-size: $uni-font-size-base;
+    color: $uni-text-color-secondary;
+    margin-bottom: $uni-spacing-sm;
+  }
+
+  .empty-tip {
+    font-size: $uni-font-size-sm;
+    color: $uni-text-color-placeholder;
   }
 }
 
 // 营地卡片
 .campsite-card {
   position: relative;
-  background-color: #FFFFFF;
-  border-radius: 16rpx;
+  background-color: $uni-bg-color-card;
+  border-radius: $uni-radius-lg;
   overflow: hidden;
-  margin-bottom: 24rpx;
-  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
+  margin-bottom: $uni-spacing-lg;
+  box-shadow: $uni-shadow-card;
+  transition: all 0.3s ease;
+
+  &:active {
+    transform: scale(0.99);
+  }
 }
 
 .campsite-image {
@@ -433,48 +449,48 @@ const viewDetail = (item: any) => {
 // 热门标签
 .hot-badge {
   position: absolute;
-  top: 24rpx;
+  top: $uni-spacing-lg;
   left: 0;
-  background: linear-gradient(135deg, #FF9F29 0%, #FFB84D 100%);
-  color: #FFFFFF;
-  padding: 8rpx 24rpx 8rpx 16rpx;
-  border-radius: 0 20rpx 20rpx 0;
+  background: $uni-color-primary-gradient;
+  color: $uni-text-color-inverse;
+  padding: $uni-spacing-sm $uni-spacing-lg $uni-spacing-sm $uni-spacing-md;
+  border-radius: 0 $uni-radius-md $uni-radius-md 0;
 
   .hot-text {
-    font-size: 22rpx;
+    font-size: $uni-font-size-xs;
     font-weight: 600;
   }
 }
 
 .campsite-info {
-  padding: 24rpx;
+  padding: $uni-spacing-lg;
 }
 
 .campsite-name {
-  font-size: 32rpx;
+  font-size: $uni-font-size-lg;
   font-weight: bold;
-  color: #333;
-  margin-bottom: 12rpx;
+  color: $uni-text-color;
+  margin-bottom: $uni-spacing-md;
   display: block;
 }
 
 .campsite-tags {
   display: flex;
-  gap: 12rpx;
-  margin-bottom: 16rpx;
+  gap: $uni-spacing-md;
+  margin-bottom: $uni-spacing-md;
   flex-wrap: wrap;
 }
 
 .tag {
-  padding: 6rpx 12rpx;
+  padding: $uni-spacing-xs $uni-spacing-md;
   background-color: rgba(255, 159, 41, 0.1);
-  color: #FF9F29;
-  font-size: 22rpx;
-  border-radius: 6rpx;
+  color: $uni-color-primary;
+  font-size: $uni-font-size-xs;
+  border-radius: $uni-radius-xs;
 }
 
 .campsite-meta {
-  margin-bottom: 12rpx;
+  margin-bottom: $uni-spacing-md;
 }
 
 .rating {
@@ -483,27 +499,27 @@ const viewDetail = (item: any) => {
   gap: 4rpx;
 
   .rating-text {
-    font-size: 26rpx;
-    color: #333;
+    font-size: $uni-font-size-sm;
+    color: $uni-text-color;
     font-weight: 500;
   }
 
   .review-count {
-    font-size: 24rpx;
-    color: #999;
-    margin-left: 8rpx;
+    font-size: $uni-font-size-sm;
+    color: $uni-text-color-placeholder;
+    margin-left: $uni-spacing-sm;
   }
 }
 
 .location-info {
   display: flex;
   align-items: center;
-  gap: 8rpx;
-  margin-bottom: 16rpx;
+  gap: $uni-spacing-sm;
+  margin-bottom: $uni-spacing-md;
 
   .distance {
-    font-size: 24rpx;
-    color: #999;
+    font-size: $uni-font-size-sm;
+    color: $uni-text-color-placeholder;
   }
 }
 
@@ -519,20 +535,21 @@ const viewDetail = (item: any) => {
     .price {
       font-size: 36rpx;
       font-weight: bold;
-      color: #F44336;
+      color: $uni-color-error;
+      font-family: 'DIN Alternate', sans-serif;
     }
 
     .unit {
-      font-size: 24rpx;
-      color: #999;
+      font-size: $uni-font-size-sm;
+      color: $uni-text-color-placeholder;
       margin-left: 4rpx;
     }
   }
 
   .site-count {
     .count-text {
-      font-size: 24rpx;
-      color: #67C23A;
+      font-size: $uni-font-size-sm;
+      color: $uni-color-success;
     }
   }
 }
@@ -540,41 +557,41 @@ const viewDetail = (item: any) => {
 // 加载状态
 .load-more {
   text-align: center;
-  padding: 32rpx 0;
+  padding: $uni-spacing-xl 0;
 
   .load-text {
-    font-size: 26rpx;
-    color: rgba(0, 0, 0, 0.6);
+    font-size: $uni-font-size-sm;
+    color: $uni-text-color-secondary;
   }
 }
 
 // 没有更多
 .no-more {
   text-align: center;
-  padding: 32rpx 0;
+  padding: $uni-spacing-xl 0;
 
   .no-more-text {
-    font-size: 26rpx;
-    color: rgba(0, 0, 0, 0.4);
+    font-size: $uni-font-size-sm;
+    color: $uni-text-color-placeholder;
   }
 }
 
 // 筛选弹窗
 .filter-popup {
-  background-color: #FFFFFF;
-  border-radius: 24rpx 24rpx 0 0;
+  background-color: $uni-bg-color-card;
+  border-radius: $uni-radius-lg $uni-radius-lg 0 0;
 
   .popup-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 32rpx;
-    border-bottom: 2rpx solid #F0F0F0;
+    padding: $uni-spacing-xl;
+    border-bottom: 2rpx solid $uni-border-color-light;
 
     .popup-title {
-      font-size: 32rpx;
+      font-size: $uni-font-size-lg;
       font-weight: 600;
-      color: #333;
+      color: $uni-text-color;
     }
   }
 
@@ -586,21 +603,26 @@ const viewDetail = (item: any) => {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 32rpx;
-      border-bottom: 2rpx solid #F8F8F8;
+      padding: $uni-spacing-xl;
+      border-bottom: 2rpx solid $uni-bg-color-grey;
+      transition: all 0.2s ease;
 
       &:last-child {
         border-bottom: none;
       }
 
+      &:active {
+        background-color: $uni-bg-color-grey;
+      }
+
       .option-text {
-        font-size: 28rpx;
-        color: #333;
+        font-size: $uni-font-size-base;
+        color: $uni-text-color;
       }
 
       &.active {
         .option-text {
-          color: #FF9F29;
+          color: $uni-color-primary;
           font-weight: 500;
         }
       }

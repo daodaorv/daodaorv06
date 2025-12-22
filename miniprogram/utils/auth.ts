@@ -23,7 +23,14 @@ export function getCurrentUser(): UserInfo | null {
 		const userInfo = uni.getStorageSync('userInfo')
 		if (!userInfo) return null
 		if (typeof userInfo === 'string') {
-			return JSON.parse(userInfo)
+			try {
+				return JSON.parse(userInfo)
+			} catch (parseError) {
+				// JSON 解析失败，清理异常缓存
+				logger.error('用户信息解析失败，已清理缓存', parseError)
+				uni.removeStorageSync('userInfo')
+				return null
+			}
 		}
 		return userInfo
 	} catch (error) {
@@ -172,8 +179,8 @@ export async function checkAndUpdateLoginStatus(): Promise<boolean> {
 export async function logout(): Promise<void> {
 	try {
 		// 调用退出登录API
-		const { logout: logoutApi } = await import('@/api/auth')
-		await logoutApi()
+		const authApi = await import('@/api/auth')
+		await authApi.logout()
 	} catch (error) {
 		logger.error('退出登录API调用失败', error)
 	} finally {

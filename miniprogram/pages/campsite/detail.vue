@@ -48,6 +48,9 @@
       </view>
     </view>
 
+    <!-- 公告栏 -->
+    <AnnouncementBar :content="campsiteDetail.announcement" />
+
     <!-- 营地特色标签 -->
     <view class="section-card">
       <view class="section-title">
@@ -240,6 +243,7 @@ import { useShare } from '@/composables/useShare';
 import { ShareScene } from '@/types/share';
 import ShareSheet from '@/components/share/ShareSheet.vue';
 import PosterPreview from '@/components/share/PosterPreview.vue';
+import AnnouncementBar from '@/components/common/AnnouncementBar.vue';
 
 // 获取路由参数
 const campsiteId = ref('');
@@ -255,6 +259,7 @@ const campsiteDetail = ref<any>({
   distance: 0,
   minPrice: 0,
   isHot: false,
+  announcement: '',
   features: [],
   facilities: [],
   siteTypes: [],
@@ -330,6 +335,7 @@ const loadCampsiteDetail = async () => {
       distance: 5.2,
       minPrice: 280,
       isHot: true,
+      announcement: '【营地公告】周末及节假日营位紧张，建议提前3天预订。本周末（12月21-22日）将举办篝火晚会活动，欢迎参加。营地内禁止燃放烟花爆竹，请遵守营地管理规定。宠物需牵绳并清理粪便。',
       features: ['湖景', '烧烤区', 'WiFi覆盖', '24小时热水', '儿童乐园', '宠物友好'],
       facilities: [
         { name: '淋浴间', icon: 'star-fill' },
@@ -481,7 +487,7 @@ const bookNow = () => {
 <style scoped lang="scss">
 .campsite-detail {
   min-height: 100vh;
-  background-color: #F8F8F8;
+  background-color: $uni-bg-color;
   padding-bottom: 120rpx;
 }
 
@@ -493,44 +499,44 @@ const bookNow = () => {
 
 // 营地基本信息
 .campsite-info-section {
-  background-color: #FFFFFF;
-  padding: 32rpx;
-  margin-bottom: 16rpx;
+  background-color: $uni-bg-color-card;
+  padding: $uni-spacing-xl;
+  margin-bottom: $uni-spacing-lg;
 
   .name-header {
     display: flex;
     align-items: center;
-    gap: 16rpx;
-    margin-bottom: 16rpx;
+    gap: $uni-spacing-lg;
+    margin-bottom: $uni-spacing-lg;
 
     .campsite-name {
       font-size: 36rpx;
       font-weight: 700;
-      color: #333;
+      color: $uni-text-color;
     }
 
     .hot-badge-wrapper {
-      margin-left: 16rpx;
+      margin-left: $uni-spacing-lg;
     }
   }
 
   .rating-section {
-    margin-bottom: 16rpx;
+    margin-bottom: $uni-spacing-lg;
 
     .rating-main {
       display: flex;
       align-items: center;
-      gap: 8rpx;
+      gap: $uni-spacing-sm;
 
       .rating-score {
-        font-size: 28rpx;
+        font-size: $uni-font-size-lg;
         font-weight: 600;
-        color: #333;
+        color: $uni-text-color;
       }
 
       .rating-count {
-        font-size: 24rpx;
-        color: #999;
+        font-size: $uni-font-size-sm;
+        color: $uni-text-color-placeholder;
       }
     }
   }
@@ -538,18 +544,23 @@ const bookNow = () => {
   .location-section {
     display: flex;
     align-items: center;
-    gap: 8rpx;
-    margin-bottom: 24rpx;
+    gap: $uni-spacing-sm;
+    margin-bottom: $uni-spacing-xl;
+    transition: all 0.2s ease;
+
+    &:active {
+      opacity: 0.7;
+    }
 
     .location-text {
       flex: 1;
-      font-size: 26rpx;
-      color: #666;
+      font-size: $uni-font-size-base;
+      color: $uni-text-color-secondary;
     }
 
     .distance-text {
-      font-size: 24rpx;
-      color: #999;
+      font-size: $uni-font-size-sm;
+      color: $uni-text-color-placeholder;
     }
   }
 
@@ -559,21 +570,22 @@ const bookNow = () => {
       align-items: baseline;
 
       .price-symbol {
-        font-size: 32rpx;
-        color: #F44336;
+        font-size: $uni-font-size-lg;
+        color: $uni-color-error;
         font-weight: 600;
       }
 
       .price-amount {
         font-size: 56rpx;
-        color: #F44336;
+        color: $uni-color-error;
         font-weight: 700;
-        margin: 0 8rpx;
+        margin: 0 $uni-spacing-sm;
+        font-family: 'DIN Alternate', sans-serif;
       }
 
       .price-unit {
-        font-size: 28rpx;
-        color: #999;
+        font-size: $uni-font-size-lg;
+        color: $uni-text-color-placeholder;
       }
     }
   }
@@ -581,25 +593,26 @@ const bookNow = () => {
 
 // 通用卡片样式
 .section-card {
-  background-color: #FFFFFF;
-  padding: 32rpx;
-  margin-bottom: 16rpx;
+  background-color: $uni-bg-color-card;
+  padding: $uni-spacing-xl;
+  margin-bottom: $uni-spacing-lg;
+  box-shadow: $uni-shadow-card;
 
   .section-title {
     display: flex;
     align-items: baseline;
-    margin-bottom: 24rpx;
+    margin-bottom: $uni-spacing-xl;
 
     .title-text {
-      font-size: 32rpx;
+      font-size: $uni-font-size-lg;
       font-weight: 600;
-      color: #333;
+      color: $uni-text-color;
     }
 
     .title-count {
-      font-size: 24rpx;
-      color: #999;
-      margin-left: 12rpx;
+      font-size: $uni-font-size-sm;
+      color: $uni-text-color-placeholder;
+      margin-left: $uni-spacing-md;
     }
   }
 }
@@ -608,19 +621,24 @@ const bookNow = () => {
 .feature-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 16rpx;
+  gap: $uni-spacing-lg;
 
   .feature-tag {
     display: flex;
     align-items: center;
-    gap: 8rpx;
-    background-color: rgba(103, 194, 58, 0.1);
-    padding: 12rpx 20rpx;
-    border-radius: 8rpx;
+    gap: $uni-spacing-sm;
+    background-color: rgba($uni-color-success, 0.1);
+    padding: $uni-spacing-md $uni-spacing-lg;
+    border-radius: $uni-radius-md;
+    transition: all 0.2s ease;
+
+    &:active {
+      transform: scale(0.98);
+    }
 
     .feature-text {
-      font-size: 26rpx;
-      color: #67C23A;
+      font-size: $uni-font-size-base;
+      color: $uni-color-success;
       font-weight: 500;
     }
   }
@@ -630,17 +648,22 @@ const bookNow = () => {
 .facility-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 32rpx;
+  gap: $uni-spacing-xl;
 
   .facility-item {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 12rpx;
+    gap: $uni-spacing-md;
+    transition: all 0.2s ease;
+
+    &:active {
+      transform: scale(0.95);
+    }
 
     .facility-name {
-      font-size: 24rpx;
-      color: #666;
+      font-size: $uni-font-size-sm;
+      color: $uni-text-color-secondary;
       text-align: center;
     }
   }
@@ -649,16 +672,16 @@ const bookNow = () => {
 // 营位类型
 .site-types {
   .site-type-card {
-    background-color: #F8F8F8;
-    border-radius: 12rpx;
-    padding: 24rpx;
-    margin-bottom: 16rpx;
+    background-color: $uni-bg-color-grey;
+    border-radius: $uni-radius-lg;
+    padding: $uni-spacing-xl;
+    margin-bottom: $uni-spacing-lg;
     border: 2rpx solid transparent;
-    transition: border-color 0.2s, background-color 0.2s;
+    transition: all 0.2s ease;
 
     &.selected {
-      border-color: #FF9F29;
-      background-color: rgba(255, 159, 41, 0.08);
+      border-color: $uni-color-primary;
+      background-color: rgba($uni-color-primary, 0.08);
     }
 
     &.disabled {
@@ -669,47 +692,51 @@ const bookNow = () => {
       margin-bottom: 0;
     }
 
+    &:active:not(.disabled) {
+      transform: scale(0.99);
+    }
+
     .site-type-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 12rpx;
+      margin-bottom: $uni-spacing-md;
 
       .site-type-name {
-        font-size: 30rpx;
+        font-size: $uni-font-size-lg;
         font-weight: 600;
-        color: #333;
+        color: $uni-text-color;
       }
 
       .site-type-badge {
-        background-color: rgba(103, 194, 58, 0.1);
-        color: #67C23A;
-        font-size: 22rpx;
-        padding: 6rpx 12rpx;
-        border-radius: 8rpx;
+        background-color: rgba($uni-color-success, 0.1);
+        color: $uni-color-success;
+        font-size: $uni-font-size-xs;
+        padding: $uni-spacing-xs $uni-spacing-md;
+        border-radius: $uni-radius-md;
 
         &.unavailable {
-          background-color: rgba(0, 0, 0, 0.1);
-          color: #999;
+          background-color: $uni-bg-color-grey;
+          color: $uni-text-color-placeholder;
         }
       }
     }
 
     .site-type-desc {
-      font-size: 26rpx;
-      color: #666;
-      margin-bottom: 16rpx;
+      font-size: $uni-font-size-base;
+      color: $uni-text-color-secondary;
+      margin-bottom: $uni-spacing-lg;
       display: block;
     }
 
     .site-type-specs {
       display: flex;
-      gap: 24rpx;
-      margin-bottom: 20rpx;
+      gap: $uni-spacing-xl;
+      margin-bottom: $uni-spacing-lg;
 
       .spec-item {
-        font-size: 24rpx;
-        color: #999;
+        font-size: $uni-font-size-sm;
+        color: $uni-text-color-placeholder;
       }
     }
 
@@ -725,31 +752,38 @@ const bookNow = () => {
         .price-amount {
           font-size: 36rpx;
           font-weight: 700;
-          color: #F44336;
+          color: $uni-color-error;
+          font-family: 'DIN Alternate', sans-serif;
         }
 
         .price-unit {
-          font-size: 24rpx;
-          color: #999;
+          font-size: $uni-font-size-sm;
+          color: $uni-text-color-placeholder;
           margin-left: 4rpx;
         }
       }
 
       .book-btn {
-        padding: 16rpx 32rpx;
-        background: linear-gradient(135deg, #FF9F29 0%, #FFB84D 100%);
-        color: #FFFFFF;
-        border-radius: 44rpx;
-        font-size: 26rpx;
+        padding: $uni-spacing-lg $uni-spacing-xl;
+        background: $uni-color-primary-gradient;
+        color: $uni-text-color-inverse;
+        border-radius: $uni-radius-btn;
+        font-size: $uni-font-size-base;
         border: none;
+        transition: all 0.2s ease;
 
         &::after {
           border: none;
         }
 
+        &:active {
+          transform: scale(0.98);
+          opacity: 0.9;
+        }
+
         &.disabled {
-          background: #E0E0E0;
-          color: #999;
+          background: $uni-bg-color-grey;
+          color: $uni-text-color-placeholder;
         }
       }
     }
@@ -758,8 +792,8 @@ const bookNow = () => {
 
 // 营地介绍
 .description-text {
-  font-size: 28rpx;
-  color: #666;
+  font-size: $uni-font-size-lg;
+  color: $uni-text-color-secondary;
   line-height: 1.8;
   white-space: pre-line;
 }
@@ -768,8 +802,8 @@ const bookNow = () => {
 .notice-list {
   .notice-item {
     display: flex;
-    gap: 12rpx;
-    margin-bottom: 20rpx;
+    gap: $uni-spacing-md;
+    margin-bottom: $uni-spacing-lg;
     line-height: 1.6;
 
     &:last-child {
@@ -777,16 +811,16 @@ const bookNow = () => {
     }
 
     .notice-number {
-      font-size: 26rpx;
-      color: #FF9F29;
+      font-size: $uni-font-size-base;
+      color: $uni-color-primary;
       font-weight: 600;
       flex-shrink: 0;
     }
 
     .notice-text {
       flex: 1;
-      font-size: 26rpx;
-      color: #666;
+      font-size: $uni-font-size-base;
+      color: $uni-text-color-secondary;
     }
   }
 }
@@ -794,10 +828,10 @@ const bookNow = () => {
 // 取消政策
 .policy-list {
   .policy-item {
-    padding: 20rpx;
-    background-color: #F8F8F8;
-    border-radius: 12rpx;
-    margin-bottom: 16rpx;
+    padding: $uni-spacing-lg;
+    background-color: $uni-bg-color-grey;
+    border-radius: $uni-radius-lg;
+    margin-bottom: $uni-spacing-lg;
 
     &:last-child {
       margin-bottom: 0;
@@ -806,19 +840,19 @@ const bookNow = () => {
     .policy-condition {
       display: flex;
       align-items: center;
-      gap: 8rpx;
-      margin-bottom: 12rpx;
+      gap: $uni-spacing-sm;
+      margin-bottom: $uni-spacing-md;
 
       .condition-text {
-        font-size: 28rpx;
-        color: #333;
+        font-size: $uni-font-size-lg;
+        color: $uni-text-color;
         font-weight: 500;
       }
     }
 
     .policy-result {
-      font-size: 26rpx;
-      color: #666;
+      font-size: $uni-font-size-base;
+      color: $uni-text-color-secondary;
       padding-left: 26rpx;
     }
   }
@@ -827,9 +861,9 @@ const bookNow = () => {
 // 用户评价
 .review-list {
   .review-item {
-    padding-bottom: 32rpx;
-    margin-bottom: 32rpx;
-    border-bottom: 2rpx solid #F0F0F0;
+    padding-bottom: $uni-spacing-xl;
+    margin-bottom: $uni-spacing-xl;
+    border-bottom: 2rpx solid $uni-border-color-light;
 
     &:last-child {
       border-bottom: none;
@@ -840,18 +874,18 @@ const bookNow = () => {
     .review-header {
       display: flex;
       align-items: center;
-      gap: 16rpx;
-      margin-bottom: 16rpx;
+      gap: $uni-spacing-lg;
+      margin-bottom: $uni-spacing-lg;
 
       .user-info {
         flex: 1;
 
         .user-name {
           display: block;
-          font-size: 28rpx;
+          font-size: $uni-font-size-lg;
           font-weight: 500;
-          color: #333;
-          margin-bottom: 8rpx;
+          color: $uni-text-color;
+          margin-bottom: $uni-spacing-sm;
         }
 
         .review-rating {
@@ -861,27 +895,27 @@ const bookNow = () => {
       }
 
       .review-date {
-        font-size: 24rpx;
-        color: #999;
+        font-size: $uni-font-size-sm;
+        color: $uni-text-color-placeholder;
       }
     }
 
     .review-content {
-      font-size: 28rpx;
-      color: #666;
+      font-size: $uni-font-size-lg;
+      color: $uni-text-color-secondary;
       line-height: 1.6;
-      margin-bottom: 16rpx;
+      margin-bottom: $uni-spacing-lg;
       display: block;
     }
 
     .review-images {
       display: flex;
-      gap: 12rpx;
+      gap: $uni-spacing-md;
 
       .review-image {
         width: 160rpx;
         height: 120rpx;
-        border-radius: 8rpx;
+        border-radius: $uni-radius-md;
       }
     }
   }
@@ -893,40 +927,41 @@ const bookNow = () => {
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: #FFFFFF;
+  background-color: $uni-bg-color-card;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16rpx 32rpx;
-  padding-bottom: calc(16rpx + env(safe-area-inset-bottom));
-  box-shadow: 0 -2rpx 10rpx rgba(0, 0, 0, 0.05);
+  padding: $uni-spacing-lg $uni-spacing-xl;
+  padding-bottom: calc(#{$uni-spacing-lg} + env(safe-area-inset-bottom));
+  box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.05);
   z-index: 100;
 
   .bar-left {
     display: flex;
     align-items: baseline;
-    
+
     .bar-price {
       display: flex;
       align-items: baseline;
-      
+
       .bar-symbol {
-        font-size: 28rpx;
-        color: #F44336;
+        font-size: $uni-font-size-lg;
+        color: $uni-color-error;
         font-weight: 600;
       }
-      
+
       .bar-amount {
         font-size: 44rpx;
-        color: #F44336;
+        color: $uni-color-error;
         font-weight: 700;
         margin: 0 4rpx;
+        font-family: 'DIN Alternate', sans-serif;
       }
     }
-    
+
     .bar-tip {
-      font-size: 24rpx;
-      color: #999;
+      font-size: $uni-font-size-sm;
+      color: $uni-text-color-placeholder;
       margin-left: 4rpx;
     }
   }
@@ -934,7 +969,7 @@ const bookNow = () => {
   .bar-actions {
     display: flex;
     align-items: center;
-    gap: 12rpx;
+    gap: $uni-spacing-md;
 
     .contact-btn {
       display: flex;
@@ -942,32 +977,42 @@ const bookNow = () => {
       align-items: center;
       justify-content: center;
       background: none;
-      padding: 0 16rpx;
+      padding: 0 $uni-spacing-lg;
       line-height: 1.2;
+      transition: all 0.2s ease;
 
       &::after { border: none; }
 
+      &:active {
+        opacity: 0.7;
+      }
+
       text {
-        font-size: 20rpx;
-        color: #666;
+        font-size: $uni-font-size-xs;
+        color: $uni-text-color-secondary;
         margin-top: 4rpx;
       }
     }
 
     .book-btn {
-      background: linear-gradient(135deg, #FF9F29 0%, #FFB84D 100%);
-      color: #FFFFFF;
-      font-size: 26rpx;
+      background: $uni-color-primary-gradient;
+      color: $uni-text-color-inverse;
+      font-size: $uni-font-size-base;
       font-weight: 600;
       padding: 0 40rpx;
       height: 68rpx;
       line-height: 68rpx;
-      border-radius: 34rpx;
+      border-radius: $uni-radius-btn;
       margin: 0;
+      box-shadow: $uni-shadow-glow;
+      transition: all 0.2s ease;
 
       &::after { border: none; }
 
-      &:active { opacity: 0.9; }
+      &:active {
+        transform: scale(0.98);
+        opacity: 0.9;
+      }
     }
   }
 }

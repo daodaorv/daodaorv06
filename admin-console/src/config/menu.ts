@@ -101,12 +101,6 @@ export const menuConfig: MenuItem[] = [
         component: () => import('@/views/vehicle/VehicleModels.vue'),
       },
       {
-        path: '/vehicles/price-groups',
-        name: 'VehicleModelPriceGroups',
-        meta: { title: '价格分组管理', description: '管理车型价格分组和定价策略' },
-        component: () => import('@/views/vehicle/VehicleModelPriceGroups.vue'),
-      },
-      {
         path: '/vehicles/list',
         name: 'VehicleList',
         meta: { title: '车辆列表', description: '管理平台所有车辆档案、状态跟踪和位置管理(包含平台自有、托管、合作车辆)' },
@@ -135,6 +129,12 @@ export const menuConfig: MenuItem[] = [
         name: 'VehicleViolations',
         meta: { title: '违章管理', description: '管理车辆违章记录、违章处理和罚款缴纳' },
         component: () => import('@/views/vehicle/VehicleViolations.vue'),
+      },
+      {
+        path: '/vehicles/price-analysis',
+        name: 'PriceAnalysisReport',
+        meta: { title: '价格分析报表', description: '分析车辆定价合理性、收益预测和智能定价建议' },
+        component: () => import('@/views/analysis/PriceAnalysisReport.vue'),
       },
     ],
   },
@@ -387,6 +387,12 @@ export const menuConfig: MenuItem[] = [
         name: 'MarketingCoupons',
         meta: { title: '优惠券管理', description: '管理优惠券创建、发放和核销' },
         component: () => import('@/views/marketing/MarketingCoupons.vue'),
+      },
+      {
+        path: '/marketing/coupon-records',
+        name: 'CouponRecords',
+        meta: { title: '优惠券记录', description: '查看优惠券领取和使用记录' },
+        component: () => import('@/views/marketing/CouponRecords.vue'),
       },
       {
         path: '/marketing/activities',
@@ -646,6 +652,12 @@ export const menuConfig: MenuItem[] = [
         name: 'SystemParams',
         meta: { title: '参数设置', description: '管理系统运行参数和业务规则' },
         component: () => import('@/views/system/SystemParams.vue'),
+      },
+      {
+        path: '/system/rental-calculation-config',
+        name: 'RentalCalculationConfig',
+        meta: { title: '租金计算参数', description: '配置车辆基础租金计算器的财务和运营参数' },
+        component: () => import('@/views/system/RentalCalculationConfig.vue'),
       },
       {
         path: '/system/alerts',

@@ -145,7 +145,7 @@
 						<text class="section-title">车辆详情</text>
 					</view>
 					<view class="description">
-						<text class="description-text">{{ model.description }}</text>
+						<rich-text :nodes="model.description" class="description-text"></rich-text>
 					</view>
 				</view>
 
@@ -362,106 +362,483 @@ export default {
 }
 </script>
 
-<style scoped>
-.model-detail-page { min-height: 100vh; background: #F5F5F5; }
+<style scoped lang="scss">
+.model-detail-page {
+  min-height: 100vh;
+  background: $uni-bg-color;
+}
 
-/* 图片轮播 */
-.image-swiper { width: 100%; height: 500rpx; }
-.swiper-image { width: 100%; height: 100%; }
+// 图片轮播
+.image-swiper {
+  width: 100%;
+  height: 500rpx;
+}
 
-/* 悬浮按钮 */
-.back-btn, .share-btn { position: fixed; width: 64rpx; height: 64rpx; background: rgba(0, 0, 0, 0.5); border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 100; }
-.back-btn { left: 24rpx; }
-.share-btn { right: 24rpx; }
+.swiper-image {
+  width: 100%;
+  height: 100%;
+}
 
-/* 滚动容器 */
-.detail-scroll { height: calc(100vh - 500rpx - 120rpx); }
-.content-container { padding-bottom: 32rpx; }
+// 悬浮按钮
+.back-btn,
+.share-btn {
+  position: fixed;
+  width: 64rpx;
+  height: 64rpx;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: $uni-radius-circle;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  transition: all 0.2s ease;
 
-/* 基本信息卡片 */
-.info-card { background: #FFF; padding: 32rpx; margin-bottom: 24rpx; }
-.header-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24rpx; }
-.title-wrap { flex: 1; }
-.model-name { display: block; font-size: 36rpx; font-weight: 600; color: #333; margin-bottom: 16rpx; }
-.brand-tag { display: inline-block; padding: 8rpx 16rpx; background: #FFF3E0; color: #FF9F29; font-size: 24rpx; border-radius: 8rpx; }
-.divider { height: 1rpx; background: #F5F5F5; margin: 24rpx 0; }
-.price-row { display: flex; justify-content: space-between; }
-.price-item { flex: 1; }
-.price-label { display: block; font-size: 24rpx; color: #999; margin-bottom: 12rpx; }
-.price-value { display: flex; align-items: baseline; }
-.currency { font-size: 28rpx; color: #FF9F29; margin-right: 4rpx; }
-.price { font-size: 40rpx; font-weight: 600; color: #FF9F29; }
-.unit { font-size: 24rpx; color: #FF9F29; margin-left: 4rpx; }
+  &:active {
+    transform: scale(0.95);
+    background: rgba(0, 0, 0, 0.7);
+  }
+}
 
-/* 核心规格 Grid */
-.specs-grid { display: flex; background: #FFF; padding: 32rpx; margin-bottom: 24rpx; }
-.spec-box { flex: 1; display: flex; flex-direction: column; align-items: center; }
-.spec-icon { width: 72rpx; height: 72rpx; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 16rpx; }
-.spec-icon.bg-blue { background: #E3F2FD; }
-.spec-icon.bg-green { background: #E8F5E9; }
-.spec-icon.bg-orange { background: #FFF3E0; }
-.spec-icon.bg-purple { background: #F3E5F5; }
-.spec-val { font-size: 28rpx; font-weight: 600; color: #333; margin-bottom: 8rpx; }
-.spec-label { font-size: 24rpx; color: #999; }
+.back-btn {
+  left: $uni-spacing-xl;
+}
 
-/* 通用卡片 */
-.section-card { background: #FFF; padding: 32rpx; margin-bottom: 24rpx; }
-.section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24rpx; }
-.section-title { font-size: 32rpx; font-weight: 600; color: #333; }
+.share-btn {
+  right: $uni-spacing-xl;
+}
 
-/* 车辆配置 */
-.features-grid { display: flex; flex-wrap: wrap; }
-.feature-item { width: 50%; display: flex; align-items: center; margin-bottom: 20rpx; }
-.feature-text { font-size: 28rpx; color: #666; margin-left: 12rpx; }
+// 滚动容器
+.detail-scroll {
+  height: calc(100vh - 500rpx - 120rpx);
+}
 
-/* 托管收益说明 */
-.hosting-info-card { background: linear-gradient(135deg, #FFF9F0 0%, #FFF 100%); }
-.hosting-info { }
-.info-row { display: flex; margin-bottom: 24rpx; }
-.info-item { flex: 1; }
-.info-label { display: block; font-size: 24rpx; color: #999; margin-bottom: 12rpx; }
-.info-value { display: block; font-size: 32rpx; font-weight: 600; color: #333; }
-.info-value.highlight { color: #FF9F29; }
-.policy-list { margin-top: 16rpx; }
-.policy-item { display: flex; align-items: center; margin-bottom: 16rpx; font-size: 28rpx; color: #666; }
-.policy-item text { margin-left: 12rpx; }
+.content-container {
+  padding-bottom: $uni-spacing-xl;
+}
 
-/* 车辆详情 */
-.description { }
-.description-text { font-size: 28rpx; color: #666; line-height: 1.8; white-space: pre-wrap; }
+// 基本信息卡片
+.info-card {
+  background: $uni-bg-color-card;
+  padding: $uni-spacing-xl;
+  margin-bottom: $uni-spacing-xl;
+  box-shadow: $uni-shadow-card;
+}
 
-/* 规格参数 */
-.specs-list { }
-.specs-item { display: flex; justify-content: space-between; padding: 24rpx 0; border-bottom: 1rpx solid #F5F5F5; }
-.specs-item:last-child { border-bottom: none; }
-.specs-label { font-size: 28rpx; color: #666; }
-.specs-value { font-size: 28rpx; color: #333; font-weight: 500; }
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: $uni-spacing-xl;
+}
 
-/* 底部安全区 */
-.safe-area-bottom { height: 120rpx; }
+.title-wrap {
+  flex: 1;
+}
 
-/* 底部操作栏 */
-.bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; height: 120rpx; background: #FFF; border-top: 1rpx solid #F5F5F5; display: flex; align-items: center; padding: 0 32rpx; z-index: 100; }
-.bar-left { display: flex; gap: 48rpx; }
-.action-btn { display: flex; flex-direction: column; align-items: center; font-size: 20rpx; color: #666; }
-.action-btn text { margin-top: 8rpx; }
-.bar-right { flex: 1; display: flex; justify-content: flex-end; }
-.booking-btn { width: 240rpx; height: 72rpx; background: linear-gradient(135deg, #FF9F29 0%, #FF7A00 100%); color: #FFF; border-radius: 48rpx; font-size: 28rpx; font-weight: 600; border: none; }
+.model-name {
+  display: block;
+  font-size: 36rpx;
+  font-weight: 600;
+  color: $uni-text-color;
+  margin-bottom: $uni-spacing-lg;
+}
 
-/* 预定弹窗 */
-.booking-popup { background: #FFF; padding: 32rpx; border-radius: 24rpx 24rpx 0 0; }
-.popup-header { text-align: center; margin-bottom: 32rpx; }
-.popup-title { font-size: 32rpx; font-weight: 600; color: #333; }
-.popup-model-info { background: #F5F5F5; padding: 24rpx; border-radius: 12rpx; margin-bottom: 32rpx; display: flex; justify-content: space-between; align-items: center; }
-.popup-model-info .model-name { font-size: 28rpx; color: #333; font-weight: 500; }
-.popup-model-info .model-price { font-size: 28rpx; color: #FF9F29; font-weight: 600; }
-.popup-form { margin-bottom: 32rpx; }
-.form-item { margin-bottom: 24rpx; }
-.form-label { display: block; font-size: 28rpx; color: #333; margin-bottom: 12rpx; }
-.form-input, .form-textarea { width: 100%; padding: 24rpx; background: #F5F5F5; border-radius: 12rpx; font-size: 28rpx; border: none; box-sizing: border-box; }
-.form-textarea { height: 160rpx; }
-.popup-actions { display: flex; gap: 24rpx; }
-.cancel-btn, .submit-btn { flex: 1; height: 88rpx; border-radius: 48rpx; font-size: 28rpx; font-weight: 600; border: none; }
-.cancel-btn { background: #F5F5F5; color: #666; }
-.submit-btn { background: linear-gradient(135deg, #FF9F29 0%, #FF7A00 100%); color: #FFF; }
+.brand-tag {
+  display: inline-block;
+  padding: $uni-spacing-sm $uni-spacing-lg;
+  background: rgba($uni-color-primary, 0.1);
+  color: $uni-color-primary;
+  font-size: $uni-font-size-xs;
+  border-radius: $uni-radius-sm;
+}
+
+.divider {
+  height: 1rpx;
+  background: $uni-border-color-light;
+  margin: $uni-spacing-xl 0;
+}
+
+.price-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.price-item {
+  flex: 1;
+}
+
+.price-label {
+  display: block;
+  font-size: $uni-font-size-xs;
+  color: $uni-text-color-placeholder;
+  margin-bottom: $uni-spacing-md;
+}
+
+.price-value {
+  display: flex;
+  align-items: baseline;
+}
+
+.currency {
+  font-size: $uni-font-size-base;
+  color: $uni-color-primary;
+  margin-right: 4rpx;
+}
+
+.price {
+  font-size: 40rpx;
+  font-weight: 600;
+  color: $uni-color-primary;
+  font-family: 'DIN Alternate', sans-serif;
+}
+
+.unit {
+  font-size: $uni-font-size-xs;
+  color: $uni-color-primary;
+  margin-left: 4rpx;
+}
+
+// 核心规格 Grid
+.specs-grid {
+  display: flex;
+  background: $uni-bg-color-card;
+  padding: $uni-spacing-xl;
+  margin-bottom: $uni-spacing-xl;
+  box-shadow: $uni-shadow-card;
+}
+
+.spec-box {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.spec-icon {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: $uni-radius-circle;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: $uni-spacing-lg;
+
+  &.bg-blue {
+    background: #E3F2FD;
+  }
+
+  &.bg-green {
+    background: rgba($uni-color-success, 0.12);
+  }
+
+  &.bg-orange {
+    background: rgba($uni-color-primary, 0.1);
+  }
+
+  &.bg-purple {
+    background: #F3E5F5;
+  }
+}
+
+.spec-val {
+  font-size: $uni-font-size-base;
+  font-weight: 600;
+  color: $uni-text-color;
+  margin-bottom: $uni-spacing-sm;
+}
+
+.spec-label {
+  font-size: $uni-font-size-xs;
+  color: $uni-text-color-placeholder;
+}
+
+// 通用卡片
+.section-card {
+  background: $uni-bg-color-card;
+  padding: $uni-spacing-xl;
+  margin-bottom: $uni-spacing-xl;
+  box-shadow: $uni-shadow-card;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $uni-spacing-xl;
+}
+
+.section-title {
+  font-size: $uni-font-size-lg;
+  font-weight: 600;
+  color: $uni-text-color;
+}
+
+// 车辆配置
+.features-grid {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.feature-item {
+  width: 50%;
+  display: flex;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.feature-text {
+  font-size: $uni-font-size-base;
+  color: $uni-text-color-secondary;
+  margin-left: $uni-spacing-md;
+}
+
+// 托管收益说明
+.hosting-info-card {
+  background: linear-gradient(135deg, rgba($uni-color-primary, 0.08) 0%, $uni-bg-color-card 100%);
+}
+
+.info-row {
+  display: flex;
+  margin-bottom: $uni-spacing-xl;
+}
+
+.info-item {
+  flex: 1;
+}
+
+.info-label {
+  display: block;
+  font-size: $uni-font-size-xs;
+  color: $uni-text-color-placeholder;
+  margin-bottom: $uni-spacing-md;
+}
+
+.info-value {
+  display: block;
+  font-size: $uni-font-size-lg;
+  font-weight: 600;
+  color: $uni-text-color;
+
+  &.highlight {
+    color: $uni-color-primary;
+  }
+}
+
+.policy-list {
+  margin-top: $uni-spacing-lg;
+}
+
+.policy-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: $uni-spacing-lg;
+  font-size: $uni-font-size-base;
+  color: $uni-text-color-secondary;
+
+  text {
+    margin-left: $uni-spacing-md;
+  }
+}
+
+// 车辆详情
+.description-text {
+  font-size: $uni-font-size-base;
+  color: $uni-text-color-secondary;
+  line-height: 1.8;
+  white-space: pre-wrap;
+}
+
+// 规格参数
+.specs-item {
+  display: flex;
+  justify-content: space-between;
+  padding: $uni-spacing-xl 0;
+  border-bottom: 1rpx solid $uni-border-color-light;
+  transition: all 0.2s ease;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.specs-label {
+  font-size: $uni-font-size-base;
+  color: $uni-text-color-secondary;
+}
+
+.specs-value {
+  font-size: $uni-font-size-base;
+  color: $uni-text-color;
+  font-weight: 500;
+}
+
+// 底部安全区
+.safe-area-bottom {
+  height: 120rpx;
+}
+
+// 底部操作栏
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 120rpx;
+  background: $uni-bg-color-card;
+  border-top: 1rpx solid $uni-border-color-light;
+  display: flex;
+  align-items: center;
+  padding: 0 $uni-spacing-xl;
+  z-index: 100;
+  box-shadow: 0 -4rpx 16rpx rgba(0, 0, 0, 0.05);
+}
+
+.bar-left {
+  display: flex;
+  gap: 48rpx;
+}
+
+.action-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 20rpx;
+  color: $uni-text-color-secondary;
+  transition: all 0.2s ease;
+
+  &:active {
+    opacity: 0.7;
+  }
+
+  text {
+    margin-top: $uni-spacing-sm;
+  }
+}
+
+.bar-right {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.booking-btn {
+  width: 240rpx;
+  height: 72rpx;
+  background: $uni-color-primary-gradient;
+  color: $uni-text-color-inverse;
+  border-radius: $uni-radius-btn;
+  font-size: $uni-font-size-base;
+  font-weight: 600;
+  border: none;
+  box-shadow: $uni-shadow-glow;
+  transition: all 0.2s ease;
+
+  &:active {
+    transform: scale(0.98);
+    opacity: 0.9;
+  }
+}
+
+// 预定弹窗
+.booking-popup {
+  background: $uni-bg-color-card;
+  padding: $uni-spacing-xl;
+  border-radius: $uni-radius-lg $uni-radius-lg 0 0;
+}
+
+.popup-header {
+  text-align: center;
+  margin-bottom: $uni-spacing-xl;
+}
+
+.popup-title {
+  font-size: $uni-font-size-lg;
+  font-weight: 600;
+  color: $uni-text-color;
+}
+
+.popup-model-info {
+  background: $uni-bg-color-grey;
+  padding: $uni-spacing-xl;
+  border-radius: $uni-radius-md;
+  margin-bottom: $uni-spacing-xl;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .model-name {
+    font-size: $uni-font-size-base;
+    color: $uni-text-color;
+    font-weight: 500;
+    margin-bottom: 0;
+  }
+
+  .model-price {
+    font-size: $uni-font-size-base;
+    color: $uni-color-primary;
+    font-weight: 600;
+  }
+}
+
+.popup-form {
+  margin-bottom: $uni-spacing-xl;
+}
+
+.form-item {
+  margin-bottom: $uni-spacing-xl;
+}
+
+.form-label {
+  display: block;
+  font-size: $uni-font-size-base;
+  color: $uni-text-color;
+  margin-bottom: $uni-spacing-md;
+}
+
+.form-input,
+.form-textarea {
+  width: 100%;
+  padding: $uni-spacing-xl;
+  background: $uni-bg-color-grey;
+  border-radius: $uni-radius-md;
+  font-size: $uni-font-size-base;
+  color: $uni-text-color;
+  border: none;
+  box-sizing: border-box;
+}
+
+.form-textarea {
+  height: 160rpx;
+}
+
+.popup-actions {
+  display: flex;
+  gap: $uni-spacing-xl;
+}
+
+.cancel-btn,
+.submit-btn {
+  flex: 1;
+  height: 88rpx;
+  border-radius: $uni-radius-btn;
+  font-size: $uni-font-size-base;
+  font-weight: 600;
+  border: none;
+  transition: all 0.2s ease;
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.cancel-btn {
+  background: $uni-bg-color-grey;
+  color: $uni-text-color-secondary;
+}
+
+.submit-btn {
+  background: $uni-color-primary-gradient;
+  color: $uni-text-color-inverse;
+  box-shadow: $uni-shadow-glow;
+}
 </style>

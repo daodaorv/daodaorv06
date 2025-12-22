@@ -396,7 +396,7 @@ const handleSkip = async () => {
 <style lang="scss" scoped>
 .complete-info-page {
 	min-height: 100vh;
-	background: linear-gradient(180deg, #FFF5E6 0%, #FFFFFF 30%);
+	background: linear-gradient(180deg, rgba($uni-color-primary, 0.08) 0%, $uni-bg-color-card 30%);
 	padding: 0 48rpx;
 }
 
@@ -409,14 +409,14 @@ const handleSkip = async () => {
 		display: block;
 		font-size: 48rpx;
 		font-weight: bold;
-		color: #333333;
-		margin-bottom: 16rpx;
+		color: $uni-text-color;
+		margin-bottom: $uni-spacing-lg;
 	}
 
 	.tip-desc {
 		display: block;
-		font-size: 28rpx;
-		color: #999999;
+		font-size: $uni-font-size-base;
+		color: $uni-text-color-placeholder;
 	}
 }
 
@@ -425,16 +425,16 @@ const handleSkip = async () => {
 	margin-bottom: 48rpx;
 
 	.section-title {
-		font-size: 32rpx;
+		font-size: $uni-font-size-lg;
 		font-weight: 500;
-		color: #333333;
-		margin-bottom: 24rpx;
+		color: $uni-text-color;
+		margin-bottom: $uni-spacing-xl;
 	}
 
 	.section-tip {
-		font-size: 24rpx;
-		color: #999999;
-		margin-top: 16rpx;
+		font-size: $uni-font-size-xs;
+		color: $uni-text-color-placeholder;
+		margin-top: $uni-spacing-lg;
 	}
 }
 
@@ -442,13 +442,13 @@ const handleSkip = async () => {
 .avatar-wrapper {
 	display: flex;
 	justify-content: center;
-	padding: 32rpx 0;
+	padding: $uni-spacing-xl 0;
 
 	.avatar-btn {
 		position: relative;
 		width: 200rpx;
 		height: 200rpx;
-		border-radius: 50%;
+		border-radius: $uni-radius-circle;
 		overflow: hidden;
 		background: transparent;
 		border: none;
@@ -461,7 +461,7 @@ const handleSkip = async () => {
 		.avatar-image {
 			width: 100%;
 			height: 100%;
-			border-radius: 50%;
+			border-radius: $uni-radius-circle;
 		}
 
 		.avatar-mask {
@@ -479,9 +479,9 @@ const handleSkip = async () => {
 			transition: opacity 0.3s;
 
 			.mask-text {
-				font-size: 24rpx;
-				color: #FFFFFF;
-				margin-top: 8rpx;
+				font-size: $uni-font-size-xs;
+				color: $uni-text-color-inverse;
+				margin-top: $uni-spacing-sm;
 			}
 		}
 
@@ -493,18 +493,18 @@ const handleSkip = async () => {
 
 // 昵称输入
 .nickname-wrapper {
-	background: #FFFFFF;
-	border-radius: 16rpx;
-	padding: 24rpx 32rpx;
-	box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.04);
+	background: $uni-bg-color-card;
+	border-radius: $uni-radius-lg;
+	padding: $uni-spacing-xl $uni-spacing-xl;
+	box-shadow: $uni-shadow-card;
 
 	.nickname-input {
-		font-size: 32rpx;
-		color: #333333;
+		font-size: $uni-font-size-lg;
+		color: $uni-text-color;
 		width: 100%;
 
 		.placeholder {
-			color: #CCCCCC;
+			color: $uni-text-color-placeholder;
 		}
 	}
 }
@@ -512,7 +512,7 @@ const handleSkip = async () => {
 // 性别选择
 .gender-wrapper {
 	display: flex;
-	gap: 32rpx;
+	gap: $uni-spacing-xl;
 
 	.gender-item {
 		flex: 1;
@@ -520,26 +520,26 @@ const handleSkip = async () => {
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		padding: 32rpx;
-		background: #FFFFFF;
-		border-radius: 16rpx;
-		box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.04);
+		padding: $uni-spacing-xl;
+		background: $uni-bg-color-card;
+		border-radius: $uni-radius-lg;
+		box-shadow: $uni-shadow-card;
 		border: 2rpx solid transparent;
 		transition: all 0.3s;
 
 		&.active {
-			border-color: #FF9F29;
-			background: #FFF5E6;
+			border-color: $uni-color-primary;
+			background: rgba($uni-color-primary, 0.08);
 		}
 
 		.gender-text {
-			font-size: 28rpx;
-			color: #666666;
-			margin-top: 8rpx;
+			font-size: $uni-font-size-base;
+			color: $uni-text-color-secondary;
+			margin-top: $uni-spacing-sm;
 		}
 
 		&.active .gender-text {
-			color: #FF9F29;
+			color: $uni-color-primary;
 			font-weight: 500;
 		}
 	}
@@ -553,16 +553,24 @@ const handleSkip = async () => {
 	.save-btn {
 		width: 100%;
 		height: 88rpx;
-		background: linear-gradient(135deg, #FF9F29 0%, #FF6B00 100%);
-		color: #FFFFFF;
-		font-size: 32rpx;
+		background: $uni-color-primary-gradient;
+		color: $uni-text-color-inverse;
+		font-size: $uni-font-size-lg;
 		font-weight: 500;
-		border-radius: 44rpx;
+		border-radius: $uni-radius-btn;
 		border: none;
-		margin-bottom: 24rpx;
+		margin-bottom: $uni-spacing-xl;
+		box-shadow: $uni-shadow-glow;
+		transition: all 0.2s ease;
+
+		&:active {
+			transform: scale(0.98);
+			opacity: 0.9;
+		}
 
 		&[disabled] {
-			background: #CCCCCC;
+			background: $uni-border-color;
+			box-shadow: none;
 		}
 	}
 
@@ -570,10 +578,15 @@ const handleSkip = async () => {
 		width: 100%;
 		height: 88rpx;
 		background: transparent;
-		color: #999999;
-		font-size: 28rpx;
-		border-radius: 44rpx;
-		border: 2rpx solid #E5E5E5;
+		color: $uni-text-color-placeholder;
+		font-size: $uni-font-size-base;
+		border-radius: $uni-radius-btn;
+		border: 2rpx solid $uni-border-color-light;
+		transition: all 0.2s ease;
+
+		&:active {
+			background: $uni-bg-color-grey;
+		}
 	}
 }
 </style>

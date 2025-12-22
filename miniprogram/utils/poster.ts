@@ -29,8 +29,15 @@ class PosterGenerator {
             this.canvas = res[0].node
             this.ctx = this.canvas.getContext('2d')
 
-            // 设置Canvas尺寸
+            // 设置Canvas尺寸（使用新 API）
+            // #ifdef MP-WEIXIN
+            const windowInfo = uni.getWindowInfo()
+            const dpr = windowInfo.pixelRatio || 2
+            // #endif
+            // #ifndef MP-WEIXIN
             const dpr = uni.getSystemInfoSync().pixelRatio || 2
+            // #endif
+
             this.canvas.width = this.canvasWidth * dpr
             this.canvas.height = this.canvasHeight * dpr
             this.ctx.scale(dpr, dpr)

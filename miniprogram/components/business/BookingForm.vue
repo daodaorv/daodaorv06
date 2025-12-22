@@ -219,7 +219,7 @@ onMounted(async () => {
 			lat: location.latitude,
 			lng: location.longitude
 		};
-		logger.debug('获取定位成功', { location: userLocation.value });
+		// 移除日志：由业务层统一记录，避免重复
 
 		// 如果没有缓存数据，或者缓存的城市与定位城市不一致，则更新
 		if (!hasCache || !pickupCity.value) {

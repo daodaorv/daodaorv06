@@ -111,67 +111,72 @@ onReachBottom(() => {
 <style scoped lang="scss">
 .category-page {
   min-height: 100vh;
-  background-color: #f5f5f5;
-  padding-bottom: 32rpx;
+  background-color: $uni-bg-color;
+  padding-bottom: $uni-spacing-xl;
 }
 
 .category-header {
-  padding: 32rpx;
-  background-color: #ffffff;
-  margin: 0 32rpx 24rpx;
-  border-radius: 24rpx;
-  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.04);
+  padding: $uni-spacing-xl;
+  background-color: $uni-bg-color-card;
+  margin: 0 $uni-spacing-xl $uni-spacing-xl;
+  border-radius: $uni-radius-lg;
+  box-shadow: $uni-shadow-card;
 
   .category-title {
     font-size: 36rpx;
     font-weight: 600;
-    color: #333333;
+    color: $uni-text-color;
   }
 
   .category-count {
     display: block;
-    margin-top: 8rpx;
-    font-size: 24rpx;
-    color: #999999;
+    margin-top: $uni-spacing-md;
+    font-size: $uni-font-size-sm;
+    color: $uni-text-color-placeholder;
   }
 }
 
 .article-list {
-  margin: 0 32rpx;
-  background-color: #ffffff;
-  border-radius: 24rpx;
-  padding: 0 32rpx;
-  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.04);
+  margin: 0 $uni-spacing-xl;
+  background-color: $uni-bg-color-card;
+  border-radius: $uni-radius-lg;
+  padding: 0 $uni-spacing-xl;
+  box-shadow: $uni-shadow-card;
 }
 
 .article-item {
-  padding: 32rpx 0;
-  border-bottom: 1rpx solid #f0f0f0;
+  padding: $uni-spacing-xl 0;
+  border-bottom: 1rpx solid $uni-border-color-light;
+  transition: all 0.2s ease;
 
   &:last-child {
     border-bottom: none;
   }
 
+  &:active {
+    opacity: 0.7;
+  }
+
   .article-title {
     font-size: 30rpx;
     font-weight: 600;
-    color: #333333;
-    margin-bottom: 8rpx;
+    color: $uni-text-color;
+    margin-bottom: $uni-spacing-md;
   }
 
   .article-summary {
-    font-size: 26rpx;
-    color: #999999;
+    font-size: $uni-font-size-sm;
+    color: $uni-text-color-placeholder;
     line-height: 1.6;
   }
 
   .article-meta {
-    margin-top: 16rpx;
+    margin-top: $uni-spacing-xl;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 22rpx;
-    color: #b0b0b0;
+    font-size: $uni-font-size-xs;
+    color: $uni-text-color-placeholder;
 
     .meta-left {
       display: flex;
@@ -183,21 +188,22 @@ onReachBottom(() => {
 
 .loading-text {
   text-align: center;
-  padding: 24rpx 0 32rpx;
-  font-size: 24rpx;
-  color: #999999;
+  padding: $uni-spacing-xl 0 $uni-spacing-xl;
+  font-size: $uni-font-size-sm;
+  color: $uni-text-color-placeholder;
 }
 
 .empty-state {
-  margin: 160rpx 32rpx;
-  padding: 60rpx 32rpx;
-  border-radius: 24rpx;
-  background-color: #ffffff;
+  margin: 160rpx $uni-spacing-xl;
+  padding: 60rpx $uni-spacing-xl;
+  border-radius: $uni-radius-lg;
+  background-color: $uni-bg-color-card;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16rpx;
-  color: #999999;
-  font-size: 26rpx;
+  gap: $uni-spacing-xl;
+  color: $uni-text-color-placeholder;
+  font-size: $uni-font-size-sm;
+  box-shadow: $uni-shadow-card;
 }
 </style>

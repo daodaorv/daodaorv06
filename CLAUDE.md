@@ -27,17 +27,17 @@
 1. **admin-console** (PC管理端)
    - 使用 Mock 数据完成所有页面
    - 不启动 backend 服务
-   - 查看进度：[admin-console/docs/实施计划.md](./admin-console/docs/实施计划.md)
+   - 查看进度：admin-console/docs/实施计划.md
 
 2. **miniprogram** (微信小程序)
    - 使用 Mock 数据完成所有页面
    - 不启动 backend 服务
-   - 查看进度：miniprogram/docs/实施计划.md (待创建)
+   - 查看进度：miniprogram/docs/小程序端实施计划.md
 
 3. **mobile-admin** (移动管理端)
    - 使用 Mock 数据完成所有页面
    - 不启动 backend 服务
-   - 查看进度：[mobile-admin/docs/实施计划.md](./mobile-admin/docs/实施计划.md)
+   - 查看进度：mobile-admin/docs/移动管理端实施计划.md
 
 ### API 状态标识
 

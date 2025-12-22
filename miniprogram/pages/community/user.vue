@@ -244,7 +244,7 @@ onMounted(() => {
 <style lang="scss" scoped>
 .user-page {
 	min-height: 100vh;
-	background: #F5F5F5;
+	background: $uni-bg-color;
 }
 
 // 用户信息卡片
@@ -252,67 +252,86 @@ onMounted(() => {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	padding: 48rpx 32rpx;
-	background: #FFFFFF;
-	margin-bottom: 16rpx;
+	padding: $uni-spacing-xl $uni-spacing-lg;
+	background: $uni-bg-color-card;
+	margin-bottom: $uni-spacing-md;
+	box-shadow: $uni-shadow-card;
 
 	.avatar {
 		width: 160rpx;
 		height: 160rpx;
-		border-radius: 50%;
-		margin-bottom: 24rpx;
+		border-radius: $uni-radius-circle;
+		margin-bottom: $uni-spacing-lg;
+		border: 4rpx solid $uni-bg-color-card;
+		box-shadow: $uni-shadow-float;
 	}
 
 	.username {
-		font-size: 36rpx;
-		font-weight: bold;
-		color: #333333;
-		margin-bottom: 12rpx;
+		font-size: $uni-font-size-xxl;
+		font-weight: 800;
+		color: $uni-text-color;
+		margin-bottom: $uni-spacing-sm;
 	}
 
 	.bio {
-		font-size: 24rpx;
-		color: #999999;
+		font-size: $uni-font-size-xs;
+		color: $uni-text-color-placeholder;
 		text-align: center;
-		margin-bottom: 32rpx;
+		margin-bottom: $uni-spacing-xl;
+		max-width: 80%;
+		line-height: 1.5;
 	}
 
 	.stats {
 		display: flex;
 		gap: 64rpx;
-		margin-bottom: 32rpx;
+		margin-bottom: $uni-spacing-xl;
 
 		.stat-item {
 			display: flex;
 			flex-direction: column;
 			align-items: center;
-			gap: 8rpx;
+			gap: $uni-spacing-xs;
 
 			.stat-value {
-				font-size: 32rpx;
+				font-size: $uni-font-size-lg;
 				font-weight: bold;
-				color: #333333;
+				color: $uni-text-color;
+				font-family: 'DIN Alternate', sans-serif;
 			}
 
 			.stat-label {
-				font-size: 24rpx;
-				color: #999999;
+				font-size: $uni-font-size-xs;
+				color: $uni-text-color-placeholder;
 			}
 		}
 	}
 
 	.follow-btn {
 		width: 400rpx;
-		height: 72rpx;
-		background: linear-gradient(135deg, #FF9F29 0%, #FF6B00 100%);
-		color: #FFFFFF;
-		font-size: 28rpx;
-		border-radius: 36rpx;
+		height: 80rpx;
+		background: $uni-color-primary-gradient;
+		color: $uni-text-color-inverse;
+		font-size: $uni-font-size-base;
+		font-weight: 600;
+		border-radius: $uni-radius-btn;
 		border: none;
+		box-shadow: $uni-shadow-glow;
+		transition: all 0.2s ease;
+
+		&:active {
+			transform: scale(0.98);
+			opacity: 0.9;
+		}
+
+		&::after {
+			border: none;
+		}
 
 		&.following {
-			background: #F5F5F5;
-			color: #999999;
+			background: $uni-bg-color-grey;
+			color: $uni-text-color-placeholder;
+			box-shadow: none;
 		}
 	}
 }
@@ -320,26 +339,29 @@ onMounted(() => {
 // Tab栏
 .tab-bar {
 	display: flex;
-	background: #FFFFFF;
-	margin-bottom: 16rpx;
+	background: $uni-bg-color-card;
+	margin-bottom: $uni-spacing-md;
+	box-shadow: $uni-shadow-sm;
 
 	.tab-item {
 		flex: 1;
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		height: 88rpx;
+		height: 96rpx;
 		position: relative;
+		transition: all 0.2s ease;
 
 		.tab-text {
-			font-size: 28rpx;
-			color: #666666;
+			font-size: $uni-font-size-base;
+			color: $uni-text-color-secondary;
+			transition: all 0.2s ease;
 		}
 
 		&.active {
 			.tab-text {
-				color: #FF9F29;
-				font-weight: 500;
+				color: $uni-color-primary;
+				font-weight: 600;
 			}
 
 			&::after {
@@ -349,9 +371,9 @@ onMounted(() => {
 				left: 50%;
 				transform: translateX(-50%);
 				width: 60rpx;
-				height: 4rpx;
-				background: #FF9F29;
-				border-radius: 2rpx;
+				height: 6rpx;
+				background: $uni-color-primary;
+				border-radius: 3rpx;
 			}
 		}
 	}
@@ -359,20 +381,25 @@ onMounted(() => {
 
 // 内容区域
 .content-section {
-	background: #FFFFFF;
+	background: $uni-bg-color-card;
 	min-height: 400rpx;
 }
 
 // 帖子列表
 .post-list {
-	padding: 32rpx;
+	padding: $uni-spacing-lg;
 
 	.post-item {
 		display: flex;
-		gap: 16rpx;
-		padding-bottom: 32rpx;
-		margin-bottom: 32rpx;
-		border-bottom: 1rpx solid #F0F0F0;
+		gap: $uni-spacing-md;
+		padding-bottom: $uni-spacing-lg;
+		margin-bottom: $uni-spacing-lg;
+		border-bottom: 1rpx solid $uni-border-color-light;
+		transition: opacity 0.2s ease;
+
+		&:active {
+			opacity: 0.8;
+		}
 
 		&:last-child {
 			border-bottom: none;
@@ -382,31 +409,33 @@ onMounted(() => {
 		.post-cover {
 			width: 200rpx;
 			height: 150rpx;
-			border-radius: 12rpx;
+			border-radius: $uni-radius-md;
 			flex-shrink: 0;
+			background-color: $uni-bg-color-grey;
 		}
 
 		.post-info {
 			flex: 1;
 			display: flex;
 			flex-direction: column;
-			gap: 12rpx;
+			gap: $uni-spacing-sm;
 
 			.post-header {
 				.type-tag {
 					display: inline-block;
-					padding: 4rpx 12rpx;
-					background: #E8F5E9;
-					color: #4CAF50;
-					font-size: 20rpx;
-					border-radius: 8rpx;
+					padding: 4rpx $uni-spacing-sm;
+					background: rgba(76, 175, 80, 0.1);
+					color: $uni-color-success;
+					font-size: $uni-font-size-xs;
+					border-radius: $uni-radius-xs;
+					font-weight: 500;
 				}
 			}
 
 			.post-title {
-				font-size: 28rpx;
+				font-size: $uni-font-size-base;
 				font-weight: 500;
-				color: #333333;
+				color: $uni-text-color;
 				line-height: 1.5;
 				overflow: hidden;
 				text-overflow: ellipsis;
@@ -418,7 +447,7 @@ onMounted(() => {
 			.post-meta {
 				display: flex;
 				align-items: center;
-				gap: 24rpx;
+				gap: $uni-spacing-lg;
 
 				.meta-item {
 					display: flex;
@@ -426,15 +455,15 @@ onMounted(() => {
 					gap: 4rpx;
 
 					.meta-text {
-						font-size: 20rpx;
-						color: #999999;
+						font-size: $uni-font-size-xs;
+						color: $uni-text-color-placeholder;
 					}
 				}
 
 				.meta-time {
 					margin-left: auto;
-					font-size: 20rpx;
-					color: #CCCCCC;
+					font-size: $uni-font-size-xs;
+					color: $uni-border-color;
 				}
 			}
 		}
@@ -448,11 +477,11 @@ onMounted(() => {
 	align-items: center;
 	justify-content: center;
 	padding: 120rpx 0;
-	gap: 16rpx;
+	gap: $uni-spacing-md;
 
 	.empty-text {
-		font-size: 24rpx;
-		color: #CCCCCC;
+		font-size: $uni-font-size-sm;
+		color: $uni-text-color-placeholder;
 	}
 }
 </style>

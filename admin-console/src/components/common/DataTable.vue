@@ -19,7 +19,16 @@
       :data="data"
       stripe
       style="width: 100%"
+      @selection-change="handleSelectionChange"
     >
+      <!-- 批量选择列 -->
+      <el-table-column
+        v-if="selectable"
+        type="selection"
+        width="55"
+        fixed="left"
+      />
+
       <el-table-column
         v-for="column in columns"
         :key="column.prop"
@@ -37,22 +46,27 @@
 
       <!-- 操作列 -->
       <el-table-column
-        v-if="actions.length > 0"
+        v-if="actions.length > 0 || $slots.actions"
         label="操作"
         :width="actionsWidth"
         fixed="right"
       >
         <template #default="{ row }">
-          <template v-for="action in actions" :key="action.label">
-            <el-button
-              v-if="!action.show || action.show(row)"
-              link
-              :type="action.type"
-              size="small"
-              @click="action.onClick(row)"
-            >
-              {{ action.label }}
-            </el-button>
+          <!-- 优先使用自定义插槽 -->
+          <slot v-if="$slots.actions" name="actions" :row="row" />
+          <!-- 否则使用 actions prop -->
+          <template v-else>
+            <template v-for="action in actions" :key="action.label">
+              <el-button
+                v-if="!action.show || action.show(row)"
+                link
+                :type="action.type"
+                size="small"
+                @click="action.onClick(row)"
+              >
+                {{ action.label }}
+              </el-button>
+            </template>
           </template>
         </template>
       </el-table-column>
@@ -116,18 +130,21 @@ const _props = withDefaults(
     actionsWidth?: string | number
     toolbarButtons?: ToolbarButton[]
     pagination?: Pagination
+    selectable?: boolean
   }>(),
   {
     loading: false,
     actions: () => [],
     actionsWidth: 200,
     toolbarButtons: () => [],
+    selectable: false,
   }
 )
 
 const emit = defineEmits<{
   (e: 'size-change', size: number): void
   (e: 'current-change', page: number): void
+  (e: 'selection-change', selection: any[]): void
 }>()
 
 const handleSizeChange = (size: number) => {
@@ -136,6 +153,10 @@ const handleSizeChange = (size: number) => {
 
 const handleCurrentChange = (page: number) => {
   emit('current-change', page)
+}
+
+const handleSelectionChange = (selection: any[]) => {
+  emit('selection-change', selection)
 }
 </script>
 

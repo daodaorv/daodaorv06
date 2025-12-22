@@ -98,7 +98,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onUnmounted } from 'vue'
 import { bindPhone, sendCode } from '@/api/auth'
 
 // 表单数据
@@ -111,6 +111,9 @@ const formData = ref({
 const loading = ref(false)
 const codeSending = ref(false)
 const countdown = ref(0)
+
+// 定时器引用（用于页面卸载时清理）
+let countdownTimer: ReturnType<typeof setInterval> | null = null
 
 // 验证码按钮文本
 const codeButtonText = computed(() => {
@@ -145,10 +148,13 @@ const handleSendCode = async () => {
 
 		// 开始倒计时
 		countdown.value = 60
-		const timer = setInterval(() => {
+		countdownTimer = setInterval(() => {
 			countdown.value--
 			if (countdown.value <= 0) {
-				clearInterval(timer)
+				if (countdownTimer) {
+					clearInterval(countdownTimer)
+					countdownTimer = null
+				}
 			}
 		}, 1000)
 	} catch (error: any) {
@@ -225,13 +231,22 @@ const handleSkip = () => {
 		}
 	})
 }
+
+// 页面卸载时清理定时器
+onUnmounted(() => {
+	if (countdownTimer) {
+		clearInterval(countdownTimer)
+		countdownTimer = null
+	}
+})
 </script>
 
 <style lang="scss" scoped>
 .bind-phone-page {
 	min-height: 100vh;
-	background: linear-gradient(180deg, #FFF5E6 0%, #FFFFFF 50%);
-	padding: 0 48rpx;
+	background: linear-gradient(180deg, #FFF8E1 0%, $uni-bg-color 50%);
+	padding: 0 $uni-spacing-lg;
+	padding-bottom: $uni-spacing-xl;
 }
 
 // 顶部说明
@@ -244,19 +259,19 @@ const handleSkip = () => {
 	.icon {
 		width: 160rpx;
 		height: 160rpx;
-		margin-bottom: 32rpx;
+		margin-bottom: $uni-spacing-lg;
 	}
 
 	.title {
-		font-size: 48rpx;
-		font-weight: bold;
-		color: #333333;
-		margin-bottom: 16rpx;
+		font-size: $uni-font-size-xxl;
+		font-weight: 800;
+		color: $uni-text-color;
+		margin-bottom: $uni-spacing-sm;
 	}
 
 	.subtitle {
-		font-size: 24rpx;
-		color: #999999;
+		font-size: $uni-font-size-sm;
+		color: $uni-text-color-placeholder;
 		text-align: center;
 	}
 }
@@ -264,20 +279,21 @@ const handleSkip = () => {
 // 绑定表单
 .bind-form {
 	.form-item {
-		margin-bottom: 32rpx;
+		margin-bottom: $uni-spacing-md;
 
 		.label {
 			display: flex;
 			align-items: center;
-			margin-bottom: 16rpx;
+			margin-bottom: $uni-spacing-sm;
 
 			.label-text {
-				font-size: 28rpx;
-				color: #333333;
+				font-size: $uni-font-size-base;
+				color: $uni-text-color;
+				font-weight: 500;
 			}
 
 			.required {
-				color: #FF4D4F;
+				color: $uni-color-error;
 				margin-left: 4rpx;
 			}
 		}
@@ -285,45 +301,57 @@ const handleSkip = () => {
 		.input-wrapper {
 			display: flex;
 			align-items: center;
-			gap: 16rpx;
-			padding: 24rpx 32rpx;
-			background: #FFFFFF;
-			border-radius: 16rpx;
-			box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.04);
+			gap: $uni-spacing-sm;
+			padding: $uni-spacing-md $uni-spacing-lg;
+			background: $uni-bg-color-card;
+			border-radius: $uni-radius-lg;
+			box-shadow: $uni-shadow-card;
+			transition: box-shadow 0.2s ease;
+
+			&:focus-within {
+				box-shadow: $uni-shadow-float;
+			}
 
 			.input {
 				flex: 1;
-				font-size: 28rpx;
-				color: #333333;
+				font-size: $uni-font-size-base;
+				color: $uni-text-color;
 			}
 
 			.code-btn {
-				padding: 8rpx 24rpx;
-				background: #FF9F29;
-				color: #FFFFFF;
-				font-size: 24rpx;
-				border-radius: 8rpx;
+				padding: $uni-spacing-xs $uni-spacing-md;
+				background: $uni-color-primary;
+				color: $uni-text-color-inverse;
+				font-size: $uni-font-size-sm;
+				border-radius: $uni-radius-sm;
 				border: none;
-				line-height: 1;
+				line-height: 1.5;
+				font-weight: 500;
+				transition: opacity 0.2s ease;
+
+				&:active {
+					opacity: 0.8;
+				}
 
 				&[disabled] {
-					background: #CCCCCC;
+					background: $uni-border-color;
+					color: $uni-text-color-placeholder;
 				}
 			}
 		}
 	}
 
 	.tips {
-		margin: 32rpx 0 48rpx;
-		padding: 24rpx;
-		background: #FFF9F0;
-		border-radius: 12rpx;
+		margin: $uni-spacing-lg 0 $uni-spacing-xl;
+		padding: $uni-spacing-md;
+		background: rgba(255, 159, 41, 0.08);
+		border-radius: $uni-radius-md;
 
 		.tip-item {
 			display: flex;
 			align-items: flex-start;
-			gap: 8rpx;
-			margin-bottom: 12rpx;
+			gap: $uni-spacing-xs;
+			margin-bottom: $uni-spacing-sm;
 
 			&:last-child {
 				margin-bottom: 0;
@@ -331,8 +359,8 @@ const handleSkip = () => {
 
 			.tip-text {
 				flex: 1;
-				font-size: 24rpx;
-				color: #666666;
+				font-size: $uni-font-size-sm;
+				color: $uni-text-color-secondary;
 				line-height: 1.6;
 			}
 		}
@@ -340,48 +368,61 @@ const handleSkip = () => {
 
 	.bind-btn {
 		width: 100%;
-		height: 88rpx;
-		background: linear-gradient(135deg, #FF9F29 0%, #FF6B00 100%);
-		color: #FFFFFF;
-		font-size: 32rpx;
-		font-weight: 500;
-		border-radius: 44rpx;
+		height: 96rpx;
+		background: $uni-color-primary-gradient;
+		color: $uni-text-color-inverse;
+		font-size: $uni-font-size-md;
+		font-weight: 600;
+		border-radius: $uni-radius-btn;
 		border: none;
-		margin-bottom: 24rpx;
+		margin-bottom: $uni-spacing-md;
+		box-shadow: $uni-shadow-glow;
+		transition: transform 0.2s ease, opacity 0.2s ease;
+
+		&:active {
+			transform: scale(0.98);
+			opacity: 0.9;
+		}
 
 		&[disabled] {
-			background: #CCCCCC;
+			background: $uni-border-color;
+			box-shadow: none;
 		}
 	}
 
 	.skip-btn {
 		width: 100%;
-		height: 88rpx;
+		height: 96rpx;
 		background: transparent;
-		color: #999999;
-		font-size: 28rpx;
-		border-radius: 44rpx;
-		border: 1rpx solid #E5E5E5;
+		color: $uni-text-color-secondary;
+		font-size: $uni-font-size-base;
+		border-radius: $uni-radius-btn;
+		border: 2rpx solid $uni-border-color;
+		transition: all 0.2s ease;
+
+		&:active {
+			background: $uni-bg-color-grey;
+		}
 	}
 }
 
 // 安全说明
 .security-info {
 	margin-top: 80rpx;
-	padding: 32rpx;
-	background: #F5F5F5;
-	border-radius: 16rpx;
+	padding: $uni-spacing-lg;
+	background: $uni-bg-color-grey;
+	border-radius: $uni-radius-lg;
 
 	.info-title {
 		display: flex;
 		align-items: center;
-		gap: 8rpx;
-		margin-bottom: 24rpx;
+		gap: $uni-spacing-xs;
+		margin-bottom: $uni-spacing-md;
 
 		.title-text {
-			font-size: 28rpx;
-			font-weight: 500;
-			color: #333333;
+			font-size: $uni-font-size-base;
+			font-weight: 600;
+			color: $uni-text-color;
 		}
 	}
 
@@ -389,23 +430,23 @@ const handleSkip = () => {
 		.info-item {
 			display: flex;
 			align-items: flex-start;
-			gap: 8rpx;
-			margin-bottom: 16rpx;
+			gap: $uni-spacing-xs;
+			margin-bottom: $uni-spacing-sm;
 
 			&:last-child {
 				margin-bottom: 0;
 			}
 
 			.dot {
-				color: #4CAF50;
-				font-size: 24rpx;
+				color: $uni-color-success;
+				font-size: $uni-font-size-sm;
 				line-height: 1.6;
 			}
 
 			.info-text {
 				flex: 1;
-				font-size: 24rpx;
-				color: #666666;
+				font-size: $uni-font-size-sm;
+				color: $uni-text-color-secondary;
 				line-height: 1.6;
 			}
 		}

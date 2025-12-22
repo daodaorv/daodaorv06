@@ -44,6 +44,9 @@
       </view>
     </view>
 
+    <!-- 公告栏 -->
+    <AnnouncementBar :content="offerDetail.announcement" />
+
     <!-- 车辆信息 -->
     <view class="section-card">
       <view class="section-title">
@@ -52,13 +55,13 @@
       <view class="vehicle-info">
         <text class="vehicle-name">{{ offerDetail.vehicle.name }}</text>
         <view class="vehicle-specs">
-          <view class="spec-item" v-for="spec in offerDetail.vehicle.specifications" :key="spec.label">
+          <view class="spec-item" v-for="(spec, index) in offerDetail.vehicle.specifications" :key="`spec-${index}`">
             <text class="spec-label">{{ spec.label }}</text>
             <text class="spec-value">{{ spec.value }}</text>
           </view>
         </view>
         <view class="vehicle-features">
-          <text class="feature-tag" v-for="feature in offerDetail.vehicle.features" :key="feature">
+          <text class="feature-tag" v-for="(feature, index) in offerDetail.vehicle.features" :key="`feature-${index}`">
             {{ feature }}
           </text>
         </view>
@@ -204,6 +207,7 @@ import { useShare } from '@/composables/useShare';
 import { ShareScene } from '@/types/share';
 import ShareSheet from '@/components/share/ShareSheet.vue';
 import PosterPreview from '@/components/share/PosterPreview.vue';
+import AnnouncementBar from '@/components/common/AnnouncementBar.vue';
 
 // 获取路由参数
 const offerId = ref('');
@@ -238,6 +242,7 @@ const offerDetail = ref<any>({
     start: '',
     end: ''
   },
+  announcement: '',
   packageIncludes: [],
   bookingNotices: [],
   cancellationPolicy: []
@@ -335,6 +340,7 @@ const loadOfferDetail = async () => {
         start: '2025-12-01',
         end: '2025-12-31'
       },
+      announcement: '【限时特惠】杭州-千岛湖专线套餐，仅剩3个名额！本套餐为固定路线，不支持更改取还车门店。春节期间（1月25日-2月10日）不可用。预订成功后不可退改，请确认行程后再下单。',
       packageIncludes: [
         { name: '车辆租金', description: '3天2晚固定租期' },
         { name: '基础保险', description: '第三者责任险' },
@@ -406,7 +412,7 @@ const bookOffer = () => {
 <style scoped lang="scss">
 .special-offer-detail {
   min-height: 100vh;
-  background-color: #F8F8F8;
+  background-color: $uni-bg-color;
   padding-bottom: 120rpx;
 }
 
@@ -423,33 +429,33 @@ const bookOffer = () => {
 
 // 套餐基本信息
 .offer-info-section {
-  background-color: #FFFFFF;
-  padding: 32rpx;
-  margin-bottom: 16rpx;
+  background-color: $uni-bg-color-card;
+  padding: $uni-spacing-xl;
+  margin-bottom: $uni-spacing-xl;
 
   .route-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 24rpx;
+    margin-bottom: $uni-spacing-xl;
 
     .route-main {
       display: flex;
       align-items: center;
-      gap: 16rpx;
+      gap: $uni-spacing-xl;
 
       .route-text {
         font-size: 36rpx;
         font-weight: 700;
-        color: #333;
+        color: $uni-text-color;
       }
 
       .special-badge {
-        background: linear-gradient(135deg, #FF9F29 0%, #FFB84D 100%);
-        color: #FFFFFF;
+        background: $uni-color-primary-gradient;
+        color: $uni-text-color-inverse;
         font-size: 22rpx;
-        padding: 6rpx 16rpx;
-        border-radius: 20rpx;
+        padding: 6rpx $uni-spacing-xl;
+        border-radius: $uni-radius-btn;
 
         .badge-text {
           font-weight: 600;
@@ -460,16 +466,16 @@ const bookOffer = () => {
     .header-right {
       display: flex;
       align-items: center;
-      gap: 16rpx;
+      gap: $uni-spacing-xl;
 
       .rental-days {
         background-color: rgba(75, 145, 255, 0.1);
         color: #4B91FF;
-        padding: 8rpx 16rpx;
-        border-radius: 8rpx;
+        padding: $uni-spacing-md $uni-spacing-xl;
+        border-radius: $uni-radius-sm;
 
         .days-text {
-          font-size: 24rpx;
+          font-size: $uni-font-size-sm;
           font-weight: 500;
         }
       }
@@ -477,8 +483,8 @@ const bookOffer = () => {
       .share-btn {
         width: 56rpx;
         height: 56rpx;
-        border-radius: 50%;
-        background-color: #F5F5F5;
+        border-radius: $uni-radius-circle;
+        background-color: $uni-bg-color-grey;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -486,7 +492,7 @@ const bookOffer = () => {
         transition: all 0.3s;
 
         &:active {
-          background-color: #E0E0E0;
+          background-color: $uni-border-color;
           transform: scale(0.95);
         }
       }
@@ -494,49 +500,49 @@ const bookOffer = () => {
   }
 
   .price-section {
-    margin-bottom: 24rpx;
+    margin-bottom: $uni-spacing-xl;
 
     .price-main {
       display: flex;
       align-items: baseline;
-      margin-bottom: 12rpx;
+      margin-bottom: $uni-spacing-lg;
 
       .price-symbol {
-        font-size: 32rpx;
-        color: #F44336;
+        font-size: $uni-font-size-lg;
+        color: $uni-color-error;
         font-weight: 600;
       }
 
       .price-amount {
         font-size: 56rpx;
-        color: #F44336;
+        color: $uni-color-error;
         font-weight: 700;
-        margin: 0 8rpx;
+        margin: 0 $uni-spacing-md;
       }
 
       .price-unit {
-        font-size: 28rpx;
-        color: #999;
+        font-size: $uni-font-size-base;
+        color: $uni-text-color-placeholder;
       }
     }
 
     .price-detail {
       display: flex;
       align-items: center;
-      gap: 16rpx;
+      gap: $uni-spacing-xl;
 
       .original-price {
-        font-size: 24rpx;
-        color: #999;
+        font-size: $uni-font-size-sm;
+        color: $uni-text-color-placeholder;
         text-decoration: line-through;
       }
 
       .save-amount {
-        font-size: 24rpx;
-        color: #F44336;
-        background-color: rgba(244, 67, 54, 0.1);
-        padding: 4rpx 12rpx;
-        border-radius: 6rpx;
+        font-size: $uni-font-size-sm;
+        color: $uni-color-error;
+        background-color: rgba($uni-color-error, 0.1);
+        padding: 4rpx $uni-spacing-lg;
+        border-radius: $uni-radius-sm;
       }
     }
   }
@@ -544,22 +550,22 @@ const bookOffer = () => {
   .quota-tip {
     display: flex;
     align-items: center;
-    gap: 8rpx;
-    background-color: rgba(255, 159, 41, 0.1);
-    padding: 16rpx;
-    border-radius: 12rpx;
+    gap: $uni-spacing-md;
+    background-color: rgba($uni-color-primary, 0.1);
+    padding: $uni-spacing-xl;
+    border-radius: $uni-radius-lg;
 
     &.warning {
-      background-color: rgba(244, 67, 54, 0.1);
+      background-color: rgba($uni-color-error, 0.1);
 
       .tip-text {
-        color: #F44336;
+        color: $uni-color-error;
       }
     }
 
     .tip-text {
-      font-size: 26rpx;
-      color: #FF9F29;
+      font-size: $uni-font-size-sm;
+      color: $uni-color-primary;
       font-weight: 500;
     }
   }
@@ -567,25 +573,25 @@ const bookOffer = () => {
 
 // 通用卡片样式
 .section-card {
-  background-color: #FFFFFF;
-  padding: 32rpx;
-  margin-bottom: 16rpx;
+  background-color: $uni-bg-color-card;
+  padding: $uni-spacing-xl;
+  margin-bottom: $uni-spacing-xl;
 
   .section-title {
     display: flex;
     align-items: baseline;
-    margin-bottom: 24rpx;
+    margin-bottom: $uni-spacing-xl;
 
     .title-text {
-      font-size: 32rpx;
+      font-size: $uni-font-size-lg;
       font-weight: 600;
-      color: #333;
+      color: $uni-text-color;
     }
 
     .title-tip {
-      font-size: 24rpx;
-      color: #999;
-      margin-left: 12rpx;
+      font-size: $uni-font-size-sm;
+      color: $uni-text-color-placeholder;
+      margin-left: $uni-spacing-lg;
     }
   }
 }
@@ -596,31 +602,31 @@ const bookOffer = () => {
     display: block;
     font-size: 30rpx;
     font-weight: 500;
-    color: #333;
-    margin-bottom: 24rpx;
+    color: $uni-text-color;
+    margin-bottom: $uni-spacing-xl;
   }
 
   .vehicle-specs {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 20rpx;
-    margin-bottom: 24rpx;
+    gap: $uni-spacing-xl;
+    margin-bottom: $uni-spacing-xl;
 
     .spec-item {
       display: flex;
       justify-content: space-between;
-      padding: 16rpx;
-      background-color: #F8F8F8;
-      border-radius: 8rpx;
+      padding: $uni-spacing-xl;
+      background-color: $uni-bg-color-grey;
+      border-radius: $uni-radius-sm;
 
       .spec-label {
-        font-size: 26rpx;
-        color: #999;
+        font-size: $uni-font-size-sm;
+        color: $uni-text-color-placeholder;
       }
 
       .spec-value {
-        font-size: 26rpx;
-        color: #333;
+        font-size: $uni-font-size-sm;
+        color: $uni-text-color;
         font-weight: 500;
       }
     }
@@ -629,14 +635,14 @@ const bookOffer = () => {
   .vehicle-features {
     display: flex;
     flex-wrap: wrap;
-    gap: 12rpx;
+    gap: $uni-spacing-lg;
 
     .feature-tag {
-      font-size: 24rpx;
-      color: #FF9F29;
-      background-color: rgba(255, 159, 41, 0.1);
-      padding: 8rpx 16rpx;
-      border-radius: 8rpx;
+      font-size: $uni-font-size-sm;
+      color: $uni-color-primary;
+      background-color: rgba($uni-color-primary, 0.1);
+      padding: $uni-spacing-md $uni-spacing-xl;
+      border-radius: $uni-radius-sm;
     }
   }
 }
@@ -645,19 +651,19 @@ const bookOffer = () => {
 .route-detail {
   .route-item {
     display: flex;
-    gap: 24rpx;
+    gap: $uni-spacing-xl;
 
     .route-icon {
       width: 48rpx;
       height: 48rpx;
-      border-radius: 50%;
+      border-radius: $uni-radius-circle;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
 
       &.pickup {
-        background: linear-gradient(135deg, #4CAF50 0%, #66BB6A 100%);
+        background: linear-gradient(135deg, $uni-color-success 0%, #66BB6A 100%);
       }
 
       &.return {
@@ -669,22 +675,22 @@ const bookOffer = () => {
       flex: 1;
       display: flex;
       flex-direction: column;
-      gap: 8rpx;
+      gap: $uni-spacing-md;
 
       .route-label {
-        font-size: 24rpx;
-        color: #999;
+        font-size: $uni-font-size-sm;
+        color: $uni-text-color-placeholder;
       }
 
       .route-value {
         font-size: 30rpx;
         font-weight: 500;
-        color: #333;
+        color: $uni-text-color;
       }
 
       .route-address {
-        font-size: 26rpx;
-        color: #666;
+        font-size: $uni-font-size-sm;
+        color: $uni-text-color-secondary;
       }
     }
   }
@@ -692,9 +698,9 @@ const bookOffer = () => {
   .route-line {
     width: 2rpx;
     height: 40rpx;
-    background-color: #E0E0E0;
+    background-color: $uni-border-color;
     margin-left: 23rpx;
-    margin: 16rpx 0 16rpx 23rpx;
+    margin: $uni-spacing-xl 0 $uni-spacing-xl 23rpx;
   }
 }
 
@@ -703,19 +709,19 @@ const bookOffer = () => {
   .time-item {
     display: flex;
     align-items: center;
-    gap: 12rpx;
-    margin-bottom: 16rpx;
+    gap: $uni-spacing-lg;
+    margin-bottom: $uni-spacing-xl;
 
     .time-text {
-      font-size: 28rpx;
-      color: #333;
+      font-size: $uni-font-size-base;
+      color: $uni-text-color;
       font-weight: 500;
     }
   }
 
   .time-tip {
-    font-size: 24rpx;
-    color: #999;
+    font-size: $uni-font-size-sm;
+    color: $uni-text-color-placeholder;
   }
 }
 
@@ -724,22 +730,22 @@ const bookOffer = () => {
   .include-item {
     display: flex;
     align-items: flex-start;
-    gap: 12rpx;
-    margin-bottom: 20rpx;
+    gap: $uni-spacing-lg;
+    margin-bottom: $uni-spacing-xl;
 
     &:last-child {
       margin-bottom: 0;
     }
 
     .include-text {
-      font-size: 28rpx;
-      color: #333;
+      font-size: $uni-font-size-base;
+      color: $uni-text-color;
       font-weight: 500;
     }
 
     .include-desc {
-      font-size: 24rpx;
-      color: #999;
+      font-size: $uni-font-size-sm;
+      color: $uni-text-color-placeholder;
       margin-left: auto;
     }
   }
@@ -749,8 +755,8 @@ const bookOffer = () => {
 .notice-list {
   .notice-item {
     display: flex;
-    gap: 12rpx;
-    margin-bottom: 20rpx;
+    gap: $uni-spacing-lg;
+    margin-bottom: $uni-spacing-xl;
     line-height: 1.6;
 
     &:last-child {
@@ -758,16 +764,16 @@ const bookOffer = () => {
     }
 
     .notice-number {
-      font-size: 26rpx;
-      color: #FF9F29;
+      font-size: $uni-font-size-sm;
+      color: $uni-color-primary;
       font-weight: 600;
       flex-shrink: 0;
     }
 
     .notice-text {
       flex: 1;
-      font-size: 26rpx;
-      color: #666;
+      font-size: $uni-font-size-sm;
+      color: $uni-text-color-secondary;
     }
   }
 }
@@ -775,10 +781,10 @@ const bookOffer = () => {
 // 取消政策
 .policy-list {
   .policy-item {
-    padding: 20rpx;
-    background-color: #F8F8F8;
-    border-radius: 12rpx;
-    margin-bottom: 16rpx;
+    padding: $uni-spacing-xl;
+    background-color: $uni-bg-color-grey;
+    border-radius: $uni-radius-lg;
+    margin-bottom: $uni-spacing-xl;
 
     &:last-child {
       margin-bottom: 0;
@@ -787,19 +793,19 @@ const bookOffer = () => {
     .policy-condition {
       display: flex;
       align-items: center;
-      gap: 8rpx;
-      margin-bottom: 12rpx;
+      gap: $uni-spacing-md;
+      margin-bottom: $uni-spacing-lg;
 
       .condition-text {
-        font-size: 28rpx;
-        color: #333;
+        font-size: $uni-font-size-base;
+        color: $uni-text-color;
         font-weight: 500;
       }
     }
 
     .policy-result {
-      font-size: 26rpx;
-      color: #666;
+      font-size: $uni-font-size-sm;
+      color: $uni-text-color-secondary;
       padding-left: 26rpx;
     }
   }
@@ -811,10 +817,10 @@ const bookOffer = () => {
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: #FFFFFF;
-  padding: 16rpx 32rpx;
-  padding-bottom: calc(16rpx + env(safe-area-inset-bottom));
-  box-shadow: 0 -4rpx 12rpx rgba(0, 0, 0, 0.08);
+  background-color: $uni-bg-color-card;
+  padding: $uni-spacing-xl $uni-spacing-xl;
+  padding-bottom: calc(#{$uni-spacing-xl} + env(safe-area-inset-bottom));
+  box-shadow: $uni-shadow-card;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -827,28 +833,28 @@ const bookOffer = () => {
       margin-bottom: 4rpx;
 
       .bar-symbol {
-        font-size: 24rpx;
-        color: #F44336;
+        font-size: $uni-font-size-sm;
+        color: $uni-color-error;
         font-weight: 600;
       }
 
       .bar-amount {
         font-size: 40rpx;
-        color: #F44336;
+        color: $uni-color-error;
         font-weight: 700;
         margin-left: 4rpx;
       }
     }
 
     .bar-tip {
-      font-size: 22rpx;
-      color: #999;
+      font-size: $uni-font-size-xs;
+      color: $uni-text-color-placeholder;
     }
   }
 
   .bar-actions {
     display: flex;
-    gap: 16rpx;
+    gap: $uni-spacing-xl;
 
     .icon-btn {
       display: flex;
@@ -859,6 +865,7 @@ const bookOffer = () => {
       background: none;
       border: none;
       padding: 0;
+      transition: all 0.2s ease;
 
       &::after {
         border: none;
@@ -866,36 +873,49 @@ const bookOffer = () => {
 
       &:active {
         opacity: 0.7;
+        transform: scale(0.95);
       }
     }
 
     .contact-btn {
       display: flex;
       align-items: center;
-      gap: 8rpx;
-      padding: 20rpx 32rpx;
-      background-color: #FFFFFF;
-      border: 2rpx solid #FF9F29;
-      color: #FF9F29;
-      border-radius: 44rpx;
-      font-size: 28rpx;
+      gap: $uni-spacing-md;
+      padding: $uni-spacing-xl $uni-spacing-xl;
+      background-color: $uni-bg-color-card;
+      border: 2rpx solid $uni-color-primary;
+      color: $uni-color-primary;
+      border-radius: $uni-radius-btn;
+      font-size: $uni-font-size-base;
+      transition: all 0.2s ease;
 
       &::after {
         border: none;
       }
+
+      &:active {
+        opacity: 0.8;
+      }
     }
 
     .book-btn {
-      padding: 20rpx 48rpx;
-      background: linear-gradient(135deg, #FF9F29 0%, #FFB84D 100%);
-      color: #FFFFFF;
-      border-radius: 44rpx;
-      font-size: 28rpx;
+      padding: $uni-spacing-xl 48rpx;
+      background: $uni-color-primary-gradient;
+      color: $uni-text-color-inverse;
+      border-radius: $uni-radius-btn;
+      font-size: $uni-font-size-base;
       font-weight: 600;
       border: none;
+      box-shadow: $uni-shadow-glow;
+      transition: all 0.2s ease;
 
       &::after {
         border: none;
+      }
+
+      &:active {
+        transform: scale(0.98);
+        opacity: 0.9;
       }
     }
   }

@@ -126,10 +126,13 @@ export const mockGetPricingStrategyList = (params: PricingStrategyListParams) =>
 // ==================== 优惠券管理 ====================
 
 // 优惠券类型
-export type CouponType = 'discount' | 'cash' | 'gift'
+export type CouponType = 'discount' | 'cash' | 'gift' | 'daily_rental'
 
 // 优惠券状态
 export type CouponStatus = 'active' | 'inactive' | 'expired'
+
+// 适用产品类型
+export type ApplicableProductType = 'vehicle_rental' | 'campsite' | 'tour' | 'all'
 
 // 优惠券信息
 export interface Coupon {
@@ -137,19 +140,26 @@ export interface Coupon {
   name: string
   type: CouponType
   code: string
-  discountType: 'percentage' | 'fixed'
+  discountType: 'percentage' | 'fixed' | 'daily_rental'
   discountValue: number
+  dailyRentalDays?: number  // 日租抵扣券：可抵扣天数
   minAmount: number
   maxDiscount: number
   totalQuantity: number
   usedQuantity: number
   remainingQuantity: number
+  receivedQuantity: number  // 已领取数量
   startDate: string
   endDate: string
   status: CouponStatus
+  applicableProductTypes: ApplicableProductType[]  // 适用产品类型
   applicableVehicles: string[]
+  applicableCampsites?: number[]  // 适用营地ID
+  applicableTours?: number[]  // 适用旅游线路ID
   targetUserTags: number[]  // 目标用户标签ID数组（双向关联）
   description: string
+  autoGenerateCode: boolean  // 是否自动生成优惠码
+  codePrefix?: string  // 优惠码前缀
   createdBy: string
   createdAt: string
   updatedAt: string
@@ -169,12 +179,15 @@ const mockCoupons: Coupon[] = [
     totalQuantity: 1000,
     usedQuantity: 356,
     remainingQuantity: 644,
+    receivedQuantity: 680,
     startDate: '2025-01-01',
     endDate: '2025-12-31',
     status: 'active',
+    applicableProductTypes: ['vehicle_rental'],
     applicableVehicles: ['所有车型'],
     targetUserTags: [3],  // 新用户标签
     description: '新用户首单立减20%，最高减200元',
+    autoGenerateCode: false,
     createdBy: '运营经理-张三',
     createdAt: '2025-01-01T10:00:00.000Z',
     updatedAt: '2025-01-01T10:00:00.000Z'
@@ -191,12 +204,15 @@ const mockCoupons: Coupon[] = [
     totalQuantity: 500,
     usedQuantity: 128,
     remainingQuantity: 372,
+    receivedQuantity: 450,
     startDate: '2025-01-20',
     endDate: '2025-02-10',
     status: 'active',
+    applicableProductTypes: ['vehicle_rental'],
     applicableVehicles: ['C型房车', 'B型房车'],
     targetUserTags: [100],  // PLUS会员专享
     description: '春节期间满2000减300',
+    autoGenerateCode: false,
     createdBy: '运营经理-张三',
     createdAt: '2025-01-10T10:00:00.000Z',
     updatedAt: '2025-01-10T10:00:00.000Z'
@@ -213,15 +229,45 @@ const mockCoupons: Coupon[] = [
     totalQuantity: 2000,
     usedQuantity: 892,
     remainingQuantity: 1108,
+    receivedQuantity: 1580,
     startDate: '2025-01-01',
     endDate: '2025-12-31',
     status: 'active',
+    applicableProductTypes: ['all'],
     applicableVehicles: ['所有车型'],
     targetUserTags: [1, 2],  // VIP用户和活跃用户
     description: '周末订单立减15%，最高减150元',
+    autoGenerateCode: false,
     createdBy: '运营经理-张三',
     createdAt: '2025-01-01T10:00:00.000Z',
     updatedAt: '2025-01-01T10:00:00.000Z'
+  },
+  {
+    id: 4,
+    name: '日租抵扣券',
+    type: 'daily_rental',
+    code: 'COUP20250121A3B7',
+    discountType: 'daily_rental',
+    discountValue: 0,
+    dailyRentalDays: 1,
+    minAmount: 0,
+    maxDiscount: 0,
+    totalQuantity: 500,
+    usedQuantity: 45,
+    remainingQuantity: 455,
+    receivedQuantity: 280,
+    startDate: '2025-01-15',
+    endDate: '2025-03-31',
+    status: 'active',
+    applicableProductTypes: ['vehicle_rental'],
+    applicableVehicles: ['所有车型'],
+    targetUserTags: [],  // 全部用户
+    description: '每张券可全额抵扣一天租金，适用于所有车型',
+    autoGenerateCode: true,
+    codePrefix: 'COUP',
+    createdBy: '运营经理-张三',
+    createdAt: '2025-01-15T10:00:00.000Z',
+    updatedAt: '2025-01-15T10:00:00.000Z'
   }
 ]
 
@@ -766,5 +812,294 @@ export const mockGetMarketingStats = () => {
         data: stats
       })
     }, 200)
+  })
+}
+
+// ==================== 优惠券记录管理 ====================
+
+// 记录类型
+export type CouponRecordType = 'receive' | 'use' | 'expire' | 'transfer' | 'revoke'
+
+// 记录来源
+export type CouponRecordSource = 'manual' | 'activity' | 'register' | 'order' | 'share' | 'admin'
+
+// 优惠券记录信息
+export interface CouponRecord {
+  id: number
+  couponId: number
+  couponCode: string
+  couponName: string
+  userId: number
+  userName: string
+  userPhone: string
+
+  // 记录信息
+  recordType: CouponRecordType
+  source: CouponRecordSource
+  sourceDetail?: string  // 来源详情（如活动名称、订单号等）
+
+  // 使用信息（仅 type=use 时）
+  orderId?: number
+  orderNo?: string
+  actualDiscountAmount?: number  // 实际优惠金额
+
+  // 转赠信息（仅 type=transfer 时）
+  transferToUserId?: number
+  transferToUserName?: string
+  transferReason?: string
+
+  // 失效信息（仅 type=expire/revoke 时）
+  expireReason?: string
+  revokeReason?: string
+  revokedBy?: string
+
+  // 时间戳
+  recordTime: string
+  createdAt: string
+
+  // 其他
+  remark?: string
+  ipAddress?: string
+  deviceInfo?: string
+}
+
+// Mock 优惠券记录数据
+const mockCouponRecords: CouponRecord[] = [
+  {
+    id: 1,
+    couponId: 1,
+    couponCode: 'NEW2025',
+    couponName: '新用户专享券',
+    userId: 1001,
+    userName: '张三',
+    userPhone: '13800138001',
+    recordType: 'receive',
+    source: 'register',
+    sourceDetail: '新用户注册赠送',
+    recordTime: '2025-01-15T10:30:00.000Z',
+    createdAt: '2025-01-15T10:30:00.000Z',
+    remark: '新用户注册自动发放',
+    ipAddress: '192.168.1.100',
+    deviceInfo: 'iPhone 13 Pro'
+  },
+  {
+    id: 2,
+    couponId: 1,
+    couponCode: 'NEW2025',
+    couponName: '新用户专享券',
+    userId: 1001,
+    userName: '张三',
+    userPhone: '13800138001',
+    recordType: 'use',
+    source: 'order',
+    sourceDetail: '订单号：ORD202501150001',
+    orderId: 5001,
+    orderNo: 'ORD202501150001',
+    actualDiscountAmount: 180,
+    recordTime: '2025-01-16T14:20:00.000Z',
+    createdAt: '2025-01-16T14:20:00.000Z',
+    remark: '首单使用优惠券',
+    ipAddress: '192.168.1.100',
+    deviceInfo: 'iPhone 13 Pro'
+  },
+  {
+    id: 3,
+    couponId: 2,
+    couponCode: 'CNY2025',
+    couponName: '春节特惠券',
+    userId: 1002,
+    userName: '李四',
+    userPhone: '13800138002',
+    recordType: 'receive',
+    source: 'activity',
+    sourceDetail: '春节房车自驾游活动',
+    recordTime: '2025-01-20T09:00:00.000Z',
+    createdAt: '2025-01-20T09:00:00.000Z',
+    remark: '参与活动领取',
+    ipAddress: '192.168.1.101',
+    deviceInfo: 'Android Xiaomi 12'
+  },
+  {
+    id: 4,
+    couponId: 3,
+    couponCode: 'WEEKEND',
+    couponName: '周末出行券',
+    userId: 1003,
+    userName: '王五',
+    userPhone: '13800138003',
+    recordType: 'receive',
+    source: 'share',
+    sourceDetail: '好友分享获得',
+    recordTime: '2025-01-18T16:45:00.000Z',
+    createdAt: '2025-01-18T16:45:00.000Z',
+    remark: '通过分享链接领取',
+    ipAddress: '192.168.1.102',
+    deviceInfo: 'iPhone 14'
+  },
+  {
+    id: 5,
+    couponId: 3,
+    couponCode: 'WEEKEND',
+    couponName: '周末出行券',
+    userId: 1003,
+    userName: '王五',
+    userPhone: '13800138003',
+    recordType: 'use',
+    source: 'order',
+    sourceDetail: '订单号：ORD202501190001',
+    orderId: 5002,
+    orderNo: 'ORD202501190001',
+    actualDiscountAmount: 120,
+    recordTime: '2025-01-19T11:30:00.000Z',
+    createdAt: '2025-01-19T11:30:00.000Z',
+    remark: '周末订单使用',
+    ipAddress: '192.168.1.102',
+    deviceInfo: 'iPhone 14'
+  },
+  {
+    id: 6,
+    couponId: 4,
+    couponCode: 'COUP20250121A3B7',
+    couponName: '日租抵扣券',
+    userId: 1004,
+    userName: '赵六',
+    userPhone: '13800138004',
+    recordType: 'receive',
+    source: 'admin',
+    sourceDetail: '管理员手动发放',
+    recordTime: '2025-01-21T10:00:00.000Z',
+    createdAt: '2025-01-21T10:00:00.000Z',
+    remark: '客服补偿发放',
+    ipAddress: '192.168.1.103',
+    deviceInfo: 'Web Chrome'
+  },
+  {
+    id: 7,
+    couponId: 1,
+    couponCode: 'NEW2025',
+    couponName: '新用户专享券',
+    userId: 1005,
+    userName: '孙七',
+    userPhone: '13800138005',
+    recordType: 'receive',
+    source: 'register',
+    sourceDetail: '新用户注册赠送',
+    recordTime: '2025-01-17T08:20:00.000Z',
+    createdAt: '2025-01-17T08:20:00.000Z',
+    ipAddress: '192.168.1.104',
+    deviceInfo: 'Android Huawei P50'
+  },
+  {
+    id: 8,
+    couponId: 1,
+    couponCode: 'NEW2025',
+    couponName: '新用户专享券',
+    userId: 1005,
+    userName: '孙七',
+    userPhone: '13800138005',
+    recordType: 'expire',
+    source: 'manual',
+    expireReason: '优惠券已过期',
+    recordTime: '2025-01-20T23:59:59.000Z',
+    createdAt: '2025-01-20T23:59:59.000Z',
+    remark: '系统自动过期',
+    ipAddress: '127.0.0.1',
+    deviceInfo: 'System'
+  },
+  {
+    id: 9,
+    couponId: 2,
+    couponCode: 'CNY2025',
+    couponName: '春节特惠券',
+    userId: 1006,
+    userName: '周八',
+    userPhone: '13800138006',
+    recordType: 'receive',
+    source: 'manual',
+    sourceDetail: '客服手动发放',
+    recordTime: '2025-01-21T14:00:00.000Z',
+    createdAt: '2025-01-21T14:00:00.000Z',
+    remark: '投诉补偿',
+    ipAddress: '192.168.1.105',
+    deviceInfo: 'Web Safari'
+  },
+  {
+    id: 10,
+    couponId: 3,
+    couponCode: 'WEEKEND',
+    couponName: '周末出行券',
+    userId: 1007,
+    userName: '吴九',
+    userPhone: '13800138007',
+    recordType: 'transfer',
+    source: 'share',
+    sourceDetail: '用户转赠',
+    transferToUserId: 1008,
+    transferToUserName: '郑十',
+    transferReason: '赠送给朋友',
+    recordTime: '2025-01-20T18:30:00.000Z',
+    createdAt: '2025-01-20T18:30:00.000Z',
+    remark: '用户主动转赠',
+    ipAddress: '192.168.1.106',
+    deviceInfo: 'iPhone 15'
+  }
+]
+
+// 优惠券记录列表查询参数
+export interface CouponRecordListParams {
+  page?: number
+  pageSize?: number
+  couponId?: number
+  userId?: number
+  recordType?: CouponRecordType
+  source?: CouponRecordSource
+  startDate?: string
+  endDate?: string
+  keyword?: string  // 搜索优惠券名称、用户名、手机号
+}
+
+// Mock 获取优惠券记录列表
+export const mockGetCouponRecordList = (params: CouponRecordListParams) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      let filtered = [...mockCouponRecords]
+
+      if (params.keyword) {
+        filtered = filtered.filter(r =>
+          r.couponName.includes(params.keyword!) ||
+          r.userName.includes(params.keyword!) ||
+          r.userPhone.includes(params.keyword!)
+        )
+      }
+      if (params.couponId) {
+        filtered = filtered.filter(r => r.couponId === params.couponId)
+      }
+      if (params.userId) {
+        filtered = filtered.filter(r => r.userId === params.userId)
+      }
+      if (params.recordType) {
+        filtered = filtered.filter(r => r.recordType === params.recordType)
+      }
+      if (params.source) {
+        filtered = filtered.filter(r => r.source === params.source)
+      }
+      if (params.startDate) {
+        filtered = filtered.filter(r => r.recordTime >= params.startDate!)
+      }
+      if (params.endDate) {
+        filtered = filtered.filter(r => r.recordTime <= params.endDate!)
+      }
+
+      const page = params.page || 1
+      const pageSize = params.pageSize || 10
+      const start = (page - 1) * pageSize
+      const list = filtered.slice(start, start + pageSize)
+
+      resolve({
+        code: 200,
+        message: '获取成功',
+        data: { list, total: filtered.length, page, pageSize }
+      })
+    }, 300)
   })
 }

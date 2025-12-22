@@ -35,14 +35,24 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { onShow } from '@dcloudio/uni-app'
+import { onLoad, onShow } from '@dcloudio/uni-app'
 import { useContactStore } from '@/stores/contact'
+import { requireLogin, isLoggedIn, buildRedirectUrl } from '@/utils/auth'
 
 const contactStore = useContactStore()
 const contacts = ref<any[]>([])
 const loading = ref(true)
+const pageReady = ref(false)
+const redirectUrl = ref('/pages/profile/contacts')
+let cachedRouteParams: Record<string, any> | null = null
 
 const loadContacts = async () => {
+  // 检查登录状态
+  if (!isLoggedIn()) {
+    contacts.value = []
+    return
+  }
+
   loading.value = true
   const res = await contactStore.fetchContacts()
   if (res) {
@@ -51,8 +61,39 @@ const loadContacts = async () => {
   loading.value = false
 }
 
-onShow(() => {
+// 页面初始化设置
+const setupContactsPage = (options: any) => {
+  pageReady.value = true
   loadContacts()
+}
+
+// 确保用户已登录
+const ensureAuth = (options: any) => {
+  redirectUrl.value = buildRedirectUrl('/pages/profile/contacts', options || {})
+  if (isLoggedIn()) {
+    return true
+  }
+  return requireLogin(redirectUrl.value)
+}
+
+// 页面加载时检查登录状态
+onLoad((options: any) => {
+  cachedRouteParams = options || {}
+  pageReady.value = false
+  if (!ensureAuth(cachedRouteParams)) {
+    return
+  }
+  setupContactsPage(cachedRouteParams)
+})
+
+// 页面显示时检查登录状态（从登录页返回时）
+onShow(() => {
+  if (!pageReady.value && cachedRouteParams && isLoggedIn()) {
+    setupContactsPage(cachedRouteParams)
+  } else if (pageReady.value && isLoggedIn()) {
+    // 页面已初始化且已登录，刷新数据
+    loadContacts()
+  }
 })
 
 const handleAdd = () => {

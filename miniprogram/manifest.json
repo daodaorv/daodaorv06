@@ -55,7 +55,6 @@
             "urlCheck" : false
         },
         "usingComponents" : true,
-        "mergeVirtualHostAttributes" : true,
         "lazyCodeLoading" : "requiredComponents",
         "permission" : {
             "scope.userLocation" : {

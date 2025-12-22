@@ -2,6 +2,10 @@
  * 价格计算辅助工具
  * 提供车型租金联动、价格计算等功能
  */
+import type { PriceCalculationResult } from '@/types/pricing'
+
+// 导出类型供其他模块使用
+export type { PriceCalculationResult }
 
 /**
  * 车型基础租金配置
@@ -449,36 +453,6 @@ export interface PriceCalculationRequest {
     adjustmentType: 'percentage' | 'fixed'
     adjustmentValue: number
   }>
-}
-
-/**
- * 价格计算结果接口
- */
-export interface PriceCalculationResult {
-  modelId: number
-  modelName: string
-  basePrice: number
-  cityId: number
-  cityName: string
-  startDate: string
-  endDate: string
-  rentalDays: number
-
-  // 因子详情
-  cityFactor?: FactorDetail
-  timeFactorSummary: {
-    averageAmount: number
-    dailyDetails: DailyPriceDetail[]
-  }
-  otherFactors: FactorDetail[]
-
-  // 计算结果
-  averageDailyRental: number // 平均每日租金
-  totalPrice: number // 订单总价
-
-  // 计算说明
-  calculationExplanation: string
-  calculatedAt: string
 }
 
 /**

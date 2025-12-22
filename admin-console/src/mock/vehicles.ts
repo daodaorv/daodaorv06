@@ -24,11 +24,6 @@ export interface VehicleModel {
   status: 'active' | 'inactive'
   createdAt: string
   updatedAt: string
-
-  // 🆕 车型分组相关
-  priceGroupId?: number // 所属价格分组ID（可为空）
-  priceGroupName?: string // 所属价格分组名称
-  isCustomPrice?: boolean // 是否自定义价格（true=独立价格，false=继承分组价格）
 }
 
 // 品牌数据
@@ -403,7 +398,26 @@ export interface Vehicle {
   location: string // 当前位置
   images: string[]
   features: string[]
-  dailyPrice: number
+
+  // 🆕 车况评级
+  conditionGrade: 'A' | 'B' | 'C' | 'D' // A(0-12月)、B(13-36月)、C(37-60月)、D(60月+)
+  conditionScore?: number // 车况评分(0-100),可选
+
+  // 🆕 基础租金
+  dailyPrice: number // 实际车辆的基础日租金
+  suggestedDailyPrice?: number // 系统建议的基础日租金
+  priceSource: 'calculated' | 'manual' | 'inherited' // 价格来源
+
+  // 🆕 租金计算参数(可选,用于追溯)
+  calculationParams?: {
+    targetAnnualReturn: number // 目标年化收益率
+    residualValueRate: number // 残值率
+    annualOperatingRate: number // 年运营率
+    operatingCostRate: number // 运营成本占比
+    conditionPremium: number // 车况溢价系数
+    calculatedAt: string // 计算时间
+  }
+
   remark: string
   createdAt: string
   updatedAt: string
@@ -433,7 +447,9 @@ export const mockVehicles: Vehicle[] = [
     location: '北京市朝阳区',
     images: ['https://via.placeholder.com/800x600?text=Vehicle+1'],
     features: ['空调', '冰箱', '微波炉', '卫生间', '淋浴', '太阳能'],
+    conditionGrade: 'B', // 购买于2024-01-15,已11个月,接近B级
     dailyPrice: 800,
+    priceSource: 'manual', // 现有价格为手动设置
     remark: '车况良好，配置齐全',
     createdAt: '2024-01-15 10:00:00',
     updatedAt: '2024-11-29 14:30:00',
