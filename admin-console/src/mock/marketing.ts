@@ -426,76 +426,228 @@ export const mockGetActivityList = (params: ActivityListParams) => {
   })
 }
 
-// ==================== 特惠套餐管理 ====================
+// ==================== 特惠租车管理 ====================
 
-// 套餐状态
-export type PackageStatus = 'active' | 'inactive' | 'soldout'
+// 特惠租车状态
+export type SpecialOfferStatus = 'active' | 'inactive' | 'soldout'
 
-// 特惠套餐信息
-export interface Package {
+// 特惠租车信息
+export interface SpecialOffer {
   id: number
-  name: string
-  status: PackageStatus
-  vehicleType: string
-  days: number
-  originalPrice: number
+  // 路线信息
+  route: {
+    fromCityId: number        // 出发城市ID
+    fromCityName: string      // 出发城市名称
+    toCityId: number          // 目的地城市ID
+    toCityName: string        // 目的地城市名称
+  }
+  // 车辆信息
+  vehicleId: number           // 执行车辆ID
+  vehicleNumber: string       // 车牌号
+  modelId: number             // 车型ID
+  modelName: string           // 车型名称
+  brandName: string           // 品牌名称
+  vehicle: {
+    images: string[]
+    specifications: Array<{
+      label: string
+      value: string
+    }>
+    features: string[]
+  }
+  // 价格信息
   packagePrice: number
-  discount: number
-  totalQuantity: number
-  soldQuantity: number
-  remainingQuantity: number
-  startDate: string
-  endDate: string
-  includes: string[]
-  description: string
+  originalPrice: number
+  rentalDays: number
+  // 配额管理
+  remainingQuota: number
+  totalQuota: number
+  // 门店信息
+  pickupStoreId: number       // 取车门店ID
+  pickupStoreName: string     // 取车门店名称
+  pickupStoreAddress: string  // 取车门店地址
+  returnStoreId: number       // 还车门店ID
+  returnStoreName: string     // 还车门店名称
+  returnStoreAddress: string  // 还车门店地址
+  // 时间范围
+  availableTimeRange: {
+    start: string
+    end: string
+  }
+  // 套餐详情
+  announcement: string
+  packageIncludes: Array<{
+    name: string
+    description: string
+  }>
+  bookingNotices: string[]
+  cancellationPolicy: Array<{
+    condition: string
+    result: string
+  }>
+  // 状态
+  status: SpecialOfferStatus
+  // 元数据
   createdBy: string
   createdAt: string
   updatedAt: string
 }
 
-// Mock 特惠套餐数据
-const mockPackages: Package[] = [
+// Package 类型别名
+export type Package = SpecialOffer
+export type PackageStatus = SpecialOfferStatus
+
+// Mock 特惠租车数据
+const mockSpecialOffers: SpecialOffer[] = [
   {
     id: 1,
-    name: '春节7天自驾套餐',
+    // 路线信息（使用门店管理中的真实城市）
+    route: {
+      fromCityId: 6,           // 杭州（门店ID: 6）
+      fromCityName: '杭州',
+      toCityId: 6,             // 杭州（同城还车）
+      toCityName: '杭州'
+    },
+    // 车辆信息
+    vehicleId: 1,
+    vehicleNumber: '浙A·12345',
+    modelId: 1,
+    modelName: 'RV80 C型房车',
+    brandName: '大通',
+    vehicle: {
+      images: [
+        '/static/vehicles/iveco-c-1.jpg',
+        '/static/vehicles/iveco-c-2.jpg',
+        '/static/vehicles/iveco-c-3.jpg'
+      ],
+      specifications: [
+        { label: '车型', value: 'C型房车' },
+        { label: '座位数', value: '4-6座' },
+        { label: '变速箱', value: '自动挡' },
+        { label: '燃料类型', value: '柴油' },
+        { label: '车长', value: '5.99米' },
+        { label: '核载人数', value: '6人' }
+      ],
+      features: ['独立卫浴', '太阳能系统', '驻车空调', '智能导航', '倒车影像', '冰箱', '微波炉', '热水器']
+    },
+    packagePrice: 1280,
+    originalPrice: 1680,
+    rentalDays: 3,
+    remainingQuota: 3,
+    totalQuota: 10,
+    // 门店信息（使用门店管理中的真实门店）
+    pickupStoreId: 6,
+    pickupStoreName: '杭州西湖店',
+    pickupStoreAddress: '杭州市西湖区文三路456号',
+    returnStoreId: 6,
+    returnStoreName: '杭州西湖店',
+    returnStoreAddress: '杭州市西湖区文三路456号',
+    availableTimeRange: {
+      start: '2025-12-01',
+      end: '2025-12-31'
+    },
+    announcement: '【限时特惠】杭州西湖店专线套餐，仅剩3个名额！本套餐为固定路线，不支持更改取还车门店。春节期间（1月25日-2月10日）不可用。预订成功后不可退改，请确认行程后再下单。',
+    packageIncludes: [
+      { name: '车辆租金', description: '3天2晚固定租期' },
+      { name: '基础保险', description: '第三者责任险' },
+      { name: '首箱燃油', description: '满油交付' },
+      { name: '不限公里数', description: '无里程限制' },
+      { name: '24小时道路救援', description: '全程保障' }
+    ],
+    bookingNotices: [
+      '本套餐为特惠固定套餐，取车门店、还车门店、租期均不可更改',
+      '取车时间可在可选时间段内自由选择，系统将自动计算还车时间',
+      '必须选择保险方案（基础险/标准险/全险），保险费用另计',
+      '可选择附加服务（如儿童座椅、GPS等），费用另计',
+      '取车时需支付押金，还车后无违章自动退还',
+      '驾驶人需持有效驾驶证满1年以上',
+      '名额有限，预订成功后不可退改，请谨慎下单'
+    ],
+    cancellationPolicy: [
+      { condition: '出发前7天以上取消', result: '全额退款' },
+      { condition: '出发前3-7天取消', result: '退款70%' },
+      { condition: '出发前1-3天取消', result: '退款30%' },
+      { condition: '出发当天取消', result: '不予退款' }
+    ],
     status: 'active',
-    vehicleType: 'C型房车',
-    days: 7,
-    originalPrice: 4900,
-    packagePrice: 3999,
-    discount: 18.4,
-    totalQuantity: 50,
-    soldQuantity: 28,
-    remainingQuantity: 22,
-    startDate: '2025-01-28',
-    endDate: '2025-02-04',
-    includes: ['车辆租赁7天', '全险保障', '免费异地还车', '赠送营地券2张', '24小时道路救援'],
-    description: '春节黄金周特惠套餐，包含7天租赁及多项增值服务',
     createdBy: '运营经理-张三',
     createdAt: '2025-01-01T10:00:00.000Z',
     updatedAt: '2025-01-10T10:00:00.000Z'
   },
   {
     id: 2,
-    name: '周末短途套餐',
-    status: 'active',
-    vehicleType: 'B型房车',
-    days: 2,
-    originalPrice: 1200,
+    // 路线信息（使用门店管理中的真实城市）
+    route: {
+      fromCityId: 2,           // 上海（门店ID: 2）
+      fromCityName: '上海',
+      toCityId: 2,             // 上海（同城还车）
+      toCityName: '上海'
+    },
+    // 车辆信息
+    vehicleId: 2,
+    vehicleNumber: '沪A·67890',
+    modelId: 2,
+    modelName: 'V90 B型房车',
+    brandName: '大通',
+    vehicle: {
+      images: [
+        '/static/vehicles/maxus-b-1.jpg',
+        '/static/vehicles/maxus-b-2.jpg'
+      ],
+      specifications: [
+        { label: '车型', value: 'B型房车' },
+        { label: '座位数', value: '4座' },
+        { label: '变速箱', value: '自动挡' },
+        { label: '燃料类型', value: '柴油' },
+        { label: '车长', value: '5.7米' },
+        { label: '核载人数', value: '4人' }
+      ],
+      features: ['独立卫浴', '驻车空调', '智能导航', '倒车影像', '冰箱', '热水器']
+    },
     packagePrice: 999,
-    discount: 16.8,
-    totalQuantity: 100,
-    soldQuantity: 67,
-    remainingQuantity: 33,
-    startDate: '2025-01-01',
-    endDate: '2025-12-31',
-    includes: ['车辆租赁2天', '基础保险', '免费市内取还车', '赠送洗车券1张'],
-    description: '周末短途出行特惠套餐，轻松享受房车生活',
+    originalPrice: 1200,
+    rentalDays: 2,
+    remainingQuota: 5,
+    totalQuota: 15,
+    // 门店信息（使用门店管理中的真实门店）
+    pickupStoreId: 2,
+    pickupStoreName: '上海浦东店',
+    pickupStoreAddress: '上海市浦东新区世纪大道1000号',
+    returnStoreId: 2,
+    returnStoreName: '上海浦东店',
+    returnStoreAddress: '上海市浦东新区世纪大道1000号',
+    availableTimeRange: {
+      start: '2025-01-01',
+      end: '2025-12-31'
+    },
+    announcement: '【周末特惠】上海浦东店周末游套餐，轻松享受周边游。周末及节假日可用，工作日不可用。',
+    packageIncludes: [
+      { name: '车辆租金', description: '2天1晚固定租期' },
+      { name: '基础保险', description: '第三者责任险' },
+      { name: '首箱燃油', description: '满油交付' },
+      { name: '不限公里数', description: '无里程限制' }
+    ],
+    bookingNotices: [
+      '本套餐为周末特惠套餐，仅限周五-周日使用',
+      '取车时间可在可选时间段内自由选择',
+      '必须选择保险方案，保险费用另计',
+      '取车时需支付押金，还车后无违章自动退还',
+      '驾驶人需持有效驾驶证满1年以上'
+    ],
+    cancellationPolicy: [
+      { condition: '出发前3天以上取消', result: '全额退款' },
+      { condition: '出发前1-3天取消', result: '退款50%' },
+      { condition: '出发当天取消', result: '不予退款' }
+    ],
+    status: 'active',
     createdBy: '运营经理-张三',
     createdAt: '2025-01-01T10:00:00.000Z',
     updatedAt: '2025-01-01T10:00:00.000Z'
   }
 ]
+
+// 兼容旧的变量名
+const mockPackages: Package[] = mockSpecialOffers
 
 // 特惠套餐列表查询参数
 export interface PackageListParams {
@@ -506,20 +658,31 @@ export interface PackageListParams {
   vehicleType?: string
 }
 
-// Mock 获取特惠套餐列表
+// Mock 获取特惠租车列表
 export const mockGetPackageList = (params: PackageListParams) => {
   return new Promise((resolve) => {
     setTimeout(() => {
-      let filtered = [...mockPackages]
+      let filtered = [...mockSpecialOffers]
 
       if (params.keyword) {
-        filtered = filtered.filter(p => p.name.includes(params.keyword!))
+        // 搜索路线（fromCityName/toCityName）或车辆名称
+        filtered = filtered.filter(p =>
+          p.route.fromCityName.includes(params.keyword!) ||
+          p.route.toCityName.includes(params.keyword!) ||
+          p.brandName.includes(params.keyword!) ||
+          p.modelName.includes(params.keyword!)
+        )
       }
       if (params.status) {
         filtered = filtered.filter(p => p.status === params.status)
       }
       if (params.vehicleType) {
-        filtered = filtered.filter(p => p.vehicleType === params.vehicleType)
+        // 搜索车辆规格中的车型
+        filtered = filtered.filter(p =>
+          p.vehicle.specifications.some(spec =>
+            spec.label === '车型' && spec.value.includes(params.vehicleType!)
+          )
+        )
       }
 
       const page = params.page || 1
@@ -539,26 +702,59 @@ export const mockGetPackageList = (params: PackageListParams) => {
 // ==================== 房车旅游管理 ====================
 
 // 旅游路线状态
-export type TourStatus = 'draft' | 'published' | 'full' | 'ended'
+export type TourStatus = 'draft' | 'published' | 'ended'
+
+// 批次状态
+export type BatchStatus = 'recruiting' | 'confirmed' | 'departed' | 'finished'
 
 // 房车旅游路线信息
 export interface Tour {
   id: number
-  name: string
+  title: string                    // 线路标题
+  images: string[]                 // 线路图片
+  tags: string[]                   // 线路标签
+  destination: string              // 目的地
+  duration: number                 // 行程天数
+  // 门店信息
+  pickupStoreId?: number           // 取车门店ID
+  pickupStoreName?: string         // 取车门店名称
+  returnStoreId?: number           // 还车门店ID
+  returnStoreName?: string         // 还车门店名称
+  // 成团设置
+  minPeople: number                // 最少成团人数
+  maxPeople: number                // 最多容纳人数
+  // 价格设置（按人头计价）
+  pricePerPerson: number           // 成人价格/人
+  childPrice: number               // 儿童价格/人
+  // 批次管理
+  batches: Array<{
+    id: string
+    departureDate: string
+    status: BatchStatus
+    currentPeople: number
+    maxPeople: number
+  }>
+  // 行程安排
+  itinerary: Array<{
+    title: string
+    content: string
+    highlights: string[]
+  }>
+  // 费用说明
+  priceIncludes: string[]
+  priceExcludes: string[]
+  // 预订信息
+  announcement: string
+  bookingNotices: string[]
+  cancellationPolicy: Array<{
+    condition: string
+    result: string
+  }>
+  // 状态
   status: TourStatus
-  destination: string
-  days: number
-  price: number
-  vehicleType: string
-  maxParticipants: number
-  currentParticipants: number
-  departureDate: string
-  returnDate: string
-  route: string[]
-  highlights: string[]
-  includes: string[]
-  excludes: string[]
-  description: string
+  isHot: boolean
+  // 元数据
+  vehicleType: string              // 适用车型（保留用于筛选）
   createdBy: string
   createdAt: string
   updatedAt: string
@@ -568,42 +764,199 @@ export interface Tour {
 const mockTours: Tour[] = [
   {
     id: 1,
-    name: '川藏线房车自驾游',
+    title: '川西秘境·稻城亚丁房车深度游',
+    images: [
+      '/static/tours/daocheng-1.jpg',
+      '/static/tours/daocheng-2.jpg',
+      '/static/tours/daocheng-3.jpg'
+    ],
+    tags: ['高原风光', '摄影天堂', '藏族文化', '深度体验'],
+    destination: '四川·稻城亚丁',
+    duration: 7,
+    minPeople: 5,
+    maxPeople: 12,
+    pricePerPerson: 4980,
+    childPrice: 2490,
+    isHot: true,
+    batches: [
+      {
+        id: '1',
+        departureDate: '2025-12-15',
+        status: 'recruiting',
+        currentPeople: 8,
+        maxPeople: 12
+      },
+      {
+        id: '2',
+        departureDate: '2025-12-22',
+        status: 'recruiting',
+        currentPeople: 3,
+        maxPeople: 12
+      },
+      {
+        id: '3',
+        departureDate: '2026-01-05',
+        status: 'recruiting',
+        currentPeople: 5,
+        maxPeople: 12
+      },
+      {
+        id: '4',
+        departureDate: '2025-12-08',
+        status: 'confirmed',
+        currentPeople: 12,
+        maxPeople: 12
+      }
+    ],
+    itinerary: [
+      {
+        title: '成都集合',
+        content: '全天成都集合，入住酒店。可自由活动，品尝成都美食，游览宽窄巷子、锦里等景点。',
+        highlights: ['成都美食', '自由活动']
+      },
+      {
+        title: '成都 - 新都桥',
+        content: '早餐后出发，经雅安、泸定，翻越折多山（海拔4298米），抵达摄影天堂新都桥。沿途欣赏大渡河峡谷风光、泸定桥、折多山云海。',
+        highlights: ['泸定桥', '折多山', '新都桥']
+      },
+      {
+        title: '新都桥 - 稻城',
+        content: '早起拍摄新都桥晨曦，后经雅江、理塘，抵达稻城县。途经高尔寺山、剪子弯山、卡子拉山、海子山，欣赏高原风光。',
+        highlights: ['新都桥晨曦', '理塘', '海子山']
+      },
+      {
+        title: '稻城 - 亚丁',
+        content: '前往亚丁景区，游览冲古寺、珍珠海、仙乃日神山。下午自由活动，可选择徒步或骑马游览。',
+        highlights: ['亚丁景区', '仙乃日', '珍珠海']
+      },
+      {
+        title: '亚丁深度游',
+        content: '全天深度游览亚丁景区，徒步洛绒牛场、牛奶海、五色海。欣赏央迈勇、夏诺多吉神山。',
+        highlights: ['牛奶海', '五色海', '三神山']
+      },
+      {
+        title: '亚丁 - 新都桥',
+        content: '早起拍摄亚丁晨曦，后返回新都桥。途经理塘、雅江，欣赏沿途风光。',
+        highlights: ['亚丁晨曦', '返程风光']
+      },
+      {
+        title: '新都桥 - 成都',
+        content: '早餐后返回成都，结束愉快的川西之旅。预计下午抵达成都，可根据返程时间安排。',
+        highlights: ['返回成都', '行程结束']
+      }
+    ],
+    priceIncludes: [
+      '全程房车使用费（含油费、过路费）',
+      '6晚住宿（房车营地或酒店）',
+      '全程早餐',
+      '专业领队服务',
+      '景区门票（亚丁景区）',
+      '旅游意外保险',
+      '对讲机使用',
+      '24小时道路救援'
+    ],
+    priceExcludes: [
+      '往返成都大交通',
+      '午餐和晚餐',
+      '景区内观光车、索道等费用',
+      '个人消费及自费项目',
+      '单房差（如需单独住宿）',
+      '因不可抗力产生的额外费用'
+    ],
+    announcement: '【行程提醒】本线路为高原地区旅行，海拔最高达4700米，请提前做好身体准备。12月15日批次即将成团，仅剩4个名额。出发前7天确认成团，未成团全额退款。建议购买高原旅游保险，携带防寒衣物和常用药品。',
+    bookingNotices: [
+      '本线路为成团产品，最少5人成团，最多12人',
+      '出发前7天确认是否成团，未成团全额退款',
+      '高原地区，请提前做好身体准备，有高血压、心脏病等疾病者不宜参加',
+      '行程中如遇天气、路况等不可抗力因素，领队有权调整行程',
+      '请携带身份证、驾驶证等有效证件',
+      '建议购买高原旅游保险',
+      '儿童价格适用于12岁以下，不占床位'
+    ],
+    cancellationPolicy: [
+      { condition: '出发前7天以上取消', result: '全额退款' },
+      { condition: '出发前3-7天取消', result: '退款70%' },
+      { condition: '出发前1-3天取消', result: '退款30%' },
+      { condition: '出发当天取消', result: '不予退款' }
+    ],
     status: 'published',
-    destination: '西藏拉萨',
-    days: 15,
-    price: 12800,
     vehicleType: 'C型房车',
-    maxParticipants: 20,
-    currentParticipants: 12,
-    departureDate: '2025-05-01',
-    returnDate: '2025-05-15',
-    route: ['成都', '雅安', '康定', '理塘', '巴塘', '芒康', '左贡', '八宿', '波密', '林芝', '拉萨'],
-    highlights: ['318国道最美路段', '稻城亚丁', '然乌湖', '布达拉宫', '纳木错'],
-    includes: ['车辆租赁15天', '全程领队', '营地住宿', '景点门票', '旅游保险'],
-    excludes: ['餐饮费用', '个人消费', '自费项目'],
-    description: '川藏线经典路线，领略高原风光，体验藏族文化',
     createdBy: '旅游部-李四',
     createdAt: '2025-01-10T10:00:00.000Z',
     updatedAt: '2025-01-15T10:00:00.000Z'
   },
   {
     id: 2,
-    name: '新疆环线房车之旅',
-    status: 'published',
+    title: '新疆环线房车之旅',
+    images: [
+      '/static/tours/xinjiang-1.jpg',
+      '/static/tours/xinjiang-2.jpg'
+    ],
+    tags: ['西域风情', '自然风光', '多元文化'],
     destination: '新疆',
-    days: 12,
-    price: 9800,
+    duration: 12,
+    minPeople: 6,
+    maxPeople: 15,
+    pricePerPerson: 9800,
+    childPrice: 4900,
+    isHot: false,
+    batches: [
+      {
+        id: '1',
+        departureDate: '2025-06-15',
+        status: 'recruiting',
+        currentPeople: 8,
+        maxPeople: 15
+      },
+      {
+        id: '2',
+        departureDate: '2025-07-01',
+        status: 'recruiting',
+        currentPeople: 5,
+        maxPeople: 15
+      }
+    ],
+    itinerary: [
+      {
+        title: '乌鲁木齐集合',
+        content: '全天乌鲁木齐集合，入住酒店。可自由活动，品尝新疆美食，游览国际大巴扎等景点。',
+        highlights: ['新疆美食', '国际大巴扎']
+      },
+      {
+        title: '乌鲁木齐 - 天山天池',
+        content: '前往天山天池景区，欣赏高山湖泊美景，远眺博格达峰。',
+        highlights: ['天山天池', '博格达峰']
+      }
+    ],
+    priceIncludes: [
+      '全程房车使用费（含油费、过路费）',
+      '11晚住宿（房车营地或酒店）',
+      '全程早餐',
+      '专业领队服务',
+      '部分景点门票',
+      '旅游意外保险'
+    ],
+    priceExcludes: [
+      '往返乌鲁木齐大交通',
+      '午餐和晚餐',
+      '自费景点门票',
+      '个人消费及自费项目'
+    ],
+    announcement: '【行程提醒】新疆地域辽阔，行程较长，请做好心理准备。建议携带防晒用品和常用药品。',
+    bookingNotices: [
+      '本线路为成团产品，最少6人成团，最多15人',
+      '出发前7天确认是否成团，未成团全额退款',
+      '请携带身份证等有效证件',
+      '儿童价格适用于12岁以下，不占床位'
+    ],
+    cancellationPolicy: [
+      { condition: '出发前7天以上取消', result: '全额退款' },
+      { condition: '出发前3-7天取消', result: '退款70%' },
+      { condition: '出发前1-3天取消', result: '退款30%' },
+      { condition: '出发当天取消', result: '不予退款' }
+    ],
+    status: 'published',
     vehicleType: 'C型房车',
-    maxParticipants: 15,
-    currentParticipants: 8,
-    departureDate: '2025-06-15',
-    returnDate: '2025-06-26',
-    route: ['乌鲁木齐', '天山天池', '吐鲁番', '库尔勒', '库车', '喀什', '和田', '阿克苏'],
-    highlights: ['天山天池', '火焰山', '喀纳斯', '赛里木湖', '那拉提草原'],
-    includes: ['车辆租赁12天', '全程领队', '营地住宿', '部分景点门票', '旅游保险'],
-    excludes: ['餐饮费用', '个人消费', '自费景点'],
-    description: '新疆环线深度游，探索西域风情，品味多元文化',
     createdBy: '旅游部-李四',
     createdAt: '2025-01-12T10:00:00.000Z',
     updatedAt: '2025-01-12T10:00:00.000Z'
@@ -626,7 +979,7 @@ export const mockGetTourList = (params: TourListParams) => {
       let filtered = [...mockTours]
 
       if (params.keyword) {
-        filtered = filtered.filter(t => t.name.includes(params.keyword!) || t.destination.includes(params.keyword!))
+        filtered = filtered.filter(t => t.title.includes(params.keyword!) || t.destination.includes(params.keyword!))
       }
       if (params.status) {
         filtered = filtered.filter(t => t.status === params.status)
@@ -651,13 +1004,39 @@ export const mockGetTourList = (params: TourListParams) => {
 
 // ==================== 增值费用管理 ====================
 
-// 增值费用类型
-export type ExtraFeeType = 'insurance' | 'equipment' | 'service' | 'other'
+// 增值费用类型（扩展）
+export type ExtraFeeType =
+  | 'insurance'      // 保险服务
+  | 'equipment'      // 设备租赁
+  | 'service'        // 增值服务
+  | 'store_special'  // 门店特色服务（新增）
+  | 'special'        // 特殊费用（新增）
+  | 'other'          // 其他费用
 
 // 增值费用状态
 export type ExtraFeeStatus = 'active' | 'inactive'
 
-// 增值费用信息
+// 费用归属方类型（扩展）
+export type ExtraFeeOwnerType =
+  | 'platform'       // 平台
+  | 'store'          // 门店（单一门店）
+  | 'multi_party'    // 多方分配（新增）
+
+// 特殊费用计算方式
+export type SpecialFeeCalculationType =
+  | 'fixed'          // 固定金额
+  | 'distance'       // 按距离计算（公里数 × 单价）
+
+// 费用分配规则
+export interface FeeAllocationRule {
+  partyType: 'platform' | 'pickup_store' | 'return_store' | 'service_store'
+  partyId?: number
+  partyName?: string
+  percentage: number         // 分配比例（0-100）
+  amount?: number            // 实际分配金额（计算后填充）
+}
+
+// 增值费用信息（完整扩展）
 export interface ExtraFee {
   id: number
   name: string
@@ -667,6 +1046,25 @@ export interface ExtraFee {
   unit: string
   isRequired: boolean
   description: string
+
+  // 归属方配置
+  ownerType: ExtraFeeOwnerType                    // 归属方（平台/门店/多方）
+  storeId?: number                                // 门店ID（当ownerType为store时）
+  storeName?: string                              // 门店名称
+
+  // 门店特色服务配置（当type为store_special时）
+  isStoreSpecial?: boolean                        // 是否为门店特色服务
+  applicableStoreIds?: number[]                   // 适用门店ID列表
+
+  // 特殊费用配置（当type为special时）
+  calculationType?: SpecialFeeCalculationType     // 计算方式
+  distanceUnitPrice?: number                      // 距离单价（元/公里）
+  allocationRules?: FeeAllocationRule[]           // 分配规则列表
+
+  // 自动分配配置（用于常规增值费用）
+  autoAllocate?: boolean                          // 是否自动分配给取还车门店
+  allocationStrategy?: 'same_store' | 'split_evenly' | 'custom'  // 分配策略
+
   createdBy: string
   createdAt: string
   updatedAt: string
@@ -683,6 +1081,7 @@ const mockExtraFees: ExtraFee[] = [
     unit: '天',
     isRequired: false,
     description: '包含车损险、三者险、盗抢险等全面保障',
+    ownerType: 'platform',
     createdBy: '运营经理-张三',
     createdAt: '2025-01-01T10:00:00.000Z',
     updatedAt: '2025-01-01T10:00:00.000Z'
@@ -696,6 +1095,7 @@ const mockExtraFees: ExtraFee[] = [
     unit: '次',
     isRequired: false,
     description: '支持异地还车，收取调度费用',
+    ownerType: 'platform',
     createdBy: '运营经理-张三',
     createdAt: '2025-01-01T10:00:00.000Z',
     updatedAt: '2025-01-01T10:00:00.000Z'
@@ -709,6 +1109,7 @@ const mockExtraFees: ExtraFee[] = [
     unit: '天',
     isRequired: false,
     description: '提供儿童安全座椅租赁服务',
+    ownerType: 'platform',
     createdBy: '运营经理-张三',
     createdAt: '2025-01-01T10:00:00.000Z',
     updatedAt: '2025-01-01T10:00:00.000Z'
@@ -722,6 +1123,7 @@ const mockExtraFees: ExtraFee[] = [
     unit: '天',
     isRequired: false,
     description: '包含帐篷、睡袋、炊具等户外装备',
+    ownerType: 'platform',
     createdBy: '运营经理-张三',
     createdAt: '2025-01-01T10:00:00.000Z',
     updatedAt: '2025-01-01T10:00:00.000Z'
@@ -735,9 +1137,155 @@ const mockExtraFees: ExtraFee[] = [
     unit: '天',
     isRequired: false,
     description: '提供24小时道路救援服务',
+    ownerType: 'platform',
     createdBy: '运营经理-张三',
     createdAt: '2025-01-01T10:00:00.000Z',
     updatedAt: '2025-01-01T10:00:00.000Z'
+  },
+  // 门店归属示例数据
+  {
+    id: 6,
+    name: '上门取车服务',
+    type: 'service',
+    status: 'active',
+    price: 100,
+    unit: '次',
+    isRequired: false,
+    description: '提供上门取车服务，节省客户时间',
+    ownerType: 'store',
+    storeId: 1,
+    storeName: '北京朝阳店',
+    createdBy: '门店经理-王五',
+    createdAt: '2025-01-05T10:00:00.000Z',
+    updatedAt: '2025-01-05T10:00:00.000Z'
+  },
+  {
+    id: 7,
+    name: '深度清洁服务',
+    type: 'service',
+    status: 'active',
+    price: 200,
+    unit: '次',
+    isRequired: false,
+    description: '专业深度清洁，包含内饰清洁、消毒等',
+    ownerType: 'platform',
+    createdBy: '运营经理-张三',
+    createdAt: '2025-01-06T10:00:00.000Z',
+    updatedAt: '2025-01-06T10:00:00.000Z'
+  },
+  {
+    id: 8,
+    name: '上门还车服务',
+    type: 'service',
+    status: 'active',
+    price: 120,
+    unit: '次',
+    isRequired: false,
+    description: '提供上门还车服务，方便客户',
+    ownerType: 'store',
+    storeId: 2,
+    storeName: '上海浦东店',
+    createdBy: '门店经理-孙七',
+    createdAt: '2025-01-07T10:00:00.000Z',
+    updatedAt: '2025-01-07T10:00:00.000Z'
+  },
+  // 门店特色服务示例数据
+  {
+    id: 9,
+    name: '北京机场接送服务',
+    type: 'store_special',
+    status: 'active',
+    price: 300,
+    unit: '次',
+    isRequired: false,
+    description: '提供首都机场、大兴机场往返接送服务',
+    ownerType: 'store',
+    storeId: 1,
+    storeName: '北京朝阳店',
+    isStoreSpecial: true,
+    applicableStoreIds: [1],
+    createdBy: '门店经理-王五',
+    createdAt: '2025-01-08T10:00:00.000Z',
+    updatedAt: '2025-01-08T10:00:00.000Z'
+  },
+  {
+    id: 10,
+    name: '上海迪士尼专线',
+    type: 'store_special',
+    status: 'active',
+    price: 250,
+    unit: '次',
+    isRequired: false,
+    description: '提供上海迪士尼乐园往返接送服务',
+    ownerType: 'store',
+    storeId: 2,
+    storeName: '上海浦东店',
+    isStoreSpecial: true,
+    applicableStoreIds: [2],
+    createdBy: '门店经理-孙七',
+    createdAt: '2025-01-09T10:00:00.000Z',
+    updatedAt: '2025-01-09T10:00:00.000Z'
+  },
+  {
+    id: 11,
+    name: '车辆深度清洁（北京店）',
+    type: 'store_special',
+    status: 'active',
+    price: 200,
+    unit: '次',
+    isRequired: false,
+    description: '专业团队提供车辆内外深度清洁服务',
+    ownerType: 'store',
+    storeId: 1,
+    storeName: '北京朝阳店',
+    isStoreSpecial: true,
+    applicableStoreIds: [1],
+    createdBy: '门店经理-王五',
+    createdAt: '2025-01-10T10:00:00.000Z',
+    updatedAt: '2025-01-10T10:00:00.000Z'
+  },
+  // 特殊费用示例数据
+  {
+    id: 100,
+    name: '异地还车费',
+    type: 'special',
+    status: 'active',
+    price: 0,  // 动态计算
+    unit: '次',
+    isRequired: false,
+    description: '根据取还车门店距离自动计算，1.5元/公里',
+    ownerType: 'multi_party',
+    calculationType: 'distance',
+    distanceUnitPrice: 1.5,
+    allocationRules: [
+      { partyType: 'pickup_store', percentage: 40, partyName: '取车门店' },
+      { partyType: 'return_store', percentage: 40, partyName: '还车门店' },
+      { partyType: 'platform', percentage: 20, partyName: '平台' }
+    ],
+    createdBy: '运营经理-张三',
+    createdAt: '2025-01-11T10:00:00.000Z',
+    updatedAt: '2025-01-11T10:00:00.000Z'
+  },
+  {
+    id: 101,
+    name: '跨省调度费',
+    type: 'special',
+    status: 'active',
+    price: 0,  // 动态计算
+    unit: '次',
+    isRequired: false,
+    description: '跨省还车需支付调度费用，2元/公里',
+    ownerType: 'multi_party',
+    calculationType: 'distance',
+    distanceUnitPrice: 2.0,
+    allocationRules: [
+      { partyType: 'pickup_store', percentage: 30, partyName: '取车门店' },
+      { partyType: 'return_store', percentage: 30, partyName: '还车门店' },
+      { partyType: 'platform', percentage: 40, partyName: '平台' }
+    ],
+    createdBy: '运营经理-张三',
+    createdAt: '2025-01-12T10:00:00.000Z',
+    updatedAt: '2025-01-12T10:00:00.000Z'
   }
 ]
 
@@ -775,6 +1323,86 @@ export const mockGetExtraFeeList = (params: ExtraFeeListParams) => {
         code: 200,
         message: '获取成功',
         data: { list, total: filtered.length, page, pageSize }
+      })
+    }, 300)
+  })
+}
+
+// Mock 创建增值费用
+export const mockCreateExtraFee = (data: Partial<ExtraFee>) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const newExtraFee: ExtraFee = {
+        id: mockExtraFees.length + 1,
+        name: data.name || '',
+        type: data.type || 'service',
+        status: data.status || 'inactive',
+        price: data.price || 0,
+        unit: data.unit || '天',
+        isRequired: data.isRequired || false,
+        description: data.description || '',
+        ownerType: data.ownerType || 'platform',
+        storeId: data.storeId,
+        storeName: data.storeName,
+        createdBy: '系统管理员',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      }
+      mockExtraFees.push(newExtraFee)
+      resolve({
+        code: 200,
+        message: '创建成功',
+        data: newExtraFee
+      })
+    }, 300)
+  })
+}
+
+// Mock 更新增值费用
+export const mockUpdateExtraFee = (id: number, data: Partial<ExtraFee>) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const index = mockExtraFees.findIndex(f => f.id === id)
+      if (index === -1) {
+        reject({
+          code: 404,
+          message: '增值费用不存在'
+        })
+        return
+      }
+
+      mockExtraFees[index] = {
+        ...mockExtraFees[index],
+        ...data,
+        updatedAt: new Date().toISOString()
+      }
+
+      resolve({
+        code: 200,
+        message: '更新成功',
+        data: mockExtraFees[index]
+      })
+    }, 300)
+  })
+}
+
+// Mock 删除增值费用
+export const mockDeleteExtraFee = (id: number) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const index = mockExtraFees.findIndex(f => f.id === id)
+      if (index === -1) {
+        reject({
+          code: 404,
+          message: '增值费用不存在'
+        })
+        return
+      }
+
+      mockExtraFees.splice(index, 1)
+      resolve({
+        code: 200,
+        message: '删除成功'
       })
     }, 300)
   })

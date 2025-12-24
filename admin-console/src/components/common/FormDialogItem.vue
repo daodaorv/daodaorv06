@@ -194,6 +194,17 @@
       style="width: 100%"
     />
 
+    <!-- 富文本编辑器 -->
+    <RichTextEditor
+      v-else-if="field.type === 'richtext'"
+      v-model="formData[field.prop]"
+      :placeholder="field.placeholder || `请输入${field.label}`"
+      :height="field.height || '400px'"
+      :disabled="field.disabled"
+      :max-length="field.maxlength"
+      :show-word-count="field.showWordCount !== false"
+    />
+
     <!-- 自定义插槽 -->
     <slot v-else-if="field.type === 'custom'" />
 
@@ -206,6 +217,7 @@
 
 <script setup lang="ts">
 import type { FormField } from './FormDialog.vue'
+import RichTextEditor from './RichTextEditor.vue'
 
 defineProps<{
   field: FormField

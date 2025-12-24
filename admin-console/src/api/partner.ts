@@ -128,3 +128,65 @@ export const getPartnerSettlement = (params: PartnerSettlementParams) => {
   // return request.get('/partner-settlements', { params })
   return mockGetPartnerSettlement(params)
 }
+
+// ==================== 门店分润配置 ====================
+
+/**
+ * 获取门店分润配置列表
+ */
+export const getStoreProfitConfigList = (params: any) => {
+  // 🟡 使用 Mock 数据(前端独立开发阶段)
+  return Promise.resolve({
+    data: {
+      list: [],
+      total: 0
+    }
+  })
+
+  // 🔵 后端联调时使用真实 API(待后端开发)
+  // return request.get('/api/partner/profit-config', { params })
+}
+
+/**
+ * 创建门店分润配置
+ */
+export const createStoreProfitConfig = (data: any) => {
+  // 🟡 使用 Mock 数据(前端独立开发阶段)
+  return Promise.resolve({ data: { id: Date.now() } })
+
+  // 🔵 后端联调时使用真实 API(待后端开发)
+  // return request.post('/api/partner/profit-config', data)
+}
+
+/**
+ * 更新门店分润配置
+ */
+export const updateStoreProfitConfig = (id: number, data: any) => {
+  // 🟡 使用 Mock 数据(前端独立开发阶段)
+  return Promise.resolve({ data: { success: true } })
+
+  // 🔵 后端联调时使用真实 API(待后端开发)
+  // return request.put(`/api/partner/profit-config/${id}`, data)
+}
+
+/**
+ * 删除门店分润配置
+ */
+export const deleteStoreProfitConfig = (id: number) => {
+  // 🟡 使用 Mock 数据(前端独立开发阶段)
+  return Promise.resolve({ data: { success: true } })
+
+  // 🔵 后端联调时使用真实 API(待后端开发)
+  // return request.delete(`/api/partner/profit-config/${id}`)
+}
+
+/**
+ * 获取门店分润配置历史记录
+ */
+export const getStoreProfitConfigHistory = (configId: number) => {
+  // 🟡 使用 Mock 数据(前端独立开发阶段)
+  return Promise.resolve({ data: [] })
+
+  // 🔵 后端联调时使用真实 API(待后端开发)
+  // return request.get(`/api/partner/profit-config/${configId}/history`)
+}

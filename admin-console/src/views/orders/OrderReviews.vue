@@ -1,27 +1,35 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="order-reviews-container">
-    
+    <el-tabs v-model="activeTab" type="border-card">
+      <!-- 评价列表标签页 -->
+      <el-tab-pane label="评价列表" name="list">
+        <div class="tab-header">
+          <el-button type="primary" @click="handleAdd">
+            <el-icon><Plus /></el-icon>
+            添加评价
+          </el-button>
+        </div>
 
-    <StatsCard :stats="statsConfig" />
+        <StatsCard :stats="statsConfig" />
 
-    <SearchForm
-      v-model="searchForm"
-      :fields="searchFields"
-      @search="handleSearch"
-      @reset="handleReset"
-    />
+        <SearchForm
+          v-model="searchForm"
+          :fields="searchFields"
+          @search="handleSearch"
+          @reset="handleReset"
+        />
 
-    <DataTable
-      :data="reviewList"
-      :columns="tableColumns"
-      :loading="loading"
-      :actions="tableActions"
-      :pagination="pagination"
-      :actions-width="220"
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-    >
+        <DataTable
+          :data="reviewList"
+          :columns="tableColumns"
+          :loading="loading"
+          :actions="tableActions"
+          :pagination="pagination"
+          :actions-width="280"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+        >
       <template #overallRating="{ row }">
         <el-rate v-model="row.overallRating" disabled show-score />
       </template>
@@ -47,6 +55,26 @@
         <span v-else style="color: #909399">未回复</span>
       </template>
     </DataTable>
+      </el-tab-pane>
+
+      <!-- 统计分析标签页 -->
+      <el-tab-pane label="统计分析" name="stats">
+        <ReviewStats />
+      </el-tab-pane>
+    </el-tabs>
+
+    <!-- 添加评价对话框 -->
+    <AddReviewDialog
+      v-model="addDialogVisible"
+      @submit="handleAddSubmit"
+    />
+
+    <!-- 删除评价对话框 -->
+    <DeleteReviewDialog
+      v-model="deleteDialogVisible"
+      :review-info="currentReview"
+      @submit="handleDeleteSubmit"
+    />
 
     <!-- 回复评价对话框 -->
     <el-dialog
@@ -102,10 +130,13 @@
 import { ref, reactive, computed, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
-import { Document, Clock, CircleCheck, Star } from '@element-plus/icons-vue'
+import { Document, Clock, CircleCheck, Star, Plus } from '@element-plus/icons-vue'
 import StatsCard from '@/components/common/StatsCard.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'
+import AddReviewDialog from '@/components/orders/AddReviewDialog.vue'
+import DeleteReviewDialog from '@/components/orders/DeleteReviewDialog.vue'
+import ReviewStats from '@/components/orders/ReviewStats.vue'
 import type { StatItem } from '@/components/common/StatsCard.vue'
 import type { SearchField } from '@/components/common/SearchForm.vue'
 import type { TableColumn, TableAction } from '@/components/common/DataTable.vue'
@@ -121,6 +152,9 @@ import { useErrorHandler } from '@/composables'
 
 // Composables
 const { handleApiError } = useErrorHandler()
+
+// 当前标签页
+const activeTab = ref('list')
 
 // 评价状态选项
 const REVIEW_STATUS_OPTIONS = [
@@ -229,6 +263,11 @@ const tableActions: TableAction[] = [
     show: (row: OrderReview) => !row.reply
   },
   {
+    label: '删除',
+    type: 'danger',
+    onClick: (row: OrderReview) => handleDelete(row)
+  },
+  {
     label: '隐藏',
     type: 'warning',
     onClick: (row: OrderReview) => handleToggleStatus(row, 'hidden'),
@@ -274,6 +313,12 @@ const replyFormRules: FormRules = {
     { min: 5, message: '回复内容至少5个字符', trigger: 'blur' }
   ]
 }
+
+// 添加评价对话框
+const addDialogVisible = ref(false)
+
+// 删除评价对话框
+const deleteDialogVisible = ref(false)
 
 // 加载评价列表
 const loadReviewList = async () => {
@@ -324,10 +369,21 @@ const handleReset = () => {
   loadReviewList()
 }
 
+// 添加评价
+const handleAdd = () => {
+  addDialogVisible.value = true
+}
+
+// 删除评价
+const handleDelete = (row: OrderReview) => {
+  currentReview.value = row
+  deleteDialogVisible.value = true
+}
+
 // 回复评价
 const handleReply = (row: OrderReview) => {
   currentReview.value = row
-  replyForm.reply = row.reply || 'info'
+  replyForm.reply = row.reply || ''
   replyDialogVisible.value = true
 }
 
@@ -382,6 +438,34 @@ const handleReplySubmit = async () => {
   })
 }
 
+// 提交添加评价
+const handleAddSubmit = async (data: any) => {
+  try {
+    // TODO: 调用添加评价API
+    console.log('添加评价数据:', data)
+    ElMessage.success('评价添加成功')
+    addDialogVisible.value = false
+    loadReviewList()
+    loadStats()
+  } catch (error) {
+    handleApiError(error, '添加评价失败')
+  }
+}
+
+// 提交删除评价
+const handleDeleteSubmit = async (data: any) => {
+  try {
+    // TODO: 调用删除评价API
+    console.log('删除评价数据:', data)
+    ElMessage.success('评价删除成功')
+    deleteDialogVisible.value = false
+    loadReviewList()
+    loadStats()
+  } catch (error) {
+    handleApiError(error, '删除评价失败')
+  }
+}
+
 // 对话框关闭
 const handleReplyDialogClose = () => {
   replyFormRef.value?.resetFields()
@@ -430,6 +514,12 @@ onMounted(() => {
 <style scoped lang="scss">
 .order-reviews-container {
   padding: 20px;
+
+  .tab-header {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: flex-end;
+  }
 }
 
 .comment-cell {
@@ -452,5 +542,9 @@ onMounted(() => {
     font-size: 12px;
     color: #909399;
   }
+}
+
+:deep(.el-tabs__content) {
+  padding: 20px;
 }
 </style>

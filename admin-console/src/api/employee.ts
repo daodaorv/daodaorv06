@@ -16,6 +16,18 @@ import {
 // 是否使用 Mock 数据（开发环境默认使用）
 const USE_MOCK = import.meta.env.DEV
 
+// 服务角色类型（从 marketing.ts 导入）
+export type ServiceRoleType = 'driver' | 'cleaner' | 'maintenance' | 'guide' | 'other'
+
+// 服务角色信息
+export interface ServiceRole {
+  roleType: ServiceRoleType           // 角色类型
+  isActive: boolean                   // 是否激活
+  certifications?: string[]           // 资质证书
+  serviceArea?: string[]              // 服务区域
+  rating?: number                     // 服务评分
+}
+
 // 员工管理API接口类型定义
 export interface EmployeeListParams {
   page?: number
@@ -42,6 +54,10 @@ export interface Employee {
   avatar: string
   joinDate: string
   loginPlatforms: ('pc' | 'mobile')[]  // 可登录的平台
+
+  // 新增字段
+  serviceRoles?: ServiceRole[]        // 服务角色列表（可多个）
+
   createdAt: string
   updatedAt?: string
 }

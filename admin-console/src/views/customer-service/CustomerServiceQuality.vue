@@ -603,11 +603,11 @@ const handleDetailDialogClose = () => {
 }
 
 const getStatusTag = (status: AgentStatus) => {
-  const statusMap: Record<AgentStatus, any> = {
+  const statusMap: Record<AgentStatus, 'success' | 'warning' | 'info' | 'primary' | 'danger'> = {
     online: 'success',
     busy: 'warning',
     offline: 'info',
-    break: '',
+    break: 'primary',
   }
   return statusMap[status] || 'info'
 }
@@ -629,9 +629,9 @@ const getScoreColor = (score: number) => {
   return '#909399'
 }
 
-const getQualityScoreTag = (score: number) => {
+const getQualityScoreTag = (score: number): 'success' | 'info' | 'warning' | 'danger' => {
   if (score >= 90) return 'success'
-  if (score >= 80) return ''
+  if (score >= 80) return 'info'
   if (score >= 70) return 'warning'
   return 'danger'
 }

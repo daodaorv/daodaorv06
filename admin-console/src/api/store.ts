@@ -10,6 +10,10 @@ import {
   mockGetStoreStats,
   mockGetCityList,
   mockGetRegionList,
+  mockGetStoreSpecialServices,
+  mockCreateStoreSpecialService,
+  mockUpdateStoreSpecialService,
+  mockDeleteStoreSpecialService,
   type Store,
   type StoreListParams,
   type CreateStoreParams,
@@ -17,7 +21,8 @@ import {
   type StoreStats,
   type City,
   type Region,
-  type CityListParams
+  type CityListParams,
+  type StoreSpecialService
 } from '@/mock/stores'
 
 // 导出类型
@@ -29,7 +34,8 @@ export type {
   StoreStats,
   City,
   Region,
-  CityListParams
+  CityListParams,
+  StoreSpecialService
 }
 
 /**
@@ -94,4 +100,42 @@ export const getCityList = (params?: CityListParams) => {
 export const getRegionList = () => {
   // return request.get('/regions')
   return mockGetRegionList()
+}
+
+// ==================== 门店特色服务 ====================
+
+/**
+ * 获取门店特色服务列表
+ */
+export const getStoreSpecialServices = (storeId: number) => {
+  // return request.get(`/stores/${storeId}/special-services`)
+  return mockGetStoreSpecialServices(storeId)
+}
+
+/**
+ * 创建门店特色服务
+ */
+export const createStoreSpecialService = (storeId: number, data: Partial<StoreSpecialService>) => {
+  // return request.post(`/stores/${storeId}/special-services`, data)
+  return mockCreateStoreSpecialService(storeId, data)
+}
+
+/**
+ * 更新门店特色服务
+ */
+export const updateStoreSpecialService = (
+  storeId: number,
+  serviceId: number,
+  data: Partial<StoreSpecialService>
+) => {
+  // return request.put(`/stores/${storeId}/special-services/${serviceId}`, data)
+  return mockUpdateStoreSpecialService(storeId, serviceId, data)
+}
+
+/**
+ * 删除门店特色服务
+ */
+export const deleteStoreSpecialService = (storeId: number, serviceId: number) => {
+  // return request.delete(`/stores/${storeId}/special-services/${serviceId}`)
+  return mockDeleteStoreSpecialService(storeId, serviceId)
 }

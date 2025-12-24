@@ -4,6 +4,7 @@
 import {
   mockGetOrderList,
   mockGetOrderDetail,
+  mockGetOrderByOrderNo,
   mockCreateOrder,
   mockUpdateOrder,
   mockCancelOrder,
@@ -21,6 +22,9 @@ import {
   mockReplyReview,
   mockToggleReviewStatus,
   mockGetReviewStats,
+  mockPickupOrder,
+  mockReturnOrder,
+  mockGetPickupRecord,
   type Order,
   type OrderListParams,
   type CreateOrderParams,
@@ -31,7 +35,10 @@ import {
   type Refund,
   type RefundListParams,
   type OrderReview,
-  type ReviewListParams
+  type ReviewListParams,
+  type PickupRecord,
+  type PickupOrderParams,
+  type ReturnOrderParams
 } from '@/mock/orders'
 
 // 导出类型
@@ -46,7 +53,10 @@ export type {
   Refund,
   RefundListParams,
   OrderReview,
-  ReviewListParams
+  ReviewListParams,
+  PickupRecord,
+  PickupOrderParams,
+  ReturnOrderParams
 }
 
 /**
@@ -63,6 +73,14 @@ export const getOrderList = (params: OrderListParams) => {
 export const getOrderDetail = (id: number) => {
   // return request.get(`/orders/${id}`)
   return mockGetOrderDetail(id)
+}
+
+/**
+ * 通过订单号查找订单
+ */
+export const getOrderByOrderNo = (orderNo: string) => {
+  // return request.get(`/orders/by-order-no/${orderNo}`)
+  return mockGetOrderByOrderNo(orderNo)
 }
 
 /**
@@ -147,6 +165,62 @@ export const getExceptionStats = () => {
   return mockGetExceptionStats()
 }
 
+/**
+ * 分配异常
+ */
+export const assignException = (id: number, data: any) => {
+  // return request.post(`/orders/exceptions/${id}/assign`, data)
+  return Promise.resolve({
+    code: 200,
+    message: '分配成功',
+    data: { id, ...data }
+  })
+}
+
+/**
+ * 升级异常
+ */
+export const escalateException = (id: number, priority: string) => {
+  // return request.post(`/orders/exceptions/${id}/escalate`, { priority })
+  return Promise.resolve({
+    code: 200,
+    message: '升级成功',
+    data: { id, priority }
+  })
+}
+
+/**
+ * 异常费用结算
+ */
+export const settleException = (id: number, data: any) => {
+  // return request.post(`/orders/exceptions/${id}/settle`, data)
+  return Promise.resolve({
+    code: 200,
+    message: '结算成功',
+    data: { id, ...data }
+  })
+}
+
+/**
+ * 获取异常时间线
+ */
+export const getExceptionTimeline = (id: number) => {
+  // return request.get(`/orders/exceptions/${id}/timeline`)
+  return Promise.resolve({
+    code: 200,
+    message: '获取成功',
+    data: [
+      {
+        action: 'created',
+        timestamp: new Date().toISOString(),
+        operator: '系统',
+        description: '异常创建',
+        details: []
+      }
+    ]
+  })
+}
+
 // ==================== 退款管理 ====================
 
 /**
@@ -171,6 +245,62 @@ export const approveRefund = (id: number, approved: boolean, reason?: string) =>
 export const getRefundStats = () => {
   // return request.get('/orders/refunds/stats')
   return mockGetRefundStats()
+}
+
+/**
+ * 退款重试
+ */
+export const retryRefund = (id: number, data: any) => {
+  // return request.post(`/orders/refunds/${id}/retry`, data)
+  return Promise.resolve({
+    code: 200,
+    message: '退款重试成功',
+    data: { id, ...data }
+  })
+}
+
+/**
+ * 切换退款方式
+ */
+export const changeRefundMethod = (id: number, data: any) => {
+  // return request.post(`/orders/refunds/${id}/change-method`, data)
+  return Promise.resolve({
+    code: 200,
+    message: '切换退款方式成功',
+    data: { id, ...data }
+  })
+}
+
+/**
+ * 线下退款登记
+ */
+export const registerOfflineRefund = (id: number, data: any) => {
+  // return request.post(`/orders/refunds/${id}/offline`, data)
+  return Promise.resolve({
+    code: 200,
+    message: '线下退款登记成功',
+    data: { id, ...data }
+  })
+}
+
+/**
+ * 查询退款进度
+ */
+export const getRefundProgress = (id: number) => {
+  // return request.get(`/orders/refunds/${id}/progress`)
+  return Promise.resolve({
+    code: 200,
+    message: '获取成功',
+    data: {
+      status: 'processing',
+      message: '退款正在处理中',
+      percentage: 50,
+      estimatedTime: '2024-01-20 18:00',
+      transactionNo: 'TXN202401200001',
+      updatedAt: new Date().toISOString(),
+      details: []
+    }
+  })
 }
 
 // ==================== 订单评价管理 ====================
@@ -205,4 +335,144 @@ export const toggleReviewStatus = (id: number, status: 'published' | 'hidden') =
 export const getReviewStats = () => {
   // return request.get('/orders/reviews/stats')
   return mockGetReviewStats()
+}
+
+/**
+ * 后台添加评价
+ */
+export const createReview = (data: any) => {
+  // return request.post('/orders/reviews', data)
+  return Promise.resolve({
+    code: 200,
+    message: '评价添加成功',
+    data: { id: Date.now(), ...data }
+  })
+}
+
+/**
+ * 删除评价
+ */
+export const deleteReview = (id: number, data: any) => {
+  // return request.delete(`/orders/reviews/${id}`, { data })
+  return Promise.resolve({
+    code: 200,
+    message: '评价删除成功',
+    data: { id, ...data }
+  })
+}
+
+/**
+ * 按车型统计评价
+ */
+export const getReviewStatsByVehicle = () => {
+  // return request.get('/orders/reviews/stats/vehicle')
+  return Promise.resolve({
+    code: 200,
+    message: '获取成功',
+    data: [
+      {
+        vehicleName: '奔驰V260',
+        reviewCount: 328,
+        averageRating: 4.8,
+        satisfactionRate: 96,
+        trend: 'up'
+      },
+      {
+        vehicleName: '大通V90',
+        reviewCount: 285,
+        averageRating: 4.6,
+        satisfactionRate: 92,
+        trend: 'up'
+      }
+    ]
+  })
+}
+
+/**
+ * 按门店统计评价
+ */
+export const getReviewStatsByStore = () => {
+  // return request.get('/orders/reviews/stats/store')
+  return Promise.resolve({
+    code: 200,
+    message: '获取成功',
+    data: [
+      {
+        storeName: '北京朝阳门店',
+        reviewCount: 412,
+        averageRating: 4.7,
+        satisfactionRate: 94,
+        serviceQuality: 95
+      },
+      {
+        storeName: '上海浦东门店',
+        reviewCount: 385,
+        averageRating: 4.6,
+        satisfactionRate: 92,
+        serviceQuality: 93
+      }
+    ]
+  })
+}
+
+/**
+ * 获取评价趋势
+ */
+export const getReviewTrend = (params: any) => {
+  // return request.get('/orders/reviews/stats/trend', { params })
+  return Promise.resolve({
+    code: 200,
+    message: '获取成功',
+    data: [
+      { date: '12-16', count: 45, rating: 4.5 },
+      { date: '12-17', count: 52, rating: 4.6 },
+      { date: '12-18', count: 38, rating: 4.4 }
+    ]
+  })
+}
+
+// ==================== 取车还车管理 ====================
+
+/**
+ * 取车登记
+ */
+export const pickupOrder = (orderId: number, data: PickupOrderParams) => {
+  // return request.post(`/orders/${orderId}/pickup`, data)
+  return mockPickupOrder(orderId, data)
+}
+
+/**
+ * 还车登记
+ */
+export const returnOrder = (orderId: number, data: ReturnOrderParams) => {
+  // return request.post(`/orders/${orderId}/return`, data)
+  return mockReturnOrder(orderId, data)
+}
+
+/**
+ * 获取取车记录
+ */
+export const getPickupRecord = (orderId: number) => {
+  // return request.get(`/orders/${orderId}/pickup-record`)
+  return mockGetPickupRecord(orderId)
+}
+
+/**
+ * 获取订单时间线
+ */
+export const getOrderTimeline = (_orderId: number) => {
+  // return request.get(`/orders/${orderId}/timeline`)
+  return Promise.resolve({
+    code: 200,
+    message: '获取成功',
+    data: [
+      {
+        action: 'created',
+        timestamp: new Date().toISOString(),
+        operator: '系统',
+        description: '订单创建成功',
+        details: []
+      }
+    ]
+  })
 }

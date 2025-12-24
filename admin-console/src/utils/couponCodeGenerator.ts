@@ -93,7 +93,7 @@ export function validateCouponCode(code: string): boolean {
 /**
  * 检查优惠码唯一性（需要调用 API）
  */
-export async function checkCodeUniqueness(code: string): Promise<boolean> {
+export async function checkCodeUniqueness(_code: string): Promise<boolean> {
   // TODO: 调用后端 API 检查
   // import { checkCouponCodeExists } from '@/api/marketing'
   // const res = await checkCouponCodeExists(code)

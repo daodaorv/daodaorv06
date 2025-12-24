@@ -175,6 +175,111 @@ const mockEmployees: Employee[] = [
     loginPlatforms: ['mobile'],
     createdAt: '2024-10-01T08:00:00.000Z',
   },
+  // 新增服务人员数据
+  {
+    id: 11,
+    realName: '刘司机',
+    jobNumber: 'EMP011',
+    phone: '13800138010',
+    email: 'liusiji@daodao.com',
+    roleId: 5,
+    role: '服务人员',
+    storeId: 1,
+    storeName: '北京朝阳店',
+    department: '服务部',
+    status: 'active',
+    avatar: '',
+    joinDate: '2024-11-01',
+    loginPlatforms: ['mobile'],
+    serviceRoles: [
+      {
+        roleType: 'driver',
+        isActive: true,
+        certifications: ['C1驾照', '客运资格证'],
+        serviceArea: ['北京市', '天津市'],
+        rating: 4.8
+      }
+    ],
+    createdAt: '2024-11-01T08:00:00.000Z',
+  },
+  {
+    id: 12,
+    realName: '王保洁',
+    jobNumber: 'EMP012',
+    phone: '13800138011',
+    email: 'wangbaojie@daodao.com',
+    roleId: 5,
+    role: '服务人员',
+    storeId: 1,
+    storeName: '北京朝阳店',
+    department: '服务部',
+    status: 'active',
+    avatar: '',
+    joinDate: '2024-11-05',
+    loginPlatforms: ['mobile'],
+    serviceRoles: [
+      {
+        roleType: 'cleaner',
+        isActive: true,
+        certifications: ['保洁资格证', '消毒资格证'],
+        serviceArea: ['北京市'],
+        rating: 4.9
+      }
+    ],
+    createdAt: '2024-11-05T08:00:00.000Z',
+  },
+  {
+    id: 13,
+    realName: '张司机',
+    jobNumber: 'EMP013',
+    phone: '13800138012',
+    email: 'zhangsiji@daodao.com',
+    roleId: 5,
+    role: '服务人员',
+    storeId: 2,
+    storeName: '上海浦东店',
+    department: '服务部',
+    status: 'active',
+    avatar: '',
+    joinDate: '2024-11-10',
+    loginPlatforms: ['mobile'],
+    serviceRoles: [
+      {
+        roleType: 'driver',
+        isActive: true,
+        certifications: ['C1驾照', '客运资格证'],
+        serviceArea: ['上海市', '江苏省'],
+        rating: 4.7
+      }
+    ],
+    createdAt: '2024-11-10T08:00:00.000Z',
+  },
+  {
+    id: 14,
+    realName: '李维修',
+    jobNumber: 'EMP014',
+    phone: '13800138013',
+    email: 'liweixiu@daodao.com',
+    roleId: 5,
+    role: '服务人员',
+    storeId: 1,
+    storeName: '北京朝阳店',
+    department: '服务部',
+    status: 'active',
+    avatar: '',
+    joinDate: '2024-11-15',
+    loginPlatforms: ['mobile'],
+    serviceRoles: [
+      {
+        roleType: 'maintenance',
+        isActive: true,
+        certifications: ['汽车维修工证', '电工证'],
+        serviceArea: ['北京市'],
+        rating: 4.6
+      }
+    ],
+    createdAt: '2024-11-15T08:00:00.000Z',
+  },
 ]
 
 // Mock 获取员工列表

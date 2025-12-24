@@ -18,7 +18,7 @@
       :loading="loading"
       :actions="tableActions"
       :pagination="pagination"
-      :actions-width="200"
+      :actions-width="280"
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
     >
@@ -86,6 +86,34 @@
         </el-button>
       </template>
     </el-dialog>
+
+    <!-- 退款重试对话框 -->
+    <RefundRetryDialog
+      v-model="retryDialogVisible"
+      :refund-info="currentRefund"
+      @submit="handleRetrySubmit"
+    />
+
+    <!-- 退款方式切换对话框 -->
+    <RefundMethodDialog
+      v-model="methodDialogVisible"
+      :refund-info="currentRefund"
+      @submit="handleMethodSubmit"
+    />
+
+    <!-- 线下退款登记对话框 -->
+    <OfflineRefundDialog
+      v-model="offlineDialogVisible"
+      :refund-info="currentRefund"
+      @submit="handleOfflineSubmit"
+    />
+
+    <!-- 退款进度查询对话框 -->
+    <RefundProgressDialog
+      v-model="progressDialogVisible"
+      :refund-info="currentRefund"
+      @refresh="handleProgressRefresh"
+    />
   </div>
 </template>
 
@@ -98,6 +126,10 @@ import { Document, Clock, CircleCheck, Money } from '@element-plus/icons-vue'
 import StatsCard from '@/components/common/StatsCard.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'
+import RefundRetryDialog from '@/components/orders/RefundRetryDialog.vue'
+import RefundMethodDialog from '@/components/orders/RefundMethodDialog.vue'
+import OfflineRefundDialog from '@/components/orders/OfflineRefundDialog.vue'
+import RefundProgressDialog from '@/components/orders/RefundProgressDialog.vue'
 import type { StatItem } from '@/components/common/StatsCard.vue'
 import type { SearchField } from '@/components/common/SearchForm.vue'
 import type { TableColumn, TableAction } from '@/components/common/DataTable.vue'
@@ -210,9 +242,28 @@ const tableActions: TableAction[] = [
     show: (row: Refund) => row.status === 'pending'
   },
   {
-    label: '查看',
+    label: '重试',
+    type: 'warning',
+    onClick: (row: Refund) => handleRetry(row),
+    show: (row: Refund) => row.status === 'failed'
+  },
+  {
+    label: '切换方式',
+    type: 'primary',
+    onClick: (row: Refund) => handleChangeMethod(row),
+    show: (row: Refund) => row.status === 'failed' || row.status === 'processing'
+  },
+  {
+    label: '线下登记',
+    type: 'success',
+    onClick: (row: Refund) => handleOfflineRefund(row),
+    show: (row: Refund) => row.status === 'failed' || row.status === 'approved'
+  },
+  {
+    label: '查询进度',
     type: 'info',
-    onClick: (row: Refund) => handleView(row)
+    onClick: (row: Refund) => handleCheckProgress(row),
+    show: (row: Refund) => row.status === 'processing' || row.status === 'approved'
   }
 ]
 
@@ -247,6 +298,18 @@ const approveFormRules: FormRules = {
     { min: 5, message: '拒绝原因至少5个字符', trigger: 'blur' }
   ]
 }
+
+// 退款重试对话框
+const retryDialogVisible = ref(false)
+
+// 退款方式切换对话框
+const methodDialogVisible = ref(false)
+
+// 线下退款登记对话框
+const offlineDialogVisible = ref(false)
+
+// 退款进度查询对话框
+const progressDialogVisible = ref(false)
 
 // 加载退款列表
 const loadRefundList = async () => {
@@ -304,9 +367,28 @@ const handleApprove = (row: Refund) => {
   approveDialogVisible.value = true
 }
 
-// 查看退款
-const handleView = (row: Refund) => {
-  ElMessage.info(`查看退款详情功能开发中，退款ID: ${row.id}`)
+// 退款重试
+const handleRetry = (row: Refund) => {
+  currentRefund.value = row
+  retryDialogVisible.value = true
+}
+
+// 切换退款方式
+const handleChangeMethod = (row: Refund) => {
+  currentRefund.value = row
+  methodDialogVisible.value = true
+}
+
+// 线下退款登记
+const handleOfflineRefund = (row: Refund) => {
+  currentRefund.value = row
+  offlineDialogVisible.value = true
+}
+
+// 查询退款进度
+const handleCheckProgress = (row: Refund) => {
+  currentRefund.value = row
+  progressDialogVisible.value = true
 }
 
 // 提交审核
@@ -349,6 +431,60 @@ const handleApproveDialogClose = () => {
   approveForm.approved = true
   approveForm.reason = ''
   currentRefund.value = null
+}
+
+// 提交重试
+const handleRetrySubmit = async (data: any) => {
+  try {
+    // TODO: 调用重试API
+    console.log('重试数据:', data)
+    ElMessage.success('退款重试已提交')
+    retryDialogVisible.value = false
+    loadRefundList()
+    loadStats()
+  } catch (error) {
+    handleApiError(error, '退款重试失败')
+  }
+}
+
+// 提交切换方式
+const handleMethodSubmit = async (data: any) => {
+  try {
+    // TODO: 调用切换方式API
+    console.log('切换方式数据:', data)
+    ElMessage.success('退款方式切换成功')
+    methodDialogVisible.value = false
+    loadRefundList()
+    loadStats()
+  } catch (error) {
+    handleApiError(error, '切换退款方式失败')
+  }
+}
+
+// 提交线下退款
+const handleOfflineSubmit = async (data: any) => {
+  try {
+    // TODO: 调用线下退款API
+    console.log('线下退款数据:', data)
+    ElMessage.success('线下退款登记成功')
+    offlineDialogVisible.value = false
+    loadRefundList()
+    loadStats()
+  } catch (error) {
+    handleApiError(error, '线下退款登记失败')
+  }
+}
+
+// 刷新进度
+const handleProgressRefresh = async (refundId: number) => {
+  try {
+    // TODO: 调用刷新进度API
+    console.log('刷新进度:', refundId)
+    // 刷新列表以获取最新状态
+    loadRefundList()
+  } catch (error) {
+    handleApiError(error, '刷新进度失败')
+  }
 }
 
 // 分页

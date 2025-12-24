@@ -11,7 +11,7 @@ Keep Sequelize migrations in `backend/migrations/` and align contract changes wi
 ## Build, Test, and Development Commands
 - `cd backend && npm run dev` – start the API with nodemon; Swagger is available at `http://localhost:3000/api-docs`.
 - `cd backend && npm run test` (add `--watch` for TDD) – run the Jest suite; `npm run build` transpiles into `dist/`.
-- `cd admin-console && npm run dev` – Vite dev server at `http://localhost:5173`; `npm run build` + `npm run preview` validate production assets.
+- `cd admin-console && npm run dev` – Vite dev server at `http://localhost:5174`; `npm run build` + `npm run preview` validate production assets.
 - `cd miniprogram && npm run dev:mp-weixin` and `cd mobile-admin && npm run dev:mp-weixin` – launch uni-app builds inside HBuilderX; use `npm run build:mp-weixin` before packaging.
 - `cd shared/tools/docker && docker-compose up -d` – boot MySQL, Redis, and the mock HTTP services prior to multi-surface integration.
 

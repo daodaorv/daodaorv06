@@ -15,6 +15,11 @@ import {
   createKnowledgeArticle as mockCreateKnowledgeArticle,
   updateKnowledgeArticle as mockUpdateKnowledgeArticle,
   deleteKnowledgeArticle as mockDeleteKnowledgeArticle,
+  getKnowledgeCategories as mockGetKnowledgeCategories,
+  updateKnowledgeCategory as mockUpdateKnowledgeCategory,
+  getTicketMessages as mockGetTicketMessages,
+  sendTicketMessage as mockSendTicketMessage,
+  markMessagesAsRead as mockMarkMessagesAsRead,
   type Ticket,
   type TicketStats,
   type TicketStatus,
@@ -26,7 +31,19 @@ import {
   type RoutingConfig,
   type KnowledgeArticle,
   type KnowledgeStats,
-  type KnowledgeCategory
+  type KnowledgeCategory,
+  type KnowledgeCategoryCode,
+  type KnowledgeCategoryEntity,
+  type ArticleVisibility,
+  type TicketMessage,
+  type MessageSender,
+  type MessageType,
+  type CardType,
+  type CardData,
+  type OrderCardData,
+  type VehicleCardData,
+  type CampsiteCardData,
+  type TourCardData
 } from '@/mock/customerService'
 
 // 导出类型
@@ -42,7 +59,19 @@ export type {
   RoutingConfig,
   KnowledgeArticle,
   KnowledgeStats,
-  KnowledgeCategory
+  KnowledgeCategory,
+  KnowledgeCategoryCode,
+  KnowledgeCategoryEntity,
+  ArticleVisibility,
+  TicketMessage,
+  MessageSender,
+  MessageType,
+  CardType,
+  CardData,
+  OrderCardData,
+  VehicleCardData,
+  CampsiteCardData,
+  TourCardData
 }
 
 /**
@@ -183,8 +212,10 @@ export function updateRoutingConfig(data: Partial<RoutingConfig>): Promise<void>
 export function getKnowledgeArticles(params: {
   page: number
   pageSize: number
-  category?: KnowledgeCategory
+  categoryCode?: KnowledgeCategoryCode
+  visibility?: ArticleVisibility
   isPublished?: boolean
+  isHot?: boolean
   keyword?: string
 }): Promise<{ list: KnowledgeArticle[]; total: number }> {
   // 使用 Mock 数据
@@ -258,5 +289,88 @@ export function deleteKnowledgeArticle(id: number): Promise<void> {
   // return request({
   //   url: `/api/customer-service/knowledge/${id}`,
   //   method: 'delete'
+  // })
+}
+
+/**
+ * 获取知识库分类列表
+ */
+export function getKnowledgeCategories(params?: {
+  isEnabled?: boolean
+}): Promise<KnowledgeCategoryEntity[]> {
+  // 使用 Mock 数据
+  return mockGetKnowledgeCategories(params)
+
+  // 真实 API 调用（待后端开发）
+  // return request({
+  //   url: '/api/customer-service/knowledge/categories',
+  //   method: 'get',
+  //   params
+  // })
+}
+
+/**
+ * 更新知识库分类
+ */
+export function updateKnowledgeCategory(
+  id: number,
+  data: Partial<KnowledgeCategoryEntity>
+): Promise<void> {
+  // 使用 Mock 数据
+  return mockUpdateKnowledgeCategory(id, data)
+
+  // 真实 API 调用（待后端开发）
+  // return request({
+  //   url: `/api/customer-service/knowledge/categories/${id}`,
+  //   method: 'put',
+  //   data
+  // })
+}
+
+/**
+ * 获取工单对话消息
+ */
+export function getTicketMessages(ticketId: number): Promise<TicketMessage[]> {
+  // 使用 Mock 数据
+  return mockGetTicketMessages(ticketId)
+
+  // 真实 API 调用（待后端开发）
+  // return request({
+  //   url: `/api/customer-service/tickets/${ticketId}/messages`,
+  //   method: 'get'
+  // })
+}
+
+/**
+ * 发送工单消息
+ */
+export function sendTicketMessage(data: {
+  ticketId: number
+  content: string
+  type?: MessageType
+  attachments?: string[]
+}): Promise<TicketMessage> {
+  // 使用 Mock 数据
+  return mockSendTicketMessage(data)
+
+  // 真实 API 调用（待后端开发）
+  // return request({
+  //   url: `/api/customer-service/tickets/${data.ticketId}/messages`,
+  //   method: 'post',
+  //   data
+  // })
+}
+
+/**
+ * 标记消息已读
+ */
+export function markMessagesAsRead(ticketId: number): Promise<void> {
+  // 使用 Mock 数据
+  return mockMarkMessagesAsRead(ticketId)
+
+  // 真实 API 调用（待后端开发）
+  // return request({
+  //   url: `/api/customer-service/tickets/${ticketId}/messages/read`,
+  //   method: 'put'
   // })
 }

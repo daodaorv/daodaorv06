@@ -314,6 +314,14 @@
       </template>
     </el-dialog>
 
+    <!-- 车辆详情对话框 -->
+    <VehicleDetailDialog
+      v-model="detailDialogVisible"
+      :vehicle-id="currentVehicleId"
+      @edit="handleEditFromDetail"
+      @refresh="loadVehicles"
+    />
+
     <!-- 批量计算器 -->
     <BatchRentalCalculator
       v-model="batchCalculatorVisible"
@@ -340,6 +348,7 @@ import DataTable from '@/components/common/DataTable.vue'
 import BaseRentalCalculator from '@/components/vehicle/BaseRentalCalculator.vue'
 import BatchRentalCalculator from '@/components/vehicle/BatchRentalCalculator.vue'
 import VehiclePriceHistory from '@/components/vehicle/VehiclePriceHistory.vue'
+import VehicleDetailDialog from '@/components/vehicle/VehicleDetailDialog.vue'
 import type { SearchField } from '@/components/common/SearchForm.vue'
 import type { TableColumn, ToolbarButton } from '@/components/common/DataTable.vue'
 import type { CalculationResult } from '@/types/system'
@@ -493,6 +502,10 @@ const loading = ref(false)
 const selectedVehicles = ref<Vehicle[]>([])
 const batchCalculatorVisible = ref(false)
 
+// 车辆详情对话框
+const detailDialogVisible = ref(false)
+const currentVehicleId = ref<number | null>(null)
+
 // 分页
 const pagination = reactive({
   page: 1,
@@ -628,8 +641,14 @@ const handleCreate = () => {
 }
 
 // 查看车辆
-const handleView = (_row: Vehicle) => {
-  ElMessage.info('查看功能开发中...')
+const handleView = (row: Vehicle) => {
+  currentVehicleId.value = row.id
+  detailDialogVisible.value = true
+}
+
+// 从详情对话框编辑
+const handleEditFromDetail = (vehicle: Vehicle) => {
+  handleEdit(vehicle)
 }
 
 // 编辑车辆

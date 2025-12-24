@@ -38,7 +38,10 @@
         <el-descriptions-item label="所属城市">
           {{ store.cityName }}
         </el-descriptions-item>
-        <el-descriptions-item label="门店地址" :span="3">
+        <el-descriptions-item v-if="store.type === 'cooperative'" label="协助门店">
+          {{ store.assistStoreName || '-' }}
+        </el-descriptions-item>
+        <el-descriptions-item label="门店地址" :span="store.type === 'cooperative' ? 3 : 3">
           {{ store.address }}
         </el-descriptions-item>
         <el-descriptions-item label="联系电话">
@@ -135,6 +138,59 @@
       <el-empty description="员工列表功能开发中" />
     </el-card>
 
+    <!-- 门店特色服务卡片 -->
+    <el-card class="special-services-card">
+      <template #header>
+        <div class="card-header">
+          <span>门店特色服务 ({{ specialServices.length }})</span>
+          <el-button type="primary" size="small" @click="handleCreateService">
+            新增服务
+          </el-button>
+        </div>
+      </template>
+      <el-table
+        v-if="specialServices.length > 0"
+        :data="specialServices"
+        border
+        style="width: 100%"
+      >
+        <el-table-column prop="name" label="服务名称" min-width="150" />
+        <el-table-column prop="price" label="价格" width="120">
+          <template #default="{ row }">
+            <span style="color: #f56c6c; font-weight: bold">
+              ¥{{ row.price }}/{{ row.unit }}
+            </span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="status" label="状态" width="100">
+          <template #default="{ row }">
+            <el-tag :type="row.status === 'active' ? 'success' : 'info'" size="small">
+              {{ row.status === 'active' ? '生效中' : '未生效' }}
+            </el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column prop="isRequired" label="是否必选" width="100">
+          <template #default="{ row }">
+            <el-tag :type="row.isRequired ? 'danger' : 'info'" size="small">
+              {{ row.isRequired ? '必选' : '可选' }}
+            </el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column prop="description" label="服务说明" min-width="200" />
+        <el-table-column label="操作" width="150" fixed="right">
+          <template #default="{ row }">
+            <el-button link type="primary" size="small" @click="handleEditService(row)">
+              编辑
+            </el-button>
+            <el-button link type="danger" size="small" @click="handleDeleteService(row)">
+              删除
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-empty v-else description="暂无特色服务，点击右上角按钮添加" />
+    </el-card>
+
     <!-- 编辑门店对话框 -->
     <el-dialog
       v-model="dialogVisible"
@@ -183,6 +239,23 @@
                   :value="option.value"
                 />
               </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row v-if="form.type === 'cooperative'" :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="协助门店" prop="assistStoreId">
+              <el-select v-model="form.assistStoreId" placeholder="请选择协助门店" style="width: 100%">
+                <el-option
+                  v-for="s in assistStoreOptions"
+                  :key="s.id"
+                  :label="s.name"
+                  :value="s.id"
+                />
+              </el-select>
+              <div style="color: #909399; font-size: 12px; margin-top: 4px;">
+                合作商门店只负责车辆取还服务，订单咨询及管理由协助门店完成
+              </div>
             </el-form-item>
           </el-col>
         </el-row>
@@ -275,6 +348,82 @@
         </el-button>
       </template>
     </el-dialog>
+
+    <!-- 门店特色服务编辑对话框 -->
+    <el-dialog
+      v-model="serviceDialogVisible"
+      :title="serviceDialogTitle"
+      width="600px"
+      @close="handleServiceDialogClose"
+    >
+      <el-form
+        ref="serviceFormRef"
+        :model="serviceForm"
+        :rules="serviceFormRules"
+        label-width="120px"
+      >
+        <el-form-item label="服务名称" prop="name">
+          <el-input v-model="serviceForm.name" placeholder="请输入服务名称" />
+        </el-form-item>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="服务价格" prop="price">
+              <el-input-number
+                v-model="serviceForm.price"
+                :min="0"
+                :precision="2"
+                placeholder="请输入价格"
+                style="width: 100%"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="计费单位" prop="unit">
+              <el-select v-model="serviceForm.unit" placeholder="请选择单位" style="width: 100%">
+                <el-option label="次" value="次" />
+                <el-option label="天" value="天" />
+                <el-option label="小时" value="小时" />
+                <el-option label="套" value="套" />
+                <el-option label="瓶" value="瓶" />
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="服务状态" prop="status">
+              <el-select v-model="serviceForm.status" placeholder="请选择状态" style="width: 100%">
+                <el-option label="生效中" value="active" />
+                <el-option label="未生效" value="inactive" />
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="是否必选" prop="isRequired">
+              <el-switch
+                v-model="serviceForm.isRequired"
+                active-text="必选"
+                inactive-text="可选"
+              />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-form-item label="服务说明" prop="description">
+          <el-input
+            v-model="serviceForm.description"
+            type="textarea"
+            :rows="3"
+            placeholder="请输入服务说明"
+          />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <el-button @click="serviceDialogVisible = false">取消</el-button>
+        <el-button type="primary" :loading="serviceSubmitLoading" @click="handleServiceSubmit">
+          确定
+        </el-button>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -282,19 +431,25 @@
 // @ts-nocheck
 import { ref, reactive, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { ElMessage } from 'element-plus'
+import { ElMessage, ElMessageBox } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
 import { Shop, TrendCharts, User, Money } from '@element-plus/icons-vue'
 import StatsCard from '@/components/common/StatsCard.vue'
 import type { StatItem } from '@/components/common/StatsCard.vue'
 import {
   getStoreDetail,
+  getStoreList,
   updateStore,
   getCityList,
   getRegionList,
+  getStoreSpecialServices,
+  createStoreSpecialService,
+  updateStoreSpecialService,
+  deleteStoreSpecialService,
   type Store,
   type City,
-  type Region
+  type Region,
+  type StoreSpecialService
 } from '@/api/store'
 import { useErrorHandler } from '@/composables'
 
@@ -324,6 +479,16 @@ const loading = ref(false)
 // 城市和区域列表
 const cityList = ref<City[]>([])
 const regionList = ref<Region[]>([])
+
+// 所有门店列表（用于协助门店选择）
+const allStores = ref<Store[]>([])
+
+// 协助门店选项（只包含直营店和加盟店，排除合作商户）
+const assistStoreOptions = computed(() => {
+  return allStores.value.filter(s =>
+    (s.type === 'direct' || s.type === 'franchise') && s.id !== store.value?.id
+  )
+})
 
 // 统计卡片配置
 const statsConfig = computed<StatItem[]>(() => [
@@ -374,7 +539,8 @@ const form = reactive({
   businessHours: '',
   serviceScope: [] as string[],
   description: '',
-  canHostingInspection: false
+  canHostingInspection: false,
+  assistStoreId: undefined as number | undefined
 })
 
 const formRules: FormRules = {
@@ -453,6 +619,16 @@ const loadRegionList = async () => {
   }
 }
 
+// 加载所有门店列表（用于协助门店选择）
+const loadAllStores = async () => {
+  try {
+    const res = await getStoreList({ page: 1, pageSize: 1000 }) as any
+    allStores.value = res.data.list
+  } catch (error) {
+    handleApiError(error, '加载门店列表失败')
+  }
+}
+
 // 编辑门店
 const handleEdit = () => {
   if (!store.value) return
@@ -470,6 +646,7 @@ const handleEdit = () => {
   form.serviceScope = store.value.serviceScope
   form.description = store.value.description
   form.canHostingInspection = store.value.canHostingInspection
+  form.assistStoreId = store.value.assistStoreId
   dialogVisible.value = true
 }
 
@@ -498,6 +675,11 @@ const handleSubmit = async () => {
         canHostingInspection: form.canHostingInspection
       }
 
+      // 如果是合作商门店，添加协助门店信息
+      if (form.type === 'cooperative') {
+        data.assistStoreId = form.assistStoreId
+      }
+
       await updateStore(store.value.id, data)
       ElMessage.success('更新成功')
       dialogVisible.value = false
@@ -523,6 +705,161 @@ const handleManageVehicles = () => {
 // 管理员工
 const handleManageEmployees = () => {
   ElMessage.info('员工管理功能开发中')
+}
+
+// ==================== 门店特色服务管理 ====================
+
+// 门店特色服务列表
+const specialServices = ref<StoreSpecialService[]>([])
+
+// 特色服务对话框
+const serviceDialogVisible = ref(false)
+const serviceDialogTitle = ref('')
+const serviceFormRef = ref<FormInstance>()
+const serviceSubmitLoading = ref(false)
+const isEditingService = ref(false)
+const currentServiceId = ref<number | null>(null)
+
+// 特色服务表单
+const serviceForm = reactive({
+  name: '',
+  price: 0,
+  unit: '次',
+  status: 'active' as 'active' | 'inactive',
+  isRequired: false,
+  description: ''
+})
+
+// 特色服务表单验证规则
+const serviceFormRules: FormRules = {
+  name: [
+    { required: true, message: '请输入服务名称', trigger: 'blur' }
+  ],
+  price: [
+    { required: true, message: '请输入服务价格', trigger: 'blur' },
+    { type: 'number', min: 0, message: '价格必须大于等于0', trigger: 'blur' }
+  ],
+  unit: [
+    { required: true, message: '请选择计费单位', trigger: 'change' }
+  ],
+  status: [
+    { required: true, message: '请选择服务状态', trigger: 'change' }
+  ]
+}
+
+// 加载门店特色服务列表
+const loadSpecialServices = async () => {
+  if (!store.value) return
+
+  try {
+    const res = await getStoreSpecialServices(store.value.id) as any
+    specialServices.value = res.data
+  } catch (error) {
+    handleApiError(error, '加载门店特色服务失败')
+  }
+}
+
+// 重置特色服务表单
+const resetServiceForm = () => {
+  serviceForm.name = ''
+  serviceForm.price = 0
+  serviceForm.unit = '次'
+  serviceForm.status = 'active'
+  serviceForm.isRequired = false
+  serviceForm.description = ''
+}
+
+// 创建特色服务
+const handleCreateService = () => {
+  resetServiceForm()
+  isEditingService.value = false
+  currentServiceId.value = null
+  serviceDialogTitle.value = '新增门店特色服务'
+  serviceDialogVisible.value = true
+}
+
+// 编辑特色服务
+const handleEditService = (row: StoreSpecialService) => {
+  isEditingService.value = true
+  currentServiceId.value = row.id
+  serviceDialogTitle.value = '编辑门店特色服务'
+
+  // 填充表单数据
+  serviceForm.name = row.name
+  serviceForm.price = row.price
+  serviceForm.unit = row.unit
+  serviceForm.status = row.status
+  serviceForm.isRequired = row.isRequired
+  serviceForm.description = row.description
+
+  serviceDialogVisible.value = true
+}
+
+// 删除特色服务
+const handleDeleteService = async (row: StoreSpecialService) => {
+  if (!store.value) return
+
+  try {
+    await ElMessageBox.confirm(
+      `确定要删除特色服务"${row.name}"吗?`,
+      '删除确认',
+      {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }
+    )
+
+    await deleteStoreSpecialService(store.value.id, row.id)
+    ElMessage.success('删除成功')
+    loadSpecialServices()
+  } catch (error) {
+    if (error !== 'cancel') {
+      handleApiError(error, '删除特色服务失败')
+    }
+  }
+}
+
+// 提交特色服务表单
+const handleServiceSubmit = async () => {
+  if (!serviceFormRef.value || !store.value) return
+
+  await serviceFormRef.value.validate(async (valid) => {
+    if (!valid) return
+
+    serviceSubmitLoading.value = true
+    try {
+      const data = {
+        name: serviceForm.name,
+        price: serviceForm.price,
+        unit: serviceForm.unit,
+        status: serviceForm.status,
+        isRequired: serviceForm.isRequired,
+        description: serviceForm.description
+      }
+
+      if (isEditingService.value && currentServiceId.value) {
+        await updateStoreSpecialService(store.value.id, currentServiceId.value, data)
+        ElMessage.success('编辑成功')
+      } else {
+        await createStoreSpecialService(store.value.id, data)
+        ElMessage.success('创建成功')
+      }
+
+      serviceDialogVisible.value = false
+      loadSpecialServices()
+    } catch (error) {
+      handleApiError(error, isEditingService.value ? '编辑特色服务失败' : '创建特色服务失败')
+    } finally {
+      serviceSubmitLoading.value = false
+    }
+  })
+}
+
+// 特色服务对话框关闭
+const handleServiceDialogClose = () => {
+  serviceFormRef.value?.resetFields()
+  resetServiceForm()
 }
 
 // 格式化日期
@@ -581,7 +918,9 @@ const getStoreStatusLabel = (status: string) => {
 onMounted(() => {
   loadCityList()
   loadRegionList()
+  loadAllStores()
   loadStoreDetail()
+  loadSpecialServices()
 })
 </script>
 
@@ -593,7 +932,8 @@ onMounted(() => {
   .images-card,
   .map-card,
   .vehicles-card,
-  .employees-card {
+  .employees-card,
+  .special-services-card {
     margin-top: 20px;
   }
 

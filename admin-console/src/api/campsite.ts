@@ -5,6 +5,8 @@ import {
   mockGetCampsiteList,
   mockGetCampsiteDetail,
   mockGetCampsiteStats,
+  mockCreateCampsite,
+  mockUpdateCampsite,
   mockGetReservationList,
   mockConfirmReservation,
   mockCancelReservation,
@@ -54,6 +56,22 @@ export const getCampsiteDetail = (id: number) => {
 export const getCampsiteStats = () => {
   // return request.get('/campsites/stats')
   return mockGetCampsiteStats()
+}
+
+/**
+ * 创建营地
+ */
+export const createCampsite = (data: Partial<Campsite>) => {
+  // return request.post('/campsites', data)
+  return mockCreateCampsite(data)
+}
+
+/**
+ * 更新营地
+ */
+export const updateCampsite = (id: number, data: Partial<Campsite>) => {
+  // return request.put(`/campsites/${id}`, data)
+  return mockUpdateCampsite(id, data)
 }
 
 // ==================== 预订管理 ====================

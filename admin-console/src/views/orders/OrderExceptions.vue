@@ -18,7 +18,7 @@
       :loading="loading"
       :actions="tableActions"
       :pagination="pagination"
-      :actions-width="150"
+      :actions-width="280"
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
     >
@@ -89,6 +89,29 @@
         </el-button>
       </template>
     </el-dialog>
+
+    <!-- 异常分配对话框 -->
+    <ExceptionAssignDialog
+      v-model="assignDialogVisible"
+      :exception-info="currentException"
+      @submit="handleAssignSubmit"
+    />
+
+    <!-- 异常费用结算对话框 -->
+    <ExceptionSettlementDialog
+      v-model="settlementDialogVisible"
+      :exception-info="currentException"
+      @submit="handleSettlementSubmit"
+    />
+
+    <!-- 异常时间线对话框 -->
+    <el-dialog
+      v-model="timelineDialogVisible"
+      title="异常处理时间线"
+      width="800px"
+    >
+      <ExceptionTimeline :timeline="exceptionTimeline" @action="handleTimelineAction" />
+    </el-dialog>
   </div>
 </template>
 
@@ -101,6 +124,9 @@ import { Document, Clock, CircleCheck, Money } from '@element-plus/icons-vue'
 import StatsCard from '@/components/common/StatsCard.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'
+import ExceptionAssignDialog from '@/components/orders/ExceptionAssignDialog.vue'
+import ExceptionSettlementDialog from '@/components/orders/ExceptionSettlementDialog.vue'
+import ExceptionTimeline from '@/components/orders/ExceptionTimeline.vue'
 import type { StatItem } from '@/components/common/StatsCard.vue'
 import type { SearchField } from '@/components/common/SearchForm.vue'
 import type { TableColumn, TableAction } from '@/components/common/DataTable.vue'
@@ -242,15 +268,33 @@ const tableColumns: TableColumn[] = [
 // 表格操作列配置
 const tableActions: TableAction[] = [
   {
-    label: '处理',
+    label: '分配',
     type: 'primary',
+    onClick: (row: OrderException) => handleAssign(row),
+    show: (row: OrderException) => row.status === 'pending'
+  },
+  {
+    label: '处理',
+    type: 'success',
     onClick: (row: OrderException) => handleProcess(row),
     show: (row: OrderException) => row.status === 'pending' || row.status === 'processing'
   },
   {
-    label: '查看',
+    label: '升级',
+    type: 'warning',
+    onClick: (row: OrderException) => handleEscalate(row),
+    show: (row: OrderException) => row.status === 'pending' || row.status === 'processing'
+  },
+  {
+    label: '费用结算',
+    type: 'primary',
+    onClick: (row: OrderException) => handleSettlement(row),
+    show: (row: OrderException) => row.status === 'processing'
+  },
+  {
+    label: '时间线',
     type: 'info',
-    onClick: (row: OrderException) => handleView(row)
+    onClick: (row: OrderException) => handleViewTimeline(row)
   }
 ]
 
@@ -281,6 +325,16 @@ const handleFormRules: FormRules = {
     { min: 10, message: '处理方案至少10个字符', trigger: 'blur' }
   ]
 }
+
+// 异常分配对话框
+const assignDialogVisible = ref(false)
+
+// 异常费用结算对话框
+const settlementDialogVisible = ref(false)
+
+// 异常时间线对话框
+const timelineDialogVisible = ref(false)
+const exceptionTimeline = ref<any[]>([])
 
 // 加载异常列表
 const loadExceptionList = async () => {
@@ -332,16 +386,68 @@ const handleReset = () => {
   loadExceptionList()
 }
 
+// 分配异常
+const handleAssign = (row: OrderException) => {
+  currentException.value = row
+  assignDialogVisible.value = true
+}
+
 // 处理异常
 const handleProcess = (row: OrderException) => {
   currentException.value = row
-  handleForm.resolution = row.resolution || 'info'
+  handleForm.resolution = row.resolution || ''
   handleDialogVisible.value = true
 }
 
-// 查看异常
-const handleView = (row: OrderException) => {
-  ElMessage.info(`查看异常详情功能开发中，异常ID: ${row.id}`)
+// 升级异常
+const handleEscalate = async (row: OrderException) => {
+  try {
+    await ElMessage.confirm(
+      `确定要升级异常 "${row.title}" 的优先级吗？升级后将自动通知管理层。`,
+      '升级异常',
+      {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }
+    )
+
+    // TODO: 调用升级API
+    ElMessage.success('异常已升级')
+    loadExceptionList()
+    loadStats()
+  } catch (error) {
+    if (error !== 'cancel') {
+      handleApiError(error, '升级异常失败')
+    }
+  }
+}
+
+// 费用结算
+const handleSettlement = (row: OrderException) => {
+  currentException.value = row
+  settlementDialogVisible.value = true
+}
+
+// 查看时间线
+const handleViewTimeline = async (row: OrderException) => {
+  currentException.value = row
+  // TODO: 调用获取时间线API
+  // 临时Mock数据
+  exceptionTimeline.value = [
+    {
+      action: 'created',
+      timestamp: row.reportedAt,
+      operator: row.reportedBy,
+      description: `异常创建：${row.title}`,
+      details: [
+        { label: '异常类型', value: getExceptionTypeLabel(row.type) },
+        { label: '优先级', value: getPriorityLabel(row.priority) },
+        { label: '预估损失', value: `¥${row.estimatedLoss.toFixed(2)}` }
+      ]
+    }
+  ]
+  timelineDialogVisible.value = true
 }
 
 // 提交处理
@@ -371,6 +477,40 @@ const handleDialogClose = () => {
   handleFormRef.value?.resetFields()
   handleForm.resolution = ''
   currentException.value = null
+}
+
+// 提交分配
+const handleAssignSubmit = async (data: any) => {
+  try {
+    // TODO: 调用分配API
+    console.log('分配数据:', data)
+    ElMessage.success('异常分配成功')
+    assignDialogVisible.value = false
+    loadExceptionList()
+    loadStats()
+  } catch (error) {
+    handleApiError(error, '异常分配失败')
+  }
+}
+
+// 提交费用结算
+const handleSettlementSubmit = async (data: any) => {
+  try {
+    // TODO: 调用费用结算API
+    console.log('结算数据:', data)
+    ElMessage.success('费用结算成功')
+    settlementDialogVisible.value = false
+    loadExceptionList()
+    loadStats()
+  } catch (error) {
+    handleApiError(error, '费用结算失败')
+  }
+}
+
+// 时间线操作
+const handleTimelineAction = (key: string, item: any) => {
+  console.log('时间线操作:', key, item)
+  // 可以根据不同的操作类型执行不同的逻辑
 }
 
 // 分页

@@ -712,3 +712,84 @@ export const mockReplyInquiry = (id: number, reply: string) => {
     }, 500)
   })
 }
+
+// Mock 创建营地
+export const mockCreateCampsite = (data: Partial<Campsite>) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const newCampsite: Campsite = {
+        id: mockCampsites.length + 1,
+        name: data.name || '',
+        type: data.type || 'scenic',
+        status: data.status || 'active',
+        bookingMode: data.bookingMode || 'instant',
+        address: data.address || '',
+        province: data.province || '',
+        city: data.city || '',
+        district: data.district || '',
+        latitude: data.latitude || 0,
+        longitude: data.longitude || 0,
+        area: data.area || 0,
+        capacity: data.capacity || 0,
+        availableSpots: data.availableSpots || 0,
+        pricePerNight: data.pricePerNight || 0,
+        weekendPrice: data.weekendPrice || 0,
+        holidayPrice: data.holidayPrice || 0,
+        facilities: data.facilities || [],
+        images: data.images || [],
+        description: data.description || '',
+        rules: data.rules || '',
+        contactPerson: data.contactPerson || '',
+        contactPhone: data.contactPhone || '',
+        rating: 0,
+        reviewCount: 0,
+        bookingCount: 0,
+        revenue: 0,
+        openTime: data.openTime || '',
+        closeTime: data.closeTime || '',
+        checkInTime: data.checkInTime || '14:00',
+        checkOutTime: data.checkOutTime || '12:00',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      }
+
+      mockCampsites.push(newCampsite)
+
+      resolve({
+        code: 200,
+        message: '创建成功',
+        data: newCampsite
+      })
+    }, 500)
+  })
+}
+
+// Mock 更新营地
+export const mockUpdateCampsite = (id: number, data: Partial<Campsite>) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const index = mockCampsites.findIndex((c) => c.id === id)
+      if (index === -1) {
+        reject({
+          code: 404,
+          message: '营地不存在'
+        })
+        return
+      }
+
+      // 更新营地数据
+      mockCampsites[index] = {
+        ...mockCampsites[index],
+        ...data,
+        id, // 保持ID不变
+        updatedAt: new Date().toISOString()
+      }
+
+      resolve({
+        code: 200,
+        message: '更新成功',
+        data: mockCampsites[index]
+      })
+    }, 500)
+  })
+}

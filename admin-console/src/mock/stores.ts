@@ -15,6 +15,21 @@ export interface StorePriceStrategyConfig {
   specialRules?: number[] // 门店专属规则ID列表
 }
 
+// 门店特色服务
+export interface StoreSpecialService {
+  id: number
+  storeId: number
+  name: string
+  description: string
+  price: number
+  unit: string
+  status: 'active' | 'inactive'
+  isRequired: boolean
+  sortOrder: number
+  createdAt: string
+  updatedAt: string
+}
+
 // 门店信息
 export interface Store {
   id: number
@@ -49,6 +64,14 @@ export interface Store {
 
   // 可托管验车（新增）
   canHostingInspection: boolean
+
+  // 协助门店（合作商门店专用）
+  assistStoreId?: number // 协助门店ID
+  assistStoreName?: string // 协助门店名称
+
+  // 门店特色服务（新增）
+  specialServices?: StoreSpecialService[]
+  specialServicesCount?: number
 }
 
 // 城市信息
@@ -227,6 +250,8 @@ const mockStores: Store[] = [
     ],
     description: '深圳南山区合作商户，提供基础租赁服务',
     canHostingInspection: false,
+    assistStoreId: 3, // 协助门店：广州天河加盟店
+    assistStoreName: '广州天河加盟店',
     createdAt: '2024-04-01T08:00:00.000Z',
     updatedAt: '2024-11-26T14:10:00.000Z'
   },
@@ -959,6 +984,285 @@ export const mockGetRegionList = () => {
         code: 200,
         message: '获取成功',
         data: mockRegions
+      })
+    }, 200)
+  })
+}
+
+// ==================== 门店特色服务 Mock 数据 ====================
+
+// Mock 门店特色服务数据
+const mockStoreSpecialServices: StoreSpecialService[] = [
+  // 北京朝阳店特色服务
+  {
+    id: 1,
+    storeId: 1,
+    name: '机场接送服务',
+    description: '提供首都机场、大兴机场往返接送服务，专业司机，准时可靠',
+    price: 200,
+    unit: '次',
+    status: 'active',
+    isRequired: false,
+    sortOrder: 1,
+    createdAt: '2025-11-01T10:00:00.000Z',
+    updatedAt: '2025-11-01T10:00:00.000Z'
+  },
+  {
+    id: 2,
+    storeId: 1,
+    name: '深度清洁服务',
+    description: '专业团队对房车进行深度清洁消毒，包含内外清洗、消毒除味',
+    price: 300,
+    unit: '次',
+    status: 'active',
+    isRequired: false,
+    sortOrder: 2,
+    createdAt: '2025-11-01T10:00:00.000Z',
+    updatedAt: '2025-11-01T10:00:00.000Z'
+  },
+  {
+    id: 3,
+    storeId: 1,
+    name: '24小时道路救援',
+    description: '提供24小时道路救援服务，包含拖车、换胎、应急充电等',
+    price: 500,
+    unit: '次',
+    status: 'active',
+    isRequired: false,
+    sortOrder: 3,
+    createdAt: '2025-11-01T10:00:00.000Z',
+    updatedAt: '2025-11-01T10:00:00.000Z'
+  },
+  // 上海浦东店特色服务
+  {
+    id: 4,
+    storeId: 2,
+    name: '迪士尼接送专线',
+    description: '上海迪士尼乐园往返接送，含停车费，方便快捷',
+    price: 150,
+    unit: '次',
+    status: 'active',
+    isRequired: false,
+    sortOrder: 1,
+    createdAt: '2025-11-01T10:00:00.000Z',
+    updatedAt: '2025-11-01T10:00:00.000Z'
+  },
+  {
+    id: 5,
+    storeId: 2,
+    name: '车载WiFi服务',
+    description: '提供4G无限流量车载WiFi，支持多设备同时连接',
+    price: 50,
+    unit: '天',
+    status: 'active',
+    isRequired: false,
+    sortOrder: 2,
+    createdAt: '2025-11-01T10:00:00.000Z',
+    updatedAt: '2025-11-01T10:00:00.000Z'
+  },
+  {
+    id: 6,
+    storeId: 2,
+    name: '户外装备租赁',
+    description: '提供帐篷、睡袋、烧烤架等户外装备租赁服务',
+    price: 100,
+    unit: '套/天',
+    status: 'active',
+    isRequired: false,
+    sortOrder: 3,
+    createdAt: '2025-11-01T10:00:00.000Z',
+    updatedAt: '2025-11-01T10:00:00.000Z'
+  },
+  // 广州天河加盟店特色服务
+  {
+    id: 7,
+    storeId: 3,
+    name: '粤语导游服务',
+    description: '提供专业粤语导游，熟悉广东省内旅游路线',
+    price: 800,
+    unit: '天',
+    status: 'active',
+    isRequired: false,
+    sortOrder: 1,
+    createdAt: '2025-11-01T10:00:00.000Z',
+    updatedAt: '2025-11-01T10:00:00.000Z'
+  },
+  {
+    id: 8,
+    storeId: 3,
+    name: '车辆代驾服务',
+    description: '提供专业代驾司机，适合不熟悉房车驾驶的客户',
+    price: 600,
+    unit: '天',
+    status: 'active',
+    isRequired: false,
+    sortOrder: 2,
+    createdAt: '2025-11-01T10:00:00.000Z',
+    updatedAt: '2025-11-01T10:00:00.000Z'
+  },
+  // 深圳南山合作店特色服务
+  {
+    id: 9,
+    storeId: 4,
+    name: '海边露营套餐',
+    description: '包含海边营地预订、烧烤设备、户外桌椅等全套装备',
+    price: 500,
+    unit: '套',
+    status: 'active',
+    isRequired: false,
+    sortOrder: 1,
+    createdAt: '2025-11-01T10:00:00.000Z',
+    updatedAt: '2025-11-01T10:00:00.000Z'
+  },
+  {
+    id: 10,
+    storeId: 4,
+    name: '车辆保养服务',
+    description: '行程结束后提供车辆全面保养检查服务',
+    price: 200,
+    unit: '次',
+    status: 'inactive',
+    isRequired: false,
+    sortOrder: 2,
+    createdAt: '2025-11-01T10:00:00.000Z',
+    updatedAt: '2025-11-01T10:00:00.000Z'
+  },
+  // 成都武侯店特色服务
+  {
+    id: 11,
+    storeId: 5,
+    name: '川藏线路规划',
+    description: '专业团队提供川藏线、川西环线等路线规划和咨询服务',
+    price: 300,
+    unit: '次',
+    status: 'active',
+    isRequired: false,
+    sortOrder: 1,
+    createdAt: '2025-11-01T10:00:00.000Z',
+    updatedAt: '2025-11-01T10:00:00.000Z'
+  },
+  {
+    id: 12,
+    storeId: 5,
+    name: '高原氧气瓶租赁',
+    description: '提供医用氧气瓶租赁，适合高原旅行使用',
+    price: 50,
+    unit: '瓶',
+    status: 'active',
+    isRequired: false,
+    sortOrder: 2,
+    createdAt: '2025-11-01T10:00:00.000Z',
+    updatedAt: '2025-11-01T10:00:00.000Z'
+  },
+  // 杭州西湖店特色服务
+  {
+    id: 13,
+    storeId: 6,
+    name: '西湖景区停车预订',
+    description: '提前预订西湖景区停车位，避免停车难问题',
+    price: 100,
+    unit: '天',
+    status: 'active',
+    isRequired: false,
+    sortOrder: 1,
+    createdAt: '2025-11-01T10:00:00.000Z',
+    updatedAt: '2025-11-01T10:00:00.000Z'
+  },
+  {
+    id: 14,
+    storeId: 6,
+    name: '茶文化体验套餐',
+    description: '包含龙井茶园参观、采茶体验、茶艺表演等',
+    price: 400,
+    unit: '套',
+    status: 'active',
+    isRequired: false,
+    sortOrder: 2,
+    createdAt: '2025-11-01T10:00:00.000Z',
+    updatedAt: '2025-11-01T10:00:00.000Z'
+  }
+]
+
+// Mock 获取门店特色服务列表
+export const mockGetStoreSpecialServices = (storeId: number) => {
+  return new Promise<{ code: number; message: string; data: StoreSpecialService[] }>((resolve) => {
+    setTimeout(() => {
+      const services = mockStoreSpecialServices.filter(service => service.storeId === storeId)
+      resolve({
+        code: 200,
+        message: '获取成功',
+        data: services
+      })
+    }, 200)
+  })
+}
+
+// Mock 创建门店特色服务
+export const mockCreateStoreSpecialService = (storeId: number, data: Partial<StoreSpecialService>) => {
+  return new Promise<{ code: number; message: string; data: StoreSpecialService }>((resolve) => {
+    setTimeout(() => {
+      const newService: StoreSpecialService = {
+        id: mockStoreSpecialServices.length + 1,
+        storeId,
+        name: data.name || '',
+        description: data.description || '',
+        price: data.price || 0,
+        unit: data.unit || '次',
+        status: data.status || 'inactive',
+        isRequired: data.isRequired || false,
+        sortOrder: data.sortOrder || 999,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      }
+      mockStoreSpecialServices.push(newService)
+      resolve({
+        code: 200,
+        message: '创建成功',
+        data: newService
+      })
+    }, 200)
+  })
+}
+
+// Mock 更新门店特色服务
+export const mockUpdateStoreSpecialService = (storeId: number, serviceId: number, data: Partial<StoreSpecialService>) => {
+  return new Promise<{ code: number; message: string; data: StoreSpecialService }>((resolve, reject) => {
+    setTimeout(() => {
+      const index = mockStoreSpecialServices.findIndex(s => s.id === serviceId && s.storeId === storeId)
+      if (index === -1) {
+        reject({ code: 404, message: '服务不存在' })
+        return
+      }
+
+      mockStoreSpecialServices[index] = {
+        ...mockStoreSpecialServices[index],
+        ...data,
+        updatedAt: new Date().toISOString()
+      }
+
+      resolve({
+        code: 200,
+        message: '更新成功',
+        data: mockStoreSpecialServices[index]
+      })
+    }, 200)
+  })
+}
+
+// Mock 删除门店特色服务
+export const mockDeleteStoreSpecialService = (storeId: number, serviceId: number) => {
+  return new Promise<{ code: number; message: string }>((resolve, reject) => {
+    setTimeout(() => {
+      const index = mockStoreSpecialServices.findIndex(s => s.id === serviceId && s.storeId === storeId)
+      if (index === -1) {
+        reject({ code: 404, message: '服务不存在' })
+        return
+      }
+
+      mockStoreSpecialServices.splice(index, 1)
+      resolve({
+        code: 200,
+        message: '删除成功'
       })
     }, 200)
   })

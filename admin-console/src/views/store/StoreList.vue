@@ -94,6 +94,23 @@
             </el-form-item>
           </el-col>
         </el-row>
+        <el-row v-if="form.type === 'cooperative'" :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="协助门店" prop="assistStoreId">
+              <el-select v-model="form.assistStoreId" placeholder="请选择协助门店" style="width: 100%">
+                <el-option
+                  v-for="store in assistStoreOptions"
+                  :key="store.id"
+                  :label="store.name"
+                  :value="store.id"
+                />
+              </el-select>
+              <div style="color: #909399; font-size: 12px; margin-top: 4px;">
+                合作商门店只负责车辆取还服务，订单咨询及管理由协助门店完成
+              </div>
+            </el-form-item>
+          </el-col>
+        </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="所属城市" prop="cityId">
@@ -230,7 +247,6 @@ import type { SearchField } from '@/components/common/SearchForm.vue'
 import type { TableColumn, TableAction, ToolbarButton } from '@/components/common/DataTable.vue'
 import {
   getStoreList,
-  getStoreDetail,
   createStore,
   updateStore,
   deleteStore,
@@ -323,6 +339,13 @@ const statsConfig = computed<StatItem[]>(() => [
 const cityList = ref<City[]>([])
 const regionList = ref<Region[]>([])
 
+// 协助门店选项（只包含直营店和加盟店，排除合作商户）
+const assistStoreOptions = computed(() => {
+  return storeList.value.filter(store =>
+    store.type === 'direct' || store.type === 'franchise'
+  )
+})
+
 // 搜索字段配置
 const searchFields = computed<SearchField[]>(() => [
   {
@@ -375,6 +398,7 @@ const tableColumns: TableColumn[] = [
   { prop: 'status', label: '状态', width: 100, slot: 'status' },
   { prop: 'cityName', label: '所属城市', width: 100 },
   { prop: 'regionName', label: '所属区域', width: 100 },
+  { prop: 'assistStoreName', label: '协助门店', width: 120 },
   { prop: 'manager', label: '门店经理', width: 100 },
   { prop: 'vehicleCount', label: '车辆数', width: 80 },
   { prop: 'employeeCount', label: '员工数', width: 80 },
@@ -450,7 +474,8 @@ const form = reactive({
   businessHours: '',
   serviceScope: [] as string[],
   description: '',
-  canHostingInspection: false
+  canHostingInspection: false,
+  assistStoreId: undefined as number | undefined
 })
 
 const formRules: FormRules = {
@@ -485,6 +510,18 @@ const formRules: FormRules = {
   ],
   businessHours: [
     { required: true, message: '请输入营业时间', trigger: 'blur' }
+  ],
+  assistStoreId: [
+    {
+      validator: (rule: any, value: any, callback: any) => {
+        if (form.type === 'cooperative' && !value) {
+          callback(new Error('合作商门店必须选择协助门店'))
+        } else {
+          callback()
+        }
+      },
+      trigger: 'change'
+    }
   ]
 }
 
@@ -567,7 +604,7 @@ const handleCreate = () => {
 
 // 查看门店
 const handleView = (row: Store) => {
-  router.push(`/store/detail/${row.id}`)
+  router.push(`/stores/detail/${row.id}`)
 }
 
 // 编辑门店
@@ -590,6 +627,7 @@ const handleEdit = (row: Store) => {
   form.serviceScope = row.serviceScope
   form.description = row.description
   form.canHostingInspection = row.canHostingInspection
+  form.assistStoreId = row.assistStoreId
   dialogVisible.value = true
 }
 
@@ -644,6 +682,11 @@ const handleSubmit = async () => {
         canHostingInspection: form.canHostingInspection
       }
 
+      // 如果是合作商门店，添加协助门店信息
+      if (form.type === 'cooperative') {
+        data.assistStoreId = form.assistStoreId
+      }
+
       if (isEdit.value) {
         await updateStore(form.id, data)
         ElMessage.success('更新成功')
@@ -682,6 +725,7 @@ const handleDialogClose = () => {
   form.serviceScope = []
   form.description = ''
   form.canHostingInspection = false
+  form.assistStoreId = undefined
 }
 
 // 分页

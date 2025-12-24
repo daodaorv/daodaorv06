@@ -250,6 +250,104 @@
             </el-checkbox-group>
           </el-form-item>
         </el-card>
+
+        <!-- 众筹配置卡片 -->
+        <el-card class="form-card" shadow="never">
+          <template #header>
+            <div class="card-header">
+              <span class="card-title">众筹配置</span>
+              <span class="card-subtitle">配置车型的众筹托管参数</span>
+            </div>
+          </template>
+
+          <el-form-item label="启用众筹">
+            <el-switch v-model="form.supportCrowdfunding" />
+            <span style="margin-left: 12px; font-size: 13px; color: #909399">
+              启用后,该车型将出现在小程序众筹车型列表中
+            </span>
+          </el-form-item>
+
+          <template v-if="form.supportCrowdfunding">
+            <el-divider />
+
+            <el-row :gutter="20">
+              <el-col :span="12">
+                <el-form-item label="购置价格" prop="purchasePrice">
+                  <el-input-number
+                    v-model="form.purchasePrice"
+                    :min="0"
+                    :step="10000"
+                    :precision="0"
+                    style="width: 100%"
+                  />
+                  <div class="form-tip">
+                    车辆购置价格(不含税费、上牌等附加费用)
+                  </div>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="建议份额数" prop="suggestedShares">
+                  <el-input-number
+                    v-model="form.suggestedShares"
+                    :min="2"
+                    :max="20"
+                    style="width: 100%"
+                  />
+                  <div class="form-tip">
+                    单份价格: ¥{{ suggestedPricePerShare.toLocaleString() }}
+                  </div>
+                </el-form-item>
+              </el-col>
+            </el-row>
+
+            <el-row :gutter="20">
+              <el-col :span="12">
+                <el-form-item label="预估月收益" prop="estimatedMonthlyIncome">
+                  <el-input-number
+                    v-model="form.estimatedMonthlyIncome"
+                    :min="0"
+                    :step="100"
+                    :precision="0"
+                    style="width: 100%"
+                  />
+                  <div class="form-tip">
+                    预估年化收益率: {{ estimatedAnnualReturn }}%
+                  </div>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="展示排序">
+                  <el-input-number
+                    v-model="form.crowdfundingDisplayOrder"
+                    :min="0"
+                    style="width: 100%"
+                  />
+                  <div class="form-tip">
+                    数值越大越靠前
+                  </div>
+                </el-form-item>
+              </el-col>
+            </el-row>
+
+            <el-form-item label="热门推荐">
+              <el-switch v-model="form.isHotCrowdfunding" />
+              <span style="margin-left: 12px; font-size: 13px; color: #909399">
+                标记为热门后,在小程序众筹首页优先展示,带"热门"角标
+              </span>
+            </el-form-item>
+
+            <el-form-item label="众筹描述">
+              <el-input
+                v-model="form.crowdfundingDescription"
+                type="textarea"
+                :rows="4"
+                placeholder="针对众筹场景的车型介绍,如不填写则使用车型基本描述"
+                maxlength="500"
+                show-word-limit
+              />
+            </el-form-item>
+          </template>
+        </el-card>
       </el-form>
     </div>
   </div>
@@ -274,7 +372,6 @@ import {
   updateVehicleModel,
   getBrands,
 } from '@/api/vehicle'
-import type { VehicleModel } from '@/mock/vehicles'
 import { useErrorHandler } from '@/composables'
 
 // Composables
@@ -324,6 +421,14 @@ const form = reactive({
   images: [] as ImageItem[],
   description: '',
   features: [] as string[],
+  // 众筹配置字段
+  supportCrowdfunding: false,
+  purchasePrice: 0,
+  suggestedShares: 10,
+  estimatedMonthlyIncome: 0,
+  isHotCrowdfunding: false,
+  crowdfundingDisplayOrder: 0,
+  crowdfundingDescription: '',
 })
 
 // 表单验证规则
@@ -353,11 +458,51 @@ const formRules: FormRules = {
       trigger: 'change',
     },
   ],
+  purchasePrice: [
+    {
+      validator: (_rule, value, callback) => {
+        if (form.supportCrowdfunding && (!value || value <= 0)) {
+          callback(new Error('启用众筹时,购置价格必须大于0'))
+        } else {
+          callback()
+        }
+      },
+      trigger: 'blur',
+    },
+  ],
+  estimatedMonthlyIncome: [
+    {
+      validator: (_rule, value, callback) => {
+        if (form.supportCrowdfunding && (!value || value <= 0)) {
+          callback(new Error('启用众筹时,预估月收益必须大于0'))
+        } else {
+          callback()
+        }
+      },
+      trigger: 'blur',
+    },
+  ],
 }
 
 const formRef = ref<FormInstance>()
 const submitLoading = ref(false)
 const isEdit = computed(() => !!route.params.id)
+
+// 计算属性：建议单份价格
+const suggestedPricePerShare = computed(() => {
+  if (form.purchasePrice > 0 && form.suggestedShares > 0) {
+    return Math.round(form.purchasePrice / form.suggestedShares)
+  }
+  return 0
+})
+
+// 计算属性：预估年化收益率
+const estimatedAnnualReturn = computed(() => {
+  if (form.purchasePrice > 0 && form.estimatedMonthlyIncome > 0) {
+    return ((form.estimatedMonthlyIncome * 12 / form.purchasePrice) * 100).toFixed(2)
+  }
+  return '0.00'
+})
 
 // 图片上传处理（Mock 模式：转换为 base64）
 const handleImageChange = (file: any) => {
@@ -391,7 +536,7 @@ const handleImageChange = (file: any) => {
 }
 
 // 预览图片
-const handlePreviewImage = (index: number) => {
+const handlePreviewImage = (_index: number) => {
   // Element Plus 的 el-image 组件会自动处理预览
 }
 
@@ -440,6 +585,15 @@ const loadVehicleModel = async (id: number) => {
     form.dailyPrice = model.dailyPrice
     form.description = model.description
     form.features = [...model.features]
+
+    // 加载众筹配置数据
+    form.supportCrowdfunding = model.supportCrowdfunding || false
+    form.purchasePrice = model.purchasePrice || 0
+    form.suggestedShares = model.suggestedShares || 10
+    form.estimatedMonthlyIncome = model.estimatedMonthlyIncome || 0
+    form.isHotCrowdfunding = model.isHotCrowdfunding || false
+    form.crowdfundingDisplayOrder = model.crowdfundingDisplayOrder || 0
+    form.crowdfundingDescription = model.crowdfundingDescription || ''
 
     // 处理图片数据
     if (model.image) {
@@ -503,6 +657,14 @@ const handleSubmit = async () => {
         images: form.images.map(img => img.url), // 所有图片URL数组
         description: form.description,
         features: [...form.features],
+        // 众筹配置数据
+        supportCrowdfunding: form.supportCrowdfunding,
+        purchasePrice: form.supportCrowdfunding ? form.purchasePrice : 0,
+        suggestedShares: form.supportCrowdfunding ? form.suggestedShares : 10,
+        estimatedMonthlyIncome: form.supportCrowdfunding ? form.estimatedMonthlyIncome : 0,
+        isHotCrowdfunding: form.supportCrowdfunding ? form.isHotCrowdfunding : false,
+        crowdfundingDisplayOrder: form.supportCrowdfunding ? form.crowdfundingDisplayOrder : 0,
+        crowdfundingDescription: form.supportCrowdfunding ? form.crowdfundingDescription : '',
       }
 
       if (isEdit.value) {
@@ -712,6 +874,13 @@ onMounted(async () => {
     font-size: 12px;
     color: #909399;
     line-height: 1.5;
+  }
+
+  .form-tip {
+    margin-top: 4px;
+    font-size: 12px;
+    color: #909399;
+    line-height: 1.4;
   }
 }
 </style>

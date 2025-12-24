@@ -1,329 +1,551 @@
 /**
  * 分润管理 API
  */
+import request from '@/utils/request'
+import type {
+  PromotionRelation,
+  PromotionProfitConfig,
+  PromotionProfitRecord,
+  HostingProfitConfig,
+  HostingProfitRecord,
+  CampsiteProfitConfig,
+  CampsiteProfitRecord,
+  TourProfitConfig,
+  TourProfitRecord,
+  ProfitCalculationLog,
+  ProfitSimulatorInput,
+  ProfitSimulatorOutput,
+  BalanceRecord,
+  WithdrawalRequest,
+  RiskControlRule,
+  RiskControlRecord,
+  ProfitStatistics,
+  UserProfitRanking,
+  ProductType,
+  HostingType,
+  ProfitStatus,
+  WithdrawalStatus,
+} from '@/types/profit'
 import {
-  mockGetHostingProfitList,
-  mockGetHostingProfitStats,
-  mockSettleHostingProfit,
-  mockBatchSettleHostingProfit,
-  mockPayHostingProfit,
-  mockExportHostingProfitRecords,
-  mockGetPriceDiffProfitList,
-  mockGetPriceDiffProfitStats,
-  mockSettlePriceDiffProfit,
-  mockBatchSettlePriceDiffProfit,
-  mockPayPriceDiffProfit,
-  mockExportPriceDiffProfitRecords,
-  mockGetEmployeeProfitList,
-  mockGetEmployeeProfitStats,
-  mockSettleEmployeeProfit,
-  mockBatchSettleEmployeeProfit,
-  mockPayEmployeeProfit,
-  mockExportEmployeeProfitRecords,
-  mockGetPromotionProfitList,
-  mockGetPromotionProfitStats,
-  mockSettlePromotionProfit,
-  mockBatchSettlePromotionProfit,
-  mockPayPromotionProfit,
-  mockExportPromotionProfitRecords,
-  type HostingProfitRecord,
-  type HostingProfitListParams,
-  type HostingProfitStats,
-  type PriceDiffProfitRecord,
-  type PriceDiffProfitListParams,
-  type PriceDiffProfitStats,
-  type EmployeeProfitRecord,
-  type EmployeeProfitListParams,
-  type EmployeeProfitStats,
-  type PromotionProfitRecord,
-  type PromotionProfitListParams,
-  type PromotionProfitStats
+  mockGetPromotionRelations,
+  mockGetPromotionProfitConfigs,
+  mockGetPromotionProfitRecords,
+  mockGetPromotionProfitStatistics,
+  mockGetHostingProfitConfigs,
+  mockGetHostingProfitRecords,
+  mockGetHostingProfitStatistics,
+  mockGetCampsiteProfitConfigs,
+  mockGetCampsiteProfitRecords,
+  mockGetCampsiteProfitStatistics,
+  mockGetTourProfitConfigs,
+  mockGetTourProfitRecords,
+  mockGetTourProfitStatistics,
+  mockSimulateProfit,
+  mockGetBalanceRecords,
+  mockGetWithdrawalRequests,
+  mockGetRiskControlRules,
+  mockGetRiskControlRecords,
 } from '@/mock/profit'
 
-// 导出类型
-export type {
-  HostingProfitRecord,
-  HostingProfitListParams,
-  HostingProfitStats,
-  PriceDiffProfitRecord,
-  PriceDiffProfitListParams,
-  PriceDiffProfitStats,
-  EmployeeProfitRecord,
-  EmployeeProfitListParams,
-  EmployeeProfitStats,
-  PromotionProfitRecord,
-  PromotionProfitListParams,
-  PromotionProfitStats
-}
+// 是否使用 Mock 数据（开发环境默认使用）
+const USE_MOCK = import.meta.env.DEV
 
-// ==================== 托管分润 ====================
+// ==================== 推广分润相关 ====================
 
 /**
- * 获取托管分润记录列表
+ * 获取推广关系列表
  */
-export const getHostingProfitList = (params: HostingProfitListParams) => {
-  // 🟡 使用 Mock 数据（前端独立开发阶段）
-  return mockGetHostingProfitList(params)
-
-  // 🔵 后端联调时使用真实 API（待后端开发）
-  // return request.get('/api/profit/hosting', { params })
+export function getPromotionRelations(params: {
+  page: number
+  pageSize: number
+  userId?: string
+  level1PromoterUserId?: string
+  level2PromoterUserId?: string
+}) {
+  if (USE_MOCK) {
+    return mockGetPromotionRelations(params) as any
+  }
+  return request.get<{
+    list: PromotionRelation[]
+    total: number
+  }>('/profit/promotion/relations', { params })
 }
 
 /**
- * 获取托管分润统计
+ * 获取推广关系树
  */
-export const getHostingProfitStats = () => {
-  // 🟡 使用 Mock 数据（前端独立开发阶段）
-  return mockGetHostingProfitStats()
-
-  // 🔵 后端联调时使用真实 API（待后端开发）
-  // return request.get('/api/profit/hosting/stats')
+export function getPromotionTree(userId: string) {
+  return request.get<PromotionRelation[]>(`/profit/promotion/tree/${userId}`)
 }
 
 /**
- * 结算托管分润
+ * 获取推广分润配置列表
  */
-export const settleHostingProfit = (id: number) => {
-  // 🟡 使用 Mock 数据（前端独立开发阶段）
-  return mockSettleHostingProfit(id)
-
-  // 🔵 后端联调时使用真实 API（待后端开发）
-  // return request.post(`/api/profit/hosting/${id}/settle`)
+export function getPromotionProfitConfigs() {
+  if (USE_MOCK) {
+    return mockGetPromotionProfitConfigs() as any
+  }
+  return request.get<PromotionProfitConfig[]>('/profit/promotion/configs')
 }
 
 /**
- * 批量结算托管分润
+ * 更新推广分润配置
  */
-export const batchSettleHostingProfit = (ids: number[]) => {
-  // 🟡 使用 Mock 数据（前端独立开发阶段）
-  return mockBatchSettleHostingProfit(ids)
-
-  // 🔵 后端联调时使用真实 API（待后端开发）
-  // return request.post('/api/profit/hosting/batch-settle', { ids })
+export function updatePromotionProfitConfig(id: string, data: Partial<PromotionProfitConfig>) {
+  return request.put(`/profit/promotion/configs/${id}`, data)
 }
 
 /**
- * 支付托管分润
+ * 获取推广分润记录
  */
-export const payHostingProfit = (id: number, paymentMethod: string) => {
-  // 🟡 使用 Mock 数据（前端独立开发阶段）
-  return mockPayHostingProfit(id, paymentMethod)
-
-  // 🔵 后端联调时使用真实 API（待后端开发）
-  // return request.post(`/api/profit/hosting/${id}/pay`, { paymentMethod })
-}
-
-/**
- * 导出托管分润记录
- */
-export const exportHostingProfitRecords = (params: HostingProfitListParams) => {
-  // 🟡 使用 Mock 数据（前端独立开发阶段）
-  return mockExportHostingProfitRecords(params)
-
-  // 🔵 后端联调时使用真实 API（待后端开发）
-  // return request.post('/api/profit/hosting/export', params)
-}
-
-// ==================== 差价分润(合作商) ====================
-
-/**
- * 获取差价分润记录列表
- */
-export const getPriceDiffProfitList = (params: PriceDiffProfitListParams) => {
-  // 🟡 使用 Mock 数据（前端独立开发阶段）
-  return mockGetPriceDiffProfitList(params)
-
-  // 🔵 后端联调时使用真实 API（待后端开发）
-  // return request.get('/api/profit/price-diff', { params })
-}
-
-/**
- * 获取差价分润统计
- */
-export const getPriceDiffProfitStats = () => {
-  // 🟡 使用 Mock 数据（前端独立开发阶段）
-  return mockGetPriceDiffProfitStats()
-
-  // 🔵 后端联调时使用真实 API（待后端开发）
-  // return request.get('/api/profit/price-diff/stats')
-}
-
-/**
- * 结算差价分润
- */
-export const settlePriceDiffProfit = (id: number) => {
-  // 🟡 使用 Mock 数据（前端独立开发阶段）
-  return mockSettlePriceDiffProfit(id)
-
-  // 🔵 后端联调时使用真实 API（待后端开发）
-  // return request.post(`/api/profit/price-diff/${id}/settle`)
-}
-
-/**
- * 批量结算差价分润
- */
-export const batchSettlePriceDiffProfit = (ids: number[]) => {
-  // 🟡 使用 Mock 数据（前端独立开发阶段）
-  return mockBatchSettlePriceDiffProfit(ids)
-
-  // 🔵 后端联调时使用真实 API（待后端开发）
-  // return request.post('/api/profit/price-diff/batch-settle', { ids })
-}
-
-/**
- * 支付差价分润
- */
-export const payPriceDiffProfit = (id: number, paymentMethod: string) => {
-  // 🟡 使用 Mock 数据（前端独立开发阶段）
-  return mockPayPriceDiffProfit(id, paymentMethod)
-
-  // 🔵 后端联调时使用真实 API（待后端开发）
-  // return request.post(`/api/profit/price-diff/${id}/pay`, { paymentMethod })
-}
-
-/**
- * 导出差价分润记录
- */
-export const exportPriceDiffProfitRecords = (params: PriceDiffProfitListParams) => {
-  // 🟡 使用 Mock 数据（前端独立开发阶段）
-  return mockExportPriceDiffProfitRecords(params)
-
-  // 🔵 后端联调时使用真实 API（待后端开发）
-  // return request.post('/api/profit/price-diff/export', params)
-}
-
-// ==================== 员工激励分润 ====================
-
-/**
- * 获取员工激励分润记录列表
- */
-export const getEmployeeProfitList = (params: EmployeeProfitListParams) => {
-  // 🟡 使用 Mock 数据（前端独立开发阶段）
-  return mockGetEmployeeProfitList(params)
-
-  // 🔵 后端联调时使用真实 API（待后端开发）
-  // return request.get('/api/profit/employee', { params })
-}
-
-/**
- * 获取员工激励分润统计
- */
-export const getEmployeeProfitStats = () => {
-  // 🟡 使用 Mock 数据（前端独立开发阶段）
-  return mockGetEmployeeProfitStats()
-
-  // 🔵 后端联调时使用真实 API（待后端开发）
-  // return request.get('/api/profit/employee/stats')
-}
-
-/**
- * 结算员工激励分润
- */
-export const settleEmployeeProfit = (id: number) => {
-  // 🟡 使用 Mock 数据（前端独立开发阶段）
-  return mockSettleEmployeeProfit(id)
-
-  // 🔵 后端联调时使用真实 API（待后端开发）
-  // return request.post(`/api/profit/employee/${id}/settle`)
-}
-
-/**
- * 批量结算员工激励分润
- */
-export const batchSettleEmployeeProfit = (ids: number[]) => {
-  // 🟡 使用 Mock 数据（前端独立开发阶段）
-  return mockBatchSettleEmployeeProfit(ids)
-
-  // 🔵 后端联调时使用真实 API（待后端开发）
-  // return request.post('/api/profit/employee/batch-settle', { ids })
-}
-
-/**
- * 支付员工激励分润
- */
-export const payEmployeeProfit = (id: number, paymentMethod: string) => {
-  // 🟡 使用 Mock 数据（前端独立开发阶段）
-  return mockPayEmployeeProfit(id, paymentMethod)
-
-  // 🔵 后端联调时使用真实 API（待后端开发）
-  // return request.post(`/api/profit/employee/${id}/pay`, { paymentMethod })
-}
-
-/**
- * 导出员工激励分润记录
- */
-export const exportEmployeeProfitRecords = (params: EmployeeProfitListParams) => {
-  // 🟡 使用 Mock 数据（前端独立开发阶段）
-  return mockExportEmployeeProfitRecords(params)
-
-  // 🔵 后端联调时使用真实 API（待后端开发）
-  // return request.post('/api/profit/employee/export', params)
-}
-
-// ==================== 推广分润 ====================
-
-/**
- * 获取推广分润记录列表
- */
-export const getPromotionProfitList = (params: PromotionProfitListParams) => {
-  // 🟡 使用 Mock 数据（前端独立开发阶段）
-  return mockGetPromotionProfitList(params)
-
-  // 🔵 后端联调时使用真实 API（待后端开发）
-  // return request.get('/api/profit/promotion', { params })
+export function getPromotionProfitRecords(params: {
+  page: number
+  pageSize: number
+  promoterUserId?: string
+  productType?: ProductType
+  status?: ProfitStatus
+  startDate?: string
+  endDate?: string
+}) {
+  if (USE_MOCK) {
+    return mockGetPromotionProfitRecords(params as any) as any
+  }
+  return request.get<{
+    list: PromotionProfitRecord[]
+    total: number
+  }>('/profit/promotion/records', { params })
 }
 
 /**
  * 获取推广分润统计
  */
-export const getPromotionProfitStats = () => {
-  // 🟡 使用 Mock 数据（前端独立开发阶段）
-  return mockGetPromotionProfitStats()
+export function getPromotionProfitStatistics(params: {
+  promoterUserId?: string
+  productType?: ProductType
+  startDate?: string
+  endDate?: string
+}) {
+  if (USE_MOCK) {
+    return mockGetPromotionProfitStatistics(params as any) as any
+  }
+  return request.get<{
+    totalProfit: number
+    vehicleRentalProfit: number
+    campsiteProfit: number
+    tourProfit: number
+    orderCount: number
+    level1Profit: number
+    level2Profit: number
+    plusMemberReward: number
+  }>('/profit/promotion/statistics', { params })
+}
 
-  // 🔵 后端联调时使用真实 API（待后端开发）
-  // return request.get('/api/profit/promotion/stats')
+// ==================== 托管车主分润相关 ====================
+
+/**
+ * 获取托管分润配置列表
+ */
+export function getHostingProfitConfigs() {
+  if (USE_MOCK) {
+    return mockGetHostingProfitConfigs() as any
+  }
+  return request.get<HostingProfitConfig[]>('/profit/hosting/configs')
 }
 
 /**
- * 结算推广分润
+ * 更新托管分润配置
  */
-export const settlePromotionProfit = (id: number) => {
-  // 🟡 使用 Mock 数据（前端独立开发阶段）
-  return mockSettlePromotionProfit(id)
-
-  // 🔵 后端联调时使用真实 API（待后端开发）
-  // return request.post(`/api/profit/promotion/${id}/settle`)
+export function updateHostingProfitConfig(id: string, data: Partial<HostingProfitConfig>) {
+  return request.put(`/profit/hosting/configs/${id}`, data)
 }
 
 /**
- * 批量结算推广分润
+ * 获取托管分润记录
  */
-export const batchSettlePromotionProfit = (ids: number[]) => {
-  // 🟡 使用 Mock 数据（前端独立开发阶段）
-  return mockBatchSettlePromotionProfit(ids)
-
-  // 🔵 后端联调时使用真实 API（待后端开发）
-  // return request.post('/api/profit/promotion/batch-settle', { ids })
+export function getHostingProfitRecords(params: {
+  page: number
+  pageSize: number
+  ownerId?: string
+  vehicleId?: string
+  hostingType?: HostingType
+  status?: ProfitStatus
+  startDate?: string
+  endDate?: string
+}) {
+  if (USE_MOCK) {
+    return mockGetHostingProfitRecords(params as any) as any
+  }
+  return request.get<{
+    list: HostingProfitRecord[]
+    total: number
+  }>('/profit/hosting/records', { params })
 }
 
 /**
- * 支付推广分润
+ * 获取托管分润统计
  */
-export const payPromotionProfit = (id: number, paymentMethod: string) => {
-  // 🟡 使用 Mock 数据（前端独立开发阶段）
-  return mockPayPromotionProfit(id, paymentMethod)
-
-  // 🔵 后端联调时使用真实 API（待后端开发）
-  // return request.post(`/api/profit/promotion/${id}/pay`, { paymentMethod })
+export function getHostingProfitStatistics(params: {
+  ownerId?: string
+  vehicleId?: string
+  hostingType?: HostingType
+  startDate?: string
+  endDate?: string
+}) {
+  if (USE_MOCK) {
+    return mockGetHostingProfitStatistics(params as any) as any
+  }
+  return request.get<{
+    totalProfit: number
+    totalSubsidy: number
+    orderCount: number
+    avgProfitPerOrder: number
+    ownCarProfit: number
+    newCarProfit: number
+    crowdfundingProfit: number
+  }>('/profit/hosting/statistics', { params })
 }
 
 /**
- * 导出推广分润记录
+ * 计算月度补贴
  */
-export const exportPromotionProfitRecords = (params: PromotionProfitListParams) => {
-  // 🟡 使用 Mock 数据（前端独立开发阶段）
-  return mockExportPromotionProfitRecords(params)
+export function calculateMonthlySubsidy(params: {
+  ownerId: string
+  month: string // YYYY-MM
+}) {
+  return request.post<{
+    totalProfit: number
+    subsidyAmount: number
+    shouldSubsidy: boolean
+  }>('/profit/hosting/subsidy/calculate', params)
+}
 
-  // 🔵 后端联调时使用真实 API（待后端开发）
-  // return request.post('/api/profit/promotion/export', params)
+// ==================== 营地产品分润相关 ====================
+
+/**
+ * 获取营地分润配置列表
+ */
+export function getCampsiteProfitConfigs() {
+  if (USE_MOCK) {
+    return mockGetCampsiteProfitConfigs() as any
+  }
+  return request.get<CampsiteProfitConfig[]>('/profit/campsite/configs')
+}
+
+/**
+ * 更新营地分润配置
+ */
+export function updateCampsiteProfitConfig(id: string, data: Partial<CampsiteProfitConfig>) {
+  return request.put(`/profit/campsite/configs/${id}`, data)
+}
+
+/**
+ * 获取营地分润记录
+ */
+export function getCampsiteProfitRecords(params: {
+  page: number
+  pageSize: number
+  ownerId?: string
+  campsiteId?: string
+  status?: ProfitStatus
+  startDate?: string
+  endDate?: string
+}) {
+  if (USE_MOCK) {
+    return mockGetCampsiteProfitRecords(params as any) as any
+  }
+  return request.get<{
+    list: CampsiteProfitRecord[]
+    total: number
+  }>('/profit/campsite/records', { params })
+}
+
+/**
+ * 获取营地分润统计
+ */
+export function getCampsiteProfitStatistics(params: {
+  ownerId?: string
+  campsiteId?: string
+  startDate?: string
+  endDate?: string
+}) {
+  if (USE_MOCK) {
+    return mockGetCampsiteProfitStatistics(params as any) as any
+  }
+  return request.get<{
+    totalProfit: number
+    orderCount: number
+    bundledOrderCount: number
+    avgProfitPerOrder: number
+  }>('/profit/campsite/statistics', { params })
+}
+
+// ==================== 房车旅游产品分润相关 ====================
+
+/**
+ * 获取旅游分润配置列表
+ */
+export function getTourProfitConfigs() {
+  if (USE_MOCK) {
+    return mockGetTourProfitConfigs() as any
+  }
+  return request.get<TourProfitConfig[]>('/profit/tour/configs')
+}
+
+/**
+ * 更新旅游分润配置
+ */
+export function updateTourProfitConfig(id: string, data: Partial<TourProfitConfig>) {
+  return request.put(`/profit/tour/configs/${id}`, data)
+}
+
+/**
+ * 获取旅游分润记录
+ */
+export function getTourProfitRecords(params: {
+  page: number
+  pageSize: number
+  providerId?: string
+  tourId?: string
+  status?: ProfitStatus
+  startDate?: string
+  endDate?: string
+}) {
+  if (USE_MOCK) {
+    return mockGetTourProfitRecords(params as any) as any
+  }
+  return request.get<{
+    list: TourProfitRecord[]
+    total: number
+  }>('/profit/tour/records', { params })
+}
+
+/**
+ * 获取旅游分润统计
+ */
+export function getTourProfitStatistics(params: {
+  providerId?: string
+  tourId?: string
+  startDate?: string
+  endDate?: string
+}) {
+  if (USE_MOCK) {
+    return mockGetTourProfitStatistics(params as any) as any
+  }
+  return request.get<{
+    totalProfit: number
+    orderCount: number
+    avgRating: number
+    avgProfitPerOrder: number
+  }>('/profit/tour/statistics', { params })
+}
+
+// ==================== 通用功能相关 ====================
+
+/**
+ * 获取分润计算日志
+ */
+export function getProfitCalculationLogs(params: {
+  page: number
+  pageSize: number
+  orderId?: string
+  productType?: ProductType
+  startDate?: string
+  endDate?: string
+}) {
+  return request.get<{
+    list: ProfitCalculationLog[]
+    total: number
+  }>('/profit/calculation-logs', { params })
+}
+
+/**
+ * 获取分润计算日志详情
+ */
+export function getProfitCalculationLogDetail(id: string) {
+  return request.get<ProfitCalculationLog>(`/profit/calculation-logs/${id}`)
+}
+
+/**
+ * 分润模拟器
+ */
+export function simulateProfit(input: ProfitSimulatorInput) {
+  if (USE_MOCK) {
+    return mockSimulateProfit(input) as any
+  }
+  return request.post<ProfitSimulatorOutput>('/profit/simulator', input)
+}
+
+/**
+ * 获取余额记录
+ */
+export function getBalanceRecords(params: {
+  page: number
+  pageSize: number
+  userId?: string
+  minBalance?: number
+}) {
+  if (USE_MOCK) {
+    return mockGetBalanceRecords(params) as any
+  }
+  return request.get<{
+    list: BalanceRecord[]
+    total: number
+  }>('/profit/balance/records', { params })
+}
+
+/**
+ * 获取用户余额详情
+ */
+export function getUserBalance(userId: string) {
+  return request.get<BalanceRecord>(`/profit/balance/${userId}`)
+}
+
+/**
+ * 获取提现申请列表
+ */
+export function getWithdrawalRequests(params: {
+  page: number
+  pageSize: number
+  userId?: string
+  status?: WithdrawalStatus
+  startDate?: string
+  endDate?: string
+}) {
+  if (USE_MOCK) {
+    return mockGetWithdrawalRequests(params as any) as any
+  }
+  return request.get<{
+    list: WithdrawalRequest[]
+    total: number
+  }>('/profit/withdrawal/requests', { params })
+}
+
+/**
+ * 审核提现申请
+ */
+export function reviewWithdrawalRequest(id: string, data: {
+  status: WithdrawalStatus
+  reason?: string
+}) {
+  return request.post(`/profit/withdrawal/requests/${id}/review`, data)
+}
+
+/**
+ * 完成提现
+ */
+export function completeWithdrawal(id: string) {
+  return request.post(`/profit/withdrawal/requests/${id}/complete`)
+}
+
+/**
+ * 获取风控规则列表
+ */
+export function getRiskControlRules() {
+  if (USE_MOCK) {
+    return mockGetRiskControlRules() as any
+  }
+  return request.get<RiskControlRule[]>('/profit/risk-control/rules')
+}
+
+/**
+ * 创建风控规则
+ */
+export function createRiskControlRule(data: Omit<RiskControlRule, 'id' | 'updatedAt'>) {
+  return request.post('/profit/risk-control/rules', data)
+}
+
+/**
+ * 更新风控规则
+ */
+export function updateRiskControlRule(id: string, data: Partial<RiskControlRule>) {
+  return request.put(`/profit/risk-control/rules/${id}`, data)
+}
+
+/**
+ * 删除风控规则
+ */
+export function deleteRiskControlRule(id: string) {
+  return request.delete(`/profit/risk-control/rules/${id}`)
+}
+
+/**
+ * 获取风控记录
+ */
+export function getRiskControlRecords(params: {
+  page: number
+  pageSize: number
+  userId?: string
+  ruleId?: string
+  status?: string
+  startDate?: string
+  endDate?: string
+}) {
+  if (USE_MOCK) {
+    return mockGetRiskControlRecords(params) as any
+  }
+  return request.get<{
+    list: RiskControlRecord[]
+    total: number
+  }>('/profit/risk-control/records', { params })
+}
+
+/**
+ * 处理风控记录
+ */
+export function handleRiskControlRecord(id: string, data: {
+  status: 'confirmed' | 'dismissed'
+  note?: string
+}) {
+  return request.post(`/profit/risk-control/records/${id}/handle`, data)
+}
+
+/**
+ * 获取分润统计
+ */
+export function getProfitStatistics(params: {
+  startDate?: string
+  endDate?: string
+  groupBy?: 'day' | 'week' | 'month'
+}) {
+  return request.get<ProfitStatistics[]>('/profit/statistics', { params })
+}
+
+/**
+ * 获取用户分润排行
+ */
+export function getUserProfitRankings(params: {
+  period: string // YYYY-MM
+  limit?: number
+  userType?: string
+}) {
+  return request.get<UserProfitRanking[]>('/profit/rankings', { params })
+}
+
+/**
+ * 批量支付分润
+ */
+export function batchPayProfit(data: {
+  recordIds: string[]
+  productType: ProductType
+}) {
+  return request.post('/profit/batch-pay', data)
+}
+
+/**
+ * 冻结分润
+ */
+export function freezeProfit(data: {
+  recordIds: string[]
+  reason: string
+}) {
+  return request.post('/profit/freeze', data)
+}
+
+/**
+ * 解冻分润
+ */
+export function unfreezeProfit(data: {
+  recordIds: string[]
+}) {
+  return request.post('/profit/unfreeze', data)
 }

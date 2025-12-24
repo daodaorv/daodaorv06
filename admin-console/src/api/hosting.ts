@@ -11,6 +11,23 @@ import {
   mockReviewOwnerUsageApplication,
   mockGetIncomeRecordList,
   mockGetIncomeStats,
+  mockGetCrowdfundingModelList,
+  mockUpdateCrowdfundingModelConfig,
+  mockBatchSetHotCrowdfunding,
+  mockUpdateCrowdfundingModelOrder,
+  mockGetCrowdfundingProjectList,
+  mockGetCrowdfundingProjectDetail,
+  mockReviewCrowdfundingProject,
+  mockUpdateCrowdfundingProjectStatus,
+  mockGetCrowdfundingOwnerList,
+  mockGetUserCrowdfundingRecords,
+  mockGetCrowdfundingShareList,
+  mockToggleShareLock,
+  mockGetCrowdfundingTransactionList,
+  mockCancelCrowdfundingTransaction,
+  mockGetCrowdfundingIncomeList,
+  mockGetCrowdfundingIncomeStats,
+  mockDistributeCrowdfundingIncome,
   type OldCarHostingApplication,
   type OldCarApplicationListParams,
   type NewCarHostingApplication,
@@ -21,7 +38,19 @@ import {
   type OwnerUsageApplicationListParams,
   type IncomeRecord,
   type IncomeRecordListParams,
-  type IncomeStats
+  type IncomeStats,
+  type CrowdfundingModel,
+  type CrowdfundingModelListParams,
+  type UpdateCrowdfundingModelConfigParams,
+  type CrowdfundingOwnerListParams,
+  type CrowdfundingOwner,
+  type CrowdfundingShareListParams,
+  type CrowdfundingShare,
+  type CrowdfundingTransactionListParams,
+  type CrowdfundingTransaction,
+  type CrowdfundingIncomeListParams,
+  type CrowdfundingIncomeRecord,
+  type CrowdfundingIncomeStats
 } from '@/mock/hosting'
 
 // 导出类型
@@ -36,7 +65,19 @@ export type {
   OwnerUsageApplicationListParams,
   IncomeRecord,
   IncomeRecordListParams,
-  IncomeStats
+  IncomeStats,
+  CrowdfundingModel,
+  CrowdfundingModelListParams,
+  UpdateCrowdfundingModelConfigParams,
+  CrowdfundingOwnerListParams,
+  CrowdfundingOwner,
+  CrowdfundingShareListParams,
+  CrowdfundingShare,
+  CrowdfundingTransactionListParams,
+  CrowdfundingTransaction,
+  CrowdfundingIncomeListParams,
+  CrowdfundingIncomeRecord,
+  CrowdfundingIncomeStats
 }
 
 // ==================== 自有车托管申请 ====================
@@ -275,4 +316,331 @@ export const exportIncomeRecords = (_params: IncomeRecordListParams) => {
 
   // 🔵 后端联调时使用真实 API（待后端开发）
   // return request.post('/api/hosting/income/records/export', params)
+}
+
+// ==================== 众筹车型管理 ====================
+
+/**
+ * 获取众筹车型列表
+ */
+export const getCrowdfundingModelList = (params: CrowdfundingModelListParams) => {
+  // 🟡 使用 Mock 数据（前端独立开发阶段）
+  return mockGetCrowdfundingModelList(params)
+
+  // 🔵 后端联调时使用真实 API（待后端开发）
+  // return request.get('/api/hosting/crowdfunding/models', { params })
+}
+
+/**
+ * 更新车型众筹配置
+ */
+export const updateCrowdfundingModelConfig = (id: number, data: UpdateCrowdfundingModelConfigParams) => {
+  // 🟡 使用 Mock 数据（前端独立开发阶段）
+  return mockUpdateCrowdfundingModelConfig(id, data)
+
+  // 🔵 后端联调时使用真实 API（待后端开发）
+  // return request.put(`/api/hosting/crowdfunding/models/${id}/config`, data)
+}
+
+/**
+ * 批量设置热门推荐
+ */
+export const batchSetHotCrowdfunding = (ids: number[], isHot: boolean) => {
+  // 🟡 使用 Mock 数据（前端独立开发阶段）
+  return mockBatchSetHotCrowdfunding(ids, isHot)
+
+  // 🔵 后端联调时使用真实 API（待后端开发）
+  // return request.post('/api/hosting/crowdfunding/models/batch-hot', { ids, isHot })
+}
+
+/**
+ * 更新展示排序
+ */
+export const updateCrowdfundingModelOrder = (id: number, order: number) => {
+  // 🟡 使用 Mock 数据(前端独立开发阶段)
+  return mockUpdateCrowdfundingModelOrder(id, order)
+
+  // 🔵 后端联调时使用真实 API(待后端开发)
+  // return request.put(`/api/hosting/crowdfunding/models/${id}/order`, { order })
+}
+
+// ==================== 众筹项目管理 ====================
+
+/**
+ * 获取众筹项目列表
+ */
+export const getCrowdfundingProjectList = (params: any) => {
+  // 🟡 使用 Mock 数据(前端独立开发阶段)
+  return mockGetCrowdfundingProjectList(params)
+
+  // 🔵 后端联调时使用真实 API(待后端开发)
+  // return request.get('/api/hosting/crowdfunding/projects', { params })
+}
+
+/**
+ * 获取众筹项目详情
+ */
+export const getCrowdfundingProjectDetail = (id: number) => {
+  // 🟡 使用 Mock 数据(前端独立开发阶段)
+  return mockGetCrowdfundingProjectDetail(id)
+
+  // 🔵 后端联调时使用真实 API(待后端开发)
+  // return request.get(`/api/hosting/crowdfunding/projects/${id}`)
+}
+
+/**
+ * 审核众筹项目
+ */
+export const reviewCrowdfundingProject = (id: number, approved: boolean, comment: string) => {
+  // 🟡 使用 Mock 数据(前端独立开发阶段)
+  return mockReviewCrowdfundingProject(id, approved, comment)
+
+  // 🔵 后端联调时使用真实 API(待后端开发)
+  // return request.post(`/api/hosting/crowdfunding/projects/${id}/review`, { approved, comment })
+}
+
+/**
+ * 更新众筹项目状态
+ */
+export const updateCrowdfundingProjectStatus = (id: number, status: string, remark: string) => {
+  // 🟡 使用 Mock 数据(前端独立开发阶段)
+  return mockUpdateCrowdfundingProjectStatus(id, status, remark)
+
+  // 🔵 后端联调时使用真实 API(待后端开发)
+  // return request.post(`/api/hosting/crowdfunding/projects/${id}/status`, { status, remark })
+}
+
+// ==================== 众筹车主管理 ====================
+
+/**
+ * 获取众筹车主列表
+ */
+export const getCrowdfundingOwnerList = (params: CrowdfundingOwnerListParams) => {
+  // 🟡 使用 Mock 数据(前端独立开发阶段)
+  return mockGetCrowdfundingOwnerList(params)
+
+  // 🔵 后端联调时使用真实 API(待后端开发)
+  // return request.get('/api/hosting/crowdfunding/owners', { params })
+}
+
+/**
+ * 获取用户众筹参与记录
+ */
+export const getUserCrowdfundingRecords = (userId: number) => {
+  // 🟡 使用 Mock 数据(前端独立开发阶段)
+  return mockGetUserCrowdfundingRecords(userId)
+
+  // 🔵 后端联调时使用真实 API(待后端开发)
+  // return request.get(`/api/hosting/crowdfunding/owners/${userId}/records`)
+}
+
+// ==================== 份额管理 ====================
+
+/**
+ * 获取份额列表
+ */
+export const getCrowdfundingShareList = (params: CrowdfundingShareListParams) => {
+  // 🟡 使用 Mock 数据(前端独立开发阶段)
+  return mockGetCrowdfundingShareList(params)
+
+  // 🔵 后端联调时使用真实 API(待后端开发)
+  // return request.get('/api/hosting/crowdfunding/shares', { params })
+}
+
+/**
+ * 锁定/解锁份额
+ */
+export const toggleShareLock = (id: number, locked: boolean) => {
+  // 🟡 使用 Mock 数据(前端独立开发阶段)
+  return mockToggleShareLock(id, locked)
+
+  // 🔵 后端联调时使用真实 API(待后端开发)
+  // return request.post(`/api/hosting/crowdfunding/shares/${id}/lock`, { locked })
+}
+
+// ==================== 份额交易监管 ====================
+
+/**
+ * 获取份额交易列表
+ */
+export const getCrowdfundingTransactionList = (params: CrowdfundingTransactionListParams) => {
+  // 🟡 使用 Mock 数据(前端独立开发阶段)
+  return mockGetCrowdfundingTransactionList(params)
+
+  // 🔵 后端联调时使用真实 API(待后端开发)
+  // return request.get('/api/hosting/crowdfunding/transactions', { params })
+}
+
+/**
+ * 取消交易
+ */
+export const cancelCrowdfundingTransaction = (id: number, reason: string) => {
+  // 🟡 使用 Mock 数据(前端独立开发阶段)
+  return mockCancelCrowdfundingTransaction(id, reason)
+
+  // 🔵 后端联调时使用真实 API(待后端开发)
+  // return request.post(`/api/hosting/crowdfunding/transactions/${id}/cancel`, { reason })
+}
+
+// ==================== 收益分配管理 ====================
+
+/**
+ * 获取收益分配列表
+ */
+export const getCrowdfundingIncomeList = (params: CrowdfundingIncomeListParams) => {
+  // 🟡 使用 Mock 数据(前端独立开发阶段)
+  return mockGetCrowdfundingIncomeList(params)
+
+  // 🔵 后端联调时使用真实 API(待后端开发)
+  // return request.get('/api/hosting/crowdfunding/income', { params })
+}
+
+/**
+ * 获取收益统计
+ */
+export const getCrowdfundingIncomeStats = () => {
+  // 🟡 使用 Mock 数据(前端独立开发阶段)
+  return mockGetCrowdfundingIncomeStats()
+
+  // 🔵 后端联调时使用真实 API(待后端开发)
+  // return request.get('/api/hosting/crowdfunding/income/stats')
+}
+
+/**
+ * 执行收益分配
+ */
+export const distributeCrowdfundingIncome = (data: {
+  projectId: number
+  orderId: string
+  totalIncome: number
+}) => {
+  // 🟡 使用 Mock 数据(前端独立开发阶段)
+  return mockDistributeCrowdfundingIncome(data)
+
+  // 🔵 后端联调时使用真实 API(待后端开发)
+  // return request.post('/api/hosting/crowdfunding/income/distribute', data)
+}
+
+// ==================== 车主自用费用配置 ====================
+
+/**
+ * 获取车主自用费用配置列表
+ */
+export const getOwnerUsageFeeConfigList = (params: any) => {
+  // 🟡 使用 Mock 数据(前端独立开发阶段)
+  return Promise.resolve({
+    data: {
+      list: [],
+      total: 0
+    }
+  })
+
+  // 🔵 后端联调时使用真实 API(待后端开发)
+  // return request.get('/api/hosting/owner-usage-fee-config', { params })
+}
+
+/**
+ * 创建车主自用费用配置
+ */
+export const createOwnerUsageFeeConfig = (data: any) => {
+  // 🟡 使用 Mock 数据(前端独立开发阶段)
+  return Promise.resolve({ data: { id: Date.now() } })
+
+  // 🔵 后端联调时使用真实 API(待后端开发)
+  // return request.post('/api/hosting/owner-usage-fee-config', data)
+}
+
+/**
+ * 更新车主自用费用配置
+ */
+export const updateOwnerUsageFeeConfig = (id: number, data: any) => {
+  // 🟡 使用 Mock 数据(前端独立开发阶段)
+  return Promise.resolve({ data: { success: true } })
+
+  // 🔵 后端联调时使用真实 API(待后端开发)
+  // return request.put(`/api/hosting/owner-usage-fee-config/${id}`, data)
+}
+
+/**
+ * 删除车主自用费用配置
+ */
+export const deleteOwnerUsageFeeConfig = (id: number) => {
+  // 🟡 使用 Mock 数据(前端独立开发阶段)
+  return Promise.resolve({ data: { success: true } })
+
+  // 🔵 后端联调时使用真实 API(待后端开发)
+  // return request.delete(`/api/hosting/owner-usage-fee-config/${id}`)
+}
+
+/**
+ * 获取车主自用费用配置历史记录
+ */
+export const getOwnerUsageFeeConfigHistory = (configId: number) => {
+  // 🟡 使用 Mock 数据(前端独立开发阶段)
+  return Promise.resolve({ data: [] })
+
+  // 🔵 后端联调时使用真实 API(待后端开发)
+  // return request.get(`/api/hosting/owner-usage-fee-config/${configId}/history`)
+}
+
+// ==================== 淡季补贴配置 ====================
+
+/**
+ * 获取淡季补贴配置列表
+ */
+export const getSeasonalSubsidyConfigList = (params: any) => {
+  // 🟡 使用 Mock 数据(前端独立开发阶段)
+  return Promise.resolve({
+    data: {
+      list: [],
+      total: 0
+    }
+  })
+
+  // 🔵 后端联调时使用真实 API(待后端开发)
+  // return request.get('/api/hosting/seasonal-subsidy-config', { params })
+}
+
+/**
+ * 创建淡季补贴配置
+ */
+export const createSeasonalSubsidyConfig = (data: any) => {
+  // 🟡 使用 Mock 数据(前端独立开发阶段)
+  return Promise.resolve({ data: { id: Date.now() } })
+
+  // 🔵 后端联调时使用真实 API(待后端开发)
+  // return request.post('/api/hosting/seasonal-subsidy-config', data)
+}
+
+/**
+ * 更新淡季补贴配置
+ */
+export const updateSeasonalSubsidyConfig = (id: number, data: any) => {
+  // 🟡 使用 Mock 数据(前端独立开发阶段)
+  return Promise.resolve({ data: { success: true } })
+
+  // 🔵 后端联调时使用真实 API(待后端开发)
+  // return request.put(`/api/hosting/seasonal-subsidy-config/${id}`, data)
+}
+
+/**
+ * 删除淡季补贴配置
+ */
+export const deleteSeasonalSubsidyConfig = (id: number) => {
+  // 🟡 使用 Mock 数据(前端独立开发阶段)
+  return Promise.resolve({ data: { success: true } })
+
+  // 🔵 后端联调时使用真实 API(待后端开发)
+  // return request.delete(`/api/hosting/seasonal-subsidy-config/${id}`)
+}
+
+/**
+ * 获取淡季补贴配置历史记录
+ */
+export const getSeasonalSubsidyConfigHistory = (configId: number) => {
+  // 🟡 使用 Mock 数据(前端独立开发阶段)
+  return Promise.resolve({ data: [] })
+
+  // 🔵 后端联调时使用真实 API(待后端开发)
+  // return request.get(`/api/hosting/seasonal-subsidy-config/${configId}/history`)
 }

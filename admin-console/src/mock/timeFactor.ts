@@ -232,7 +232,6 @@ export const mockGetNationalHolidayList = (params: NationalHolidayListParams): P
 
       // 过滤已过期的节假日（只保留当前日期向后1年的数据）
       const now = new Date()
-      const oneYearLater = new Date(now.getTime() + 365 * 24 * 60 * 60 * 1000)
 
       filteredList = filteredList.filter(item => {
         const endDate = new Date(item.endDate)

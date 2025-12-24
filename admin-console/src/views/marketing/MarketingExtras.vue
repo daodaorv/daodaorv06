@@ -26,6 +26,11 @@
           {{ getExtraFeeTypeLabel(row.type) }}
         </el-tag>
       </template>
+      <template #ownerType="{ row }">
+        <el-tag :type="row.ownerType === 'platform' ? 'success' : 'primary'" size="small">
+          {{ row.ownerType === 'platform' ? '平台' : row.storeName || '门店' }}
+        </el-tag>
+      </template>
       <template #status="{ row }">
         <el-tag :type="(getExtraFeeStatusTag(row.status)) as any" size="small">
           {{ getExtraFeeStatusLabel(row.status) }}
@@ -81,6 +86,14 @@
             {{ currentExtraFee.isRequired ? '必选' : '可选' }}
           </el-tag>
         </el-descriptions-item>
+        <el-descriptions-item label="归属方">
+          <el-tag :type="currentExtraFee.ownerType === 'platform' ? 'success' : 'primary'" size="small">
+            {{ currentExtraFee.ownerType === 'platform' ? '平台' : '门店' }}
+          </el-tag>
+        </el-descriptions-item>
+        <el-descriptions-item label="所属门店">
+          {{ currentExtraFee.storeName || '-' }}
+        </el-descriptions-item>
         <el-descriptions-item label="创建人">{{ currentExtraFee.createdBy }}</el-descriptions-item>
         <el-descriptions-item label="创建时间">{{ currentExtraFee.createdAt }}</el-descriptions-item>
         <el-descriptions-item label="费用说明" :span="2">
@@ -106,12 +119,19 @@ import type { SearchField } from '@/components/common/SearchForm.vue'
 import type { TableColumn, TableAction, ToolbarButton } from '@/components/common/DataTable.vue'
 import {
   getExtraFeeList,
+  createExtraFee,
+  updateExtraFee,
+  deleteExtraFee,
   type ExtraFee,
   type ExtraFeeListParams
 } from '@/api/marketing'
+import { getStoreList } from '@/api/store'
 import { useErrorHandler } from '@/composables'
 
 const { handleApiError } = useErrorHandler()
+
+// 门店选项
+const storeOptions = ref<Array<{ label: string; value: number }>>([])
 
 const EXTRA_FEE_TYPE_OPTIONS = [
   { label: '保险服务', value: 'insurance' },
@@ -123,6 +143,11 @@ const EXTRA_FEE_TYPE_OPTIONS = [
 const EXTRA_FEE_STATUS_OPTIONS = [
   { label: '生效中', value: 'active' },
   { label: '未生效', value: 'inactive' }
+]
+
+const OWNER_TYPE_OPTIONS = [
+  { label: '平台', value: 'platform' },
+  { label: '门店', value: 'store' }
 ]
 
 const searchForm = reactive<ExtraFeeListParams>({
@@ -161,10 +186,11 @@ const tableColumns: TableColumn[] = [
   { prop: 'id', label: 'ID', width: 80 },
   { prop: 'name', label: '费用名称', minWidth: 180 },
   { prop: 'type', label: '类型', width: 120, slot: 'type' },
+  { prop: 'ownerType', label: '归属方', width: 120, slot: 'ownerType' },
   { prop: 'status', label: '状态', width: 100, slot: 'status' },
   { prop: 'price', label: '价格', width: 120, slot: 'price' },
   { prop: 'isRequired', label: '是否必选', width: 100, slot: 'isRequired' },
-  { prop: 'description', label: '说明', minWidth: 250 },
+  { prop: 'description', label: '说明', minWidth: 200 },
   { prop: 'createdBy', label: '创建人', width: 120 }
 ]
 
@@ -232,7 +258,11 @@ const formData = reactive({
   price: 0,
   unit: '天',
   isRequired: false,
-  description: ''
+  description: '',
+  ownerType: 'platform',
+  storeId: undefined as number | undefined,
+  autoAllocate: false,
+  allocationStrategy: 'split_evenly' as 'same_store' | 'split_evenly' | 'custom'
 })
 
 // 表单字段配置
@@ -280,6 +310,66 @@ const formFields = computed(() => [
   },
   {
     type: 'divider',
+    label: '归属方配置',
+    tip: '配置费用的归属和分配规则'
+  },
+  {
+    type: 'row',
+    columns: [
+      {
+        prop: 'autoAllocate',
+        label: '自动分配',
+        type: 'switch',
+        span: 24,
+        tip: '开启后,费用将根据订单的取车和还车门店自动分配。关闭则使用固定归属方'
+      }
+    ]
+  },
+  {
+    type: 'row',
+    columns: [
+      {
+        prop: 'ownerType',
+        label: '归属方',
+        type: 'select',
+        options: [
+          { label: '平台', value: 'platform' },
+          { label: '门店', value: 'store' }
+        ],
+        span: 12,
+        tip: '选择费用固定归属方',
+        show: !formData.autoAllocate
+      },
+      {
+        prop: 'storeId',
+        label: '所属门店',
+        type: 'select',
+        options: storeOptions.value,
+        span: 12,
+        tip: '当归属方为门店时必选',
+        show: !formData.autoAllocate && formData.ownerType === 'store'
+      }
+    ]
+  },
+  {
+    type: 'row',
+    columns: [
+      {
+        prop: 'allocationStrategy',
+        label: '分配策略',
+        type: 'select',
+        options: [
+          { label: '同店100%归属', value: 'same_store' },
+          { label: '不同店平均分配', value: 'split_evenly' }
+        ],
+        span: 24,
+        tip: '同店:取还车同一门店时100%归该店;不同店:取还车不同门店时平均分配',
+        show: formData.autoAllocate
+      }
+    ]
+  },
+  {
+    type: 'divider',
     label: '价格设置'
   },
   {
@@ -322,7 +412,46 @@ const formRules = {
   type: [{ required: true, message: '请选择费用类型', trigger: 'change' }],
   status: [{ required: true, message: '请选择费用状态', trigger: 'change' }],
   price: [{ required: true, message: '请输入费用价格', trigger: 'blur' }],
-  unit: [{ required: true, message: '请选择计费单位', trigger: 'change' }]
+  unit: [{ required: true, message: '请选择计费单位', trigger: 'change' }],
+  ownerType: [
+    {
+      required: false,
+      validator: (_rule: any, value: any, callback: any) => {
+        if (!formData.autoAllocate && !value) {
+          callback(new Error('当未开启自动分配时，必须选择归属方'))
+        } else {
+          callback()
+        }
+      },
+      trigger: 'change'
+    }
+  ],
+  storeId: [
+    {
+      required: false,
+      validator: (_rule: any, value: any, callback: any) => {
+        if (!formData.autoAllocate && formData.ownerType === 'store' && !value) {
+          callback(new Error('当归属方为门店时，必须选择所属门店'))
+        } else {
+          callback()
+        }
+      },
+      trigger: 'change'
+    }
+  ],
+  allocationStrategy: [
+    {
+      required: false,
+      validator: (_rule: any, value: any, callback: any) => {
+        if (formData.autoAllocate && !value) {
+          callback(new Error('当开启自动分配时，必须选择分配策略'))
+        } else {
+          callback()
+        }
+      },
+      trigger: 'change'
+    }
+  ]
 }
 
 const loadExtraFeeList = async () => {
@@ -366,6 +495,10 @@ const resetForm = () => {
   formData.unit = '天'
   formData.isRequired = false
   formData.description = ''
+  formData.ownerType = 'platform'
+  formData.storeId = undefined
+  formData.autoAllocate = false
+  formData.allocationStrategy = 'split_evenly'
 }
 
 // 创建费用
@@ -392,6 +525,10 @@ const handleEdit = (row: ExtraFee) => {
   formData.unit = row.unit
   formData.isRequired = row.isRequired
   formData.description = row.description
+  formData.ownerType = row.ownerType
+  formData.storeId = row.storeId
+  formData.autoAllocate = row.autoAllocate || false
+  formData.allocationStrategy = row.allocationStrategy || 'split_evenly'
 
   dialogVisible.value = true
 }
@@ -415,7 +552,7 @@ const handleDelete = async (row: ExtraFee) => {
       }
     )
 
-    // TODO: 调用删除API
+    await deleteExtraFee(row.id)
     ElMessage.success('删除成功')
     loadExtraFeeList()
   } catch (error) {
@@ -429,11 +566,11 @@ const handleDelete = async (row: ExtraFee) => {
 const handleSubmit = async (_data: any) => {
   submitLoading.value = true
   try {
-    if (isEdit.value) {
-      // TODO: 调用编辑API
+    if (isEdit.value && currentExtraFeeId.value) {
+      await updateExtraFee(currentExtraFeeId.value, formData)
       ElMessage.success('编辑成功')
     } else {
-      // TODO: 调用创建API
+      await createExtraFee(formData)
       ElMessage.success('创建成功')
     }
 
@@ -492,8 +629,22 @@ const getExtraFeeStatusLabel = (status: string) => {
   return labelMap[status] || status
 }
 
+// 加载门店列表
+const loadStoreList = async () => {
+  try {
+    const res = await getStoreList({ page: 1, pageSize: 1000 }) as any
+    storeOptions.value = res.data.list.map((store: any) => ({
+      label: store.name,
+      value: store.id
+    }))
+  } catch (error) {
+    handleApiError(error, '加载门店列表失败')
+  }
+}
+
 onMounted(() => {
   loadExtraFeeList()
+  loadStoreList()
 })
 </script>
 

@@ -28,6 +28,12 @@
           {{ row.cooperationStatus === 'active' ? '合作中' : '已停止' }}
         </el-tag>
       </template>
+      <template #contractStatus="{ row }">
+        <el-tag v-if="row.currentContract" :type="CONTRACT_STATUS_TYPE[row.currentContract.status]" size="small">
+          {{ CONTRACT_STATUS_TEXT[row.currentContract.status] }}
+        </el-tag>
+        <el-tag v-else type="info" size="small">无合同</el-tag>
+      </template>
       <template #qualityRating="{ row }">
         <el-rate v-model="row.qualityRating" disabled show-score text-color="#ff9900" />
       </template>
@@ -35,6 +41,26 @@
         ¥{{ row.totalCost.toLocaleString() }}
       </template>
     </DataTable>
+
+    <!-- 合作协议管理对话框 -->
+    <el-dialog
+      v-model="contractDialogVisible"
+      title="合作协议管理"
+      width="1200px"
+      destroy-on-close
+    >
+      <ContractManagement v-if="currentSupplierId" :supplier-id="currentSupplierId" />
+    </el-dialog>
+
+    <!-- 服务列表管理对话框 -->
+    <el-dialog
+      v-model="serviceDialogVisible"
+      title="服务列表管理"
+      width="1000px"
+      destroy-on-close
+    >
+      <ServiceManagement v-if="currentSupplierId" :supplier-id="currentSupplierId" />
+    </el-dialog>
 
     <!-- 新增/编辑供应商对话框 -->
     <el-dialog
@@ -75,6 +101,9 @@
         </el-row>
         <el-form-item label="地址" prop="address">
           <el-input v-model="form.address" placeholder="请输入地址" />
+        </el-form-item>
+        <el-form-item label="所在城市" prop="city">
+          <CitySelector v-model="form.city" width="100%" />
         </el-form-item>
         <el-form-item label="服务范围" prop="serviceScope">
           <el-input v-model="form.serviceScope" type="textarea" :rows="2" placeholder="请输入服务范围" />
@@ -121,10 +150,13 @@
 // @ts-nocheck
 import { ref, reactive, computed, onMounted } from 'vue'
 import { ElMessage, ElMessageBox, type FormInstance, type FormRules } from 'element-plus'
-import { Plus, Edit, Delete } from '@element-plus/icons-vue'
+import { Plus, Edit, Delete, Document, List } from '@element-plus/icons-vue'
 import StatsCard from '@/components/common/StatsCard.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'
+import CitySelector from '@/components/common/CitySelector.vue'
+import ContractManagement from './components/ContractManagement.vue'
+import ServiceManagement from './components/ServiceManagement.vue'
 import type { SearchField } from '@/components/common/SearchForm.vue'
 import type { TableColumn, TableAction, ToolbarButton } from '@/components/common/DataTable.vue'
 import {
@@ -138,6 +170,7 @@ import {
   type CreateSupplierParams,
   type SupplierType
 } from '@/api/supplier'
+import { CONTRACT_STATUS_TEXT, CONTRACT_STATUS_TYPE } from '@/types/supplier'
 
 // Props
 interface Props {
@@ -154,7 +187,8 @@ const props = withDefaults(defineProps<Props>(), {
 // 搜索表单
 const searchForm = ref({
   keyword: '',
-  cooperationStatus: ''
+  cooperationStatus: '',
+  city: ''
 })
 
 // 搜索字段配置
@@ -174,6 +208,12 @@ const searchFields: SearchField[] = [
       { label: '合作中', value: 'active' },
       { label: '已停止', value: 'inactive' }
     ]
+  },
+  {
+    type: 'custom',
+    prop: 'city',
+    label: '城市',
+    component: CitySelector
   }
 ]
 
@@ -263,12 +303,14 @@ const pagination = reactive({
 const tableColumns: TableColumn[] = [
   { prop: 'id', label: 'ID', width: 80 },
   { prop: 'name', label: '供应商名称', width: 180 },
+  { prop: 'city', label: '城市', width: 100 },
   { prop: 'contactPerson', label: '联系人', width: 100 },
   { prop: 'phone', label: '联系电话', width: 130 },
   { prop: 'serviceScope', label: '服务范围', minWidth: 200 },
   { prop: 'priceRange', label: '价格区间', width: 150 },
   { prop: 'qualityRating', label: '质量评级', width: 150, slot: 'qualityRating' },
   { prop: 'cooperationStatus', label: '合作状态', width: 100, slot: 'cooperationStatus' },
+  { prop: 'contractStatus', label: '合同状态', width: 100, slot: 'contractStatus' },
   { prop: 'serviceCount', label: '服务次数', width: 100 },
   { prop: 'totalCost', label: '总成本', width: 120, slot: 'totalCost' }
 ]
@@ -280,6 +322,18 @@ const tableActions: TableAction[] = [
     type: 'primary',
     icon: Edit,
     onClick: (row: Supplier) => handleEdit(row)
+  },
+  {
+    label: '合作协议',
+    type: 'primary',
+    icon: Document,
+    onClick: (row: Supplier) => handleContractManage(row)
+  },
+  {
+    label: '服务列表',
+    type: 'success',
+    icon: List,
+    onClick: (row: Supplier) => handleServiceManage(row)
   },
   {
     label: '删除',
@@ -306,6 +360,13 @@ const formRef = ref<FormInstance>()
 const submitLoading = ref(false)
 const editingId = ref<number | null>(null)
 
+// 合作协议管理对话框
+const contractDialogVisible = ref(false)
+const currentSupplierId = ref<number | null>(null)
+
+// 服务列表管理对话框
+const serviceDialogVisible = ref(false)
+
 const form = reactive<CreateSupplierParams>({
   name: '',
   type: props.supplierType || 'maintenance',
@@ -313,6 +374,7 @@ const form = reactive<CreateSupplierParams>({
   phone: '',
   email: '',
   address: '',
+  city: '',
   serviceScope: '',
   priceRange: '',
   qualityRating: 5,
@@ -332,6 +394,7 @@ const formRules: FormRules = {
     { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' }
   ],
   address: [{ required: true, message: '请输入地址', trigger: 'blur' }],
+  city: [{ required: true, message: '请选择城市', trigger: 'change' }],
   serviceScope: [{ required: true, message: '请输入服务范围', trigger: 'blur' }],
   priceRange: [{ required: true, message: '请输入价格区间', trigger: 'blur' }],
   cooperationStatus: [{ required: true, message: '请选择合作状态', trigger: 'change' }]
@@ -380,7 +443,8 @@ function handleSearch() {
 function handleReset() {
   searchForm.value = {
     keyword: '',
-    cooperationStatus: ''
+    cooperationStatus: '',
+    city: ''
   }
   pagination.page = 1
   fetchSupplierList()
@@ -405,6 +469,7 @@ function handleEdit(row: Supplier) {
     phone: row.phone,
     email: row.email,
     address: row.address,
+    city: row.city,
     serviceScope: row.serviceScope,
     priceRange: row.priceRange,
     qualityRating: row.qualityRating,
@@ -478,6 +543,7 @@ function resetForm() {
     phone: '',
     email: '',
     address: '',
+    city: '',
     serviceScope: '',
     priceRange: '',
     qualityRating: 5,
@@ -485,6 +551,18 @@ function resetForm() {
     contractUrl: ''
   })
   formRef.value?.clearValidate()
+}
+
+// 合作协议管理
+function handleContractManage(row: Supplier) {
+  currentSupplierId.value = row.id
+  contractDialogVisible.value = true
+}
+
+// 服务列表管理
+function handleServiceManage(row: Supplier) {
+  currentSupplierId.value = row.id
+  serviceDialogVisible.value = true
 }
 
 // 分页

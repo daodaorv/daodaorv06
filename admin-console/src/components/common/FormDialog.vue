@@ -87,6 +87,7 @@ export interface FormField {
     | 'timerange'
     | 'cascader'
     | 'upload'
+    | 'richtext'
     | 'row'
     | 'divider'
     | 'custom'
@@ -112,6 +113,8 @@ export interface FormField {
   style?: Record<string, any>
   class?: string
   tip?: string
+  height?: string
+  showWordCount?: boolean
 }
 
 const props = withDefaults(

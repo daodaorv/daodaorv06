@@ -17,7 +17,43 @@ export type OrderStatus =
 export type PaymentStatus = 'unpaid' | 'paid' | 'refunding' | 'refunded'
 
 // 订单类型
-export type OrderType = 'hosting' | 'cooperative'
+export type OrderType = 'hosting' | 'cooperative' | 'tour'
+
+// 费用分配规则（从 marketing.ts 导入类型）
+export interface FeeAllocationRule {
+  partyType: 'platform' | 'pickup_store' | 'return_store' | 'service_store'
+  partyId?: number
+  partyName?: string
+  percentage: number         // 分配比例（0-100）
+  amount?: number            // 实际分配金额（计算后填充）
+}
+
+// 特殊费用计算方式
+export type SpecialFeeCalculationType = 'fixed' | 'distance'
+
+// 订单增值费用明细（扩展）
+export interface OrderExtraFee {
+  extraFeeId: number                  // 增值费用ID
+  name: string                        // 费用名称
+  type: string                        // 费用类型
+  price: number                       // 单价
+  quantity: number                    // 数量
+  unit: string                        // 计费单位
+  totalAmount: number                 // 总金额
+  ownerType: 'platform' | 'store' | 'multi_party'  // 归属方（扩展）
+  storeId?: number                    // 门店ID
+  storeName?: string                  // 门店名称
+
+  // 多方分配信息（新增）
+  allocations?: FeeAllocationRule[]   // 分配明细
+
+  // 特殊费用计算信息（新增）
+  calculationType?: SpecialFeeCalculationType
+  distanceKm?: number                 // 计算使用的公里数
+  distanceUnitPrice?: number          // 距离单价
+
+  addedAt: string                     // 添加时间
+}
 
 // 订单信息
 export interface Order {
@@ -32,6 +68,7 @@ export interface Order {
   vehicleNumber: string
   storeId: number
   storeName: string
+  storeType?: 'direct' | 'franchise' | 'cooperative' // 门店类型
   status: OrderStatus
   paymentStatus: PaymentStatus
   startDate: string
@@ -46,8 +83,13 @@ export interface Order {
   actualAmount: number
   paidAmount: number
   refundAmount: number
-  pickupStore: string
-  returnStore: string
+
+  // 取车还车门店信息（扩展）
+  pickupStoreId: number               // 取车门店ID（新增）
+  pickupStore: string                 // 取车门店名称
+  returnStoreId: number               // 还车门店ID（新增）
+  returnStore: string                 // 还车门店名称
+
   pickupTime: string
   returnTime: string
   driverName: string
@@ -63,6 +105,15 @@ export interface Order {
   confirmedAt: string
   completedAt: string
   cancelledAt: string
+
+  // 合作商订单信息（仅当门店类型为 cooperative 时使用）
+  partnerOrderNo?: string // 合作商订单编号
+  partnerOrderPrice?: number // 合作商订单价格
+  priceDifference?: number // 差价（平台订单价格 - 合作商订单价格）
+
+  // 新增字段：增值费用
+  extraFees: OrderExtraFee[]          // 增值费用明细列表
+  extraFeesAmount: number             // 增值费用总额
 }
 
 // 订单统计
@@ -105,7 +156,9 @@ const mockOrders: Order[] = [
     actualAmount: 3500,
     paidAmount: 8500,
     refundAmount: 0,
+    pickupStoreId: 1,
     pickupStore: '北京朝阳店',
+    returnStoreId: 1,
     returnStore: '北京朝阳店',
     pickupTime: '2025-12-01 09:00:00',
     returnTime: '2025-12-05 18:00:00',
@@ -121,7 +174,9 @@ const mockOrders: Order[] = [
     updatedAt: '2025-12-01T09:00:00.000Z',
     confirmedAt: '2025-11-28T14:00:00.000Z',
     completedAt: '',
-    cancelledAt: ''
+    cancelledAt: '',
+    extraFees: [],
+    extraFeesAmount: 0
   },
   {
     id: 2,
@@ -135,6 +190,7 @@ const mockOrders: Order[] = [
     vehicleNumber: '沪B67890',
     storeId: 2,
     storeName: '上海浦东店',
+    storeType: 'direct',
     status: 'confirmed',
     paymentStatus: 'paid',
     startDate: '2025-12-05',
@@ -149,7 +205,9 @@ const mockOrders: Order[] = [
     actualAmount: 4700,
     paidAmount: 10700,
     refundAmount: 0,
+    pickupStoreId: 2,
     pickupStore: '上海浦东店',
+    returnStoreId: 2,
     returnStore: '上海浦东店',
     pickupTime: '2025-12-05 10:00:00',
     returnTime: '2025-12-10 17:00:00',
@@ -165,7 +223,9 @@ const mockOrders: Order[] = [
     updatedAt: '2025-11-29T15:00:00.000Z',
     confirmedAt: '2025-11-29T15:00:00.000Z',
     completedAt: '',
-    cancelledAt: ''
+    cancelledAt: '',
+    extraFees: [],
+    extraFeesAmount: 0
   },
   {
     id: 3,
@@ -193,7 +253,9 @@ const mockOrders: Order[] = [
     actualAmount: 5000,
     paidAmount: 13000,
     refundAmount: 8000,
+    pickupStoreId: 3,
     pickupStore: '广州天河加盟店',
+    returnStoreId: 3,
     returnStore: '广州天河加盟店',
     pickupTime: '2025-11-20 09:00:00',
     returnTime: '2025-11-25 18:00:00',
@@ -209,7 +271,9 @@ const mockOrders: Order[] = [
     updatedAt: '2025-11-25T18:30:00.000Z',
     confirmedAt: '2025-11-15T14:00:00.000Z',
     completedAt: '2025-11-25T18:30:00.000Z',
-    cancelledAt: ''
+    cancelledAt: '',
+    extraFees: [],
+    extraFeesAmount: 0
   },
   {
     id: 4,
@@ -237,7 +301,9 @@ const mockOrders: Order[] = [
     actualAmount: 8200,
     paidAmount: 18200,
     refundAmount: 0,
+    pickupStoreId: 1,
     pickupStore: '北京朝阳店',
+    returnStoreId: 1,
     returnStore: '北京朝阳店',
     pickupTime: '2025-12-10 10:00:00',
     returnTime: '2025-12-15 17:00:00',
@@ -253,7 +319,9 @@ const mockOrders: Order[] = [
     updatedAt: '2025-12-02T10:30:00.000Z',
     confirmedAt: '',
     completedAt: '',
-    cancelledAt: ''
+    cancelledAt: '',
+    extraFees: [],
+    extraFeesAmount: 0
   },
   {
     id: 5,
@@ -281,7 +349,9 @@ const mockOrders: Order[] = [
     actualAmount: 2980,
     paidAmount: 6980,
     refundAmount: 6980,
+    pickupStoreId: 5,
     pickupStore: '成都武侯店',
+    returnStoreId: 5,
     returnStore: '成都武侯店',
     pickupTime: '2025-12-08 09:00:00',
     returnTime: '2025-12-12 18:00:00',
@@ -297,7 +367,9 @@ const mockOrders: Order[] = [
     updatedAt: '2025-12-01T16:00:00.000Z',
     confirmedAt: '2025-11-30T14:00:00.000Z',
     completedAt: '',
-    cancelledAt: '2025-12-01T16:00:00.000Z'
+    cancelledAt: '2025-12-01T16:00:00.000Z',
+    extraFees: [],
+    extraFeesAmount: 0
   },
   {
     id: 6,
@@ -325,7 +397,9 @@ const mockOrders: Order[] = [
     actualAmount: 4440,
     paidAmount: 0,
     refundAmount: 0,
+    pickupStoreId: 6,
     pickupStore: '杭州西湖店',
+    returnStoreId: 6,
     returnStore: '杭州西湖店',
     pickupTime: '2025-12-15 10:00:00',
     returnTime: '2025-12-20 17:00:00',
@@ -341,7 +415,62 @@ const mockOrders: Order[] = [
     updatedAt: '2025-12-03T09:00:00.000Z',
     confirmedAt: '',
     completedAt: '',
-    cancelledAt: ''
+    cancelledAt: '',
+    extraFees: [],
+    extraFeesAmount: 0
+  },
+  {
+    id: 7,
+    orderNo: 'ORD202412030007',
+    type: 'cooperative',
+    userId: 7,
+    userName: '吴九',
+    userPhone: '13800138006',
+    vehicleId: 7,
+    vehicleName: '金杯海狮房车',
+    vehicleNumber: '粤B55555',
+    storeId: 4,
+    storeName: '深圳南山合作店',
+    storeType: 'cooperative',
+    status: 'in_use',
+    paymentStatus: 'paid',
+    startDate: '2025-12-02',
+    endDate: '2025-12-07',
+    days: 5,
+    dailyPrice: 650,
+    totalAmount: 3250,
+    depositAmount: 4000,
+    insuranceAmount: 180,
+    serviceAmount: 100,
+    discountAmount: 0,
+    actualAmount: 3530,
+    paidAmount: 7530,
+    refundAmount: 0,
+    pickupStoreId: 4,
+    pickupStore: '深圳南山合作店',
+    returnStoreId: 4,
+    returnStore: '深圳南山合作店',
+    pickupTime: '2025-12-02 09:00:00',
+    returnTime: '2025-12-07 18:00:00',
+    driverName: '吴九',
+    driverPhone: '13800138006',
+    driverLicense: '440301199007071234',
+    emergencyContact: '郑十',
+    emergencyPhone: '13800138007',
+    remark: '合作商门店订单',
+    cancelReason: '',
+    refundReason: '',
+    createdAt: '2025-11-28T10:00:00.000Z',
+    updatedAt: '2025-12-02T09:00:00.000Z',
+    confirmedAt: '2025-11-28T14:00:00.000Z',
+    completedAt: '',
+    cancelledAt: '',
+    // 合作商订单信息
+    partnerOrderNo: 'PARTNER-20251128-001',
+    partnerOrderPrice: 2800,
+    priceDifference: 730, // 3530 - 2800 = 730
+    extraFees: [],
+    extraFeesAmount: 0
   }
 ]
 
@@ -475,6 +604,20 @@ export const mockGetOrderDetail = (id: number) => {
   })
 }
 
+// Mock 通过订单号查找订单
+export const mockGetOrderByOrderNo = (orderNo: string) => {
+  return new Promise<{ id: number; orderNo: string } | null>((resolve) => {
+    setTimeout(() => {
+      const order = mockOrders.find((o) => o.orderNo === orderNo)
+      if (order) {
+        resolve({ id: order.id, orderNo: order.orderNo })
+      } else {
+        resolve(null)
+      }
+    }, 100)
+  })
+}
+
 // Mock 创建订单
 export const mockCreateOrder = (params: CreateOrderParams) => {
   return new Promise((resolve) => {
@@ -525,7 +668,9 @@ export const mockCreateOrder = (params: CreateOrderParams) => {
         updatedAt: new Date().toISOString(),
         confirmedAt: '',
         completedAt: '',
-        cancelledAt: ''
+        cancelledAt: '',
+        extraFees: [],
+        extraFeesAmount: 0
       }
       mockOrders.unshift(newOrder)
       resolve({
@@ -1395,6 +1540,218 @@ export const mockGetReviewStats = () => {
         message: '获取成功',
         data: stats
       })
+    }, 200)
+  })
+}
+
+// ==================== 取车还车管理 ====================
+
+// 取车记录信息
+export interface PickupRecord {
+  id: number
+  orderId: number
+  orderNo: string
+  vehicleId: number
+  vehicleName: string
+  vehicleNumber: string
+  pickupTime: string
+  pickupLocation: string
+  pickupStaff: string
+  vehicleCondition: string
+  fuelLevel: number
+  mileage: number
+  images: string[]
+  remark: string
+  createdAt: string
+}
+
+// 还车记录信息
+export interface ReturnRecord {
+  id: number
+  orderId: number
+  orderNo: string
+  vehicleId: number
+  vehicleName: string
+  vehicleNumber: string
+  returnTime: string
+  returnLocation: string
+  returnStaff: string
+  vehicleCondition: string
+  fuelLevel: number
+  mileage: number
+  images: string[]
+  damages: string[]
+  additionalFees: number
+  remark: string
+  createdAt: string
+}
+
+// Mock 取车记录数据
+const mockPickupRecords: PickupRecord[] = [
+  {
+    id: 1,
+    orderId: 1,
+    orderNo: 'ORD202412030001',
+    vehicleId: 1,
+    vehicleName: '大通RV80 C型房车',
+    vehicleNumber: '京A12345',
+    pickupTime: '2025-12-01T09:00:00.000Z',
+    pickupLocation: '北京朝阳店',
+    pickupStaff: '门店员工-王五',
+    vehicleCondition: '良好',
+    fuelLevel: 100,
+    mileage: 15000,
+    images: ['/images/pickup1-1.jpg', '/images/pickup1-2.jpg'],
+    remark: '车辆状况良好，已完成交接',
+    createdAt: '2025-12-01T09:00:00.000Z'
+  }
+]
+
+// 取车参数
+export interface PickupOrderParams {
+  orderId: number
+  pickupTime: string
+  pickupLocation: string
+  vehicleCondition: string
+  fuelLevel: number
+  mileage: number
+  images?: string[]
+  remark?: string
+}
+
+// 还车参数
+export interface ReturnOrderParams {
+  orderId: number
+  returnTime: string
+  returnLocation: string
+  vehicleCondition: string
+  fuelLevel: number
+  mileage: number
+  images?: string[]
+  damages?: string[]
+  additionalFees?: number
+  remark?: string
+}
+
+// Mock 取车
+export const mockPickupOrder = (orderId: number, params: PickupOrderParams) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const orderIndex = mockOrders.findIndex((o) => o.id === orderId)
+      if (orderIndex !== -1) {
+        const order = mockOrders[orderIndex]
+
+        // 更新订单状态
+        mockOrders[orderIndex] = {
+          ...order,
+          status: 'in_use',
+          updatedAt: new Date().toISOString()
+        }
+
+        // 创建取车记录
+        const pickupRecord: PickupRecord = {
+          id: mockPickupRecords.length + 1,
+          orderId,
+          orderNo: order.orderNo,
+          vehicleId: order.vehicleId,
+          vehicleName: order.vehicleName,
+          vehicleNumber: order.vehicleNumber,
+          pickupTime: params.pickupTime,
+          pickupLocation: params.pickupLocation,
+          pickupStaff: '门店员工',
+          vehicleCondition: params.vehicleCondition,
+          fuelLevel: params.fuelLevel,
+          mileage: params.mileage,
+          images: params.images || [],
+          remark: params.remark || '',
+          createdAt: new Date().toISOString()
+        }
+        mockPickupRecords.push(pickupRecord)
+
+        resolve({
+          code: 200,
+          message: '取车登记成功',
+          data: pickupRecord
+        })
+      } else {
+        reject({
+          code: 404,
+          message: '订单不存在'
+        })
+      }
+    }, 500)
+  })
+}
+
+// Mock 还车
+export const mockReturnOrder = (orderId: number, params: ReturnOrderParams) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const orderIndex = mockOrders.findIndex((o) => o.id === orderId)
+      if (orderIndex !== -1) {
+        const order = mockOrders[orderIndex]
+
+        // 更新订单状态
+        mockOrders[orderIndex] = {
+          ...order,
+          status: 'completed',
+          completedAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        }
+
+        // 创建还车记录
+        const returnRecord: ReturnRecord = {
+          id: 1,
+          orderId,
+          orderNo: order.orderNo,
+          vehicleId: order.vehicleId,
+          vehicleName: order.vehicleName,
+          vehicleNumber: order.vehicleNumber,
+          returnTime: params.returnTime,
+          returnLocation: params.returnLocation,
+          returnStaff: '门店员工',
+          vehicleCondition: params.vehicleCondition,
+          fuelLevel: params.fuelLevel,
+          mileage: params.mileage,
+          images: params.images || [],
+          damages: params.damages || [],
+          additionalFees: params.additionalFees || 0,
+          remark: params.remark || '',
+          createdAt: new Date().toISOString()
+        }
+
+        resolve({
+          code: 200,
+          message: '还车登记成功',
+          data: returnRecord
+        })
+      } else {
+        reject({
+          code: 404,
+          message: '订单不存在'
+        })
+      }
+    }, 500)
+  })
+}
+
+// Mock 获取取车记录
+export const mockGetPickupRecord = (orderId: number) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const pickupRecord = mockPickupRecords.find((r) => r.orderId === orderId)
+      if (pickupRecord) {
+        resolve({
+          code: 200,
+          message: '获取成功',
+          data: pickupRecord
+        })
+      } else {
+        reject({
+          code: 404,
+          message: '取车记录不存在'
+        })
+      }
     }, 200)
   })
 }

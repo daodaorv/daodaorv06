@@ -58,15 +58,37 @@ export const asyncRoutes: RouteRecordRaw[] = [
     meta: { requiresAuth: true },
     children: [
       ...generateRoutes(menuConfig),
+      // 用户详情页面（不在菜单中，但需要路由）
+      {
+        path: '/users/detail/:id',
+        name: 'UserDetail',
+        component: () => import('@/views/user/UserDetail.vue'),
+        meta: {
+          title: '用户详情',
+          requiresAuth: true,
+          permissions: ['user:view']
+        }
+      },
       // 门店详情页面（不在菜单中，但需要路由）
       {
-        path: '/store/detail/:id',
+        path: '/stores/detail/:id',
         name: 'StoreDetail',
         component: () => import('@/views/store/StoreDetail.vue'),
         meta: {
           title: '门店详情',
           requiresAuth: true,
           permissions: ['store:view']
+        }
+      },
+      // 订单详情页面（不在菜单中，但需要路由）
+      {
+        path: '/orders/detail/:id',
+        name: 'OrderDetail',
+        component: () => import('@/views/orders/OrderDetail.vue'),
+        meta: {
+          title: '订单详情',
+          requiresAuth: true,
+          permissions: ['order:view']
         }
       },
       // 车型编辑页面（不在菜单中，但需要路由）
@@ -88,6 +110,26 @@ export const asyncRoutes: RouteRecordRaw[] = [
           title: '编辑车型',
           requiresAuth: true,
           permissions: ['vehicle:edit']
+        }
+      },
+      // 营地新建页面（不在菜单中，但需要路由）
+      {
+        path: '/campsites/create',
+        name: 'CampsiteCreate',
+        component: () => import('@/views/campsites/CampsiteSettings.vue'),
+        meta: {
+          title: '新建营地',
+          requiresAuth: true
+        }
+      },
+      // 营地编辑页面（不在菜单中，但需要路由）
+      {
+        path: '/campsites/edit/:id',
+        name: 'CampsiteEdit',
+        component: () => import('@/views/campsites/CampsiteSettings.vue'),
+        meta: {
+          title: '编辑营地',
+          requiresAuth: true
         }
       }
     ],

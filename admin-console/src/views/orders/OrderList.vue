@@ -80,6 +80,21 @@
         </el-button>
       </template>
     </el-dialog>
+
+    <!-- 取车管理对话框 -->
+    <PickupDialog
+      v-model="pickupDialogVisible"
+      :order-info="currentPickupOrder"
+      @submit="handlePickupSubmit"
+    />
+
+    <!-- 还车管理对话框 -->
+    <ReturnDialog
+      v-model="returnDialogVisible"
+      :order-info="currentReturnOrder"
+      :pickup-record="currentPickupRecord"
+      @submit="handleReturnSubmit"
+    />
   </div>
 </template>
 
@@ -100,6 +115,8 @@ import {
 import StatsCard from '@/components/common/StatsCard.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'
+import PickupDialog from '@/components/orders/PickupDialog.vue'
+import ReturnDialog from '@/components/orders/ReturnDialog.vue'
 import type { StatItem } from '@/components/common/StatsCard.vue'
 import type { SearchField } from '@/components/common/SearchForm.vue'
 import type { TableColumn, TableAction, ToolbarButton } from '@/components/common/DataTable.vue'
@@ -109,6 +126,9 @@ import {
   confirmOrder,
   completeOrder,
   cancelOrder,
+  pickupOrder,
+  returnOrder,
+  getPickupRecord,
   type Order,
   type OrderListParams
 } from '@/api/order'
@@ -123,7 +143,8 @@ const { handleApiError } = useErrorHandler()
 // 订单类型选项
 const ORDER_TYPE_OPTIONS = [
   { label: '托管订单', value: 'hosting' },
-  { label: '合作订单', value: 'cooperative' }
+  { label: '合作订单', value: 'cooperative' },
+  { label: '房车旅游', value: 'tour' }
 ]
 
 // 订单状态选项
@@ -285,6 +306,18 @@ const tableActions: TableAction[] = [
     show: (row: Order) => row.status === 'pending_confirm'
   },
   {
+    label: '取车',
+    type: 'success',
+    onClick: (row: Order) => handlePickup(row),
+    show: (row: Order) => row.status === 'confirmed'
+  },
+  {
+    label: '还车',
+    type: 'warning',
+    onClick: (row: Order) => handleReturn(row),
+    show: (row: Order) => row.status === 'in_use'
+  },
+  {
     label: '完成',
     type: 'success',
     onClick: (row: Order) => handleComplete(row),
@@ -328,6 +361,15 @@ const cancelFormRules: FormRules = {
     { min: 5, message: '取消原因至少5个字符', trigger: 'blur' }
   ]
 }
+
+// 取车管理对话框
+const pickupDialogVisible = ref(false)
+const currentPickupOrder = ref<Order | null>(null)
+
+// 还车管理对话框
+const returnDialogVisible = ref(false)
+const currentReturnOrder = ref<Order | null>(null)
+const currentPickupRecord = ref<any>(null)
 
 // 加载订单列表
 const loadOrderList = async () => {
@@ -469,6 +511,51 @@ const handleCancelDialogClose = () => {
   currentCancelOrder.value = null
 }
 
+// 取车
+const handlePickup = (row: Order) => {
+  currentPickupOrder.value = row
+  pickupDialogVisible.value = true
+}
+
+// 提交取车
+const handlePickupSubmit = async (data: any) => {
+  try {
+    await pickupOrder(data.orderId, data)
+    ElMessage.success('取车登记成功')
+    pickupDialogVisible.value = false
+    loadOrderList()
+    loadStats()
+  } catch (error) {
+    handleApiError(error, '取车登记失败')
+  }
+}
+
+// 还车
+const handleReturn = async (row: Order) => {
+  try {
+    // 先获取取车记录
+    const res = await getPickupRecord(row.id) as any
+    currentPickupRecord.value = res.data
+    currentReturnOrder.value = row
+    returnDialogVisible.value = true
+  } catch (error) {
+    handleApiError(error, '获取取车记录失败')
+  }
+}
+
+// 提交还车
+const handleReturnSubmit = async (data: any) => {
+  try {
+    await returnOrder(data.orderId, data)
+    ElMessage.success('还车登记成功')
+    returnDialogVisible.value = false
+    loadOrderList()
+    loadStats()
+  } catch (error) {
+    handleApiError(error, '还车登记失败')
+  }
+}
+
 // 分页
 const handleSizeChange = (size: number) => {
   pagination.pageSize = size
@@ -484,7 +571,8 @@ const handleCurrentChange = (page: number) => {
 const getOrderTypeTag = (type: string) => {
   const tagMap: Record<string, string> = {
     hosting: 'primary',
-    cooperative: 'success'
+    cooperative: 'success',
+    tour: 'warning'
   }
   return tagMap[type] || 'info'
 }
@@ -493,7 +581,8 @@ const getOrderTypeTag = (type: string) => {
 const getOrderTypeLabel = (type: string) => {
   const labelMap: Record<string, string> = {
     hosting: '托管订单',
-    cooperative: '合作订单'
+    cooperative: '合作订单',
+    tour: '房车旅游'
   }
   return labelMap[type] || type
 }

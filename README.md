@@ -87,7 +87,7 @@ npm install
 
 # 4. 启动开发服务器
 npm run dev
-# 访问: http://localhost:5173
+# 访问: http://localhost:5174
 ```
 
 #### 📲 移动管理端开发者
@@ -232,7 +232,7 @@ daodao/
 | 后端API | http://localhost:3000 | RESTful API服务 |
 | API文档 | http://localhost:3000/api-docs | Swagger UI |
 | Mock服务 | http://localhost:3001 | Mock数据服务 |
-| PC管理后台 | http://localhost:5173 | Vue管理后台 |
+| PC管理后台 | http://localhost:5174 | Vue管理后台 |
 | 数据库管理 | http://localhost:8080 | Adminer |
 | 邮件管理 | http://localhost:8025 | MailHog |
 

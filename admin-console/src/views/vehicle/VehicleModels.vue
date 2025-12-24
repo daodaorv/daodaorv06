@@ -56,6 +56,12 @@
         ¥{{ row.dailyPrice }}
       </template>
 
+      <template #crowdfundingStatus="{ row }">
+        <el-tag :type="row.supportCrowdfunding ? 'success' : 'info'" size="small">
+          {{ row.supportCrowdfunding ? '支持众筹' : '不支持' }}
+        </el-tag>
+      </template>
+
       <template #status="{ row }">
         <el-tag :type="row.status === 'active' ? 'success' : 'info'" size="small">
           {{ row.status === 'active' ? '启用' : '禁用' }}
@@ -77,6 +83,9 @@
         </el-button>
         <el-button link type="info" size="small" @click="handleViewHistory(row)">
           价格历史
+        </el-button>
+        <el-button link type="warning" size="small" @click="handleCrowdfundingConfig(row)">
+          众筹配置
         </el-button>
         <el-button
           link
@@ -274,6 +283,15 @@
       </template>
     </el-dialog>
 
+    <!-- 车型详情对话框 -->
+    <VehicleModelDetailDialog
+      v-model="detailDialogVisible"
+      :model-id="currentModelId"
+      @edit="handleEditFromDetail"
+      @adjust-price="handleAdjustPriceFromDetail"
+      @view-vehicle="handleViewVehicleFromDetail"
+    />
+
     <!-- 价格历史对话框 -->
     <el-dialog
       v-model="historyDialogVisible"
@@ -346,6 +364,7 @@ import {
 } from '@element-plus/icons-vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'
+import VehicleModelDetailDialog from '@/components/vehicle/VehicleModelDetailDialog.vue'
 import type { SearchField } from '@/components/common/SearchForm.vue'
 import type { TableColumn, TableAction, ToolbarButton } from '@/components/common/DataTable.vue'
 import {
@@ -355,7 +374,7 @@ import {
   getBrands,
 } from '@/api/vehicle'
 import type { VehicleModel } from '@/mock/vehicles'
-import type { UpdateModelPriceRequest, BatchUpdatePriceRequest, VehicleModelPriceHistory } from '@/types/vehicleModel'
+import type { UpdateModelPriceRequest, VehicleModelPriceHistory } from '@/types/vehicleModel'
 import { useErrorHandler, useEnumLabel } from '@/composables'
 import { exportToCSV } from '@/utils/export'
 
@@ -438,6 +457,7 @@ const tableColumns: TableColumn[] = [
   { prop: 'beds', label: '床位数', width: 100, slot: 'beds' },
   { prop: 'dailyPrice', label: '日租金', width: 120, slot: 'dailyPrice' },
   { prop: 'vehicleCount', label: '车辆数量', width: 100 },
+  { prop: 'supportCrowdfunding', label: '众筹状态', width: 120, slot: 'crowdfundingStatus' },
   { prop: 'status', label: '状态', width: 100, slot: 'status' },
   { prop: 'createdAt', label: '创建时间', width: 180 },
 ]
@@ -512,6 +532,10 @@ const batchPriceFormData = reactive({
 const historyDialogVisible = ref(false)
 const priceHistoryList = ref<VehicleModelPriceHistory[]>([])
 const historyLoading = ref(false)
+
+// 车型详情对话框
+const detailDialogVisible = ref(false)
+const currentModelId = ref<number | null>(null)
 
 const batchPriceFormRules: FormRules = {
   adjustValue: [
@@ -633,8 +657,25 @@ const handleCreate = () => {
 }
 
 // 查看车型
-const handleView = (_row: VehicleModel) => {
-  ElMessage.info('查看功能开发中...')
+const handleView = (row: VehicleModel) => {
+  currentModelId.value = row.id
+  detailDialogVisible.value = true
+}
+
+// 从详情对话框编辑
+const handleEditFromDetail = (model: VehicleModel) => {
+  router.push({ name: 'VehicleModelEdit', params: { id: model.id } })
+}
+
+// 从详情对话框调整价格
+const handleAdjustPriceFromDetail = (model: VehicleModel) => {
+  handleAdjustPrice(model)
+}
+
+// 从详情对话框查看车辆
+const handleViewVehicleFromDetail = (vehicle: any) => {
+  // TODO: 打开车辆详情对话框
+  ElMessage.info(`查看车辆: ${vehicle.vehicleNumber}`)
 }
 
 // 编辑车型
@@ -843,13 +884,12 @@ const handleBatchPriceSubmit = async () => {
 
     submitLoading.value = true
 
-    const request: BatchUpdatePriceRequest = {
-      modelIds: selectedModels.value.map(m => m.id),
-      adjustType: batchPriceFormData.adjustType,
-      adjustValue: batchPriceFormData.adjustValue,
-      changeReason: batchPriceFormData.changeReason,
-      remark: batchPriceFormData.remark,
-    }
+    // 构建批量更新价格请求
+    selectedModels.value.map(m => m.id)
+    batchPriceFormData.adjustType
+    batchPriceFormData.adjustValue
+    batchPriceFormData.changeReason
+    batchPriceFormData.remark
 
     // Mock API call - 实际应该调用真实的 API
     const res = await new Promise<any>((resolve) => {
@@ -958,6 +998,16 @@ onMounted(() => {
   loadBrands()
   loadVehicleModels()
 })
+
+// 众筹配置
+const handleCrowdfundingConfig = (row: VehicleModel) => {
+  // 跳转到车型编辑页面，并定位到众筹配置面板
+  router.push({
+    name: 'VehicleModelEdit',
+    params: { id: row.id },
+    query: { tab: 'crowdfunding' }
+  })
+}
 
 // 导出数据
 function handleExport() {

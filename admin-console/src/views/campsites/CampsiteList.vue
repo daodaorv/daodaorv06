@@ -1,7 +1,12 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="campsite-list-container">
-    
+    <!-- 页面头部操作栏 -->
+    <div class="page-header">
+      <el-button type="primary" :icon="Plus" @click="handleCreate">
+        新建营地
+      </el-button>
+    </div>
 
     <StatsCard :stats="statsConfig" />
 
@@ -197,8 +202,9 @@
 <script setup lang="ts">
 // @ts-nocheck
 import { ref, reactive, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
-import { House, TrendCharts, User, Money } from '@element-plus/icons-vue'
+import { House, TrendCharts, User, Money, Plus } from '@element-plus/icons-vue'
 
 import StatsCard from '@/components/common/StatsCard.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
@@ -217,6 +223,7 @@ import {
 import { useErrorHandler } from '@/composables'
 
 // Composables
+const router = useRouter()
 const { handleApiError } = useErrorHandler()
 
 // 营地类型选项
@@ -380,11 +387,6 @@ const tableActions: TableAction[] = [
     label: '编辑',
     type: 'warning',
     onClick: (row: Campsite) => handleEdit(row)
-  },
-  {
-    label: '设置',
-    type: 'info',
-    onClick: (row: Campsite) => handleSettings(row)
   }
 ]
 
@@ -450,6 +452,11 @@ const handleReset = () => {
   loadCampsiteList()
 }
 
+// 新建营地
+const handleCreate = () => {
+  router.push('/campsites/create')
+}
+
 // 查看营地详情
 const handleView = async (row: Campsite) => {
   try {
@@ -463,12 +470,7 @@ const handleView = async (row: Campsite) => {
 
 // 编辑营地
 const handleEdit = (row: Campsite) => {
-  ElMessage.info(`编辑营地功能开发中，营地ID: ${row.id}`)
-}
-
-// 营地设置
-const handleSettings = (row: Campsite) => {
-  ElMessage.info(`营地设置功能开发中，营地ID: ${row.id}`)
+  router.push(`/campsites/edit/${row.id}`)
 }
 
 // 对话框关闭
@@ -563,5 +565,11 @@ onMounted(() => {
 <style scoped lang="scss">
 .campsite-list-container {
   padding: 20px;
+}
+
+.page-header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 16px;
 }
 </style>

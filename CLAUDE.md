@@ -8,7 +8,7 @@
 
 一个基于 Node.js 后端 + Vue 3 前端 + uni-app 移动端的全栈房车租赁管理平台：
 - **backend**: Node.js + Express + TypeScript RESTful API (端口 3001)
-- **admin-console**: Vue 3 + Element Plus PC 管理后台 (端口 5173)
+- **admin-console**: Vue 3 + Element Plus PC 管理后台 (端口 5174)
 - **miniprogram**: uni-app 3 微信小程序用户端 (HBuilderX)
 - **mobile-admin**: uni-app 3 移动管理端 (HBuilderX)
 
@@ -479,7 +479,7 @@ npm test             # 运行测试
 ### PC 管理端开发
 ```bash
 cd admin-console
-npm run dev          # 端口 5173
+npm run dev          # 端口 5174
 npm run lint         # ESLint + Prettier
 npm run type-check   # TypeScript 类型检查
 ```
