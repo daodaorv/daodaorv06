@@ -20,14 +20,22 @@ export function hasRole(user: User | null, roles?: UserRole[]): boolean {
  * 检查用户是否有指定权限
  */
 export function hasPermission(user: User | null, permissions?: PermissionCode[]): boolean {
-  if (!user || !permissions || permissions.length === 0) {
+  // 如果没有指定权限要求，则允许访问
+  if (!permissions || permissions.length === 0) {
     return true
   }
 
+  // 如果没有用户信息，则拒绝访问
+  if (!user) {
+    return false
+  }
+
+  // 如果用户没有权限列表，则拒绝访问
   if (!user.permissions || user.permissions.length === 0) {
     return false
   }
 
+  // 检查用户是否拥有所需权限中的任意一个
   return permissions.some((permission) => user.permissions?.includes(permission))
 }
 

@@ -225,20 +225,9 @@ export function registerMockOrder(order: Partial<MockOrderRecord> & { orderNo: s
  * 计算订单价格
  */
 export function calculatePrice(data: import('@/types/order').CalculatePriceParams) {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve({
-                code: 0,
-                message: 'success',
-                data: {
-                    rentalFee: 2400,
-                    insuranceFee: 300,
-                    serviceFee: 180,
-                    depositAmount: 5000,
-                    totalAmount: 2880
-                }
-            });
-        }, 500);
+    logger.debug('计算订单价格', data);
+    return post('/orders/calculate-price', data).then((response: any) => {
+        return response.data;
     });
 }
 
@@ -281,14 +270,9 @@ export function getUserOrders(params?: {
  * 获取订单状态列表
  */
 export function getOrderStatusList() {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve({
-                code: 0,
-                message: 'success',
-                data: mockStatusList
-            });
-        }, 300);
+    logger.debug('获取订单状态列表');
+    return get('/orders/statuses').then((response: any) => {
+        return response.data;
     });
 }
 

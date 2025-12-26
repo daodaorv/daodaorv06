@@ -24,14 +24,14 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineComponent, h } from 'vue'
+import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { ElSubMenu, ElMenuItem, ElIcon } from 'element-plus'
 import { useAppStore } from '@/stores/app'
 import { useUserStore } from '@/stores/user'
 import { menuConfig } from '@/config/menu'
 import { filterMenuByPermission } from '@/utils/permission'
 import type { MenuItem } from '@/types/permission'
+import MenuItemComponent from './MenuItemComponent.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -50,62 +50,6 @@ const activeMenu = computed(() => {
 const menuRoutes = computed<MenuItem[]>(() => {
   const user = userStore.user
   return filterMenuByPermission(menuConfig, user)
-})
-
-// 递归菜单组件
-const MenuItemComponent = defineComponent({
-  name: 'MenuItemComponent',
-  props: {
-    menuItem: {
-      type: Object as () => MenuItem,
-      required: true,
-    },
-  },
-  setup(props) {
-    const hasChildren = computed(() => {
-      return props.menuItem.children && props.menuItem.children.length > 0
-    })
-
-    return () => {
-      if (hasChildren.value) {
-        // 有子菜单，渲染 el-sub-menu
-        return h(
-          ElSubMenu,
-          { index: props.menuItem.path },
-          {
-            title: () => [
-              props.menuItem.meta?.icon
-                ? h(ElIcon, null, {
-                    default: () => h(props.menuItem.meta!.icon as any),
-                  })
-                : null,
-              h('span', null, props.menuItem.meta?.title),
-            ],
-            default: () =>
-              props.menuItem.children!.map((child) =>
-                h(MenuItemComponent, { key: child.path, menuItem: child })
-              ),
-          }
-        )
-      } else {
-        // 没有子菜单，渲染 el-menu-item
-        return h(
-          ElMenuItem,
-          { index: props.menuItem.path },
-          {
-            default: () => [
-              props.menuItem.meta?.icon
-                ? h(ElIcon, null, {
-                    default: () => h(props.menuItem.meta!.icon as any),
-                  })
-                : null,
-              h('template', { slot: 'title' }, props.menuItem.meta?.title),
-            ],
-          }
-        )
-      }
-    }
-  },
 })
 
 // 处理菜单选择
