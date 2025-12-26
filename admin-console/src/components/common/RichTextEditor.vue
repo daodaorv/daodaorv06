@@ -309,8 +309,13 @@ const mockImageUploadRequest = async (options: UploadRequestOptions) => {
   try {
     const file = options.file as File
     const url = await readAsDataUrl(file)
+    // 直接设置图片URL，不依赖 onSuccess 回调
+    imageUrl.value = url
+    ElMessage.success('图片上传成功')
+    // 仍然调用 onSuccess 以保持 Element Plus 的状态一致
     options.onSuccess?.({ data: { url } })
   } catch (error) {
+    ElMessage.error('图片上传失败')
     options.onError?.(error as any)
   }
 }
