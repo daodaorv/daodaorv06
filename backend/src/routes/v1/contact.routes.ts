@@ -75,8 +75,8 @@ router.post('/', authMiddleware, async (req: Request, res: Response) => {
 
     const { name, phone, idCard, driverLicenseNo, driverLicenseFront, driverLicenseBack, isDefault } = req.body;
 
-    // 验证必填字段
-    if (!name || !phone || !idCard || !driverLicenseNo || !driverLicenseFront || !driverLicenseBack) {
+    // 验证必填字段（idCard 为可选字段）
+    if (!name || !phone || !driverLicenseNo || !driverLicenseFront || !driverLicenseBack) {
       res.status(400).json(errorResponse('缺少必填字段', 400));
       return undefined;
     }

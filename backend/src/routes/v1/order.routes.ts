@@ -90,11 +90,22 @@ router.get('/statuses', async (_req: Request, res: Response): Promise<void> => {
 /**
  * 获取订单详情
  * GET /api/v1/orders/:id
+ * 支持通过订单ID（数字）或订单号（字符串）查询
  */
 router.get('/:id', async (req: Request, res: Response): Promise<void> => {
   try {
-    const id = Number(req.params.id);
-    const order = await orderDAO.findOrderDetail(id);
+    const idParam = req.params.id;
+    let order = null;
+
+    // 判断参数是数字ID还是订单号
+    const numericId = Number(idParam);
+    if (!isNaN(numericId) && numericId.toString() === idParam) {
+      // 参数是纯数字，按ID查询
+      order = await orderDAO.findOrderDetail(numericId);
+    } else {
+      // 参数包含非数字字符，按订单号查询
+      order = await orderDAO.findOrderDetailByOrderNo(idParam);
+    }
 
     if (!order) {
       res.status(404).json(errorResponse('订单不存在', 404));
@@ -274,10 +285,11 @@ router.delete('/:id', async (req: Request, res: Response): Promise<void> => {
 /**
  * 更新订单状态
  * PUT /api/v1/orders/:id/status
+ * 支持通过订单ID（数字）或订单号（字符串）更新
  */
 router.put('/:id/status', async (req: Request, res: Response): Promise<void> => {
   try {
-    const orderId = Number(req.params.id);
+    const idParam = req.params.id;
     const { status, remark } = req.body;
 
     if (!status) {
@@ -292,15 +304,25 @@ router.put('/:id/status', async (req: Request, res: Response): Promise<void> => 
       return undefined;
     }
 
-    // 获取订单信息
-    const order = await orderDAO.findById(orderId);
+    // 判断参数是数字ID还是订单号，获取订单信息
+    let order = null;
+    const numericId = Number(idParam);
+    if (!isNaN(numericId) && numericId.toString() === idParam) {
+      order = await orderDAO.findById(numericId);
+    } else {
+      // 通过订单号查询
+      const orderDetail = await orderDAO.findOrderDetailByOrderNo(idParam);
+      if (orderDetail) {
+        order = await orderDAO.findById(orderDetail.id);
+      }
+    }
     if (!order) {
       res.status(404).json(errorResponse('订单不存在', 404));
       return undefined;
     }
 
     // 更新订单状态
-    const success = await orderDAO.updateOrderStatus(orderId, status as OrderStatus, remark);
+    const success = await orderDAO.updateOrderStatus(order.id, status as OrderStatus, remark);
     if (!success) {
       res.status(500).json(errorResponse('更新订单状态失败', 500));
       return undefined;

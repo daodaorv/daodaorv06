@@ -205,6 +205,35 @@ export class OrderDAO extends BaseDao<Order> {
   }
 
   /**
+   * 通过订单号获取订单详情
+   */
+  async findOrderDetailByOrderNo(orderNo: string): Promise<OrderDetail | null> {
+    try {
+      const sql =
+        'SELECT ' +
+        'o.*, ' +
+        'u.username as user_name, u.phone as user_phone, ' +
+        'v.vehicle_no, v.license_plate, ' +
+        'vm.name as vehicle_name, vm.brand as vehicle_brand, ' +
+        's1.name as store_name, s1.address as store_address, ' +
+        's2.name as return_store_name, s2.address as return_store_address ' +
+        'FROM ' + this.tableName + ' o ' +
+        'LEFT JOIN users u ON o.user_id = u.id ' +
+        'LEFT JOIN vehicles v ON o.vehicle_id = v.id ' +
+        'LEFT JOIN vehicle_models vm ON v.model_id = vm.id ' +
+        'LEFT JOIN stores s1 ON o.store_id = s1.id ' +
+        'LEFT JOIN stores s2 ON o.return_store_id = s2.id ' +
+        'WHERE o.order_no = ?';
+
+      const result = (await QueryBuilder.queryOne(sql, [orderNo])) as OrderDetail | null;
+      return result;
+    } catch (error) {
+      logger.error('通过订单号获取订单详情失败:', error);
+      throw error;
+    }
+  }
+
+  /**
    * 取消订单
    */
   async cancelOrder(params: CancelOrderParams): Promise<boolean> {

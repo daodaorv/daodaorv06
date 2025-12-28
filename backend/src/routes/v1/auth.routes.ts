@@ -82,7 +82,7 @@ router.post('/register', async (req: Request, res: Response) => {
     const userId = await userDAO.createUser({
       phone,
       password,
-      username: nickname || `用户${phone.substr(-4)}`,
+      username: nickname || `用户${phone.slice(-4)}`,
       user_type: 'customer',
     });
 
@@ -242,7 +242,7 @@ router.post('/login-with-code', async (req: Request, res: Response) => {
       // 自动注册
       const userId = await userDAO.createUser({
         phone,
-        username: `用户${phone.substr(-4)}`,
+        username: `用户${phone.slice(-4)}`,
         user_type: 'customer',
       });
       user = await userDAO.findById(userId);
@@ -299,7 +299,7 @@ router.post('/login-with-code', async (req: Request, res: Response) => {
  */
 router.post('/wechat-login', async (req: Request, res: Response) => {
   try {
-    const { code, userInfo } = req.body;
+    const { code, phoneCode, userInfo } = req.body;
 
     if (!code) {
       res.status(400).json(errorResponse('微信授权码不能为空', 400));
@@ -308,17 +308,26 @@ router.post('/wechat-login', async (req: Request, res: Response) => {
 
     // Mock微信登录：返回Mock用户信息
     // TODO: 生产环境需要调用微信API验证code并获取openid
-    const mockOpenId = `wx_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const mockOpenId = `wx_${Date.now()}_${Math.random().toString(36).slice(2, 11)}`;
     const mockPhone = '13800138000'; // Mock手机号
 
-    logger.info(`微信登录: code=${code}, openId=${mockOpenId}`);
+    // 如果提供了phoneCode，应该调用微信API获取真实手机号
+    // TODO: 生产环境实现手机号解密
+    // if (phoneCode) {
+    //   const phoneResult = await getWechatPhoneNumber(phoneCode);
+    //   mockPhone = phoneResult.phoneNumber;
+    // }
+
+    logger.info(`微信登录: code=${code}, phoneCode=${phoneCode || '未提供'}, openId=${mockOpenId}`);
 
     // 查找或创建用户
     let user = await userDAO.findByPhone(mockPhone);
+    let isNewUser = false;
     if (!user) {
+      isNewUser = true;
       const userId = await userDAO.createUser({
         phone: mockPhone,
-        username: userInfo?.nickName || `微信用户${mockPhone.substr(-4)}`,
+        username: userInfo?.nickName || `微信用户${mockPhone.slice(-4)}`,
         user_type: 'customer',
       });
       user = await userDAO.findById(userId);
@@ -347,6 +356,7 @@ router.post('/wechat-login', async (req: Request, res: Response) => {
       successResponse({
         token,
         refreshToken,
+        isNewUser, // 新增：标识是否为新用户
         user: {
           id: user.id.toString(),
           phone: user.phone,
@@ -475,10 +485,12 @@ router.post('/alipay-login', async (req: Request, res: Response) => {
     logger.info(`支付宝登录: code=${code}, userId=${mockUserId}`);
 
     let user = await userDAO.findByPhone(mockPhone);
+    let isNewUser = false;
     if (!user) {
+      isNewUser = true;
       const userId = await userDAO.createUser({
         phone: mockPhone,
-        username: `支付宝用户${mockPhone.substr(-4)}`,
+        username: `支付宝用户${mockPhone.slice(-4)}`,
         user_type: 'customer',
       });
       user = await userDAO.findById(userId);
@@ -507,6 +519,7 @@ router.post('/alipay-login', async (req: Request, res: Response) => {
       successResponse({
         token,
         refreshToken,
+        isNewUser, // 新增：标识是否为新用户
         user: {
           id: user.id.toString(),
           phone: user.phone,
@@ -542,10 +555,12 @@ router.post('/douyin-login', async (req: Request, res: Response) => {
     logger.info(`抖音登录: code=${code}, openId=${mockOpenId}`);
 
     let user = await userDAO.findByPhone(mockPhone);
+    let isNewUser = false;
     if (!user) {
+      isNewUser = true;
       const userId = await userDAO.createUser({
         phone: mockPhone,
-        username: `抖音用户${mockPhone.substr(-4)}`,
+        username: `抖音用户${mockPhone.slice(-4)}`,
         user_type: 'customer',
       });
       user = await userDAO.findById(userId);
@@ -574,6 +589,7 @@ router.post('/douyin-login', async (req: Request, res: Response) => {
       successResponse({
         token,
         refreshToken,
+        isNewUser, // 新增：标识是否为新用户
         user: {
           id: user.id.toString(),
           phone: user.phone,

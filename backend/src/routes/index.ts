@@ -20,8 +20,8 @@ import orderRoutes from './v1/order.routes';
 // import ratingRoutes from './v1/rating.routes';
 // import helpRoutes from './v1/help.routes';
 // import walletRoutes from './v1/wallet.routes';
-// import contactRoutes from './v1/contact.routes';
-// import rulesRoutes from './v1/rules.routes';
+import contactRoutes from './v1/contact.routes';
+import rulesRoutes from './v1/rules.routes';
 
 const router = Router();
 
@@ -46,7 +46,7 @@ router.use('/v1/orders', orderRoutes);
 // router.use('/v1/ratings', ratingRoutes);
 // router.use('/v1/help', helpRoutes);
 // router.use('/v1/wallet', walletRoutes);
-// router.use('/v1/contacts', contactRoutes);
-// router.use('/v1/rules', rulesRoutes);
+router.use('/v1/contacts', contactRoutes);
+router.use('/v1/rules', rulesRoutes);
 
 export default router;
