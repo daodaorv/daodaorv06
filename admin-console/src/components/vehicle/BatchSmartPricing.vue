@@ -12,9 +12,14 @@
         <template #title>
           <div class="summary-row">
             <span><strong>选中车辆：</strong>{{ batchSuggestion.totalVehicles }} 辆</span>
-            <span><strong>当前均价：</strong>¥{{ batchSuggestion.summary.averageCurrentPrice }}</span>
-            <span><strong>建议均价：</strong>¥{{ batchSuggestion.summary.averageSuggestedPrice }}</span>
-            <span><strong>预期收益增长：</strong>
+            <span
+              ><strong>当前均价：</strong>¥{{ batchSuggestion.summary.averageCurrentPrice }}</span
+            >
+            <span
+              ><strong>建议均价：</strong>¥{{ batchSuggestion.summary.averageSuggestedPrice }}</span
+            >
+            <span
+              ><strong>预期收益增长：</strong>
               <el-tag :type="batchSuggestion.summary.totalRevenueImpact > 0 ? 'success' : 'danger'">
                 {{ batchSuggestion.summary.totalRevenueImpact > 0 ? '+' : '' }}
                 {{ batchSuggestion.summary.totalRevenueImpact }}%
@@ -56,19 +61,20 @@
         </el-table-column>
         <el-table-column label="建议价格" width="100">
           <template #default="{ row }">
-            <span class="suggested-price">
-              ¥{{ getSuggestedPrice(row) }}
-            </span>
+            <span class="suggested-price"> ¥{{ getSuggestedPrice(row) }} </span>
           </template>
         </el-table-column>
         <el-table-column label="价格变化" width="120">
           <template #default="{ row }">
             <el-tag
-              :type="getPriceChange(row) > 0 ? 'success' : getPriceChange(row) < 0 ? 'danger' : 'info'"
+              :type="
+                getPriceChange(row) > 0 ? 'success' : getPriceChange(row) < 0 ? 'danger' : 'info'
+              "
               size="small"
             >
-              {{ getPriceChange(row) > 0 ? '+' : '' }}{{ getPriceChange(row) }}
-              ({{ getPriceChangePercent(row) > 0 ? '+' : '' }}{{ getPriceChangePercent(row) }}%)
+              {{ getPriceChange(row) > 0 ? '+' : '' }}{{ getPriceChange(row) }} ({{
+                getPriceChangePercent(row) > 0 ? '+' : ''
+              }}{{ getPriceChangePercent(row) }}%)
             </el-tag>
           </template>
         </el-table-column>
@@ -90,13 +96,7 @@
         </el-table-column>
         <el-table-column label="操作" width="100" fixed="right">
           <template #default="{ row }">
-            <el-button
-              link
-              size="small"
-              @click="handleViewDetail(row)"
-            >
-              查看详情
-            </el-button>
+            <el-button link size="small" @click="handleViewDetail(row)"> 查看详情 </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -116,11 +116,7 @@
           >
             应用选中 ({{ selectedSuggestions.length }})
           </el-button>
-          <el-button
-            type="success"
-            :loading="applying"
-            @click="handleApplyAll"
-          >
+          <el-button type="success" :loading="applying" @click="handleApplyAll">
             应用全部 ({{ batchSuggestion?.totalVehicles || 0 }})
           </el-button>
         </div>
@@ -142,7 +138,10 @@ import { ref, watch, reactive } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { getBatchPricingSuggestions, batchApplySmartPricing } from '@/api/priceAnalysis'
 import SmartPricingSuggestion from './SmartPricingSuggestion.vue'
-import type { BatchPricingSuggestion, SmartPricingSuggestion as SmartPricingSuggestionType } from '@/types/system'
+import type {
+  BatchPricingSuggestion,
+  SmartPricingSuggestion as SmartPricingSuggestionType,
+} from '@/types/system'
 
 interface Props {
   vehicleIds: number[]
@@ -169,15 +168,18 @@ const detailVisible = ref(false)
 const detailVehicleId = ref<number>()
 
 // 监听 modelValue 变化
-watch(() => props.modelValue, (val) => {
-  visible.value = val
-  if (val) {
-    loadBatchSuggestions()
+watch(
+  () => props.modelValue,
+  val => {
+    visible.value = val
+    if (val) {
+      loadBatchSuggestions()
+    }
   }
-})
+)
 
 // 监听 visible 变化
-watch(visible, (val) => {
+watch(visible, val => {
   emit('update:modelValue', val)
 })
 

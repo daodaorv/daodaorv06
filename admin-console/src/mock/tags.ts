@@ -26,7 +26,7 @@ export const mockTags: Tag[] = [
         name: 'PLUS会员购买',
         description: '用户购买PLUS会员商品（99元）',
         sourceId: 'order_plus_member_purchase',
-        autoRemove: false
+        autoRemove: false,
       },
       {
         id: 'trigger_2',
@@ -35,16 +35,14 @@ export const mockTags: Tag[] = [
         priority: 2,
         name: '高额消费自动升级',
         description: '单次消费满1万元自动升级',
-        conditions: [
-          { type: 'total_amount', operator: 'gte', value: 10000 }
-        ],
+        conditions: [{ type: 'total_amount', operator: 'gte', value: 10000 }],
         logic: 'AND',
-        triggerMode: 'realtime'
-      }
+        triggerMode: 'realtime',
+      },
     ],
 
     createdAt: '2024-01-01T00:00:00.000Z',
-    updatedAt: '2024-01-01T00:00:00.000Z'
+    updatedAt: '2024-01-01T00:00:00.000Z',
   },
 
   // ==================== 系统标签：托管车主 ====================
@@ -69,10 +67,9 @@ export const mockTags: Tag[] = [
         description: '自有车托管审核通过且车辆上线',
         sourceId: 'hosting_owner_approved',
         autoRemove: true,
-        removeSourceId: 'hosting_cancelled'
-      }
+        removeSourceId: 'hosting_cancelled',
+      },
     ],
-
 
     benefitsConfig: {
       benefits: [
@@ -85,20 +82,20 @@ export const mockTags: Tag[] = [
           value: 0.7,
           priority: 1,
           applicableScenes: ['order_settlement'],
-          status: 'active'
-        }
-      ]
+          status: 'active',
+        },
+      ],
     },
 
     businessAssociation: {
       coupons: [],
       pricingStrategies: [],
       activities: [],
-      profitConfigs: [1]
+      profitConfigs: [1],
     },
 
     createdAt: '2024-01-01T00:00:00.000Z',
-    updatedAt: '2024-01-01T00:00:00.000Z'
+    updatedAt: '2024-01-01T00:00:00.000Z',
   },
 
   {
@@ -122,10 +119,9 @@ export const mockTags: Tag[] = [
         description: '购车托管审核通过且车辆上线',
         sourceId: 'hosting_owner_approved',
         autoRemove: true,
-        removeSourceId: 'hosting_cancelled'
-      }
+        removeSourceId: 'hosting_cancelled',
+      },
     ],
-
 
     benefitsConfig: {
       benefits: [
@@ -138,20 +134,20 @@ export const mockTags: Tag[] = [
           value: 0.6,
           priority: 1,
           applicableScenes: ['order_settlement'],
-          status: 'active'
-        }
-      ]
+          status: 'active',
+        },
+      ],
     },
 
     businessAssociation: {
       coupons: [],
       pricingStrategies: [],
       activities: [],
-      profitConfigs: [2]
+      profitConfigs: [2],
     },
 
     createdAt: '2024-01-01T00:00:00.000Z',
-    updatedAt: '2024-01-01T00:00:00.000Z'
+    updatedAt: '2024-01-01T00:00:00.000Z',
   },
   // ==================== 价值等级类标签 ====================
   {
@@ -165,13 +161,13 @@ export const mockTags: Tag[] = [
     description: '高价值用户，消费金额超过10000元',
     userCount: 15,
     businessAssociation: {
-      coupons: [3],              // 关联VIP专属优惠券
-      pricingStrategies: [1],    // 关联VIP价格策略
+      coupons: [3], // 关联VIP专属优惠券
+      pricingStrategies: [1], // 关联VIP价格策略
       activities: [1],
-      profitConfigs: []
+      profitConfigs: [],
     },
     createdAt: '2024-01-15T08:00:00.000Z',
-    updatedAt: '2024-01-15T08:00:00.000Z'
+    updatedAt: '2024-01-15T08:00:00.000Z',
   },
   {
     id: 7,
@@ -187,10 +183,10 @@ export const mockTags: Tag[] = [
       coupons: [],
       pricingStrategies: [],
       activities: [],
-      profitConfigs: []
+      profitConfigs: [],
     },
     createdAt: '2024-04-15T08:00:00.000Z',
-    updatedAt: '2024-04-15T08:00:00.000Z'
+    updatedAt: '2024-04-15T08:00:00.000Z',
   },
 
   // ==================== 行为特征类标签 ====================
@@ -207,11 +203,11 @@ export const mockTags: Tag[] = [
     businessAssociation: {
       coupons: [],
       pricingStrategies: [],
-      activities: [2],           // 关联新用户注册送券活动
-      profitConfigs: []
+      activities: [2], // 关联新用户注册送券活动
+      profitConfigs: [],
     },
     createdAt: '2024-02-10T08:00:00.000Z',
-    updatedAt: '2024-02-10T08:00:00.000Z'
+    updatedAt: '2024-02-10T08:00:00.000Z',
   },
   {
     id: 4,
@@ -224,13 +220,13 @@ export const mockTags: Tag[] = [
     description: '超过90天未登录',
     userCount: 12,
     businessAssociation: {
-      coupons: [4],              // 关联唤醒优惠券
+      coupons: [4], // 关联唤醒优惠券
       pricingStrategies: [],
       activities: [],
-      profitConfigs: []
+      profitConfigs: [],
     },
     createdAt: '2024-03-10T08:00:00.000Z',
-    updatedAt: '2024-03-10T08:00:00.000Z'
+    updatedAt: '2024-03-10T08:00:00.000Z',
   },
 
   // ==================== 用户属性类标签 ====================
@@ -245,13 +241,13 @@ export const mockTags: Tag[] = [
     description: '注册时间少于30天',
     userCount: 23,
     businessAssociation: {
-      coupons: [1],              // 关联新用户专享券
+      coupons: [1], // 关联新用户专享券
       pricingStrategies: [],
-      activities: [2],           // 关联新用户注册送券活动
-      profitConfigs: []
+      activities: [2], // 关联新用户注册送券活动
+      profitConfigs: [],
     },
     createdAt: '2024-03-05T08:00:00.000Z',
-    updatedAt: '2024-03-05T08:00:00.000Z'
+    updatedAt: '2024-03-05T08:00:00.000Z',
   },
   {
     id: 6,
@@ -265,12 +261,12 @@ export const mockTags: Tag[] = [
     userCount: 8,
     businessAssociation: {
       coupons: [],
-      pricingStrategies: [2],    // 关联企业客户价格策略
+      pricingStrategies: [2], // 关联企业客户价格策略
       activities: [],
-      profitConfigs: []
+      profitConfigs: [],
     },
     createdAt: '2024-04-01T08:00:00.000Z',
-    updatedAt: '2024-04-01T08:00:00.000Z'
+    updatedAt: '2024-04-01T08:00:00.000Z',
   },
 
   // ==================== 风险控制类标签 ====================
@@ -288,16 +284,16 @@ export const mockTags: Tag[] = [
       coupons: [],
       pricingStrategies: [],
       activities: [],
-      profitConfigs: []
+      profitConfigs: [],
     },
     createdAt: '2024-03-15T08:00:00.000Z',
-    updatedAt: '2024-03-15T08:00:00.000Z'
-  }
+    updatedAt: '2024-03-15T08:00:00.000Z',
+  },
 ]
 
 // Mock API 实现
 export function mockGetTagList(): Promise<Tag[]> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       resolve([...mockTags])
     }, 300)
@@ -305,7 +301,7 @@ export function mockGetTagList(): Promise<Tag[]> {
 }
 
 export function mockCreateTag(data: Partial<Tag>): Promise<Tag> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const newTag: Tag = {
         id: mockTags.length + 1,
@@ -319,7 +315,7 @@ export function mockCreateTag(data: Partial<Tag>): Promise<Tag> {
         userCount: 0,
         businessAssociation: data.businessAssociation,
         expiresAt: data.expiresAt,
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
       }
       mockTags.push(newTag)
       resolve(newTag)
@@ -338,7 +334,7 @@ export function mockUpdateTag(id: number, data: Partial<Tag>): Promise<Tag> {
 
       mockTags[index] = {
         ...mockTags[index],
-        ...data
+        ...data,
       }
       resolve(mockTags[index])
     }, 300)
@@ -361,7 +357,7 @@ export function mockDeleteTag(id: number): Promise<void> {
 }
 
 export function mockGetUserTags(_userId: number): Promise<Tag[]> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       // 这里简化处理，实际应该从用户数据中获取
       resolve([])
@@ -370,7 +366,7 @@ export function mockGetUserTags(_userId: number): Promise<Tag[]> {
 }
 
 export function mockAddUserTags(userId: number, tagIds: number[]): Promise<void> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       // 这里简化处理，实际应该更新用户数据
       console.log(`为用户 ${userId} 添加标签:`, tagIds)
@@ -380,7 +376,7 @@ export function mockAddUserTags(userId: number, tagIds: number[]): Promise<void>
 }
 
 export function mockRemoveUserTag(userId: number, tagId: number): Promise<void> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       // 这里简化处理，实际应该更新用户数据
       console.log(`为用户 ${userId} 移除标签:`, tagId)

@@ -5,13 +5,13 @@ import {
   mockCreateElectronicSign,
   mockQuerySignStatus,
   mockGetTemplates,
-  mockDownloadSignedContract
+  mockDownloadSignedContract,
 } from '@/mock/junziqian'
 import type {
   JZQSignRequest,
   JZQSignResponse,
   JZQSignStatusResponse,
-  JZQTemplate
+  JZQTemplate,
 } from '@/types/junziqian'
 
 // 导出类型

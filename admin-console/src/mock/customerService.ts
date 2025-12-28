@@ -10,7 +10,14 @@ export type TicketStatus = 'pending' | 'processing' | 'resolved' | 'closed' | 'r
 export type TicketPriority = 'low' | 'medium' | 'high' | 'urgent'
 
 // 工单类型
-export type TicketType = 'consultation' | 'complaint' | 'suggestion' | 'technical' | 'refund' | 'campsite_inquiry' | 'other'
+export type TicketType =
+  | 'consultation'
+  | 'complaint'
+  | 'suggestion'
+  | 'technical'
+  | 'refund'
+  | 'campsite_inquiry'
+  | 'other'
 
 // 客服技能
 export type ServiceSkill = 'vehicle' | 'order' | 'payment' | 'technical' | 'complaint' | 'general'
@@ -64,9 +71,9 @@ export interface Ticket {
   updatedAt: string
   resolvedAt: string | null
   closedAt: string | null
-  responseTime: number | null  // 响应时长（分钟）
-  resolveTime: number | null   // 解决时长（小时）
-  satisfaction: number | null  // 满意度评分 1-5
+  responseTime: number | null // 响应时长（分钟）
+  resolveTime: number | null // 解决时长（小时）
+  satisfaction: number | null // 满意度评分 1-5
   satisfactionComment: string
 }
 
@@ -77,9 +84,9 @@ export interface TicketStats {
   processingTickets: number
   resolvedTickets: number
   closedTickets: number
-  avgResponseTime: number      // 平均响应时长（分钟）
-  avgResolveTime: number       // 平均解决时长（小时）
-  avgSatisfaction: number      // 平均满意度
+  avgResponseTime: number // 平均响应时长（分钟）
+  avgResolveTime: number // 平均解决时长（小时）
+  avgSatisfaction: number // 平均满意度
   todayTickets: number
 }
 
@@ -90,26 +97,26 @@ export interface ServiceAgent {
   avatar: string
   status: ServiceStatus
   skills: ServiceSkill[]
-  maxConcurrent: number        // 最大并发工单数
-  currentTickets: number       // 当前处理工单数
-  totalTickets: number         // 累计处理工单数
-  avgSatisfaction: number      // 平均满意度
-  avgResponseTime: number      // 平均响应时长（分钟）
-  onlineTime: number           // 今日在线时长（小时）
+  maxConcurrent: number // 最大并发工单数
+  currentTickets: number // 当前处理工单数
+  totalTickets: number // 累计处理工单数
+  avgSatisfaction: number // 平均满意度
+  avgResponseTime: number // 平均响应时长（分钟）
+  onlineTime: number // 今日在线时长（小时）
   createdAt: string
 }
 
 // 智能路由配置
 export interface RoutingConfig {
   id: number
-  enableAutoRouting: boolean   // 启用自动路由
+  enableAutoRouting: boolean // 启用自动路由
   routingStrategy: 'skill' | 'load' | 'priority' | 'round_robin'
-  skillMatching: boolean       // 技能匹配
-  loadBalancing: boolean       // 负载均衡
-  priorityFirst: boolean       // 优先级优先
-  maxWaitTime: number          // 最大等待时间（分钟）
-  autoEscalate: boolean        // 自动升级
-  escalateTime: number         // 升级时间（分钟）
+  skillMatching: boolean // 技能匹配
+  loadBalancing: boolean // 负载均衡
+  priorityFirst: boolean // 优先级优先
+  maxWaitTime: number // 最大等待时间（分钟）
+  autoEscalate: boolean // 自动升级
+  escalateTime: number // 升级时间（分钟）
   workingHours: {
     start: string
     end: string
@@ -121,18 +128,18 @@ export interface RoutingConfig {
 export interface KnowledgeArticle {
   id: number
   title: string
-  summary: string                    // 文章摘要
+  summary: string // 文章摘要
   content: string
-  categoryId: number                 // 分类ID
+  categoryId: number // 分类ID
   categoryCode: KnowledgeCategoryCode // 分类代码
-  categoryName: string               // 分类名称
+  categoryName: string // 分类名称
   tags: string[]
-  visibility: ArticleVisibility      // 展示范围
-  isHot: boolean                     // 热门标记
-  order: number                      // 排序权重
+  visibility: ArticleVisibility // 展示范围
+  isHot: boolean // 热门标记
+  order: number // 排序权重
   viewCount: number
   likeCount: number
-  helpfulCount: number               // 有用数
+  helpfulCount: number // 有用数
   isPublished: boolean
   authorId: number
   authorName: string
@@ -146,12 +153,12 @@ export interface KnowledgeStats {
   publishedArticles: number
   totalViews: number
   totalLikes: number
-  totalHelpful: number               // 总有用数
+  totalHelpful: number // 总有用数
   avgViewsPerArticle: number
-  hotArticles: number                // 热门文章数
-  adminOnlyArticles: number          // 仅客服可见文章数
-  miniprogramOnlyArticles: number    // 仅小程序可见文章数
-  bothVisibleArticles: number        // 双端可见文章数
+  hotArticles: number // 热门文章数
+  adminOnlyArticles: number // 仅客服可见文章数
+  miniprogramOnlyArticles: number // 仅小程序可见文章数
+  bothVisibleArticles: number // 双端可见文章数
   topArticles: Array<{
     id: number
     title: string
@@ -563,7 +570,8 @@ const mockKnowledgeArticles: KnowledgeArticle[] = [
     id: 3,
     title: '退款政策说明',
     summary: '详细说明不同取消时间对应的退款比例，帮助用户了解退款规则。',
-    content: '# 退款政策\n\n## 全额退款\n- 提前7天以上取消\n\n## 部分退款\n- 提前3-7天取消，退款50%\n\n## 不予退款\n- 提前3天内取消',
+    content:
+      '# 退款政策\n\n## 全额退款\n- 提前7天以上取消\n\n## 部分退款\n- 提前3-7天取消，退款50%\n\n## 不予退款\n- 提前3天内取消',
     categoryId: 3,
     categoryCode: 'policy',
     categoryName: '政策条款',
@@ -584,7 +592,8 @@ const mockKnowledgeArticles: KnowledgeArticle[] = [
     id: 4,
     title: '常见技术问题解答',
     summary: '解答支付失败、无法登录等常见技术问题，提供详细的解决步骤。',
-    content: '# 技术问题FAQ\n\n## 支付失败怎么办？\n1. 检查网络\n2. 检查余额\n3. 联系客服\n\n## 无法登录怎么办？\n1. 检查手机号\n2. 重置密码\n3. 联系客服',
+    content:
+      '# 技术问题FAQ\n\n## 支付失败怎么办？\n1. 检查网络\n2. 检查余额\n3. 联系客服\n\n## 无法登录怎么办？\n1. 检查手机号\n2. 重置密码\n3. 联系客服',
     categoryId: 1,
     categoryCode: 'faq',
     categoryName: '常见问题',
@@ -605,7 +614,8 @@ const mockKnowledgeArticles: KnowledgeArticle[] = [
     id: 5,
     title: '房车保险说明',
     summary: '介绍房车租赁包含的保险类型，包括车损险、第三者责任险等。',
-    content: '# 房车保险\n\n我们为每辆房车购买了全险，包括：\n- 车损险\n- 第三者责任险\n- 司乘险\n- 盗抢险',
+    content:
+      '# 房车保险\n\n我们为每辆房车购买了全险，包括：\n- 车损险\n- 第三者责任险\n- 司乘险\n- 盗抢险',
     categoryId: 3,
     categoryCode: 'policy',
     categoryName: '政策条款',
@@ -626,7 +636,8 @@ const mockKnowledgeArticles: KnowledgeArticle[] = [
     id: 6,
     title: '客服内部操作手册',
     summary: '客服人员内部使用的操作手册，包含工单处理流程和常见问题应对方案。',
-    content: '# 客服操作手册\n\n## 工单处理流程\n1. 接收工单\n2. 分析问题\n3. 解决方案\n4. 回复用户\n5. 关闭工单\n\n## 常见问题应对\n- 退款问题：按退款政策处理\n- 投诉问题：优先处理，及时上报',
+    content:
+      '# 客服操作手册\n\n## 工单处理流程\n1. 接收工单\n2. 分析问题\n3. 解决方案\n4. 回复用户\n5. 关闭工单\n\n## 常见问题应对\n- 退款问题：按退款政策处理\n- 投诉问题：优先处理，及时上报',
     categoryId: 2,
     categoryCode: 'guide',
     categoryName: '使用指南',
@@ -647,7 +658,8 @@ const mockKnowledgeArticles: KnowledgeArticle[] = [
     id: 7,
     title: '小程序专属优惠活动',
     summary: '仅在小程序端展示的优惠活动说明，包含限时折扣和会员专享优惠。',
-    content: '# 小程序专属优惠\n\n## 限时折扣\n- 新用户首单9折\n- 周末特惠8.5折\n\n## 会员专享\n- 银卡会员95折\n- 金卡会员9折\n- 钻石会员85折',
+    content:
+      '# 小程序专属优惠\n\n## 限时折扣\n- 新用户首单9折\n- 周末特惠8.5折\n\n## 会员专享\n- 银卡会员95折\n- 金卡会员9折\n- 钻石会员85折',
     categoryId: 3,
     categoryCode: 'policy',
     categoryName: '政策条款',
@@ -680,26 +692,26 @@ export function getTickets(params: {
   assigneeId?: number
   keyword?: string
 }): Promise<{ list: Ticket[]; total: number }> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       let filteredList = [...mockTickets]
 
       // 筛选
       if (params.status) {
-        filteredList = filteredList.filter((item) => item.status === params.status)
+        filteredList = filteredList.filter(item => item.status === params.status)
       }
       if (params.type) {
-        filteredList = filteredList.filter((item) => item.type === params.type)
+        filteredList = filteredList.filter(item => item.type === params.type)
       }
       if (params.priority) {
-        filteredList = filteredList.filter((item) => item.priority === params.priority)
+        filteredList = filteredList.filter(item => item.priority === params.priority)
       }
       if (params.assigneeId) {
-        filteredList = filteredList.filter((item) => item.assigneeId === params.assigneeId)
+        filteredList = filteredList.filter(item => item.assigneeId === params.assigneeId)
       }
       if (params.keyword) {
         filteredList = filteredList.filter(
-          (item) =>
+          item =>
             item.ticketNo.includes(params.keyword!) ||
             item.title.includes(params.keyword!) ||
             item.userName.includes(params.keyword!)
@@ -723,14 +735,14 @@ export function getTickets(params: {
  * 获取工单统计
  */
 export function getTicketStats(): Promise<TicketStats> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const stats: TicketStats = {
         totalTickets: mockTickets.length,
-        pendingTickets: mockTickets.filter((item) => item.status === 'pending').length,
-        processingTickets: mockTickets.filter((item) => item.status === 'processing').length,
-        resolvedTickets: mockTickets.filter((item) => item.status === 'resolved').length,
-        closedTickets: mockTickets.filter((item) => item.status === 'closed').length,
+        pendingTickets: mockTickets.filter(item => item.status === 'pending').length,
+        processingTickets: mockTickets.filter(item => item.status === 'processing').length,
+        resolvedTickets: mockTickets.filter(item => item.status === 'resolved').length,
+        closedTickets: mockTickets.filter(item => item.status === 'closed').length,
         avgResponseTime: 11.6,
         avgResolveTime: 1.1,
         avgSatisfaction: 4.6,
@@ -745,9 +757,9 @@ export function getTicketStats(): Promise<TicketStats> {
  * 分配工单
  */
 export function assignTicket(id: number, assigneeId: number, assigneeName: string): Promise<void> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
-      const index = mockTickets.findIndex((item) => item.id === id)
+      const index = mockTickets.findIndex(item => item.id === id)
       if (index !== -1) {
         mockTickets[index].assigneeId = assigneeId
         mockTickets[index].assigneeName = assigneeName
@@ -763,9 +775,9 @@ export function assignTicket(id: number, assigneeId: number, assigneeName: strin
  * 更新工单状态
  */
 export function updateTicketStatus(id: number, status: TicketStatus): Promise<void> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
-      const index = mockTickets.findIndex((item) => item.id === id)
+      const index = mockTickets.findIndex(item => item.id === id)
       if (index !== -1) {
         mockTickets[index].status = status
         mockTickets[index].updatedAt = new Date().toISOString().slice(0, 19).replace('T', ' ')
@@ -787,15 +799,15 @@ export function getServiceAgents(params?: {
   status?: ServiceStatus
   skill?: ServiceSkill
 }): Promise<ServiceAgent[]> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       let filteredList = [...mockServiceAgents]
 
       if (params?.status) {
-        filteredList = filteredList.filter((item) => item.status === params.status)
+        filteredList = filteredList.filter(item => item.status === params.status)
       }
       if (params?.skill) {
-        filteredList = filteredList.filter((item) => item.skills.includes(params.skill!))
+        filteredList = filteredList.filter(item => item.skills.includes(params.skill!))
       }
 
       resolve(filteredList)
@@ -807,9 +819,9 @@ export function getServiceAgents(params?: {
  * 更新客服状态
  */
 export function updateServiceAgentStatus(id: number, status: ServiceStatus): Promise<void> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
-      const index = mockServiceAgents.findIndex((item) => item.id === id)
+      const index = mockServiceAgents.findIndex(item => item.id === id)
       if (index !== -1) {
         mockServiceAgents[index].status = status
       }
@@ -822,7 +834,7 @@ export function updateServiceAgentStatus(id: number, status: ServiceStatus): Pro
  * 获取智能路由配置
  */
 export function getRoutingConfig(): Promise<RoutingConfig> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       resolve(mockRoutingConfig)
     }, 200)
@@ -833,7 +845,7 @@ export function getRoutingConfig(): Promise<RoutingConfig> {
  * 更新智能路由配置
  */
 export function updateRoutingConfig(data: Partial<RoutingConfig>): Promise<void> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       mockRoutingConfig = {
         ...mockRoutingConfig,
@@ -857,30 +869,30 @@ export function getKnowledgeArticles(params: {
   isHot?: boolean
   keyword?: string
 }): Promise<{ list: KnowledgeArticle[]; total: number }> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       let filteredList = [...mockKnowledgeArticles]
 
       // 分类筛选
       if (params.categoryCode) {
-        filteredList = filteredList.filter((item) => item.categoryCode === params.categoryCode)
+        filteredList = filteredList.filter(item => item.categoryCode === params.categoryCode)
       }
       // 展示范围筛选
       if (params.visibility) {
-        filteredList = filteredList.filter((item) => item.visibility === params.visibility)
+        filteredList = filteredList.filter(item => item.visibility === params.visibility)
       }
       // 发布状态筛选
       if (params.isPublished !== undefined) {
-        filteredList = filteredList.filter((item) => item.isPublished === params.isPublished)
+        filteredList = filteredList.filter(item => item.isPublished === params.isPublished)
       }
       // 热门筛选
       if (params.isHot !== undefined) {
-        filteredList = filteredList.filter((item) => item.isHot === params.isHot)
+        filteredList = filteredList.filter(item => item.isHot === params.isHot)
       }
       // 关键词搜索
       if (params.keyword) {
         filteredList = filteredList.filter(
-          (item) =>
+          item =>
             item.title.includes(params.keyword!) ||
             item.summary.includes(params.keyword!) ||
             item.content.includes(params.keyword!)
@@ -888,7 +900,10 @@ export function getKnowledgeArticles(params: {
       }
 
       // 按排序权重和创建时间排序
-      filteredList.sort((a, b) => b.order - a.order || new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+      filteredList.sort(
+        (a, b) =>
+          b.order - a.order || new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      )
 
       // 分页
       const start = (params.page - 1) * params.pageSize
@@ -907,25 +922,30 @@ export function getKnowledgeArticles(params: {
  * 获取知识库统计
  */
 export function getKnowledgeStats(): Promise<KnowledgeStats> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const stats: KnowledgeStats = {
         totalArticles: mockKnowledgeArticles.length,
-        publishedArticles: mockKnowledgeArticles.filter((item) => item.isPublished).length,
+        publishedArticles: mockKnowledgeArticles.filter(item => item.isPublished).length,
         totalViews: mockKnowledgeArticles.reduce((sum, item) => sum + item.viewCount, 0),
         totalLikes: mockKnowledgeArticles.reduce((sum, item) => sum + item.likeCount, 0),
         totalHelpful: mockKnowledgeArticles.reduce((sum, item) => sum + item.helpfulCount, 0),
         avgViewsPerArticle: Math.round(
-          mockKnowledgeArticles.reduce((sum, item) => sum + item.viewCount, 0) / mockKnowledgeArticles.length
+          mockKnowledgeArticles.reduce((sum, item) => sum + item.viewCount, 0) /
+            mockKnowledgeArticles.length
         ),
-        hotArticles: mockKnowledgeArticles.filter((item) => item.isHot).length,
-        adminOnlyArticles: mockKnowledgeArticles.filter((item) => item.visibility === 'admin_only').length,
-        miniprogramOnlyArticles: mockKnowledgeArticles.filter((item) => item.visibility === 'miniprogram_only').length,
-        bothVisibleArticles: mockKnowledgeArticles.filter((item) => item.visibility === 'both').length,
+        hotArticles: mockKnowledgeArticles.filter(item => item.isHot).length,
+        adminOnlyArticles: mockKnowledgeArticles.filter(item => item.visibility === 'admin_only')
+          .length,
+        miniprogramOnlyArticles: mockKnowledgeArticles.filter(
+          item => item.visibility === 'miniprogram_only'
+        ).length,
+        bothVisibleArticles: mockKnowledgeArticles.filter(item => item.visibility === 'both')
+          .length,
         topArticles: [...mockKnowledgeArticles]
           .sort((a, b) => b.viewCount - a.viewCount)
           .slice(0, 5)
-          .map((item) => ({
+          .map(item => ({
             id: item.id,
             title: item.title,
             viewCount: item.viewCount,
@@ -939,13 +959,13 @@ export function getKnowledgeStats(): Promise<KnowledgeStats> {
 /**
  * 创建知识库文章
  */
-export function createKnowledgeArticle(
-  data: Partial<KnowledgeArticle>
-): Promise<KnowledgeArticle> {
-  return new Promise((resolve) => {
+export function createKnowledgeArticle(data: Partial<KnowledgeArticle>): Promise<KnowledgeArticle> {
+  return new Promise(resolve => {
     setTimeout(() => {
       // 根据分类代码获取分类信息
-      const category = mockKnowledgeCategories.find((c) => c.code === data.categoryCode) || mockKnowledgeCategories[4]
+      const category =
+        mockKnowledgeCategories.find(c => c.code === data.categoryCode) ||
+        mockKnowledgeCategories[4]
 
       const newArticle: KnowledgeArticle = {
         id: mockKnowledgeArticles.length + 1,
@@ -971,7 +991,7 @@ export function createKnowledgeArticle(
       mockKnowledgeArticles.push(newArticle)
 
       // 更新分类文章数
-      const categoryIndex = mockKnowledgeCategories.findIndex((c) => c.id === category.id)
+      const categoryIndex = mockKnowledgeCategories.findIndex(c => c.id === category.id)
       if (categoryIndex !== -1) {
         mockKnowledgeCategories[categoryIndex].articleCount++
       }
@@ -984,13 +1004,10 @@ export function createKnowledgeArticle(
 /**
  * 更新知识库文章
  */
-export function updateKnowledgeArticle(
-  id: number,
-  data: Partial<KnowledgeArticle>
-): Promise<void> {
-  return new Promise((resolve) => {
+export function updateKnowledgeArticle(id: number, data: Partial<KnowledgeArticle>): Promise<void> {
+  return new Promise(resolve => {
     setTimeout(() => {
-      const index = mockKnowledgeArticles.findIndex((item) => item.id === id)
+      const index = mockKnowledgeArticles.findIndex(item => item.id === id)
       if (index !== -1) {
         mockKnowledgeArticles[index] = {
           ...mockKnowledgeArticles[index],
@@ -1007,13 +1024,13 @@ export function updateKnowledgeArticle(
  * 删除知识库文章
  */
 export function deleteKnowledgeArticle(id: number): Promise<void> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
-      const index = mockKnowledgeArticles.findIndex((item) => item.id === id)
+      const index = mockKnowledgeArticles.findIndex(item => item.id === id)
       if (index !== -1) {
         // 更新分类文章数
         const article = mockKnowledgeArticles[index]
-        const categoryIndex = mockKnowledgeCategories.findIndex((c) => c.id === article.categoryId)
+        const categoryIndex = mockKnowledgeCategories.findIndex(c => c.id === article.categoryId)
         if (categoryIndex !== -1 && mockKnowledgeCategories[categoryIndex].articleCount > 0) {
           mockKnowledgeCategories[categoryIndex].articleCount--
         }
@@ -1030,12 +1047,12 @@ export function deleteKnowledgeArticle(id: number): Promise<void> {
 export function getKnowledgeCategories(params?: {
   isEnabled?: boolean
 }): Promise<KnowledgeCategoryEntity[]> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       let filteredList = [...mockKnowledgeCategories]
 
       if (params?.isEnabled !== undefined) {
-        filteredList = filteredList.filter((item) => item.isEnabled === params.isEnabled)
+        filteredList = filteredList.filter(item => item.isEnabled === params.isEnabled)
       }
 
       // 按排序权重排序
@@ -1053,9 +1070,9 @@ export function updateKnowledgeCategory(
   id: number,
   data: Partial<KnowledgeCategoryEntity>
 ): Promise<void> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
-      const index = mockKnowledgeCategories.findIndex((item) => item.id === id)
+      const index = mockKnowledgeCategories.findIndex(item => item.id === id)
       if (index !== -1) {
         mockKnowledgeCategories[index] = {
           ...mockKnowledgeCategories[index],
@@ -1102,7 +1119,8 @@ const mockTicketMessages: TicketMessage[] = [
     senderName: '客服小王',
     senderAvatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=agent1',
     type: 'text',
-    content: '您好！感谢您选择叨叨房车。预订房车非常简单，您只需要：\n1. 在小程序首页选择您心仪的车型\n2. 选择租赁日期和取还车地点\n3. 填写驾驶人信息（需要有效驾照）\n4. 完成支付即可',
+    content:
+      '您好！感谢您选择叨叨房车。预订房车非常简单，您只需要：\n1. 在小程序首页选择您心仪的车型\n2. 选择租赁日期和取还车地点\n3. 填写驾驶人信息（需要有效驾照）\n4. 完成支付即可',
     attachments: [],
     createdAt: '2025-12-03 09:08:00',
     isRead: true,
@@ -1126,7 +1144,8 @@ const mockTicketMessages: TicketMessage[] = [
     senderName: '客服小王',
     senderAvatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=agent1',
     type: 'text',
-    content: '是的，根据车型不同，押金在3000-10000元不等。押金会在还车验收无误后3个工作日内原路退回。如果您是我们的会员，还可以享受免押金服务哦！',
+    content:
+      '是的，根据车型不同，押金在3000-10000元不等。押金会在还车验收无误后3个工作日内原路退回。如果您是我们的会员，还可以享受免押金服务哦！',
     attachments: [],
     createdAt: '2025-12-03 09:20:00',
     isRead: true,
@@ -1199,7 +1218,8 @@ const mockTicketMessages: TicketMessage[] = [
     senderName: '客服小李',
     senderAvatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=agent2',
     type: 'text',
-    content: '非常抱歉给您带来不好的体验！我们会立即为您安排换车，请问您现在方便到最近的门店吗？我们会为您准备一辆同款或更高配置的车辆。',
+    content:
+      '非常抱歉给您带来不好的体验！我们会立即为您安排换车，请问您现在方便到最近的门店吗？我们会为您准备一辆同款或更高配置的车辆。',
     attachments: [],
     createdAt: '2025-12-03 10:15:00',
     isRead: true,
@@ -1223,7 +1243,8 @@ const mockTicketMessages: TicketMessage[] = [
     senderName: '客服小李',
     senderAvatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=agent2',
     type: 'text',
-    content: '西湖区有我们的旗舰店，地址是：西湖区文三路123号。我已经通知门店为您准备车辆，您到店后报您的手机号即可。另外，作为补偿，我们会赠送您一张200元的优惠券。',
+    content:
+      '西湖区有我们的旗舰店，地址是：西湖区文三路123号。我已经通知门店为您准备车辆，您到店后报您的手机号即可。另外，作为补偿，我们会赠送您一张200元的优惠券。',
     attachments: [],
     createdAt: '2025-12-03 10:25:00',
     isRead: true,
@@ -1367,7 +1388,8 @@ const mockTicketMessages: TicketMessage[] = [
     senderName: '客服小张',
     senderAvatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=agent3',
     type: 'text',
-    content: '您好！千岛湖营地周末还有少量位置，建议您尽快预订。营地设施非常完善，有独立水电桩、24小时热水淋浴、烧烤区和免费WiFi。',
+    content:
+      '您好！千岛湖营地周末还有少量位置，建议您尽快预订。营地设施非常完善，有独立水电桩、24小时热水淋浴、烧烤区和免费WiFi。',
     attachments: [],
     createdAt: '2025-12-01 10:10:00',
     isRead: true,
@@ -1381,9 +1403,9 @@ let messageIdCounter = 23
  * 获取工单对话消息
  */
 export function getTicketMessages(ticketId: number): Promise<TicketMessage[]> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
-      const messages = mockTicketMessages.filter((msg) => msg.ticketId === ticketId)
+      const messages = mockTicketMessages.filter(msg => msg.ticketId === ticketId)
       resolve(messages)
     }, 200)
   })
@@ -1398,7 +1420,7 @@ export function sendTicketMessage(data: {
   type?: MessageType
   attachments?: string[]
 }): Promise<TicketMessage> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const newMessage: TicketMessage = {
         id: messageIdCounter++,
@@ -1422,9 +1444,9 @@ export function sendTicketMessage(data: {
  * 标记消息已读
  */
 export function markMessagesAsRead(ticketId: number): Promise<void> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
-      mockTicketMessages.forEach((msg) => {
+      mockTicketMessages.forEach(msg => {
         if (msg.ticketId === ticketId) {
           msg.isRead = true
         }

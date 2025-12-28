@@ -9,11 +9,7 @@
     </template>
 
     <!-- 递归渲染子菜单 -->
-    <MenuItemComponent
-      v-for="child in menuItem.children"
-      :key="child.path"
-      :menu-item="child"
-    />
+    <MenuItemComponent v-for="child in menuItem.children" :key="child.path" :menu-item="child" />
   </el-sub-menu>
 
   <!-- 无子菜单：渲染 el-menu-item -->

@@ -6,11 +6,7 @@
       :hidden="unreadCount === 0"
       :is-dot="showDot"
     >
-      <el-button
-        :icon="Bell"
-        circle
-        @click="handleToggle"
-      />
+      <el-button :icon="Bell" circle @click="handleToggle" />
     </el-badge>
 
     <!-- 通知弹出框 -->
@@ -23,12 +19,7 @@
     >
       <!-- 头部标签页 -->
       <el-tabs v-model="activeTab" @tab-change="handleTabChange">
-        <el-tab-pane
-          v-for="tab in tabs"
-          :key="tab.name"
-          :label="tab.label"
-          :name="tab.name"
-        >
+        <el-tab-pane v-for="tab in tabs" :key="tab.name" :label="tab.label" :name="tab.name">
           <template #label>
             <span class="tab-label">
               {{ tab.label }}
@@ -69,12 +60,7 @@
               <div class="item-content">
                 <div class="item-title">
                   {{ notification.title }}
-                  <el-tag
-                    v-if="!notification.read"
-                    type="danger"
-                    size="small"
-                    effect="dark"
-                  >
+                  <el-tag v-if="!notification.read" type="danger" size="small" effect="dark">
                     新
                   </el-tag>
                 </div>
@@ -90,26 +76,16 @@
               <div class="item-actions">
                 <el-dropdown
                   trigger="click"
-                  @command="(command) => handleAction(command, notification)"
+                  @command="command => handleAction(command, notification)"
                 >
                   <el-button :icon="MoreFilled" text circle size="small" />
                   <template #dropdown>
                     <el-dropdown-menu>
-                      <el-dropdown-item
-                        v-if="!notification.read"
-                        command="markRead"
-                      >
+                      <el-dropdown-item v-if="!notification.read" command="markRead">
                         标记已读
                       </el-dropdown-item>
-                      <el-dropdown-item
-                        v-else
-                        command="markUnread"
-                      >
-                        标记未读
-                      </el-dropdown-item>
-                      <el-dropdown-item command="delete" divided>
-                        删除
-                      </el-dropdown-item>
+                      <el-dropdown-item v-else command="markUnread"> 标记未读 </el-dropdown-item>
+                      <el-dropdown-item command="delete" divided> 删除 </el-dropdown-item>
                     </el-dropdown-menu>
                   </template>
                 </el-dropdown>
@@ -117,11 +93,7 @@
             </div>
 
             <!-- 加载更多 -->
-            <div
-              v-if="hasMore && !loading"
-              class="load-more"
-              @click="handleLoadMore"
-            >
+            <div v-if="hasMore && !loading" class="load-more" @click="handleLoadMore">
               <el-button text>加载更多</el-button>
             </div>
           </div>
@@ -131,25 +103,11 @@
       <!-- 底部操作 -->
       <template #footer>
         <div class="drawer-footer">
-          <el-button
-            v-if="showMarkAllRead && unreadCount > 0"
-            @click="handleMarkAllRead"
-          >
+          <el-button v-if="showMarkAllRead && unreadCount > 0" @click="handleMarkAllRead">
             全部标记已读
           </el-button>
-          <el-button
-            v-if="showClearAll"
-            @click="handleClearAll"
-          >
-            清空全部
-          </el-button>
-          <el-button
-            v-if="showViewAll"
-            type="primary"
-            @click="handleViewAll"
-          >
-            查看全部
-          </el-button>
+          <el-button v-if="showClearAll" @click="handleClearAll"> 清空全部 </el-button>
+          <el-button v-if="showViewAll" type="primary" @click="handleViewAll"> 查看全部 </el-button>
         </div>
       </template>
     </el-drawer>
@@ -176,40 +134,40 @@ export type NotificationType = 'info' | 'success' | 'warning' | 'error' | 'messa
 
 // 通知项接口
 export interface Notification {
-  id: string | number           // 通知 ID
-  type: NotificationType        // 通知类型
-  title: string                 // 通知标题
-  description: string           // 通知描述
-  time: string | Date           // 通知时间
-  read: boolean                 // 是否已读
-  data?: any                    // 附加数据
+  id: string | number // 通知 ID
+  type: NotificationType // 通知类型
+  title: string // 通知标题
+  description: string // 通知描述
+  time: string | Date // 通知时间
+  read: boolean // 是否已读
+  data?: any // 附加数据
 }
 
 // 标签页配置接口
 export interface TabConfig {
-  name: string                  // 标签名称
-  label: string                 // 标签文本
-  count: number                 // 未读数量
-  type?: NotificationType[]     // 筛选的通知类型
+  name: string // 标签名称
+  label: string // 标签文本
+  count: number // 未读数量
+  type?: NotificationType[] // 筛选的通知类型
 }
 
 // Props 定义
 interface Props {
   notifications?: Notification[] // 通知列表
-  tabs?: TabConfig[]            // 标签页配置
-  title?: string                // 抽屉标题
-  maxBadgeCount?: number        // 徽章最大显示数
-  showDot?: boolean             // 是否显示小红点
-  drawerSize?: string | number  // 抽屉大小
+  tabs?: TabConfig[] // 标签页配置
+  title?: string // 抽屉标题
+  maxBadgeCount?: number // 徽章最大显示数
+  showDot?: boolean // 是否显示小红点
+  drawerSize?: string | number // 抽屉大小
   direction?: 'rtl' | 'ltr' | 'ttb' | 'btt' // 抽屉方向
-  appendToBody?: boolean        // 是否插入到 body
-  emptyText?: string            // 空状态文本
-  showMarkAllRead?: boolean     // 是否显示全部标记已读
-  showClearAll?: boolean        // 是否显示清空全部
-  showViewAll?: boolean         // 是否显示查看全部
-  pageSize?: number             // 每页数量
-  autoRefresh?: boolean         // 是否自动刷新
-  refreshInterval?: number      // 刷新间隔（毫秒）
+  appendToBody?: boolean // 是否插入到 body
+  emptyText?: string // 空状态文本
+  showMarkAllRead?: boolean // 是否显示全部标记已读
+  showClearAll?: boolean // 是否显示清空全部
+  showViewAll?: boolean // 是否显示查看全部
+  pageSize?: number // 每页数量
+  autoRefresh?: boolean // 是否自动刷新
+  refreshInterval?: number // 刷新间隔（毫秒）
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -237,15 +195,15 @@ const props = withDefaults(defineProps<Props>(), {
 
 // Emits 定义
 const emit = defineEmits<{
-  'click': [notification: Notification]
+  click: [notification: Notification]
   'mark-read': [notification: Notification]
   'mark-unread': [notification: Notification]
-  'delete': [notification: Notification]
+  delete: [notification: Notification]
   'mark-all-read': []
   'clear-all': []
   'view-all': []
   'load-more': [tab: string]
-  'refresh': []
+  refresh: []
 }>()
 
 // 响应式数据
@@ -411,8 +369,12 @@ const _cleanup = () => {
 
 // 暴露方法供父组件调用
 defineExpose({
-  open: () => { drawerVisible.value = true },
-  close: () => { drawerVisible.value = false },
+  open: () => {
+    drawerVisible.value = true
+  },
+  close: () => {
+    drawerVisible.value = false
+  },
   refresh: () => emit('refresh'),
 })
 </script>

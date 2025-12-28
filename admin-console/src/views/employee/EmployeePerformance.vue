@@ -1,13 +1,16 @@
 <!-- 员工绩效管理页面 -->
 <template>
   <div class="employee-performance-container">
-    
-
     <!-- 统计卡片 -->
     <StatsCard :stats="statsCards" />
 
     <!-- 搜索表单 -->
-    <SearchForm v-model="searchParams" :fields="searchFields" @search="handleSearch" @reset="handleReset" />
+    <SearchForm
+      v-model="searchParams"
+      :fields="searchFields"
+      @search="handleSearch"
+      @reset="handleReset"
+    />
 
     <!-- 数据表格 -->
     <DataTable
@@ -20,11 +23,7 @@
       @current-change="handleCurrentChange"
     >
       <template #score="{ row }">
-        <el-progress
-          :percentage="row.score"
-          :color="getScoreColor(row.score)"
-          :stroke-width="20"
-        />
+        <el-progress :percentage="row.score" :color="getScoreColor(row.score)" :stroke-width="20" />
       </template>
 
       <template #rank="{ row }">

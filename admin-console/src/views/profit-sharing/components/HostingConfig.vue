@@ -1,11 +1,6 @@
 <template>
   <div class="hosting-config">
-    <el-alert
-      title="托管配置说明"
-      type="info"
-      :closable="false"
-      style="margin-bottom: 20px"
-    >
+    <el-alert title="托管配置说明" type="info" :closable="false" style="margin-bottom: 20px">
       <p>配置不同托管类型的基础分成比例和绩效加成规则</p>
     </el-alert>
 
@@ -19,9 +14,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="baseRatio" label="基础比例" width="120" align="right">
-        <template #default="{ row }">
-          {{ row.baseRatio }}%
-        </template>
+        <template #default="{ row }"> {{ row.baseRatio }}% </template>
       </el-table-column>
       <el-table-column prop="performanceBonus" label="绩效加成" min-width="300">
         <template #default="{ row }">
@@ -38,17 +31,12 @@
       </el-table-column>
       <el-table-column prop="enabled" label="状态" width="100">
         <template #default="{ row }">
-          <el-switch
-            v-model="row.enabled"
-            @change="handleStatusChange(row)"
-          />
+          <el-switch v-model="row.enabled" @change="handleStatusChange(row)" />
         </template>
       </el-table-column>
       <el-table-column label="操作" width="120" fixed="right">
         <template #default="{ row }">
-          <el-button link type="primary" size="small" @click="handleEdit(row)">
-            编辑
-          </el-button>
+          <el-button link type="primary" size="small" @click="handleEdit(row)"> 编辑 </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -59,12 +47,7 @@
       :title="`编辑${getHostingTypeName(currentConfig?.hostingType || 'own_car')}配置`"
       width="600px"
     >
-      <el-form
-        ref="formRef"
-        :model="formData"
-        :rules="formRules"
-        label-width="120px"
-      >
+      <el-form ref="formRef" :model="formData" :rules="formRules" label-width="120px">
         <el-form-item label="基础比例" prop="baseRatio">
           <el-input-number
             v-model="formData.baseRatio"
@@ -76,12 +59,12 @@
           <span style="margin-left: 10px">%</span>
         </el-form-item>
         <el-form-item label="绩效加成">
-          <div v-for="(bonus, index) in formData.performanceBonus" :key="index" style="margin-bottom: 10px">
-            <el-input
-              v-model="bonus.metric"
-              placeholder="指标名称"
-              style="width: 100px"
-            />
+          <div
+            v-for="(bonus, index) in formData.performanceBonus"
+            :key="index"
+            style="margin-bottom: 10px"
+          >
+            <el-input v-model="bonus.metric" placeholder="指标名称" style="width: 100px" />
             <span style="margin: 0 5px">≥</span>
             <el-input-number
               v-model="bonus.threshold"
@@ -100,24 +83,16 @@
               style="width: 100px"
             />
             <span style="margin: 0 5px">%</span>
-            <el-button
-              type="danger"
-              size="small"
-              @click="handleRemoveBonus(index)"
-            >
+            <el-button type="danger" size="small" @click="handleRemoveBonus(index)">
               删除
             </el-button>
           </div>
-          <el-button type="primary" size="small" @click="handleAddBonus">
-            添加绩效加成
-          </el-button>
+          <el-button type="primary" size="small" @click="handleAddBonus"> 添加绩效加成 </el-button>
         </el-form-item>
       </el-form>
       <template #footer>
         <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="handleSubmit" :loading="submitting">
-          保存
-        </el-button>
+        <el-button type="primary" @click="handleSubmit" :loading="submitting"> 保存 </el-button>
       </template>
     </el-dialog>
   </div>
@@ -187,7 +162,7 @@ const handleRemoveBonus = (index: number) => {
 
 const handleSubmit = async () => {
   if (!formRef.value) return
-  await formRef.value.validate(async (valid) => {
+  await formRef.value.validate(async valid => {
     if (!valid) return
     submitting.value = true
     try {

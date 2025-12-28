@@ -16,11 +16,7 @@
         <!-- 面包屑导航（移除最后一级） -->
         <div class="breadcrumb-container" v-if="breadcrumbItems.length > 0">
           <el-breadcrumb separator="/">
-            <el-breadcrumb-item
-              v-for="item in breadcrumbItems"
-              :key="item.path"
-              :to="item.path"
-            >
+            <el-breadcrumb-item v-for="item in breadcrumbItems" :key="item.path" :to="item.path">
               {{ item.name }}
             </el-breadcrumb-item>
           </el-breadcrumb>
@@ -66,12 +62,12 @@ const breadcrumbItems = computed(() => {
 
 // 当前页面标题
 const currentPageTitle = computed(() => {
-  return route.meta?.title as string || ''
+  return (route.meta?.title as string) || ''
 })
 
 // 当前页面描述
 const currentPageDescription = computed(() => {
-  return route.meta?.description as string || ''
+  return (route.meta?.description as string) || ''
 })
 
 // 是否显示页面标题

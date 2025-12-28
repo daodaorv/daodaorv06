@@ -20,25 +20,27 @@ export function exportToCSV(
 
     // 生成 CSV 数据行
     const rows = data.map(item => {
-      return columns.map(col => {
-        let value = item[col.key]
+      return columns
+        .map(col => {
+          let value = item[col.key]
 
-        // 处理特殊值
-        if (value === null || value === undefined) {
-          value = ''
-        } else if (typeof value === 'object') {
-          value = JSON.stringify(value)
-        } else {
-          value = String(value)
-        }
+          // 处理特殊值
+          if (value === null || value === undefined) {
+            value = ''
+          } else if (typeof value === 'object') {
+            value = JSON.stringify(value)
+          } else {
+            value = String(value)
+          }
 
-        // 如果值包含逗号、引号或换行符,需要用引号包裹并转义
-        if (value.includes(',') || value.includes('"') || value.includes('\n')) {
-          value = `"${value.replace(/"/g, '""')}"`
-        }
+          // 如果值包含逗号、引号或换行符,需要用引号包裹并转义
+          if (value.includes(',') || value.includes('"') || value.includes('\n')) {
+            value = `"${value.replace(/"/g, '""')}"`
+          }
 
-        return value
-      }).join(',')
+          return value
+        })
+        .join(',')
     })
 
     // 合并表头和数据
@@ -90,12 +92,16 @@ export function downloadImportTemplate(
     const headers = columns.map(col => col.label).join(',')
 
     // 生成示例数据行
-    const rows = sampleData ? sampleData.map(item => {
-      return columns.map(col => {
-        const value = item[col.key] || ''
-        return String(value)
-      }).join(',')
-    }) : []
+    const rows = sampleData
+      ? sampleData.map(item => {
+          return columns
+            .map(col => {
+              const value = item[col.key] || ''
+              return String(value)
+            })
+            .join(',')
+        })
+      : []
 
     // 合并表头和示例数据
     const csvContent = [headers, ...rows].join('\n')
@@ -123,7 +129,7 @@ export function parseCSV(file: File): Promise<any[]> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
 
-    reader.onload = (e) => {
+    reader.onload = e => {
       try {
         const text = e.target?.result as string
         const lines = text.split('\n').filter(line => line.trim())
@@ -229,8 +235,8 @@ export function validateImportData(
 ) {
   const errors: Array<{ row: number; field: string; message: string }> = []
 
-  data.forEach((row) => {
-    rules.forEach((rule) => {
+  data.forEach(row => {
+    rules.forEach(rule => {
       const value = row[rule.label] || row[rule.field]
 
       // 必填验证
@@ -238,7 +244,7 @@ export function validateImportData(
         errors.push({
           row: row._rowNumber || 0,
           field: rule.label,
-          message: `${rule.label}不能为空`
+          message: `${rule.label}不能为空`,
         })
         return
       }
@@ -250,7 +256,7 @@ export function validateImportData(
           errors.push({
             row: row._rowNumber || 0,
             field: rule.label,
-            message: typeof result === 'string' ? result : `${rule.label}格式不正确`
+            message: typeof result === 'string' ? result : `${rule.label}格式不正确`,
           })
         }
       }
@@ -259,6 +265,6 @@ export function validateImportData(
 
   return {
     valid: errors.length === 0,
-    errors
+    errors,
   }
 }

@@ -6,13 +6,10 @@
     :close-on-click-modal="false"
     @close="handleClose"
   >
-    <el-alert
-      title="批量计算说明"
-      type="info"
-      :closable="false"
-      style="margin-bottom: 20px"
-    >
-      <p>已选择 <strong>{{ selectedVehicles.length }}</strong> 辆车进行批量计算</p>
+    <el-alert title="批量计算说明" type="info" :closable="false" style="margin-bottom: 20px">
+      <p>
+        已选择 <strong>{{ selectedVehicles.length }}</strong> 辆车进行批量计算
+      </p>
       <p>系统将使用统一的计算参数为所有车辆计算建议租金，您可以预览结果后选择性应用</p>
     </el-alert>
 
@@ -108,13 +105,7 @@
             >
               应用选中 ({{ selectedResults.length }})
             </el-button>
-            <el-button
-              type="primary"
-              size="small"
-              @click="handleApplyAll"
-            >
-              应用全部
-            </el-button>
+            <el-button type="primary" size="small" @click="handleApplyAll"> 应用全部 </el-button>
           </div>
         </div>
       </template>
@@ -131,9 +122,7 @@
         <el-table-column label="购买信息" width="180">
           <template #default="{ row }">
             <div>购买价格: ¥{{ row.purchasePrice.toLocaleString() }}</div>
-            <div style="font-size: 12px; color: #909399">
-              购买日期: {{ row.purchaseDate }}
-            </div>
+            <div style="font-size: 12px; color: #909399">购买日期: {{ row.purchaseDate }}</div>
           </template>
         </el-table-column>
         <el-table-column label="车况评级" width="100" align="center">
@@ -150,18 +139,20 @@
         </el-table-column>
         <el-table-column label="建议租金" width="100" align="right">
           <template #default="{ row }">
-            <span style="color: #67c23a; font-weight: bold">
-              ¥{{ row.suggestedPrice }}
-            </span>
+            <span style="color: #67c23a; font-weight: bold"> ¥{{ row.suggestedPrice }} </span>
           </template>
         </el-table-column>
         <el-table-column label="价格变化" width="120" align="center">
           <template #default="{ row }">
-            <div v-if="row.priceChange !== 0" :style="{ color: row.priceChange > 0 ? '#f56c6c' : '#67c23a' }">
+            <div
+              v-if="row.priceChange !== 0"
+              :style="{ color: row.priceChange > 0 ? '#f56c6c' : '#67c23a' }"
+            >
               <el-icon v-if="row.priceChange > 0"><CaretTop /></el-icon>
               <el-icon v-else><CaretBottom /></el-icon>
-              {{ row.priceChange > 0 ? '+' : '' }}{{ row.priceChange }}
-              ({{ row.priceChangePercent > 0 ? '+' : '' }}{{ row.priceChangePercent }}%)
+              {{ row.priceChange > 0 ? '+' : '' }}{{ row.priceChange }} ({{
+                row.priceChangePercent > 0 ? '+' : ''
+              }}{{ row.priceChangePercent }}%)
             </div>
             <span v-else style="color: #909399">无变化</span>
           </template>
@@ -291,7 +282,10 @@ interface Props {
 
 interface Emits {
   (e: 'update:modelValue', value: boolean): void
-  (e: 'success', results: Array<{ vehicleId: number; dailyPrice: number; calculationParams: any }>): void
+  (
+    e: 'success',
+    results: Array<{ vehicleId: number; dailyPrice: number; calculationParams: any }>
+  ): void
 }
 
 const props = defineProps<Props>()
@@ -299,7 +293,7 @@ const emit = defineEmits<Emits>()
 
 const visible = computed({
   get: () => props.modelValue,
-  set: (val) => emit('update:modelValue', val),
+  set: val => emit('update:modelValue', val),
 })
 
 // 计算参数
@@ -398,9 +392,8 @@ const handleCalculate = async () => {
 
         // 计算价格变化
         const priceChange = result.suggestedDailyPrice - vehicle.dailyPrice
-        const priceChangePercent = vehicle.dailyPrice > 0
-          ? Math.round((priceChange / vehicle.dailyPrice) * 100)
-          : 0
+        const priceChangePercent =
+          vehicle.dailyPrice > 0 ? Math.round((priceChange / vehicle.dailyPrice) * 100) : 0
 
         calculationResults.push({
           vehicleId: vehicle.id,
@@ -452,7 +445,9 @@ const handleCalculate = async () => {
     results.value = calculationResults
     progressText.value = '计算完成'
 
-    ElMessage.success(`批量计算完成！成功 ${successCount.value} 辆，失败 ${total - successCount.value} 辆`)
+    ElMessage.success(
+      `批量计算完成！成功 ${successCount.value} 辆，失败 ${total - successCount.value} 辆`
+    )
   } catch (error) {
     console.error('批量计算失败:', error)
     ElMessage.error('批量计算失败')
@@ -559,7 +554,7 @@ const handleClose = () => {
 }
 
 // 监听对话框打开，重置参数
-watch(visible, (val) => {
+watch(visible, val => {
   if (val) {
     params.value = {
       targetAnnualReturn: DEFAULT_FINANCIAL_PARAMS.TARGET_ANNUAL_RETURN * 100,

@@ -6,12 +6,7 @@
     :close-on-click-modal="false"
     @close="handleClose"
   >
-    <el-form
-      ref="formRef"
-      :model="form"
-      :rules="formRules"
-      label-width="120px"
-    >
+    <el-form ref="formRef" :model="form" :rules="formRules" label-width="120px">
       <!-- 订单信息 -->
       <el-card class="info-card" shadow="never">
         <template #header><span class="card-title">订单信息</span></template>
@@ -247,13 +242,13 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: false,
-  orderInfo: null
+  orderInfo: null,
 })
 
 // Emits
 const emit = defineEmits<{
   'update:modelValue': [value: boolean]
-  'submit': [data: any]
+  submit: [data: any]
 }>()
 
 // 响应式数据
@@ -268,7 +263,7 @@ const form = reactive({
     fuelLevel: 100,
     exterior: [] as any[],
     interior: [] as any[],
-    dashboard: [] as any[]
+    dashboard: [] as any[],
   },
   checklist: {
     spareTire: true,
@@ -278,21 +273,19 @@ const form = reactive({
     warningTriangle: true,
     jack: true,
     vehicleLicense: true,
-    insurancePolicy: true
+    insurancePolicy: true,
   },
   customerSignature: '',
-  notes: ''
+  notes: '',
 })
 
 // 表单验证规则
 const formRules: FormRules = {
   'vehicleCondition.mileage': [
     { required: true, message: '请输入当前里程', trigger: 'blur' },
-    { type: 'number', min: 0, message: '里程数不能为负数', trigger: 'blur' }
+    { type: 'number', min: 0, message: '里程数不能为负数', trigger: 'blur' },
   ],
-  'vehicleCondition.fuelLevel': [
-    { required: true, message: '请选择油量', trigger: 'change' }
-  ],
+  'vehicleCondition.fuelLevel': [{ required: true, message: '请选择油量', trigger: 'change' }],
   'vehicleCondition.exterior': [
     { required: true, message: '请上传车辆外观照片', trigger: 'change' },
     {
@@ -303,8 +296,8 @@ const formRules: FormRules = {
           callback()
         }
       },
-      trigger: 'change'
-    }
+      trigger: 'change',
+    },
   ],
   'vehicleCondition.dashboard': [
     { required: true, message: '请上传仪表盘照片', trigger: 'change' },
@@ -316,12 +309,10 @@ const formRules: FormRules = {
           callback()
         }
       },
-      trigger: 'change'
-    }
+      trigger: 'change',
+    },
   ],
-  customerSignature: [
-    { required: true, message: '请获取客户签名', trigger: 'change' }
-  ]
+  customerSignature: [{ required: true, message: '请获取客户签名', trigger: 'change' }],
 }
 
 // 油量标记
@@ -330,7 +321,7 @@ const fuelMarks = {
   25: '1/4',
   50: '1/2',
   75: '3/4',
-  100: '满'
+  100: '满',
 }
 
 // 签名相关
@@ -341,11 +332,14 @@ const lastX = ref(0)
 const lastY = ref(0)
 
 // 监听 modelValue 变化
-watch(() => props.modelValue, (val) => {
-  visible.value = val
-})
+watch(
+  () => props.modelValue,
+  val => {
+    visible.value = val
+  }
+)
 
-watch(visible, (val) => {
+watch(visible, val => {
   emit('update:modelValue', val)
 })
 
@@ -455,7 +449,7 @@ const saveSignature = () => {
 const handleSubmit = async () => {
   if (!formRef.value) return
 
-  await formRef.value.validate(async (valid) => {
+  await formRef.value.validate(async valid => {
     if (!valid) return
 
     loading.value = true
@@ -467,13 +461,19 @@ const handleSubmit = async () => {
         vehicleCondition: {
           mileage: form.vehicleCondition.mileage,
           fuelLevel: form.vehicleCondition.fuelLevel,
-          exterior: form.vehicleCondition.exterior.map(file => file.url || URL.createObjectURL(file.raw)),
-          interior: form.vehicleCondition.interior.map(file => file.url || URL.createObjectURL(file.raw)),
-          dashboard: form.vehicleCondition.dashboard.map(file => file.url || URL.createObjectURL(file.raw))
+          exterior: form.vehicleCondition.exterior.map(
+            file => file.url || URL.createObjectURL(file.raw)
+          ),
+          interior: form.vehicleCondition.interior.map(
+            file => file.url || URL.createObjectURL(file.raw)
+          ),
+          dashboard: form.vehicleCondition.dashboard.map(
+            file => file.url || URL.createObjectURL(file.raw)
+          ),
         },
         checklist: form.checklist,
         customerSignature: form.customerSignature,
-        notes: form.notes
+        notes: form.notes,
       }
 
       emit('submit', submitData)

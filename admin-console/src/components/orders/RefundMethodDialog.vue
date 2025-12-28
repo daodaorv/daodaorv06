@@ -6,12 +6,7 @@
     :close-on-click-modal="false"
     @close="handleClose"
   >
-    <el-form
-      ref="formRef"
-      :model="form"
-      :rules="formRules"
-      label-width="120px"
-    >
+    <el-form ref="formRef" :model="form" :rules="formRules" label-width="120px">
       <!-- 退款信息 -->
       <el-card class="info-card" shadow="never">
         <template #header><span class="card-title">退款信息</span></template>
@@ -72,25 +67,13 @@
       <!-- 银行卡信息 -->
       <template v-if="form.newMethod === 'bank_card'">
         <el-form-item label="银行卡号" prop="bankCard">
-          <el-input
-            v-model="form.bankCard"
-            placeholder="请输入银行卡号"
-            maxlength="19"
-          />
+          <el-input v-model="form.bankCard" placeholder="请输入银行卡号" maxlength="19" />
         </el-form-item>
         <el-form-item label="开户行" prop="bankName">
-          <el-input
-            v-model="form.bankName"
-            placeholder="请输入开户行名称"
-            maxlength="50"
-          />
+          <el-input v-model="form.bankName" placeholder="请输入开户行名称" maxlength="50" />
         </el-form-item>
         <el-form-item label="持卡人姓名" prop="cardHolder">
-          <el-input
-            v-model="form.cardHolder"
-            placeholder="请输入持卡人姓名"
-            maxlength="20"
-          />
+          <el-input v-model="form.cardHolder" placeholder="请输入持卡人姓名" maxlength="20" />
         </el-form-item>
       </template>
 
@@ -104,11 +87,7 @@
           />
         </el-form-item>
         <el-form-item label="真实姓名" prop="realName">
-          <el-input
-            v-model="form.realName"
-            placeholder="请输入支付宝实名认证姓名"
-            maxlength="20"
-          />
+          <el-input v-model="form.realName" placeholder="请输入支付宝实名认证姓名" maxlength="20" />
         </el-form-item>
       </template>
 
@@ -122,11 +101,7 @@
           />
         </el-form-item>
         <el-form-item label="真实姓名" prop="realName">
-          <el-input
-            v-model="form.realName"
-            placeholder="请输入微信实名认证姓名"
-            maxlength="20"
-          />
+          <el-input v-model="form.realName" placeholder="请输入微信实名认证姓名" maxlength="20" />
         </el-form-item>
       </template>
 
@@ -143,12 +118,7 @@
       </el-form-item>
 
       <!-- 风险提示 -->
-      <el-alert
-        title="重要提示"
-        type="warning"
-        :closable="false"
-        show-icon
-      >
+      <el-alert title="重要提示" type="warning" :closable="false" show-icon>
         <template #default>
           <ul class="tips-list">
             <li>切换退款方式后将使用新方式重新发起退款</li>
@@ -162,9 +132,7 @@
 
     <template #footer>
       <el-button @click="handleClose">取消</el-button>
-      <el-button type="primary" :loading="loading" @click="handleSubmit">
-        确认切换
-      </el-button>
+      <el-button type="primary" :loading="loading" @click="handleSubmit"> 确认切换 </el-button>
     </template>
   </el-dialog>
 </template>
@@ -181,13 +149,13 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: false,
-  refundInfo: null
+  refundInfo: null,
 })
 
 // Emits
 const emit = defineEmits<{
   'update:modelValue': [value: boolean]
-  'submit': [data: any]
+  submit: [data: any]
 }>()
 
 // 响应式数据
@@ -204,48 +172,49 @@ const form = reactive({
   alipayAccount: '',
   wechatAccount: '',
   realName: '',
-  reason: ''
+  reason: '',
 })
 
 // 表单验证规则
 const formRules: FormRules = {
-  newMethod: [
-    { required: true, message: '请选择新的退款方式', trigger: 'change' }
-  ],
+  newMethod: [{ required: true, message: '请选择新的退款方式', trigger: 'change' }],
   bankCard: [
     { required: true, message: '请输入银行卡号', trigger: 'blur' },
-    { pattern: /^\d{16,19}$/, message: '请输入正确的银行卡号', trigger: 'blur' }
+    { pattern: /^\d{16,19}$/, message: '请输入正确的银行卡号', trigger: 'blur' },
   ],
-  bankName: [
-    { required: true, message: '请输入开户行名称', trigger: 'blur' }
-  ],
+  bankName: [{ required: true, message: '请输入开户行名称', trigger: 'blur' }],
   cardHolder: [
     { required: true, message: '请输入持卡人姓名', trigger: 'blur' },
-    { min: 2, max: 20, message: '姓名长度为2-20个字符', trigger: 'blur' }
+    { min: 2, max: 20, message: '姓名长度为2-20个字符', trigger: 'blur' },
   ],
   alipayAccount: [
     { required: true, message: '请输入支付宝账号', trigger: 'blur' },
-    { pattern: /^(1[3-9]\d{9}|[\w.-]+@[\w.-]+\.\w+)$/, message: '请输入正确的手机号或邮箱', trigger: 'blur' }
+    {
+      pattern: /^(1[3-9]\d{9}|[\w.-]+@[\w.-]+\.\w+)$/,
+      message: '请输入正确的手机号或邮箱',
+      trigger: 'blur',
+    },
   ],
-  wechatAccount: [
-    { required: true, message: '请输入微信账号', trigger: 'blur' }
-  ],
+  wechatAccount: [{ required: true, message: '请输入微信账号', trigger: 'blur' }],
   realName: [
     { required: true, message: '请输入真实姓名', trigger: 'blur' },
-    { min: 2, max: 20, message: '姓名长度为2-20个字符', trigger: 'blur' }
+    { min: 2, max: 20, message: '姓名长度为2-20个字符', trigger: 'blur' },
   ],
   reason: [
     { required: true, message: '请输入切换原因', trigger: 'blur' },
-    { min: 10, message: '切换原因至少10个字符', trigger: 'blur' }
-  ]
+    { min: 10, message: '切换原因至少10个字符', trigger: 'blur' },
+  ],
 }
 
 // 监听 modelValue 变化
-watch(() => props.modelValue, (val) => {
-  visible.value = val
-})
+watch(
+  () => props.modelValue,
+  val => {
+    visible.value = val
+  }
+)
 
-watch(visible, (val) => {
+watch(visible, val => {
   emit('update:modelValue', val)
 })
 
@@ -256,7 +225,7 @@ const getRefundMethodLabel = (method: string) => {
     balance: '退到余额',
     bank_card: '银行卡',
     alipay: '支付宝',
-    wechat: '微信'
+    wechat: '微信',
   }
   return labelMap[method] || method
 }
@@ -265,7 +234,7 @@ const getRefundMethodLabel = (method: string) => {
 const handleSubmit = async () => {
   if (!formRef.value) return
 
-  await formRef.value.validate(async (valid) => {
+  await formRef.value.validate(async valid => {
     if (!valid) return
 
     loading.value = true
@@ -274,7 +243,7 @@ const handleSubmit = async () => {
         refundId: props.refundInfo?.id,
         fromMethod: props.refundInfo?.method,
         toMethod: form.newMethod,
-        reason: form.reason
+        reason: form.reason,
       }
 
       // 根据不同的退款方式添加对应的账户信息
@@ -282,17 +251,17 @@ const handleSubmit = async () => {
         submitData.accountInfo = {
           bankCard: form.bankCard,
           bankName: form.bankName,
-          cardHolder: form.cardHolder
+          cardHolder: form.cardHolder,
         }
       } else if (form.newMethod === 'alipay') {
         submitData.accountInfo = {
           alipayAccount: form.alipayAccount,
-          realName: form.realName
+          realName: form.realName,
         }
       } else if (form.newMethod === 'wechat') {
         submitData.accountInfo = {
           wechatAccount: form.wechatAccount,
-          realName: form.realName
+          realName: form.realName,
         }
       }
 

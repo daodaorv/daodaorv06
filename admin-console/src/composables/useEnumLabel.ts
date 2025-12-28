@@ -16,7 +16,7 @@ import {
   LOG_MODULE_MAP,
   LOG_ACTION_MAP,
   ROLE_TYPE_MAP,
-  DATA_SCOPE_MAP
+  DATA_SCOPE_MAP,
 } from '@/constants/enums'
 
 /**
@@ -189,6 +189,6 @@ export function useEnumLabel() {
     getLogActionLabel,
     getRoleTypeLabel,
     getDataScopeLabel,
-    getEnumLabel
+    getEnumLabel,
   }
 }

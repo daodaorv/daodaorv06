@@ -1,8 +1,6 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="finance-income-container">
-    
-
     <!-- 统计卡片 -->
     <el-row :gutter="16" class="stats-row">
       <el-col :span="6">
@@ -98,8 +96,8 @@
         <el-table-column label="占比" width="150">
           <template #default="{ row }">
             <el-progress
-              :percentage="(row.income / stats.totalIncome * 100)"
-              :color="getProgressColor(row.income / stats.totalIncome * 100)"
+              :percentage="(row.income / stats.totalIncome) * 100"
+              :color="getProgressColor((row.income / stats.totalIncome) * 100)"
             />
           </template>
         </el-table-column>
@@ -111,12 +109,7 @@
       <div class="card-header">
         <h3>月度收入趋势</h3>
       </div>
-      <ChartCard
-        title=""
-        :chart-data="incomeChartData"
-        chart-type="line"
-        :height="300"
-      />
+      <ChartCard title="" :chart-data="incomeChartData" chart-type="line" :height="300" />
     </div>
 
     <!-- 收入明细列表 -->
@@ -178,12 +171,7 @@ import StatsCard from '@/components/common/StatsCard.vue'
 import ChartCard from '@/components/common/ChartCard.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'
-import {
-  getIncomeStats,
-  getIncomeList,
-  type IncomeStats,
-  type IncomeRecord
-} from '@/api/finance'
+import { getIncomeStats, getIncomeList, type IncomeStats, type IncomeRecord } from '@/api/finance'
 import { exportToCSV } from '@/utils/export'
 
 // 统计数据
@@ -197,7 +185,7 @@ const stats = ref<IncomeStats>({
   monthIncome: 0,
   yearIncome: 0,
   incomeByStore: [],
-  incomeByMonth: []
+  incomeByMonth: [],
 })
 
 // 搜索表单
@@ -205,7 +193,7 @@ const searchForm = ref({
   storeId: '',
   startDate: '',
   endDate: '',
-  keyword: ''
+  keyword: '',
 })
 
 // 搜索字段配置
@@ -220,27 +208,27 @@ const searchFields = [
       { label: '上海浦东门店', value: 2 },
       { label: '深圳南山门店', value: 3 },
       { label: '成都高新门店', value: 4 },
-      { label: '杭州西湖门店', value: 5 }
-    ]
+      { label: '杭州西湖门店', value: 5 },
+    ],
   },
   {
     type: 'date',
     prop: 'startDate',
     label: '开始日期',
-    placeholder: '请选择开始日期'
+    placeholder: '请选择开始日期',
   },
   {
     type: 'date',
     prop: 'endDate',
     label: '结束日期',
-    placeholder: '请选择结束日期'
+    placeholder: '请选择结束日期',
   },
   {
     type: 'input',
     prop: 'keyword',
     label: '关键词',
-    placeholder: '订单号/用户名'
-  }
+    placeholder: '订单号/用户名',
+  },
 ]
 
 // 收入列表
@@ -251,7 +239,7 @@ const loading = ref(false)
 const pagination = reactive({
   currentPage: 1,
   pageSize: 10,
-  total: 0
+  total: 0,
 })
 
 // 表格列配置
@@ -264,7 +252,7 @@ const tableColumns = [
   { prop: 'storeName', label: '门店', width: 150 },
   { prop: 'userName', label: '用户', width: 120 },
   { prop: 'description', label: '说明', minWidth: 200 },
-  { prop: 'createdAt', label: '时间', width: 160 }
+  { prop: 'createdAt', label: '时间', width: 160 },
 ]
 
 // 收入趋势图表数据
@@ -276,9 +264,9 @@ const incomeChartData = computed(() => ({
       data: stats.value.incomeByMonth.map(item => item.income),
       borderColor: '#67C23A',
       backgroundColor: 'rgba(103, 194, 58, 0.1)',
-      tension: 0.4
-    }
-  ]
+      tension: 0.4,
+    },
+  ],
 }))
 
 // 获取统计数据
@@ -304,7 +292,7 @@ const fetchIncomeList = async () => {
       storeId: searchForm.value.storeId ? Number(searchForm.value.storeId) : undefined,
       startDate: searchForm.value.startDate,
       endDate: searchForm.value.endDate,
-      keyword: searchForm.value.keyword
+      keyword: searchForm.value.keyword,
     }
     const { list, total } = await getIncomeList(params)
     incomeList.value = list
@@ -329,7 +317,7 @@ const handleReset = () => {
     storeId: '',
     startDate: '',
     endDate: '',
-    keyword: ''
+    keyword: '',
   }
   handleSearch()
 }
@@ -362,10 +350,10 @@ const handleExport = () => {
 // 获取订单类型标签
 const getOrderTypeTag = (type: string) => {
   const typeMap: Record<string, any> = {
-    '租车订单': 'success',
-    '增值服务': 'warning',
-    '押金': 'info',
-    '违章罚款': 'danger'
+    租车订单: 'success',
+    增值服务: 'warning',
+    押金: 'info',
+    违章罚款: 'danger',
   }
   return typeMap[type] || 'info'
 }

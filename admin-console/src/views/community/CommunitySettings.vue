@@ -1,8 +1,6 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="community-settings-container">
-    
-
     <el-tabs v-model="activeTab" class="settings-tabs">
       <!-- 版块管理 -->
       <el-tab-pane label="版块管理" name="sections">
@@ -88,12 +86,7 @@
       <!-- 系统配置 -->
       <el-tab-pane label="系统配置" name="config">
         <div class="system-config">
-          <el-form
-            :model="configForm"
-            :rules="configRules"
-            ref="configFormRef"
-            label-width="150px"
-          >
+          <el-form :model="configForm" :rules="configRules" ref="configFormRef" label-width="150px">
             <el-card header="审核配置" class="config-card">
               <el-form-item label="启用AI审核" prop="enableAiReview">
                 <el-switch v-model="configForm.enableAiReview" />
@@ -173,11 +166,7 @@
                   @keyup.enter="handleAddSensitiveWord"
                   @blur="handleAddSensitiveWord"
                 />
-                <el-button
-                  v-else
-                  size="small"
-                  @click="showSensitiveWordInput = true"
-                >
+                <el-button v-else size="small" @click="showSensitiveWordInput = true">
                   + 添加敏感词
                 </el-button>
               </el-form-item>
@@ -201,12 +190,7 @@
       width="600px"
       @close="handleSectionDialogClose"
     >
-      <el-form
-        :model="sectionForm"
-        :rules="sectionRules"
-        ref="sectionFormRef"
-        label-width="120px"
-      >
+      <el-form :model="sectionForm" :rules="sectionRules" ref="sectionFormRef" label-width="120px">
         <el-form-item label="版块名称" prop="name">
           <el-input v-model="sectionForm.name" placeholder="请输入版块名称" />
         </el-form-item>
@@ -282,7 +266,7 @@ import {
   updateCommunityConfig,
   type CommunitySection,
   type SectionStatus,
-  type CommunityConfig
+  type CommunityConfig,
 } from '@/api/community'
 
 // 当前标签页
@@ -305,14 +289,14 @@ const sectionForm = reactive({
   status: 'active' as SectionStatus,
   allowPost: true,
   allowComment: true,
-  requireReview: false
+  requireReview: false,
 })
 const sectionFormRef = ref()
 const sectionRules = {
   name: [{ required: true, message: '请输入版块名称', trigger: 'blur' }],
   description: [{ required: true, message: '请输入版块描述', trigger: 'blur' }],
   icon: [{ required: true, message: '请选择图标', trigger: 'change' }],
-  sort: [{ required: true, message: '请输入排序', trigger: 'blur' }]
+  sort: [{ required: true, message: '请输入排序', trigger: 'blur' }],
 }
 const sectionSaving = ref(false)
 
@@ -328,30 +312,30 @@ const configForm = reactive<CommunityConfig>({
   maxImageCount: 9,
   maxVideoCount: 3,
   allowAnonymous: false,
-  updatedAt: ''
+  updatedAt: '',
 })
 const configFormRef = ref()
 const configRules = {
   aiThreshold: [
     { required: true, message: '请设置AI审核阈值', trigger: 'blur' },
-    { type: 'number', min: 0, max: 100, message: '阈值范围为0-100', trigger: 'blur' }
+    { type: 'number', min: 0, max: 100, message: '阈值范围为0-100', trigger: 'blur' },
   ],
   autoPublishScore: [
     { required: true, message: '请设置自动发布分数', trigger: 'blur' },
-    { type: 'number', min: 0, max: 100, message: '分数范围为0-100', trigger: 'blur' }
+    { type: 'number', min: 0, max: 100, message: '分数范围为0-100', trigger: 'blur' },
   ],
   maxPostLength: [
     { required: true, message: '请设置最大帖子长度', trigger: 'blur' },
-    { type: 'number', min: 100, max: 50000, message: '长度范围为100-50000', trigger: 'blur' }
+    { type: 'number', min: 100, max: 50000, message: '长度范围为100-50000', trigger: 'blur' },
   ],
   maxImageCount: [
     { required: true, message: '请设置最大图片数量', trigger: 'blur' },
-    { type: 'number', min: 1, max: 20, message: '数量范围为1-20', trigger: 'blur' }
+    { type: 'number', min: 1, max: 20, message: '数量范围为1-20', trigger: 'blur' },
   ],
   maxVideoCount: [
     { required: true, message: '请设置最大视频数量', trigger: 'blur' },
-    { type: 'number', min: 1, max: 10, message: '数量范围为1-10', trigger: 'blur' }
-  ]
+    { type: 'number', min: 1, max: 10, message: '数量范围为1-10', trigger: 'blur' },
+  ],
 }
 const configSaving = ref(false)
 
@@ -414,7 +398,7 @@ const handleDeleteSection = async (row: CommunitySection) => {
     await ElMessageBox.confirm(`确定要删除版块"${row.name}"吗？`, '提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
-      type: 'warning'
+      type: 'warning',
     })
 
     await deleteCommunitySection(row.id)
@@ -465,7 +449,7 @@ const getSectionStatusType = (status: SectionStatus) => {
   const statusMap: Record<SectionStatus, any> = {
     active: 'success',
     inactive: 'info',
-    archived: 'warning'
+    archived: 'warning',
   }
   return statusMap[status] || 'info'
 }
@@ -475,7 +459,7 @@ const getSectionStatusLabel = (status: SectionStatus) => {
   const statusMap: Record<SectionStatus, string> = {
     active: '启用',
     inactive: '禁用',
-    archived: '归档'
+    archived: '归档',
   }
   return statusMap[status] || status
 }

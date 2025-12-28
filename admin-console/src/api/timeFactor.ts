@@ -15,7 +15,7 @@ import type {
   CustomTimeRule,
   CustomTimeRuleFormData,
   TimeFactorCalendarParams,
-  TimeFactorCalendarResponse
+  TimeFactorCalendarResponse,
 } from '@/types/timeFactor'
 
 import {
@@ -31,13 +31,15 @@ import {
   mockCreateCustomTimeRule,
   mockUpdateCustomTimeRule,
   mockDeleteCustomTimeRule,
-  mockGetTimeFactorCalendar
+  mockGetTimeFactorCalendar,
 } from '@/mock/timeFactor'
 
 /**
  * 获取法定节假日列表
  */
-export const getNationalHolidayList = (params: NationalHolidayListParams): Promise<NationalHolidayListResponse> => {
+export const getNationalHolidayList = (
+  params: NationalHolidayListParams
+): Promise<NationalHolidayListResponse> => {
   return mockGetNationalHolidayList(params)
 }
 
@@ -58,7 +60,10 @@ export const createNationalHoliday = (data: NationalHolidayFormData): Promise<Na
 /**
  * 更新法定节假日
  */
-export const updateNationalHoliday = (id: number, data: NationalHolidayFormData): Promise<NationalHoliday> => {
+export const updateNationalHoliday = (
+  id: number,
+  data: NationalHolidayFormData
+): Promise<NationalHoliday> => {
   return mockUpdateNationalHoliday(id, data)
 }
 
@@ -72,7 +77,9 @@ export const deleteNationalHoliday = (id: number): Promise<void> => {
 /**
  * 同步法定节假日
  */
-export const syncNationalHoliday = (data: SyncNationalHolidayRequest): Promise<SyncNationalHolidayResponse> => {
+export const syncNationalHoliday = (
+  data: SyncNationalHolidayRequest
+): Promise<SyncNationalHolidayResponse> => {
   return mockSyncNationalHoliday(data)
 }
 
@@ -86,7 +93,9 @@ export const getYearList = (): Promise<YearListResponse> => {
 /**
  * 获取自定义时间规则列表
  */
-export const getCustomTimeRuleList = (params: CustomTimeRuleListParams): Promise<CustomTimeRuleListResponse> => {
+export const getCustomTimeRuleList = (
+  params: CustomTimeRuleListParams
+): Promise<CustomTimeRuleListResponse> => {
   return mockGetCustomTimeRuleList(params)
 }
 
@@ -107,7 +116,10 @@ export const createCustomTimeRule = (data: CustomTimeRuleFormData): Promise<Cust
 /**
  * 更新自定义时间规则
  */
-export const updateCustomTimeRule = (id: number, data: CustomTimeRuleFormData): Promise<CustomTimeRule> => {
+export const updateCustomTimeRule = (
+  id: number,
+  data: CustomTimeRuleFormData
+): Promise<CustomTimeRule> => {
   return mockUpdateCustomTimeRule(id, data)
 }
 
@@ -121,6 +133,8 @@ export const deleteCustomTimeRule = (id: number): Promise<void> => {
 /**
  * 获取时间因子日历
  */
-export const getTimeFactorCalendar = (params: TimeFactorCalendarParams): Promise<TimeFactorCalendarResponse> => {
+export const getTimeFactorCalendar = (
+  params: TimeFactorCalendarParams
+): Promise<TimeFactorCalendarResponse> => {
   return mockGetTimeFactorCalendar(params)
 }

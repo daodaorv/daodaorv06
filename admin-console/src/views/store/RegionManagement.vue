@@ -1,8 +1,6 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="city-tier-management-container">
-
-
     <DataTable
       :data="cityTierList"
       :columns="tableColumns"
@@ -30,12 +28,7 @@
       width="600px"
       @close="handleDialogClose"
     >
-      <el-form
-        ref="formRef"
-        :model="form"
-        :rules="formRules"
-        label-width="120px"
-      >
+      <el-form ref="formRef" :model="form" :rules="formRules" label-width="120px">
         <el-form-item label="分级名称" prop="name">
           <el-input v-model="form.name" placeholder="请输入分级名称" />
         </el-form-item>
@@ -68,9 +61,7 @@
       </el-form>
       <template #footer>
         <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" :loading="submitLoading" @click="handleSubmit">
-          确定
-        </el-button>
+        <el-button type="primary" :loading="submitLoading" @click="handleSubmit"> 确定 </el-button>
       </template>
     </el-dialog>
   </div>
@@ -97,7 +88,7 @@ const getLevelTagType = (level: number) => {
     2: 'warning',
     3: 'success',
     4: 'info',
-    5: 'primary'
+    5: 'primary',
   }
   return typeMap[level] || 'info'
 }
@@ -111,7 +102,7 @@ const tableColumns: TableColumn[] = [
   { prop: 'storeCount', label: '门店数量', width: 120 },
   { prop: 'status', label: '状态', width: 100, slot: 'status' },
   { prop: 'description', label: '包含城市', minWidth: 300 },
-  { prop: 'createdAt', label: '创建时间', width: 180 }
+  { prop: 'createdAt', label: '创建时间', width: 180 },
 ]
 
 // 工具栏按钮配置
@@ -120,26 +111,26 @@ const toolbarButtons: ToolbarButton[] = [
     label: '新增分级',
     type: 'primary',
     icon: Plus,
-    onClick: () => handleCreate()
-  }
+    onClick: () => handleCreate(),
+  },
 ]
 
 // 表格操作列配置
 const tableActions: TableAction[] = [
   {
     label: '编辑',
-  // @ts-ignore
+    // @ts-ignore
     type: 'primary',
     icon: Edit,
-    onClick: (row: CityTier) => handleEdit(row)
+    onClick: (row: CityTier) => handleEdit(row),
   },
   {
     label: '删除',
-  // @ts-ignore
+    // @ts-ignore
     type: 'danger',
     icon: Delete,
-    onClick: (row: CityTier) => handleDelete(row)
-  }
+    onClick: (row: CityTier) => handleDelete(row),
+  },
 ]
 
 // 城市分级列表
@@ -159,29 +150,21 @@ const form = reactive({
   code: '',
   level: 1,
   status: 'active' as 'active' | 'inactive',
-  description: ''
+  description: '',
 })
 
 const formRules: FormRules = {
-  name: [
-    { required: true, message: '请输入分级名称', trigger: 'blur' }
-  ],
-  code: [
-    { required: true, message: '请输入分级编码', trigger: 'blur' }
-  ],
-  level: [
-    { required: true, message: '请选择分级等级', trigger: 'change' }
-  ],
-  status: [
-    { required: true, message: '请选择分级状态', trigger: 'change' }
-  ]
+  name: [{ required: true, message: '请输入分级名称', trigger: 'blur' }],
+  code: [{ required: true, message: '请输入分级编码', trigger: 'blur' }],
+  level: [{ required: true, message: '请选择分级等级', trigger: 'change' }],
+  status: [{ required: true, message: '请选择分级状态', trigger: 'change' }],
 }
 
 // 加载城市分级列表
 const loadCityTierList = async () => {
   loading.value = true
   try {
-    const res = await getCityTierList() as any
+    const res = (await getCityTierList()) as any
     cityTierList.value = res.data
   } catch (error) {
     handleApiError(error, '加载城市分级列表失败')
@@ -213,15 +196,11 @@ const handleEdit = (row: CityTier) => {
 // 删除分级
 const handleDelete = async (row: CityTier) => {
   try {
-    await ElMessageBox.confirm(
-      `确定要删除分级 "${row.name}" 吗？`,
-      '删除确认',
-      {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }
-    )
+    await ElMessageBox.confirm(`确定要删除分级 "${row.name}" 吗？`, '删除确认', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    })
 
     ElMessage.success('删除成功')
     loadCityTierList()
@@ -236,7 +215,7 @@ const handleDelete = async (row: CityTier) => {
 const handleSubmit = async () => {
   if (!formRef.value) return
 
-  await formRef.value.validate(async (valid) => {
+  await formRef.value.validate(async valid => {
     if (!valid) return
 
     submitLoading.value = true

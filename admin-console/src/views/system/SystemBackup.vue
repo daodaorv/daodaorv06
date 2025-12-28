@@ -100,9 +100,7 @@
           />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" :icon="Search" @click="handleSearch">
-            搜索
-          </el-button>
+          <el-button type="primary" :icon="Search" @click="handleSearch"> 搜索 </el-button>
           <el-button :icon="Refresh" @click="handleReset">重置</el-button>
         </el-form-item>
       </el-form>
@@ -110,23 +108,14 @@
 
     <!-- 操作栏 -->
     <el-card class="toolbar-card" shadow="never">
-      <el-button type="primary" :icon="Plus" @click="handleCreateBackup">
-        立即备份
-      </el-button>
-      <el-button :icon="Setting" @click="handleAutoBackupSettings">
-        自动备份设置
-      </el-button>
+      <el-button type="primary" :icon="Plus" @click="handleCreateBackup"> 立即备份 </el-button>
+      <el-button :icon="Setting" @click="handleAutoBackupSettings"> 自动备份设置 </el-button>
       <el-button type="danger" :icon="Delete">批量删除</el-button>
     </el-card>
 
     <!-- 备份列表 -->
     <el-card class="table-card" shadow="never">
-      <el-table
-        v-loading="loading"
-        :data="backupList"
-        stripe
-        style="width: 100%"
-      >
+      <el-table v-loading="loading" :data="backupList" stripe style="width: 100%">
         <el-table-column type="selection" width="55" />
         <el-table-column prop="id" label="ID" width="80" />
         <el-table-column prop="name" label="备份名称" width="250" />
@@ -150,9 +139,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="duration" label="耗时" width="100">
-          <template #default="{ row }">
-            {{ row.duration }}s
-          </template>
+          <template #default="{ row }"> {{ row.duration }}s </template>
         </el-table-column>
         <el-table-column prop="createdBy" label="创建人" width="120" />
         <el-table-column prop="createdAt" label="备份时间" width="180" />
@@ -177,22 +164,10 @@
             >
               下载
             </el-button>
-            <el-button
-              link
-              type="warning"
-              size="small"
-              @click="handleVerify(row)"
-            >
+            <el-button link type="warning" size="small" @click="handleVerify(row)">
               验证
             </el-button>
-            <el-button
-              link
-              type="danger"
-              size="small"
-              @click="handleDelete(row)"
-            >
-              删除
-            </el-button>
+            <el-button link type="danger" size="small" @click="handleDelete(row)"> 删除 </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -212,17 +187,8 @@
     </el-card>
 
     <!-- 创建备份对话框 -->
-    <el-dialog
-      v-model="backupDialogVisible"
-      title="创建备份"
-      width="600px"
-    >
-      <el-form
-        ref="backupFormRef"
-        :model="backupForm"
-        :rules="backupFormRules"
-        label-width="120px"
-      >
+    <el-dialog v-model="backupDialogVisible" title="创建备份" width="600px">
+      <el-form ref="backupFormRef" :model="backupForm" :rules="backupFormRules" label-width="120px">
         <el-form-item label="备份名称" prop="name">
           <el-input v-model="backupForm.name" placeholder="请输入备份名称" />
         </el-form-item>
@@ -234,11 +200,7 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="压缩备份" prop="compress">
-          <el-switch
-            v-model="backupForm.compress"
-            active-text="是"
-            inactive-text="否"
-          />
+          <el-switch v-model="backupForm.compress" active-text="是" inactive-text="否" />
         </el-form-item>
         <el-form-item label="备份表">
           <el-select
@@ -271,22 +233,10 @@
     </el-dialog>
 
     <!-- 自动备份设置对话框 -->
-    <el-dialog
-      v-model="autoBackupDialogVisible"
-      title="自动备份设置"
-      width="600px"
-    >
-      <el-form
-        ref="autoBackupFormRef"
-        :model="autoBackupForm"
-        label-width="120px"
-      >
+    <el-dialog v-model="autoBackupDialogVisible" title="自动备份设置" width="600px">
+      <el-form ref="autoBackupFormRef" :model="autoBackupForm" label-width="120px">
         <el-form-item label="启用自动备份">
-          <el-switch
-            v-model="autoBackupForm.enabled"
-            active-text="启用"
-            inactive-text="禁用"
-          />
+          <el-switch v-model="autoBackupForm.enabled" active-text="启用" inactive-text="禁用" />
         </el-form-item>
         <el-form-item label="备份频率">
           <el-select
@@ -317,10 +267,7 @@
           <span class="form-tip">份（超过后自动删除旧备份）</span>
         </el-form-item>
         <el-form-item label="备份类型">
-          <el-radio-group
-            v-model="autoBackupForm.type"
-            :disabled="!autoBackupForm.enabled"
-          >
+          <el-radio-group v-model="autoBackupForm.type" :disabled="!autoBackupForm.enabled">
             <el-radio value="full">全量备份</el-radio>
             <el-radio value="incremental">增量备份</el-radio>
           </el-radio-group>
@@ -328,9 +275,7 @@
       </el-form>
       <template #footer>
         <el-button @click="autoBackupDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="handleSaveAutoBackup">
-          保存设置
-        </el-button>
+        <el-button type="primary" @click="handleSaveAutoBackup"> 保存设置 </el-button>
       </template>
     </el-dialog>
   </div>
@@ -460,9 +405,7 @@ const backupForm = reactive({
 })
 
 const backupFormRules: FormRules = {
-  name: [
-    { required: true, message: '请输入备份名称', trigger: 'blur' },
-  ],
+  name: [{ required: true, message: '请输入备份名称', trigger: 'blur' }],
 }
 
 // 自动备份设置对话框
@@ -500,7 +443,7 @@ const handleCreateBackup = () => {
 const handleConfirmBackup = async () => {
   if (!backupFormRef.value) return
 
-  await backupFormRef.value.validate(async (valid) => {
+  await backupFormRef.value.validate(async valid => {
     if (!valid) return
 
     backupLoading.value = true
@@ -561,15 +504,11 @@ const handleVerify = (_row: Backup) => {
 // 删除备份
 const handleDelete = async (row: Backup) => {
   try {
-    await ElMessageBox.confirm(
-      `确定要删除备份 "${row.name}" 吗？`,
-      '删除确认',
-      {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      }
-    )
+    await ElMessageBox.confirm(`确定要删除备份 "${row.name}" 吗？`, '删除确认', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    })
     const index = backupList.value.findIndex(b => b.id === row.id)
     if (index > -1) {
       backupList.value.splice(index, 1)

@@ -66,10 +66,20 @@
         <el-tab-pane label="分润记录" name="records">
           <el-form :inline="true" :model="queryForm" class="search-form">
             <el-form-item label="提供者">
-              <el-input v-model="queryForm.providerId" placeholder="请输入提供者ID或姓名" clearable style="width: 200px" />
+              <el-input
+                v-model="queryForm.providerId"
+                placeholder="请输入提供者ID或姓名"
+                clearable
+                style="width: 200px"
+              />
             </el-form-item>
             <el-form-item label="旅游产品">
-              <el-input v-model="queryForm.tourId" placeholder="请输入产品ID或名称" clearable style="width: 200px" />
+              <el-input
+                v-model="queryForm.tourId"
+                placeholder="请输入产品ID或名称"
+                clearable
+                style="width: 200px"
+              />
             </el-form-item>
             <el-form-item label="分润状态">
               <el-select v-model="queryForm.status" placeholder="请选择" clearable>
@@ -104,7 +114,9 @@
             </el-table-column>
             <el-table-column prop="profitAmount" label="分润金额" width="120" align="right">
               <template #default="{ row }">
-                <span style="color: #f56c6c; font-weight: bold">¥{{ formatNumber(row.profitAmount) }}</span>
+                <span style="color: #f56c6c; font-weight: bold"
+                  >¥{{ formatNumber(row.profitAmount) }}</span
+                >
               </template>
             </el-table-column>
             <el-table-column prop="rating" label="评分" width="100">

@@ -1,8 +1,6 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="profit-employee-container">
-    
-
     <!-- 统计卡片 -->
     <el-row :gutter="20" class="stats-row">
       <el-col :span="6">
@@ -116,11 +114,7 @@
     />
 
     <div class="table-toolbar">
-      <el-button
-        type="primary"
-        :disabled="selectedIds.length === 0"
-        @click="handleBatchSettle"
-      >
+      <el-button type="primary" :disabled="selectedIds.length === 0" @click="handleBatchSettle">
         <el-icon><DocumentChecked /></el-icon>
         批量结算
       </el-button>
@@ -162,7 +156,9 @@
         <div style="font-size: 12px">
           <div>基础: ¥{{ row.baseAmount.toLocaleString() }}</div>
           <div style="color: #f56c6c">奖金: ¥{{ row.bonusAmount.toLocaleString() }}</div>
-          <div style="color: #409eff; font-weight: bold">总计: ¥{{ row.totalAmount.toLocaleString() }}</div>
+          <div style="color: #409eff; font-weight: bold">
+            总计: ¥{{ row.totalAmount.toLocaleString() }}
+          </div>
         </div>
       </template>
       <template #performanceScore="{ row }">
@@ -338,9 +334,7 @@
 
       <template #footer>
         <el-button @click="paymentDialogVisible = false">取消</el-button>
-        <el-button type="success" @click="handleConfirmPayment">
-          确认支付
-        </el-button>
+        <el-button type="success" @click="handleConfirmPayment"> 确认支付 </el-button>
       </template>
     </el-dialog>
   </div>
@@ -358,7 +352,7 @@ import {
   Clock,
   DocumentChecked,
   CircleCheck,
-  Download
+  Download,
 } from '@element-plus/icons-vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'
@@ -372,7 +366,7 @@ import {
   exportEmployeeProfitRecords,
   type EmployeeProfitRecord,
   type EmployeeProfitListParams,
-  type EmployeeProfitStats
+  type EmployeeProfitStats,
 } from '@/api/profit'
 import { useErrorHandler } from '@/composables'
 
@@ -384,14 +378,14 @@ const INCENTIVE_TYPE_OPTIONS = [
   { label: '销售激励', value: 'sales' },
   { label: '服务激励', value: 'service' },
   { label: '绩效激励', value: 'performance' },
-  { label: '其他激励', value: 'other' }
+  { label: '其他激励', value: 'other' },
 ]
 
 // 结算状态选项
 const SETTLEMENT_STATUS_OPTIONS = [
   { label: '待结算', value: 'pending' },
   { label: '已结算', value: 'settled' },
-  { label: '已支付', value: 'paid' }
+  { label: '已支付', value: 'paid' },
 ]
 
 // 部门选项（实际应该从后端获取）
@@ -400,7 +394,7 @@ const DEPARTMENT_OPTIONS = [
   { label: '客服部', value: '客服部' },
   { label: '运营部', value: '运营部' },
   { label: '技术部', value: '技术部' },
-  { label: '市场部', value: '市场部' }
+  { label: '市场部', value: '市场部' },
 ]
 
 // 搜索表单
@@ -411,7 +405,7 @@ const searchForm = reactive<EmployeeProfitListParams>({
   settlementStatus: undefined,
   settlementMonth: '',
   page: 1,
-  pageSize: 10
+  pageSize: 10,
 })
 
 // 搜索字段配置
@@ -421,7 +415,7 @@ const searchFields = computed(() => [
     label: '关键词',
     type: 'input',
     placeholder: '记录编号/员工姓名/员工ID',
-    width: '220px'
+    width: '220px',
   },
   {
     prop: 'department',
@@ -429,7 +423,7 @@ const searchFields = computed(() => [
     type: 'select',
     placeholder: '全部部门',
     options: DEPARTMENT_OPTIONS,
-    width: '150px'
+    width: '150px',
   },
   {
     prop: 'incentiveType',
@@ -437,7 +431,7 @@ const searchFields = computed(() => [
     type: 'select',
     placeholder: '全部类型',
     options: INCENTIVE_TYPE_OPTIONS,
-    width: '150px'
+    width: '150px',
   },
   {
     prop: 'settlementStatus',
@@ -445,7 +439,7 @@ const searchFields = computed(() => [
     type: 'select',
     placeholder: '全部状态',
     options: SETTLEMENT_STATUS_OPTIONS,
-    width: '150px'
+    width: '150px',
   },
   {
     prop: 'settlementMonth',
@@ -453,8 +447,8 @@ const searchFields = computed(() => [
     type: 'month',
     placeholder: '选择月份',
     valueFormat: 'YYYY-MM',
-    width: '150px'
-  }
+    width: '150px',
+  },
 ]) as any
 
 // 表格列配置
@@ -466,7 +460,7 @@ const tableColumns = computed(() => [
   { prop: 'amountBreakdown', label: '金额明细', width: 150, slot: true },
   { prop: 'performanceScore', label: '绩效分数', width: 180, slot: true },
   { prop: 'settlementStatus', label: '结算状态', width: 100, slot: true },
-  { prop: 'settlementDate', label: '结算日期', width: 120 }
+  { prop: 'settlementDate', label: '结算日期', width: 120 },
 ]) as any
 
 // 表格操作配置
@@ -474,20 +468,20 @@ const tableActions = computed<TableAction[]>(() => [
   {
     label: '查看详情',
     type: 'primary',
-    onClick: handleViewDetail
+    onClick: handleViewDetail,
   },
   {
     label: '结算',
     type: 'primary',
     onClick: handleSettle,
-    show: (row: EmployeeProfitRecord) => row.settlementStatus === 'pending'
+    show: (row: EmployeeProfitRecord) => row.settlementStatus === 'pending',
   },
   {
     label: '支付',
     type: 'success',
     onClick: handlePay,
-    show: (row: EmployeeProfitRecord) => row.settlementStatus === 'settled'
-  }
+    show: (row: EmployeeProfitRecord) => row.settlementStatus === 'settled',
+  },
 ])
 
 // 数据列表
@@ -502,14 +496,14 @@ const stats = ref<EmployeeProfitStats>({
   employeeCount: 0,
   pendingCount: 0,
   settledCount: 0,
-  paidCount: 0
+  paidCount: 0,
 })
 
 // 分页
 const pagination = reactive({
   total: 0,
   page: 1,
-  pageSize: 10
+  pageSize: 10,
 })
 
 // 详情对话框
@@ -519,7 +513,7 @@ const currentRecord = ref<EmployeeProfitRecord | null>(null)
 // 支付对话框
 const paymentDialogVisible = ref(false)
 const paymentForm = reactive({
-  paymentMethod: ''
+  paymentMethod: '',
 })
 
 // 选中的记录ID
@@ -542,7 +536,7 @@ const fetchRecordList = async () => {
     const res: any = await getEmployeeProfitList({
       ...searchForm,
       page: pagination.page,
-      pageSize: pagination.pageSize
+      pageSize: pagination.pageSize,
     })
     recordList.value = res.data.list
     pagination.total = res.data.total
@@ -585,8 +579,8 @@ const handleCurrentChange = (page: number) => {
 // 选择变化
 const handleSelectionChange = (selection: EmployeeProfitRecord[]) => {
   selectedIds.value = selection
-    .filter((record) => record.settlementStatus === 'pending')
-    .map((record) => record.id)
+    .filter(record => record.settlementStatus === 'pending')
+    .map(record => record.id)
 }
 
 // 查看详情
@@ -602,7 +596,7 @@ const handleSettle = async (row: EmployeeProfitRecord) => {
       `确认结算记录"${row.recordNo}"吗？结算后将生成支付任务。`,
       '结算确认',
       {
-        type: 'warning'
+        type: 'warning',
       }
     )
 
@@ -630,7 +624,7 @@ const handleBatchSettle = async () => {
       `确认批量结算${selectedIds.value.length}条记录吗？`,
       '批量结算确认',
       {
-        type: 'warning'
+        type: 'warning',
       }
     )
 
@@ -688,7 +682,7 @@ const getIncentiveTypeTag = (type: string) => {
     sales: 'success',
     service: 'primary',
     performance: 'warning',
-    other: 'info'
+    other: 'info',
   }
   return tagMap[type] || 'info'
 }
@@ -699,7 +693,7 @@ const getIncentiveTypeLabel = (type: string) => {
     sales: '销售激励',
     service: '服务激励',
     performance: '绩效激励',
-    other: '其他激励'
+    other: '其他激励',
   }
   return labelMap[type] || type
 }
@@ -709,7 +703,7 @@ const getSettlementStatusTag = (status: string) => {
   const tagMap: Record<string, any> = {
     pending: 'warning',
     settled: 'primary',
-    paid: 'success'
+    paid: 'success',
   }
   return tagMap[status] || 'info'
 }
@@ -719,7 +713,7 @@ const getSettlementStatusLabel = (status: string) => {
   const labelMap: Record<string, string> = {
     pending: '待结算',
     settled: '已结算',
-    paid: '已支付'
+    paid: '已支付',
   }
   return labelMap[status] || status
 }

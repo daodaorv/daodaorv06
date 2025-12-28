@@ -1,10 +1,6 @@
 <template>
   <div class="store-price-calendar-preview" v-loading="loading">
-    <el-alert
-      type="info"
-      :closable="false"
-      style="margin-bottom: 16px"
-    >
+    <el-alert type="info" :closable="false" style="margin-bottom: 16px">
       <template #title>
         <div style="font-size: 13px">
           显示该门店未来 7 天的价格预览，点击"查看完整日历"可查看更多
@@ -36,18 +32,10 @@
           </div>
         </div>
         <div class="item-factors">
-          <el-tag
-            v-if="item.cityFactor"
-            size="small"
-            type="primary"
-          >
+          <el-tag v-if="item.cityFactor" size="small" type="primary">
             {{ item.cityFactor.factorName }}
           </el-tag>
-          <el-tag
-            v-if="item.timeFactor"
-            size="small"
-            type="danger"
-          >
+          <el-tag v-if="item.timeFactor" size="small" type="danger">
             {{ item.timeFactor.factorName }}
           </el-tag>
         </div>
@@ -57,9 +45,7 @@
     <el-empty v-else description="暂无价格数据" />
 
     <div style="margin-top: 16px; text-align: center">
-      <el-button type="primary" @click="handleViewFullCalendar">
-        查看完整日历
-      </el-button>
+      <el-button type="primary" @click="handleViewFullCalendar"> 查看完整日历 </el-button>
     </div>
   </div>
 </template>
@@ -90,9 +76,7 @@ const loadPreviewData = async () => {
     // 获取未来 7 天的日期范围
     const today = new Date()
     const startDate = today.toISOString().split('T')[0]
-    const endDate = new Date(today.getTime() + 6 * 24 * 60 * 60 * 1000)
-      .toISOString()
-      .split('T')[0]
+    const endDate = new Date(today.getTime() + 6 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
 
     // 使用默认车型（第一个车型）或指定车型
     const modelId = props.modelId || 1
@@ -101,7 +85,7 @@ const loadPreviewData = async () => {
       modelId,
       storeId: props.storeId,
       startDate,
-      endDate
+      endDate,
     })
 
     if (res.success) {
@@ -115,7 +99,7 @@ const loadPreviewData = async () => {
         }
         return {
           ...item,
-          priceChange
+          priceChange,
         }
       })
 
@@ -156,8 +140,8 @@ const handleViewFullCalendar = () => {
     name: 'PriceCalendar',
     query: {
       storeId: props.storeId,
-      modelId: props.modelId || 1
-    }
+      modelId: props.modelId || 1,
+    },
   })
 }
 

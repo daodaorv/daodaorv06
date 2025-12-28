@@ -1,8 +1,6 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="vehicle-status-container">
-    
-
     <StatsCard :stats="statsConfig" />
 
     <SearchForm
@@ -32,7 +30,7 @@
       </template>
 
       <template #status="{ row }">
-        <el-tag :type="(getVehicleStatusTag(row.status)) as any" size="small">
+        <el-tag :type="getVehicleStatusTag(row.status) as any" size="small">
           {{ getVehicleStatusLabel(row.status) }}
         </el-tag>
       </template>
@@ -89,22 +87,13 @@
     </DataTable>
 
     <!-- 状态变更对话框 -->
-    <el-dialog
-      v-model="statusDialogVisible"
-      :title="statusDialogTitle"
-      width="600px"
-    >
-      <el-form
-        ref="statusFormRef"
-        :model="statusForm"
-        :rules="statusFormRules"
-        label-width="120px"
-      >
+    <el-dialog v-model="statusDialogVisible" :title="statusDialogTitle" width="600px">
+      <el-form ref="statusFormRef" :model="statusForm" :rules="statusFormRules" label-width="120px">
         <el-form-item label="车辆信息">
           <div>{{ currentVehicle?.vehicleNumber }} - {{ currentVehicle?.modelName }}</div>
         </el-form-item>
         <el-form-item label="当前状态">
-          <el-tag :type="(getVehicleStatusTag(currentVehicle?.status || 'info')) as any" size="small">
+          <el-tag :type="getVehicleStatusTag(currentVehicle?.status || 'info') as any" size="small">
             {{ getVehicleStatusLabel(currentVehicle?.status || 'info') }}
           </el-tag>
         </el-form-item>
@@ -126,7 +115,10 @@
             placeholder="请输入状态变更原因"
           />
         </el-form-item>
-        <el-form-item label="预计恢复时间" v-if="statusForm.newStatus === 'maintenance' || statusForm.newStatus === 'repair'">
+        <el-form-item
+          label="预计恢复时间"
+          v-if="statusForm.newStatus === 'maintenance' || statusForm.newStatus === 'repair'"
+        >
           <el-date-picker
             v-model="statusForm.estimatedRecoveryTime"
             type="datetime"
@@ -153,27 +145,23 @@
     </el-dialog>
 
     <!-- 状态历史对话框 -->
-    <el-dialog
-      v-model="historyDialogVisible"
-      title="状态变更历史"
-      width="900px"
-    >
+    <el-dialog v-model="historyDialogVisible" title="状态变更历史" width="900px">
       <el-timeline>
         <el-timeline-item
           v-for="item in statusHistory"
           :key="item.id"
           :timestamp="formatDateTime(item.createdAt)"
           placement="top"
-          :type="(getTimelineType(item.newStatus)) as any"
+          :type="getTimelineType(item.newStatus) as any"
         >
           <el-card>
             <div class="history-item">
               <div class="history-header">
-                <el-tag :type="(getVehicleStatusTag(item.oldStatus)) as any" size="small">
+                <el-tag :type="getVehicleStatusTag(item.oldStatus) as any" size="small">
                   {{ getVehicleStatusLabel(item.oldStatus) }}
                 </el-tag>
                 <el-icon><Right /></el-icon>
-                <el-tag :type="(getVehicleStatusTag(item.newStatus)) as any" size="small">
+                <el-tag :type="getVehicleStatusTag(item.newStatus) as any" size="small">
                   {{ getVehicleStatusLabel(item.newStatus) }}
                 </el-tag>
               </div>
@@ -384,12 +372,8 @@ const statusForm = reactive({
 })
 
 const statusFormRules: FormRules = {
-  newStatus: [
-    { required: true, message: '请选择新状态', trigger: 'change' },
-  ],
-  reason: [
-    { required: true, message: '请输入变更原因', trigger: 'blur' },
-  ],
+  newStatus: [{ required: true, message: '请选择新状态', trigger: 'change' }],
+  reason: [{ required: true, message: '请输入变更原因', trigger: 'blur' }],
 }
 
 // 状态历史对话框
@@ -482,7 +466,7 @@ const handleChangeStatus = (row: Vehicle, newStatus: string) => {
 const handleStatusSubmit = async () => {
   if (!statusFormRef.value || !currentVehicle.value) return
 
-  await statusFormRef.value.validate(async (valid) => {
+  await statusFormRef.value.validate(async valid => {
     if (!valid) return
 
     submitLoading.value = true

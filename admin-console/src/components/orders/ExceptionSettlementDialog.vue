@@ -6,12 +6,7 @@
     :close-on-click-modal="false"
     @close="handleClose"
   >
-    <el-form
-      ref="formRef"
-      :model="form"
-      :rules="formRules"
-      label-width="120px"
-    >
+    <el-form ref="formRef" :model="form" :rules="formRules" label-width="120px">
       <!-- 异常信息 -->
       <el-card class="info-card" shadow="never">
         <template #header><span class="card-title">异常信息</span></template>
@@ -28,7 +23,9 @@
             {{ exceptionInfo?.title }}
           </el-descriptions-item>
           <el-descriptions-item label="预估损失" :span="2">
-            <span class="amount-text">¥{{ exceptionInfo?.estimatedLoss?.toFixed(2) || '0.00' }}</span>
+            <span class="amount-text"
+              >¥{{ exceptionInfo?.estimatedLoss?.toFixed(2) || '0.00' }}</span
+            >
           </el-descriptions-item>
         </el-descriptions>
       </el-card>
@@ -127,9 +124,7 @@
           >
             <template #append>元</template>
           </el-input-number>
-          <div class="field-tip">
-            自动计算：{{ totalFeeAmount.toFixed(2) }} 元
-          </div>
+          <div class="field-tip">自动计算：{{ totalFeeAmount.toFixed(2) }} 元</div>
         </el-form-item>
 
         <el-form-item label="结算凭证">
@@ -200,13 +195,13 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: false,
-  exceptionInfo: null
+  exceptionInfo: null,
 })
 
 // Emits
 const emit = defineEmits<{
   'update:modelValue': [value: boolean]
-  'submit': [data: any]
+  submit: [data: any]
 }>()
 
 // 响应式数据
@@ -224,17 +219,13 @@ const form = reactive({
   settlementMethod: 'deposit',
   settlementAmount: 0,
   vouchers: [] as any[],
-  settlementNote: ''
+  settlementNote: '',
 })
 
 // 表单验证规则
 const formRules: FormRules = {
-  settlementMethod: [
-    { required: true, message: '请选择扣款方式', trigger: 'change' }
-  ],
-  settlementAmount: [
-    { required: true, message: '请输入结算金额', trigger: 'blur' }
-  ]
+  settlementMethod: [{ required: true, message: '请选择扣款方式', trigger: 'change' }],
+  settlementAmount: [{ required: true, message: '请输入结算金额', trigger: 'blur' }],
 }
 
 // 计算总费用
@@ -243,16 +234,19 @@ const totalFeeAmount = computed(() => {
 })
 
 // 监听总费用变化，自动更新结算金额
-watch(totalFeeAmount, (val) => {
+watch(totalFeeAmount, val => {
   form.settlementAmount = val
 })
 
 // 监听 modelValue 变化
-watch(() => props.modelValue, (val) => {
-  visible.value = val
-})
+watch(
+  () => props.modelValue,
+  val => {
+    visible.value = val
+  }
+)
 
-watch(visible, (val) => {
+watch(visible, val => {
   emit('update:modelValue', val)
 })
 
@@ -265,7 +259,7 @@ const getExceptionTypeTag = (type: string) => {
     accident: 'danger',
     complaint: 'info',
     payment: 'warning',
-    other: 'info'
+    other: 'info',
   }
   return tagMap[type] || 'info'
 }
@@ -279,7 +273,7 @@ const getExceptionTypeLabel = (type: string) => {
     accident: '交通事故',
     complaint: '客户投诉',
     payment: '支付纠纷',
-    other: '其他'
+    other: '其他',
   }
   return labelMap[type] || type
 }
@@ -289,7 +283,7 @@ const getSettlementMethodLabel = (method: string) => {
   const labelMap: Record<string, string> = {
     deposit: '从押金扣除',
     additional: '向用户追加收费',
-    compensation: '平台承担赔偿'
+    compensation: '平台承担赔偿',
   }
   return labelMap[method] || method
 }
@@ -299,7 +293,7 @@ const handleAddFeeItem = () => {
   form.feeItems.push({
     type: '',
     amount: 0,
-    description: ''
+    description: '',
   })
 }
 
@@ -335,7 +329,7 @@ const handleSubmit = async () => {
     }
   }
 
-  await formRef.value.validate(async (valid) => {
+  await formRef.value.validate(async valid => {
     if (!valid) return
 
     loading.value = true
@@ -346,7 +340,7 @@ const handleSubmit = async () => {
         settlementMethod: form.settlementMethod,
         settlementAmount: form.settlementAmount,
         vouchers: form.vouchers.map(file => file.url || URL.createObjectURL(file.raw)),
-        settlementNote: form.settlementNote
+        settlementNote: form.settlementNote,
       }
 
       emit('submit', submitData)

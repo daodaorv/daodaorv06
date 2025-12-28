@@ -6,7 +6,7 @@
 // 标签类型枚举
 export enum TagType {
   SYSTEM = 'system',
-  CUSTOM = 'custom'
+  CUSTOM = 'custom',
 }
 
 // 标签分类枚举
@@ -16,7 +16,7 @@ export enum TagCategory {
   VALUE_LEVEL = 'value_level',
   RISK_CONTROL = 'risk_control',
   MEMBERSHIP = 'membership',
-  HOSTING = 'hosting'
+  HOSTING = 'hosting',
 }
 
 // 自动规则触发条件类型
@@ -41,7 +41,7 @@ export interface AutoRuleCondition {
 export enum TagTriggerType {
   MANUAL = 'manual',
   RULE_BASED = 'rule_based',
-  API_DRIVEN = 'api_driven'
+  API_DRIVEN = 'api_driven',
 }
 
 // 自动规则配置
@@ -119,7 +119,7 @@ export const API_TRIGGER_SOURCES: ApiTriggerSource[] = [
     httpMethod: 'POST',
     requestSchema: { userId: 'number', tagId: 'number', expiresAt: 'string' },
     enabled: true,
-    createdAt: '2024-01-01T00:00:00Z'
+    createdAt: '2024-01-01T00:00:00Z',
   },
   {
     id: 'order_high_value_purchase',
@@ -130,7 +130,7 @@ export const API_TRIGGER_SOURCES: ApiTriggerSource[] = [
     httpMethod: 'POST',
     requestSchema: { userId: 'number', tagId: 'number', expiresAt: 'string', orderId: 'number' },
     enabled: true,
-    createdAt: '2024-01-01T00:00:00Z'
+    createdAt: '2024-01-01T00:00:00Z',
   },
   {
     id: 'hosting_owner_approved',
@@ -141,7 +141,7 @@ export const API_TRIGGER_SOURCES: ApiTriggerSource[] = [
     httpMethod: 'POST',
     requestSchema: { userId: 'number', tagId: 'number', vehicleId: 'number' },
     enabled: true,
-    createdAt: '2024-01-01T00:00:00Z'
+    createdAt: '2024-01-01T00:00:00Z',
   },
   {
     id: 'hosting_cancelled',
@@ -152,8 +152,8 @@ export const API_TRIGGER_SOURCES: ApiTriggerSource[] = [
     httpMethod: 'POST',
     requestSchema: { userId: 'number', tagId: 'number', reason: 'string' },
     enabled: true,
-    createdAt: '2024-01-01T00:00:00Z'
-  }
+    createdAt: '2024-01-01T00:00:00Z',
+  },
 ]
 
 // ==================== 通用权益系统 ====================
@@ -167,7 +167,7 @@ export enum BenefitType {
   INSURANCE = 'insurance',
   PRIORITY = 'priority',
   PROFIT_SHARING = 'profit_sharing',
-  CUSTOM = 'custom'
+  CUSTOM = 'custom',
 }
 
 // 通用权益配置
@@ -222,13 +222,11 @@ export interface Tag {
   // 多触发器配置（新增）
   triggers?: (ManualTrigger | RuleTrigger | ApiTriggerConfig)[]
 
-
   businessAssociation?: BusinessAssociation
   expiresAt?: string
 
   // 通用权益配置（新增）
   benefitsConfig?: TagBenefitsConfig
-
 
   createdAt: string
   updatedAt?: string

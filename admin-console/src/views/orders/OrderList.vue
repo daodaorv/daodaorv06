@@ -1,8 +1,6 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="order-list-container">
-    
-
     <StatsCard :stats="statsConfig" />
 
     <SearchForm
@@ -46,9 +44,7 @@
           {{ getPaymentStatusLabel(row.paymentStatus) }}
         </el-tag>
       </template>
-      <template #actualAmount="{ row }">
-        ¥{{ row.actualAmount.toLocaleString() }}
-      </template>
+      <template #actualAmount="{ row }"> ¥{{ row.actualAmount.toLocaleString() }} </template>
     </DataTable>
 
     <!-- 取消订单对话框 -->
@@ -58,12 +54,7 @@
       width="500px"
       @close="handleCancelDialogClose"
     >
-      <el-form
-        ref="cancelFormRef"
-        :model="cancelForm"
-        :rules="cancelFormRules"
-        label-width="100px"
-      >
+      <el-form ref="cancelFormRef" :model="cancelForm" :rules="cancelFormRules" label-width="100px">
         <el-form-item label="取消原因" prop="reason">
           <el-input
             v-model="cancelForm.reason"
@@ -104,14 +95,7 @@ import { ref, reactive, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
-import {
-  Plus,
-  Download,
-  Document,
-  Clock,
-  CircleCheck,
-  Money
-} from '@element-plus/icons-vue'
+import { Plus, Download, Document, Clock, CircleCheck, Money } from '@element-plus/icons-vue'
 import StatsCard from '@/components/common/StatsCard.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'
@@ -130,7 +114,7 @@ import {
   returnOrder,
   getPickupRecord,
   type Order,
-  type OrderListParams
+  type OrderListParams,
 } from '@/api/order'
 import { useErrorHandler } from '@/composables'
 import { exportToCSV } from '@/utils/export'
@@ -144,7 +128,7 @@ const { handleApiError } = useErrorHandler()
 const ORDER_TYPE_OPTIONS = [
   { label: '托管订单', value: 'hosting' },
   { label: '合作订单', value: 'cooperative' },
-  { label: '房车旅游', value: 'tour' }
+  { label: '房车旅游', value: 'tour' },
 ]
 
 // 订单状态选项
@@ -156,7 +140,7 @@ const ORDER_STATUS_OPTIONS = [
   { label: '已完成', value: 'completed' },
   { label: '已取消', value: 'cancelled' },
   { label: '退款中', value: 'refunding' },
-  { label: '已退款', value: 'refunded' }
+  { label: '已退款', value: 'refunded' },
 ]
 
 // 支付状态选项
@@ -164,7 +148,7 @@ const PAYMENT_STATUS_OPTIONS = [
   { label: '未支付', value: 'unpaid' },
   { label: '已支付', value: 'paid' },
   { label: '退款中', value: 'refunding' },
-  { label: '已退款', value: 'refunded' }
+  { label: '已退款', value: 'refunded' },
 ]
 
 // 搜索表单
@@ -175,7 +159,7 @@ const searchForm = reactive<OrderListParams>({
   paymentStatus: undefined,
   storeId: undefined,
   startDate: '',
-  endDate: ''
+  endDate: '',
 })
 
 // 统计数据
@@ -183,7 +167,7 @@ const stats = reactive({
   totalOrders: 0,
   pendingConfirm: 0,
   inUse: 0,
-  totalRevenue: 0
+  totalRevenue: 0,
 })
 
 // 统计卡片配置
@@ -192,27 +176,27 @@ const statsConfig = computed<StatItem[]>(() => [
     label: '订单总数',
     value: stats.totalOrders,
     icon: Document,
-    color: '#409eff'
+    color: '#409eff',
   },
   {
     label: '待确认',
     value: stats.pendingConfirm,
     icon: Clock,
-    color: '#e6a23c'
+    color: '#e6a23c',
   },
   {
     label: '使用中',
     value: stats.inUse,
     icon: CircleCheck,
-    color: '#67c23a'
+    color: '#67c23a',
   },
   {
     label: '总营收',
     value: stats.totalRevenue,
     icon: Money,
     color: '#f56c6c',
-    format: 'currency'
-  }
+    format: 'currency',
+  },
 ])
 
 // 搜索字段配置
@@ -222,7 +206,7 @@ const searchFields = computed<SearchField[]>(() => [
     label: '关键词',
     type: 'input',
     placeholder: '订单号/用户/车辆',
-    width: '200px'
+    width: '200px',
   },
   {
     prop: 'type',
@@ -230,7 +214,7 @@ const searchFields = computed<SearchField[]>(() => [
     type: 'select',
     placeholder: '请选择类型',
     width: '150px',
-    options: ORDER_TYPE_OPTIONS
+    options: ORDER_TYPE_OPTIONS,
   },
   {
     prop: 'status',
@@ -238,7 +222,7 @@ const searchFields = computed<SearchField[]>(() => [
     type: 'select',
     placeholder: '请选择状态',
     width: '150px',
-    options: ORDER_STATUS_OPTIONS
+    options: ORDER_STATUS_OPTIONS,
   },
   {
     prop: 'paymentStatus',
@@ -246,7 +230,7 @@ const searchFields = computed<SearchField[]>(() => [
     type: 'select',
     placeholder: '请选择状态',
     width: '150px',
-    options: PAYMENT_STATUS_OPTIONS
+    options: PAYMENT_STATUS_OPTIONS,
   },
   {
     prop: 'storeId',
@@ -254,8 +238,8 @@ const searchFields = computed<SearchField[]>(() => [
     type: 'select',
     placeholder: '请选择门店',
     width: '150px',
-    options: STORE_OPTIONS
-  }
+    options: STORE_OPTIONS,
+  },
 ])
 
 // 表格列配置
@@ -274,7 +258,7 @@ const tableColumns: TableColumn[] = [
   { prop: 'endDate', label: '结束日期', width: 110 },
   { prop: 'days', label: '天数', width: 80 },
   { prop: 'actualAmount', label: '实付金额', width: 120, slot: 'actualAmount' },
-  { prop: 'createdAt', label: '创建时间', width: 180 }
+  { prop: 'createdAt', label: '创建时间', width: 180 },
 ]
 
 // 工具栏按钮配置
@@ -283,13 +267,13 @@ const toolbarButtons: ToolbarButton[] = [
     label: '新增订单',
     type: 'primary',
     icon: Plus,
-    onClick: () => ElMessage.info('新增订单功能开发中')
+    onClick: () => ElMessage.info('新增订单功能开发中'),
   },
   {
     label: '导出订单',
     icon: Download,
-    onClick: handleExport
-  }
+    onClick: handleExport,
+  },
 ]
 
 // 表格操作列配置
@@ -297,31 +281,31 @@ const tableActions: TableAction[] = [
   {
     label: '查看',
     type: 'primary',
-    onClick: (row: Order) => handleView(row)
+    onClick: (row: Order) => handleView(row),
   },
   {
     label: '确认',
     type: 'success',
     onClick: (row: Order) => handleConfirm(row),
-    show: (row: Order) => row.status === 'pending_confirm'
+    show: (row: Order) => row.status === 'pending_confirm',
   },
   {
     label: '取车',
     type: 'success',
     onClick: (row: Order) => handlePickup(row),
-    show: (row: Order) => row.status === 'confirmed'
+    show: (row: Order) => row.status === 'confirmed',
   },
   {
     label: '还车',
     type: 'warning',
     onClick: (row: Order) => handleReturn(row),
-    show: (row: Order) => row.status === 'in_use'
+    show: (row: Order) => row.status === 'in_use',
   },
   {
     label: '完成',
     type: 'success',
     onClick: (row: Order) => handleComplete(row),
-    show: (row: Order) => row.status === 'in_use'
+    show: (row: Order) => row.status === 'in_use',
   },
   {
     label: '取消',
@@ -330,8 +314,8 @@ const tableActions: TableAction[] = [
     show: (row: Order) =>
       row.status === 'pending_payment' ||
       row.status === 'pending_confirm' ||
-      row.status === 'confirmed'
-  }
+      row.status === 'confirmed',
+  },
 ]
 
 // 订单列表
@@ -342,7 +326,7 @@ const loading = ref(false)
 const pagination = reactive({
   page: 1,
   pageSize: 10,
-  total: 0
+  total: 0,
 })
 
 // 取消订单对话框
@@ -352,14 +336,14 @@ const cancelFormRef = ref<FormInstance>()
 const currentCancelOrder = ref<Order | null>(null)
 
 const cancelForm = reactive({
-  reason: ''
+  reason: '',
 })
 
 const cancelFormRules: FormRules = {
   reason: [
     { required: true, message: '请输入取消原因', trigger: 'blur' },
-    { min: 5, message: '取消原因至少5个字符', trigger: 'blur' }
-  ]
+    { min: 5, message: '取消原因至少5个字符', trigger: 'blur' },
+  ],
 }
 
 // 取车管理对话框
@@ -378,10 +362,10 @@ const loadOrderList = async () => {
     const params: OrderListParams = {
       page: pagination.page,
       pageSize: pagination.pageSize,
-      ...searchForm
+      ...searchForm,
     }
 
-    const res = await getOrderList(params) as any
+    const res = (await getOrderList(params)) as any
     orderList.value = res.data.list
     pagination.total = res.data.total
   } catch (error) {
@@ -394,7 +378,7 @@ const loadOrderList = async () => {
 // 加载统计数据
 const loadStats = async () => {
   try {
-    const res = await getOrderStats() as any
+    const res = (await getOrderStats()) as any
     stats.totalOrders = res.data.totalOrders
     stats.pendingConfirm = res.data.pendingConfirm
     stats.inUse = res.data.inUse
@@ -437,7 +421,7 @@ const handleConfirm = async (row: Order) => {
       {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'success'
+        type: 'success',
       }
     )
 
@@ -461,7 +445,7 @@ const handleComplete = async (row: Order) => {
       {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'success'
+        type: 'success',
       }
     )
 
@@ -486,7 +470,7 @@ const handleCancel = (row: Order) => {
 const handleCancelSubmit = async () => {
   if (!cancelFormRef.value || !currentCancelOrder.value) return
 
-  await cancelFormRef.value.validate(async (valid) => {
+  await cancelFormRef.value.validate(async valid => {
     if (!valid) return
 
     cancelLoading.value = true
@@ -534,7 +518,7 @@ const handlePickupSubmit = async (data: any) => {
 const handleReturn = async (row: Order) => {
   try {
     // 先获取取车记录
-    const res = await getPickupRecord(row.id) as any
+    const res = (await getPickupRecord(row.id)) as any
     currentPickupRecord.value = res.data
     currentReturnOrder.value = row
     returnDialogVisible.value = true
@@ -572,7 +556,7 @@ const getOrderTypeTag = (type: string) => {
   const tagMap: Record<string, string> = {
     hosting: 'primary',
     cooperative: 'success',
-    tour: 'warning'
+    tour: 'warning',
   }
   return tagMap[type] || 'info'
 }
@@ -582,7 +566,7 @@ const getOrderTypeLabel = (type: string) => {
   const labelMap: Record<string, string> = {
     hosting: '托管订单',
     cooperative: '合作订单',
-    tour: '房车旅游'
+    tour: '房车旅游',
   }
   return labelMap[type] || type
 }
@@ -597,7 +581,7 @@ const getOrderStatusTag = (status: string) => {
     completed: 'info',
     cancelled: 'danger',
     refunding: 'warning',
-    refunded: 'info'
+    refunded: 'info',
   }
   return tagMap[status] || 'info'
 }
@@ -612,7 +596,7 @@ const getOrderStatusLabel = (status: string) => {
     completed: '已完成',
     cancelled: '已取消',
     refunding: '退款中',
-    refunded: '已退款'
+    refunded: '已退款',
   }
   return labelMap[status] || status
 }
@@ -623,7 +607,7 @@ const getPaymentStatusTag = (status: string) => {
     unpaid: 'danger',
     paid: 'success',
     refunding: 'warning',
-    refunded: 'info'
+    refunded: 'info',
   }
   return tagMap[status] || 'info'
 }
@@ -634,7 +618,7 @@ const getPaymentStatusLabel = (status: string) => {
     unpaid: '未支付',
     paid: '已支付',
     refunding: '退款中',
-    refunded: '已退款'
+    refunded: '已退款',
   }
   return labelMap[status] || status
 }

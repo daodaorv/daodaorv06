@@ -11,7 +11,7 @@ import type { MenuItem } from '@/types/permission'
 const generateRoutes = (menus: MenuItem[], _parentPath = ''): RouteRecordRaw[] => {
   const routes: RouteRecordRaw[] = []
 
-  menus.forEach((menu) => {
+  menus.forEach(menu => {
     // 如果有子菜单，递归生成子路由并直接添加到routes中
     if (menu.children && menu.children.length > 0) {
       // 递归处理子菜单
@@ -21,7 +21,7 @@ const generateRoutes = (menus: MenuItem[], _parentPath = ''): RouteRecordRaw[] =
       // 没有子菜单的才作为路由添加
       const route: RouteRecordRaw = {
         path: menu.path,
-    // @ts-ignore
+        // @ts-ignore
         name: menu.name,
         meta: menu.meta,
         component: menu.component || (() => import('@/views/common/ComingSoon.vue')),
@@ -66,8 +66,8 @@ export const asyncRoutes: RouteRecordRaw[] = [
         meta: {
           title: '用户详情',
           requiresAuth: true,
-          permissions: ['user:view']
-        }
+          permissions: ['user:view'],
+        },
       },
       // 门店详情页面（不在菜单中，但需要路由）
       {
@@ -77,8 +77,8 @@ export const asyncRoutes: RouteRecordRaw[] = [
         meta: {
           title: '门店详情',
           requiresAuth: true,
-          permissions: ['store:view']
-        }
+          permissions: ['store:view'],
+        },
       },
       // 订单详情页面（不在菜单中，但需要路由）
       {
@@ -88,8 +88,8 @@ export const asyncRoutes: RouteRecordRaw[] = [
         meta: {
           title: '订单详情',
           requiresAuth: true,
-          permissions: ['order:view']
-        }
+          permissions: ['order:view'],
+        },
       },
       // 车型编辑页面（不在菜单中，但需要路由）
       {
@@ -99,8 +99,8 @@ export const asyncRoutes: RouteRecordRaw[] = [
         meta: {
           title: '新增车型',
           requiresAuth: true,
-          permissions: ['vehicle:create']
-        }
+          permissions: ['vehicle:create'],
+        },
       },
       {
         path: '/vehicles/models/edit/:id',
@@ -109,8 +109,8 @@ export const asyncRoutes: RouteRecordRaw[] = [
         meta: {
           title: '编辑车型',
           requiresAuth: true,
-          permissions: ['vehicle:edit']
-        }
+          permissions: ['vehicle:edit'],
+        },
       },
       // 营地新建页面（不在菜单中，但需要路由）
       {
@@ -119,8 +119,8 @@ export const asyncRoutes: RouteRecordRaw[] = [
         component: () => import('@/views/campsites/CampsiteSettings.vue'),
         meta: {
           title: '新建营地',
-          requiresAuth: true
-        }
+          requiresAuth: true,
+        },
       },
       // 营地编辑页面（不在菜单中，但需要路由）
       {
@@ -129,9 +129,9 @@ export const asyncRoutes: RouteRecordRaw[] = [
         component: () => import('@/views/campsites/CampsiteSettings.vue'),
         meta: {
           title: '编辑营地',
-          requiresAuth: true
-        }
-      }
+          requiresAuth: true,
+        },
+      },
     ],
   },
   {

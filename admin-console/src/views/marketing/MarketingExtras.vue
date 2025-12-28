@@ -1,8 +1,6 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="marketing-extras-container">
-    
-
     <SearchForm
       v-model="searchForm"
       :fields="searchFields"
@@ -22,7 +20,7 @@
       @current-change="handleCurrentChange"
     >
       <template #type="{ row }">
-        <el-tag :type="(getExtraFeeTypeTag(row.type)) as any" size="small">
+        <el-tag :type="getExtraFeeTypeTag(row.type) as any" size="small">
           {{ getExtraFeeTypeLabel(row.type) }}
         </el-tag>
       </template>
@@ -32,14 +30,12 @@
         </el-tag>
       </template>
       <template #status="{ row }">
-        <el-tag :type="(getExtraFeeStatusTag(row.status)) as any" size="small">
+        <el-tag :type="getExtraFeeStatusTag(row.status) as any" size="small">
           {{ getExtraFeeStatusLabel(row.status) }}
         </el-tag>
       </template>
       <template #price="{ row }">
-        <span style="color: #f56c6c; font-weight: bold">
-          ¥{{ row.price }}/{{ row.unit }}
-        </span>
+        <span style="color: #f56c6c; font-weight: bold"> ¥{{ row.price }}/{{ row.unit }} </span>
       </template>
       <template #isRequired="{ row }">
         <el-tag :type="row.isRequired ? 'danger' : 'info'" size="small">
@@ -71,23 +67,28 @@
         <el-descriptions-item label="费用ID">{{ currentExtraFee.id }}</el-descriptions-item>
         <el-descriptions-item label="费用名称">{{ currentExtraFee.name }}</el-descriptions-item>
         <el-descriptions-item label="费用类型">
-          <el-tag :type="(getExtraFeeTypeTag(currentExtraFee.type)) as any" size="small">
+          <el-tag :type="getExtraFeeTypeTag(currentExtraFee.type) as any" size="small">
             {{ getExtraFeeTypeLabel(currentExtraFee.type) }}
           </el-tag>
         </el-descriptions-item>
         <el-descriptions-item label="费用状态">
-          <el-tag :type="(getExtraFeeStatusTag(currentExtraFee.status)) as any" size="small">
+          <el-tag :type="getExtraFeeStatusTag(currentExtraFee.status) as any" size="small">
             {{ getExtraFeeStatusLabel(currentExtraFee.status) }}
           </el-tag>
         </el-descriptions-item>
-        <el-descriptions-item label="费用价格">¥{{ currentExtraFee.price }}/{{ currentExtraFee.unit }}</el-descriptions-item>
+        <el-descriptions-item label="费用价格"
+          >¥{{ currentExtraFee.price }}/{{ currentExtraFee.unit }}</el-descriptions-item
+        >
         <el-descriptions-item label="是否必选">
           <el-tag :type="currentExtraFee.isRequired ? 'danger' : 'info'" size="small">
             {{ currentExtraFee.isRequired ? '必选' : '可选' }}
           </el-tag>
         </el-descriptions-item>
         <el-descriptions-item label="归属方">
-          <el-tag :type="currentExtraFee.ownerType === 'platform' ? 'success' : 'primary'" size="small">
+          <el-tag
+            :type="currentExtraFee.ownerType === 'platform' ? 'success' : 'primary'"
+            size="small"
+          >
             {{ currentExtraFee.ownerType === 'platform' ? '平台' : '门店' }}
           </el-tag>
         </el-descriptions-item>
@@ -95,7 +96,9 @@
           {{ currentExtraFee.storeName || '-' }}
         </el-descriptions-item>
         <el-descriptions-item label="创建人">{{ currentExtraFee.createdBy }}</el-descriptions-item>
-        <el-descriptions-item label="创建时间">{{ currentExtraFee.createdAt }}</el-descriptions-item>
+        <el-descriptions-item label="创建时间">{{
+          currentExtraFee.createdAt
+        }}</el-descriptions-item>
         <el-descriptions-item label="费用说明" :span="2">
           {{ currentExtraFee.description }}
         </el-descriptions-item>
@@ -123,7 +126,7 @@ import {
   updateExtraFee,
   deleteExtraFee,
   type ExtraFee,
-  type ExtraFeeListParams
+  type ExtraFeeListParams,
 } from '@/api/marketing'
 import { getStoreList } from '@/api/store'
 import { useErrorHandler } from '@/composables'
@@ -137,23 +140,23 @@ const EXTRA_FEE_TYPE_OPTIONS = [
   { label: '保险服务', value: 'insurance' },
   { label: '设备租赁', value: 'equipment' },
   { label: '增值服务', value: 'service' },
-  { label: '其他费用', value: 'other' }
+  { label: '其他费用', value: 'other' },
 ]
 
 const EXTRA_FEE_STATUS_OPTIONS = [
   { label: '生效中', value: 'active' },
-  { label: '未生效', value: 'inactive' }
+  { label: '未生效', value: 'inactive' },
 ]
 
 const OWNER_TYPE_OPTIONS = [
   { label: '平台', value: 'platform' },
-  { label: '门店', value: 'store' }
+  { label: '门店', value: 'store' },
 ]
 
 const searchForm = reactive<ExtraFeeListParams>({
   keyword: '',
   type: undefined,
-  status: undefined
+  status: undefined,
 })
 
 const searchFields = computed<SearchField[]>(() => [
@@ -162,7 +165,7 @@ const searchFields = computed<SearchField[]>(() => [
     label: '关键词',
     type: 'input',
     placeholder: '费用名称',
-    width: '200px'
+    width: '200px',
   },
   {
     prop: 'type',
@@ -170,7 +173,7 @@ const searchFields = computed<SearchField[]>(() => [
     type: 'select',
     placeholder: '请选择类型',
     width: '150px',
-    options: EXTRA_FEE_TYPE_OPTIONS
+    options: EXTRA_FEE_TYPE_OPTIONS,
   },
   {
     prop: 'status',
@@ -178,8 +181,8 @@ const searchFields = computed<SearchField[]>(() => [
     type: 'select',
     placeholder: '请选择状态',
     width: '150px',
-    options: EXTRA_FEE_STATUS_OPTIONS
-  }
+    options: EXTRA_FEE_STATUS_OPTIONS,
+  },
 ])
 
 const tableColumns: TableColumn[] = [
@@ -191,7 +194,7 @@ const tableColumns: TableColumn[] = [
   { prop: 'price', label: '价格', width: 120, slot: 'price' },
   { prop: 'isRequired', label: '是否必选', width: 100, slot: 'isRequired' },
   { prop: 'description', label: '说明', minWidth: 200 },
-  { prop: 'createdBy', label: '创建人', width: 120 }
+  { prop: 'createdBy', label: '创建人', width: 120 },
 ]
 
 // 工具栏按钮配置
@@ -200,26 +203,26 @@ const toolbarButtons: ToolbarButton[] = [
     label: '新增费用',
     type: 'primary',
     icon: Plus,
-    onClick: () => handleCreate()
-  }
+    onClick: () => handleCreate(),
+  },
 ]
 
 const tableActions: TableAction[] = [
   {
     label: '查看',
     type: 'primary',
-    onClick: (row: ExtraFee) => handleView(row)
+    onClick: (row: ExtraFee) => handleView(row),
   },
   {
     label: '编辑',
     type: 'primary',
-    onClick: (row: ExtraFee) => handleEdit(row)
+    onClick: (row: ExtraFee) => handleEdit(row),
   },
   {
     label: '删除',
     type: 'danger',
-    onClick: (row: ExtraFee) => handleDelete(row)
-  }
+    onClick: (row: ExtraFee) => handleDelete(row),
+  },
 ]
 
 const extraFeeList = ref<ExtraFee[]>([])
@@ -228,7 +231,7 @@ const loading = ref(false)
 const pagination = reactive({
   page: 1,
   pageSize: 10,
-  total: 0
+  total: 0,
 })
 
 // 对话框状态
@@ -247,7 +250,7 @@ const UNIT_OPTIONS = [
   { label: '天', value: '天' },
   { label: '次', value: '次' },
   { label: '个', value: '个' },
-  { label: '套', value: '套' }
+  { label: '套', value: '套' },
 ]
 
 // 表单数据
@@ -262,14 +265,14 @@ const formData = reactive({
   ownerType: 'platform',
   storeId: undefined as number | undefined,
   autoAllocate: false,
-  allocationStrategy: 'split_evenly' as 'same_store' | 'split_evenly' | 'custom'
+  allocationStrategy: 'split_evenly' as 'same_store' | 'split_evenly' | 'custom',
 })
 
 // 表单字段配置
 const formFields = computed(() => [
   {
     type: 'divider',
-    label: '基本信息'
+    label: '基本信息',
   },
   {
     type: 'row',
@@ -279,16 +282,16 @@ const formFields = computed(() => [
         label: '费用名称',
         type: 'input',
         placeholder: '请输入费用名称',
-        span: 12
+        span: 12,
       },
       {
         prop: 'type',
         label: '费用类型',
         type: 'select',
         options: EXTRA_FEE_TYPE_OPTIONS,
-        span: 12
-      }
-    ]
+        span: 12,
+      },
+    ],
   },
   {
     type: 'row',
@@ -298,20 +301,20 @@ const formFields = computed(() => [
         label: '费用状态',
         type: 'select',
         options: EXTRA_FEE_STATUS_OPTIONS,
-        span: 12
+        span: 12,
       },
       {
         prop: 'isRequired',
         label: '是否必选',
         type: 'switch',
-        span: 12
-      }
-    ]
+        span: 12,
+      },
+    ],
   },
   {
     type: 'divider',
     label: '归属方配置',
-    tip: '配置费用的归属和分配规则'
+    tip: '配置费用的归属和分配规则',
   },
   {
     type: 'row',
@@ -321,9 +324,9 @@ const formFields = computed(() => [
         label: '自动分配',
         type: 'switch',
         span: 24,
-        tip: '开启后,费用将根据订单的取车和还车门店自动分配。关闭则使用固定归属方'
-      }
-    ]
+        tip: '开启后,费用将根据订单的取车和还车门店自动分配。关闭则使用固定归属方',
+      },
+    ],
   },
   {
     type: 'row',
@@ -334,11 +337,11 @@ const formFields = computed(() => [
         type: 'select',
         options: [
           { label: '平台', value: 'platform' },
-          { label: '门店', value: 'store' }
+          { label: '门店', value: 'store' },
         ],
         span: 12,
         tip: '选择费用固定归属方',
-        show: !formData.autoAllocate
+        show: !formData.autoAllocate,
       },
       {
         prop: 'storeId',
@@ -347,9 +350,9 @@ const formFields = computed(() => [
         options: storeOptions.value,
         span: 12,
         tip: '当归属方为门店时必选',
-        show: !formData.autoAllocate && formData.ownerType === 'store'
-      }
-    ]
+        show: !formData.autoAllocate && formData.ownerType === 'store',
+      },
+    ],
   },
   {
     type: 'row',
@@ -360,17 +363,17 @@ const formFields = computed(() => [
         type: 'select',
         options: [
           { label: '同店100%归属', value: 'same_store' },
-          { label: '不同店平均分配', value: 'split_evenly' }
+          { label: '不同店平均分配', value: 'split_evenly' },
         ],
         span: 24,
         tip: '同店:取还车同一门店时100%归该店;不同店:取还车不同门店时平均分配',
-        show: formData.autoAllocate
-      }
-    ]
+        show: formData.autoAllocate,
+      },
+    ],
   },
   {
     type: 'divider',
-    label: '价格设置'
+    label: '价格设置',
   },
   {
     type: 'row',
@@ -381,20 +384,20 @@ const formFields = computed(() => [
         type: 'number',
         min: 0,
         span: 12,
-        tip: '单位：元'
+        tip: '单位：元',
       },
       {
         prop: 'unit',
         label: '计费单位',
         type: 'select',
         options: UNIT_OPTIONS,
-        span: 12
-      }
-    ]
+        span: 12,
+      },
+    ],
   },
   {
     type: 'divider',
-    label: '费用说明'
+    label: '费用说明',
   },
   {
     prop: 'description',
@@ -402,8 +405,8 @@ const formFields = computed(() => [
     type: 'textarea',
     rows: 5,
     placeholder: '请输入费用说明',
-    maxlength: 500
-  }
+    maxlength: 500,
+  },
 ]) as any
 
 // 表单验证规则
@@ -423,8 +426,8 @@ const formRules = {
           callback()
         }
       },
-      trigger: 'change'
-    }
+      trigger: 'change',
+    },
   ],
   storeId: [
     {
@@ -436,8 +439,8 @@ const formRules = {
           callback()
         }
       },
-      trigger: 'change'
-    }
+      trigger: 'change',
+    },
   ],
   allocationStrategy: [
     {
@@ -449,9 +452,9 @@ const formRules = {
           callback()
         }
       },
-      trigger: 'change'
-    }
-  ]
+      trigger: 'change',
+    },
+  ],
 }
 
 const loadExtraFeeList = async () => {
@@ -460,10 +463,10 @@ const loadExtraFeeList = async () => {
     const params: ExtraFeeListParams = {
       page: pagination.page,
       pageSize: pagination.pageSize,
-      ...searchForm
+      ...searchForm,
     }
 
-    const res = await getExtraFeeList(params) as any
+    const res = (await getExtraFeeList(params)) as any
     extraFeeList.value = res.data.list
     pagination.total = res.data.total
   } catch (error) {
@@ -542,15 +545,11 @@ const handleView = (row: ExtraFee) => {
 // 删除费用
 const handleDelete = async (row: ExtraFee) => {
   try {
-    await ElMessageBox.confirm(
-      `确定要删除增值费用"${row.name}"吗？`,
-      '删除确认',
-      {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }
-    )
+    await ElMessageBox.confirm(`确定要删除增值费用"${row.name}"吗？`, '删除确认', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    })
 
     await deleteExtraFee(row.id)
     ElMessage.success('删除成功')
@@ -598,7 +597,7 @@ const getExtraFeeTypeTag = (type: string) => {
     insurance: 'danger',
     equipment: 'primary',
     service: 'success',
-    other: 'info'
+    other: 'info',
   }
   return tagMap[type] || 'info'
 }
@@ -608,7 +607,7 @@ const getExtraFeeTypeLabel = (type: string) => {
     insurance: '保险服务',
     equipment: '设备租赁',
     service: '增值服务',
-    other: '其他费用'
+    other: '其他费用',
   }
   return labelMap[type] || type
 }
@@ -616,7 +615,7 @@ const getExtraFeeTypeLabel = (type: string) => {
 const getExtraFeeStatusTag = (status: string) => {
   const tagMap: Record<string, string> = {
     active: 'success',
-    inactive: 'info'
+    inactive: 'info',
   }
   return tagMap[status] || 'info'
 }
@@ -624,7 +623,7 @@ const getExtraFeeStatusTag = (status: string) => {
 const getExtraFeeStatusLabel = (status: string) => {
   const labelMap: Record<string, string> = {
     active: '生效中',
-    inactive: '未生效'
+    inactive: '未生效',
   }
   return labelMap[status] || status
 }
@@ -632,10 +631,10 @@ const getExtraFeeStatusLabel = (status: string) => {
 // 加载门店列表
 const loadStoreList = async () => {
   try {
-    const res = await getStoreList({ page: 1, pageSize: 1000 }) as any
+    const res = (await getStoreList({ page: 1, pageSize: 1000 })) as any
     storeOptions.value = res.data.list.map((store: any) => ({
       label: store.name,
-      value: store.id
+      value: store.id,
     }))
   } catch (error) {
     handleApiError(error, '加载门店列表失败')

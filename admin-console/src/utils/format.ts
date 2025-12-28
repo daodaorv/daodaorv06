@@ -58,7 +58,10 @@ export const formatTime = (date: string | Date | null | undefined): string => {
  * @param currency 货币符号，默认 '¥'
  * @returns 格式化后的货币字符串
  */
-export const formatCurrency = (amount: number | null | undefined, currency: string = '¥'): string => {
+export const formatCurrency = (
+  amount: number | null | undefined,
+  currency: string = '¥'
+): string => {
   if (amount === null || amount === undefined) return '-'
   return `${currency}${amount.toLocaleString('zh-CN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
 }
@@ -71,7 +74,10 @@ export const formatCurrency = (amount: number | null | undefined, currency: stri
  */
 export const formatNumber = (num: number | null | undefined, decimals: number = 0): string => {
   if (num === null || num === undefined) return '-'
-  return num.toLocaleString('zh-CN', { minimumFractionDigits: decimals, maximumFractionDigits: decimals })
+  return num.toLocaleString('zh-CN', {
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals,
+  })
 }
 
 /**

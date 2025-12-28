@@ -12,7 +12,7 @@ import {
   type SupplierListParams,
   type CreateSupplierParams,
   type UpdateSupplierParams,
-  type SupplierStats
+  type SupplierStats,
 } from '@/mock/suppliers'
 import type { SupplierContract, SupplierService } from '@/types/supplier'
 
@@ -24,7 +24,7 @@ export type {
   UpdateSupplierParams,
   SupplierStats,
   SupplierContract,
-  SupplierService
+  SupplierService,
 }
 
 /**
@@ -82,10 +82,10 @@ export const getSupplierStats = () => {
  */
 export const getSupplierContracts = (supplierId: number): Promise<SupplierContract[]> => {
   // return request.get(`/suppliers/${supplierId}/contracts`)
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       // 从供应商详情中获取合作协议列表
-      mockGetSupplierDetail(supplierId).then((supplier) => {
+      mockGetSupplierDetail(supplierId).then(supplier => {
         resolve(supplier.contracts || [])
       })
     }, 200)
@@ -102,7 +102,7 @@ export const getContractDetail = (contractId: number): Promise<SupplierContract>
       // 模拟从所有供应商中查找合作协议
       mockGetSupplierList({ page: 1, pageSize: 100 }).then(({ list }) => {
         for (const supplier of list) {
-          const contract = supplier.contracts?.find((c) => c.id === contractId)
+          const contract = supplier.contracts?.find(c => c.id === contractId)
           if (contract) {
             resolve(contract)
             return
@@ -133,7 +133,7 @@ export const createElectronicContract = (data: {
   }>
 }): Promise<SupplierContract> => {
   // return request.post('/supplier-contracts/electronic', data)
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const newContract: SupplierContract = {
         id: Date.now(),
@@ -149,7 +149,7 @@ export const createElectronicContract = (data: {
         jzqContractId: `contract_${Date.now()}`,
         jzqSignUrl: `https://api.sandbox.junziqian.com/sign/${Date.now()}`,
         createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
+        updatedAt: new Date().toISOString(),
       }
       resolve(newContract)
     }, 500)
@@ -174,7 +174,7 @@ export const uploadScannedContract = (
   }
 ): Promise<SupplierContract> => {
   // return request.post(`/suppliers/${supplierId}/contracts/scanned`, data)
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const newContract: SupplierContract = {
         id: Date.now(),
@@ -191,7 +191,7 @@ export const uploadScannedContract = (
         scannedFileSize: data.scannedFileSize,
         remark: data.remark,
         createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
+        updatedAt: new Date().toISOString(),
       }
       resolve(newContract)
     }, 500)
@@ -208,14 +208,16 @@ export const updateContract = (
   // return request.put(`/supplier-contracts/${contractId}`, data)
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      getContractDetail(contractId).then((contract) => {
-        const updatedContract = {
-          ...contract,
-          ...data,
-          updatedAt: new Date().toISOString()
-        }
-        resolve(updatedContract)
-      }).catch(reject)
+      getContractDetail(contractId)
+        .then(contract => {
+          const updatedContract = {
+            ...contract,
+            ...data,
+            updatedAt: new Date().toISOString(),
+          }
+          resolve(updatedContract)
+        })
+        .catch(reject)
     }, 300)
   })
 }
@@ -225,7 +227,7 @@ export const updateContract = (
  */
 export const deleteContract = (contractId: number): Promise<void> => {
   // return request.delete(`/supplier-contracts/${contractId}`)
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       resolve()
     }, 300)
@@ -237,7 +239,7 @@ export const deleteContract = (contractId: number): Promise<void> => {
  */
 export const downloadContract = (contractId: number): Promise<Blob> => {
   // return request.get(`/supplier-contracts/${contractId}/download`, { responseType: 'blob' })
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const blob = new Blob(['Mock PDF Content'], { type: 'application/pdf' })
       resolve(blob)
@@ -248,7 +250,9 @@ export const downloadContract = (contractId: number): Promise<Blob> => {
 /**
  * 查询君子签签署状态
  */
-export const queryJZQSignStatus = (flowId: string): Promise<{
+export const queryJZQSignStatus = (
+  flowId: string
+): Promise<{
   flowId: string
   contractId: string
   status: 'draft' | 'pending' | 'signed' | 'rejected' | 'expired'
@@ -256,14 +260,14 @@ export const queryJZQSignStatus = (flowId: string): Promise<{
   pdfUrl?: string
 }> => {
   // return request.get(`/junziqian/sign-status/${flowId}`)
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       resolve({
         flowId,
         contractId: `contract_${flowId.split('_')[1]}`,
         status: 'signed',
         signedAt: new Date().toISOString(),
-        pdfUrl: `https://example.com/contracts/signed-${flowId}.pdf`
+        pdfUrl: `https://example.com/contracts/signed-${flowId}.pdf`,
       })
     }, 300)
   })
@@ -276,9 +280,9 @@ export const queryJZQSignStatus = (flowId: string): Promise<{
  */
 export const getSupplierServices = (supplierId: number): Promise<SupplierService[]> => {
   // return request.get(`/suppliers/${supplierId}/services`)
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
-      mockGetSupplierDetail(supplierId).then((supplier) => {
+      mockGetSupplierDetail(supplierId).then(supplier => {
         resolve(supplier.services || [])
       })
     }, 200)
@@ -300,7 +304,7 @@ export const createSupplierService = (
   }
 ): Promise<SupplierService> => {
   // return request.post(`/suppliers/${supplierId}/services`, data)
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const newService: SupplierService = {
         id: Date.now(),
@@ -308,7 +312,7 @@ export const createSupplierService = (
         ...data,
         sortOrder: 999,
         createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
+        updatedAt: new Date().toISOString(),
       }
       resolve(newService)
     }, 300)
@@ -323,7 +327,7 @@ export const updateSupplierService = (
   data: Partial<SupplierService>
 ): Promise<SupplierService> => {
   // return request.put(`/supplier-services/${serviceId}`, data)
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const updatedService: SupplierService = {
         id: serviceId,
@@ -336,7 +340,7 @@ export const updateSupplierService = (
         status: data.status || 'active',
         sortOrder: data.sortOrder || 0,
         createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
+        updatedAt: new Date().toISOString(),
       }
       resolve(updatedService)
     }, 300)
@@ -348,7 +352,7 @@ export const updateSupplierService = (
  */
 export const deleteSupplierService = (serviceId: number): Promise<void> => {
   // return request.delete(`/supplier-services/${serviceId}`)
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       resolve()
     }, 300)
@@ -358,12 +362,9 @@ export const deleteSupplierService = (serviceId: number): Promise<void> => {
 /**
  * 批量更新服务排序
  */
-export const updateServicesOrder = (
-  supplierId: number,
-  serviceIds: number[]
-): Promise<void> => {
+export const updateServicesOrder = (supplierId: number, serviceIds: number[]): Promise<void> => {
   // return request.put(`/suppliers/${supplierId}/services/order`, { serviceIds })
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       resolve()
     }, 300)

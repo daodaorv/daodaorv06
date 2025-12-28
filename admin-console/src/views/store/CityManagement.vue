@@ -1,8 +1,6 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="city-management-container">
-    
-
     <DataTable
       :data="cityList"
       :columns="tableColumns"
@@ -25,12 +23,7 @@
       width="600px"
       @close="handleDialogClose"
     >
-      <el-form
-        ref="formRef"
-        :model="form"
-        :rules="formRules"
-        label-width="120px"
-      >
+      <el-form ref="formRef" :model="form" :rules="formRules" label-width="120px">
         <el-form-item label="城市名称" prop="name">
           <el-input v-model="form.name" placeholder="请输入城市名称" />
         </el-form-item>
@@ -49,9 +42,7 @@
       </el-form>
       <template #footer>
         <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" :loading="submitLoading" @click="handleSubmit">
-          确定
-        </el-button>
+        <el-button type="primary" :loading="submitLoading" @click="handleSubmit"> 确定 </el-button>
       </template>
     </el-dialog>
   </div>
@@ -79,7 +70,7 @@ const tableColumns: TableColumn[] = [
   { prop: 'provinceName', label: '所属省份', width: 120 },
   { prop: 'status', label: '服务状态', width: 100, slot: 'status' },
   { prop: 'storeCount', label: '门店数量', width: 100 },
-  { prop: 'createdAt', label: '创建时间', width: 180 }
+  { prop: 'createdAt', label: '创建时间', width: 180 },
 ]
 
 // 工具栏按钮配置
@@ -88,26 +79,26 @@ const toolbarButtons: ToolbarButton[] = [
     label: '新增城市',
     type: 'primary',
     icon: Plus,
-    onClick: () => handleCreate()
-  }
+    onClick: () => handleCreate(),
+  },
 ]
 
 // 表格操作列配置
 const tableActions: TableAction[] = [
   {
     label: '编辑',
-  // @ts-ignore
+    // @ts-ignore
     type: 'primary',
     icon: Edit,
-    onClick: (row: City) => handleEdit(row)
+    onClick: (row: City) => handleEdit(row),
   },
   {
     label: '删除',
-  // @ts-ignore
+    // @ts-ignore
     type: 'danger',
     icon: Delete,
-    onClick: (row: City) => handleDelete(row)
-  }
+    onClick: (row: City) => handleDelete(row),
+  },
 ]
 
 // 城市列表
@@ -126,29 +117,21 @@ const form = reactive({
   name: '',
   code: '',
   provinceName: '',
-  status: 'active' as 'active' | 'inactive'
+  status: 'active' as 'active' | 'inactive',
 })
 
 const formRules: FormRules = {
-  name: [
-    { required: true, message: '请输入城市名称', trigger: 'blur' }
-  ],
-  code: [
-    { required: true, message: '请输入城市编码', trigger: 'blur' }
-  ],
-  provinceName: [
-    { required: true, message: '请输入所属省份', trigger: 'blur' }
-  ],
-  status: [
-    { required: true, message: '请选择服务状态', trigger: 'change' }
-  ]
+  name: [{ required: true, message: '请输入城市名称', trigger: 'blur' }],
+  code: [{ required: true, message: '请输入城市编码', trigger: 'blur' }],
+  provinceName: [{ required: true, message: '请输入所属省份', trigger: 'blur' }],
+  status: [{ required: true, message: '请选择服务状态', trigger: 'change' }],
 }
 
 // 加载城市列表
 const loadCityList = async () => {
   loading.value = true
   try {
-    const res = await getCityList() as any
+    const res = (await getCityList()) as any
     cityList.value = res.data
   } catch (error) {
     handleApiError(error, '加载城市列表失败')
@@ -185,7 +168,7 @@ const handleDelete = async (row: City) => {
       {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
+        type: 'warning',
       }
     )
 
@@ -202,7 +185,7 @@ const handleDelete = async (row: City) => {
 const handleSubmit = async () => {
   if (!formRef.value) return
 
-  await formRef.value.validate(async (valid) => {
+  await formRef.value.validate(async valid => {
     if (!valid) return
 
     submitLoading.value = true

@@ -1,8 +1,6 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="employee-customer-service-container">
-    
-
     <SearchForm
       v-model="searchForm"
       :fields="searchFields"
@@ -34,7 +32,7 @@
       </template>
 
       <template #role="{ row }">
-        <el-tag :type="(getRoleTypeTag(row.role)) as any" size="small">
+        <el-tag :type="getRoleTypeTag(row.role) as any" size="small">
           {{ row.role }}
         </el-tag>
       </template>
@@ -49,11 +47,7 @@
           >
             PC端
           </el-tag>
-          <el-tag
-            v-if="row.loginPlatforms.includes('mobile')"
-            type="success"
-            size="small"
-          >
+          <el-tag v-if="row.loginPlatforms.includes('mobile')" type="success" size="small">
             移动端
           </el-tag>
         </div>
@@ -66,12 +60,8 @@
       </template>
 
       <template #actions="{ row }">
-        <el-button link type="primary" size="small" @click="handleView(row)">
-          查看
-        </el-button>
-        <el-button link type="primary" size="small" @click="handleEdit(row)">
-          编辑
-        </el-button>
+        <el-button link type="primary" size="small" @click="handleView(row)"> 查看 </el-button>
+        <el-button link type="primary" size="small" @click="handleEdit(row)"> 编辑 </el-button>
         <el-button link type="primary" size="small" @click="handleAssignRole(row)">
           分配角色
         </el-button>
@@ -107,7 +97,7 @@
       @submit="handleRoleSubmit"
     >
       <template #header>
-        <div style="margin-bottom: 16px;">
+        <div style="margin-bottom: 16px">
           <strong>员工:</strong>{{ currentEmployee?.realName }} ({{ currentEmployee?.jobNumber }})
         </div>
       </template>
@@ -227,9 +217,7 @@ const STORE_OPTIONS = [
 ]
 
 // 角色选项 - 客服人员都是门店员工
-const ROLE_OPTIONS = [
-  { label: '门店员工', value: 4 },
-]
+const ROLE_OPTIONS = [{ label: '门店员工', value: 4 }]
 
 // 登录平台选项
 const LOGIN_PLATFORM_OPTIONS = [
@@ -424,12 +412,8 @@ const formFields: FormField[] = [
 ]
 
 const formRules = {
-  realName: [
-    { required: true, message: '请输入真实姓名', trigger: 'blur' },
-  ],
-  jobNumber: [
-    { required: true, message: '请输入工号', trigger: 'blur' },
-  ],
+  realName: [{ required: true, message: '请输入真实姓名', trigger: 'blur' }],
+  jobNumber: [{ required: true, message: '请输入工号', trigger: 'blur' }],
   phone: [
     { required: true, message: '请输入手机号', trigger: 'blur' },
     { pattern: /^1[3-9]\d{9}$/, message: '请输入正确的手机号', trigger: 'blur' },
@@ -438,9 +422,7 @@ const formRules = {
     { required: true, message: '请输入邮箱', trigger: 'blur' },
     { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' },
   ],
-  storeId: [
-    { required: true, message: '请选择所属门店', trigger: 'change' },
-  ],
+  storeId: [{ required: true, message: '请选择所属门店', trigger: 'change' }],
   loginPlatforms: [
     { required: true, message: '请选择至少一个登录平台', trigger: 'change', type: 'array', min: 1 },
   ],
@@ -648,14 +630,14 @@ function handleExport() {
     { key: 'storeName', label: '所属门店' },
     { key: 'department', label: '部门' },
     { key: 'status', label: '状态' },
-    { key: 'joinDate', label: '入职日期' }
+    { key: 'joinDate', label: '入职日期' },
   ]
 
   // 处理数据
   const exportData = list.value.map(emp => ({
     ...emp,
-    loginPlatforms: emp.loginPlatforms.map(p => p === 'pc' ? 'PC端' : '移动端').join('、'),
-    status: emp.status === 'active' ? '在职' : '离职'
+    loginPlatforms: emp.loginPlatforms.map(p => (p === 'pc' ? 'PC端' : '移动端')).join('、'),
+    status: emp.status === 'active' ? '在职' : '离职',
   }))
 
   // 导出
@@ -672,7 +654,7 @@ function handleImport() {
     { key: 'email', label: '邮箱' },
     { key: 'department', label: '部门' },
     { key: 'joinDate', label: '入职日期' },
-    { key: 'loginPlatforms', label: '可登录平台(pc/mobile,多个用逗号分隔)' }
+    { key: 'loginPlatforms', label: '可登录平台(pc/mobile,多个用逗号分隔)' },
   ]
 
   const sampleData = [
@@ -683,7 +665,7 @@ function handleImport() {
       email: 'zhangsan@daodao.com',
       department: '技术部',
       joinDate: '2024-01-15',
-      loginPlatforms: 'pc,mobile'
+      loginPlatforms: 'pc,mobile',
     },
     {
       realName: '李四',
@@ -692,8 +674,8 @@ function handleImport() {
       email: 'lisi@daodao.com',
       department: '运营部',
       joinDate: '2024-02-01',
-      loginPlatforms: 'mobile'
-    }
+      loginPlatforms: 'mobile',
+    },
   ]
 
   downloadImportTemplate(columns, '客服人员导入', sampleData)
@@ -702,10 +684,10 @@ function handleImport() {
 // 获取角色类型标签
 function getRoleTypeTag(role: string) {
   const typeMap: Record<string, string> = {
-    '平台管理员': 'danger',
-    '区域经理': 'warning',
-    '门店经理': 'success',
-    '门店员工': 'info',
+    平台管理员: 'danger',
+    区域经理: 'warning',
+    门店经理: 'success',
+    门店员工: 'info',
   }
   return typeMap[role] || 'info'
 }

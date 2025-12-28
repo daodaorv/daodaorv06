@@ -95,12 +95,12 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  timeline: () => []
+  timeline: () => [],
 })
 
 // Emits
 const emit = defineEmits<{
-  'action': [key: string, item: any]
+  action: [key: string, item: any]
 }>()
 
 // 计算时间线数据
@@ -119,7 +119,7 @@ const timelineData = computed<TimelineItem[]>(() => {
       operator: item.operator,
       details: item.details || [],
       images: item.images || [],
-      actions: item.actions || []
+      actions: item.actions || [],
     }
   })
 })
@@ -134,7 +134,7 @@ const getTimelineConfig = (action: string) => {
       color: '#409eff',
       icon: Document,
       tagType: 'primary',
-      description: '用户成功创建订单'
+      description: '用户成功创建订单',
     },
     paid: {
       title: '支付完成',
@@ -143,7 +143,7 @@ const getTimelineConfig = (action: string) => {
       color: '#67c23a',
       icon: Check,
       tagType: 'success',
-      description: '订单支付成功'
+      description: '订单支付成功',
     },
     confirmed: {
       title: '订单确认',
@@ -152,7 +152,7 @@ const getTimelineConfig = (action: string) => {
       color: '#67c23a',
       icon: Check,
       tagType: 'success',
-      description: '管理员确认订单'
+      description: '管理员确认订单',
     },
     ready: {
       title: '准备取车',
@@ -161,7 +161,7 @@ const getTimelineConfig = (action: string) => {
       color: '#e6a23c',
       icon: Clock,
       tagType: 'warning',
-      description: '车辆准备完毕，等待取车'
+      description: '车辆准备完毕，等待取车',
     },
     pickup: {
       title: '取车完成',
@@ -170,7 +170,7 @@ const getTimelineConfig = (action: string) => {
       color: '#67c23a',
       icon: CaretRight,
       tagType: 'success',
-      description: '客户完成取车手续'
+      description: '客户完成取车手续',
     },
     in_use: {
       title: '使用中',
@@ -179,7 +179,7 @@ const getTimelineConfig = (action: string) => {
       color: '#409eff',
       icon: CaretRight,
       tagType: 'primary',
-      description: '订单正在使用中'
+      description: '订单正在使用中',
     },
     return: {
       title: '还车完成',
@@ -188,7 +188,7 @@ const getTimelineConfig = (action: string) => {
       color: '#67c23a',
       icon: Check,
       tagType: 'success',
-      description: '客户完成还车手续'
+      description: '客户完成还车手续',
     },
     completed: {
       title: '订单完成',
@@ -197,7 +197,7 @@ const getTimelineConfig = (action: string) => {
       color: '#67c23a',
       icon: Check,
       tagType: 'success',
-      description: '订单已完成，押金已退还'
+      description: '订单已完成，押金已退还',
     },
     cancelled: {
       title: '订单取消',
@@ -206,7 +206,7 @@ const getTimelineConfig = (action: string) => {
       color: '#f56c6c',
       icon: Close,
       tagType: 'danger',
-      description: '订单已取消'
+      description: '订单已取消',
     },
     refunding: {
       title: '退款处理',
@@ -215,7 +215,7 @@ const getTimelineConfig = (action: string) => {
       color: '#e6a23c',
       icon: Clock,
       tagType: 'warning',
-      description: '正在处理退款'
+      description: '正在处理退款',
     },
     refunded: {
       title: '退款完成',
@@ -224,7 +224,7 @@ const getTimelineConfig = (action: string) => {
       color: '#909399',
       icon: Check,
       tagType: 'info',
-      description: '退款已完成'
+      description: '退款已完成',
     },
     exception_created: {
       title: '异常创建',
@@ -233,7 +233,7 @@ const getTimelineConfig = (action: string) => {
       color: '#f56c6c',
       icon: Close,
       tagType: 'danger',
-      description: '订单产生异常'
+      description: '订单产生异常',
     },
     exception_resolved: {
       title: '异常解决',
@@ -242,19 +242,21 @@ const getTimelineConfig = (action: string) => {
       color: '#67c23a',
       icon: Check,
       tagType: 'success',
-      description: '异常已解决'
-    }
+      description: '异常已解决',
+    },
   }
 
-  return configMap[action] || {
-    title: action,
-    status: action,
-    type: 'info',
-    color: '#909399',
-    icon: Document,
-    tagType: 'info',
-    description: ''
-  }
+  return (
+    configMap[action] || {
+      title: action,
+      status: action,
+      type: 'info',
+      color: '#909399',
+      icon: Document,
+      tagType: 'info',
+      description: '',
+    }
+  )
 }
 
 // 处理操作

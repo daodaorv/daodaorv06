@@ -1,8 +1,6 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="marketing-tours-container">
-    
-
     <SearchForm
       v-model="searchForm"
       :fields="searchFields"
@@ -22,7 +20,7 @@
       @current-change="handleCurrentChange"
     >
       <template #status="{ row }">
-        <el-tag :type="(getTourStatusTag(row.status)) as any" size="small">
+        <el-tag :type="getTourStatusTag(row.status) as any" size="small">
           {{ getTourStatusLabel(row.status) }}
         </el-tag>
         <el-tag v-if="row.isHot" type="danger" size="small" style="margin-left: 4px">热门</el-tag>
@@ -36,12 +34,19 @@
       <template #batches="{ row }">
         <div style="font-size: 12px">
           <div>批次数: {{ row.batches.length }}</div>
-          <div style="color: #67c23a">招募中: {{ row.batches.filter(b => b.status === 'recruiting').length }}</div>
+          <div style="color: #67c23a">
+            招募中: {{ row.batches.filter(b => b.status === 'recruiting').length }}
+          </div>
         </div>
       </template>
       <template #tags="{ row }">
         <div style="display: flex; flex-wrap: wrap; gap: 4px">
-          <el-tag v-for="(tag, index) in row.tags.slice(0, 2)" :key="index" size="small" type="info">
+          <el-tag
+            v-for="(tag, index) in row.tags.slice(0, 2)"
+            :key="index"
+            size="small"
+            type="info"
+          >
             {{ tag }}
           </el-tag>
           <el-tag v-if="row.tags.length > 2" size="small" type="warning">
@@ -74,51 +79,97 @@
         <el-descriptions-item label="路线ID">{{ currentTour.id }}</el-descriptions-item>
         <el-descriptions-item label="线路标题">{{ currentTour.title }}</el-descriptions-item>
         <el-descriptions-item label="路线状态">
-          <el-tag :type="(getTourStatusTag(currentTour.status)) as any" size="small">
+          <el-tag :type="getTourStatusTag(currentTour.status) as any" size="small">
             {{ getTourStatusLabel(currentTour.status) }}
           </el-tag>
-          <el-tag v-if="currentTour.isHot" type="danger" size="small" style="margin-left: 8px">热门</el-tag>
+          <el-tag v-if="currentTour.isHot" type="danger" size="small" style="margin-left: 8px"
+            >热门</el-tag
+          >
         </el-descriptions-item>
         <el-descriptions-item label="目的地">{{ currentTour.destination }}</el-descriptions-item>
-        <el-descriptions-item label="行程天数">{{ currentTour.duration }}天{{ currentTour.duration - 1 }}晚</el-descriptions-item>
-        <el-descriptions-item label="取车门店">{{ currentTour.pickupStoreName || '-' }}</el-descriptions-item>
-        <el-descriptions-item label="还车门店">{{ currentTour.returnStoreName || '-' }}</el-descriptions-item>
-        <el-descriptions-item label="成人价格">¥{{ currentTour.pricePerPerson }}/人</el-descriptions-item>
-        <el-descriptions-item label="儿童价格">¥{{ currentTour.childPrice }}/人</el-descriptions-item>
-        <el-descriptions-item label="成团人数">{{ currentTour.minPeople }}-{{ currentTour.maxPeople }}人</el-descriptions-item>
+        <el-descriptions-item label="行程天数"
+          >{{ currentTour.duration }}天{{ currentTour.duration - 1 }}晚</el-descriptions-item
+        >
+        <el-descriptions-item label="取车门店">{{
+          currentTour.pickupStoreName || '-'
+        }}</el-descriptions-item>
+        <el-descriptions-item label="还车门店">{{
+          currentTour.returnStoreName || '-'
+        }}</el-descriptions-item>
+        <el-descriptions-item label="成人价格"
+          >¥{{ currentTour.pricePerPerson }}/人</el-descriptions-item
+        >
+        <el-descriptions-item label="儿童价格"
+          >¥{{ currentTour.childPrice }}/人</el-descriptions-item
+        >
+        <el-descriptions-item label="成团人数"
+          >{{ currentTour.minPeople }}-{{ currentTour.maxPeople }}人</el-descriptions-item
+        >
         <el-descriptions-item label="线路标签" :span="2">
-          <el-tag v-for="(tag, index) in currentTour.tags" :key="index" size="small" type="success" style="margin-right: 8px">
+          <el-tag
+            v-for="(tag, index) in currentTour.tags"
+            :key="index"
+            size="small"
+            type="success"
+            style="margin-right: 8px"
+          >
             {{ tag }}
           </el-tag>
         </el-descriptions-item>
         <el-descriptions-item label="出发批次" :span="2">
-          <div v-for="batch in currentTour.batches" :key="batch.id" style="margin-bottom: 8px; padding: 8px; background: #f5f7fa; border-radius: 4px">
+          <div
+            v-for="batch in currentTour.batches"
+            :key="batch.id"
+            style="margin-bottom: 8px; padding: 8px; background: #f5f7fa; border-radius: 4px"
+          >
             <span style="font-weight: 500">{{ batch.departureDate }}</span>
             <el-tag :type="getBatchStatusTag(batch.status)" size="small" style="margin-left: 8px">
               {{ getBatchStatusLabel(batch.status) }}
             </el-tag>
-            <span style="margin-left: 8px; color: #909399">{{ batch.currentPeople }}/{{ batch.maxPeople }}人</span>
+            <span style="margin-left: 8px; color: #909399"
+              >{{ batch.currentPeople }}/{{ batch.maxPeople }}人</span
+            >
           </div>
         </el-descriptions-item>
         <el-descriptions-item label="行程安排" :span="2">
-          <div v-for="(day, index) in currentTour.itinerary" :key="index" style="margin-bottom: 12px">
-            <div style="font-weight: 500; margin-bottom: 4px">Day {{ index + 1 }}: {{ day.title }}</div>
+          <div
+            v-for="(day, index) in currentTour.itinerary"
+            :key="index"
+            style="margin-bottom: 12px"
+          >
+            <div style="font-weight: 500; margin-bottom: 4px">
+              Day {{ index + 1 }}: {{ day.title }}
+            </div>
             <div style="color: #606266; margin-bottom: 4px">{{ day.content }}</div>
             <div v-if="day.highlights && day.highlights.length > 0">
-              <el-tag v-for="(highlight, hIndex) in day.highlights" :key="hIndex" size="small" type="warning" style="margin-right: 4px">
+              <el-tag
+                v-for="(highlight, hIndex) in day.highlights"
+                :key="hIndex"
+                size="small"
+                type="warning"
+                style="margin-right: 4px"
+              >
                 {{ highlight }}
               </el-tag>
             </div>
           </div>
         </el-descriptions-item>
         <el-descriptions-item label="费用包含" :span="2">
-          <div v-for="(item, index) in currentTour.priceIncludes" :key="index" style="margin-bottom: 4px">
+          <div
+            v-for="(item, index) in currentTour.priceIncludes"
+            :key="index"
+            style="margin-bottom: 4px"
+          >
             <el-icon style="color: #67c23a"><Check /></el-icon>
             <span style="margin-left: 4px">{{ item }}</span>
           </div>
         </el-descriptions-item>
         <el-descriptions-item label="费用不含" :span="2">
-          <div v-for="(item, index) in currentTour.priceExcludes" :key="index" style="margin-bottom: 4px">
+          <div
+            v-for="(item, index) in currentTour.priceExcludes"
+            :key="index"
+            style="margin-bottom: 4px"
+          >
             <el-icon style="color: #f56c6c"><Close /></el-icon>
             <span style="margin-left: 4px">{{ item }}</span>
           </div>
@@ -149,7 +200,7 @@ import {
   updateTour,
   deleteTour,
   type Tour,
-  type TourListParams
+  type TourListParams,
 } from '@/api/marketing'
 import { useErrorHandler } from '@/composables'
 import { STORE_OPTIONS } from '@/constants/options'
@@ -159,13 +210,13 @@ const { handleApiError } = useErrorHandler()
 const TOUR_STATUS_OPTIONS = [
   { label: '草稿', value: 'draft' },
   { label: '已发布', value: 'published' },
-  { label: '已结束', value: 'ended' }
+  { label: '已结束', value: 'ended' },
 ]
 
 const searchForm = reactive<TourListParams>({
   keyword: '',
   status: undefined,
-  destination: ''
+  destination: '',
 })
 
 const searchFields = computed<SearchField[]>(() => [
@@ -174,7 +225,7 @@ const searchFields = computed<SearchField[]>(() => [
     label: '关键词',
     type: 'input',
     placeholder: '路线名称/目的地',
-    width: '200px'
+    width: '200px',
   },
   {
     prop: 'status',
@@ -182,15 +233,15 @@ const searchFields = computed<SearchField[]>(() => [
     type: 'select',
     placeholder: '请选择状态',
     width: '150px',
-    options: TOUR_STATUS_OPTIONS
+    options: TOUR_STATUS_OPTIONS,
   },
   {
     prop: 'destination',
     label: '目的地',
     type: 'input',
     placeholder: '目的地名称',
-    width: '150px'
-  }
+    width: '150px',
+  },
 ])
 
 const tableColumns: TableColumn[] = [
@@ -201,7 +252,7 @@ const tableColumns: TableColumn[] = [
   { prop: 'duration', label: '天数', width: 80 },
   { prop: 'price', label: '价格', width: 140, slot: 'price' },
   { prop: 'batches', label: '批次信息', width: 120, slot: 'batches' },
-  { prop: 'tags', label: '标签', width: 150, slot: 'tags' }
+  { prop: 'tags', label: '标签', width: 150, slot: 'tags' },
 ]
 
 // 工具栏按钮配置
@@ -210,26 +261,26 @@ const toolbarButtons: ToolbarButton[] = [
     label: '新增路线',
     type: 'primary',
     icon: Plus,
-    onClick: () => handleCreate()
-  }
+    onClick: () => handleCreate(),
+  },
 ]
 
 const tableActions: TableAction[] = [
   {
     label: '查看',
     type: 'primary',
-    onClick: (row: Tour) => handleView(row)
+    onClick: (row: Tour) => handleView(row),
   },
   {
     label: '编辑',
     type: 'primary',
-    onClick: (row: Tour) => handleEdit(row)
+    onClick: (row: Tour) => handleEdit(row),
   },
   {
     label: '删除',
     type: 'danger',
-    onClick: (row: Tour) => handleDelete(row)
-  }
+    onClick: (row: Tour) => handleDelete(row),
+  },
 ]
 
 const tourList = ref<Tour[]>([])
@@ -238,7 +289,7 @@ const loading = ref(false)
 const pagination = reactive({
   page: 1,
   pageSize: 10,
-  total: 0
+  total: 0,
 })
 
 // 对话框状态
@@ -257,7 +308,7 @@ const VEHICLE_TYPE_OPTIONS = [
   { label: 'A型房车', value: 'A型房车' },
   { label: 'B型房车', value: 'B型房车' },
   { label: 'C型房车', value: 'C型房车' },
-  { label: '拖挂房车', value: '拖挂房车' }
+  { label: '拖挂房车', value: '拖挂房车' },
 ]
 
 // 表单数据
@@ -274,14 +325,14 @@ const formData = reactive({
   minPeople: 5,
   maxPeople: 12,
   tags: '',
-  description: ''
+  description: '',
 })
 
 // 表单字段配置
 const formFields = computed(() => [
   {
     type: 'divider',
-    label: '基本信息'
+    label: '基本信息',
   },
   {
     type: 'row',
@@ -291,16 +342,16 @@ const formFields = computed(() => [
         label: '线路标题',
         type: 'input',
         placeholder: '请输入线路标题',
-        span: 12
+        span: 12,
       },
       {
         prop: 'status',
         label: '路线状态',
         type: 'select',
         options: TOUR_STATUS_OPTIONS,
-        span: 12
-      }
-    ]
+        span: 12,
+      },
+    ],
   },
   {
     type: 'row',
@@ -310,7 +361,7 @@ const formFields = computed(() => [
         label: '目的地',
         type: 'input',
         placeholder: '请输入目的地',
-        span: 12
+        span: 12,
       },
       {
         prop: 'duration',
@@ -318,9 +369,9 @@ const formFields = computed(() => [
         type: 'number',
         min: 1,
         span: 12,
-        tip: '单位：天'
-      }
-    ]
+        tip: '单位：天',
+      },
+    ],
   },
   {
     type: 'row',
@@ -331,7 +382,7 @@ const formFields = computed(() => [
         type: 'select',
         placeholder: '请选择取车门店',
         options: STORE_OPTIONS,
-        span: 12
+        span: 12,
       },
       {
         prop: 'returnStoreId',
@@ -339,9 +390,9 @@ const formFields = computed(() => [
         type: 'select',
         placeholder: '请选择还车门店',
         options: STORE_OPTIONS,
-        span: 12
-      }
-    ]
+        span: 12,
+      },
+    ],
   },
   {
     type: 'row',
@@ -352,7 +403,7 @@ const formFields = computed(() => [
         type: 'number',
         min: 0,
         span: 12,
-        tip: '单位：元/人'
+        tip: '单位：元/人',
       },
       {
         prop: 'childPrice',
@@ -360,19 +411,19 @@ const formFields = computed(() => [
         type: 'number',
         min: 0,
         span: 12,
-        tip: '单位：元/人'
-      }
-    ]
+        tip: '单位：元/人',
+      },
+    ],
   },
   {
     prop: 'vehicleType',
     label: '适用车型',
     type: 'select',
-    options: VEHICLE_TYPE_OPTIONS
+    options: VEHICLE_TYPE_OPTIONS,
   },
   {
     type: 'divider',
-    label: '成团设置'
+    label: '成团设置',
   },
   {
     type: 'row',
@@ -383,7 +434,7 @@ const formFields = computed(() => [
         type: 'number',
         min: 1,
         span: 12,
-        tip: '单位：人'
+        tip: '单位：人',
       },
       {
         prop: 'maxPeople',
@@ -391,13 +442,13 @@ const formFields = computed(() => [
         type: 'number',
         min: 1,
         span: 12,
-        tip: '单位：人'
-      }
-    ]
+        tip: '单位：人',
+      },
+    ],
   },
   {
     type: 'divider',
-    label: '路线详情'
+    label: '路线详情',
   },
   {
     prop: 'tags',
@@ -405,15 +456,15 @@ const formFields = computed(() => [
     type: 'textarea',
     rows: 2,
     placeholder: '请输入线路标签，多个标签用逗号分隔',
-    tip: '例如：高原风光,摄影天堂,藏族文化'
+    tip: '例如：高原风光,摄影天堂,藏族文化',
   },
   {
     prop: 'description',
     label: '路线描述',
     type: 'richtext',
     placeholder: '请输入路线描述，支持图片、视频、链接等富文本内容',
-    height: '500px'
-  }
+    height: '500px',
+  },
 ]) as any
 
 // 表单验证规则
@@ -426,7 +477,7 @@ const formRules = {
   childPrice: [{ required: true, message: '请输入儿童价格', trigger: 'blur' }],
   vehicleType: [{ required: true, message: '请选择适用车型', trigger: 'change' }],
   minPeople: [{ required: true, message: '请输入最少成团人数', trigger: 'blur' }],
-  maxPeople: [{ required: true, message: '请输入最多容纳人数', trigger: 'blur' }]
+  maxPeople: [{ required: true, message: '请输入最多容纳人数', trigger: 'blur' }],
 }
 
 const loadTourList = async () => {
@@ -435,10 +486,10 @@ const loadTourList = async () => {
     const params: TourListParams = {
       page: pagination.page,
       pageSize: pagination.pageSize,
-      ...searchForm
+      ...searchForm,
     }
 
-    const res = await getTourList(params) as any
+    const res = (await getTourList(params)) as any
     tourList.value = res.data.list
     pagination.total = res.data.total
   } catch (error) {
@@ -521,15 +572,11 @@ const handleView = (row: Tour) => {
 // 删除路线
 const handleDelete = async (row: Tour) => {
   try {
-    await ElMessageBox.confirm(
-      `确定要删除房车旅游路线"${row.title}"吗？`,
-      '删除确认',
-      {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }
-    )
+    await ElMessageBox.confirm(`确定要删除房车旅游路线"${row.title}"吗？`, '删除确认', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    })
 
     await deleteTour(row.id)
     ElMessage.success('删除成功')
@@ -564,7 +611,10 @@ const handleSubmit = async (data: any) => {
       vehicleType: data.vehicleType,
       minPeople: data.minPeople,
       maxPeople: data.maxPeople,
-      tags: data.tags.split(',').map((tag: string) => tag.trim()).filter((tag: string) => tag),
+      tags: data.tags
+        .split(',')
+        .map((tag: string) => tag.trim())
+        .filter((tag: string) => tag),
       images: [],
       batches: [],
       itinerary: [],
@@ -573,7 +623,7 @@ const handleSubmit = async (data: any) => {
       announcement: data.description || '',
       bookingNotices: [],
       cancellationPolicy: [],
-      isHot: false
+      isHot: false,
     }
 
     if (isEdit.value && currentTourId.value) {
@@ -607,7 +657,7 @@ const getTourStatusTag = (status: string) => {
   const tagMap: Record<string, string> = {
     draft: 'info',
     published: 'success',
-    ended: 'danger'
+    ended: 'danger',
   }
   return tagMap[status] || 'info'
 }
@@ -616,7 +666,7 @@ const getTourStatusLabel = (status: string) => {
   const labelMap: Record<string, string> = {
     draft: '草稿',
     published: '已发布',
-    ended: '已结束'
+    ended: '已结束',
   }
   return labelMap[status] || status
 }
@@ -626,7 +676,7 @@ const getBatchStatusTag = (status: string) => {
     recruiting: 'success',
     confirmed: 'primary',
     departed: 'warning',
-    finished: 'info'
+    finished: 'info',
   }
   return tagMap[status] || 'info'
 }
@@ -636,7 +686,7 @@ const getBatchStatusLabel = (status: string) => {
     recruiting: '招募中',
     confirmed: '已成团',
     departed: '已出发',
-    finished: '已结束'
+    finished: '已结束',
   }
   return labelMap[status] || status
 }

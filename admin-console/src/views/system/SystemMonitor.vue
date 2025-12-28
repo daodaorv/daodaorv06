@@ -17,7 +17,10 @@
             <div class="status-info">
               <div class="status-label">CPU使用率</div>
               <div class="status-value">{{ systemStatus.cpu }}%</div>
-              <el-progress :percentage="systemStatus.cpu" :color="getProgressColor(systemStatus.cpu)" />
+              <el-progress
+                :percentage="systemStatus.cpu"
+                :color="getProgressColor(systemStatus.cpu)"
+              />
             </div>
           </div>
         </el-card>
@@ -31,7 +34,10 @@
             <div class="status-info">
               <div class="status-label">内存使用率</div>
               <div class="status-value">{{ systemStatus.memory }}%</div>
-              <el-progress :percentage="systemStatus.memory" :color="getProgressColor(systemStatus.memory)" />
+              <el-progress
+                :percentage="systemStatus.memory"
+                :color="getProgressColor(systemStatus.memory)"
+              />
             </div>
           </div>
         </el-card>
@@ -45,7 +51,10 @@
             <div class="status-info">
               <div class="status-label">磁盘使用率</div>
               <div class="status-value">{{ systemStatus.disk }}%</div>
-              <el-progress :percentage="systemStatus.disk" :color="getProgressColor(systemStatus.disk)" />
+              <el-progress
+                :percentage="systemStatus.disk"
+                :color="getProgressColor(systemStatus.disk)"
+              />
             </div>
           </div>
         </el-card>
@@ -159,15 +168,11 @@
         </el-table-column>
         <el-table-column prop="avgTime" label="平均响应时间" width="150">
           <template #default="{ row }">
-            <span :class="{ 'slow-api': row.avgTime > 1000 }">
-              {{ row.avgTime }}ms
-            </span>
+            <span :class="{ 'slow-api': row.avgTime > 1000 }"> {{ row.avgTime }}ms </span>
           </template>
         </el-table-column>
         <el-table-column prop="p95Time" label="P95响应时间" width="150">
-          <template #default="{ row }">
-            {{ row.p95Time }}ms
-          </template>
+          <template #default="{ row }"> {{ row.p95Time }}ms </template>
         </el-table-column>
         <el-table-column prop="requestCount" label="请求次数" width="120" />
         <el-table-column prop="errorCount" label="错误次数" width="120">

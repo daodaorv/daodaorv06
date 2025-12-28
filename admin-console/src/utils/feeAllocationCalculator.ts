@@ -101,7 +101,7 @@ export function validateAllocationRules(rules: FeeAllocationRule[]): boolean {
   }
 
   // 每个规则的比例必须大于0
-  if (rules.some((rule) => rule.percentage <= 0)) {
+  if (rules.some(rule => rule.percentage <= 0)) {
     console.error('分配规则的比例必须大于0')
     return false
   }
@@ -131,13 +131,13 @@ function calculateAllocationAmounts(
     if (i === rules.length - 1) {
       amount = remainingAmount
     } else {
-      amount = Math.round((totalAmount * rule.percentage) / 100 * 100) / 100
+      amount = Math.round(((totalAmount * rule.percentage) / 100) * 100) / 100
       remainingAmount -= amount
     }
 
     result.push({
       ...rule,
-      amount
+      amount,
     })
   }
 
@@ -150,10 +150,7 @@ function calculateAllocationAmounts(
  * @param order 订单信息
  * @returns 订单增值费用明细
  */
-function calculateStoreSpecialServiceAllocation(
-  extraFee: ExtraFee,
-  order: Order
-): OrderExtraFee {
+function calculateStoreSpecialServiceAllocation(extraFee: ExtraFee, order: Order): OrderExtraFee {
   // 门店特色服务100%归属设置该服务的门店
   const totalAmount = extraFee.price
 
@@ -174,9 +171,9 @@ function calculateStoreSpecialServiceAllocation(
         partyId: extraFee.storeId,
         partyName: extraFee.storeName,
         percentage: 100,
-        amount: totalAmount
-      }
-    ]
+        amount: totalAmount,
+      },
+    ],
   }
 }
 
@@ -212,7 +209,7 @@ function calculateSpecialFeeAllocation(
   const allocations = calculateAllocationAmounts(totalAmount, rules)
 
   // 填充门店信息
-  const allocationsWithStoreInfo = allocations.map((rule) => {
+  const allocationsWithStoreInfo = allocations.map(rule => {
     let partyId = rule.partyId
     let partyName = rule.partyName
 
@@ -227,7 +224,7 @@ function calculateSpecialFeeAllocation(
     return {
       ...rule,
       partyId,
-      partyName
+      partyName,
     }
   })
 
@@ -243,7 +240,7 @@ function calculateSpecialFeeAllocation(
     allocations: allocationsWithStoreInfo,
     calculationType: 'distance',
     distanceKm,
-    distanceUnitPrice: unitPrice
+    distanceUnitPrice: unitPrice,
   }
 }
 
@@ -275,9 +272,9 @@ function calculateRegularFeeAllocation(extraFee: ExtraFee, order: Order): OrderE
           partyId: order.pickupStoreId,
           partyName: order.pickupStoreName,
           percentage: 100,
-          amount: totalAmount
-        }
-      ]
+          amount: totalAmount,
+        },
+      ],
     }
   }
 
@@ -294,15 +291,15 @@ function calculateRegularFeeAllocation(extraFee: ExtraFee, order: Order): OrderE
         partyId: order.pickupStoreId,
         partyName: order.pickupStoreName,
         percentage: 50,
-        amount: totalAmount / 2
+        amount: totalAmount / 2,
       },
       {
         partyType: 'return_store',
         partyId: order.returnStoreId,
         partyName: order.returnStoreName,
         percentage: 50,
-        amount: totalAmount / 2
-      }
+        amount: totalAmount / 2,
+      },
     ]
   } else if (strategy === 'custom' && extraFee.allocationRules) {
     // 自定义分配
@@ -318,15 +315,15 @@ function calculateRegularFeeAllocation(extraFee: ExtraFee, order: Order): OrderE
         partyId: order.pickupStoreId,
         partyName: order.pickupStoreName,
         percentage: 50,
-        amount: totalAmount / 2
+        amount: totalAmount / 2,
       },
       {
         partyType: 'return_store',
         partyId: order.returnStoreId,
         partyName: order.returnStoreName,
         percentage: 50,
-        amount: totalAmount / 2
-      }
+        amount: totalAmount / 2,
+      },
     ]
   }
 
@@ -339,7 +336,7 @@ function calculateRegularFeeAllocation(extraFee: ExtraFee, order: Order): OrderE
     unit: extraFee.unit,
     totalAmount,
     ownerType: 'multi_party',
-    allocations
+    allocations,
   }
 }
 
@@ -380,9 +377,9 @@ export function calculateFeeAllocation(
         {
           partyType: 'platform',
           percentage: 100,
-          amount: extraFee.price
-        }
-      ]
+          amount: extraFee.price,
+        },
+      ],
     }
   }
 
@@ -405,9 +402,9 @@ export function calculateFeeAllocation(
           partyId: extraFee.storeId,
           partyName: extraFee.storeName,
           percentage: 100,
-          amount: extraFee.price
-        }
-      ]
+          amount: extraFee.price,
+        },
+      ],
     }
   }
 
@@ -425,7 +422,7 @@ export function calculateFeeAllocation(
     quantity: 1,
     unit: extraFee.unit,
     totalAmount: extraFee.price,
-    ownerType: extraFee.ownerType
+    ownerType: extraFee.ownerType,
   }
 }
 
@@ -441,7 +438,7 @@ export function calculateOrderExtraFees(
   order: Order,
   stores: Store[]
 ): OrderExtraFee[] {
-  return extraFees.map((fee) => calculateFeeAllocation(fee, order, stores))
+  return extraFees.map(fee => calculateFeeAllocation(fee, order, stores))
 }
 
 /**
@@ -466,9 +463,9 @@ export function calculateFeesByParty(
     { partyType: string; partyId?: number; partyName?: string; amount: number }
   > = {}
 
-  orderExtraFees.forEach((fee) => {
+  orderExtraFees.forEach(fee => {
     if (fee.allocations) {
-      fee.allocations.forEach((allocation) => {
+      fee.allocations.forEach(allocation => {
         const key = allocation.partyId
           ? `${allocation.partyType}-${allocation.partyId}`
           : allocation.partyType
@@ -478,7 +475,7 @@ export function calculateFeesByParty(
             partyType: allocation.partyType,
             partyId: allocation.partyId,
             partyName: allocation.partyName,
-            amount: 0
+            amount: 0,
           }
         }
 

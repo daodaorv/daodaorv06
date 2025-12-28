@@ -1,8 +1,6 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="service-config-container">
-    
-
     <el-tabs v-model="activeTab" class="config-tabs">
       <!-- 智能路由配置 -->
       <el-tab-pane label="智能路由配置" name="routing">
@@ -143,9 +141,7 @@
               </template>
             </el-table-column>
             <el-table-column prop="onlineTime" label="今日在线" width="120">
-              <template #default="{ row }">
-                {{ row.onlineTime.toFixed(1) }}小时
-              </template>
+              <template #default="{ row }"> {{ row.onlineTime.toFixed(1) }}小时 </template>
             </el-table-column>
             <el-table-column label="操作" width="150" fixed="right">
               <template #default="{ row }">
@@ -186,7 +182,7 @@ import {
   type RoutingConfig,
   type ServiceAgent,
   type ServiceStatus,
-  type ServiceSkill
+  type ServiceSkill,
 } from '@/api/customerService'
 
 // 当前标签页
@@ -205,9 +201,9 @@ const routingConfig = reactive<RoutingConfig>({
   escalateTime: 30,
   workingHours: {
     start: '09:00',
-    end: '18:00'
+    end: '18:00',
   },
-  updatedAt: ''
+  updatedAt: '',
 })
 
 const routingFormRef = ref()
@@ -215,12 +211,12 @@ const routingRules = {
   routingStrategy: [{ required: true, message: '请选择路由策略', trigger: 'change' }],
   maxWaitTime: [
     { required: true, message: '请设置最大等待时间', trigger: 'blur' },
-    { type: 'number', min: 1, max: 60, message: '等待时间范围为1-60分钟', trigger: 'blur' }
+    { type: 'number', min: 1, max: 60, message: '等待时间范围为1-60分钟', trigger: 'blur' },
   ],
   escalateTime: [
     { required: true, message: '请设置升级时间', trigger: 'blur' },
-    { type: 'number', min: 10, max: 120, message: '升级时间范围为10-120分钟', trigger: 'blur' }
-  ]
+    { type: 'number', min: 10, max: 120, message: '升级时间范围为10-120分钟', trigger: 'blur' },
+  ],
 }
 const routingSaving = ref(false)
 
@@ -296,7 +292,7 @@ const getAgentStatusType = (status: ServiceStatus) => {
     online: 'success',
     busy: 'warning',
     offline: 'info',
-    break: ''
+    break: '',
   }
   return statusMap[status] || 'info'
 }
@@ -307,7 +303,7 @@ const getAgentStatusLabel = (status: ServiceStatus) => {
     online: '在线',
     busy: '忙碌',
     offline: '离线',
-    break: '休息'
+    break: '休息',
   }
   return statusMap[status] || status
 }
@@ -320,7 +316,7 @@ const getSkillLabel = (skill: ServiceSkill) => {
     payment: '支付',
     technical: '技术',
     complaint: '投诉',
-    general: '通用'
+    general: '通用',
   }
   return skillMap[skill] || skill
 }

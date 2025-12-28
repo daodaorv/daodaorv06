@@ -6,12 +6,7 @@
     :close-on-click-modal="false"
     @close="handleClose"
   >
-    <el-form
-      ref="formRef"
-      :model="form"
-      :rules="formRules"
-      label-width="120px"
-    >
+    <el-form ref="formRef" :model="form" :rules="formRules" label-width="120px">
       <!-- 退款信息 -->
       <el-card class="info-card" shadow="never">
         <template #header><span class="card-title">退款信息</span></template>
@@ -73,51 +68,29 @@
         >
           <template #append>元</template>
         </el-input-number>
-        <div class="field-tip">
-          应退金额：¥{{ refundInfo?.amount?.toFixed(2) || '0.00' }}
-        </div>
+        <div class="field-tip">应退金额：¥{{ refundInfo?.amount?.toFixed(2) || '0.00' }}</div>
       </el-form-item>
 
       <!-- 银行转账信息 -->
       <template v-if="form.method === 'bank_transfer'">
         <el-form-item label="转账银行" prop="bankName">
-          <el-input
-            v-model="form.bankName"
-            placeholder="请输入转账银行名称"
-            maxlength="50"
-          />
+          <el-input v-model="form.bankName" placeholder="请输入转账银行名称" maxlength="50" />
         </el-form-item>
         <el-form-item label="转账账号" prop="accountNumber">
-          <el-input
-            v-model="form.accountNumber"
-            placeholder="请输入转账账号"
-            maxlength="30"
-          />
+          <el-input v-model="form.accountNumber" placeholder="请输入转账账号" maxlength="30" />
         </el-form-item>
         <el-form-item label="转账流水号" prop="transactionNo">
-          <el-input
-            v-model="form.transactionNo"
-            placeholder="请输入转账流水号"
-            maxlength="50"
-          />
+          <el-input v-model="form.transactionNo" placeholder="请输入转账流水号" maxlength="50" />
         </el-form-item>
       </template>
 
       <!-- 支票信息 -->
       <template v-if="form.method === 'check'">
         <el-form-item label="支票号码" prop="checkNumber">
-          <el-input
-            v-model="form.checkNumber"
-            placeholder="请输入支票号码"
-            maxlength="30"
-          />
+          <el-input v-model="form.checkNumber" placeholder="请输入支票号码" maxlength="30" />
         </el-form-item>
         <el-form-item label="开票银行" prop="bankName">
-          <el-input
-            v-model="form.bankName"
-            placeholder="请输入开票银行名称"
-            maxlength="50"
-          />
+          <el-input v-model="form.bankName" placeholder="请输入开票银行名称" maxlength="50" />
         </el-form-item>
       </template>
 
@@ -166,11 +139,7 @@
 
       <!-- 经办人 -->
       <el-form-item label="经办人" prop="operator">
-        <el-input
-          v-model="form.operator"
-          placeholder="请输入经办人姓名"
-          maxlength="20"
-        />
+        <el-input v-model="form.operator" placeholder="请输入经办人姓名" maxlength="20" />
       </el-form-item>
 
       <!-- 备注说明 -->
@@ -186,12 +155,7 @@
       </el-form-item>
 
       <!-- 风险提示 -->
-      <el-alert
-        title="重要提示"
-        type="warning"
-        :closable="false"
-        show-icon
-      >
+      <el-alert title="重要提示" type="warning" :closable="false" show-icon>
         <template #default>
           <ul class="tips-list">
             <li>请确保退款凭证真实有效</li>
@@ -205,9 +169,7 @@
 
     <template #footer>
       <el-button @click="handleClose">取消</el-button>
-      <el-button type="primary" :loading="loading" @click="handleSubmit">
-        确认登记
-      </el-button>
+      <el-button type="primary" :loading="loading" @click="handleSubmit"> 确认登记 </el-button>
     </template>
   </el-dialog>
 </template>
@@ -225,13 +187,13 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: false,
-  refundInfo: null
+  refundInfo: null,
 })
 
 // Emits
 const emit = defineEmits<{
   'update:modelValue': [value: boolean]
-  'submit': [data: any]
+  submit: [data: any]
 }>()
 
 // 响应式数据
@@ -251,53 +213,44 @@ const form = reactive({
   vouchers: [] as any[],
   completedAt: '',
   operator: '',
-  note: ''
+  note: '',
 })
 
 // 表单验证规则
 const formRules: FormRules = {
-  method: [
-    { required: true, message: '请选择退款方式', trigger: 'change' }
-  ],
+  method: [{ required: true, message: '请选择退款方式', trigger: 'change' }],
   actualAmount: [
     { required: true, message: '请输入实际退款金额', trigger: 'blur' },
-    { type: 'number', min: 0.01, message: '退款金额必须大于0', trigger: 'blur' }
+    { type: 'number', min: 0.01, message: '退款金额必须大于0', trigger: 'blur' },
   ],
-  bankName: [
-    { required: true, message: '请输入银行名称', trigger: 'blur' }
-  ],
-  accountNumber: [
-    { required: true, message: '请输入账号', trigger: 'blur' }
-  ],
-  transactionNo: [
-    { required: true, message: '请输入流水号', trigger: 'blur' }
-  ],
-  checkNumber: [
-    { required: true, message: '请输入支票号码', trigger: 'blur' }
-  ],
+  bankName: [{ required: true, message: '请输入银行名称', trigger: 'blur' }],
+  accountNumber: [{ required: true, message: '请输入账号', trigger: 'blur' }],
+  transactionNo: [{ required: true, message: '请输入流水号', trigger: 'blur' }],
+  checkNumber: [{ required: true, message: '请输入支票号码', trigger: 'blur' }],
   methodDescription: [
     { required: true, message: '请说明退款方式', trigger: 'blur' },
-    { min: 10, message: '说明至少10个字符', trigger: 'blur' }
+    { min: 10, message: '说明至少10个字符', trigger: 'blur' },
   ],
-  completedAt: [
-    { required: true, message: '请选择完成时间', trigger: 'change' }
-  ],
+  completedAt: [{ required: true, message: '请选择完成时间', trigger: 'change' }],
   operator: [
     { required: true, message: '请输入经办人', trigger: 'blur' },
-    { min: 2, max: 20, message: '经办人姓名为2-20个字符', trigger: 'blur' }
-  ]
+    { min: 2, max: 20, message: '经办人姓名为2-20个字符', trigger: 'blur' },
+  ],
 }
 
 // 监听 modelValue 变化
-watch(() => props.modelValue, (val) => {
-  visible.value = val
-  if (val && props.refundInfo) {
-    // 初始化实际退款金额为应退金额
-    form.actualAmount = props.refundInfo.amount || 0
+watch(
+  () => props.modelValue,
+  val => {
+    visible.value = val
+    if (val && props.refundInfo) {
+      // 初始化实际退款金额为应退金额
+      form.actualAmount = props.refundInfo.amount || 0
+    }
   }
-})
+)
 
-watch(visible, (val) => {
+watch(visible, val => {
   emit('update:modelValue', val)
 })
 
@@ -311,7 +264,7 @@ const handleSubmit = async () => {
     return
   }
 
-  await formRef.value.validate(async (valid) => {
+  await formRef.value.validate(async valid => {
     if (!valid) return
 
     loading.value = true
@@ -323,7 +276,7 @@ const handleSubmit = async () => {
         vouchers: form.vouchers.map(file => file.url || URL.createObjectURL(file.raw)),
         completedAt: form.completedAt,
         operator: form.operator,
-        note: form.note
+        note: form.note,
       }
 
       // 根据不同的退款方式添加对应的信息
@@ -331,12 +284,12 @@ const handleSubmit = async () => {
         submitData.transferInfo = {
           bankName: form.bankName,
           accountNumber: form.accountNumber,
-          transactionNo: form.transactionNo
+          transactionNo: form.transactionNo,
         }
       } else if (form.method === 'check') {
         submitData.checkInfo = {
           checkNumber: form.checkNumber,
-          bankName: form.bankName
+          bankName: form.bankName,
         }
       } else if (form.method === 'other') {
         submitData.methodDescription = form.methodDescription

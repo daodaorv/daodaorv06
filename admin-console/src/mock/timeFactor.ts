@@ -19,7 +19,7 @@ import type {
   CustomTimeRuleFormData,
   TimeFactorCalendarParams,
   TimeFactorCalendarResponse,
-  TimeFactorCalendarItem
+  TimeFactorCalendarItem,
 } from '@/types/timeFactor'
 
 /**
@@ -40,7 +40,7 @@ export const mockNationalHolidays: NationalHolidayListItem[] = [
     createdBy: '系统',
     createdAt: '2024-12-01 10:00:00',
     updatedAt: '2024-12-01 10:00:00',
-    daysCount: 1
+    daysCount: 1,
   },
   {
     id: 2,
@@ -56,7 +56,7 @@ export const mockNationalHolidays: NationalHolidayListItem[] = [
     createdBy: '系统',
     createdAt: '2024-12-01 10:00:00',
     updatedAt: '2024-12-01 10:00:00',
-    daysCount: 8
+    daysCount: 8,
   },
   {
     id: 3,
@@ -72,7 +72,7 @@ export const mockNationalHolidays: NationalHolidayListItem[] = [
     createdBy: '系统',
     createdAt: '2024-12-01 10:00:00',
     updatedAt: '2024-12-01 10:00:00',
-    daysCount: 3
+    daysCount: 3,
   },
   {
     id: 4,
@@ -88,7 +88,7 @@ export const mockNationalHolidays: NationalHolidayListItem[] = [
     createdBy: '系统',
     createdAt: '2024-12-01 10:00:00',
     updatedAt: '2024-12-01 10:00:00',
-    daysCount: 5
+    daysCount: 5,
   },
   {
     id: 5,
@@ -104,7 +104,7 @@ export const mockNationalHolidays: NationalHolidayListItem[] = [
     createdBy: '系统',
     createdAt: '2024-12-01 10:00:00',
     updatedAt: '2024-12-01 10:00:00',
-    daysCount: 3
+    daysCount: 3,
   },
   {
     id: 6,
@@ -120,7 +120,7 @@ export const mockNationalHolidays: NationalHolidayListItem[] = [
     createdBy: '系统',
     createdAt: '2024-12-01 10:00:00',
     updatedAt: '2024-12-01 10:00:00',
-    daysCount: 3
+    daysCount: 3,
   },
   {
     id: 7,
@@ -136,8 +136,8 @@ export const mockNationalHolidays: NationalHolidayListItem[] = [
     createdBy: '系统',
     createdAt: '2024-12-01 10:00:00',
     updatedAt: '2024-12-01 10:00:00',
-    daysCount: 7
-  }
+    daysCount: 7,
+  },
 ]
 
 /**
@@ -155,14 +155,14 @@ export const mockCustomTimeRules: CustomTimeRuleListItem[] = [
       periodicType: 'weekly',
       weekdays: [6, 7], // 周六、周日
       startDate: '2025-01-01',
-      endDate: '2025-12-31'
+      endDate: '2025-12-31',
     },
     status: 'active',
     remark: '周末（周六、周日）价格上浮10%',
     createdBy: '管理员',
     createdAt: '2024-12-01 10:00:00',
     updatedAt: '2024-12-01 10:00:00',
-    configSummary: '每周六、日'
+    configSummary: '每周六、日',
   },
   {
     id: 2,
@@ -173,14 +173,14 @@ export const mockCustomTimeRules: CustomTimeRuleListItem[] = [
     adjustmentValue: 25,
     dateRangeConfig: {
       startDate: '2025-07-01',
-      endDate: '2025-08-31'
+      endDate: '2025-08-31',
     },
     status: 'active',
     remark: '暑期旺季（7-8月），价格上浮25%',
     createdBy: '管理员',
     createdAt: '2024-12-01 10:00:00',
     updatedAt: '2024-12-01 10:00:00',
-    configSummary: '2025-07-01 至 2025-08-31'
+    configSummary: '2025-07-01 至 2025-08-31',
   },
   {
     id: 3,
@@ -191,14 +191,14 @@ export const mockCustomTimeRules: CustomTimeRuleListItem[] = [
     adjustmentValue: 20,
     dateRangeConfig: {
       startDate: '2025-01-15',
-      endDate: '2025-02-15'
+      endDate: '2025-02-15',
     },
     status: 'active',
     remark: '寒假旺季，价格上浮20%',
     createdBy: '管理员',
     createdAt: '2024-12-01 10:00:00',
     updatedAt: '2024-12-01 10:00:00',
-    configSummary: '2025-01-15 至 2025-02-15'
+    configSummary: '2025-01-15 至 2025-02-15',
   },
   {
     id: 4,
@@ -211,22 +211,24 @@ export const mockCustomTimeRules: CustomTimeRuleListItem[] = [
       periodicType: 'monthly',
       monthDays: [1, 2, 3], // 每月1-3号
       startDate: '2025-01-01',
-      endDate: '2025-12-31'
+      endDate: '2025-12-31',
     },
     status: 'active',
     remark: '每月1-3号优惠，价格下调5%',
     createdBy: '管理员',
     createdAt: '2024-12-01 10:00:00',
     updatedAt: '2024-12-01 10:00:00',
-    configSummary: '每月1-3日'
-  }
+    configSummary: '每月1-3日',
+  },
 ]
 
 /**
  * 获取法定节假日列表
  */
-export const mockGetNationalHolidayList = (params: NationalHolidayListParams): Promise<NationalHolidayListResponse> => {
-  return new Promise((resolve) => {
+export const mockGetNationalHolidayList = (
+  params: NationalHolidayListParams
+): Promise<NationalHolidayListResponse> => {
+  return new Promise(resolve => {
     setTimeout(() => {
       let filteredList = [...mockNationalHolidays]
 
@@ -256,9 +258,8 @@ export const mockGetNationalHolidayList = (params: NationalHolidayListParams): P
 
       // 关键词搜索
       if (params.keyword) {
-        filteredList = filteredList.filter(item =>
-          item.name.includes(params.keyword!) ||
-          item.remark.includes(params.keyword!)
+        filteredList = filteredList.filter(
+          item => item.name.includes(params.keyword!) || item.remark.includes(params.keyword!)
         )
       }
 
@@ -272,7 +273,7 @@ export const mockGetNationalHolidayList = (params: NationalHolidayListParams): P
         list: filteredList.slice(start, end),
         total,
         page,
-        pageSize
+        pageSize,
       })
     }, 300)
   })
@@ -297,8 +298,10 @@ export const mockGetNationalHolidayDetail = (id: number): Promise<NationalHolida
 /**
  * 创建法定节假日
  */
-export const mockCreateNationalHoliday = (data: NationalHolidayFormData): Promise<NationalHoliday> => {
-  return new Promise((resolve) => {
+export const mockCreateNationalHoliday = (
+  data: NationalHolidayFormData
+): Promise<NationalHoliday> => {
+  return new Promise(resolve => {
     setTimeout(() => {
       // 使用安全的日期解析方式
       const [startYear, startMonth, startDay] = data.startDate.split('-').map(Number)
@@ -306,7 +309,8 @@ export const mockCreateNationalHoliday = (data: NationalHolidayFormData): Promis
 
       const startDate = new Date(startYear, startMonth - 1, startDay)
       const endDate = new Date(endYear, endMonth - 1, endDay)
-      const daysCount = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)) + 1
+      const daysCount =
+        Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)) + 1
 
       const newHoliday: NationalHolidayListItem = {
         id: mockNationalHolidays.length + 1,
@@ -322,7 +326,7 @@ export const mockCreateNationalHoliday = (data: NationalHolidayFormData): Promis
         createdBy: '管理员',
         createdAt: new Date().toISOString().replace('T', ' ').substring(0, 19),
         updatedAt: new Date().toISOString().replace('T', ' ').substring(0, 19),
-        daysCount
+        daysCount,
       }
       mockNationalHolidays.push(newHoliday)
       resolve(newHoliday)
@@ -333,7 +337,10 @@ export const mockCreateNationalHoliday = (data: NationalHolidayFormData): Promis
 /**
  * 更新法定节假日
  */
-export const mockUpdateNationalHoliday = (id: number, data: NationalHolidayFormData): Promise<NationalHoliday> => {
+export const mockUpdateNationalHoliday = (
+  id: number,
+  data: NationalHolidayFormData
+): Promise<NationalHoliday> => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       const holiday = mockNationalHolidays.find(item => item.id === id)
@@ -344,7 +351,8 @@ export const mockUpdateNationalHoliday = (id: number, data: NationalHolidayFormD
 
         const startDate = new Date(startYear, startMonth - 1, startDay)
         const endDate = new Date(endYear, endMonth - 1, endDay)
-        const daysCount = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)) + 1
+        const daysCount =
+          Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)) + 1
 
         holiday.name = data.name
         holiday.type = data.type
@@ -385,8 +393,10 @@ export const mockDeleteNationalHoliday = (id: number): Promise<void> => {
 /**
  * 同步法定节假日
  */
-export const mockSyncNationalHoliday = (data: SyncNationalHolidayRequest): Promise<SyncNationalHolidayResponse> => {
-  return new Promise((resolve) => {
+export const mockSyncNationalHoliday = (
+  data: SyncNationalHolidayRequest
+): Promise<SyncNationalHolidayResponse> => {
+  return new Promise(resolve => {
     setTimeout(() => {
       // 模拟同步逻辑
       const existingHolidays = mockNationalHolidays.filter(h => h.year === data.year)
@@ -397,7 +407,7 @@ export const mockSyncNationalHoliday = (data: SyncNationalHolidayRequest): Promi
           message: `${data.year}年的节假日数据已存在，如需覆盖请勾选"强制覆盖"`,
           syncedCount: 0,
           skippedCount: existingHolidays.length,
-          failedCount: 0
+          failedCount: 0,
         })
       } else {
         // 模拟同步成功
@@ -406,7 +416,7 @@ export const mockSyncNationalHoliday = (data: SyncNationalHolidayRequest): Promi
           message: `成功同步${data.year}年的法定节假日数据`,
           syncedCount: 7,
           skippedCount: 0,
-          failedCount: 0
+          failedCount: 0,
         })
       }
     }, 1000)
@@ -417,7 +427,7 @@ export const mockSyncNationalHoliday = (data: SyncNationalHolidayRequest): Promi
  * 获取年份列表
  */
 export const mockGetYearList = (): Promise<YearListResponse> => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const currentYear = new Date().getFullYear()
       const years = [currentYear - 1, currentYear, currentYear + 1, currentYear + 2]
@@ -429,8 +439,10 @@ export const mockGetYearList = (): Promise<YearListResponse> => {
 /**
  * 获取自定义时间规则列表
  */
-export const mockGetCustomTimeRuleList = (params: CustomTimeRuleListParams): Promise<CustomTimeRuleListResponse> => {
-  return new Promise((resolve) => {
+export const mockGetCustomTimeRuleList = (
+  params: CustomTimeRuleListParams
+): Promise<CustomTimeRuleListResponse> => {
+  return new Promise(resolve => {
     setTimeout(() => {
       let filteredList = [...mockCustomTimeRules]
 
@@ -446,9 +458,8 @@ export const mockGetCustomTimeRuleList = (params: CustomTimeRuleListParams): Pro
 
       // 关键词搜索
       if (params.keyword) {
-        filteredList = filteredList.filter(item =>
-          item.ruleName.includes(params.keyword!) ||
-          item.remark.includes(params.keyword!)
+        filteredList = filteredList.filter(
+          item => item.ruleName.includes(params.keyword!) || item.remark.includes(params.keyword!)
         )
       }
 
@@ -462,7 +473,7 @@ export const mockGetCustomTimeRuleList = (params: CustomTimeRuleListParams): Pro
         list: filteredList.slice(start, end),
         total,
         page,
-        pageSize
+        pageSize,
       })
     }, 300)
   })
@@ -488,7 +499,7 @@ export const mockGetCustomTimeRuleDetail = (id: number): Promise<CustomTimeRule>
  * 创建自定义时间规则
  */
 export const mockCreateCustomTimeRule = (data: CustomTimeRuleFormData): Promise<CustomTimeRule> => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       // 生成配置摘要
       let configSummary = ''
@@ -497,7 +508,8 @@ export const mockCreateCustomTimeRule = (data: CustomTimeRuleFormData): Promise<
       } else if (data.ruleType === 'periodic' && data.periodicConfig) {
         if (data.periodicConfig.periodicType === 'weekly') {
           const weekdayNames = ['一', '二', '三', '四', '五', '六', '日']
-          const days = data.periodicConfig.weekdays?.map(d => `周${weekdayNames[d - 1]}`).join('、') || ''
+          const days =
+            data.periodicConfig.weekdays?.map(d => `周${weekdayNames[d - 1]}`).join('、') || ''
           configSummary = `每${days}`
         } else if (data.periodicConfig.periodicType === 'monthly') {
           const days = data.periodicConfig.monthDays?.join('、') || ''
@@ -522,7 +534,7 @@ export const mockCreateCustomTimeRule = (data: CustomTimeRuleFormData): Promise<
         createdBy: '管理员',
         createdAt: new Date().toISOString().replace('T', ' ').substring(0, 19),
         updatedAt: new Date().toISOString().replace('T', ' ').substring(0, 19),
-        configSummary
+        configSummary,
       }
       mockCustomTimeRules.push(newRule)
       resolve(newRule)
@@ -533,7 +545,10 @@ export const mockCreateCustomTimeRule = (data: CustomTimeRuleFormData): Promise<
 /**
  * 更新自定义时间规则
  */
-export const mockUpdateCustomTimeRule = (id: number, data: CustomTimeRuleFormData): Promise<CustomTimeRule> => {
+export const mockUpdateCustomTimeRule = (
+  id: number,
+  data: CustomTimeRuleFormData
+): Promise<CustomTimeRule> => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       const rule = mockCustomTimeRules.find(item => item.id === id)
@@ -545,7 +560,8 @@ export const mockUpdateCustomTimeRule = (id: number, data: CustomTimeRuleFormDat
         } else if (data.ruleType === 'periodic' && data.periodicConfig) {
           if (data.periodicConfig.periodicType === 'weekly') {
             const weekdayNames = ['一', '二', '三', '四', '五', '六', '日']
-            const days = data.periodicConfig.weekdays?.map(d => `周${weekdayNames[d - 1]}`).join('、') || ''
+            const days =
+              data.periodicConfig.weekdays?.map(d => `周${weekdayNames[d - 1]}`).join('、') || ''
             configSummary = `每${days}`
           } else if (data.periodicConfig.periodicType === 'monthly') {
             const days = data.periodicConfig.monthDays?.join('、') || ''
@@ -595,8 +611,10 @@ export const mockDeleteCustomTimeRule = (id: number): Promise<void> => {
 /**
  * 获取时间因子日历
  */
-export const mockGetTimeFactorCalendar = (params: TimeFactorCalendarParams): Promise<TimeFactorCalendarResponse> => {
-  return new Promise((resolve) => {
+export const mockGetTimeFactorCalendar = (
+  params: TimeFactorCalendarParams
+): Promise<TimeFactorCalendarResponse> => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const calendar: TimeFactorCalendarItem[] = []
       const startDate = new Date(params.startDate)
@@ -615,7 +633,11 @@ export const mockGetTimeFactorCalendar = (params: TimeFactorCalendarParams): Pro
 
         // 检查是否为法定节假日
         for (const holiday of mockNationalHolidays) {
-          if (holiday.status === 'active' && dateStr >= holiday.startDate && dateStr <= holiday.endDate) {
+          if (
+            holiday.status === 'active' &&
+            dateStr >= holiday.startDate &&
+            dateStr <= holiday.endDate
+          ) {
             isHoliday = true
             holidayName = holiday.name
             appliedRules.push({
@@ -624,7 +646,7 @@ export const mockGetTimeFactorCalendar = (params: TimeFactorCalendarParams): Pro
               ruleType: 'holiday',
               adjustmentType: holiday.adjustmentType,
               adjustmentValue: holiday.adjustmentValue,
-              priority: 10 // 节假日优先级最高
+              priority: 10, // 节假日优先级最高
             })
             break
           }
@@ -637,7 +659,8 @@ export const mockGetTimeFactorCalendar = (params: TimeFactorCalendarParams): Pro
           let isApplicable = false
 
           if (rule.ruleType === 'date_range' && rule.dateRangeConfig) {
-            isApplicable = dateStr >= rule.dateRangeConfig.startDate && dateStr <= rule.dateRangeConfig.endDate
+            isApplicable =
+              dateStr >= rule.dateRangeConfig.startDate && dateStr <= rule.dateRangeConfig.endDate
           } else if (rule.ruleType === 'periodic' && rule.periodicConfig) {
             if (rule.periodicConfig.periodicType === 'weekly') {
               const weekday = d.getDay() || 7 // 转换为1-7
@@ -657,7 +680,7 @@ export const mockGetTimeFactorCalendar = (params: TimeFactorCalendarParams): Pro
               ruleType: 'custom',
               adjustmentType: rule.adjustmentType,
               adjustmentValue: rule.adjustmentValue,
-              priority: rule.priority
+              priority: rule.priority,
             })
           }
         }
@@ -672,7 +695,7 @@ export const mockGetTimeFactorCalendar = (params: TimeFactorCalendarParams): Pro
           holidayName: holidayName || undefined,
           appliedRules,
           finalAdjustmentType: finalRule?.adjustmentType,
-          finalAdjustmentValue: finalRule?.adjustmentValue
+          finalAdjustmentValue: finalRule?.adjustmentValue,
         })
 
         // 统计
@@ -691,8 +714,8 @@ export const mockGetTimeFactorCalendar = (params: TimeFactorCalendarParams): Pro
           totalDays: calendar.length,
           holidayDays,
           customRuleDays,
-          normalDays
-        }
+          normalDays,
+        },
       })
     }, 500)
   })

@@ -44,8 +44,8 @@ export class SmartPricingEngine {
     // 基于目标投资回报率反推价格
     const purchasePrice = vehicle.purchasePrice || 300000
     const investmentPeriod = 5 // 年
-    const annualOperatingRate = 0.30
-    const operatingCostRate = 0.40
+    const annualOperatingRate = 0.3
+    const operatingCostRate = 0.4
 
     // 计算所需年收益
     const requiredAnnualRevenue = (purchasePrice * (1 + targetROI)) / investmentPeriod
@@ -81,7 +81,7 @@ export class SmartPricingEngine {
 
     // 计算四分位数
     const q1 = competitorPrices[Math.floor(competitorPrices.length * 0.25)]
-    const q2 = competitorPrices[Math.floor(competitorPrices.length * 0.50)]
+    const q2 = competitorPrices[Math.floor(competitorPrices.length * 0.5)]
     const q3 = competitorPrices[Math.floor(competitorPrices.length * 0.75)]
 
     // 根据车况定位价格
@@ -101,11 +101,7 @@ export class SmartPricingEngine {
     const competitivePrice = this.calculateCompetitivePrice(vehicle, marketData.competitors)
 
     // 加权平均
-    return Math.round(
-      marketPrice * 0.4 +
-      revenuePrice * 0.3 +
-      competitivePrice * 0.3
-    )
+    return Math.round(marketPrice * 0.4 + revenuePrice * 0.3 + competitivePrice * 0.3)
   }
 
   /**
@@ -124,7 +120,7 @@ export class SmartPricingEngine {
     if (mileage < 50000) return 1.05 // 低里程，略微加价
     if (mileage < 100000) return 1.0 // 正常里程
     if (mileage < 150000) return 0.95 // 较高里程，略微降价
-    return 0.90 // 高里程，降价
+    return 0.9 // 高里程，降价
   }
 
   /**
@@ -141,17 +137,13 @@ export class SmartPricingEngine {
     if (ageMonths < 12) return 1.05 // 新车，略微加价
     if (ageMonths < 36) return 1.0 // 1-3年，正常价格
     if (ageMonths < 60) return 0.95 // 3-5年，略微降价
-    return 0.90 // 5年以上，降价
+    return 0.9 // 5年以上，降价
   }
 
   /**
    * 计算置信度
    */
-  calculateConfidence(
-    vehicle: Vehicle,
-    marketData: MarketData,
-    strategy: string
-  ): number {
+  calculateConfidence(vehicle: Vehicle, marketData: MarketData, strategy: string): number {
     let confidence = 70 // 基础置信度
 
     // 根据市场数据质量调整

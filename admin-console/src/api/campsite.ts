@@ -18,7 +18,7 @@ import {
   type CampsiteReservation,
   type ReservationListParams,
   type CampsiteInquiry,
-  type InquiryListParams
+  type InquiryListParams,
 } from '@/mock/campsites'
 
 // 导出类型
@@ -29,7 +29,7 @@ export type {
   CampsiteReservation,
   ReservationListParams,
   CampsiteInquiry,
-  InquiryListParams
+  InquiryListParams,
 }
 
 // ==================== 营地管理 ====================

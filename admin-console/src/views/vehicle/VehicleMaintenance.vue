@@ -1,8 +1,6 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="vehicle-maintenance-container">
-    
-
     <StatsCard :stats="statsConfig" />
 
     <SearchForm
@@ -24,18 +22,16 @@
       @current-change="handleCurrentChange"
     >
       <template #type="{ row }">
-        <el-tag :type="(getMaintenanceTypeTag(row.type)) as any" size="small">
+        <el-tag :type="getMaintenanceTypeTag(row.type) as any" size="small">
           {{ getVehicleStatusLabel(row.type) }}
         </el-tag>
       </template>
       <template #status="{ row }">
-        <el-tag :type="(getMaintenanceStatusTag(row.status)) as any" size="small">
+        <el-tag :type="getMaintenanceStatusTag(row.status) as any" size="small">
           {{ getVehicleStatusLabel(row.status) }}
         </el-tag>
       </template>
-      <template #cost="{ row }">
-        ¥{{ row.cost.toLocaleString() }}
-      </template>
+      <template #cost="{ row }"> ¥{{ row.cost.toLocaleString() }} </template>
     </DataTable>
 
     <!-- 新增/编辑维保记录对话框 -->
@@ -45,12 +41,7 @@
       width="800px"
       @close="handleDialogClose"
     >
-      <el-form
-        ref="formRef"
-        :model="form"
-        :rules="formRules"
-        label-width="120px"
-      >
+      <el-form ref="formRef" :model="form" :rules="formRules" label-width="120px">
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="车辆" prop="vehicleId">
@@ -142,28 +133,17 @@
           </el-col>
         </el-row>
         <el-form-item label="备注">
-          <el-input
-            v-model="form.remark"
-            type="textarea"
-            :rows="2"
-            placeholder="请输入备注信息"
-          />
+          <el-input v-model="form.remark" type="textarea" :rows="2" placeholder="请输入备注信息" />
         </el-form-item>
       </el-form>
       <template #footer>
         <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" :loading="submitLoading" @click="handleSubmit">
-          确定
-        </el-button>
+        <el-button type="primary" :loading="submitLoading" @click="handleSubmit"> 确定 </el-button>
       </template>
     </el-dialog>
 
     <!-- 维保详情对话框 -->
-    <el-dialog
-      v-model="detailDialogVisible"
-      title="维保记录详情"
-      width="800px"
-    >
+    <el-dialog v-model="detailDialogVisible" title="维保记录详情" width="800px">
       <el-descriptions :column="2" border v-if="currentRecord">
         <el-descriptions-item label="车牌号">
           {{ currentRecord.vehicleNumber }}
@@ -172,12 +152,12 @@
           {{ currentRecord.modelName }}
         </el-descriptions-item>
         <el-descriptions-item label="维保类型">
-          <el-tag :type="(getMaintenanceTypeTag(currentRecord.type)) as any" size="small">
+          <el-tag :type="getMaintenanceTypeTag(currentRecord.type) as any" size="small">
             {{ getVehicleStatusLabel(currentRecord.type) }}
           </el-tag>
         </el-descriptions-item>
         <el-descriptions-item label="维保状态">
-          <el-tag :type="(getMaintenanceStatusTag(currentRecord.status)) as any" size="small">
+          <el-tag :type="getMaintenanceStatusTag(currentRecord.status) as any" size="small">
             {{ getVehicleStatusLabel(currentRecord.status) }}
           </el-tag>
         </el-descriptions-item>
@@ -448,24 +428,12 @@ const form = reactive({
 })
 
 const formRules: FormRules = {
-  vehicleId: [
-    { required: true, message: '请选择车辆', trigger: 'change' },
-  ],
-  type: [
-    { required: true, message: '请选择维保类型', trigger: 'change' },
-  ],
-  description: [
-    { required: true, message: '请输入维保内容', trigger: 'blur' },
-  ],
-  serviceProvider: [
-    { required: true, message: '请输入服务商名称', trigger: 'blur' },
-  ],
-  scheduledDate: [
-    { required: true, message: '请选择计划日期', trigger: 'change' },
-  ],
-  estimatedCost: [
-    { required: true, message: '请输入预计费用', trigger: 'blur' },
-  ],
+  vehicleId: [{ required: true, message: '请选择车辆', trigger: 'change' }],
+  type: [{ required: true, message: '请选择维保类型', trigger: 'change' }],
+  description: [{ required: true, message: '请输入维保内容', trigger: 'blur' }],
+  serviceProvider: [{ required: true, message: '请输入服务商名称', trigger: 'blur' }],
+  scheduledDate: [{ required: true, message: '请选择计划日期', trigger: 'change' }],
+  estimatedCost: [{ required: true, message: '请输入预计费用', trigger: 'blur' }],
 }
 
 // 详情对话框
@@ -606,15 +574,11 @@ const handleComplete = async (row: MaintenanceRecord) => {
 // 删除维保记录
 const handleDelete = async (row: MaintenanceRecord) => {
   try {
-    await ElMessageBox.confirm(
-      `确定要删除维保记录 "${row.description}" 吗？`,
-      '删除确认',
-      {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      }
-    )
+    await ElMessageBox.confirm(`确定要删除维保记录 "${row.description}" 吗？`, '删除确认', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    })
 
     await deleteMaintenanceRecord(row.id)
     ElMessage.success('删除成功')
@@ -631,7 +595,7 @@ const handleDelete = async (row: MaintenanceRecord) => {
 const handleSubmit = async () => {
   if (!formRef.value) return
 
-  await formRef.value.validate(async (valid) => {
+  await formRef.value.validate(async valid => {
     if (!valid) return
 
     submitLoading.value = true

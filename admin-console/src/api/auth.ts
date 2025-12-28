@@ -9,7 +9,9 @@ export const authApi = {
   // 登录
   login: (data: LoginForm) => {
     if (USE_MOCK) {
-      return mockLogin(data.username, data.password) as Promise<ApiResponse<{ token: string; user: User }>>
+      return mockLogin(data.username, data.password) as Promise<
+        ApiResponse<{ token: string; user: User }>
+      >
     }
     return request.post<ApiResponse<{ token: string; user: User }>>('/auth/login', {
       phone: data.username,
@@ -35,8 +37,7 @@ export const authApi = {
   },
 
   // 刷新token
-  refreshToken: () =>
-    request.post<ApiResponse<{ token: string }>>('/auth/refresh'),
+  refreshToken: () => request.post<ApiResponse<{ token: string }>>('/auth/refresh'),
 
   // 修改密码
   changePassword: (data: { oldPassword: string; newPassword: string }) =>

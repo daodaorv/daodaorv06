@@ -25,7 +25,7 @@ import {
   type ReportType,
   type Invoice,
   type InvoiceStatus,
-  type FinancialAnalysis
+  type FinancialAnalysis,
 } from '@/mock/finance'
 
 // 导出类型
@@ -40,7 +40,7 @@ export type {
   ReportType,
   Invoice,
   InvoiceStatus,
-  FinancialAnalysis
+  FinancialAnalysis,
 }
 
 /**
@@ -120,7 +120,9 @@ export function getReconciliationList(params: {
 /**
  * 创建对账记录
  */
-export function createReconciliation(data: Partial<ReconciliationRecord>): Promise<ReconciliationRecord> {
+export function createReconciliation(
+  data: Partial<ReconciliationRecord>
+): Promise<ReconciliationRecord> {
   return mockCreateReconciliation(data)
 }
 

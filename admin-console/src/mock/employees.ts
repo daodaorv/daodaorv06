@@ -1,7 +1,12 @@
 /**
  * 员工管理 Mock 数据
  */
-import type { Employee, EmployeeListParams, CreateEmployeeParams, UpdateEmployeeParams } from '@/api/employee'
+import type {
+  Employee,
+  EmployeeListParams,
+  CreateEmployeeParams,
+  UpdateEmployeeParams,
+} from '@/api/employee'
 
 // Mock 员工数据
 const mockEmployees: Employee[] = [
@@ -197,8 +202,8 @@ const mockEmployees: Employee[] = [
         isActive: true,
         certifications: ['C1驾照', '客运资格证'],
         serviceArea: ['北京市', '天津市'],
-        rating: 4.8
-      }
+        rating: 4.8,
+      },
     ],
     createdAt: '2024-11-01T08:00:00.000Z',
   },
@@ -223,8 +228,8 @@ const mockEmployees: Employee[] = [
         isActive: true,
         certifications: ['保洁资格证', '消毒资格证'],
         serviceArea: ['北京市'],
-        rating: 4.9
-      }
+        rating: 4.9,
+      },
     ],
     createdAt: '2024-11-05T08:00:00.000Z',
   },
@@ -249,8 +254,8 @@ const mockEmployees: Employee[] = [
         isActive: true,
         certifications: ['C1驾照', '客运资格证'],
         serviceArea: ['上海市', '江苏省'],
-        rating: 4.7
-      }
+        rating: 4.7,
+      },
     ],
     createdAt: '2024-11-10T08:00:00.000Z',
   },
@@ -275,8 +280,8 @@ const mockEmployees: Employee[] = [
         isActive: true,
         certifications: ['汽车维修工证', '电工证'],
         serviceArea: ['北京市'],
-        rating: 4.6
-      }
+        rating: 4.6,
+      },
     ],
     createdAt: '2024-11-15T08:00:00.000Z',
   },
@@ -284,14 +289,14 @@ const mockEmployees: Employee[] = [
 
 // Mock 获取员工列表
 export const mockGetEmployeeList = (params: EmployeeListParams) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       let filteredEmployees = [...mockEmployees]
 
       // 关键词搜索
       if (params.keyword) {
         filteredEmployees = filteredEmployees.filter(
-          (emp) =>
+          emp =>
             emp.realName.includes(params.keyword!) ||
             emp.phone.includes(params.keyword!) ||
             emp.jobNumber.includes(params.keyword!)
@@ -300,17 +305,17 @@ export const mockGetEmployeeList = (params: EmployeeListParams) => {
 
       // 门店筛选
       if (params.storeId) {
-        filteredEmployees = filteredEmployees.filter((emp) => emp.storeId === params.storeId)
+        filteredEmployees = filteredEmployees.filter(emp => emp.storeId === params.storeId)
       }
 
       // 角色筛选
       if (params.roleId) {
-        filteredEmployees = filteredEmployees.filter((emp) => emp.roleId === params.roleId)
+        filteredEmployees = filteredEmployees.filter(emp => emp.roleId === params.roleId)
       }
 
       // 状态筛选
       if (params.status) {
-        filteredEmployees = filteredEmployees.filter((emp) => emp.status === params.status)
+        filteredEmployees = filteredEmployees.filter(emp => emp.status === params.status)
       }
 
       // 分页
@@ -338,7 +343,7 @@ export const mockGetEmployeeList = (params: EmployeeListParams) => {
 export const mockGetEmployeeDetail = (id: number) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      const employee = mockEmployees.find((e) => e.id === id)
+      const employee = mockEmployees.find(e => e.id === id)
       if (employee) {
         resolve({
           code: 200,
@@ -357,7 +362,7 @@ export const mockGetEmployeeDetail = (id: number) => {
 
 // Mock 创建员工
 export const mockCreateEmployee = (data: CreateEmployeeParams) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const newEmployee: Employee = {
         id: mockEmployees.length + 1,
@@ -391,7 +396,7 @@ export const mockCreateEmployee = (data: CreateEmployeeParams) => {
 export const mockUpdateEmployee = (data: UpdateEmployeeParams) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      const index = mockEmployees.findIndex((e) => e.id === data.id)
+      const index = mockEmployees.findIndex(e => e.id === data.id)
       if (index > -1) {
         mockEmployees[index] = {
           ...mockEmployees[index],
@@ -417,7 +422,7 @@ export const mockUpdateEmployee = (data: UpdateEmployeeParams) => {
 export const mockChangeEmployeeStatus = (id: number, status: 'active' | 'inactive') => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      const index = mockEmployees.findIndex((e) => e.id === id)
+      const index = mockEmployees.findIndex(e => e.id === id)
       if (index > -1) {
         mockEmployees[index].status = status
         mockEmployees[index].updatedAt = new Date().toISOString()
@@ -439,7 +444,7 @@ export const mockChangeEmployeeStatus = (id: number, status: 'active' | 'inactiv
 export const mockAssignEmployeeRoles = (id: number, roleIds: number[]) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      const index = mockEmployees.findIndex((e) => e.id === id)
+      const index = mockEmployees.findIndex(e => e.id === id)
       if (index > -1) {
         // 这里只是模拟,实际应该保存角色分配
         mockEmployees[index].roleId = roleIds[0] || 0
@@ -460,7 +465,7 @@ export const mockAssignEmployeeRoles = (id: number, roleIds: number[]) => {
 
 // Mock 导出员工列表
 export const mockExportEmployees = () => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       resolve({
         code: 200,
@@ -475,7 +480,7 @@ export const mockExportEmployees = () => {
 
 // Mock 导入员工数据
 export const mockImportEmployees = (_file: File) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       resolve({
         code: 200,
@@ -541,17 +546,22 @@ const mockEmployeePerformances: EmployeePerformance[] = [
 ]
 
 // Mock 获取员工绩效列表
-export const mockGetEmployeePerformanceList = (params: { page?: number; pageSize?: number; month?: string; employeeId?: number }) => {
-  return new Promise((resolve) => {
+export const mockGetEmployeePerformanceList = (params: {
+  page?: number
+  pageSize?: number
+  month?: string
+  employeeId?: number
+}) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       let filteredData = [...mockEmployeePerformances]
 
       if (params.month) {
-        filteredData = filteredData.filter((item) => item.month === params.month)
+        filteredData = filteredData.filter(item => item.month === params.month)
       }
 
       if (params.employeeId) {
-        filteredData = filteredData.filter((item) => item.employeeId === params.employeeId)
+        filteredData = filteredData.filter(item => item.employeeId === params.employeeId)
       }
 
       const page = params.page || 1
@@ -573,7 +583,7 @@ export const mockGetEmployeePerformanceList = (params: { page?: number; pageSize
 
 // Mock 获取员工绩效统计
 export const mockGetEmployeePerformanceStats = () => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const stats: EmployeePerformanceStats = {
         totalEmployees: mockEmployeePerformances.length,

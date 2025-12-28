@@ -31,9 +31,7 @@
           />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" :icon="Search" @click="handleSearch">
-            搜索
-          </el-button>
+          <el-button type="primary" :icon="Search" @click="handleSearch"> 搜索 </el-button>
           <el-button :icon="Refresh" @click="handleReset">重置</el-button>
         </el-form-item>
       </el-form>
@@ -41,9 +39,7 @@
 
     <!-- 操作栏 -->
     <el-card class="toolbar-card" shadow="never">
-      <el-button type="primary" :icon="Plus" @click="handleCreate">
-        新增参数
-      </el-button>
+      <el-button type="primary" :icon="Plus" @click="handleCreate"> 新增参数 </el-button>
       <el-button :icon="Download">导出配置</el-button>
       <el-button :icon="Upload">导入配置</el-button>
       <el-button type="warning" :icon="RefreshRight">重置默认值</el-button>
@@ -51,12 +47,7 @@
 
     <!-- 参数列表 -->
     <el-card class="table-card" shadow="never">
-      <el-table
-        v-loading="loading"
-        :data="paramsList"
-        stripe
-        style="width: 100%"
-      >
+      <el-table v-loading="loading" :data="paramsList" stripe style="width: 100%">
         <el-table-column prop="id" label="ID" width="80" />
         <el-table-column prop="name" label="参数名称" width="200" />
         <el-table-column prop="key" label="参数键名" width="200" />
@@ -87,9 +78,7 @@
         <el-table-column prop="updatedAt" label="更新时间" width="180" />
         <el-table-column label="操作" width="200" fixed="right">
           <template #default="{ row }">
-            <el-button link type="primary" size="small" @click="handleEdit(row)">
-              编辑
-            </el-button>
+            <el-button link type="primary" size="small" @click="handleEdit(row)"> 编辑 </el-button>
             <el-button
               link
               type="danger"
@@ -127,21 +116,12 @@
       width="600px"
       @close="handleDialogClose"
     >
-      <el-form
-        ref="formRef"
-        :model="form"
-        :rules="formRules"
-        label-width="120px"
-      >
+      <el-form ref="formRef" :model="form" :rules="formRules" label-width="120px">
         <el-form-item label="参数名称" prop="name">
           <el-input v-model="form.name" placeholder="请输入参数名称" />
         </el-form-item>
         <el-form-item label="参数键名" prop="key">
-          <el-input
-            v-model="form.key"
-            placeholder="请输入参数键名（英文）"
-            :disabled="isEdit"
-          />
+          <el-input v-model="form.key" placeholder="请输入参数键名（英文）" :disabled="isEdit" />
         </el-form-item>
         <el-form-item label="参数分类" prop="category">
           <el-select v-model="form.category" placeholder="请选择分类" style="width: 100%">
@@ -160,11 +140,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="参数值" prop="value">
-          <el-input
-            v-if="form.type === 'string'"
-            v-model="form.value"
-            placeholder="请输入参数值"
-          />
+          <el-input v-if="form.type === 'string'" v-model="form.value" placeholder="请输入参数值" />
           <el-input-number
             v-else-if="form.type === 'number'"
             v-model="form.value"
@@ -209,9 +185,7 @@
       </el-form>
       <template #footer>
         <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" :loading="submitLoading" @click="handleSubmit">
-          确定
-        </el-button>
+        <el-button type="primary" :loading="submitLoading" @click="handleSubmit"> 确定 </el-button>
       </template>
     </el-dialog>
   </div>
@@ -221,14 +195,7 @@
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
-import {
-  Search,
-  Refresh,
-  Plus,
-  Download,
-  Upload,
-  RefreshRight,
-} from '@element-plus/icons-vue'
+import { Search, Refresh, Plus, Download, Upload, RefreshRight } from '@element-plus/icons-vue'
 
 // 参数数据类型
 interface SystemParam {
@@ -350,22 +317,14 @@ const form = reactive({
 })
 
 const formRules: FormRules = {
-  name: [
-    { required: true, message: '请输入参数名称', trigger: 'blur' },
-  ],
+  name: [{ required: true, message: '请输入参数名称', trigger: 'blur' }],
   key: [
     { required: true, message: '请输入参数键名', trigger: 'blur' },
     { pattern: /^[a-z_]+$/, message: '参数键名只能包含小写字母和下划线', trigger: 'blur' },
   ],
-  category: [
-    { required: true, message: '请选择参数分类', trigger: 'change' },
-  ],
-  type: [
-    { required: true, message: '请选择参数类型', trigger: 'change' },
-  ],
-  value: [
-    { required: true, message: '请输入参数值', trigger: 'blur' },
-  ],
+  category: [{ required: true, message: '请选择参数分类', trigger: 'change' }],
+  type: [{ required: true, message: '请选择参数类型', trigger: 'change' }],
+  value: [{ required: true, message: '请输入参数值', trigger: 'blur' }],
 }
 
 // 搜索
@@ -408,15 +367,11 @@ const handleEdit = (row: SystemParam) => {
 // 删除参数
 const handleDelete = async (row: SystemParam) => {
   try {
-    await ElMessageBox.confirm(
-      `确定要删除参数 "${row.name}" 吗？`,
-      '删除确认',
-      {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      }
-    )
+    await ElMessageBox.confirm(`确定要删除参数 "${row.name}" 吗？`, '删除确认', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    })
     const index = paramsList.value.findIndex(p => p.id === row.id)
     if (index > -1) {
       paramsList.value.splice(index, 1)
@@ -433,15 +388,11 @@ const handleDelete = async (row: SystemParam) => {
 // 重置参数值
 const handleResetValue = async (row: SystemParam) => {
   try {
-    await ElMessageBox.confirm(
-      `确定要将参数 "${row.name}" 重置为默认值吗？`,
-      '重置确认',
-      {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      }
-    )
+    await ElMessageBox.confirm(`确定要将参数 "${row.name}" 重置为默认值吗？`, '重置确认', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    })
     row.value = row.defaultValue
     ElMessage.success('重置成功')
   } catch (error) {
@@ -455,7 +406,7 @@ const handleResetValue = async (row: SystemParam) => {
 const handleSubmit = async () => {
   if (!formRef.value) return
 
-  await formRef.value.validate(async (valid) => {
+  await formRef.value.validate(async valid => {
     if (!valid) return
 
     submitLoading.value = true

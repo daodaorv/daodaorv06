@@ -8,17 +8,13 @@ import {
   calculateSyncYears,
   parseTimorHolidays,
   formatSyncResults,
-  type ParsedHoliday
+  type ParsedHoliday,
 } from '@/utils/timorApi'
-import type {
-  NationalHoliday,
-  NationalHolidayFormData,
-  HolidaySyncLog
-} from '@/types/timeFactor'
+import type { NationalHoliday, NationalHolidayFormData, HolidaySyncLog } from '@/types/timeFactor'
 import {
   getNationalHolidayList,
   createNationalHoliday,
-  updateNationalHoliday
+  updateNationalHoliday,
 } from '@/api/timeFactor'
 
 /**
@@ -49,10 +45,7 @@ export interface SyncOptions {
 /**
  * 比较两个节假日是否相同（用于判断是否需要更新）
  */
-function isSameHoliday(
-  existing: NationalHoliday,
-  parsed: ParsedHoliday
-): boolean {
+function isSameHoliday(existing: NationalHoliday, parsed: ParsedHoliday): boolean {
   return (
     existing.name === parsed.name &&
     existing.year === parsed.year &&
@@ -77,21 +70,19 @@ function convertToFormData(
     adjustmentType: 'percentage',
     adjustmentValue: defaultAdjustmentValue,
     remark: `${parsed.year}年${parsed.name}，连休${parsed.restDays}天，价格上浮${defaultAdjustmentValue}%`,
-    status: 'active'
+    status: 'active',
   }
 }
 
 /**
  * 执行节假日数据同步
  */
-export async function syncNationalHolidays(
-  options: SyncOptions = {}
-): Promise<SyncResult> {
+export async function syncNationalHolidays(options: SyncOptions = {}): Promise<SyncResult> {
   const {
     years: specifiedYears,
     forceOverwrite = false,
     defaultAdjustmentValue = 30,
-    onProgress
+    onProgress,
   } = options
 
   // 步骤1：计算需要同步的年份
@@ -100,7 +91,7 @@ export async function syncNationalHolidays(
   onProgress?.({
     current: 0,
     total: yearsToSync.length,
-    message: `准备同步 ${yearsToSync.join('、')} 年的节假日数据...`
+    message: `准备同步 ${yearsToSync.join('、')} 年的节假日数据...`,
   })
 
   const result: SyncResult = {
@@ -111,7 +102,7 @@ export async function syncNationalHolidays(
     newCount: 0,
     updatedCount: 0,
     skippedCount: 0,
-    errors: []
+    errors: [],
   }
 
   try {
@@ -119,7 +110,7 @@ export async function syncNationalHolidays(
     onProgress?.({
       current: 1,
       total: yearsToSync.length + 3,
-      message: '正在从 Timor API 获取节假日数据...'
+      message: '正在从 Timor API 获取节假日数据...',
     })
 
     const apiResults = await fetchMultipleYearsHolidays(yearsToSync)
@@ -129,7 +120,7 @@ export async function syncNationalHolidays(
       if (!apiResults.has(year)) {
         result.errors.push({
           year,
-          error: new Error('API 调用失败')
+          error: new Error('API 调用失败'),
         })
       }
     }
@@ -147,14 +138,14 @@ export async function syncNationalHolidays(
     onProgress?.({
       current: 2,
       total: yearsToSync.length + 3,
-      message: `成功获取 ${result.totalHolidays} 个节假日，正在同步到系统...`
+      message: `成功获取 ${result.totalHolidays} 个节假日，正在同步到系统...`,
     })
 
     // 步骤4：获取系统中已有的节假日数据
     const existingHolidaysResponse = await getNationalHolidayList({
       page: 1,
       pageSize: 1000,
-      type: 'national'
+      type: 'national',
     })
     const existingHolidays = existingHolidaysResponse.list
 
@@ -165,13 +156,11 @@ export async function syncNationalHolidays(
       onProgress?.({
         current: 3 + i,
         total: yearsToSync.length + 3 + allParsedHolidays.length,
-        message: `正在同步 ${parsed.name} (${parsed.startDate})...`
+        message: `正在同步 ${parsed.name} (${parsed.startDate})...`,
       })
 
       // 查找是否已存在相同的节假日（相同年份+名称）
-      const existing = existingHolidays.find(
-        h => h.year === parsed.year && h.name === parsed.name
-      )
+      const existing = existingHolidays.find(h => h.year === parsed.year && h.name === parsed.name)
 
       if (existing) {
         // 已存在
@@ -188,7 +177,7 @@ export async function syncNationalHolidays(
             console.error(`更新节假日失败: ${parsed.name}`, error)
             result.errors.push({
               year: parsed.year,
-              error: error instanceof Error ? error : new Error(String(error))
+              error: error instanceof Error ? error : new Error(String(error)),
             })
           }
         } else {
@@ -205,7 +194,7 @@ export async function syncNationalHolidays(
           console.error(`创建节假日失败: ${parsed.name}`, error)
           result.errors.push({
             year: parsed.year,
-            error: error instanceof Error ? error : new Error(String(error))
+            error: error instanceof Error ? error : new Error(String(error)),
           })
         }
       }
@@ -218,21 +207,28 @@ export async function syncNationalHolidays(
     onProgress?.({
       current: yearsToSync.length + 3 + allParsedHolidays.length,
       total: yearsToSync.length + 3 + allParsedHolidays.length,
-      message: '同步完成！'
+      message: '同步完成！',
     })
 
     // 步骤7：生成同步日志
     result.syncLog = {
       id: Date.now(),
       year: yearsToSync[0], // 主要年份
-      syncStatus: result.success ? 'success' : result.errors.length === yearsToSync.length ? 'failed' : 'partial',
+      syncStatus: result.success
+        ? 'success'
+        : result.errors.length === yearsToSync.length
+          ? 'failed'
+          : 'partial',
       syncedCount: result.newCount + result.updatedCount,
       skippedCount: result.skippedCount,
       failedCount: result.errors.length,
-      errorMessage: result.errors.length > 0 ? result.errors.map(e => `${e.year}年: ${e.error.message}`).join('; ') : undefined,
+      errorMessage:
+        result.errors.length > 0
+          ? result.errors.map(e => `${e.year}年: ${e.error.message}`).join('; ')
+          : undefined,
       dataSource: 'Timor API',
       syncedBy: 'system',
-      syncedAt: new Date().toISOString().replace('T', ' ').substring(0, 19)
+      syncedAt: new Date().toISOString().replace('T', ' ').substring(0, 19),
     }
 
     return result
@@ -244,7 +240,7 @@ export async function syncNationalHolidays(
     result.message = `同步失败: ${err.message}`
     result.errors.push({
       year: yearsToSync[0],
-      error: err
+      error: err,
     })
 
     result.syncLog = {
@@ -257,7 +253,7 @@ export async function syncNationalHolidays(
       errorMessage: err.message,
       dataSource: 'Timor API',
       syncedBy: 'system',
-      syncedAt: new Date().toISOString().replace('T', ' ').substring(0, 19)
+      syncedAt: new Date().toISOString().replace('T', ' ').substring(0, 19),
     }
 
     return result
@@ -336,7 +332,7 @@ export async function cleanupExpiredHolidays(): Promise<{
     const response = await getNationalHolidayList({
       page: 1,
       pageSize: 1000,
-      type: 'national'
+      type: 'national',
     })
 
     // 筛选出过期的节假日
@@ -350,14 +346,14 @@ export async function cleanupExpiredHolidays(): Promise<{
     return {
       success: true,
       deletedCount: expiredHolidays.length,
-      message: `成功清理 ${expiredHolidays.length} 条过期节假日数据（${cutoffYear}年之前）`
+      message: `成功清理 ${expiredHolidays.length} 条过期节假日数据（${cutoffYear}年之前）`,
     }
   } catch (error: unknown) {
     const err = error instanceof Error ? error : new Error(String(error))
     return {
       success: false,
       deletedCount: 0,
-      message: `清理失败: ${err.message}`
+      message: `清理失败: ${err.message}`,
     }
   }
 }

@@ -326,7 +326,7 @@ export const mockGetUserList = (params: {
   status?: string
   tagId?: number
 }) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const { page = 1, pageSize = 10, phone, username, userType, status, tagId } = params
 
@@ -351,9 +351,7 @@ export const mockGetUserList = (params: {
 
       // 按标签筛选
       if (tagId) {
-        filteredList = filteredList.filter(user =>
-          user.tags?.some(tag => tag.id === tagId)
-        )
+        filteredList = filteredList.filter(user => user.tags?.some(tag => tag.id === tagId))
       }
 
       // 分页
@@ -403,14 +401,14 @@ export const mockGetUserDetail = (id: number) => {
 
 // Mock 创建用户
 export const mockCreateUser = (data: any) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const newUser: UserInfo = {
         id: mockUserList.length + 1,
         username: data.username,
         phone: data.phone,
         email: data.email,
-        userType: 'customer',  // 强制设置为 customer
+        userType: 'customer', // 强制设置为 customer
         status: 'active',
         realName: data.realName,
         avatarUrl: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
@@ -447,7 +445,7 @@ export const mockUpdateUser = (data: any) => {
       mockUserList[index] = {
         ...mockUserList[index],
         ...data,
-        userType: 'customer',  // 确保 userType 始终为 customer
+        userType: 'customer', // 确保 userType 始终为 customer
         updatedAt: new Date().toISOString(),
       }
 

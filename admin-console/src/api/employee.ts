@@ -21,11 +21,11 @@ export type ServiceRoleType = 'driver' | 'cleaner' | 'maintenance' | 'guide' | '
 
 // 服务角色信息
 export interface ServiceRole {
-  roleType: ServiceRoleType           // 角色类型
-  isActive: boolean                   // 是否激活
-  certifications?: string[]           // 资质证书
-  serviceArea?: string[]              // 服务区域
-  rating?: number                     // 服务评分
+  roleType: ServiceRoleType // 角色类型
+  isActive: boolean // 是否激活
+  certifications?: string[] // 资质证书
+  serviceArea?: string[] // 服务区域
+  rating?: number // 服务评分
 }
 
 // 员工管理API接口类型定义
@@ -53,10 +53,10 @@ export interface Employee {
   status: 'active' | 'inactive'
   avatar: string
   joinDate: string
-  loginPlatforms: ('pc' | 'mobile')[]  // 可登录的平台
+  loginPlatforms: ('pc' | 'mobile')[] // 可登录的平台
 
   // 新增字段
-  serviceRoles?: ServiceRole[]        // 服务角色列表（可多个）
+  serviceRoles?: ServiceRole[] // 服务角色列表（可多个）
 
   createdAt: string
   updatedAt?: string
@@ -152,17 +152,24 @@ export const employeeApi = {
   // 导入员工数据
   importEmployees: (file: File) => {
     if (USE_MOCK) {
-      return mockImportEmployees(file) as Promise<ApiResponse<{ successCount: number; failCount: number }>>
+      return mockImportEmployees(file) as Promise<
+        ApiResponse<{ successCount: number; failCount: number }>
+      >
     }
     const formData = new FormData()
     formData.append('file', file)
-    return request.post<ApiResponse<{ successCount: number; failCount: number }>>('/employees/import', formData)
+    return request.post<ApiResponse<{ successCount: number; failCount: number }>>(
+      '/employees/import',
+      formData
+    )
   },
 
   // 获取门店员工列表
   getStoreStaffList: (params: EmployeeListParams) => {
     if (USE_MOCK) {
-      return mockGetEmployeeList({ ...params, department: 'store' }) as Promise<ApiResponse<EmployeeListResponse>>
+      return mockGetEmployeeList({ ...params, department: 'store' }) as Promise<
+        ApiResponse<EmployeeListResponse>
+      >
     }
     return request.get<ApiResponse<EmployeeListResponse>>('/employees/store-staff', params)
   },
@@ -170,17 +177,29 @@ export const employeeApi = {
   // 获取客服人员列表
   getCustomerServiceList: (params: EmployeeListParams) => {
     if (USE_MOCK) {
-      return mockGetEmployeeList({ ...params, department: 'customer_service' }) as Promise<ApiResponse<EmployeeListResponse>>
+      return mockGetEmployeeList({ ...params, department: 'customer_service' }) as Promise<
+        ApiResponse<EmployeeListResponse>
+      >
     }
     return request.get<ApiResponse<EmployeeListResponse>>('/employees/customer-service', params)
   },
 
   // 获取员工绩效列表
-  getEmployeePerformanceList: (params: { page?: number; pageSize?: number; month?: string; employeeId?: number }) => {
+  getEmployeePerformanceList: (params: {
+    page?: number
+    pageSize?: number
+    month?: string
+    employeeId?: number
+  }) => {
     if (USE_MOCK) {
-      return mockGetEmployeePerformanceList(params) as Promise<ApiResponse<EmployeePerformanceListResponse>>
+      return mockGetEmployeePerformanceList(params) as Promise<
+        ApiResponse<EmployeePerformanceListResponse>
+      >
     }
-    return request.get<ApiResponse<EmployeePerformanceListResponse>>('/employees/performance', params)
+    return request.get<ApiResponse<EmployeePerformanceListResponse>>(
+      '/employees/performance',
+      params
+    )
   },
 
   // 获取员工绩效统计

@@ -29,11 +29,29 @@
       </div>
 
       <div v-if="priceDetail.timeFactorSummary" class="breakdown-item">
-        <span class="label">时间因子【{{ priceDetail.timeFactorSummary.averageAmount ? '多日平均' : priceDetail.timeFactorSummary.dailyDetails?.[0]?.timeFactor?.factorName || '无' }}】：</span>
-        <span v-if="priceDetail.timeFactorSummary.dailyDetails?.[0]?.timeFactor" class="value" :class="getValueClass(priceDetail.timeFactorSummary.dailyDetails[0].timeFactor.calculatedAmount)">
-          {{ formatAmount(priceDetail.timeFactorSummary.dailyDetails[0].timeFactor.calculatedAmount) }}
+        <span class="label"
+          >时间因子【{{
+            priceDetail.timeFactorSummary.averageAmount
+              ? '多日平均'
+              : priceDetail.timeFactorSummary.dailyDetails?.[0]?.timeFactor?.factorName || '无'
+          }}】：</span
+        >
+        <span
+          v-if="priceDetail.timeFactorSummary.dailyDetails?.[0]?.timeFactor"
+          class="value"
+          :class="
+            getValueClass(priceDetail.timeFactorSummary.dailyDetails[0].timeFactor.calculatedAmount)
+          "
+        >
+          {{
+            formatAmount(priceDetail.timeFactorSummary.dailyDetails[0].timeFactor.calculatedAmount)
+          }}
         </span>
-        <el-tag v-if="priceDetail.timeFactorSummary.dailyDetails?.[0]?.timeFactor" size="small" type="danger">
+        <el-tag
+          v-if="priceDetail.timeFactorSummary.dailyDetails?.[0]?.timeFactor"
+          size="small"
+          type="danger"
+        >
           优先级: {{ priceDetail.timeFactorSummary.dailyDetails[0].timeFactor.priority }}
         </el-tag>
       </div>
@@ -113,7 +131,7 @@ const loadPriceDetail = async () => {
     const res = await getDayPriceDetail({
       modelId: props.modelId,
       cityId: props.cityId,
-      date: props.date
+      date: props.date,
     })
 
     if (res.success) {
@@ -167,11 +185,15 @@ const handleCopyToOtherDates = () => {
 }
 
 // 监听日期变化
-watch(() => props.date, () => {
-  if (props.date && props.modelId && props.cityId) {
-    loadPriceDetail()
-  }
-}, { immediate: true })
+watch(
+  () => props.date,
+  () => {
+    if (props.date && props.modelId && props.cityId) {
+      loadPriceDetail()
+    }
+  },
+  { immediate: true }
+)
 </script>
 
 <style scoped lang="scss">

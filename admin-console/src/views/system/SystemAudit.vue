@@ -2,7 +2,6 @@
 <template>
   <div class="system-audit-container">
     <!-- 页面标题 -->
-    
 
     <!-- 搜索表单 -->
     <SearchForm
@@ -56,24 +55,16 @@
       </template>
 
       <!-- 耗时列 -->
-      <template #duration="{ row }">
-        {{ row.duration }}ms
-      </template>
+      <template #duration="{ row }"> {{ row.duration }}ms </template>
 
       <!-- 自定义操作列 -->
       <template #actions="{ row }">
-        <el-button link type="primary" size="small" @click="handleView(row)">
-          查看详情
-        </el-button>
+        <el-button link type="primary" size="small" @click="handleView(row)"> 查看详情 </el-button>
       </template>
     </DataTable>
 
     <!-- 审计日志详情对话框 -->
-    <el-dialog
-      v-model="detailDialogVisible"
-      title="审计日志详情"
-      width="800px"
-    >
+    <el-dialog v-model="detailDialogVisible" title="审计日志详情" width="800px">
       <el-descriptions :column="2" border>
         <el-descriptions-item label="日志ID">
           {{ currentAudit?.id }}
@@ -110,32 +101,18 @@
           {{ currentAudit?.duration }}ms
         </el-descriptions-item>
         <el-descriptions-item label="请求参数" :span="2">
-      // @ts-ignore
-          <el-input
-            v-model="currentAudit.requestParams"
-            type="textarea"
-            :rows="4"
-            readonly
-          />
+          // @ts-ignore
+          <el-input v-model="currentAudit.requestParams" type="textarea" :rows="4" readonly />
         </el-descriptions-item>
         <el-descriptions-item label="响应结果" :span="2">
-      // @ts-ignore
-          <el-input
-            v-model="currentAudit.responseData"
-            type="textarea"
-            :rows="4"
-            readonly
-          />
+          // @ts-ignore
+          <el-input v-model="currentAudit.responseData" type="textarea" :rows="4" readonly />
         </el-descriptions-item>
       </el-descriptions>
     </el-dialog>
 
     <!-- 清理日志对话框 -->
-    <el-dialog
-      v-model="cleanDialogVisible"
-      title="清理日志"
-      width="500px"
-    >
+    <el-dialog v-model="cleanDialogVisible" title="清理日志" width="500px">
       <el-form :model="cleanForm" label-width="120px">
         <el-form-item label="清理策略">
           <el-radio-group v-model="cleanForm.strategy">
@@ -144,21 +121,11 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item v-if="cleanForm.strategy === 'date'" label="保留天数">
-          <el-input-number
-            v-model="cleanForm.days"
-            :min="7"
-            :max="365"
-            :step="1"
-          />
+          <el-input-number v-model="cleanForm.days" :min="7" :max="365" :step="1" />
           <span class="form-tip">天（保留最近N天的日志）</span>
         </el-form-item>
         <el-form-item v-if="cleanForm.strategy === 'count'" label="保留数量">
-          <el-input-number
-            v-model="cleanForm.count"
-            :min="1000"
-            :max="1000000"
-            :step="1000"
-          />
+          <el-input-number v-model="cleanForm.count" :min="1000" :max="1000000" :step="1000" />
           <span class="form-tip">条（保留最近N条日志）</span>
         </el-form-item>
         <el-alert
@@ -170,9 +137,7 @@
       </el-form>
       <template #footer>
         <el-button @click="cleanDialogVisible = false">取消</el-button>
-        <el-button type="danger" @click="handleConfirmClean">
-          确认清理
-        </el-button>
+        <el-button type="danger" @click="handleConfirmClean"> 确认清理 </el-button>
       </template>
     </el-dialog>
   </div>
@@ -430,15 +395,11 @@ const handleClean = () => {
 // 确认清理
 const handleConfirmClean = async () => {
   try {
-    await ElMessageBox.confirm(
-      '确定要清理日志吗？此操作不可恢复！',
-      '清理确认',
-      {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      }
-    )
+    await ElMessageBox.confirm('确定要清理日志吗？此操作不可恢复！', '清理确认', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    })
     // TODO: 调用清理API
     ElMessage.success('日志清理成功')
     cleanDialogVisible.value = false

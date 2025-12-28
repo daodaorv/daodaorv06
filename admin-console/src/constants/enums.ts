@@ -10,7 +10,7 @@
 export const USER_TYPE_MAP: Record<string, string> = {
   customer: '普通用户',
   mobile_admin: '移动管理员',
-  pc_admin: 'PC管理员'
+  pc_admin: 'PC管理员',
 } as const
 
 /**
@@ -20,7 +20,7 @@ export const USER_STATUS_MAP: Record<string, string> = {
   active: '正常',
   inactive: '禁用',
   pending: '待审核',
-  suspended: '已冻结'
+  suspended: '已冻结',
 } as const
 
 /**
@@ -29,7 +29,7 @@ export const USER_STATUS_MAP: Record<string, string> = {
 export const RISK_LEVEL_MAP: Record<string, string> = {
   high: '高风险',
   medium: '中风险',
-  low: '低风险'
+  low: '低风险',
 } as const
 
 /**
@@ -39,7 +39,7 @@ export const RISK_TYPE_MAP: Record<string, string> = {
   login: '登录风险',
   behavior: '行为风险',
   payment: '支付风险',
-  credit: '信用风险'
+  credit: '信用风险',
 } as const
 
 /**
@@ -48,7 +48,7 @@ export const RISK_TYPE_MAP: Record<string, string> = {
 export const RISK_STATUS_MAP: Record<string, string> = {
   pending: '待处理',
   processed: '已处理',
-  ignored: '已忽略'
+  ignored: '已忽略',
 } as const
 
 /**
@@ -59,7 +59,7 @@ export const VEHICLE_STATUS_MAP: Record<string, string> = {
   rented: '租用中',
   maintenance: '保养中',
   repair: '维修中',
-  retired: '已退役'
+  retired: '已退役',
 } as const
 
 /**
@@ -68,7 +68,7 @@ export const VEHICLE_STATUS_MAP: Record<string, string> = {
 export const VEHICLE_OWNERSHIP_TYPE_MAP: Record<string, string> = {
   self_owned: '自有',
   leased: '租赁',
-  cooperative: '合作'
+  cooperative: '合作',
 } as const
 
 /**
@@ -81,7 +81,7 @@ export const ORDER_STATUS_MAP: Record<string, string> = {
   in_progress: '进行中',
   completed: '已完成',
   cancelled: '已取消',
-  refunded: '已退款'
+  refunded: '已退款',
 } as const
 
 /**
@@ -93,7 +93,7 @@ export const PAYMENT_STATUS_MAP: Record<string, string> = {
   success: '支付成功',
   failed: '支付失败',
   refunded: '已退款',
-  cancelled: '已取消'
+  cancelled: '已取消',
 } as const
 
 /**
@@ -104,7 +104,7 @@ export const PAYMENT_METHOD_MAP: Record<string, string> = {
   alipay: '支付宝',
   bank_card: '银行卡',
   cash: '现金',
-  other: '其他'
+  other: '其他',
 } as const
 
 /**
@@ -113,7 +113,7 @@ export const PAYMENT_METHOD_MAP: Record<string, string> = {
 export const GENDER_MAP: Record<string, string> = {
   male: '男',
   female: '女',
-  unknown: '未知'
+  unknown: '未知',
 } as const
 
 /**
@@ -122,7 +122,7 @@ export const GENDER_MAP: Record<string, string> = {
 export const AUDIT_STATUS_MAP: Record<string, string> = {
   pending: '待审核',
   approved: '已通过',
-  rejected: '已拒绝'
+  rejected: '已拒绝',
 } as const
 
 /**
@@ -134,7 +134,7 @@ export const HOSTING_STATUS_MAP: Record<string, string> = {
   rejected: '已拒绝',
   active: '托管中',
   completed: '已完成',
-  cancelled: '已取消'
+  cancelled: '已取消',
 } as const
 
 /**
@@ -146,7 +146,7 @@ export const WITHDRAWAL_STATUS_MAP: Record<string, string> = {
   rejected: '已拒绝',
   processing: '处理中',
   completed: '已完成',
-  failed: '失败'
+  failed: '失败',
 } as const
 
 /**
@@ -155,7 +155,7 @@ export const WITHDRAWAL_STATUS_MAP: Record<string, string> = {
 export const COUPON_TYPE_MAP: Record<string, string> = {
   discount: '折扣券',
   cash: '代金券',
-  gift: '礼品券'
+  gift: '礼品券',
 } as const
 
 /**
@@ -164,7 +164,7 @@ export const COUPON_TYPE_MAP: Record<string, string> = {
 export const COUPON_STATUS_MAP: Record<string, string> = {
   unused: '未使用',
   used: '已使用',
-  expired: '已过期'
+  expired: '已过期',
 } as const
 
 /**
@@ -173,7 +173,7 @@ export const COUPON_STATUS_MAP: Record<string, string> = {
 export const INSURANCE_STATUS_MAP: Record<string, string> = {
   active: '有效',
   expired: '已过期',
-  cancelled: '已取消'
+  cancelled: '已取消',
 } as const
 
 /**
@@ -183,7 +183,7 @@ export const VIOLATION_STATUS_MAP: Record<string, string> = {
   pending: '待处理',
   processing: '处理中',
   completed: '已处理',
-  appealing: '申诉中'
+  appealing: '申诉中',
 } as const
 
 /**
@@ -193,7 +193,7 @@ export const MAINTENANCE_TYPE_MAP: Record<string, string> = {
   regular: '常规保养',
   major: '大保养',
   repair: '维修',
-  inspection: '检查'
+  inspection: '检查',
 } as const
 
 /**
@@ -203,7 +203,7 @@ export const MAINTENANCE_STATUS_MAP: Record<string, string> = {
   scheduled: '已预约',
   in_progress: '进行中',
   completed: '已完成',
-  cancelled: '已取消'
+  cancelled: '已取消',
 } as const
 
 /**
@@ -215,7 +215,7 @@ export const CAMPSITE_TYPE_MAP: Record<string, string> = {
   lakeside: '湖畔营地',
   mountain: '山地营地',
   beach: '海滨营地',
-  grassland: '草原营地'
+  grassland: '草原营地',
 } as const
 
 /**
@@ -229,7 +229,7 @@ export const CAMPSITE_FACILITY_MAP: Record<string, string> = {
   water: '供水',
   wifi: 'WiFi',
   restaurant: '餐厅',
-  shop: '商店'
+  shop: '商店',
 } as const
 
 /**
@@ -238,7 +238,7 @@ export const CAMPSITE_FACILITY_MAP: Record<string, string> = {
 export const TOUR_TYPE_MAP: Record<string, string> = {
   self_drive: '自驾游',
   group: '跟团游',
-  custom: '定制游'
+  custom: '定制游',
 } as const
 
 /**
@@ -247,7 +247,7 @@ export const TOUR_TYPE_MAP: Record<string, string> = {
 export const TOUR_DIFFICULTY_MAP: Record<string, string> = {
   easy: '简单',
   medium: '中等',
-  hard: '困难'
+  hard: '困难',
 } as const
 
 /**
@@ -256,7 +256,7 @@ export const TOUR_DIFFICULTY_MAP: Record<string, string> = {
 export const PERMISSION_TYPE_MAP: Record<string, string> = {
   menu: '菜单权限',
   button: '按钮权限',
-  api: 'API权限'
+  api: 'API权限',
 } as const
 
 /**
@@ -266,7 +266,7 @@ export const LOG_TYPE_MAP: Record<string, string> = {
   login: '登录日志',
   operation: '操作日志',
   error: '错误日志',
-  system: '系统日志'
+  system: '系统日志',
 } as const
 
 /**
@@ -280,7 +280,7 @@ export const LOG_MODULE_MAP: Record<string, string> = {
   role: '角色管理',
   permission: '权限管理',
   system: '系统管理',
-  backup: '备份管理'
+  backup: '备份管理',
 } as const
 
 /**
@@ -294,7 +294,7 @@ export const LOG_ACTION_MAP: Record<string, string> = {
   export: '导出',
   import: '导入',
   login: '登录',
-  logout: '登出'
+  logout: '登出',
 } as const
 
 /**
@@ -304,7 +304,7 @@ export const NOTIFICATION_TYPE_MAP: Record<string, string> = {
   system: '系统通知',
   order: '订单通知',
   payment: '支付通知',
-  promotion: '促销通知'
+  promotion: '促销通知',
 } as const
 
 /**
@@ -312,7 +312,7 @@ export const NOTIFICATION_TYPE_MAP: Record<string, string> = {
  */
 export const NOTIFICATION_STATUS_MAP: Record<string, string> = {
   unread: '未读',
-  read: '已读'
+  read: '已读',
 } as const
 
 /**
@@ -322,7 +322,7 @@ export const BLACKLIST_REASON_MAP: Record<string, string> = {
   fraud: '欺诈行为',
   complaint: '用户投诉',
   violation: '违规操作',
-  other: '其他原因'
+  other: '其他原因',
 } as const
 
 /**
@@ -331,7 +331,7 @@ export const BLACKLIST_REASON_MAP: Record<string, string> = {
 export const VEHICLE_TYPE_MAP: Record<string, string> = {
   c_type: '自行式C型',
   b_type: '自行式B型',
-  trailer: '拖挂式'
+  trailer: '拖挂式',
 } as const
 
 /**
@@ -340,7 +340,7 @@ export const VEHICLE_TYPE_MAP: Record<string, string> = {
 export const STORE_MAP: Record<number, string> = {
   1: '北京朝阳店',
   2: '上海浦东店',
-  3: '深圳南山店'
+  3: '深圳南山店',
 } as const
 
 /**
@@ -348,7 +348,7 @@ export const STORE_MAP: Record<number, string> = {
  */
 export const ROLE_STATUS_MAP: Record<string, string> = {
   active: '启用',
-  inactive: '禁用'
+  inactive: '禁用',
 } as const
 
 /**
@@ -356,7 +356,7 @@ export const ROLE_STATUS_MAP: Record<string, string> = {
  */
 export const ROLE_TYPE_MAP: Record<string, string> = {
   system: '系统角色',
-  custom: '自定义角色'
+  custom: '自定义角色',
 } as const
 
 /**
@@ -367,5 +367,5 @@ export const DATA_SCOPE_MAP: Record<string, string> = {
   custom: '自定义数据',
   dept: '本部门数据',
   dept_and_child: '本部门及下级数据',
-  self: '仅本人数据'
+  self: '仅本人数据',
 } as const

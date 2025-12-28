@@ -31,12 +31,7 @@
     </el-upload>
 
     <!-- 图片预览对话框 -->
-    <el-dialog
-      v-model="previewVisible"
-      title="图片预览"
-      width="800px"
-      append-to-body
-    >
+    <el-dialog v-model="previewVisible" title="图片预览" width="800px" append-to-body>
       <img :src="previewUrl" alt="预览图片" style="width: 100%; display: block" />
     </el-dialog>
   </div>
@@ -51,17 +46,17 @@ import { readAsDataUrl } from '@/utils/file'
 
 // Props 定义
 interface Props {
-  modelValue?: string[]           // v-model 绑定的图片 URL 数组
-  uploadUrl?: string              // 上传接口地址
+  modelValue?: string[] // v-model 绑定的图片 URL 数组
+  uploadUrl?: string // 上传接口地址
   headers?: Record<string, string> // 上传请求头
-  data?: Record<string, any>      // 上传额外参数
-  multiple?: boolean              // 是否支持多选
-  limit?: number                  // 最大上传数量
-  maxSize?: number                // 单个文件最大大小（MB）
-  accept?: string                 // 接受的文件类型
-  disabled?: boolean              // 是否禁用
-  compress?: boolean              // 是否压缩图片
-  compressQuality?: number        // 压缩质量 0-1
+  data?: Record<string, any> // 上传额外参数
+  multiple?: boolean // 是否支持多选
+  limit?: number // 最大上传数量
+  maxSize?: number // 单个文件最大大小（MB）
+  accept?: string // 接受的文件类型
+  disabled?: boolean // 是否禁用
+  compress?: boolean // 是否压缩图片
+  compressQuality?: number // 压缩质量 0-1
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -81,9 +76,9 @@ const props = withDefaults(defineProps<Props>(), {
 // Emits 定义
 const emit = defineEmits<{
   'update:modelValue': [value: string[]]
-  'change': [urls: string[]]
-  'success': [response: any, file: UploadFile]
-  'error': [error: Error, file: UploadFile]
+  change: [urls: string[]]
+  success: [response: any, file: UploadFile]
+  error: [error: Error, file: UploadFile]
 }>()
 
 // 文件列表
@@ -125,7 +120,7 @@ const mockUploadRequest = async (options: UploadRequestOptions) => {
 // 监听 modelValue 变化，同步到 fileList
 watch(
   () => props.modelValue,
-  (newVal) => {
+  newVal => {
     if (!newVal || newVal.length === 0) {
       fileList.value = []
       return
@@ -143,7 +138,7 @@ watch(
 )
 
 // 上传前校验
-const handleBeforeUpload: UploadProps['beforeUpload'] = async (rawFile) => {
+const handleBeforeUpload: UploadProps['beforeUpload'] = async rawFile => {
   // 文件类型校验
   const acceptTypes = props.accept.split(',')
   if (!acceptTypes.includes(rawFile.type)) {
@@ -177,7 +172,7 @@ const compressImage = (file: File, quality: number): Promise<File> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
     reader.readAsDataURL(file)
-    reader.onload = (e) => {
+    reader.onload = e => {
       const img = new Image()
       img.src = e.target?.result as string
       img.onload = () => {
@@ -199,7 +194,7 @@ const compressImage = (file: File, quality: number): Promise<File> => {
         ctx.drawImage(img, 0, 0, width, height)
 
         canvas.toBlob(
-          (blob) => {
+          blob => {
             if (blob) {
               const compressedFile = new File([blob], file.name, {
                 type: file.type,
@@ -236,9 +231,7 @@ const handleSuccess: UploadProps['onSuccess'] = (response, file) => {
   }
 
   // 提取所有已上传的图片 URL
-  const urls = fileList.value
-    .filter(f => f.status === 'success' && f.url)
-    .map(f => f.url!)
+  const urls = fileList.value.filter(f => f.status === 'success' && f.url).map(f => f.url!)
 
   emit('update:modelValue', urls)
   emit('change', urls)
@@ -258,7 +251,7 @@ const handleExceed: UploadProps['onExceed'] = () => {
 }
 
 // 删除图片
-const handleRemove: UploadProps['onRemove'] = (file) => {
+const handleRemove: UploadProps['onRemove'] = file => {
   const urls = fileList.value
     .filter(f => f.uid !== file.uid && f.status === 'success' && f.url)
     .map(f => f.url!)
@@ -268,7 +261,7 @@ const handleRemove: UploadProps['onRemove'] = (file) => {
 }
 
 // 预览图片
-const handlePreview: UploadProps['onPreview'] = (file) => {
+const handlePreview: UploadProps['onPreview'] = file => {
   previewUrl.value = file.url || ''
   previewVisible.value = true
 }

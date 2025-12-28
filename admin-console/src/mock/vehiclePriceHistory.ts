@@ -46,9 +46,9 @@ const priceHistoryStore: VehiclePriceHistory[] = [
     priceSource: 'calculated',
     calculationParams: {
       targetAnnualReturn: 0.03,
-      residualValueRate: 0.30,
-      annualOperatingRate: 0.30,
-      operatingCostRate: 0.40,
+      residualValueRate: 0.3,
+      annualOperatingRate: 0.3,
+      operatingCostRate: 0.4,
       conditionPremium: 1.15,
       calculatedAt: '2024-03-10 09:15:00',
     },
@@ -62,12 +62,14 @@ let nextId = 4
 /**
  * 获取车辆价格历史记录
  */
-export const mockGetVehiclePriceHistory = (vehicleId: number): Promise<{
+export const mockGetVehiclePriceHistory = (
+  vehicleId: number
+): Promise<{
   code: number
   message: string
   data: VehiclePriceHistory[]
 }> => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const history = priceHistoryStore
         .filter(h => h.vehicleId === vehicleId)
@@ -85,25 +87,29 @@ export const mockGetVehiclePriceHistory = (vehicleId: number): Promise<{
 /**
  * 创建价格历史记录
  */
-export const mockCreatePriceHistory = (data: Omit<VehiclePriceHistory, 'id' | 'createdAt'>): Promise<{
+export const mockCreatePriceHistory = (
+  data: Omit<VehiclePriceHistory, 'id' | 'createdAt'>
+): Promise<{
   code: number
   message: string
   data: VehiclePriceHistory
 }> => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const newHistory: VehiclePriceHistory = {
         ...data,
         id: nextId++,
-        createdAt: new Date().toLocaleString('zh-CN', {
-          year: 'numeric',
-          month: '2-digit',
-          day: '2-digit',
-          hour: '2-digit',
-          minute: '2-digit',
-          second: '2-digit',
-          hour12: false,
-        }).replace(/\//g, '-'),
+        createdAt: new Date()
+          .toLocaleString('zh-CN', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false,
+          })
+          .replace(/\//g, '-'),
       }
 
       priceHistoryStore.push(newHistory)
@@ -130,17 +136,19 @@ export const mockGetPriceHistoryStats = (): Promise<{
     avgPriceChange: number
   }
 }> => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const uniqueVehicles = new Set(priceHistoryStore.map(h => h.vehicleId))
       const recentChanges = priceHistoryStore
         .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
         .slice(0, 10)
 
-      const totalPriceChange = priceHistoryStore.reduce((sum, h) => sum + Math.abs(h.priceChange), 0)
-      const avgPriceChange = priceHistoryStore.length > 0
-        ? Math.round(totalPriceChange / priceHistoryStore.length)
-        : 0
+      const totalPriceChange = priceHistoryStore.reduce(
+        (sum, h) => sum + Math.abs(h.priceChange),
+        0
+      )
+      const avgPriceChange =
+        priceHistoryStore.length > 0 ? Math.round(totalPriceChange / priceHistoryStore.length) : 0
 
       resolve({
         code: 200,
@@ -169,18 +177,20 @@ export const mockBatchCreatePriceHistory = (
     records: VehiclePriceHistory[]
   }
 }> => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const createdRecords: VehiclePriceHistory[] = []
-      const now = new Date().toLocaleString('zh-CN', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: false,
-      }).replace(/\//g, '-')
+      const now = new Date()
+        .toLocaleString('zh-CN', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: false,
+        })
+        .replace(/\//g, '-')
 
       records.forEach(record => {
         const newHistory: VehiclePriceHistory = {

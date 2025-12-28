@@ -1,8 +1,6 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="vehicle-insurance-container">
-    
-
     <StatsCard :stats="statsConfig" />
 
     <SearchForm
@@ -23,15 +21,13 @@
       @current-change="handleCurrentChange"
     >
       <template #insuranceType="{ row }">
-        <el-tag :type="(getInsuranceTypeTag(row.insuranceType)) as any" size="small">
+        <el-tag :type="getInsuranceTypeTag(row.insuranceType) as any" size="small">
           {{ getInsuranceTypeLabel(row.insuranceType) }}
         </el-tag>
       </template>
-      <template #premium="{ row }">
-        ¥{{ row.premium.toLocaleString() }}
-      </template>
+      <template #premium="{ row }"> ¥{{ row.premium.toLocaleString() }} </template>
       <template #status="{ row }">
-        <el-tag :type="(getStatusTag(row.status)) as any" size="small">
+        <el-tag :type="getStatusTag(row.status) as any" size="small">
           {{ getInsuranceStatusLabel(row.status) }}
         </el-tag>
       </template>
@@ -47,11 +43,7 @@
       @submit="handleSubmit"
     />
 
-    <el-dialog
-      v-model="detailDialogVisible"
-      title="保险记录详情"
-      width="800px"
-    >
+    <el-dialog v-model="detailDialogVisible" title="保险记录详情" width="800px">
       <el-descriptions :column="2" border v-if="currentRecord">
         <el-descriptions-item label="车牌号">
           {{ currentRecord.vehicleNumber }}
@@ -60,12 +52,12 @@
           {{ currentRecord.modelName }}
         </el-descriptions-item>
         <el-descriptions-item label="保险类型">
-          <el-tag :type="(getInsuranceTypeTag(currentRecord.insuranceType)) as any" size="small">
+          <el-tag :type="getInsuranceTypeTag(currentRecord.insuranceType) as any" size="small">
             {{ getInsuranceTypeLabel(currentRecord.insuranceType) }}
           </el-tag>
         </el-descriptions-item>
         <el-descriptions-item label="保险状态">
-          <el-tag :type="(getStatusTag(currentRecord.status)) as any" size="small">
+          <el-tag :type="getStatusTag(currentRecord.status) as any" size="small">
             {{ getInsuranceStatusLabel(currentRecord.status) }}
           </el-tag>
         </el-descriptions-item>
@@ -84,7 +76,7 @@
         <el-descriptions-item label="保费">
           ¥{{ currentRecord.premium.toLocaleString() }}
         </el-descriptions-item>
-    // @ts-ignore
+        // @ts-ignore
         <el-descriptions-item label="保额">
           ¥{{ currentRecord.coverageAmount?.toLocaleString() }}
         </el-descriptions-item>
@@ -148,7 +140,7 @@ const {
   handleReset,
   handleSizeChange,
   handleCurrentChange,
-  refresh
+  refresh,
 } = useListPage<InsuranceRecord>(getInsuranceRecords, {
   vehicleNumber: '',
   insuranceType: '',
@@ -298,7 +290,7 @@ const dialogTitle = ref('新增保险记录')
 const isEdit = ref(false)
 const submitLoading = ref(false)
 
-  // @ts-ignore
+// @ts-ignore
 const formData = reactive({
   id: 0,
   vehicleId: undefined as number | null,
@@ -424,27 +416,13 @@ const formFields: FormField[] = [
 ]
 
 const formRules = {
-  vehicleId: [
-    { required: true, message: '请选择车辆', trigger: 'change' },
-  ],
-  insuranceType: [
-    { required: true, message: '请选择保险类型', trigger: 'change' },
-  ],
-  insuranceCompany: [
-    { required: true, message: '请输入保险公司', trigger: 'blur' },
-  ],
-  policyNumber: [
-    { required: true, message: '请输入保单号', trigger: 'blur' },
-  ],
-  startDate: [
-    { required: true, message: '请选择生效日期', trigger: 'change' },
-  ],
-  endDate: [
-    { required: true, message: '请选择到期日期', trigger: 'change' },
-  ],
-  premium: [
-    { required: true, message: '请输入保费', trigger: 'blur' },
-  ],
+  vehicleId: [{ required: true, message: '请选择车辆', trigger: 'change' }],
+  insuranceType: [{ required: true, message: '请选择保险类型', trigger: 'change' }],
+  insuranceCompany: [{ required: true, message: '请输入保险公司', trigger: 'blur' }],
+  policyNumber: [{ required: true, message: '请输入保单号', trigger: 'blur' }],
+  startDate: [{ required: true, message: '请选择生效日期', trigger: 'change' }],
+  endDate: [{ required: true, message: '请选择到期日期', trigger: 'change' }],
+  premium: [{ required: true, message: '请输入保费', trigger: 'blur' }],
 }
 
 // 详情对话框
@@ -452,7 +430,7 @@ const detailDialogVisible = ref(false)
 const currentRecord = ref<InsuranceRecord | null>(null)
 
 // 加载统计数据
-  // @ts-ignore
+// @ts-ignore
 const loadStats = async () => {
   try {
     const res = await getInsuranceStats()
@@ -484,7 +462,7 @@ function handleCreate() {
   dialogVisible.value = true
 }
 
-  // @ts-ignore
+// @ts-ignore
 // 查看保险记录
 async function handleView(row: InsuranceRecord) {
   try {
@@ -555,10 +533,10 @@ async function handleSubmit() {
       startDate: formData.startDate,
       endDate: formData.endDate,
       premium: formData.premium,
-    // @ts-ignore
+      // @ts-ignore
       coverageAmount: formData.coverageAmount,
       coverageItems: formData.coverageItems,
-    // @ts-ignore
+      // @ts-ignore
       remark: formData.remark,
     }
 

@@ -86,5 +86,5 @@ export const JZQ_CONFIG: JZQConfig = {
   appSecret: import.meta.env.VITE_JZQ_APP_SECRET || 'd96a65d025959c33e719e88ee475c1c8',
   companyName: import.meta.env.VITE_JZQ_COMPANY_NAME || '深圳市叨叨网络科技有限公司',
   businessLicense: import.meta.env.VITE_JZQ_BUSINESS_LICENSE || '91440300MA5GU5657U',
-  email: import.meta.env.VITE_JZQ_EMAIL || 'szdd@bccto.me'
+  email: import.meta.env.VITE_JZQ_EMAIL || 'szdd@bccto.me',
 }

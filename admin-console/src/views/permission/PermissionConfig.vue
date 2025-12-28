@@ -1,10 +1,13 @@
 <!-- 权限配置页面 -->
 <template>
   <div class="permission-config-container">
-    
-
     <!-- 搜索表单 -->
-    <SearchForm v-model="searchParams" :fields="searchFields" @search="handleSearch" @reset="handleReset" />
+    <SearchForm
+      v-model="searchParams"
+      :fields="searchFields"
+      @search="handleSearch"
+      @reset="handleReset"
+    />
 
     <!-- 数据表格 -->
     <DataTable
@@ -23,10 +26,7 @@
       </template>
 
       <template #enabled="{ row }">
-        <el-switch
-          v-model="row.enabled"
-          @change="handleToggleEnabled(row)"
-        />
+        <el-switch v-model="row.enabled" @change="handleToggleEnabled(row)" />
       </template>
 
       <template #actions="{ row }">
@@ -35,18 +35,8 @@
     </DataTable>
 
     <!-- 编辑对话框 -->
-    <el-dialog
-      v-model="dialogVisible"
-      title="编辑权限"
-      width="600px"
-      @close="handleDialogClose"
-    >
-      <el-form
-        ref="formRef"
-        :model="formData"
-        :rules="formRules"
-        label-width="100px"
-      >
+    <el-dialog v-model="dialogVisible" title="编辑权限" width="600px" @close="handleDialogClose">
+      <el-form ref="formRef" :model="formData" :rules="formRules" label-width="100px">
         <el-form-item label="权限名称" prop="name">
           <el-input v-model="formData.name" placeholder="请输入权限名称" />
         </el-form-item>
@@ -68,9 +58,7 @@
 
       <template #footer>
         <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" :loading="submitLoading" @click="handleSubmit">
-          保存
-        </el-button>
+        <el-button type="primary" :loading="submitLoading" @click="handleSubmit"> 保存 </el-button>
       </template>
     </el-dialog>
   </div>
@@ -220,7 +208,7 @@ const handleEdit = (row: Permission) => {
 const handleSubmit = async () => {
   if (!formRef.value) return
 
-  await formRef.value.validate(async (valid) => {
+  await formRef.value.validate(async valid => {
     if (!valid) return
 
     submitLoading.value = true

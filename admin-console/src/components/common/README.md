@@ -5,6 +5,7 @@
 本目录包含 **17个** 高度可复用的通用组件，用于快速构建管理后台页面。
 
 ### 基础组件（5个）
+
 1. **PageHeader** - 页面标题组件
 2. **StatsCard** - 统计卡片组件
 3. **SearchForm** - 动态搜索表单
@@ -12,6 +13,7 @@
 5. **FormDialog** - 表单对话框（开发中）
 
 ### 业务组件（12个）✨ 新增
+
 6. **ImageUploader** - 图片上传组件
 7. **ImageViewer** - 图片查看器组件
 8. **ApprovalFlow** - 审批流程组件
@@ -30,10 +32,12 @@
 **用途**: 统一的页面标题和描述展示
 
 **Props**:
+
 - `title` (string, required): 页面标题
 - `description` (string, optional): 页面描述
 
 **使用示例**:
+
 ```vue
 <PageHeader title="违章管理" description="管理车辆违章记录、违章处理和罚款缴纳" />
 ```
@@ -45,22 +49,25 @@
 **用途**: 展示统计数据卡片，支持图标、数值格式化
 
 **Props**:
+
 - `stats` (StatItem[], required): 统计数据数组
 - `span` (number, optional, default: 6): 每个卡片占据的栅格数
 - `iconSize` (number, optional, default: 40): 图标大小
 
 **StatItem 类型**:
+
 ```typescript
 interface StatItem {
-  label: string              // 标签文本
-  value: number | string     // 数值
-  icon: Component            // Element Plus 图标组件
-  color: string              // 图标颜色
-  format?: 'number' | 'currency' | 'percent'  // 数值格式化方式
+  label: string // 标签文本
+  value: number | string // 数值
+  icon: Component // Element Plus 图标组件
+  color: string // 图标颜色
+  format?: 'number' | 'currency' | 'percent' // 数值格式化方式
 }
 ```
 
 **使用示例**:
+
 ```vue
 <script setup>
 import { computed } from 'vue'
@@ -70,7 +77,7 @@ import StatsCard from '@/components/common/StatsCard.vue'
 const stats = reactive({
   pending: 10,
   completed: 50,
-  totalAmount: 12500
+  totalAmount: 12500,
 })
 
 const statsConfig = computed(() => [
@@ -91,7 +98,7 @@ const statsConfig = computed(() => [
     value: stats.totalAmount,
     icon: Money,
     color: '#409eff',
-    format: 'currency',  // 自动格式化为 ¥12,500
+    format: 'currency', // 自动格式化为 ¥12,500
   },
 ])
 </script>
@@ -108,23 +115,27 @@ const statsConfig = computed(() => [
 **用途**: 根据配置动态生成搜索表单，支持多种字段类型
 
 **Props**:
+
 - `modelValue` (Record<string, any>, required): 表单数据对象
 - `fields` (SearchField[], required): 字段配置数组
 
 **Events**:
+
 - `update:modelValue`: 表单数据更新
 - `search`: 点击搜索按钮
 - `reset`: 点击重置按钮
 
 **SearchField 类型**:
+
 ```typescript
 interface SearchField {
-  prop: string                    // 字段名
-  label: string                   // 标签文本
-  type: 'input' | 'select' | 'daterange' | 'date'  // 字段类型
-  placeholder?: string            // 占位符
-  width?: string                  // 字段宽度
-  options?: Array<{               // select 类型的选项
+  prop: string // 字段名
+  label: string // 标签文本
+  type: 'input' | 'select' | 'daterange' | 'date' // 字段类型
+  placeholder?: string // 占位符
+  width?: string // 字段宽度
+  options?: Array<{
+    // select 类型的选项
     label: string
     value: string | number
   }>
@@ -132,6 +143,7 @@ interface SearchField {
 ```
 
 **使用示例**:
+
 ```vue
 <script setup>
 import SearchForm from '@/components/common/SearchForm.vue'
@@ -139,7 +151,7 @@ import SearchForm from '@/components/common/SearchForm.vue'
 const searchForm = reactive({
   vehicleNumber: '',
   status: '',
-  dateRange: []
+  dateRange: [],
 })
 
 const searchFields = [
@@ -196,6 +208,7 @@ const handleReset = () => {
 **用途**: 功能完整的数据表格，支持分页、操作列、工具栏
 
 **Props**:
+
 - `data` (any[], required): 表格数据
 - `columns` (TableColumn[], required): 列配置
 - `loading` (boolean, optional): 加载状态
@@ -205,10 +218,12 @@ const handleReset = () => {
 - `pagination` (Pagination, optional): 分页配置
 
 **Events**:
+
 - `size-change`: 每页条数改变
 - `current-change`: 当前页改变
 
 **类型定义**:
+
 ```typescript
 interface TableColumn {
   prop: string
@@ -217,14 +232,14 @@ interface TableColumn {
   minWidth?: string | number
   fixed?: 'left' | 'right'
   showOverflowTooltip?: boolean
-  slot?: string  // 自定义插槽名称
+  slot?: string // 自定义插槽名称
 }
 
 interface TableAction {
   label: string
   type?: 'primary' | 'success' | 'warning' | 'danger' | 'info'
   onClick: (row: any) => void
-  show?: (row: any) => boolean  // 条件显示
+  show?: (row: any) => boolean // 条件显示
 }
 
 interface ToolbarButton {
@@ -243,6 +258,7 @@ interface Pagination {
 ```
 
 **使用示例**:
+
 ```vue
 <script setup>
 import { Plus, Download } from '@element-plus/icons-vue'
@@ -284,32 +300,32 @@ const tableActions = [
   {
     label: '查看',
     type: 'primary',
-    onClick: (row) => console.log('查看', row),
+    onClick: row => console.log('查看', row),
   },
   {
     label: '编辑',
     type: 'primary',
-    onClick: (row) => console.log('编辑', row),
+    onClick: row => console.log('编辑', row),
   },
   {
     label: '删除',
     type: 'danger',
-    onClick: (row) => console.log('删除', row),
+    onClick: row => console.log('删除', row),
   },
   {
     label: '审核',
     type: 'success',
-    onClick: (row) => console.log('审核', row),
-    show: (row) => row.status === 'pending',  // 只在待审核时显示
+    onClick: row => console.log('审核', row),
+    show: row => row.status === 'pending', // 只在待审核时显示
   },
 ]
 
-const handleSizeChange = (size) => {
+const handleSizeChange = size => {
   pagination.pageSize = size
   loadData()
 }
 
-const handleCurrentChange = (page) => {
+const handleCurrentChange = page => {
   pagination.page = page
   loadData()
 }
@@ -356,6 +372,7 @@ const handleCurrentChange = (page) => {
 **用途**: 多图上传、图片压缩、预览管理
 
 **Props**:
+
 - `modelValue` (string[], optional): v-model 绑定的图片 URL 数组
 - `uploadUrl` (string, optional, default: '/api/v1/upload/image'): 上传接口地址
 - `multiple` (boolean, optional, default: true): 是否支持多选
@@ -367,30 +384,27 @@ const handleCurrentChange = (page) => {
 - `compressQuality` (number, optional, default: 0.8): 压缩质量 0-1
 
 **Events**:
+
 - `update:modelValue`: 图片 URL 数组更新
 - `change`: 图片列表变化
 - `success`: 上传成功
 - `error`: 上传失败
 
 **使用示例**:
+
 ```vue
 <script setup>
 import ImageUploader from '@/components/common/ImageUploader.vue'
 
 const vehicleImages = ref([])
 
-const handleImagesChange = (urls) => {
+const handleImagesChange = urls => {
   console.log('图片列表:', urls)
 }
 </script>
 
 <template>
-  <ImageUploader
-    v-model="vehicleImages"
-    :limit="12"
-    :max-size="5"
-    @change="handleImagesChange"
-  >
+  <ImageUploader v-model="vehicleImages" :limit="12" :max-size="5" @change="handleImagesChange">
     <template #tip>
       <span>请上传车辆照片，至少12张，展示车辆外观、内饰、配置等</span>
     </template>
@@ -405,6 +419,7 @@ const handleImagesChange = (urls) => {
 **用途**: 图片预览、缩放、旋转、对比、下载
 
 **Props**:
+
 - `modelValue` (boolean, required): 是否显示对话框
 - `images` (string[], required): 图片 URL 数组
 - `initialIndex` (number, optional, default: 0): 初始显示的图片索引
@@ -414,11 +429,13 @@ const handleImagesChange = (urls) => {
 - `dialogWidth` (string, optional, default: '90%'): 对话框宽度
 
 **Events**:
+
 - `update:modelValue`: 对话框显示状态更新
 - `change`: 当前图片索引变化
 - `close`: 对话框关闭
 
 **功能特性**:
+
 - ✅ 图片缩放（放大/缩小/重置）
 - ✅ 图片旋转（顺时针/逆时针）
 - ✅ 图片拖拽（放大后可拖拽）
@@ -429,6 +446,7 @@ const handleImagesChange = (urls) => {
 - ✅ 图片下载
 
 **使用示例**:
+
 ```vue
 <script setup>
 import ImageViewer from '@/components/common/ImageViewer.vue'
@@ -441,7 +459,7 @@ const vehicleImages = ref([
 ])
 const currentImageIndex = ref(0)
 
-const handleViewImage = (index) => {
+const handleViewImage = index => {
   currentImageIndex.value = index
   viewerVisible.value = true
 }
@@ -465,6 +483,7 @@ const handleViewImage = (index) => {
 **用途**: 审批流程展示、审批操作、时效提醒
 
 **Props**:
+
 - `steps` (ApprovalStep[], required): 审批流程步骤
 - `currentStepIndex` (number, optional, default: -1): 当前步骤索引
 - `showApprovalActions` (boolean, optional, default: false): 是否显示审批操作区
@@ -473,26 +492,30 @@ const handleViewImage = (index) => {
 - `uploadUrl` (string, optional): 附件上传地址
 
 **Events**:
+
 - `submit`: 提交审批（返回审批结果、意见、附件）
 
 **ApprovalStep 接口**:
+
 ```typescript
 interface ApprovalStep {
-  name: string                    // 步骤名称
+  name: string // 步骤名称
   status: 'pending' | 'approved' | 'rejected' | 'returned' | 'processing'
-  operator?: string               // 操作人
-  operatorAvatar?: string         // 操作人头像
-  timestamp?: string              // 操作时间
-  comment?: string                // 审批意见
-  attachments?: Array<{           // 附件
+  operator?: string // 操作人
+  operatorAvatar?: string // 操作人头像
+  timestamp?: string // 操作时间
+  comment?: string // 审批意见
+  attachments?: Array<{
+    // 附件
     name: string
     url: string
   }>
-  deadline?: string               // 截止时间
+  deadline?: string // 截止时间
 }
 ```
 
 **使用示例**:
+
 ```vue
 <script setup>
 import ApprovalFlow from '@/components/common/ApprovalFlow.vue'
@@ -519,7 +542,7 @@ const approvalSteps = ref([
   },
 ])
 
-const handleApprovalSubmit = (data) => {
+const handleApprovalSubmit = data => {
   console.log('审批结果:', data)
   // 调用 API 提交审批
 }
@@ -543,6 +566,7 @@ const handleApprovalSubmit = (data) => {
 **用途**: Excel/CSV/PDF 导出、字段选择、进度显示
 
 **Props**:
+
 - `label` (string, optional, default: '导出'): 按钮文本
 - `type` (string, optional, default: 'default'): 按钮类型
 - `icon` (Component, optional): 按钮图标
@@ -559,11 +583,13 @@ const handleApprovalSubmit = (data) => {
 - `fetchAllData` (() => Promise<any[]>, optional): 获取全部数据的方法
 
 **Events**:
+
 - `before-export`: 导出前触发
 - `success`: 导出成功
 - `error`: 导出失败
 
 **功能特性**:
+
 - ✅ 支持 Excel (.xlsx) 导出
 - ✅ 支持 CSV (.csv) 导出
 - ✅ 支持 PDF (.pdf) 导出（需额外配置）
@@ -573,6 +599,7 @@ const handleApprovalSubmit = (data) => {
 - ✅ 大数据分批导出
 
 **使用示例**:
+
 ```vue
 <script setup>
 import FileExport from '@/components/common/FileExport.vue'
@@ -597,7 +624,7 @@ const fetchAllOrders = async () => {
   return response.data.list
 }
 
-const handleExportSuccess = (data) => {
+const handleExportSuccess = data => {
   console.log('导出成功:', data)
 }
 </script>
@@ -620,6 +647,7 @@ const handleExportSuccess = (data) => {
 ```
 
 **依赖安装**:
+
 ```bash
 npm install xlsx
 ```
@@ -631,22 +659,24 @@ npm install xlsx
 **用途**: 订单状态流转、托管申请流程、众筹项目进度展示
 
 **Props**:
+
 - `steps` (TimelineStep[], required): 时间线步骤数组
 - `reverse` (boolean, optional, default: false): 是否倒序显示
 
 **TimelineStep 接口**:
+
 ```typescript
 interface TimelineStep {
-  name: string                    // 步骤名称
+  name: string // 步骤名称
   status: 'pending' | 'current' | 'completed' | 'failed' | 'cancelled'
-  timestamp?: string              // 时间戳
-  operator?: string               // 操作人
-  operatorAvatar?: string         // 操作人头像
-  description?: string            // 步骤描述
-  details?: StepDetail[]          // 步骤详情
-  extra?: StepExtra               // 附加信息
-  estimatedTime?: string          // 预计时间（待处理状态）
-  duration?: string               // 耗时（已完成状态）
+  timestamp?: string // 时间戳
+  operator?: string // 操作人
+  operatorAvatar?: string // 操作人头像
+  description?: string // 步骤描述
+  details?: StepDetail[] // 步骤详情
+  extra?: StepExtra // 附加信息
+  estimatedTime?: string // 预计时间（待处理状态）
+  duration?: string // 耗时（已完成状态）
 }
 
 interface StepDetail {
@@ -662,6 +692,7 @@ interface StepExtra {
 ```
 
 **功能特性**:
+
 - ✅ 多种状态展示（待处理、进行中、已完成、失败、已取消）
 - ✅ 时间线可视化
 - ✅ 操作人信息展示
@@ -671,6 +702,7 @@ interface StepExtra {
 - ✅ 空状态处理
 
 **使用示例**:
+
 ```vue
 <script setup>
 import StatusTimeline from '@/components/common/StatusTimeline.vue'
@@ -724,6 +756,7 @@ const orderSteps = ref([
 **用途**: 工作台数据可视化、财务报表、统计图表展示
 
 **Props**:
+
 - `title` (string, required): 卡片标题
 - `subtitle` (string, optional): 卡片副标题
 - `icon` (Component, optional): 标题图标
@@ -739,15 +772,18 @@ const orderSteps = ref([
 - `autoResize` (boolean, optional, default: true): 是否自动调整大小
 
 **Events**:
+
 - `refresh`: 点击刷新按钮
 - `chart-ready`: 图表初始化完成（返回 ECharts 实例）
 
 **Slots**:
+
 - `extra`: 头部右侧额外内容
 - `chart`: 自定义图表内容（chartType='custom' 时使用）
 - `footer`: 卡片底部内容
 
 **功能特性**:
+
 - ✅ 基于 ECharts 5.x
 - ✅ 支持柱状图、折线图、饼图、散点图、雷达图、仪表盘
 - ✅ 自动响应容器大小变化
@@ -756,6 +792,7 @@ const orderSteps = ref([
 - ✅ 支持自定义图表内容
 
 **使用示例**:
+
 ```vue
 <script setup>
 import { ref, computed } from 'vue'
@@ -827,6 +864,7 @@ const handleRefresh = () => {
 ```
 
 **依赖安装**:
+
 ```bash
 npm install echarts
 ```
@@ -838,6 +876,7 @@ npm install echarts
 **用途**: 社区内容管理、知识库、营销活动详情、公告编辑
 
 **Props**:
+
 - `modelValue` (string, optional): v-model 绑定的 HTML 内容
 - `height` (string, optional, default: '400px'): 编辑器高度
 - `minHeight` (string, optional, default: '200px'): 最小高度
@@ -848,16 +887,19 @@ npm install echarts
 - `uploadUrl` (string, optional, default: '/api/v1/upload/image'): 图片上传地址
 
 **Events**:
+
 - `update:modelValue`: 内容更新
 - `change`: 内容变化
 - `blur`: 失去焦点
 
 **Methods** (通过 ref 调用):
+
 - `setContent(html: string)`: 设置内容
 - `getContent()`: 获取内容
 - `clear()`: 清空内容
 
 **功能特性**:
+
 - ✅ 文本格式（粗体、斜体、下划线、删除线）
 - ✅ 标题（H1-H4）
 - ✅ 对齐方式（左对齐、居中、右对齐）
@@ -870,6 +912,7 @@ npm install echarts
 - ✅ 粘贴纯文本（自动过滤格式）
 
 **使用示例**:
+
 ```vue
 <script setup>
 import { ref } from 'vue'
@@ -878,7 +921,7 @@ import RichTextEditor from '@/components/common/RichTextEditor.vue'
 const content = ref('')
 const editorRef = ref()
 
-const handleContentChange = (html) => {
+const handleContentChange = html => {
   console.log('内容变化:', html)
 }
 
@@ -913,6 +956,7 @@ const handleClear = () => {
 ```
 
 **注意事项**:
+
 - 编辑器基于原生 `contenteditable` 实现，轻量级但功能完整
 - 粘贴内容会自动转换为纯文本，避免格式污染
 - 图片上传需要配置正确的 `uploadUrl` 和后端接口
@@ -925,6 +969,7 @@ const handleClear = () => {
 **用途**: 复杂列表页面的高级筛选功能，支持多种字段类型和自动搜索
 
 **Props**:
+
 - `title` (string, optional, default: '高级筛选'): 面板标题
 - `filters` (FilterConfig[], required): 筛选项配置
 - `modelValue` (Record<string, any>, optional): v-model 绑定的筛选值
@@ -941,22 +986,38 @@ const handleClear = () => {
 - `autoSearch` (boolean, optional, default: false): 是否自动搜索
 
 **Events**:
+
 - `update:modelValue`: 筛选值更新
 - `search`: 点击搜索按钮
 - `reset`: 点击重置按钮
 - `change`: 筛选值变化
 
 **FilterConfig 接口**:
+
 ```typescript
 interface FilterConfig {
-  prop: string                    // 字段名
-  label: string                   // 标签文本
-  type: 'input' | 'number' | 'select' | 'cascader' | 'date' | 'daterange' |
-        'time' | 'timerange' | 'datetime' | 'radio' | 'checkbox' | 'slider' | 'switch' | 'custom'
-  span?: number                   // 栅格占位
-  placeholder?: string            // 占位符
-  clearable?: boolean             // 是否可清空
-  options?: Array<{               // 选项列表
+  prop: string // 字段名
+  label: string // 标签文本
+  type:
+    | 'input'
+    | 'number'
+    | 'select'
+    | 'cascader'
+    | 'date'
+    | 'daterange'
+    | 'time'
+    | 'timerange'
+    | 'datetime'
+    | 'radio'
+    | 'checkbox'
+    | 'slider'
+    | 'switch'
+    | 'custom'
+  span?: number // 栅格占位
+  placeholder?: string // 占位符
+  clearable?: boolean // 是否可清空
+  options?: Array<{
+    // 选项列表
     label: string
     value: any
     disabled?: boolean
@@ -966,6 +1027,7 @@ interface FilterConfig {
 ```
 
 **功能特性**:
+
 - ✅ 支持14种字段类型（input、number、select、cascader、date、daterange、time、timerange、datetime、radio、checkbox、slider、switch、custom）
 - ✅ 可折叠面板
 - ✅ 自动搜索模式
@@ -974,6 +1036,7 @@ interface FilterConfig {
 - ✅ 表单验证支持
 
 **使用示例**:
+
 ```vue
 <script setup>
 import FilterPanel from '@/components/common/FilterPanel.vue'
@@ -1022,7 +1085,7 @@ const filterConfig = [
   },
 ]
 
-const handleSearch = (filters) => {
+const handleSearch = filters => {
   console.log('搜索参数:', filters)
   // 调用 API 搜索
 }
@@ -1050,6 +1113,7 @@ const handleReset = () => {
 **用途**: 列表页面的批量操作功能，支持全选、批量删除、批量审核等
 
 **Props**:
+
 - `selectedIds` (any[], optional): 选中的 ID 数组
 - `selectedRows` (any[], optional): 选中的行数据数组
 - `total` (number, optional, default: 0): 总数据量
@@ -1061,29 +1125,32 @@ const handleReset = () => {
 - `getItemLabel` ((row: any) => string, optional): 获取项目标签的方法
 
 **Events**:
+
 - `select-all`: 全选/取消全选
 - `clear-selection`: 清空选择
 - `action`: 执行操作
 
 **BatchAction 接口**:
+
 ```typescript
 interface BatchAction {
-  label: string                   // 按钮文本
-  command?: string                // 操作命令
+  label: string // 按钮文本
+  command?: string // 操作命令
   type?: 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'default'
-  icon?: Component                // 按钮图标
-  disabled?: boolean              // 是否禁用
-  confirm?: boolean               // 是否需要确认
-  confirmTitle?: string           // 确认对话框标题
-  confirmMessage?: string         // 确认对话框消息
+  icon?: Component // 按钮图标
+  disabled?: boolean // 是否禁用
+  confirm?: boolean // 是否需要确认
+  confirmTitle?: string // 确认对话框标题
+  confirmMessage?: string // 确认对话框消息
   confirmType?: 'warning' | 'info' | 'success' | 'danger'
-  showSelectedItems?: boolean     // 是否显示选中项
-  dropdown?: boolean              // 是否为下拉菜单
+  showSelectedItems?: boolean // 是否显示选中项
+  dropdown?: boolean // 是否为下拉菜单
   onClick?: (selectedIds: any[], selectedRows: any[]) => void | Promise<void>
 }
 ```
 
 **功能特性**:
+
 - ✅ 全选/取消全选
 - ✅ 选中数量显示
 - ✅ 批量操作按钮
@@ -1093,6 +1160,7 @@ interface BatchAction {
 - ✅ 自动禁用（未选中时）
 
 **使用示例**:
+
 ```vue
 <script setup>
 import { Delete, Check, Close } from '@element-plus/icons-vue'
@@ -1135,7 +1203,7 @@ const batchActions = [
   },
 ]
 
-const handleSelectAll = (selected) => {
+const handleSelectAll = selected => {
   console.log('全选:', selected)
   // 更新选中状态
 }
@@ -1165,6 +1233,7 @@ const handleClearSelection = () => {
 **用途**: 顶部导航栏的消息通知中心，支持多种通知类型和实时更新
 
 **Props**:
+
 - `notifications` (Notification[], optional): 通知列表
 - `tabs` (TabConfig[], optional): 标签页配置
 - `title` (string, optional, default: '通知中心'): 抽屉标题
@@ -1180,6 +1249,7 @@ const handleClearSelection = () => {
 - `refreshInterval` (number, optional, default: 30000): 刷新间隔（毫秒）
 
 **Events**:
+
 - `click`: 点击通知
 - `mark-read`: 标记已读
 - `mark-unread`: 标记未读
@@ -1190,19 +1260,21 @@ const handleClearSelection = () => {
 - `refresh`: 刷新通知
 
 **Notification 接口**:
+
 ```typescript
 interface Notification {
-  id: string | number           // 通知 ID
+  id: string | number // 通知 ID
   type: 'info' | 'success' | 'warning' | 'error' | 'message' | 'comment'
-  title: string                 // 通知标题
-  description: string           // 通知描述
-  time: string | Date           // 通知时间
-  read: boolean                 // 是否已读
-  data?: any                    // 附加数据
+  title: string // 通知标题
+  description: string // 通知描述
+  time: string | Date // 通知时间
+  read: boolean // 是否已读
+  data?: any // 附加数据
 }
 ```
 
 **功能特性**:
+
 - ✅ 未读数量徽章
 - ✅ 多标签页分类
 - ✅ 通知类型图标
@@ -1214,6 +1286,7 @@ interface Notification {
 - ✅ 自动刷新
 
 **使用示例**:
+
 ```vue
 <script setup>
 import NotificationBell from '@/components/common/NotificationBell.vue'
@@ -1237,18 +1310,18 @@ const notifications = ref([
   },
 ])
 
-const handleNotificationClick = (notification) => {
+const handleNotificationClick = notification => {
   console.log('点击通知:', notification)
   // 跳转到详情页
 }
 
-const handleMarkRead = (notification) => {
+const handleMarkRead = notification => {
   notification.read = true
   // 调用 API 标记已读
 }
 
 const handleMarkAllRead = () => {
-  notifications.value.forEach(n => n.read = true)
+  notifications.value.forEach(n => (n.read = true))
   // 调用 API 全部标记已读
 }
 </script>
@@ -1270,6 +1343,7 @@ const handleMarkAllRead = () => {
 **用途**: 基于权限控制的按钮组件，自动显示/隐藏/禁用按钮
 
 **Props**:
+
 - `permission` (string | string[], optional): 权限标识
 - `permissions` (string[], optional): 用户拥有的权限列表
 - `checkMode` ('some' | 'every', optional, default: 'some'): 权限检查模式
@@ -1290,10 +1364,12 @@ const handleMarkAllRead = () => {
 - `customCheck` ((permissions: string[]) => boolean, optional): 自定义权限检查函数
 
 **Events**:
+
 - `click`: 点击按钮
 - `permission-denied`: 权限不足
 
 **功能特性**:
+
 - ✅ 自动权限检查
 - ✅ 多权限支持（any/all）
 - ✅ 无权限时禁用或隐藏
@@ -1302,6 +1378,7 @@ const handleMarkAllRead = () => {
 - ✅ 支持按钮和链接两种模式
 
 **使用示例**:
+
 ```vue
 <script setup>
 import { Edit, Delete } from '@element-plus/icons-vue'
@@ -1379,6 +1456,7 @@ const handleDelete = () => {
 **用途**: 文章、订单、社区内容的评论列表展示和交互
 
 **Props**:
+
 - `comments` (Comment[], optional): 评论列表
 - `currentUser` (CommentUser, optional): 当前用户
 - `total` (number, optional, default: 0): 评论总数
@@ -1397,6 +1475,7 @@ const handleDelete = () => {
 - `allowReport` (boolean, optional, default: true): 是否允许举报
 
 **Events**:
+
 - `submit`: 提交评论
 - `reply`: 回复评论
 - `like`: 点赞评论
@@ -1407,22 +1486,24 @@ const handleDelete = () => {
 - `sort-change`: 排序变化
 
 **Comment 接口**:
+
 ```typescript
 interface Comment {
-  id: string | number           // 评论 ID
-  user: CommentUser             // 评论用户
-  content: string               // 评论内容
-  time: string | Date           // 评论时间
-  likeCount: number             // 点赞数
-  liked: boolean                // 是否已点赞
-  images?: string[]             // 图片附件
-  replyTo?: CommentUser         // 回复的用户
-  replies?: Comment[]           // 子评论
-  replyCount?: number           // 回复总数
+  id: string | number // 评论 ID
+  user: CommentUser // 评论用户
+  content: string // 评论内容
+  time: string | Date // 评论时间
+  likeCount: number // 点赞数
+  liked: boolean // 是否已点赞
+  images?: string[] // 图片附件
+  replyTo?: CommentUser // 回复的用户
+  replies?: Comment[] // 子评论
+  replyCount?: number // 回复总数
 }
 ```
 
 **功能特性**:
+
 - ✅ 评论发表
 - ✅ 评论回复（支持多级）
 - ✅ 点赞功能
@@ -1434,6 +1515,7 @@ interface Comment {
 - ✅ 用户徽章
 
 **使用示例**:
+
 ```vue
 <script setup>
 import CommentList from '@/components/common/CommentList.vue'
@@ -1477,7 +1559,7 @@ const comments = ref([
   },
 ])
 
-const handleSubmit = (content) => {
+const handleSubmit = content => {
   console.log('发表评论:', content)
   // 调用 API 发表评论
 }
@@ -1487,13 +1569,13 @@ const handleReply = (comment, content, parentComment) => {
   // 调用 API 回复评论
 }
 
-const handleLike = (comment) => {
+const handleLike = comment => {
   comment.liked = !comment.liked
   comment.likeCount += comment.liked ? 1 : -1
   // 调用 API 点赞
 }
 
-const handleDelete = (comment) => {
+const handleDelete = comment => {
   console.log('删除评论:', comment)
   // 调用 API 删除评论
 }
@@ -1591,12 +1673,14 @@ import DataTable from '@/components/common/DataTable.vue'
 ## 📊 重构效果对比
 
 ### 重构前
+
 - 单个页面: 800+ 行代码
 - Template 部分: 400+ 行
 - 大量重复的 UI 结构
 - 难以维护和修改
 
 ### 重构后
+
 - 单个页面: 500-600 行代码（减少 25-40%）
 - Template 部分: 150-200 行（减少 50%+）
 - 配置化开发，易于维护
@@ -1616,6 +1700,7 @@ import DataTable from '@/components/common/DataTable.vue'
 - ✅ 使用 `<el-card>` 作为容器
 
 **只在以下情况创建自定义组件**:
+
 - 需要在多个页面重复使用相同的 UI 结构
 - 需要封装复杂的业务逻辑
 - 需要统一的配置化接口
@@ -1623,6 +1708,7 @@ import DataTable from '@/components/common/DataTable.vue'
 ### 2. 组件职责单一
 
 每个组件只做一件事：
+
 - `PageHeader`: 只负责标题展示
 - `StatsCard`: 只负责统计卡片
 - `SearchForm`: 只负责搜索表单
@@ -1662,6 +1748,7 @@ import type { TableColumn, TableAction } from '@/components/common/DataTable.vue
 ## 📝 待重构页面清单
 
 ### Vehicle 模块（6个页面）
+
 - [x] VehicleViolations.vue (685行) - 已重构 ✅
 - [ ] VehicleInsurance.vue (767行) - 待重构
 - [ ] VehicleMaintenance.vue (830行) - 待重构
@@ -1670,6 +1757,7 @@ import type { TableColumn, TableAction } from '@/components/common/DataTable.vue
 - [ ] VehicleStatus.vue (722行) - 待重构
 
 ### 其他模块
+
 根据需要逐步重构其他模块的页面。
 
 ---

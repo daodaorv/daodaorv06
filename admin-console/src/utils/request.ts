@@ -2,7 +2,7 @@ import axios, {
   type AxiosInstance,
   type AxiosRequestConfig,
   type AxiosResponse,
-  type InternalAxiosRequestConfig
+  type InternalAxiosRequestConfig,
 } from 'axios'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { useUserStore } from '@/stores/user'
@@ -29,7 +29,7 @@ service.interceptors.request.use(
 
     return config
   },
-  (error) => {
+  error => {
     console.error('请求错误:', error)
     return Promise.reject(error)
   }
@@ -49,7 +49,7 @@ service.interceptors.response.use(
     ElMessage.error(message || '请求失败')
     return Promise.reject(new Error(message || '请求失败'))
   },
-  async (error) => {
+  async error => {
     const { response } = error
 
     if (response) {

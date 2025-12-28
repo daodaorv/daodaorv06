@@ -34,7 +34,7 @@ let mockSystemConfig: SystemConfig = {
 }
 
 export const mockGetSystemConfig = () => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       resolve({
         code: 200,
@@ -46,7 +46,7 @@ export const mockGetSystemConfig = () => {
 }
 
 export const mockUpdateSystemConfig = (data: UpdateSystemConfigParams) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       mockSystemConfig = { ...mockSystemConfig, ...data }
       resolve({
@@ -110,17 +110,17 @@ const mockSystemParams: SystemParam[] = [
 ]
 
 export const mockGetSystemParams = (params: SystemParamListParams) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       let filteredParams = [...mockSystemParams]
 
       if (params.category) {
-        filteredParams = filteredParams.filter((p) => p.category === params.category)
+        filteredParams = filteredParams.filter(p => p.category === params.category)
       }
 
       if (params.keyword) {
         filteredParams = filteredParams.filter(
-          (p) => p.name.includes(params.keyword!) || p.key.includes(params.keyword!)
+          p => p.name.includes(params.keyword!) || p.key.includes(params.keyword!)
         )
       }
 
@@ -143,7 +143,7 @@ export const mockGetSystemParams = (params: SystemParamListParams) => {
 }
 
 export const mockCreateSystemParam = (data: CreateSystemParamParams) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const newParam: SystemParam = {
         id: mockSystemParams.length + 1,
@@ -165,7 +165,7 @@ export const mockCreateSystemParam = (data: CreateSystemParamParams) => {
 export const mockUpdateSystemParam = (data: UpdateSystemParamParams) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      const index = mockSystemParams.findIndex((p) => p.id === data.id)
+      const index = mockSystemParams.findIndex(p => p.id === data.id)
       if (index > -1) {
         mockSystemParams[index] = {
           ...mockSystemParams[index],
@@ -189,7 +189,7 @@ export const mockUpdateSystemParam = (data: UpdateSystemParamParams) => {
 export const mockDeleteSystemParam = (id: number) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      const index = mockSystemParams.findIndex((p) => p.id === id)
+      const index = mockSystemParams.findIndex(p => p.id === id)
       if (index > -1) {
         mockSystemParams.splice(index, 1)
         resolve({
@@ -209,7 +209,7 @@ export const mockDeleteSystemParam = (id: number) => {
 export const mockResetSystemParam = (id: number) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      const index = mockSystemParams.findIndex((p) => p.id === id)
+      const index = mockSystemParams.findIndex(p => p.id === id)
       if (index > -1) {
         mockSystemParams[index].value = mockSystemParams[index].defaultValue
         mockSystemParams[index].updatedAt = new Date().toISOString()
@@ -261,20 +261,20 @@ const mockSystemAlerts: SystemAlert[] = [
 ]
 
 export const mockGetSystemAlerts = (params: SystemAlertListParams) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       let filteredAlerts = [...mockSystemAlerts]
 
       if (params.level) {
-        filteredAlerts = filteredAlerts.filter((a) => a.level === params.level)
+        filteredAlerts = filteredAlerts.filter(a => a.level === params.level)
       }
 
       if (params.type) {
-        filteredAlerts = filteredAlerts.filter((a) => a.type === params.type)
+        filteredAlerts = filteredAlerts.filter(a => a.type === params.type)
       }
 
       if (params.status) {
-        filteredAlerts = filteredAlerts.filter((a) => a.status === params.status)
+        filteredAlerts = filteredAlerts.filter(a => a.status === params.status)
       }
 
       const page = params.page || 1
@@ -298,7 +298,7 @@ export const mockGetSystemAlerts = (params: SystemAlertListParams) => {
 export const mockGetSystemAlertDetail = (id: number) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      const alert = mockSystemAlerts.find((a) => a.id === id)
+      const alert = mockSystemAlerts.find(a => a.id === id)
       if (alert) {
         resolve({
           code: 200,
@@ -316,9 +316,9 @@ export const mockGetSystemAlertDetail = (id: number) => {
 }
 
 export const mockResolveSystemAlert = (id: number) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
-      const alert = mockSystemAlerts.find((a) => a.id === id)
+      const alert = mockSystemAlerts.find(a => a.id === id)
       if (alert) {
         alert.status = 'resolved'
         alert.resolvedAt = new Date().toISOString()
@@ -333,9 +333,9 @@ export const mockResolveSystemAlert = (id: number) => {
 }
 
 export const mockIgnoreSystemAlert = (id: number) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
-      const alert = mockSystemAlerts.find((a) => a.id === id)
+      const alert = mockSystemAlerts.find(a => a.id === id)
       if (alert) {
         alert.status = 'ignored'
       }
@@ -348,12 +348,12 @@ export const mockIgnoreSystemAlert = (id: number) => {
 }
 
 export const mockGetSystemAlertStats = () => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const stats: SystemAlertStats = {
-        critical: mockSystemAlerts.filter((a) => a.level === 'critical').length,
-        warning: mockSystemAlerts.filter((a) => a.level === 'warning').length,
-        info: mockSystemAlerts.filter((a) => a.level === 'info').length,
+        critical: mockSystemAlerts.filter(a => a.level === 'critical').length,
+        warning: mockSystemAlerts.filter(a => a.level === 'warning').length,
+        info: mockSystemAlerts.filter(a => a.level === 'info').length,
         total: mockSystemAlerts.length,
       }
       resolve({
@@ -367,7 +367,7 @@ export const mockGetSystemAlertStats = () => {
 
 // ==================== 系统监控 Mock 数据 ====================
 export const mockGetSystemMonitorStatus = () => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const status: SystemMonitorStatus = {
         cpu: Math.floor(Math.random() * 40) + 30, // 30-70%
@@ -385,7 +385,7 @@ export const mockGetSystemMonitorStatus = () => {
 }
 
 export const mockGetSystemMonitorServices = () => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const services: SystemService[] = [
         {
@@ -417,7 +417,7 @@ export const mockGetSystemMonitorServices = () => {
 }
 
 export const mockGetSystemMonitorDatabase = () => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const dbStatus: SystemDatabaseStatus = {
         activeConnections: 45,
@@ -435,7 +435,7 @@ export const mockGetSystemMonitorDatabase = () => {
 }
 
 export const mockGetSystemMonitorApiStats = () => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const apiStats: SystemApiStats = {
         totalRequests: 125680,
@@ -453,7 +453,7 @@ export const mockGetSystemMonitorApiStats = () => {
 }
 
 export const mockGetSystemMonitorLogs = (params: { level?: string; limit?: number }) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const logs: SystemLog[] = [
         {
@@ -478,7 +478,7 @@ export const mockGetSystemMonitorLogs = (params: { level?: string; limit?: numbe
 
       let filteredLogs = logs
       if (params.level) {
-        filteredLogs = logs.filter((log) => log.level === params.level)
+        filteredLogs = logs.filter(log => log.level === params.level)
       }
 
       if (params.limit) {
@@ -521,16 +521,16 @@ const mockSystemBackups: SystemBackup[] = [
 ]
 
 export const mockGetSystemBackups = (params: SystemBackupListParams) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       let filteredBackups = [...mockSystemBackups]
 
       if (params.type) {
-        filteredBackups = filteredBackups.filter((b) => b.type === params.type)
+        filteredBackups = filteredBackups.filter(b => b.type === params.type)
       }
 
       if (params.status) {
-        filteredBackups = filteredBackups.filter((b) => b.status === params.status)
+        filteredBackups = filteredBackups.filter(b => b.status === params.status)
       }
 
       const page = params.page || 1
@@ -552,7 +552,7 @@ export const mockGetSystemBackups = (params: SystemBackupListParams) => {
 }
 
 export const mockCreateSystemBackup = (data: CreateSystemBackupParams) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const newBackup: SystemBackup = {
         id: mockSystemBackups.length + 1,
@@ -583,7 +583,7 @@ export const mockCreateSystemBackup = (data: CreateSystemBackupParams) => {
 }
 
 export const mockRestoreSystemBackup = (_id: number) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       resolve({
         code: 200,
@@ -596,7 +596,7 @@ export const mockRestoreSystemBackup = (_id: number) => {
 export const mockDeleteSystemBackup = (id: number) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      const index = mockSystemBackups.findIndex((b) => b.id === id)
+      const index = mockSystemBackups.findIndex(b => b.id === id)
       if (index > -1) {
         mockSystemBackups.splice(index, 1)
         resolve({
@@ -614,7 +614,7 @@ export const mockDeleteSystemBackup = (id: number) => {
 }
 
 export const mockVerifySystemBackup = (_id: number) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       resolve({
         code: 200,
@@ -633,7 +633,7 @@ let mockBackupAutoSettings: SystemBackupAutoSettings = {
 }
 
 export const mockGetSystemBackupAutoSettings = () => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       resolve({
         code: 200,
@@ -645,7 +645,7 @@ export const mockGetSystemBackupAutoSettings = () => {
 }
 
 export const mockUpdateSystemBackupAutoSettings = (data: SystemBackupAutoSettings) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       mockBackupAutoSettings = data
       resolve({
@@ -657,7 +657,7 @@ export const mockUpdateSystemBackupAutoSettings = (data: SystemBackupAutoSetting
 }
 
 export const mockGetSystemBackupStats = () => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const stats: SystemBackupStats = {
         totalBackups: mockSystemBackups.length,

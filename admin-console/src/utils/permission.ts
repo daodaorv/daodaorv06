@@ -41,7 +41,7 @@ export function hasPermission(user: User | null, permissions?: PermissionCode[])
   }
 
   // 检查用户是否拥有所需权限中的任意一个
-  return permissions.some((permission) => {
+  return permissions.some(permission => {
     // 直接匹配
     if (user.permissions?.includes(permission)) {
       return true
@@ -49,7 +49,7 @@ export function hasPermission(user: User | null, permissions?: PermissionCode[])
 
     // 通配符匹配（例如：vehicle:* 可以匹配 vehicle:edit）
     const permissionPrefix = permission.split(':')[0]
-    return user.permissions?.some((userPerm) => {
+    return user.permissions?.some(userPerm => {
       if (userPerm.endsWith(':*')) {
         const userPermPrefix = userPerm.split(':')[0]
         return userPermPrefix === permissionPrefix
@@ -85,7 +85,7 @@ export function canAccessRoute(user: User | null, meta?: RouteMeta): boolean {
  */
 export function filterMenuByPermission(menus: MenuItem[], user: User | null): MenuItem[] {
   return menus
-    .filter((menu) => {
+    .filter(menu => {
       // 检查当前菜单项是否可访问
       if (!canAccessRoute(user, menu.meta)) {
         return false
@@ -100,7 +100,7 @@ export function filterMenuByPermission(menus: MenuItem[], user: User | null): Me
 
       return true
     })
-    .filter((menu) => !menu.meta?.hidden) // 过滤隐藏的菜单
+    .filter(menu => !menu.meta?.hidden) // 过滤隐藏的菜单
 }
 
 /**

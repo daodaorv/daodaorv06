@@ -2,11 +2,7 @@
   <div class="admin-header">
     <!-- 左侧 -->
     <div class="header-left">
-      <el-button
-        link
-        @click="toggleSidebar"
-        class="menu-toggle"
-      >
+      <el-button link @click="toggleSidebar" class="menu-toggle">
         <el-icon size="20">
           <Fold v-if="!collapsed" />
           <Expand v-else />

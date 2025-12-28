@@ -16,7 +16,7 @@ import {
   mockDeleteTag,
   mockGetUserTags,
   mockAddUserTags,
-  mockRemoveUserTag
+  mockRemoveUserTag,
 } from '@/mock/tags'
 
 // 是否使用 Mock 数据（开发环境默认使用）
@@ -42,24 +42,24 @@ export type {
   ApiTrigger,
   BusinessAssociation,
   MemberBenefits,
-  Tag
+  Tag,
 } from '@/types/tag'
 
 export { TagType, TagCategory, TagTriggerType } from '@/types/tag'
 
 // 用户类型枚举（重构：移除plus_member，改为标签管理）
-export type UserType = 'visitor' | 'registered' | 'customer'  // customer 保留用于向后兼容
+export type UserType = 'visitor' | 'registered' | 'customer' // customer 保留用于向后兼容
 
 export interface UserInfo {
   id: number
   username: string
   phone: string
   email?: string
-  userType: UserType  // 只描述身份认证状态：游客/注册用户
+  userType: UserType // 只描述身份认证状态：游客/注册用户
   status: 'active' | 'inactive' | 'banned'
   realName?: string
   avatarUrl?: string
-  tags?: Tag[]  // 用户标签（包含PLUS会员、VIP等标签）
+  tags?: Tag[] // 用户标签（包含PLUS会员、VIP等标签）
   lastLoginAt?: string
   createdAt: string
   updatedAt: string
@@ -77,7 +77,7 @@ export interface CreateUserParams {
   phone: string
   password: string
   email?: string
-  userType: UserType  // visitor 或 registered
+  userType: UserType // visitor 或 registered
   realName?: string
 }
 
@@ -85,7 +85,7 @@ export interface UpdateUserParams {
   id: number
   username?: string
   email?: string
-  userType?: UserType  // visitor 或 registered
+  userType?: UserType // visitor 或 registered
   status?: 'active' | 'inactive' | 'banned'
   realName?: string
 }
@@ -158,7 +158,7 @@ export const userApi = {
     return Promise.resolve({
       success: 0,
       failed: 0,
-      errors: []
+      errors: [],
     } as ImportUsersResult)
   },
 }

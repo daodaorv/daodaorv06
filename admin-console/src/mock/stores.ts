@@ -169,14 +169,11 @@ const mockStores: Store[] = [
     employeeCount: 8,
     monthlyRevenue: 450000,
     rating: 4.8,
-    images: [
-      storePlaceholder('Store 1', '#409EFF'),
-      storePlaceholder('Store 2', '#67C23A'),
-    ],
+    images: [storePlaceholder('Store 1', '#409EFF'), storePlaceholder('Store 2', '#67C23A')],
     description: '北京朝阳区旗舰店，提供全方位房车租赁服务',
     canHostingInspection: true,
     createdAt: '2024-01-15T08:00:00.000Z',
-    updatedAt: '2024-11-29T10:00:00.000Z'
+    updatedAt: '2024-11-29T10:00:00.000Z',
   },
   {
     id: 2,
@@ -201,13 +198,11 @@ const mockStores: Store[] = [
     employeeCount: 10,
     monthlyRevenue: 520000,
     rating: 4.9,
-    images: [
-      storePlaceholder('Store 3', '#E6A23C'),
-    ],
+    images: [storePlaceholder('Store 3', '#E6A23C')],
     description: '上海浦东核心商圈店，高端房车租赁首选',
     canHostingInspection: true,
     createdAt: '2024-02-01T08:00:00.000Z',
-    updatedAt: '2024-11-28T15:30:00.000Z'
+    updatedAt: '2024-11-28T15:30:00.000Z',
   },
   {
     id: 3,
@@ -232,13 +227,11 @@ const mockStores: Store[] = [
     employeeCount: 6,
     monthlyRevenue: 320000,
     rating: 4.6,
-    images: [
-      storePlaceholder('Store 4', '#F56C6C'),
-    ],
+    images: [storePlaceholder('Store 4', '#F56C6C')],
     description: '广州天河区加盟店，服务周到价格实惠',
     canHostingInspection: false,
     createdAt: '2024-03-15T08:00:00.000Z',
-    updatedAt: '2024-11-27T09:20:00.000Z'
+    updatedAt: '2024-11-27T09:20:00.000Z',
   },
   {
     id: 4,
@@ -263,15 +256,13 @@ const mockStores: Store[] = [
     employeeCount: 4,
     monthlyRevenue: 180000,
     rating: 4.3,
-    images: [
-      storePlaceholder('Store 5', '#909399'),
-    ],
+    images: [storePlaceholder('Store 5', '#909399')],
     description: '深圳南山区合作商户，提供基础租赁服务',
     canHostingInspection: false,
     assistStoreId: 3, // 协助门店：广州天河加盟店
     assistStoreName: '广州天河加盟店',
     createdAt: '2024-04-01T08:00:00.000Z',
-    updatedAt: '2024-11-26T14:10:00.000Z'
+    updatedAt: '2024-11-26T14:10:00.000Z',
   },
   {
     id: 5,
@@ -296,13 +287,11 @@ const mockStores: Store[] = [
     employeeCount: 7,
     monthlyRevenue: 380000,
     rating: 4.7,
-    images: [
-      storePlaceholder('Store 6', '#409EFF'),
-    ],
+    images: [storePlaceholder('Store 6', '#409EFF')],
     description: '成都武侯区直营店，川藏线房车租赁专家',
     canHostingInspection: true,
     createdAt: '2024-05-10T08:00:00.000Z',
-    updatedAt: '2024-11-25T11:45:00.000Z'
+    updatedAt: '2024-11-25T11:45:00.000Z',
   },
   {
     id: 6,
@@ -327,14 +316,12 @@ const mockStores: Store[] = [
     employeeCount: 5,
     monthlyRevenue: 0,
     rating: 4.4,
-    images: [
-      storePlaceholder('Store 7', '#67C23A'),
-    ],
+    images: [storePlaceholder('Store 7', '#67C23A')],
     description: '杭州西湖区加盟店，暂停营业装修中',
     canHostingInspection: false,
     createdAt: '2024-06-01T08:00:00.000Z',
-    updatedAt: '2024-11-20T16:00:00.000Z'
-  }
+    updatedAt: '2024-11-20T16:00:00.000Z',
+  },
 ]
 
 // Mock 城市数据
@@ -354,7 +341,7 @@ export const mockCities: City[] = [
     isHot: true,
     sortOrder: 1,
     createdAt: '2024-01-01T00:00:00.000Z',
-    updatedAt: '2024-01-01T00:00:00.000Z'
+    updatedAt: '2024-01-01T00:00:00.000Z',
   },
   {
     id: 2,
@@ -370,7 +357,7 @@ export const mockCities: City[] = [
     isHot: true,
     sortOrder: 2,
     createdAt: '2024-01-01T00:00:00.000Z',
-    updatedAt: '2024-01-01T00:00:00.000Z'
+    updatedAt: '2024-01-01T00:00:00.000Z',
   },
   {
     id: 3,
@@ -386,7 +373,7 @@ export const mockCities: City[] = [
     isHot: true,
     sortOrder: 3,
     createdAt: '2024-01-01T00:00:00.000Z',
-    updatedAt: '2024-01-01T00:00:00.000Z'
+    updatedAt: '2024-01-01T00:00:00.000Z',
   },
   {
     id: 4,
@@ -402,7 +389,7 @@ export const mockCities: City[] = [
     isHot: true,
     sortOrder: 4,
     createdAt: '2024-01-01T00:00:00.000Z',
-    updatedAt: '2024-01-01T00:00:00.000Z'
+    updatedAt: '2024-01-01T00:00:00.000Z',
   },
 
   // 新一线城市
@@ -420,7 +407,7 @@ export const mockCities: City[] = [
     isHot: true,
     sortOrder: 5,
     createdAt: '2024-01-01T00:00:00.000Z',
-    updatedAt: '2024-01-01T00:00:00.000Z'
+    updatedAt: '2024-01-01T00:00:00.000Z',
   },
   {
     id: 6,
@@ -436,7 +423,7 @@ export const mockCities: City[] = [
     isHot: true,
     sortOrder: 6,
     createdAt: '2024-01-01T00:00:00.000Z',
-    updatedAt: '2024-01-01T00:00:00.000Z'
+    updatedAt: '2024-01-01T00:00:00.000Z',
   },
   {
     id: 7,
@@ -452,7 +439,7 @@ export const mockCities: City[] = [
     isHot: true,
     sortOrder: 7,
     createdAt: '2024-01-01T00:00:00.000Z',
-    updatedAt: '2024-01-01T00:00:00.000Z'
+    updatedAt: '2024-01-01T00:00:00.000Z',
   },
   {
     id: 8,
@@ -468,7 +455,7 @@ export const mockCities: City[] = [
     isHot: true,
     sortOrder: 8,
     createdAt: '2024-01-01T00:00:00.000Z',
-    updatedAt: '2024-01-01T00:00:00.000Z'
+    updatedAt: '2024-01-01T00:00:00.000Z',
   },
   {
     id: 9,
@@ -484,7 +471,7 @@ export const mockCities: City[] = [
     isHot: true,
     sortOrder: 9,
     createdAt: '2024-01-01T00:00:00.000Z',
-    updatedAt: '2024-01-01T00:00:00.000Z'
+    updatedAt: '2024-01-01T00:00:00.000Z',
   },
   {
     id: 10,
@@ -500,7 +487,7 @@ export const mockCities: City[] = [
     isHot: true,
     sortOrder: 10,
     createdAt: '2024-01-01T00:00:00.000Z',
-    updatedAt: '2024-01-01T00:00:00.000Z'
+    updatedAt: '2024-01-01T00:00:00.000Z',
   },
 
   // 二线城市
@@ -518,7 +505,7 @@ export const mockCities: City[] = [
     isHot: false,
     sortOrder: 11,
     createdAt: '2024-01-01T00:00:00.000Z',
-    updatedAt: '2024-01-01T00:00:00.000Z'
+    updatedAt: '2024-01-01T00:00:00.000Z',
   },
   {
     id: 12,
@@ -534,7 +521,7 @@ export const mockCities: City[] = [
     isHot: false,
     sortOrder: 12,
     createdAt: '2024-01-01T00:00:00.000Z',
-    updatedAt: '2024-01-01T00:00:00.000Z'
+    updatedAt: '2024-01-01T00:00:00.000Z',
   },
   {
     id: 13,
@@ -550,7 +537,7 @@ export const mockCities: City[] = [
     isHot: false,
     sortOrder: 13,
     createdAt: '2024-01-01T00:00:00.000Z',
-    updatedAt: '2024-01-01T00:00:00.000Z'
+    updatedAt: '2024-01-01T00:00:00.000Z',
   },
   {
     id: 14,
@@ -566,7 +553,7 @@ export const mockCities: City[] = [
     isHot: false,
     sortOrder: 14,
     createdAt: '2024-01-01T00:00:00.000Z',
-    updatedAt: '2024-01-01T00:00:00.000Z'
+    updatedAt: '2024-01-01T00:00:00.000Z',
   },
   {
     id: 15,
@@ -582,7 +569,7 @@ export const mockCities: City[] = [
     isHot: false,
     sortOrder: 15,
     createdAt: '2024-01-01T00:00:00.000Z',
-    updatedAt: '2024-01-01T00:00:00.000Z'
+    updatedAt: '2024-01-01T00:00:00.000Z',
   },
 
   // 三线城市
@@ -600,7 +587,7 @@ export const mockCities: City[] = [
     isHot: false,
     sortOrder: 16,
     createdAt: '2024-01-01T00:00:00.000Z',
-    updatedAt: '2024-01-01T00:00:00.000Z'
+    updatedAt: '2024-01-01T00:00:00.000Z',
   },
   {
     id: 17,
@@ -616,7 +603,7 @@ export const mockCities: City[] = [
     isHot: false,
     sortOrder: 17,
     createdAt: '2024-01-01T00:00:00.000Z',
-    updatedAt: '2024-01-01T00:00:00.000Z'
+    updatedAt: '2024-01-01T00:00:00.000Z',
   },
   {
     id: 18,
@@ -632,7 +619,7 @@ export const mockCities: City[] = [
     isHot: false,
     sortOrder: 18,
     createdAt: '2024-01-01T00:00:00.000Z',
-    updatedAt: '2024-01-01T00:00:00.000Z'
+    updatedAt: '2024-01-01T00:00:00.000Z',
   },
   {
     id: 19,
@@ -648,7 +635,7 @@ export const mockCities: City[] = [
     isHot: false,
     sortOrder: 19,
     createdAt: '2024-01-01T00:00:00.000Z',
-    updatedAt: '2024-01-01T00:00:00.000Z'
+    updatedAt: '2024-01-01T00:00:00.000Z',
   },
   {
     id: 20,
@@ -664,8 +651,8 @@ export const mockCities: City[] = [
     isHot: false,
     sortOrder: 20,
     createdAt: '2024-01-01T00:00:00.000Z',
-    updatedAt: '2024-01-01T00:00:00.000Z'
-  }
+    updatedAt: '2024-01-01T00:00:00.000Z',
+  },
 ]
 
 // Mock 区域数据 - 按城市分级划分
@@ -681,7 +668,7 @@ const mockRegions: Region[] = [
     storeCount: 6,
     status: 'active',
     description: '一线城市：北京、上海、广州、深圳',
-    createdAt: '2024-01-01T00:00:00.000Z'
+    createdAt: '2024-01-01T00:00:00.000Z',
   },
   {
     id: 2,
@@ -694,7 +681,7 @@ const mockRegions: Region[] = [
     storeCount: 6,
     status: 'active',
     description: '新一线城市：成都、杭州、重庆、西安、武汉、南京',
-    createdAt: '2024-01-01T00:00:00.000Z'
+    createdAt: '2024-01-01T00:00:00.000Z',
   },
   {
     id: 3,
@@ -707,7 +694,7 @@ const mockRegions: Region[] = [
     storeCount: 5,
     status: 'active',
     description: '二线城市：苏州、天津、郑州、长沙、沈阳',
-    createdAt: '2024-01-01T00:00:00.000Z'
+    createdAt: '2024-01-01T00:00:00.000Z',
   },
   {
     id: 4,
@@ -720,7 +707,7 @@ const mockRegions: Region[] = [
     storeCount: 4,
     status: 'active',
     description: '三线城市：昆明、大连、福州、哈尔滨',
-    createdAt: '2024-01-01T00:00:00.000Z'
+    createdAt: '2024-01-01T00:00:00.000Z',
   },
   {
     id: 5,
@@ -733,8 +720,8 @@ const mockRegions: Region[] = [
     storeCount: 1,
     status: 'active',
     description: '四线城市及其他城市',
-    createdAt: '2024-01-01T00:00:00.000Z'
-  }
+    createdAt: '2024-01-01T00:00:00.000Z',
+  },
 ]
 
 // Mock 城市分级数据
@@ -748,7 +735,7 @@ const mockCityTiers: CityTier[] = [
     storeCount: 6,
     status: 'active',
     description: '北京、上海、广州、深圳',
-    createdAt: '2024-01-01T00:00:00.000Z'
+    createdAt: '2024-01-01T00:00:00.000Z',
   },
   {
     id: 2,
@@ -759,7 +746,7 @@ const mockCityTiers: CityTier[] = [
     storeCount: 0,
     status: 'active',
     description: '成都、杭州、重庆、西安、武汉、南京',
-    createdAt: '2024-01-01T00:00:00.000Z'
+    createdAt: '2024-01-01T00:00:00.000Z',
   },
   {
     id: 3,
@@ -770,7 +757,7 @@ const mockCityTiers: CityTier[] = [
     storeCount: 0,
     status: 'active',
     description: '苏州、天津、郑州、长沙、沈阳',
-    createdAt: '2024-01-01T00:00:00.000Z'
+    createdAt: '2024-01-01T00:00:00.000Z',
   },
   {
     id: 4,
@@ -781,7 +768,7 @@ const mockCityTiers: CityTier[] = [
     storeCount: 0,
     status: 'active',
     description: '昆明、大连、福州、哈尔滨',
-    createdAt: '2024-01-01T00:00:00.000Z'
+    createdAt: '2024-01-01T00:00:00.000Z',
   },
   {
     id: 5,
@@ -792,8 +779,8 @@ const mockCityTiers: CityTier[] = [
     storeCount: 0,
     status: 'active',
     description: '其他城市',
-    createdAt: '2024-01-01T00:00:00.000Z'
-  }
+    createdAt: '2024-01-01T00:00:00.000Z',
+  },
 ]
 
 // 门店列表查询参数
@@ -832,14 +819,14 @@ export interface UpdateStoreParams extends Partial<CreateStoreParams> {
 
 // Mock 获取门店列表
 export const mockGetStoreList = (params: StoreListParams) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       let filteredStores = [...mockStores]
 
       // 关键词搜索
       if (params.keyword) {
         filteredStores = filteredStores.filter(
-          (store) =>
+          store =>
             store.name.includes(params.keyword!) ||
             store.code.includes(params.keyword!) ||
             store.address.includes(params.keyword!)
@@ -848,22 +835,22 @@ export const mockGetStoreList = (params: StoreListParams) => {
 
       // 门店类型筛选
       if (params.type) {
-        filteredStores = filteredStores.filter((store) => store.type === params.type)
+        filteredStores = filteredStores.filter(store => store.type === params.type)
       }
 
       // 状态筛选
       if (params.status) {
-        filteredStores = filteredStores.filter((store) => store.status === params.status)
+        filteredStores = filteredStores.filter(store => store.status === params.status)
       }
 
       // 城市筛选
       if (params.cityId) {
-        filteredStores = filteredStores.filter((store) => store.cityId === params.cityId)
+        filteredStores = filteredStores.filter(store => store.cityId === params.cityId)
       }
 
       // 区域筛选
       if (params.regionId) {
-        filteredStores = filteredStores.filter((store) => store.regionId === params.regionId)
+        filteredStores = filteredStores.filter(store => store.regionId === params.regionId)
       }
 
       // 分页
@@ -880,8 +867,8 @@ export const mockGetStoreList = (params: StoreListParams) => {
           list,
           total: filteredStores.length,
           page,
-          pageSize
-        }
+          pageSize,
+        },
       })
     }, 300)
   })
@@ -891,17 +878,17 @@ export const mockGetStoreList = (params: StoreListParams) => {
 export const mockGetStoreDetail = (id: number) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      const store = mockStores.find((s) => s.id === id)
+      const store = mockStores.find(s => s.id === id)
       if (store) {
         resolve({
           code: 200,
           message: '获取成功',
-          data: store
+          data: store,
         })
       } else {
         reject({
           code: 404,
-          message: '门店不存在'
+          message: '门店不存在',
         })
       }
     }, 200)
@@ -910,13 +897,13 @@ export const mockGetStoreDetail = (id: number) => {
 
 // Mock 创建门店
 export const mockCreateStore = (params: CreateStoreParams) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const newStore: Store = {
         id: mockStores.length + 1,
         ...params,
-        cityName: mockCities.find((c) => c.id === params.cityId)?.name || '',
-        regionName: mockRegions.find((r) => r.id === params.regionId)?.name || '',
+        cityName: mockCities.find(c => c.id === params.cityId)?.name || '',
+        regionName: mockRegions.find(r => r.id === params.regionId)?.name || '',
         manager: '新经理',
         status: 'active',
         vehicleCount: 0,
@@ -926,13 +913,13 @@ export const mockCreateStore = (params: CreateStoreParams) => {
         images: [],
         canHostingInspection: false,
         createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
+        updatedAt: new Date().toISOString(),
       }
       mockStores.push(newStore)
       resolve({
         code: 200,
         message: '创建成功',
-        data: newStore
+        data: newStore,
       })
     }, 500)
   })
@@ -942,22 +929,22 @@ export const mockCreateStore = (params: CreateStoreParams) => {
 export const mockUpdateStore = (id: number, params: UpdateStoreParams) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      const index = mockStores.findIndex((s) => s.id === id)
+      const index = mockStores.findIndex(s => s.id === id)
       if (index !== -1) {
         mockStores[index] = {
           ...mockStores[index],
           ...params,
-          updatedAt: new Date().toISOString()
+          updatedAt: new Date().toISOString(),
         }
         resolve({
           code: 200,
           message: '更新成功',
-          data: mockStores[index]
+          data: mockStores[index],
         })
       } else {
         reject({
           code: 404,
-          message: '门店不存在'
+          message: '门店不存在',
         })
       }
     }, 500)
@@ -968,17 +955,17 @@ export const mockUpdateStore = (id: number, params: UpdateStoreParams) => {
 export const mockDeleteStore = (id: number) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      const index = mockStores.findIndex((s) => s.id === id)
+      const index = mockStores.findIndex(s => s.id === id)
       if (index !== -1) {
         mockStores.splice(index, 1)
         resolve({
           code: 200,
-          message: '删除成功'
+          message: '删除成功',
         })
       } else {
         reject({
           code: 404,
-          message: '门店不存在'
+          message: '门店不存在',
         })
       }
     }, 500)
@@ -987,22 +974,22 @@ export const mockDeleteStore = (id: number) => {
 
 // Mock 获取门店统计
 export const mockGetStoreStats = () => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const stats: StoreStats = {
         totalStores: mockStores.length,
-        activeStores: mockStores.filter((s) => s.status === 'active').length,
-        directStores: mockStores.filter((s) => s.type === 'direct').length,
-        franchiseStores: mockStores.filter((s) => s.type === 'franchise').length,
-        cooperativeStores: mockStores.filter((s) => s.type === 'cooperative').length,
+        activeStores: mockStores.filter(s => s.status === 'active').length,
+        directStores: mockStores.filter(s => s.type === 'direct').length,
+        franchiseStores: mockStores.filter(s => s.type === 'franchise').length,
+        cooperativeStores: mockStores.filter(s => s.type === 'cooperative').length,
         totalRevenue: mockStores.reduce((sum, s) => sum + s.monthlyRevenue, 0),
         totalVehicles: mockStores.reduce((sum, s) => sum + s.vehicleCount, 0),
-        totalEmployees: mockStores.reduce((sum, s) => sum + s.employeeCount, 0)
+        totalEmployees: mockStores.reduce((sum, s) => sum + s.employeeCount, 0),
       }
       resolve({
         code: 200,
         message: '获取成功',
-        data: stats
+        data: stats,
       })
     }, 200)
   })
@@ -1020,7 +1007,7 @@ export interface CityListParams {
 
 // Mock 获取城市列表
 export const mockGetCityList = (params?: CityListParams) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       let filteredCities = [...mockCities]
 
@@ -1041,9 +1028,8 @@ export const mockGetCityList = (params?: CityListParams) => {
 
       // 关键词搜索
       if (params?.keyword) {
-        filteredCities = filteredCities.filter(city =>
-          city.name.includes(params.keyword!) ||
-          city.provinceName.includes(params.keyword!)
+        filteredCities = filteredCities.filter(
+          city => city.name.includes(params.keyword!) || city.provinceName.includes(params.keyword!)
         )
       }
 
@@ -1060,7 +1046,7 @@ export const mockGetCityList = (params?: CityListParams) => {
         data: list,
         total: filteredCities.length,
         page,
-        pageSize
+        pageSize,
       })
     }, 200)
   })
@@ -1068,12 +1054,12 @@ export const mockGetCityList = (params?: CityListParams) => {
 
 // Mock 获取区域列表
 export const mockGetRegionList = () => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       resolve({
         code: 200,
         message: '获取成功',
-        data: mockRegions
+        data: mockRegions,
       })
     }, 200)
   })
@@ -1083,12 +1069,12 @@ export const mockGetRegionList = () => {
  * 获取城市分级列表
  */
 export const mockGetCityTierList = () => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       resolve({
         code: 200,
         message: '获取成功',
-        data: mockCityTiers
+        data: mockCityTiers,
       })
     }, 200)
   })
@@ -1110,7 +1096,7 @@ const mockStoreSpecialServices: StoreSpecialService[] = [
     isRequired: false,
     sortOrder: 1,
     createdAt: '2025-11-01T10:00:00.000Z',
-    updatedAt: '2025-11-01T10:00:00.000Z'
+    updatedAt: '2025-11-01T10:00:00.000Z',
   },
   {
     id: 2,
@@ -1123,7 +1109,7 @@ const mockStoreSpecialServices: StoreSpecialService[] = [
     isRequired: false,
     sortOrder: 2,
     createdAt: '2025-11-01T10:00:00.000Z',
-    updatedAt: '2025-11-01T10:00:00.000Z'
+    updatedAt: '2025-11-01T10:00:00.000Z',
   },
   {
     id: 3,
@@ -1136,7 +1122,7 @@ const mockStoreSpecialServices: StoreSpecialService[] = [
     isRequired: false,
     sortOrder: 3,
     createdAt: '2025-11-01T10:00:00.000Z',
-    updatedAt: '2025-11-01T10:00:00.000Z'
+    updatedAt: '2025-11-01T10:00:00.000Z',
   },
   // 上海浦东店特色服务
   {
@@ -1150,7 +1136,7 @@ const mockStoreSpecialServices: StoreSpecialService[] = [
     isRequired: false,
     sortOrder: 1,
     createdAt: '2025-11-01T10:00:00.000Z',
-    updatedAt: '2025-11-01T10:00:00.000Z'
+    updatedAt: '2025-11-01T10:00:00.000Z',
   },
   {
     id: 5,
@@ -1163,7 +1149,7 @@ const mockStoreSpecialServices: StoreSpecialService[] = [
     isRequired: false,
     sortOrder: 2,
     createdAt: '2025-11-01T10:00:00.000Z',
-    updatedAt: '2025-11-01T10:00:00.000Z'
+    updatedAt: '2025-11-01T10:00:00.000Z',
   },
   {
     id: 6,
@@ -1176,7 +1162,7 @@ const mockStoreSpecialServices: StoreSpecialService[] = [
     isRequired: false,
     sortOrder: 3,
     createdAt: '2025-11-01T10:00:00.000Z',
-    updatedAt: '2025-11-01T10:00:00.000Z'
+    updatedAt: '2025-11-01T10:00:00.000Z',
   },
   // 广州天河加盟店特色服务
   {
@@ -1190,7 +1176,7 @@ const mockStoreSpecialServices: StoreSpecialService[] = [
     isRequired: false,
     sortOrder: 1,
     createdAt: '2025-11-01T10:00:00.000Z',
-    updatedAt: '2025-11-01T10:00:00.000Z'
+    updatedAt: '2025-11-01T10:00:00.000Z',
   },
   {
     id: 8,
@@ -1203,7 +1189,7 @@ const mockStoreSpecialServices: StoreSpecialService[] = [
     isRequired: false,
     sortOrder: 2,
     createdAt: '2025-11-01T10:00:00.000Z',
-    updatedAt: '2025-11-01T10:00:00.000Z'
+    updatedAt: '2025-11-01T10:00:00.000Z',
   },
   // 深圳南山合作店特色服务
   {
@@ -1217,7 +1203,7 @@ const mockStoreSpecialServices: StoreSpecialService[] = [
     isRequired: false,
     sortOrder: 1,
     createdAt: '2025-11-01T10:00:00.000Z',
-    updatedAt: '2025-11-01T10:00:00.000Z'
+    updatedAt: '2025-11-01T10:00:00.000Z',
   },
   {
     id: 10,
@@ -1230,7 +1216,7 @@ const mockStoreSpecialServices: StoreSpecialService[] = [
     isRequired: false,
     sortOrder: 2,
     createdAt: '2025-11-01T10:00:00.000Z',
-    updatedAt: '2025-11-01T10:00:00.000Z'
+    updatedAt: '2025-11-01T10:00:00.000Z',
   },
   // 成都武侯店特色服务
   {
@@ -1244,7 +1230,7 @@ const mockStoreSpecialServices: StoreSpecialService[] = [
     isRequired: false,
     sortOrder: 1,
     createdAt: '2025-11-01T10:00:00.000Z',
-    updatedAt: '2025-11-01T10:00:00.000Z'
+    updatedAt: '2025-11-01T10:00:00.000Z',
   },
   {
     id: 12,
@@ -1257,7 +1243,7 @@ const mockStoreSpecialServices: StoreSpecialService[] = [
     isRequired: false,
     sortOrder: 2,
     createdAt: '2025-11-01T10:00:00.000Z',
-    updatedAt: '2025-11-01T10:00:00.000Z'
+    updatedAt: '2025-11-01T10:00:00.000Z',
   },
   // 杭州西湖店特色服务
   {
@@ -1271,7 +1257,7 @@ const mockStoreSpecialServices: StoreSpecialService[] = [
     isRequired: false,
     sortOrder: 1,
     createdAt: '2025-11-01T10:00:00.000Z',
-    updatedAt: '2025-11-01T10:00:00.000Z'
+    updatedAt: '2025-11-01T10:00:00.000Z',
   },
   {
     id: 14,
@@ -1284,27 +1270,30 @@ const mockStoreSpecialServices: StoreSpecialService[] = [
     isRequired: false,
     sortOrder: 2,
     createdAt: '2025-11-01T10:00:00.000Z',
-    updatedAt: '2025-11-01T10:00:00.000Z'
-  }
+    updatedAt: '2025-11-01T10:00:00.000Z',
+  },
 ]
 
 // Mock 获取门店特色服务列表
 export const mockGetStoreSpecialServices = (storeId: number) => {
-  return new Promise<{ code: number; message: string; data: StoreSpecialService[] }>((resolve) => {
+  return new Promise<{ code: number; message: string; data: StoreSpecialService[] }>(resolve => {
     setTimeout(() => {
       const services = mockStoreSpecialServices.filter(service => service.storeId === storeId)
       resolve({
         code: 200,
         message: '获取成功',
-        data: services
+        data: services,
       })
     }, 200)
   })
 }
 
 // Mock 创建门店特色服务
-export const mockCreateStoreSpecialService = (storeId: number, data: Partial<StoreSpecialService>) => {
-  return new Promise<{ code: number; message: string; data: StoreSpecialService }>((resolve) => {
+export const mockCreateStoreSpecialService = (
+  storeId: number,
+  data: Partial<StoreSpecialService>
+) => {
+  return new Promise<{ code: number; message: string; data: StoreSpecialService }>(resolve => {
     setTimeout(() => {
       const newService: StoreSpecialService = {
         id: mockStoreSpecialServices.length + 1,
@@ -1317,48 +1306,58 @@ export const mockCreateStoreSpecialService = (storeId: number, data: Partial<Sto
         isRequired: data.isRequired || false,
         sortOrder: data.sortOrder || 999,
         createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
+        updatedAt: new Date().toISOString(),
       }
       mockStoreSpecialServices.push(newService)
       resolve({
         code: 200,
         message: '创建成功',
-        data: newService
+        data: newService,
       })
     }, 200)
   })
 }
 
 // Mock 更新门店特色服务
-export const mockUpdateStoreSpecialService = (storeId: number, serviceId: number, data: Partial<StoreSpecialService>) => {
-  return new Promise<{ code: number; message: string; data: StoreSpecialService }>((resolve, reject) => {
-    setTimeout(() => {
-      const index = mockStoreSpecialServices.findIndex(s => s.id === serviceId && s.storeId === storeId)
-      if (index === -1) {
-        reject({ code: 404, message: '服务不存在' })
-        return
-      }
+export const mockUpdateStoreSpecialService = (
+  storeId: number,
+  serviceId: number,
+  data: Partial<StoreSpecialService>
+) => {
+  return new Promise<{ code: number; message: string; data: StoreSpecialService }>(
+    (resolve, reject) => {
+      setTimeout(() => {
+        const index = mockStoreSpecialServices.findIndex(
+          s => s.id === serviceId && s.storeId === storeId
+        )
+        if (index === -1) {
+          reject({ code: 404, message: '服务不存在' })
+          return
+        }
 
-      mockStoreSpecialServices[index] = {
-        ...mockStoreSpecialServices[index],
-        ...data,
-        updatedAt: new Date().toISOString()
-      }
+        mockStoreSpecialServices[index] = {
+          ...mockStoreSpecialServices[index],
+          ...data,
+          updatedAt: new Date().toISOString(),
+        }
 
-      resolve({
-        code: 200,
-        message: '更新成功',
-        data: mockStoreSpecialServices[index]
-      })
-    }, 200)
-  })
+        resolve({
+          code: 200,
+          message: '更新成功',
+          data: mockStoreSpecialServices[index],
+        })
+      }, 200)
+    }
+  )
 }
 
 // Mock 删除门店特色服务
 export const mockDeleteStoreSpecialService = (storeId: number, serviceId: number) => {
   return new Promise<{ code: number; message: string }>((resolve, reject) => {
     setTimeout(() => {
-      const index = mockStoreSpecialServices.findIndex(s => s.id === serviceId && s.storeId === storeId)
+      const index = mockStoreSpecialServices.findIndex(
+        s => s.id === serviceId && s.storeId === storeId
+      )
       if (index === -1) {
         reject({ code: 404, message: '服务不存在' })
         return
@@ -1367,7 +1366,7 @@ export const mockDeleteStoreSpecialService = (storeId: number, serviceId: number
       mockStoreSpecialServices.splice(index, 1)
       resolve({
         code: 200,
-        message: '删除成功'
+        message: '删除成功',
       })
     }, 200)
   })

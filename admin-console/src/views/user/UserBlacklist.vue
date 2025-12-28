@@ -1,7 +1,5 @@
 <template>
   <div class="user-blacklist-container">
-    
-
     <SearchForm
       v-model="searchForm"
       :fields="searchFields"
@@ -49,25 +47,11 @@
       </template>
 
       <template #actions="{ row }">
-        <el-button link type="primary" size="small" @click="handleView(row)">
-          查看详情
-        </el-button>
-        <el-button
-          v-if="row.isActive"
-          link
-          type="success"
-          size="small"
-          @click="handleRemove(row)"
-        >
+        <el-button link type="primary" size="small" @click="handleView(row)"> 查看详情 </el-button>
+        <el-button v-if="row.isActive" link type="success" size="small" @click="handleRemove(row)">
           解除
         </el-button>
-        <el-button
-          v-else
-          link
-          type="danger"
-          size="small"
-          @click="handleReactivate(row)"
-        >
+        <el-button v-else link type="danger" size="small" @click="handleReactivate(row)">
           重新加入
         </el-button>
       </template>
@@ -83,11 +67,7 @@
       @submit="handleSubmit"
     />
 
-    <el-dialog
-      v-model="detailDialogVisible"
-      title="黑名单详情"
-      width="600px"
-    >
+    <el-dialog v-model="detailDialogVisible" title="黑名单详情" width="600px">
       <el-descriptions :column="1" border v-if="currentBlacklist">
         <el-descriptions-item label="用户ID">
           {{ currentBlacklist.id }}
@@ -297,7 +277,7 @@ const formFields: FormField[] = [
     placeholder: '请输入手机号或用户名搜索',
     options: userList.value.map(u => ({
       label: `${u.username} (${u.phone})`,
-      value: u.id
+      value: u.id,
     })),
     filterable: true,
   },
@@ -318,12 +298,8 @@ const formFields: FormField[] = [
 ]
 
 const formRules = {
-  userId: [
-    { required: true, message: '请选择用户', trigger: 'change' },
-  ],
-  reason: [
-    { required: true, message: '请选择加入原因', trigger: 'change' },
-  ],
+  userId: [{ required: true, message: '请选择用户', trigger: 'change' }],
+  reason: [{ required: true, message: '请选择加入原因', trigger: 'change' }],
   description: [
     { required: true, message: '请输入详细说明', trigger: 'blur' },
     { min: 10, message: '详细说明至少10个字符', trigger: 'blur' },

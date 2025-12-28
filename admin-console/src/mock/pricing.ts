@@ -13,7 +13,7 @@ import type {
   CityFactorListItem,
   CityFactorListParams,
   CityFactorListResponse,
-  CityFactorFormData
+  CityFactorFormData,
 } from '@/types/pricing'
 import { mockCities } from './stores'
 
@@ -32,7 +32,7 @@ export const mockCityTiers: CityTierListItem[] = [
     cityCount: 4,
     createdAt: '2024-01-01 10:00:00',
     updatedAt: '2024-01-01 10:00:00',
-    cities: mockCities.filter(c => c.tierId === 1)
+    cities: mockCities.filter(c => c.tierId === 1),
   },
   {
     id: 2,
@@ -45,7 +45,7 @@ export const mockCityTiers: CityTierListItem[] = [
     cityCount: 6,
     createdAt: '2024-01-01 10:00:00',
     updatedAt: '2024-01-01 10:00:00',
-    cities: mockCities.filter(c => c.tierId === 2)
+    cities: mockCities.filter(c => c.tierId === 2),
   },
   {
     id: 3,
@@ -58,7 +58,7 @@ export const mockCityTiers: CityTierListItem[] = [
     cityCount: 5,
     createdAt: '2024-01-01 10:00:00',
     updatedAt: '2024-01-01 10:00:00',
-    cities: mockCities.filter(c => c.tierId === 3)
+    cities: mockCities.filter(c => c.tierId === 3),
   },
   {
     id: 4,
@@ -71,7 +71,7 @@ export const mockCityTiers: CityTierListItem[] = [
     cityCount: 5,
     createdAt: '2024-01-01 10:00:00',
     updatedAt: '2024-01-01 10:00:00',
-    cities: mockCities.filter(c => c.tierId === 4)
+    cities: mockCities.filter(c => c.tierId === 4),
   },
   {
     id: 5,
@@ -84,8 +84,8 @@ export const mockCityTiers: CityTierListItem[] = [
     cityCount: 0,
     createdAt: '2024-01-01 10:00:00',
     updatedAt: '2024-01-01 10:00:00',
-    cities: []
-  }
+    cities: [],
+  },
 ]
 
 /**
@@ -106,7 +106,7 @@ export const mockCityFactors: CityFactorListItem[] = [
     remark: '暑期旅游旺季，热门旅游城市价格上浮25%',
     createdBy: '管理员',
     createdAt: '2024-06-01 10:00:00',
-    updatedAt: '2024-06-01 10:00:00'
+    updatedAt: '2024-06-01 10:00:00',
   },
   {
     id: 2,
@@ -122,7 +122,7 @@ export const mockCityFactors: CityFactorListItem[] = [
     remark: '冬季冰雪旅游旺季，东北城市价格上浮30%',
     createdBy: '管理员',
     createdAt: '2024-11-01 10:00:00',
-    updatedAt: '2024-11-01 10:00:00'
+    updatedAt: '2024-11-01 10:00:00',
   },
   {
     id: 3,
@@ -138,15 +138,15 @@ export const mockCityFactors: CityFactorListItem[] = [
     remark: '夏季沿海城市旅游旺季，固定加价100元/天',
     createdBy: '管理员',
     createdAt: '2024-05-01 10:00:00',
-    updatedAt: '2024-05-01 10:00:00'
-  }
+    updatedAt: '2024-05-01 10:00:00',
+  },
 ]
 
 /**
  * 获取城市分级列表
  */
 export const mockGetCityTierList = (params: CityTierListParams): Promise<CityTierListResponse> => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       let filteredList = [...mockCityTiers]
 
@@ -162,9 +162,9 @@ export const mockGetCityTierList = (params: CityTierListParams): Promise<CityTie
 
       // 关键词搜索
       if (params.keyword) {
-        filteredList = filteredList.filter(item =>
-          item.tierName.includes(params.keyword!) ||
-          item.description.includes(params.keyword!)
+        filteredList = filteredList.filter(
+          item =>
+            item.tierName.includes(params.keyword!) || item.description.includes(params.keyword!)
         )
       }
 
@@ -178,7 +178,7 @@ export const mockGetCityTierList = (params: CityTierListParams): Promise<CityTie
         list: filteredList.slice(start, end),
         total,
         page,
-        pageSize
+        pageSize,
       })
     }, 300)
   })
@@ -225,8 +225,10 @@ export const mockUpdateCityTier = (id: number, data: UpdateCityTierRequest): Pro
 /**
  * 获取自定义城市因子列表
  */
-export const mockGetCityFactorList = (params: CityFactorListParams): Promise<CityFactorListResponse> => {
-  return new Promise((resolve) => {
+export const mockGetCityFactorList = (
+  params: CityFactorListParams
+): Promise<CityFactorListResponse> => {
+  return new Promise(resolve => {
     setTimeout(() => {
       let filteredList = [...mockCityFactors]
 
@@ -242,9 +244,8 @@ export const mockGetCityFactorList = (params: CityFactorListParams): Promise<Cit
 
       // 关键词搜索
       if (params.keyword) {
-        filteredList = filteredList.filter(item =>
-          item.factorName.includes(params.keyword!) ||
-          item.remark.includes(params.keyword!)
+        filteredList = filteredList.filter(
+          item => item.factorName.includes(params.keyword!) || item.remark.includes(params.keyword!)
         )
       }
 
@@ -266,7 +267,7 @@ export const mockGetCityFactorList = (params: CityFactorListParams): Promise<Cit
         list: filteredList.slice(start, end),
         total,
         page,
-        pageSize
+        pageSize,
       })
     }, 300)
   })
@@ -292,7 +293,7 @@ export const mockGetCityFactorDetail = (id: number): Promise<CityFactor> => {
  * 创建自定义城市因子
  */
 export const mockCreateCityFactor = (data: CityFactorFormData): Promise<CityFactor> => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const newFactor: CityFactor = {
         id: mockCityFactors.length + 1,
@@ -308,7 +309,7 @@ export const mockCreateCityFactor = (data: CityFactorFormData): Promise<CityFact
         remark: data.remark,
         createdBy: '管理员',
         createdAt: new Date().toISOString().replace('T', ' ').substring(0, 19),
-        updatedAt: new Date().toISOString().replace('T', ' ').substring(0, 19)
+        updatedAt: new Date().toISOString().replace('T', ' ').substring(0, 19),
       }
       mockCityFactors.push(newFactor)
       resolve(newFactor)

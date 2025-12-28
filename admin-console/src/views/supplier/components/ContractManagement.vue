@@ -52,7 +52,12 @@
       width="600px"
       @close="handleElectronicDialogClose"
     >
-      <el-form ref="electronicFormRef" :model="electronicForm" :rules="electronicFormRules" label-width="100px">
+      <el-form
+        ref="electronicFormRef"
+        :model="electronicForm"
+        :rules="electronicFormRules"
+        label-width="100px"
+      >
         <el-form-item label="合同名称" prop="contractName">
           <el-input v-model="electronicForm.contractName" placeholder="请输入合同名称" />
         </el-form-item>
@@ -89,7 +94,11 @@
 
       <template #footer>
         <el-button @click="electronicDialogVisible = false">取消</el-button>
-        <el-button type="primary" :loading="electronicSubmitLoading" @click="handleElectronicSubmit">
+        <el-button
+          type="primary"
+          :loading="electronicSubmitLoading"
+          @click="handleElectronicSubmit"
+        >
           发起签署
         </el-button>
       </template>
@@ -102,7 +111,12 @@
       width="600px"
       @close="handleScannedDialogClose"
     >
-      <el-form ref="scannedFormRef" :model="scannedForm" :rules="scannedFormRules" label-width="100px">
+      <el-form
+        ref="scannedFormRef"
+        :model="scannedForm"
+        :rules="scannedFormRules"
+        label-width="100px"
+      >
         <el-form-item label="合同名称" prop="contractName">
           <el-input v-model="scannedForm.contractName" placeholder="请输入合同名称" />
         </el-form-item>
@@ -156,13 +170,9 @@
             drag
           >
             <el-icon class="el-icon--upload"><UploadFilled /></el-icon>
-            <div class="el-upload__text">
-              拖拽文件到此处或<em>点击上传</em>
-            </div>
+            <div class="el-upload__text">拖拽文件到此处或<em>点击上传</em></div>
             <template #tip>
-              <div class="el-upload__tip">
-                支持 PDF、JPG、PNG 格式，文件大小不超过 10MB
-              </div>
+              <div class="el-upload__tip">支持 PDF、JPG、PNG 格式，文件大小不超过 10MB</div>
             </template>
           </el-upload>
         </el-form-item>
@@ -189,7 +199,13 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { ElMessage, ElMessageBox, type FormInstance, type FormRules, type UploadFile } from 'element-plus'
+import {
+  ElMessage,
+  ElMessageBox,
+  type FormInstance,
+  type FormRules,
+  type UploadFile,
+} from 'element-plus'
 import { DocumentAdd, Upload, UploadFilled } from '@element-plus/icons-vue'
 import {
   getSupplierContracts,
@@ -197,7 +213,7 @@ import {
   uploadScannedContract,
   deleteContract,
   downloadContract,
-  type SupplierContract
+  type SupplierContract,
 } from '@/api/supplier'
 import { uploadContractFile } from '@/api/upload'
 import { CONTRACT_STATUS_TEXT, CONTRACT_STATUS_TYPE } from '@/types/supplier'
@@ -219,14 +235,14 @@ const electronicForm = ref({
   contractName: '',
   contractNo: '',
   startDate: '',
-  endDate: ''
+  endDate: '',
 })
 
 const electronicFormRules: FormRules = {
   contractName: [{ required: true, message: '请输入合同名称', trigger: 'blur' }],
   contractNo: [{ required: true, message: '请输入合同编号', trigger: 'blur' }],
   startDate: [{ required: true, message: '请选择生效日期', trigger: 'change' }],
-  endDate: [{ required: true, message: '请选择到期日期', trigger: 'change' }]
+  endDate: [{ required: true, message: '请选择到期日期', trigger: 'change' }],
 }
 
 // 扫描件上传对话框
@@ -241,7 +257,7 @@ const scannedForm = ref({
   signDate: '',
   startDate: '',
   endDate: '',
-  remark: ''
+  remark: '',
 })
 
 const scannedFormRules: FormRules = {
@@ -249,7 +265,7 @@ const scannedFormRules: FormRules = {
   contractNo: [{ required: true, message: '请输入合同编号', trigger: 'blur' }],
   signDate: [{ required: true, message: '请选择签署日期', trigger: 'change' }],
   startDate: [{ required: true, message: '请选择生效日期', trigger: 'change' }],
-  endDate: [{ required: true, message: '请选择到期日期', trigger: 'change' }]
+  endDate: [{ required: true, message: '请选择到期日期', trigger: 'change' }],
 }
 
 // 获取合作协议列表
@@ -313,7 +329,7 @@ async function handleDelete(row: SupplierContract) {
     await ElMessageBox.confirm(`确定要删除协议"${row.contractName}"吗？`, '提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
-      type: 'warning'
+      type: 'warning',
     })
 
     await deleteContract(row.id)
@@ -343,15 +359,15 @@ async function handleElectronicSubmit() {
           name: '供应商代表',
           mobile: '13900139001',
           role: 'supplier',
-          signOrder: 1
+          signOrder: 1,
         },
         {
           name: '公司代表',
           mobile: '13900139999',
           role: 'company',
-          signOrder: 2
-        }
-      ]
+          signOrder: 2,
+        },
+      ],
     })
 
     ElMessage.success('电子签署发起成功')
@@ -392,7 +408,7 @@ async function handleScannedSubmit() {
       ...scannedForm.value,
       scannedFileUrl: fileResult.url,
       scannedFileName: fileResult.fileName,
-      scannedFileSize: fileResult.fileSize
+      scannedFileSize: fileResult.fileSize,
     })
 
     ElMessage.success('上传成功')
@@ -414,7 +430,7 @@ function handleElectronicDialogClose() {
     contractName: '',
     contractNo: '',
     startDate: '',
-    endDate: ''
+    endDate: '',
   }
   electronicFormRef.value?.clearValidate()
 }
@@ -427,7 +443,7 @@ function handleScannedDialogClose() {
     signDate: '',
     startDate: '',
     endDate: '',
-    remark: ''
+    remark: '',
   }
   uploadedFile.value = null
   uploadRef.value?.clearFiles()

@@ -35,7 +35,7 @@ function getCacheKey(coord1: Coordinate, coord2: Coordinate): string {
   // 使用排序后的坐标生成键,确保 A->B 和 B->A 使用同一个缓存
   const coords = [
     `${coord1.latitude.toFixed(6)},${coord1.longitude.toFixed(6)}`,
-    `${coord2.latitude.toFixed(6)},${coord2.longitude.toFixed(6)}`
+    `${coord2.latitude.toFixed(6)},${coord2.longitude.toFixed(6)}`,
   ].sort()
   return coords.join('|')
 }
@@ -66,7 +66,7 @@ export function calculateDistance(coord1: Coordinate, coord2: Coordinate): Dista
   if (coord1.latitude === coord2.latitude && coord1.longitude === coord2.longitude) {
     return {
       distance: 0,
-      distanceFormatted: '0公里'
+      distanceFormatted: '0公里',
     }
   }
 
@@ -88,7 +88,7 @@ export function calculateDistance(coord1: Coordinate, coord2: Coordinate): Dista
 
   return {
     distance,
-    distanceFormatted: formatDistance(distance)
+    distanceFormatted: formatDistance(distance),
   }
 }
 
@@ -98,10 +98,7 @@ export function calculateDistance(coord1: Coordinate, coord2: Coordinate): Dista
  * @param coord2 第二个坐标点
  * @returns 距离结果(公里)
  */
-export function calculateDistanceWithCache(
-  coord1: Coordinate,
-  coord2: Coordinate
-): DistanceResult {
+export function calculateDistanceWithCache(coord1: Coordinate, coord2: Coordinate): DistanceResult {
   const cacheKey = getCacheKey(coord1, coord2)
 
   // 检查缓存
@@ -155,13 +152,13 @@ export function calculateStoreDistance(
   if (pickupStoreId === returnStoreId) {
     return {
       distance: 0,
-      distanceFormatted: '0公里'
+      distanceFormatted: '0公里',
     }
   }
 
   // 查找门店
-  const pickupStore = stores.find((s) => s.id === pickupStoreId)
-  const returnStore = stores.find((s) => s.id === returnStoreId)
+  const pickupStore = stores.find(s => s.id === pickupStoreId)
+  const returnStore = stores.find(s => s.id === returnStoreId)
 
   if (!pickupStore) {
     throw new Error(`取车门店不存在: ID=${pickupStoreId}`)

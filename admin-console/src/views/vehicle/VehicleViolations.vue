@@ -1,8 +1,6 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="vehicle-violations-container">
-    
-
     <StatsCard :stats="statsConfig" />
 
     <SearchForm
@@ -22,12 +20,10 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
     >
-      <template #fineAmount="{ row }">
-        ¥{{ row.fineAmount }}
-      </template>
+      <template #fineAmount="{ row }"> ¥{{ row.fineAmount }} </template>
 
       <template #status="{ row }">
-        <el-tag :type="(getViolationStatusTag(row.status)) as any" size="small">
+        <el-tag :type="getViolationStatusTag(row.status) as any" size="small">
           {{ getViolationStatusLabel(row.status) }}
         </el-tag>
       </template>
@@ -40,12 +36,7 @@
       width="800px"
       @close="handleDialogClose"
     >
-      <el-form
-        ref="formRef"
-        :model="form"
-        :rules="formRules"
-        label-width="120px"
-      >
+      <el-form ref="formRef" :model="form" :rules="formRules" label-width="120px">
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="车辆" prop="vehicleId">
@@ -113,12 +104,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="罚款金额" prop="fineAmount">
-              <el-input-number
-                v-model="form.fineAmount"
-                :min="0"
-                :step="50"
-                style="width: 100%"
-              />
+              <el-input-number v-model="form.fineAmount" :min="0" :step="50" style="width: 100%" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -135,28 +121,17 @@
           </el-col>
         </el-row>
         <el-form-item label="备注">
-          <el-input
-            v-model="form.remark"
-            type="textarea"
-            :rows="2"
-            placeholder="请输入备注信息"
-          />
+          <el-input v-model="form.remark" type="textarea" :rows="2" placeholder="请输入备注信息" />
         </el-form-item>
       </el-form>
       <template #footer>
         <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" :loading="submitLoading" @click="handleSubmit">
-          确定
-        </el-button>
+        <el-button type="primary" :loading="submitLoading" @click="handleSubmit"> 确定 </el-button>
       </template>
     </el-dialog>
 
     <!-- 违章详情对话框 -->
-    <el-dialog
-      v-model="detailDialogVisible"
-      title="违章记录详情"
-      width="800px"
-    >
+    <el-dialog v-model="detailDialogVisible" title="违章记录详情" width="800px">
       <el-descriptions :column="2" border v-if="currentRecord">
         <el-descriptions-item label="车牌号">
           {{ currentRecord.vehicleNumber }}
@@ -174,7 +149,7 @@
           {{ currentRecord.violationDate }}
         </el-descriptions-item>
         <el-descriptions-item label="违章状态">
-          <el-tag :type="(getViolationStatusTag(currentRecord.status)) as any" size="small">
+          <el-tag :type="getViolationStatusTag(currentRecord.status) as any" size="small">
             {{ getViolationStatusLabel(currentRecord.status) }}
           </el-tag>
         </el-descriptions-item>
@@ -380,7 +355,7 @@ const tableActions: TableAction[] = [
     label: '处理',
     type: 'success',
     onClick: handleProcess,
-    show: (row) => row.status === 'pending' || row.status === 'processing',
+    show: row => row.status === 'pending' || row.status === 'processing',
   },
   {
     label: '删除',
@@ -561,15 +536,11 @@ async function handleProcess(row: ViolationRecord) {
 // 删除违章记录
 async function handleDelete(row: ViolationRecord) {
   try {
-    await ElMessageBox.confirm(
-      `确定要删除违章记录 "${row.violationType}" 吗？`,
-      '删除确认',
-      {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      }
-    )
+    await ElMessageBox.confirm(`确定要删除违章记录 "${row.violationType}" 吗？`, '删除确认', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    })
 
     await deleteViolationRecord(row.id)
     ElMessage.success('删除成功')
@@ -586,7 +557,7 @@ async function handleDelete(row: ViolationRecord) {
 const handleSubmit = async () => {
   if (!formRef.value) return
 
-  await formRef.value.validate(async (valid) => {
+  await formRef.value.validate(async valid => {
     if (!valid) return
 
     submitLoading.value = true

@@ -1,11 +1,6 @@
 <template>
   <div class="thirdparty-config">
-    <el-form
-      ref="formRef"
-      :model="form"
-      :rules="formRules"
-      label-width="180px"
-    >
+    <el-form ref="formRef" :model="form" :rules="formRules" label-width="180px">
       <!-- 对象存储配置 -->
       <div class="config-section">
         <h3 class="section-title">对象存储配置 (OSS)</h3>
@@ -17,10 +12,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="AccessKey ID" prop="ossAccessKeyId">
-          <el-input
-            v-model="form.ossAccessKeyId"
-            placeholder="请输入AccessKey ID"
-          />
+          <el-input v-model="form.ossAccessKeyId" placeholder="请输入AccessKey ID" />
         </el-form-item>
         <el-form-item label="AccessKey Secret" prop="ossAccessKeySecret">
           <el-input
@@ -31,16 +23,10 @@
           />
         </el-form-item>
         <el-form-item label="Bucket名称" prop="ossBucket">
-          <el-input
-            v-model="form.ossBucket"
-            placeholder="请输入Bucket名称"
-          />
+          <el-input v-model="form.ossBucket" placeholder="请输入Bucket名称" />
         </el-form-item>
         <el-form-item label="访问域名" prop="ossDomain">
-          <el-input
-            v-model="form.ossDomain"
-            placeholder="请输入访问域名"
-          />
+          <el-input v-model="form.ossDomain" placeholder="请输入访问域名" />
         </el-form-item>
       </div>
 
@@ -55,10 +41,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="API Key" prop="mapApiKey">
-          <el-input
-            v-model="form.mapApiKey"
-            placeholder="请输入地图API Key"
-          />
+          <el-input v-model="form.mapApiKey" placeholder="请输入地图API Key" />
         </el-form-item>
         <el-form-item label="Secret Key" prop="mapSecretKey">
           <el-input
@@ -74,11 +57,7 @@
       <div class="config-section">
         <h3 class="section-title">实名认证配置</h3>
         <el-form-item label="启用实名认证" prop="idVerifyEnabled">
-          <el-switch
-            v-model="form.idVerifyEnabled"
-            active-text="启用"
-            inactive-text="禁用"
-          />
+          <el-switch v-model="form.idVerifyEnabled" active-text="启用" inactive-text="禁用" />
         </el-form-item>
         <el-form-item label="认证服务商" prop="idVerifyProvider">
           <el-select
@@ -227,21 +206,15 @@ const form = reactive({
 })
 
 const formRules: FormRules = {
-  ossAccessKeyId: [
-    { required: true, message: '请输入AccessKey ID', trigger: 'blur' },
-  ],
-  ossBucket: [
-    { required: true, message: '请输入Bucket名称', trigger: 'blur' },
-  ],
-  mapApiKey: [
-    { required: true, message: '请输入地图API Key', trigger: 'blur' },
-  ],
+  ossAccessKeyId: [{ required: true, message: '请输入AccessKey ID', trigger: 'blur' }],
+  ossBucket: [{ required: true, message: '请输入Bucket名称', trigger: 'blur' }],
+  mapApiKey: [{ required: true, message: '请输入地图API Key', trigger: 'blur' }],
 }
 
 const handleSubmit = async () => {
   if (!formRef.value) return
 
-  await formRef.value.validate(async (valid) => {
+  await formRef.value.validate(async valid => {
     if (!valid) return
 
     submitLoading.value = true

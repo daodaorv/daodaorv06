@@ -1,11 +1,6 @@
 <template>
   <div class="subsidy-rules">
-    <el-alert
-      title="补贴规则说明"
-      type="info"
-      :closable="false"
-      style="margin-bottom: 20px"
-    >
+    <el-alert title="补贴规则说明" type="info" :closable="false" style="margin-bottom: 20px">
       <p>配置淡季补贴和保底分润规则，确保车主收益稳定</p>
     </el-alert>
 
@@ -21,9 +16,7 @@
       <el-table-column prop="startDate" label="开始日期" width="120" />
       <el-table-column prop="endDate" label="结束日期" width="120" />
       <el-table-column prop="minMonthlyProfit" label="最低月分润" width="130" align="right">
-        <template #default="{ row }">
-          ¥{{ row.minMonthlyProfit }}
-        </template>
+        <template #default="{ row }"> ¥{{ row.minMonthlyProfit }} </template>
       </el-table-column>
       <el-table-column prop="description" label="说明" min-width="300" />
     </el-table>

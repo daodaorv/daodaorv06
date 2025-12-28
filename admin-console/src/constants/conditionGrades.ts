@@ -11,7 +11,7 @@ export const CONDITION_GRADES: ConditionGradeConfig[] = [
     grade: 'A',
     name: '优秀',
     ageRange: { min: 0, max: 12 },
-    premiumMultiplier: 1.30,
+    premiumMultiplier: 1.3,
     description: '新车，0-12个月',
   },
   {
@@ -25,7 +25,7 @@ export const CONDITION_GRADES: ConditionGradeConfig[] = [
     grade: 'C',
     name: '一般',
     ageRange: { min: 37, max: 60 },
-    premiumMultiplier: 0.90,
+    premiumMultiplier: 0.9,
     description: '中等车龄，37-60个月',
   },
   {
@@ -43,13 +43,13 @@ export const CONDITION_GRADES: ConditionGradeConfig[] = [
 export const DEFAULT_FINANCIAL_PARAMS = {
   TARGET_ANNUAL_RETURN: 0.03, // 目标年化收益率 3%
   INVESTMENT_PERIOD: 5, // 投资周期 5年
-  RESIDUAL_VALUE_RATE: 0.30, // 残值率 30%
+  RESIDUAL_VALUE_RATE: 0.3, // 残值率 30%
 }
 
 /**
  * 默认运营参数
  */
 export const DEFAULT_OPERATIONAL_PARAMS = {
-  ANNUAL_OPERATING_RATE: 0.30, // 年运营率 30% (365天×30%=109.5天)
-  OPERATING_COST_RATE: 0.40, // 运营成本占比 40%
+  ANNUAL_OPERATING_RATE: 0.3, // 年运营率 30% (365天×30%=109.5天)
+  OPERATING_COST_RATE: 0.4, // 运营成本占比 40%
 }

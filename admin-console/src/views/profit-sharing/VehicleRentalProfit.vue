@@ -129,13 +129,7 @@
           </el-form>
 
           <!-- 数据表格 -->
-          <el-table
-            :data="recordList"
-            v-loading="loading"
-            border
-            stripe
-            style="width: 100%"
-          >
+          <el-table :data="recordList" v-loading="loading" border stripe style="width: 100%">
             <el-table-column prop="orderNo" label="订单号" width="160" />
             <el-table-column prop="vehicleName" label="车辆" width="150" />
             <el-table-column prop="ownerName" label="车主" width="120" />
@@ -147,19 +141,13 @@
               </template>
             </el-table-column>
             <el-table-column prop="orderAmount" label="订单金额" width="120" align="right">
-              <template #default="{ row }">
-                ¥{{ formatNumber(row.orderAmount) }}
-              </template>
+              <template #default="{ row }"> ¥{{ formatNumber(row.orderAmount) }} </template>
             </el-table-column>
             <el-table-column prop="orderProfit" label="订单利润" width="120" align="right">
-              <template #default="{ row }">
-                ¥{{ formatNumber(row.orderProfit) }}
-              </template>
+              <template #default="{ row }"> ¥{{ formatNumber(row.orderProfit) }} </template>
             </el-table-column>
             <el-table-column prop="finalRatio" label="最终比例" width="100" align="right">
-              <template #default="{ row }">
-                {{ row.finalRatio }}%
-              </template>
+              <template #default="{ row }"> {{ row.finalRatio }}% </template>
             </el-table-column>
             <el-table-column prop="profitAmount" label="分润金额" width="120" align="right">
               <template #default="{ row }">
@@ -235,11 +223,7 @@
     </el-card>
 
     <!-- 详情对话框 -->
-    <el-dialog
-      v-model="detailDialogVisible"
-      title="分润详情"
-      width="800px"
-    >
+    <el-dialog v-model="detailDialogVisible" title="分润详情" width="800px">
       <el-descriptions :column="2" border v-if="currentRecord">
         <el-descriptions-item label="订单号">{{ currentRecord.orderNo }}</el-descriptions-item>
         <el-descriptions-item label="车辆">{{ currentRecord.vehicleName }}</el-descriptions-item>
@@ -309,11 +293,7 @@ import {
   TrendCharts,
 } from '@element-plus/icons-vue'
 import type { HostingProfitRecord, HostingType, ProfitStatus } from '@/types/profit'
-import {
-  getHostingProfitRecords,
-  getHostingProfitStatistics,
-  batchPayProfit,
-} from '@/api/profit'
+import { getHostingProfitRecords, getHostingProfitStatistics, batchPayProfit } from '@/api/profit'
 import { ProductType } from '@/types/profit'
 import HostingConfig from './components/HostingConfig.vue'
 import SubsidyRules from './components/SubsidyRules.vue'

@@ -3,32 +3,16 @@
     <div class="editor-toolbar">
       <!-- 文本格式 -->
       <el-button-group>
-        <el-button
-          size="small"
-          title="粗体"
-          @click="execCommand('bold')"
-        >
+        <el-button size="small" title="粗体" @click="execCommand('bold')">
           <strong>B</strong>
         </el-button>
-        <el-button
-          size="small"
-          title="斜体"
-          @click="execCommand('italic')"
-        >
+        <el-button size="small" title="斜体" @click="execCommand('italic')">
           <em>I</em>
         </el-button>
-        <el-button
-          size="small"
-          title="下划线"
-          @click="execCommand('underline')"
-        >
+        <el-button size="small" title="下划线" @click="execCommand('underline')">
           <u>U</u>
         </el-button>
-        <el-button
-          size="small"
-          title="删除线"
-          @click="execCommand('strikeThrough')"
-        >
+        <el-button size="small" title="删除线" @click="execCommand('strikeThrough')">
           <s>S</s>
         </el-button>
       </el-button-group>
@@ -49,27 +33,9 @@
 
       <!-- 对齐方式 -->
       <el-button-group style="margin-left: 8px">
-        <el-button
-          size="small"
-          title="左对齐"
-          @click="execCommand('justifyLeft')"
-        >
-          ←
-        </el-button>
-        <el-button
-          size="small"
-          title="居中"
-          @click="execCommand('justifyCenter')"
-        >
-          ↔
-        </el-button>
-        <el-button
-          size="small"
-          title="右对齐"
-          @click="execCommand('justifyRight')"
-        >
-          →
-        </el-button>
+        <el-button size="small" title="左对齐" @click="execCommand('justifyLeft')"> ← </el-button>
+        <el-button size="small" title="居中" @click="execCommand('justifyCenter')"> ↔ </el-button>
+        <el-button size="small" title="右对齐" @click="execCommand('justifyRight')"> → </el-button>
       </el-button-group>
 
       <!-- 列表 -->
@@ -90,24 +56,9 @@
 
       <!-- 插入 -->
       <el-button-group style="margin-left: 8px">
-        <el-button
-          :icon="Link"
-          size="small"
-          title="插入链接"
-          @click="handleInsertLink"
-        />
-        <el-button
-          :icon="Picture"
-          size="small"
-          title="插入图片"
-          @click="handleInsertImage"
-        />
-        <el-button
-          :icon="VideoPlay"
-          size="small"
-          title="插入视频"
-          @click="handleInsertVideo"
-        />
+        <el-button :icon="Link" size="small" title="插入链接" @click="handleInsertLink" />
+        <el-button :icon="Picture" size="small" title="插入图片" @click="handleInsertImage" />
+        <el-button :icon="VideoPlay" size="small" title="插入视频" @click="handleInsertVideo" />
       </el-button-group>
 
       <!-- 其他 -->
@@ -118,12 +69,7 @@
           title="清除格式"
           @click="execCommand('removeFormat')"
         />
-        <el-button
-          :icon="Delete"
-          size="small"
-          title="清空内容"
-          @click="handleClear"
-        />
+        <el-button :icon="Delete" size="small" title="清空内容" @click="handleClear" />
       </el-button-group>
 
       <!-- 字数统计 -->
@@ -144,11 +90,7 @@
     ></div>
 
     <!-- 插入链接对话框 -->
-    <el-dialog
-      v-model="linkDialogVisible"
-      title="插入链接"
-      width="500px"
-    >
+    <el-dialog v-model="linkDialogVisible" title="插入链接" width="500px">
       <el-form :model="linkForm" label-width="80px">
         <el-form-item label="链接文本">
           <el-input v-model="linkForm.text" placeholder="请输入链接文本" />
@@ -170,18 +112,10 @@
     </el-dialog>
 
     <!-- 插入图片对话框 -->
-    <el-dialog
-      v-model="imageDialogVisible"
-      title="插入图片"
-      width="500px"
-    >
+    <el-dialog v-model="imageDialogVisible" title="插入图片" width="500px">
       <el-tabs v-model="imageTabActive">
         <el-tab-pane label="图片URL" name="url">
-          <el-input
-            v-model="imageUrl"
-            placeholder="请输入图片URL"
-            clearable
-          />
+          <el-input v-model="imageUrl" placeholder="请输入图片URL" clearable />
         </el-tab-pane>
         <el-tab-pane label="上传图片" name="upload">
           <el-upload
@@ -209,11 +143,7 @@
     </el-dialog>
 
     <!-- 插入视频对话框 -->
-    <el-dialog
-      v-model="videoDialogVisible"
-      title="插入视频"
-      width="500px"
-    >
+    <el-dialog v-model="videoDialogVisible" title="插入视频" width="500px">
       <el-input
         v-model="videoUrl"
         placeholder="请输入视频URL或嵌入代码"
@@ -245,14 +175,14 @@ import { readAsDataUrl } from '@/utils/file'
 
 // Props 定义
 interface Props {
-  modelValue?: string             // v-model 绑定的 HTML 内容
-  height?: string                 // 编辑器高度
-  minHeight?: string              // 最小高度
-  placeholder?: string            // 占位符
-  disabled?: boolean              // 是否禁用
-  maxLength?: number              // 最大字数限制
-  showWordCount?: boolean         // 是否显示字数统计
-  uploadUrl?: string              // 图片上传地址
+  modelValue?: string // v-model 绑定的 HTML 内容
+  height?: string // 编辑器高度
+  minHeight?: string // 最小高度
+  placeholder?: string // 占位符
+  disabled?: boolean // 是否禁用
+  maxLength?: number // 最大字数限制
+  showWordCount?: boolean // 是否显示字数统计
+  uploadUrl?: string // 图片上传地址
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -269,8 +199,8 @@ const props = withDefaults(defineProps<Props>(), {
 // Emits 定义
 const emit = defineEmits<{
   'update:modelValue': [value: string]
-  'change': [value: string]
-  'blur': []
+  change: [value: string]
+  blur: []
 }>()
 
 // 响应式数据
@@ -309,10 +239,7 @@ const mockImageUploadRequest = async (options: UploadRequestOptions) => {
   try {
     const file = options.file as File
     const url = await readAsDataUrl(file)
-    // 直接设置图片URL，不依赖 onSuccess 回调
-    imageUrl.value = url
-    ElMessage.success('图片上传成功')
-    // 仍然调用 onSuccess 以保持 Element Plus 的状态一致
+    // 调用 onSuccess 回调，传递正确的响应格式
     options.onSuccess?.({ data: { url } })
   } catch (error) {
     ElMessage.error('图片上传失败')
@@ -423,10 +350,23 @@ const beforeImageUpload = (file: File) => {
 }
 
 const handleImageUploadSuccess = (response: any) => {
-  const url = response.data?.url || response.url
+  // 处理不同的响应格式
+  // 1. response.data.url (标准格式)
+  // 2. response.url (简化格式)
+  // 3. response 本身就是 URL 字符串
+  let url = ''
+
+  if (response && typeof response === 'object') {
+    url = response.data?.url || response.url || ''
+  } else if (typeof response === 'string') {
+    url = response
+  }
+
   if (url) {
     imageUrl.value = url
     ElMessage.success('图片上传成功')
+  } else {
+    ElMessage.error('图片上传失败：无法获取图片URL')
   }
 }
 
@@ -490,7 +430,7 @@ const getContent = () => {
 // 监听 modelValue 变化
 watch(
   () => props.modelValue,
-  (newVal) => {
+  newVal => {
     if (editorRef.value && newVal !== editorRef.value.innerHTML) {
       setContent(newVal)
     }
@@ -500,7 +440,7 @@ watch(
 // 监听禁用状态
 watch(
   () => props.disabled,
-  (newVal) => {
+  newVal => {
     if (editorRef.value) {
       editorRef.value.contentEditable = String(!newVal)
     }

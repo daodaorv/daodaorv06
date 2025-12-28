@@ -1,7 +1,14 @@
 /**
  * 角色管理 Mock 数据
  */
-import type { Role, RoleListParams, CreateRoleParams, UpdateRoleParams, ConfigPermissionsParams, RoleUser } from '@/api/role'
+import type {
+  Role,
+  RoleListParams,
+  CreateRoleParams,
+  UpdateRoleParams,
+  ConfigPermissionsParams,
+  RoleUser,
+} from '@/api/role'
 
 // Mock 角色数据
 const mockRoles: Role[] = [
@@ -109,14 +116,14 @@ const mockRoleUsers: Record<number, RoleUser[]> = {
 
 // Mock 获取角色列表
 export const mockGetRoleList = (params: RoleListParams) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       let filteredRoles = [...mockRoles]
 
       // 关键词搜索
       if (params.keyword) {
         filteredRoles = filteredRoles.filter(
-          (role) =>
+          role =>
             role.name.includes(params.keyword!) ||
             role.code.includes(params.keyword!) ||
             role.description.includes(params.keyword!)
@@ -125,7 +132,7 @@ export const mockGetRoleList = (params: RoleListParams) => {
 
       // 状态筛选
       if (params.status) {
-        filteredRoles = filteredRoles.filter((role) => role.status === params.status)
+        filteredRoles = filteredRoles.filter(role => role.status === params.status)
       }
 
       // 分页
@@ -153,7 +160,7 @@ export const mockGetRoleList = (params: RoleListParams) => {
 export const mockGetRoleDetail = (id: number) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      const role = mockRoles.find((r) => r.id === id)
+      const role = mockRoles.find(r => r.id === id)
       if (role) {
         resolve({
           code: 200,
@@ -172,7 +179,7 @@ export const mockGetRoleDetail = (id: number) => {
 
 // Mock 创建角色
 export const mockCreateRole = (data: CreateRoleParams) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const newRole: Role = {
         id: mockRoles.length + 1,
@@ -201,7 +208,7 @@ export const mockCreateRole = (data: CreateRoleParams) => {
 export const mockUpdateRole = (data: UpdateRoleParams) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      const index = mockRoles.findIndex((r) => r.id === data.id)
+      const index = mockRoles.findIndex(r => r.id === data.id)
       if (index > -1) {
         mockRoles[index] = {
           ...mockRoles[index],
@@ -227,7 +234,7 @@ export const mockUpdateRole = (data: UpdateRoleParams) => {
 export const mockDeleteRole = (id: number) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      const index = mockRoles.findIndex((r) => r.id === id)
+      const index = mockRoles.findIndex(r => r.id === id)
       if (index > -1) {
         const role = mockRoles[index]
         if (role.isSystem) {
@@ -256,7 +263,7 @@ export const mockDeleteRole = (id: number) => {
 export const mockConfigRolePermissions = (data: ConfigPermissionsParams) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      const role = mockRoles.find((r) => r.id === data.roleId)
+      const role = mockRoles.find(r => r.id === data.roleId)
       if (role) {
         // 这里只是模拟，实际应该保存权限配置
         resolve({
@@ -275,7 +282,7 @@ export const mockConfigRolePermissions = (data: ConfigPermissionsParams) => {
 
 // Mock 获取角色用户列表
 export const mockGetRoleUsers = (roleId: number, params?: { page?: number; pageSize?: number }) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const users = mockRoleUsers[roleId] || []
       const page = params?.page || 1

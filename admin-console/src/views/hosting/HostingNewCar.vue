@@ -1,8 +1,6 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="hosting-new-car-container">
-    
-
     <SearchForm
       v-model="searchForm"
       :fields="searchFields"
@@ -102,7 +100,7 @@
             <el-descriptions-item label="年龄">
               {{ currentApplication.age }}岁
             </el-descriptions-item>
-        // @ts-ignore
+            // @ts-ignore
             <el-descriptions-item label="信用评分">
               <el-tag :type="getCreditScoreTag(currentApplication.creditScore)" size="small">
                 {{ currentApplication.creditScore }}分
@@ -164,7 +162,9 @@
 
         <!-- 购车进度 -->
         <el-card
-          v-if="currentApplication.status === 'purchasing' || currentApplication.status === 'completed'"
+          v-if="
+            currentApplication.status === 'purchasing' || currentApplication.status === 'completed'
+          "
           class="detail-card"
           shadow="never"
         >
@@ -193,19 +193,13 @@
                 :step="10"
                 style="width: 150px"
               />
-              <el-button type="primary" @click="handleUpdateProgress">
-                更新进度
-              </el-button>
+              <el-button type="primary" @click="handleUpdateProgress"> 更新进度 </el-button>
             </div>
           </div>
         </el-card>
 
         <!-- 审核信息 -->
-        <el-card
-          v-if="currentApplication.status !== 'pending'"
-          class="detail-card"
-          shadow="never"
-        >
+        <el-card v-if="currentApplication.status !== 'pending'" class="detail-card" shadow="never">
           <template #header>
             <span>审核信息</span>
           </template>
@@ -222,17 +216,15 @@
               {{ currentApplication.reviewedBy || '-' }}
             </el-descriptions-item>
             <el-descriptions-item label="审核时间">
-              {{ currentApplication.reviewedAt ? formatDateTime(currentApplication.reviewedAt) : '-' }}
+              {{
+                currentApplication.reviewedAt ? formatDateTime(currentApplication.reviewedAt) : '-'
+              }}
             </el-descriptions-item>
           </el-descriptions>
         </el-card>
 
         <!-- 审核操作 -->
-        <el-card
-          v-if="currentApplication.status === 'pending'"
-          class="detail-card"
-          shadow="never"
-        >
+        <el-card v-if="currentApplication.status === 'pending'" class="detail-card" shadow="never">
           <template #header>
             <span>审核操作</span>
           </template>
@@ -282,7 +274,7 @@ import {
   reviewNewCarApplication,
   updatePurchaseProgress,
   type NewCarHostingApplication,
-  type NewCarApplicationListParams
+  type NewCarApplicationListParams,
 } from '@/api/hosting'
 import { useErrorHandler } from '@/composables'
 
@@ -296,13 +288,13 @@ const APPLICATION_STATUS_OPTIONS = [
   { label: '已拒绝', value: 'rejected' },
   { label: '购车中', value: 'purchasing' },
   { label: '已完成', value: 'completed' },
-  { label: '已取消', value: 'cancelled' }
+  { label: '已取消', value: 'cancelled' },
 ]
 
 // 搜索表单
 const searchForm = reactive<NewCarApplicationListParams>({
   keyword: '',
-  status: undefined
+  status: undefined,
 })
 
 // 搜索字段配置
@@ -312,7 +304,7 @@ const searchFields = computed<SearchField[]>(() => [
     label: '关键词',
     type: 'input',
     placeholder: '申请编号/申请人姓名/手机号',
-    width: '250px'
+    width: '250px',
   },
   {
     prop: 'status',
@@ -320,8 +312,8 @@ const searchFields = computed<SearchField[]>(() => [
     type: 'select',
     placeholder: '全部状态',
     options: APPLICATION_STATUS_OPTIONS,
-    width: '150px'
-  }
+    width: '150px',
+  },
 ])
 
 // 表格列配置
@@ -333,7 +325,7 @@ const tableColumns = computed(() => [
   { prop: 'guaranteedIncome', label: '保底收益', width: 120, slot: true },
   { prop: 'status', label: '申请状态', width: 100, slot: true },
   { prop: 'purchaseProgress', label: '购车进度', width: 150, slot: true },
-  { prop: 'createdAt', label: '申请时间', width: 160, formatter: formatDateTime }
+  { prop: 'createdAt', label: '申请时间', width: 160, formatter: formatDateTime },
 ]) as any
 
 // 表格操作配置
@@ -341,20 +333,20 @@ const tableActions = computed<TableAction[]>(() => [
   {
     label: '查看详情',
     type: 'primary',
-    onClick: handleViewDetail
+    onClick: handleViewDetail,
   },
   {
     label: '审核',
     type: 'success',
     onClick: handleReview,
-    show: (row: NewCarHostingApplication) => row.status === 'pending'
+    show: (row: NewCarHostingApplication) => row.status === 'pending',
   },
   {
     label: '更新进度',
     type: 'warning',
     onClick: handleUpdateProgressDialog,
-    show: (row: NewCarHostingApplication) => row.status === 'purchasing'
-  }
+    show: (row: NewCarHostingApplication) => row.status === 'purchasing',
+  },
 ])
 
 // 数据列表
@@ -365,7 +357,7 @@ const loading = ref(false)
 const pagination = reactive({
   total: 0,
   page: 1,
-  pageSize: 10
+  pageSize: 10,
 })
 
 // 详情对话框
@@ -374,12 +366,12 @@ const currentApplication = ref<NewCarHostingApplication | null>(null)
 
 // 审核表单
 const reviewForm = reactive({
-  comment: ''
+  comment: '',
 })
 
 // 进度更新表单
 const progressForm = reactive({
-  progress: 0
+  progress: 0,
 })
 
 // 获取申请列表
@@ -389,7 +381,7 @@ const fetchApplicationList = async () => {
     const res: any = await getNewCarApplicationList({
       ...searchForm,
       page: pagination.page,
-      pageSize: pagination.pageSize
+      pageSize: pagination.pageSize,
     })
     applicationList.value = res.data.list
     pagination.total = res.data.total
@@ -450,7 +442,7 @@ const handleApprove = async () => {
 
   try {
     await ElMessageBox.confirm('确认通过该购车托管申请吗？', '确认操作', {
-      type: 'warning'
+      type: 'warning',
     })
 
     await reviewNewCarApplication(currentApplication.value!.id, true, reviewForm.comment)
@@ -473,7 +465,7 @@ const handleReject = async () => {
 
   try {
     await ElMessageBox.confirm('确认拒绝该购车托管申请吗？', '确认操作', {
-      type: 'warning'
+      type: 'warning',
     })
 
     await reviewNewCarApplication(currentApplication.value!.id, false, reviewForm.comment)
@@ -514,7 +506,7 @@ const formatDateTime = (dateStr: string) => {
     month: '2-digit',
     day: '2-digit',
     hour: '2-digit',
-    minute: '2-digit'
+    minute: '2-digit',
   })
 }
 
@@ -526,7 +518,7 @@ const getStatusTag = (status: string) => {
     rejected: 'danger',
     purchasing: 'primary',
     completed: 'success',
-    cancelled: 'info'
+    cancelled: 'info',
   }
   return tagMap[status] || 'info'
 }
@@ -539,7 +531,7 @@ const getStatusLabel = (status: string) => {
     rejected: '已拒绝',
     purchasing: '购车中',
     completed: '已完成',
-    cancelled: '已取消'
+    cancelled: '已取消',
   }
   return labelMap[status] || status
 }

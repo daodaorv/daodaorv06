@@ -1,8 +1,6 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="marketing-activities-container">
-    
-
     <SearchForm
       v-model="searchForm"
       :fields="searchFields"
@@ -22,12 +20,12 @@
       @current-change="handleCurrentChange"
     >
       <template #type="{ row }">
-        <el-tag :type="(getActivityTypeTag(row.type)) as any" size="small">
+        <el-tag :type="getActivityTypeTag(row.type) as any" size="small">
           {{ getActivityTypeLabel(row.type) }}
         </el-tag>
       </template>
       <template #status="{ row }">
-        <el-tag :type="(getActivityStatusTag(row.status)) as any" size="small">
+        <el-tag :type="getActivityStatusTag(row.status) as any" size="small">
           {{ getActivityStatusLabel(row.status) }}
         </el-tag>
       </template>
@@ -87,32 +85,54 @@
         <el-descriptions-item label="活动ID">{{ currentActivity.id }}</el-descriptions-item>
         <el-descriptions-item label="活动名称">{{ currentActivity.name }}</el-descriptions-item>
         <el-descriptions-item label="活动类型">
-          <el-tag :type="(getActivityTypeTag(currentActivity.type)) as any" size="small">
+          <el-tag :type="getActivityTypeTag(currentActivity.type) as any" size="small">
             {{ getActivityTypeLabel(currentActivity.type) }}
           </el-tag>
         </el-descriptions-item>
         <el-descriptions-item label="活动状态">
-          <el-tag :type="(getActivityStatusTag(currentActivity.status)) as any" size="small">
+          <el-tag :type="getActivityStatusTag(currentActivity.status) as any" size="small">
             {{ getActivityStatusLabel(currentActivity.status) }}
           </el-tag>
         </el-descriptions-item>
-        <el-descriptions-item label="开始时间">{{ currentActivity.startDate }}</el-descriptions-item>
+        <el-descriptions-item label="开始时间">{{
+          currentActivity.startDate
+        }}</el-descriptions-item>
         <el-descriptions-item label="结束时间">{{ currentActivity.endDate }}</el-descriptions-item>
-        <el-descriptions-item label="活动预算">¥{{ currentActivity.budget.toLocaleString() }}</el-descriptions-item>
-        <el-descriptions-item label="实际成本">¥{{ currentActivity.actualCost.toLocaleString() }}</el-descriptions-item>
+        <el-descriptions-item label="活动预算"
+          >¥{{ currentActivity.budget.toLocaleString() }}</el-descriptions-item
+        >
+        <el-descriptions-item label="实际成本"
+          >¥{{ currentActivity.actualCost.toLocaleString() }}</el-descriptions-item
+        >
         <el-descriptions-item label="目标用户标签" :span="2">
-          <el-tag v-for="tagId in currentActivity.targetUserTags" :key="tagId" size="small" style="margin-right: 8px">
+          <el-tag
+            v-for="tagId in currentActivity.targetUserTags"
+            :key="tagId"
+            size="small"
+            style="margin-right: 8px"
+          >
             {{ getTagName(tagId) }}
           </el-tag>
-          <span v-if="!currentActivity.targetUserTags || currentActivity.targetUserTags.length === 0" style="color: #909399">
+          <span
+            v-if="!currentActivity.targetUserTags || currentActivity.targetUserTags.length === 0"
+            style="color: #909399"
+          >
             全部用户
           </span>
         </el-descriptions-item>
-        <el-descriptions-item label="参与人数">{{ currentActivity.participantCount }}人</el-descriptions-item>
-        <el-descriptions-item label="订单数量">{{ currentActivity.orderCount }}单</el-descriptions-item>
-        <el-descriptions-item label="活动营收">¥{{ currentActivity.revenue.toLocaleString() }}</el-descriptions-item>
+        <el-descriptions-item label="参与人数"
+          >{{ currentActivity.participantCount }}人</el-descriptions-item
+        >
+        <el-descriptions-item label="订单数量"
+          >{{ currentActivity.orderCount }}单</el-descriptions-item
+        >
+        <el-descriptions-item label="活动营收"
+          >¥{{ currentActivity.revenue.toLocaleString() }}</el-descriptions-item
+        >
         <el-descriptions-item label="投资回报率(ROI)">
-          <span :style="{ color: currentActivity.roi > 10 ? '#67c23a' : '#f56c6c', fontWeight: 'bold' }">
+          <span
+            :style="{ color: currentActivity.roi > 10 ? '#67c23a' : '#f56c6c', fontWeight: 'bold' }"
+          >
             {{ currentActivity.roi.toFixed(1) }}
           </span>
         </el-descriptions-item>
@@ -123,7 +143,9 @@
         <el-descriptions-item label="活动规则" :span="2">
           <div v-html="currentActivity.rules"></div>
         </el-descriptions-item>
-        <el-descriptions-item label="创建时间" :span="2">{{ currentActivity.createdAt }}</el-descriptions-item>
+        <el-descriptions-item label="创建时间" :span="2">{{
+          currentActivity.createdAt
+        }}</el-descriptions-item>
       </el-descriptions>
       <template #footer>
         <el-button @click="detailDialogVisible = false">关闭</el-button>
@@ -142,11 +164,7 @@ import DataTable from '@/components/common/DataTable.vue'
 import FormDialog from '@/components/common/FormDialog.vue'
 import type { SearchField } from '@/components/common/SearchForm.vue'
 import type { TableColumn, TableAction, ToolbarButton } from '@/components/common/DataTable.vue'
-import {
-  getActivityList,
-  type MarketingActivity,
-  type ActivityListParams
-} from '@/api/marketing'
+import { getActivityList, type MarketingActivity, type ActivityListParams } from '@/api/marketing'
 import { tagApi, type Tag } from '@/api/user'
 import { useErrorHandler } from '@/composables'
 
@@ -157,28 +175,28 @@ const tagList = ref<Tag[]>([])
 const tagOptions = computed(() =>
   tagList.value.map(tag => ({
     label: tag.name,
-    value: tag.id
+    value: tag.id,
   }))
 )
 
 const ACTIVITY_TYPE_OPTIONS = [
   { label: '促销活动', value: 'promotion' },
   { label: '主题活动', value: 'event' },
-  { label: '营销战役', value: 'campaign' }
+  { label: '营销战役', value: 'campaign' },
 ]
 
 const ACTIVITY_STATUS_OPTIONS = [
   { label: '草稿', value: 'draft' },
   { label: '进行中', value: 'active' },
   { label: '已暂停', value: 'paused' },
-  { label: '已结束', value: 'ended' }
+  { label: '已结束', value: 'ended' },
 ]
 
 const searchForm = reactive<ActivityListParams>({
   keyword: '',
   type: undefined,
   status: undefined,
-  tagId: undefined
+  tagId: undefined,
 })
 
 const searchFields = computed<SearchField[]>(() => [
@@ -187,7 +205,7 @@ const searchFields = computed<SearchField[]>(() => [
     label: '关键词',
     type: 'input',
     placeholder: '活动名称',
-    width: '200px'
+    width: '200px',
   },
   {
     prop: 'type',
@@ -195,7 +213,7 @@ const searchFields = computed<SearchField[]>(() => [
     type: 'select',
     placeholder: '请选择类型',
     width: '150px',
-    options: ACTIVITY_TYPE_OPTIONS
+    options: ACTIVITY_TYPE_OPTIONS,
   },
   {
     prop: 'status',
@@ -203,7 +221,7 @@ const searchFields = computed<SearchField[]>(() => [
     type: 'select',
     placeholder: '请选择状态',
     width: '150px',
-    options: ACTIVITY_STATUS_OPTIONS
+    options: ACTIVITY_STATUS_OPTIONS,
   },
   {
     prop: 'tagId',
@@ -211,8 +229,8 @@ const searchFields = computed<SearchField[]>(() => [
     type: 'select',
     placeholder: '请选择标签',
     width: '150px',
-    options: tagOptions.value
-  }
+    options: tagOptions.value,
+  },
 ])
 
 const tableColumns: TableColumn[] = [
@@ -225,7 +243,7 @@ const tableColumns: TableColumn[] = [
   { prop: 'performance', label: '活动效果', width: 140, slot: 'performance' },
   { prop: 'roi', label: 'ROI', width: 80, slot: 'roi' },
   { prop: 'startDate', label: '开始时间', width: 120 },
-  { prop: 'endDate', label: '结束时间', width: 120 }
+  { prop: 'endDate', label: '结束时间', width: 120 },
 ]
 
 // 工具栏按钮配置
@@ -234,26 +252,26 @@ const toolbarButtons: ToolbarButton[] = [
     label: '新增活动',
     type: 'primary',
     icon: Plus,
-    onClick: () => handleCreate()
-  }
+    onClick: () => handleCreate(),
+  },
 ]
 
 const tableActions: TableAction[] = [
   {
     label: '查看',
     type: 'primary',
-    onClick: (row: MarketingActivity) => handleView(row)
+    onClick: (row: MarketingActivity) => handleView(row),
   },
   {
     label: '编辑',
     type: 'primary',
-    onClick: (row: MarketingActivity) => handleEdit(row)
+    onClick: (row: MarketingActivity) => handleEdit(row),
   },
   {
     label: '删除',
     type: 'danger',
-    onClick: (row: MarketingActivity) => handleDelete(row)
-  }
+    onClick: (row: MarketingActivity) => handleDelete(row),
+  },
 ]
 
 const activityList = ref<MarketingActivity[]>([])
@@ -262,7 +280,7 @@ const loading = ref(false)
 const pagination = reactive({
   page: 1,
   pageSize: 10,
-  total: 0
+  total: 0,
 })
 
 // 对话框状态
@@ -286,14 +304,14 @@ const formData = reactive({
   budget: 0,
   targetUserTags: [] as number[],
   description: '',
-  rules: ''
+  rules: '',
 })
 
 // 表单字段配置
 const formFields = computed(() => [
   {
     type: 'divider',
-    label: '基本信息'
+    label: '基本信息',
   },
   {
     type: 'row',
@@ -303,16 +321,16 @@ const formFields = computed(() => [
         label: '活动名称',
         type: 'input',
         placeholder: '请输入活动名称',
-        span: 12
+        span: 12,
       },
       {
         prop: 'type',
         label: '活动类型',
         type: 'select',
         options: ACTIVITY_TYPE_OPTIONS,
-        span: 12
-      }
-    ]
+        span: 12,
+      },
+    ],
   },
   {
     type: 'row',
@@ -322,7 +340,7 @@ const formFields = computed(() => [
         label: '活动状态',
         type: 'select',
         options: ACTIVITY_STATUS_OPTIONS,
-        span: 12
+        span: 12,
       },
       {
         prop: 'budget',
@@ -330,13 +348,13 @@ const formFields = computed(() => [
         type: 'number',
         min: 0,
         span: 12,
-        tip: '单位：元'
-      }
-    ]
+        tip: '单位：元',
+      },
+    ],
   },
   {
     type: 'divider',
-    label: '活动时间'
+    label: '活动时间',
   },
   {
     type: 'row',
@@ -346,20 +364,20 @@ const formFields = computed(() => [
         label: '开始时间',
         type: 'date',
         valueFormat: 'YYYY-MM-DD',
-        span: 12
+        span: 12,
       },
       {
         prop: 'endDate',
         label: '结束时间',
         type: 'date',
         valueFormat: 'YYYY-MM-DD',
-        span: 12
-      }
-    ]
+        span: 12,
+      },
+    ],
   },
   {
     type: 'divider',
-    label: '目标用户'
+    label: '目标用户',
   },
   {
     prop: 'targetUserTags',
@@ -368,11 +386,11 @@ const formFields = computed(() => [
     multiple: true,
     options: tagOptions.value,
     placeholder: '请选择目标用户标签（不选则全部用户可参与）',
-    tip: '选择可参与此活动的用户标签，不选则全部用户可参与'
+    tip: '选择可参与此活动的用户标签，不选则全部用户可参与',
   },
   {
     type: 'divider',
-    label: '活动详情'
+    label: '活动详情',
   },
   {
     prop: 'description',
@@ -380,7 +398,7 @@ const formFields = computed(() => [
     type: 'textarea',
     rows: 4,
     placeholder: '请输入活动描述',
-    maxlength: 1000
+    maxlength: 1000,
   },
   {
     prop: 'rules',
@@ -388,8 +406,8 @@ const formFields = computed(() => [
     type: 'textarea',
     rows: 6,
     placeholder: '请输入活动规则',
-    maxlength: 2000
-  }
+    maxlength: 2000,
+  },
 ]) as any
 
 // 表单验证规则
@@ -401,7 +419,7 @@ const formRules = {
   endDate: [{ required: true, message: '请选择结束时间', trigger: 'change' }],
   budget: [{ required: true, message: '请输入活动预算', trigger: 'blur' }],
   description: [{ required: true, message: '请输入活动描述', trigger: 'blur' }],
-  rules: [{ required: true, message: '请输入活动规则', trigger: 'blur' }]
+  rules: [{ required: true, message: '请输入活动规则', trigger: 'blur' }],
 }
 
 const loadActivityList = async () => {
@@ -410,10 +428,10 @@ const loadActivityList = async () => {
     const params: ActivityListParams = {
       page: pagination.page,
       pageSize: pagination.pageSize,
-      ...searchForm
+      ...searchForm,
     }
 
-    const res = await getActivityList(params) as any
+    const res = (await getActivityList(params)) as any
     activityList.value = res.data.list
     pagination.total = res.data.total
   } catch (error) {
@@ -487,15 +505,11 @@ const handleView = (row: MarketingActivity) => {
 // 删除活动
 const handleDelete = async (row: MarketingActivity) => {
   try {
-    await ElMessageBox.confirm(
-      `确定要删除营销活动"${row.name}"吗？`,
-      '删除确认',
-      {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }
-    )
+    await ElMessageBox.confirm(`确定要删除营销活动"${row.name}"吗？`, '删除确认', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    })
 
     // TODO: 调用删除API
     ElMessage.success('删除成功')
@@ -542,7 +556,7 @@ const getActivityTypeTag = (type: string) => {
   const tagMap: Record<string, string> = {
     promotion: 'success',
     event: 'primary',
-    campaign: 'warning'
+    campaign: 'warning',
   }
   return tagMap[type] || 'info'
 }
@@ -551,7 +565,7 @@ const getActivityTypeLabel = (type: string) => {
   const labelMap: Record<string, string> = {
     promotion: '促销活动',
     event: '主题活动',
-    campaign: '营销战役'
+    campaign: '营销战役',
   }
   return labelMap[type] || type
 }
@@ -561,7 +575,7 @@ const getActivityStatusTag = (status: string) => {
     draft: 'info',
     active: 'success',
     paused: 'warning',
-    ended: 'danger'
+    ended: 'danger',
   }
   return tagMap[status] || 'info'
 }
@@ -571,7 +585,7 @@ const getActivityStatusLabel = (status: string) => {
     draft: '草稿',
     active: '进行中',
     paused: '已暂停',
-    ended: '已结束'
+    ended: '已结束',
   }
   return labelMap[status] || status
 }
@@ -585,11 +599,11 @@ const getTagName = (tagId: number) => {
 // 加载标签列表
 const loadTagList = async () => {
   try {
-    const res = await tagApi.getTagList({
+    const res = (await tagApi.getTagList({
       page: 1,
       pageSize: 100,
-      status: 'active'
-    }) as any
+      status: 'active',
+    })) as any
     tagList.value = res.data.list
   } catch (error) {
     handleApiError(error, '加载标签列表失败')

@@ -423,10 +423,13 @@ export function getWithdrawalRequests(params: {
 /**
  * 审核提现申请
  */
-export function reviewWithdrawalRequest(id: string, data: {
-  status: WithdrawalStatus
-  reason?: string
-}) {
+export function reviewWithdrawalRequest(
+  id: string,
+  data: {
+    status: WithdrawalStatus
+    reason?: string
+  }
+) {
   return request.post(`/profit/withdrawal/requests/${id}/review`, data)
 }
 
@@ -492,10 +495,13 @@ export function getRiskControlRecords(params: {
 /**
  * 处理风控记录
  */
-export function handleRiskControlRecord(id: string, data: {
-  status: 'confirmed' | 'dismissed'
-  note?: string
-}) {
+export function handleRiskControlRecord(
+  id: string,
+  data: {
+    status: 'confirmed' | 'dismissed'
+    note?: string
+  }
+) {
   return request.post(`/profit/risk-control/records/${id}/handle`, data)
 }
 
@@ -524,28 +530,20 @@ export function getUserProfitRankings(params: {
 /**
  * 批量支付分润
  */
-export function batchPayProfit(data: {
-  recordIds: string[]
-  productType: ProductType
-}) {
+export function batchPayProfit(data: { recordIds: string[]; productType: ProductType }) {
   return request.post('/profit/batch-pay', data)
 }
 
 /**
  * 冻结分润
  */
-export function freezeProfit(data: {
-  recordIds: string[]
-  reason: string
-}) {
+export function freezeProfit(data: { recordIds: string[]; reason: string }) {
   return request.post('/profit/freeze', data)
 }
 
 /**
  * 解冻分润
  */
-export function unfreezeProfit(data: {
-  recordIds: string[]
-}) {
+export function unfreezeProfit(data: { recordIds: string[] }) {
   return request.post('/profit/unfreeze', data)
 }

@@ -137,7 +137,7 @@ const mockCampsites: Campsite[] = [
       { id: 'wifi', name: 'WiFi', icon: 'wifi', available: true },
       { id: 'bbq', name: '烧烤区', icon: 'bbq', available: true },
       { id: 'parking', name: '停车场', icon: 'parking', available: true },
-      { id: 'store', name: '便利店', icon: 'store', available: true }
+      { id: 'store', name: '便利店', icon: 'store', available: true },
     ],
     images: ['/images/campsite1-1.jpg', '/images/campsite1-2.jpg', '/images/campsite1-3.jpg'],
     description: '位于雁栖湖畔的优质房车营地，环境优美，设施齐全，适合家庭出游和团队活动。',
@@ -153,7 +153,7 @@ const mockCampsites: Campsite[] = [
     checkInTime: '14:00',
     checkOutTime: '12:00',
     createdAt: '2024-01-15T10:00:00.000Z',
-    updatedAt: '2025-12-03T10:00:00.000Z'
+    updatedAt: '2025-12-03T10:00:00.000Z',
   },
   {
     id: 2,
@@ -180,7 +180,7 @@ const mockCampsites: Campsite[] = [
       { id: 'shower', name: '淋浴间', icon: 'shower', available: false },
       { id: 'wifi', name: 'WiFi', icon: 'wifi', available: true },
       { id: 'bbq', name: '烧烤区', icon: 'bbq', available: true },
-      { id: 'parking', name: '停车场', icon: 'parking', available: true }
+      { id: 'parking', name: '停车场', icon: 'parking', available: true },
     ],
     images: ['/images/campsite2-1.jpg', '/images/campsite2-2.jpg'],
     description: '崇明岛东滩湿地旁的生态营地，可观鸟、骑行，体验自然之美。',
@@ -196,7 +196,7 @@ const mockCampsites: Campsite[] = [
     checkInTime: '14:00',
     checkOutTime: '12:00',
     createdAt: '2024-03-20T10:00:00.000Z',
-    updatedAt: '2025-12-03T10:00:00.000Z'
+    updatedAt: '2025-12-03T10:00:00.000Z',
   },
   {
     id: 3,
@@ -225,9 +225,14 @@ const mockCampsites: Campsite[] = [
       { id: 'bbq', name: '烧烤区', icon: 'bbq', available: true },
       { id: 'parking', name: '停车场', icon: 'parking', available: true },
       { id: 'store', name: '便利店', icon: 'store', available: true },
-      { id: 'restaurant', name: '餐厅', icon: 'restaurant', available: true }
+      { id: 'restaurant', name: '餐厅', icon: 'restaurant', available: true },
     ],
-    images: ['/images/campsite3-1.jpg', '/images/campsite3-2.jpg', '/images/campsite3-3.jpg', '/images/campsite3-4.jpg'],
+    images: [
+      '/images/campsite3-1.jpg',
+      '/images/campsite3-2.jpg',
+      '/images/campsite3-3.jpg',
+      '/images/campsite3-4.jpg',
+    ],
     description: '千岛湖畔的森林营地，空气清新，景色宜人，配套设施完善。',
     rules: '1. 禁止明火\n2. 森林防火，严禁吸烟\n3. 保护森林环境\n4. 夜间保持安静',
     contactPerson: '王经理',
@@ -241,7 +246,7 @@ const mockCampsites: Campsite[] = [
     checkInTime: '14:00',
     checkOutTime: '12:00',
     createdAt: '2024-02-10T10:00:00.000Z',
-    updatedAt: '2025-12-03T10:00:00.000Z'
+    updatedAt: '2025-12-03T10:00:00.000Z',
   },
   {
     id: 4,
@@ -253,7 +258,7 @@ const mockCampsites: Campsite[] = [
     province: '四川省',
     city: '成都市',
     district: '都江堰市',
-    latitude: 30.9000,
+    latitude: 30.9,
     longitude: 103.5667,
     area: 4000,
     capacity: 40,
@@ -267,7 +272,7 @@ const mockCampsites: Campsite[] = [
       { id: 'toilet', name: '卫生间', icon: 'toilet', available: true },
       { id: 'shower', name: '淋浴间', icon: 'shower', available: true },
       { id: 'wifi', name: 'WiFi', icon: 'wifi', available: false },
-      { id: 'parking', name: '停车场', icon: 'parking', available: true }
+      { id: 'parking', name: '停车场', icon: 'parking', available: true },
     ],
     images: ['/images/campsite4-1.jpg', '/images/campsite4-2.jpg'],
     description: '青城山脚下的山地营地，正在进行设施升级改造。',
@@ -283,8 +288,8 @@ const mockCampsites: Campsite[] = [
     checkInTime: '14:00',
     checkOutTime: '12:00',
     createdAt: '2024-04-05T10:00:00.000Z',
-    updatedAt: '2025-12-03T10:00:00.000Z'
-  }
+    updatedAt: '2025-12-03T10:00:00.000Z',
+  },
 ]
 
 // Mock 预订数据
@@ -305,7 +310,7 @@ const mockReservations: CampsiteReservation[] = [
     status: 'confirmed',
     specialRequests: '需要靠近湖边的位置',
     createdAt: '2025-12-01T10:00:00.000Z',
-    updatedAt: '2025-12-01T10:30:00.000Z'
+    updatedAt: '2025-12-01T10:30:00.000Z',
   },
   {
     id: 2,
@@ -323,7 +328,7 @@ const mockReservations: CampsiteReservation[] = [
     status: 'pending',
     specialRequests: '',
     createdAt: '2025-12-03T09:00:00.000Z',
-    updatedAt: '2025-12-03T09:00:00.000Z'
+    updatedAt: '2025-12-03T09:00:00.000Z',
   },
   {
     id: 3,
@@ -341,8 +346,8 @@ const mockReservations: CampsiteReservation[] = [
     status: 'checked_out',
     specialRequests: '需要安静的位置',
     createdAt: '2025-11-28T10:00:00.000Z',
-    updatedAt: '2025-12-07T12:00:00.000Z'
-  }
+    updatedAt: '2025-12-07T12:00:00.000Z',
+  },
 ]
 
 // Mock 咨询数据
@@ -360,7 +365,7 @@ const mockInquiries: CampsiteInquiry[] = [
     repliedAt: '2025-12-02T10:30:00.000Z',
     status: 'replied',
     createdAt: '2025-12-02T10:00:00.000Z',
-    updatedAt: '2025-12-02T10:30:00.000Z'
+    updatedAt: '2025-12-02T10:30:00.000Z',
   },
   {
     id: 2,
@@ -375,7 +380,7 @@ const mockInquiries: CampsiteInquiry[] = [
     repliedAt: '',
     status: 'pending',
     createdAt: '2025-12-03T09:30:00.000Z',
-    updatedAt: '2025-12-03T09:30:00.000Z'
+    updatedAt: '2025-12-03T09:30:00.000Z',
   },
   {
     id: 3,
@@ -390,8 +395,8 @@ const mockInquiries: CampsiteInquiry[] = [
     repliedAt: '2025-12-01T15:00:00.000Z',
     status: 'replied',
     createdAt: '2025-12-01T14:30:00.000Z',
-    updatedAt: '2025-12-01T15:00:00.000Z'
-  }
+    updatedAt: '2025-12-01T15:00:00.000Z',
+  },
 ]
 
 // 营地列表查询参数
@@ -427,41 +432,44 @@ export interface InquiryListParams {
 
 // Mock 获取营地列表
 export const mockGetCampsiteList = (params: CampsiteListParams) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       let filteredCampsites = [...mockCampsites]
 
       // 关键词搜索
       if (params.keyword) {
         filteredCampsites = filteredCampsites.filter(
-          (campsite) =>
-            campsite.name.includes(params.keyword!) ||
-            campsite.address.includes(params.keyword!)
+          campsite =>
+            campsite.name.includes(params.keyword!) || campsite.address.includes(params.keyword!)
         )
       }
 
       // 类型筛选
       if (params.type) {
-        filteredCampsites = filteredCampsites.filter((campsite) => campsite.type === params.type)
+        filteredCampsites = filteredCampsites.filter(campsite => campsite.type === params.type)
       }
 
       // 状态筛选
       if (params.status) {
-        filteredCampsites = filteredCampsites.filter((campsite) => campsite.status === params.status)
+        filteredCampsites = filteredCampsites.filter(campsite => campsite.status === params.status)
       }
 
       // 省份筛选
       if (params.province) {
-        filteredCampsites = filteredCampsites.filter((campsite) => campsite.province === params.province)
+        filteredCampsites = filteredCampsites.filter(
+          campsite => campsite.province === params.province
+        )
       }
 
       // 城市筛选
       if (params.city) {
-        filteredCampsites = filteredCampsites.filter((campsite) => campsite.city === params.city)
+        filteredCampsites = filteredCampsites.filter(campsite => campsite.city === params.city)
       }
 
       // 按创建时间倒序排序
-      filteredCampsites.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+      filteredCampsites.sort(
+        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      )
 
       // 分页
       const page = params.page || 1
@@ -477,8 +485,8 @@ export const mockGetCampsiteList = (params: CampsiteListParams) => {
           list,
           total: filteredCampsites.length,
           page,
-          pageSize
-        }
+          pageSize,
+        },
       })
     }, 300)
   })
@@ -488,17 +496,17 @@ export const mockGetCampsiteList = (params: CampsiteListParams) => {
 export const mockGetCampsiteDetail = (id: number) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      const campsite = mockCampsites.find((c) => c.id === id)
+      const campsite = mockCampsites.find(c => c.id === id)
       if (campsite) {
         resolve({
           code: 200,
           message: '获取成功',
-          data: campsite
+          data: campsite,
         })
       } else {
         reject({
           code: 404,
-          message: '营地不存在'
+          message: '营地不存在',
         })
       }
     }, 200)
@@ -507,20 +515,20 @@ export const mockGetCampsiteDetail = (id: number) => {
 
 // Mock 获取营地统计
 export const mockGetCampsiteStats = () => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const stats: CampsiteStats = {
         totalCampsites: mockCampsites.length,
-        activeCampsites: mockCampsites.filter((c) => c.status === 'active').length,
+        activeCampsites: mockCampsites.filter(c => c.status === 'active').length,
         totalCapacity: mockCampsites.reduce((sum, c) => sum + c.capacity, 0),
         occupancyRate: 0.65,
         totalRevenue: mockCampsites.reduce((sum, c) => sum + c.revenue, 0),
-        todayBookings: 5
+        todayBookings: 5,
       }
       resolve({
         code: 200,
         message: '获取成功',
-        data: stats
+        data: stats,
       })
     }, 200)
   })
@@ -528,14 +536,14 @@ export const mockGetCampsiteStats = () => {
 
 // Mock 获取预订列表
 export const mockGetReservationList = (params: ReservationListParams) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       let filteredReservations = [...mockReservations]
 
       // 关键词搜索
       if (params.keyword) {
         filteredReservations = filteredReservations.filter(
-          (reservation) =>
+          reservation =>
             reservation.campsiteName.includes(params.keyword!) ||
             reservation.userName.includes(params.keyword!) ||
             reservation.userPhone.includes(params.keyword!)
@@ -545,19 +553,21 @@ export const mockGetReservationList = (params: ReservationListParams) => {
       // 营地筛选
       if (params.campsiteId) {
         filteredReservations = filteredReservations.filter(
-          (reservation) => reservation.campsiteId === params.campsiteId
+          reservation => reservation.campsiteId === params.campsiteId
         )
       }
 
       // 状态筛选
       if (params.status) {
         filteredReservations = filteredReservations.filter(
-          (reservation) => reservation.status === params.status
+          reservation => reservation.status === params.status
         )
       }
 
       // 按创建时间倒序排序
-      filteredReservations.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+      filteredReservations.sort(
+        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      )
 
       // 分页
       const page = params.page || 1
@@ -573,8 +583,8 @@ export const mockGetReservationList = (params: ReservationListParams) => {
           list,
           total: filteredReservations.length,
           page,
-          pageSize
-        }
+          pageSize,
+        },
       })
     }, 300)
   })
@@ -584,22 +594,22 @@ export const mockGetReservationList = (params: ReservationListParams) => {
 export const mockConfirmReservation = (id: number) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      const index = mockReservations.findIndex((r) => r.id === id)
+      const index = mockReservations.findIndex(r => r.id === id)
       if (index !== -1) {
         mockReservations[index] = {
           ...mockReservations[index],
           status: 'confirmed',
-          updatedAt: new Date().toISOString()
+          updatedAt: new Date().toISOString(),
         }
         resolve({
           code: 200,
           message: '确认成功',
-          data: mockReservations[index]
+          data: mockReservations[index],
         })
       } else {
         reject({
           code: 404,
-          message: '预订不存在'
+          message: '预订不存在',
         })
       }
     }, 500)
@@ -610,22 +620,22 @@ export const mockConfirmReservation = (id: number) => {
 export const mockCancelReservation = (id: number) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      const index = mockReservations.findIndex((r) => r.id === id)
+      const index = mockReservations.findIndex(r => r.id === id)
       if (index !== -1) {
         mockReservations[index] = {
           ...mockReservations[index],
           status: 'cancelled',
-          updatedAt: new Date().toISOString()
+          updatedAt: new Date().toISOString(),
         }
         resolve({
           code: 200,
           message: '取消成功',
-          data: mockReservations[index]
+          data: mockReservations[index],
         })
       } else {
         reject({
           code: 404,
-          message: '预订不存在'
+          message: '预订不存在',
         })
       }
     }, 500)
@@ -634,14 +644,14 @@ export const mockCancelReservation = (id: number) => {
 
 // Mock 获取咨询列表
 export const mockGetInquiryList = (params: InquiryListParams) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       let filteredInquiries = [...mockInquiries]
 
       // 关键词搜索
       if (params.keyword) {
         filteredInquiries = filteredInquiries.filter(
-          (inquiry) =>
+          inquiry =>
             inquiry.campsiteName.includes(params.keyword!) ||
             inquiry.userName.includes(params.keyword!) ||
             inquiry.question.includes(params.keyword!)
@@ -651,17 +661,19 @@ export const mockGetInquiryList = (params: InquiryListParams) => {
       // 营地筛选
       if (params.campsiteId) {
         filteredInquiries = filteredInquiries.filter(
-          (inquiry) => inquiry.campsiteId === params.campsiteId
+          inquiry => inquiry.campsiteId === params.campsiteId
         )
       }
 
       // 状态筛选
       if (params.status) {
-        filteredInquiries = filteredInquiries.filter((inquiry) => inquiry.status === params.status)
+        filteredInquiries = filteredInquiries.filter(inquiry => inquiry.status === params.status)
       }
 
       // 按创建时间倒序排序
-      filteredInquiries.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+      filteredInquiries.sort(
+        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      )
 
       // 分页
       const page = params.page || 1
@@ -677,8 +689,8 @@ export const mockGetInquiryList = (params: InquiryListParams) => {
           list,
           total: filteredInquiries.length,
           page,
-          pageSize
-        }
+          pageSize,
+        },
       })
     }, 300)
   })
@@ -688,7 +700,7 @@ export const mockGetInquiryList = (params: InquiryListParams) => {
 export const mockReplyInquiry = (id: number, reply: string) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      const index = mockInquiries.findIndex((i) => i.id === id)
+      const index = mockInquiries.findIndex(i => i.id === id)
       if (index !== -1) {
         mockInquiries[index] = {
           ...mockInquiries[index],
@@ -696,17 +708,17 @@ export const mockReplyInquiry = (id: number, reply: string) => {
           repliedBy: '客服-小王',
           repliedAt: new Date().toISOString(),
           status: 'replied',
-          updatedAt: new Date().toISOString()
+          updatedAt: new Date().toISOString(),
         }
         resolve({
           code: 200,
           message: '回复成功',
-          data: mockInquiries[index]
+          data: mockInquiries[index],
         })
       } else {
         reject({
           code: 404,
-          message: '咨询不存在'
+          message: '咨询不存在',
         })
       }
     }, 500)
@@ -715,7 +727,7 @@ export const mockReplyInquiry = (id: number, reply: string) => {
 
 // Mock 创建营地
 export const mockCreateCampsite = (data: Partial<Campsite>) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const newCampsite: Campsite = {
         id: mockCampsites.length + 1,
@@ -750,7 +762,7 @@ export const mockCreateCampsite = (data: Partial<Campsite>) => {
         checkInTime: data.checkInTime || '14:00',
         checkOutTime: data.checkOutTime || '12:00',
         createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
+        updatedAt: new Date().toISOString(),
       }
 
       mockCampsites.push(newCampsite)
@@ -758,7 +770,7 @@ export const mockCreateCampsite = (data: Partial<Campsite>) => {
       resolve({
         code: 200,
         message: '创建成功',
-        data: newCampsite
+        data: newCampsite,
       })
     }, 500)
   })
@@ -768,11 +780,11 @@ export const mockCreateCampsite = (data: Partial<Campsite>) => {
 export const mockUpdateCampsite = (id: number, data: Partial<Campsite>) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      const index = mockCampsites.findIndex((c) => c.id === id)
+      const index = mockCampsites.findIndex(c => c.id === id)
       if (index === -1) {
         reject({
           code: 404,
-          message: '营地不存在'
+          message: '营地不存在',
         })
         return
       }
@@ -782,13 +794,13 @@ export const mockUpdateCampsite = (id: number, data: Partial<Campsite>) => {
         ...mockCampsites[index],
         ...data,
         id, // 保持ID不变
-        updatedAt: new Date().toISOString()
+        updatedAt: new Date().toISOString(),
       }
 
       resolve({
         code: 200,
         message: '更新成功',
-        data: mockCampsites[index]
+        data: mockCampsites[index],
       })
     }, 500)
   })

@@ -1,57 +1,25 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="content-review-container">
-    
-
     <!-- 统计卡片 -->
     <el-row :gutter="16" class="stats-row">
       <el-col :span="4">
-        <StatsCard
-          title="待审核"
-          :value="stats.totalPending"
-          icon="Clock"
-          color="#E6A23C"
-        />
+        <StatsCard title="待审核" :value="stats.totalPending" icon="Clock" color="#E6A23C" />
       </el-col>
       <el-col :span="4">
-        <StatsCard
-          title="AI通过"
-          :value="stats.aiApproved"
-          icon="CircleCheck"
-          color="#67C23A"
-        />
+        <StatsCard title="AI通过" :value="stats.aiApproved" icon="CircleCheck" color="#67C23A" />
       </el-col>
       <el-col :span="4">
-        <StatsCard
-          title="AI拒绝"
-          :value="stats.aiRejected"
-          icon="CircleClose"
-          color="#F56C6C"
-        />
+        <StatsCard title="AI拒绝" :value="stats.aiRejected" icon="CircleClose" color="#F56C6C" />
       </el-col>
       <el-col :span="4">
-        <StatsCard
-          title="人工通过"
-          :value="stats.manualApproved"
-          icon="Select"
-          color="#409EFF"
-        />
+        <StatsCard title="人工通过" :value="stats.manualApproved" icon="Select" color="#409EFF" />
       </el-col>
       <el-col :span="4">
-        <StatsCard
-          title="人工拒绝"
-          :value="stats.manualRejected"
-          icon="Close"
-          color="#909399"
-        />
+        <StatsCard title="人工拒绝" :value="stats.manualRejected" icon="Close" color="#909399" />
       </el-col>
       <el-col :span="4">
-        <StatsCard
-          title="今日审核"
-          :value="stats.todayReviewed"
-          icon="Document"
-          color="#409EFF"
-        />
+        <StatsCard title="今日审核" :value="stats.todayReviewed" icon="Document" color="#409EFF" />
       </el-col>
     </el-row>
 
@@ -230,9 +198,7 @@
           <div v-if="currentReview.title" class="detail-title">
             <strong>标题：</strong>{{ currentReview.title }}
           </div>
-          <div class="detail-content">
-            <strong>内容：</strong>{{ currentReview.content }}
-          </div>
+          <div class="detail-content"><strong>内容：</strong>{{ currentReview.content }}</div>
 
           <!-- 图片 -->
           <div v-if="currentReview.images.length > 0" class="detail-images">
@@ -335,7 +301,7 @@ import {
   type ContentReviewStats,
   type ReviewStatus,
   type ContentType,
-  type ViolationType
+  type ViolationType,
 } from '@/api/community'
 
 // 统计数据
@@ -346,7 +312,7 @@ const stats = ref<ContentReviewStats>({
   manualApproved: 0,
   manualRejected: 0,
   todayReviewed: 0,
-  avgReviewTime: 0
+  avgReviewTime: 0,
 })
 
 // 搜索表单
@@ -354,7 +320,7 @@ const searchForm = ref({
   status: '',
   contentType: '',
   sectionId: '',
-  keyword: ''
+  keyword: '',
 })
 
 // 搜索字段配置
@@ -369,8 +335,8 @@ const searchFields = [
       { label: 'AI通过', value: 'ai_approved' },
       { label: 'AI拒绝', value: 'ai_rejected' },
       { label: '人工通过', value: 'manual_approved' },
-      { label: '人工拒绝', value: 'manual_rejected' }
-    ]
+      { label: '人工拒绝', value: 'manual_rejected' },
+    ],
   },
   {
     type: 'select',
@@ -382,15 +348,15 @@ const searchFields = [
       { label: '评论', value: 'comment' },
       { label: '回复', value: 'reply' },
       { label: '图片', value: 'image' },
-      { label: '视频', value: 'video' }
-    ]
+      { label: '视频', value: 'video' },
+    ],
   },
   {
     type: 'input',
     prop: 'keyword',
     label: '关键词',
-    placeholder: '请输入标题、内容或用户名'
-  }
+    placeholder: '请输入标题、内容或用户名',
+  },
 ]
 
 // 表格数据
@@ -402,7 +368,7 @@ const selectedIds = ref<number[]>([])
 const pagination = reactive({
   currentPage: 1,
   pageSize: 10,
-  total: 0
+  total: 0,
 })
 
 // 表格列配置
@@ -415,7 +381,7 @@ const tableColumns = [
   { prop: 'sectionName', label: '版块', width: 120 },
   { prop: 'status', label: '状态', width: 120, slot: 'status' },
   { prop: 'aiScore', label: 'AI分数', width: 150, slot: 'aiScore' },
-  { prop: 'createdAt', label: '发布时间', width: 160 }
+  { prop: 'createdAt', label: '发布时间', width: 160 },
 ]
 
 // 表格操作
@@ -424,15 +390,15 @@ const tableActions = [
     label: '查看',
     type: 'primary',
     link: true,
-    onClick: (row: ContentReview) => handleViewDetail(row)
+    onClick: (row: ContentReview) => handleViewDetail(row),
   },
   {
     label: '审核',
     type: 'success',
     link: true,
     onClick: (row: ContentReview) => handleReview(row),
-    show: (row: ContentReview) => row.status === 'pending'
-  }
+    show: (row: ContentReview) => row.status === 'pending',
+  },
 ]
 
 // 批量操作
@@ -440,13 +406,13 @@ const batchActions = [
   {
     label: '批量通过',
     type: 'success',
-    onClick: () => handleBatchReview('manual_approved')
+    onClick: () => handleBatchReview('manual_approved'),
   },
   {
     label: '批量拒绝',
     type: 'danger',
-    onClick: () => handleBatchReview('manual_rejected')
-  }
+    onClick: () => handleBatchReview('manual_rejected'),
+  },
 ]
 
 // 审核对话框
@@ -456,7 +422,7 @@ const reviewForm = reactive({
   id: 0,
   status: 'manual_approved' as 'manual_approved' | 'manual_rejected',
   reason: '',
-  violationType: '' as ViolationType | ''
+  violationType: '' as ViolationType | '',
 })
 const reviewFormRef = ref()
 const reviewRules = {
@@ -473,9 +439,9 @@ const reviewRules = {
         } else {
           callback()
         }
-      }
-    }
-  ]
+      },
+    },
+  ],
 }
 const submitting = ref(false)
 
@@ -502,7 +468,7 @@ const fetchReviewList = async () => {
       status: searchForm.value.status as ReviewStatus | undefined,
       contentType: searchForm.value.contentType as ContentType | undefined,
       sectionId: searchForm.value.sectionId ? Number(searchForm.value.sectionId) : undefined,
-      keyword: searchForm.value.keyword
+      keyword: searchForm.value.keyword,
     }
     const { list, total } = await getContentReviews(params)
     reviewList.value = list
@@ -527,14 +493,14 @@ const handleReset = () => {
     status: '',
     contentType: '',
     sectionId: '',
-    keyword: ''
+    keyword: '',
   }
   handleSearch()
 }
 
 // 选择变化
 const handleSelectionChange = (selection: ContentReview[]) => {
-  selectedIds.value = selection.map((item) => item.id)
+  selectedIds.value = selection.map(item => item.id)
 }
 
 // 分页变化
@@ -585,7 +551,7 @@ const handleReviewSubmit = async () => {
         id: reviewForm.id,
         status: reviewForm.status,
         reason: reviewForm.reason,
-        violationType: reviewForm.violationType as ViolationType | undefined
+        violationType: reviewForm.violationType as ViolationType | undefined,
       })
       ElMessage.success('审核成功')
       reviewDialogVisible.value = false
@@ -613,13 +579,13 @@ const handleBatchReview = async (status: 'manual_approved' | 'manual_rejected') 
       confirmButtonText: '确定',
       cancelButtonText: '取消',
       inputPattern: /.+/,
-      inputErrorMessage: '请输入原因'
+      inputErrorMessage: '请输入原因',
     })
 
     await batchReviewContent({
       ids: selectedIds.value,
       status,
-      reason: '批量审核'
+      reason: '批量审核',
     })
 
     ElMessage.success(`批量${action}成功`)
@@ -660,7 +626,7 @@ const getContentTypeTagType = (type: ContentType) => {
     comment: 'success',
     reply: 'info',
     image: 'warning',
-    video: 'danger'
+    video: 'danger',
   }
   return typeMap[type] || 'info'
 }
@@ -672,7 +638,7 @@ const getContentTypeLabel = (type: ContentType) => {
     comment: '评论',
     reply: '回复',
     image: '图片',
-    video: '视频'
+    video: '视频',
   }
   return typeMap[type] || type
 }
@@ -684,7 +650,7 @@ const getStatusTagType = (status: ReviewStatus) => {
     ai_approved: 'success',
     ai_rejected: 'danger',
     manual_approved: 'success',
-    manual_rejected: 'info'
+    manual_rejected: 'info',
   }
   return statusMap[status] || 'info'
 }
@@ -696,7 +662,7 @@ const getStatusLabel = (status: ReviewStatus) => {
     ai_approved: 'AI通过',
     ai_rejected: 'AI拒绝',
     manual_approved: '人工通过',
-    manual_rejected: '人工拒绝'
+    manual_rejected: '人工拒绝',
   }
   return statusMap[status] || status
 }
@@ -719,7 +685,7 @@ const getViolationTypeLabel = (type: ViolationType) => {
     fraud: '诈骗信息',
     harassment: '骚扰辱骂',
     copyright: '侵权内容',
-    other: '其他违规'
+    other: '其他违规',
   }
   return typeMap[type] || type
 }

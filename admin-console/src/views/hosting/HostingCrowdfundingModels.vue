@@ -59,10 +59,7 @@
 
       <!-- 热门推荐 -->
       <template #isHotCrowdfunding="{ row }">
-        <el-switch
-          v-model="row.isHotCrowdfunding"
-          @change="handleToggleHot(row)"
-        />
+        <el-switch v-model="row.isHotCrowdfunding" @change="handleToggleHot(row)" />
       </template>
 
       <!-- 展示排序 -->
@@ -79,9 +76,7 @@
 
       <!-- 操作列 -->
       <template #actions="{ row }">
-        <el-button link type="primary" size="small" @click="handleEdit(row)">
-          编辑配置
-        </el-button>
+        <el-button link type="primary" size="small" @click="handleEdit(row)"> 编辑配置 </el-button>
         <el-button link type="success" size="small" @click="handleViewProjects(row)">
           查看项目
         </el-button>
@@ -98,12 +93,7 @@
       width="700px"
       @close="handleEditDialogClose"
     >
-      <el-form
-        ref="editFormRef"
-        :model="editForm"
-        :rules="editFormRules"
-        label-width="120px"
-      >
+      <el-form ref="editFormRef" :model="editForm" :rules="editFormRules" label-width="120px">
         <el-form-item label="车型名称">
           <el-input v-model="editForm.modelName" disabled />
         </el-form-item>
@@ -126,9 +116,7 @@
             :max="20"
             style="width: 100%"
           />
-          <div class="form-tip">
-            单份价格: ¥{{ calculateEditPricePerShare.toLocaleString() }}
-          </div>
+          <div class="form-tip">单份价格: ¥{{ calculateEditPricePerShare.toLocaleString() }}</div>
         </el-form-item>
 
         <el-form-item label="预估月收益" prop="estimatedMonthlyIncome">
@@ -139,9 +127,7 @@
             :precision="0"
             style="width: 100%"
           />
-          <div class="form-tip">
-            预估年化收益率: {{ calculateEditAnnualReturn }}%
-          </div>
+          <div class="form-tip">预估年化收益率: {{ calculateEditAnnualReturn }}%</div>
         </el-form-item>
 
         <el-form-item label="热门推荐">
@@ -234,7 +220,12 @@ const tableColumns: TableColumn[] = [
   { prop: 'purchasePrice', label: '购置价格', width: 120, slot: 'purchasePrice' },
   { prop: 'suggestedShares', label: '建议份额', width: 100 },
   { prop: 'pricePerShare', label: '单份价格', width: 120, slot: 'pricePerShare' },
-  { prop: 'estimatedMonthlyIncome', label: '预估月收益', width: 120, slot: 'estimatedMonthlyIncome' },
+  {
+    prop: 'estimatedMonthlyIncome',
+    label: '预估月收益',
+    width: 120,
+    slot: 'estimatedMonthlyIncome',
+  },
   { prop: 'annualReturn', label: '年化收益率', width: 120, slot: 'annualReturn' },
   { prop: 'isHotCrowdfunding', label: '热门推荐', width: 100, slot: 'isHotCrowdfunding' },
   { prop: 'displayOrder', label: '展示排序', width: 120, slot: 'displayOrder' },
@@ -295,9 +286,7 @@ const editFormRules: FormRules = {
     { required: true, message: '请输入购置价格', trigger: 'blur' },
     { type: 'number', min: 1, message: '购置价格必须大于0', trigger: 'blur' },
   ],
-  suggestedShares: [
-    { required: true, message: '请输入建议份额数', trigger: 'blur' },
-  ],
+  suggestedShares: [{ required: true, message: '请输入建议份额数', trigger: 'blur' }],
   estimatedMonthlyIncome: [
     { required: true, message: '请输入预估月收益', trigger: 'blur' },
     { type: 'number', min: 1, message: '预估月收益必须大于0', trigger: 'blur' },
@@ -315,7 +304,7 @@ const calculatePricePerShare = (row: any) => {
 // 计算年化收益率
 const calculateAnnualReturn = (row: any) => {
   if (row.purchasePrice > 0 && row.estimatedMonthlyIncome > 0) {
-    return ((row.estimatedMonthlyIncome * 12 / row.purchasePrice) * 100).toFixed(2)
+    return (((row.estimatedMonthlyIncome * 12) / row.purchasePrice) * 100).toFixed(2)
   }
   return '0.00'
 }
@@ -330,7 +319,7 @@ const calculateEditPricePerShare = computed(() => {
 
 const calculateEditAnnualReturn = computed(() => {
   if (editForm.purchasePrice > 0 && editForm.estimatedMonthlyIncome > 0) {
-    return ((editForm.estimatedMonthlyIncome * 12 / editForm.purchasePrice) * 100).toFixed(2)
+    return (((editForm.estimatedMonthlyIncome * 12) / editForm.purchasePrice) * 100).toFixed(2)
   }
   return '0.00'
 })
@@ -444,7 +433,7 @@ const handleEdit = (row: any) => {
 const handleEditSubmit = async () => {
   if (!editFormRef.value) return
 
-  await editFormRef.value.validate(async (valid) => {
+  await editFormRef.value.validate(async valid => {
     if (!valid) {
       ElMessage.warning('请完善表单信息')
       return

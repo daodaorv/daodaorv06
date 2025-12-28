@@ -109,13 +109,7 @@
       </el-form>
 
       <!-- 数据表格 -->
-      <el-table
-        :data="recordList"
-        v-loading="loading"
-        border
-        stripe
-        style="width: 100%"
-      >
+      <el-table :data="recordList" v-loading="loading" border stripe style="width: 100%">
         <el-table-column type="selection" width="55" />
         <el-table-column prop="orderNo" label="订单号" width="160" />
         <el-table-column prop="productType" label="产品类型" width="120">
@@ -168,15 +162,7 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
-import {
-  Download,
-  Search,
-  Refresh,
-  Money,
-  Coin,
-  User,
-  TrendCharts,
-} from '@element-plus/icons-vue'
+import { Download, Search, Refresh, Money, Coin, User, TrendCharts } from '@element-plus/icons-vue'
 import type { ProductType, ProfitStatus } from '@/types/profit'
 import { getProfitStatistics } from '@/api/profit'
 

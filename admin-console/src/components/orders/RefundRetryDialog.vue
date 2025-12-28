@@ -6,12 +6,7 @@
     :close-on-click-modal="false"
     @close="handleClose"
   >
-    <el-form
-      ref="formRef"
-      :model="form"
-      :rules="formRules"
-      label-width="120px"
-    >
+    <el-form ref="formRef" :model="form" :rules="formRules" label-width="120px">
       <!-- 退款信息 -->
       <el-card class="info-card" shadow="never">
         <template #header><span class="card-title">退款信息</span></template>
@@ -63,11 +58,7 @@
         </el-form-item>
 
         <el-form-item v-if="form.channel === 'bank_card'" label="银行卡号" prop="bankCard">
-          <el-input
-            v-model="form.bankCard"
-            placeholder="请输入银行卡号"
-            maxlength="19"
-          />
+          <el-input v-model="form.bankCard" placeholder="请输入银行卡号" maxlength="19" />
         </el-form-item>
       </template>
 
@@ -84,12 +75,7 @@
       </el-form-item>
 
       <!-- 风险提示 -->
-      <el-alert
-        title="重要提示"
-        type="warning"
-        :closable="false"
-        show-icon
-      >
+      <el-alert title="重要提示" type="warning" :closable="false" show-icon>
         <template #default>
           <ul class="tips-list">
             <li>重试前请确认失败原因已解决</li>
@@ -127,13 +113,13 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: false,
-  refundInfo: null
+  refundInfo: null,
 })
 
 // Emits
 const emit = defineEmits<{
   'update:modelValue': [value: boolean]
-  'submit': [data: any]
+  submit: [data: any]
 }>()
 
 // 响应式数据
@@ -146,21 +132,17 @@ const form = reactive({
   retryMethod: 'auto',
   channel: 'original',
   bankCard: '',
-  note: ''
+  note: '',
 })
 
 // 表单验证规则
 const formRules: FormRules = {
-  retryMethod: [
-    { required: true, message: '请选择重试方式', trigger: 'change' }
-  ],
-  channel: [
-    { required: true, message: '请选择退款渠道', trigger: 'change' }
-  ],
+  retryMethod: [{ required: true, message: '请选择重试方式', trigger: 'change' }],
+  channel: [{ required: true, message: '请选择退款渠道', trigger: 'change' }],
   bankCard: [
     { required: true, message: '请输入银行卡号', trigger: 'blur' },
-    { pattern: /^\d{16,19}$/, message: '请输入正确的银行卡号', trigger: 'blur' }
-  ]
+    { pattern: /^\d{16,19}$/, message: '请输入正确的银行卡号', trigger: 'blur' },
+  ],
 }
 
 // 是否达到重试上限
@@ -170,11 +152,14 @@ const isRetryLimitReached = computed(() => {
 })
 
 // 监听 modelValue 变化
-watch(() => props.modelValue, (val) => {
-  visible.value = val
-})
+watch(
+  () => props.modelValue,
+  val => {
+    visible.value = val
+  }
+)
 
-watch(visible, (val) => {
+watch(visible, val => {
   emit('update:modelValue', val)
 })
 
@@ -185,7 +170,7 @@ const getRefundMethodLabel = (method: string) => {
     balance: '退到余额',
     bank_card: '银行卡',
     alipay: '支付宝',
-    wechat: '微信'
+    wechat: '微信',
   }
   return labelMap[method] || method
 }
@@ -200,7 +185,7 @@ const handleSubmit = async () => {
     return
   }
 
-  await formRef.value.validate(async (valid) => {
+  await formRef.value.validate(async valid => {
     if (!valid) return
 
     loading.value = true
@@ -210,7 +195,7 @@ const handleSubmit = async () => {
         retryMethod: form.retryMethod,
         channel: form.retryMethod === 'manual' ? form.channel : undefined,
         bankCard: form.channel === 'bank_card' ? form.bankCard : undefined,
-        note: form.note
+        note: form.note,
       }
 
       emit('submit', submitData)

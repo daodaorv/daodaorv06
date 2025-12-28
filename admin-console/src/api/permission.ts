@@ -109,7 +109,9 @@ export const permissionApi = {
   // 权限配置
   getPermissionList: (params: PermissionListParams) => {
     if (USE_MOCK) {
-      return mockGetPermissionList(params) as Promise<ApiResponse<{ list: Permission[]; total: number }>>
+      return mockGetPermissionList(params) as Promise<
+        ApiResponse<{ list: Permission[]; total: number }>
+      >
     }
     return request.get<ApiResponse<{ list: Permission[]; total: number }>>('/permissions', params)
   },
@@ -131,9 +133,14 @@ export const permissionApi = {
   // 菜单权限
   getMenuPermissionList: (params: MenuPermissionListParams) => {
     if (USE_MOCK) {
-      return mockGetMenuPermissionList(params) as Promise<ApiResponse<{ list: MenuPermission[]; total: number }>>
+      return mockGetMenuPermissionList(params) as Promise<
+        ApiResponse<{ list: MenuPermission[]; total: number }>
+      >
     }
-    return request.get<ApiResponse<{ list: MenuPermission[]; total: number }>>('/permissions/menu', params)
+    return request.get<ApiResponse<{ list: MenuPermission[]; total: number }>>(
+      '/permissions/menu',
+      params
+    )
   },
 
   updateMenuPermission: (data: UpdateMenuPermissionParams) => {
@@ -146,9 +153,14 @@ export const permissionApi = {
   // 数据权限
   getDataPermissionList: (params: DataPermissionListParams) => {
     if (USE_MOCK) {
-      return mockGetDataPermissionList(params) as Promise<ApiResponse<{ list: DataPermission[]; total: number }>>
+      return mockGetDataPermissionList(params) as Promise<
+        ApiResponse<{ list: DataPermission[]; total: number }>
+      >
     }
-    return request.get<ApiResponse<{ list: DataPermission[]; total: number }>>('/permissions/data', params)
+    return request.get<ApiResponse<{ list: DataPermission[]; total: number }>>(
+      '/permissions/data',
+      params
+    )
   },
 
   updateDataPermission: (data: UpdateDataPermissionParams) => {

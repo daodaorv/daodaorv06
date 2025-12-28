@@ -1,8 +1,6 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="finance-reconciliation-container">
-    
-
     <!-- 搜索和操作 -->
     <div class="toolbar">
       <SearchForm
@@ -125,9 +123,7 @@
 
       <template #footer>
         <el-button @click="editDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="handleEditSubmit" :loading="submitting">
-          确定
-        </el-button>
+        <el-button type="primary" @click="handleEditSubmit" :loading="submitting"> 确定 </el-button>
       </template>
     </el-dialog>
 
@@ -199,7 +195,7 @@ import {
   getReconciliationList,
   createReconciliation,
   type ReconciliationRecord,
-  type ReconciliationStatus
+  type ReconciliationStatus,
 } from '@/api/finance'
 
 // 搜索表单
@@ -207,7 +203,7 @@ const searchForm = ref({
   status: '',
   storeId: '',
   startDate: '',
-  endDate: ''
+  endDate: '',
 })
 
 // 搜索字段配置
@@ -221,8 +217,8 @@ const searchFields = [
       { label: '待处理', value: 'pending' },
       { label: '处理中', value: 'processing' },
       { label: '已完成', value: 'completed' },
-      { label: '失败', value: 'failed' }
-    ]
+      { label: '失败', value: 'failed' },
+    ],
   },
   {
     type: 'select',
@@ -234,21 +230,21 @@ const searchFields = [
       { label: '上海浦东门店', value: 2 },
       { label: '深圳南山门店', value: 3 },
       { label: '成都高新门店', value: 4 },
-      { label: '杭州西湖门店', value: 5 }
-    ]
+      { label: '杭州西湖门店', value: 5 },
+    ],
   },
   {
     type: 'date',
     prop: 'startDate',
     label: '开始日期',
-    placeholder: '请选择开始日期'
+    placeholder: '请选择开始日期',
   },
   {
     type: 'date',
     prop: 'endDate',
     label: '结束日期',
-    placeholder: '请选择结束日期'
-  }
+    placeholder: '请选择结束日期',
+  },
 ]
 
 // 对账列表
@@ -259,7 +255,7 @@ const loading = ref(false)
 const pagination = reactive({
   currentPage: 1,
   pageSize: 10,
-  total: 0
+  total: 0,
 })
 
 // 表格列配置
@@ -272,7 +268,7 @@ const tableColumns = [
   { prop: 'netProfit', label: '净利润', width: 130, slot: 'netProfit' },
   { prop: 'status', label: '状态', width: 100, slot: 'status' },
   { prop: 'reconciler', label: '对账人', width: 120 },
-  { prop: 'reconciledAt', label: '对账时间', width: 160 }
+  { prop: 'reconciledAt', label: '对账时间', width: 160 },
 ]
 
 // 表格操作
@@ -281,8 +277,8 @@ const tableActions = [
     label: '详情',
     type: 'primary',
     link: true,
-    onClick: (row: ReconciliationRecord) => handleDetail(row)
-  }
+    onClick: (row: ReconciliationRecord) => handleDetail(row),
+  },
 ]
 
 // 编辑对话框
@@ -296,7 +292,7 @@ const editForm = reactive({
   totalIncome: 0,
   totalExpense: 0,
   reconciler: '',
-  notes: ''
+  notes: '',
 })
 const editFormRef = ref()
 const editRules = {
@@ -304,13 +300,13 @@ const editRules = {
   storeId: [{ required: true, message: '请选择门店', trigger: 'change' }],
   totalIncome: [
     { required: true, message: '请输入总收入', trigger: 'blur' },
-    { type: 'number', min: 0, message: '金额必须大于等于0', trigger: 'blur' }
+    { type: 'number', min: 0, message: '金额必须大于等于0', trigger: 'blur' },
   ],
   totalExpense: [
     { required: true, message: '请输入总支出', trigger: 'blur' },
-    { type: 'number', min: 0, message: '金额必须大于等于0', trigger: 'blur' }
+    { type: 'number', min: 0, message: '金额必须大于等于0', trigger: 'blur' },
   ],
-  reconciler: [{ required: true, message: '请输入对账人', trigger: 'blur' }]
+  reconciler: [{ required: true, message: '请输入对账人', trigger: 'blur' }],
 }
 const submitting = ref(false)
 
@@ -328,7 +324,7 @@ const fetchReconciliationList = async () => {
       status: searchForm.value.status as ReconciliationStatus | undefined,
       storeId: searchForm.value.storeId ? Number(searchForm.value.storeId) : undefined,
       startDate: searchForm.value.startDate,
-      endDate: searchForm.value.endDate
+      endDate: searchForm.value.endDate,
     }
     const { list, total } = await getReconciliationList(params)
     reconciliationList.value = list
@@ -353,7 +349,7 @@ const handleReset = () => {
     status: '',
     storeId: '',
     startDate: '',
-    endDate: ''
+    endDate: '',
   }
   handleSearch()
 }
@@ -416,7 +412,14 @@ const handleEditSubmit = async () => {
     submitting.value = true
     try {
       // 获取门店名称
-      const storeNames = ['', '北京朝阳门店', '上海浦东门店', '深圳南山门店', '成都高新门店', '杭州西湖门店']
+      const storeNames = [
+        '',
+        '北京朝阳门店',
+        '上海浦东门店',
+        '深圳南山门店',
+        '成都高新门店',
+        '杭州西湖门店',
+      ]
       editForm.storeName = storeNames[editForm.storeId]
 
       await createReconciliation(editForm)
@@ -448,7 +451,7 @@ const getStatusTagType = (status: ReconciliationStatus) => {
     pending: 'info',
     processing: 'warning',
     completed: 'success',
-    failed: 'danger'
+    failed: 'danger',
   }
   return statusMap[status] || 'info'
 }
@@ -459,7 +462,7 @@ const getStatusLabel = (status: ReconciliationStatus) => {
     pending: '待处理',
     processing: '处理中',
     completed: '已完成',
-    failed: '失败'
+    failed: '失败',
   }
   return statusMap[status] || status
 }

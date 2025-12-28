@@ -2,11 +2,7 @@
 <template>
   <el-card class="search-card" shadow="never">
     <el-form :model="modelValue" inline>
-      <el-form-item
-        v-for="field in fields"
-        :key="field.prop"
-        :label="field.label"
-      >
+      <el-form-item v-for="field in fields" :key="field.prop" :label="field.label">
         <!-- 输入框 -->
         <el-input
           v-if="field.type === 'input'"
@@ -54,9 +50,7 @@
       </el-form-item>
 
       <el-form-item>
-        <el-button type="primary" :icon="Search" @click="handleSearch">
-          搜索
-        </el-button>
+        <el-button type="primary" :icon="Search" @click="handleSearch"> 搜索 </el-button>
         <el-button :icon="Refresh" @click="handleReset">重置</el-button>
       </el-form-item>
     </el-form>

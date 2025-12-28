@@ -1,11 +1,6 @@
 <template>
   <div class="promotion-config">
-    <el-alert
-      title="推广配置说明"
-      type="info"
-      :closable="false"
-      style="margin-bottom: 20px"
-    >
+    <el-alert title="推广配置说明" type="info" :closable="false" style="margin-bottom: 20px">
       <p>配置不同产品类型的推广分润比例、PLUS会员奖励和累计推广门槛奖励</p>
     </el-alert>
 
@@ -19,24 +14,16 @@
         </template>
       </el-table-column>
       <el-table-column prop="level1Ratio" label="一级推广比例" width="120" align="right">
-        <template #default="{ row }">
-          {{ row.level1Ratio }}%
-        </template>
+        <template #default="{ row }"> {{ row.level1Ratio }}% </template>
       </el-table-column>
       <el-table-column prop="level2Ratio" label="二级推广比例" width="120" align="right">
-        <template #default="{ row }">
-          {{ row.level2Ratio }}%
-        </template>
+        <template #default="{ row }"> {{ row.level2Ratio }}% </template>
       </el-table-column>
       <el-table-column prop="plusMemberDirectReward" label="PLUS直推奖励" width="130" align="right">
-        <template #default="{ row }">
-          ¥{{ row.plusMemberDirectReward }}
-        </template>
+        <template #default="{ row }"> ¥{{ row.plusMemberDirectReward }} </template>
       </el-table-column>
       <el-table-column prop="plusMemberAssistReward" label="PLUS助力奖励" width="130" align="right">
-        <template #default="{ row }">
-          ¥{{ row.plusMemberAssistReward }}
-        </template>
+        <template #default="{ row }"> ¥{{ row.plusMemberAssistReward }} </template>
       </el-table-column>
       <el-table-column prop="milestoneRewards" label="门槛奖励" min-width="200">
         <template #default="{ row }">
@@ -52,17 +39,12 @@
       </el-table-column>
       <el-table-column prop="enabled" label="状态" width="100">
         <template #default="{ row }">
-          <el-switch
-            v-model="row.enabled"
-            @change="handleStatusChange(row)"
-          />
+          <el-switch v-model="row.enabled" @change="handleStatusChange(row)" />
         </template>
       </el-table-column>
       <el-table-column label="操作" width="120" fixed="right">
         <template #default="{ row }">
-          <el-button link type="primary" size="small" @click="handleEdit(row)">
-            编辑
-          </el-button>
+          <el-button link type="primary" size="small" @click="handleEdit(row)"> 编辑 </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -73,12 +55,7 @@
       :title="`编辑${getProductTypeName(currentConfig?.productType || 'vehicle_rental')}推广配置`"
       width="600px"
     >
-      <el-form
-        ref="formRef"
-        :model="formData"
-        :rules="formRules"
-        label-width="140px"
-      >
+      <el-form ref="formRef" :model="formData" :rules="formRules" label-width="140px">
         <el-form-item label="一级推广比例" prop="level1Ratio">
           <el-input-number
             v-model="formData.level1Ratio"
@@ -100,23 +77,19 @@
           <span style="margin-left: 10px">%</span>
         </el-form-item>
         <el-form-item label="PLUS直推奖励" prop="plusMemberDirectReward">
-          <el-input-number
-            v-model="formData.plusMemberDirectReward"
-            :min="0"
-            :precision="2"
-          />
+          <el-input-number v-model="formData.plusMemberDirectReward" :min="0" :precision="2" />
           <span style="margin-left: 10px">元</span>
         </el-form-item>
         <el-form-item label="PLUS助力奖励" prop="plusMemberAssistReward">
-          <el-input-number
-            v-model="formData.plusMemberAssistReward"
-            :min="0"
-            :precision="2"
-          />
+          <el-input-number v-model="formData.plusMemberAssistReward" :min="0" :precision="2" />
           <span style="margin-left: 10px">元</span>
         </el-form-item>
         <el-form-item label="门槛奖励">
-          <div v-for="(reward, index) in formData.milestoneRewards" :key="index" style="margin-bottom: 10px">
+          <div
+            v-for="(reward, index) in formData.milestoneRewards"
+            :key="index"
+            style="margin-bottom: 10px"
+          >
             <el-input-number
               v-model="reward.orderCount"
               :min="1"
@@ -141,16 +114,12 @@
               删除
             </el-button>
           </div>
-          <el-button type="primary" size="small" @click="handleAddReward">
-            添加门槛奖励
-          </el-button>
+          <el-button type="primary" size="small" @click="handleAddReward"> 添加门槛奖励 </el-button>
         </el-form-item>
       </el-form>
       <template #footer>
         <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="handleSubmit" :loading="submitting">
-          保存
-        </el-button>
+        <el-button type="primary" @click="handleSubmit" :loading="submitting"> 保存 </el-button>
       </template>
     </el-dialog>
   </div>
@@ -246,7 +215,7 @@ const handleRemoveReward = (index: number) => {
 // 提交
 const handleSubmit = async () => {
   if (!formRef.value) return
-  await formRef.value.validate(async (valid) => {
+  await formRef.value.validate(async valid => {
     if (!valid) return
     submitting.value = true
     try {

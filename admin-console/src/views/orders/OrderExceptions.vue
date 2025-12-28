@@ -1,8 +1,6 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="order-exceptions-container">
-    
-
     <StatsCard :stats="statsConfig" />
 
     <SearchForm
@@ -56,22 +54,12 @@
       width="600px"
       @close="handleDialogClose"
     >
-      <el-form
-        ref="handleFormRef"
-        :model="handleForm"
-        :rules="handleFormRules"
-        label-width="100px"
-      >
+      <el-form ref="handleFormRef" :model="handleForm" :rules="handleFormRules" label-width="100px">
         <el-form-item label="异常标题">
           <el-input :value="currentException?.title" disabled />
         </el-form-item>
         <el-form-item label="异常描述">
-          <el-input
-            :value="currentException?.description"
-            type="textarea"
-            :rows="3"
-            disabled
-          />
+          <el-input :value="currentException?.description" type="textarea" :rows="3" disabled />
         </el-form-item>
         <el-form-item label="处理方案" prop="resolution">
           <el-input
@@ -105,11 +93,7 @@
     />
 
     <!-- 异常时间线对话框 -->
-    <el-dialog
-      v-model="timelineDialogVisible"
-      title="异常处理时间线"
-      width="800px"
-    >
+    <el-dialog v-model="timelineDialogVisible" title="异常处理时间线" width="800px">
       <ExceptionTimeline :timeline="exceptionTimeline" @action="handleTimelineAction" />
     </el-dialog>
   </div>
@@ -135,7 +119,7 @@ import {
   getExceptionStats,
   handleException,
   type OrderException,
-  type ExceptionListParams
+  type ExceptionListParams,
 } from '@/api/order'
 import { useErrorHandler } from '@/composables'
 
@@ -150,7 +134,7 @@ const EXCEPTION_TYPE_OPTIONS = [
   { label: '交通事故', value: 'accident' },
   { label: '客户投诉', value: 'customer_complaint' },
   { label: '支付纠纷', value: 'payment_dispute' },
-  { label: '其他异常', value: 'other' }
+  { label: '其他异常', value: 'other' },
 ]
 
 // 异常状态选项
@@ -158,7 +142,7 @@ const EXCEPTION_STATUS_OPTIONS = [
   { label: '待处理', value: 'pending' },
   { label: '处理中', value: 'processing' },
   { label: '已解决', value: 'resolved' },
-  { label: '已关闭', value: 'closed' }
+  { label: '已关闭', value: 'closed' },
 ]
 
 // 优先级选项
@@ -166,7 +150,7 @@ const PRIORITY_OPTIONS = [
   { label: '低', value: 'low' },
   { label: '中', value: 'medium' },
   { label: '高', value: 'high' },
-  { label: '紧急', value: 'urgent' }
+  { label: '紧急', value: 'urgent' },
 ]
 
 // 搜索表单
@@ -174,7 +158,7 @@ const searchForm = reactive<ExceptionListParams>({
   keyword: '',
   type: undefined,
   status: undefined,
-  priority: undefined
+  priority: undefined,
 })
 
 // 统计数据
@@ -183,7 +167,7 @@ const stats = reactive({
   pending: 0,
   processing: 0,
   resolved: 0,
-  totalLoss: 0
+  totalLoss: 0,
 })
 
 // 统计卡片配置
@@ -192,27 +176,27 @@ const statsConfig = computed<StatItem[]>(() => [
     label: '异常总数',
     value: stats.totalExceptions,
     icon: Document,
-    color: '#409eff'
+    color: '#409eff',
   },
   {
     label: '待处理',
     value: stats.pending,
     icon: Clock,
-    color: '#e6a23c'
+    color: '#e6a23c',
   },
   {
     label: '处理中',
     value: stats.processing,
     icon: CircleCheck,
-    color: '#67c23a'
+    color: '#67c23a',
   },
   {
     label: '总损失',
     value: stats.totalLoss,
     icon: Money,
     color: '#f56c6c',
-    format: 'currency'
-  }
+    format: 'currency',
+  },
 ])
 
 // 搜索字段配置
@@ -222,7 +206,7 @@ const searchFields = computed<SearchField[]>(() => [
     label: '关键词',
     type: 'input',
     placeholder: '订单号/标题/描述',
-    width: '200px'
+    width: '200px',
   },
   {
     prop: 'type',
@@ -230,7 +214,7 @@ const searchFields = computed<SearchField[]>(() => [
     type: 'select',
     placeholder: '请选择类型',
     width: '150px',
-    options: EXCEPTION_TYPE_OPTIONS
+    options: EXCEPTION_TYPE_OPTIONS,
   },
   {
     prop: 'status',
@@ -238,7 +222,7 @@ const searchFields = computed<SearchField[]>(() => [
     type: 'select',
     placeholder: '请选择状态',
     width: '150px',
-    options: EXCEPTION_STATUS_OPTIONS
+    options: EXCEPTION_STATUS_OPTIONS,
   },
   {
     prop: 'priority',
@@ -246,8 +230,8 @@ const searchFields = computed<SearchField[]>(() => [
     type: 'select',
     placeholder: '请选择优先级',
     width: '120px',
-    options: PRIORITY_OPTIONS
-  }
+    options: PRIORITY_OPTIONS,
+  },
 ])
 
 // 表格列配置
@@ -262,7 +246,7 @@ const tableColumns: TableColumn[] = [
   { prop: 'assignedTo', label: '处理人', width: 120 },
   { prop: 'estimatedLoss', label: '预估损失', width: 120, slot: 'estimatedLoss' },
   { prop: 'actualLoss', label: '实际损失', width: 120, slot: 'actualLoss' },
-  { prop: 'reportedAt', label: '报告时间', width: 180 }
+  { prop: 'reportedAt', label: '报告时间', width: 180 },
 ]
 
 // 表格操作列配置
@@ -271,31 +255,31 @@ const tableActions: TableAction[] = [
     label: '分配',
     type: 'primary',
     onClick: (row: OrderException) => handleAssign(row),
-    show: (row: OrderException) => row.status === 'pending'
+    show: (row: OrderException) => row.status === 'pending',
   },
   {
     label: '处理',
     type: 'success',
     onClick: (row: OrderException) => handleProcess(row),
-    show: (row: OrderException) => row.status === 'pending' || row.status === 'processing'
+    show: (row: OrderException) => row.status === 'pending' || row.status === 'processing',
   },
   {
     label: '升级',
     type: 'warning',
     onClick: (row: OrderException) => handleEscalate(row),
-    show: (row: OrderException) => row.status === 'pending' || row.status === 'processing'
+    show: (row: OrderException) => row.status === 'pending' || row.status === 'processing',
   },
   {
     label: '费用结算',
     type: 'primary',
     onClick: (row: OrderException) => handleSettlement(row),
-    show: (row: OrderException) => row.status === 'processing'
+    show: (row: OrderException) => row.status === 'processing',
   },
   {
     label: '时间线',
     type: 'info',
-    onClick: (row: OrderException) => handleViewTimeline(row)
-  }
+    onClick: (row: OrderException) => handleViewTimeline(row),
+  },
 ]
 
 // 异常列表
@@ -306,7 +290,7 @@ const loading = ref(false)
 const pagination = reactive({
   page: 1,
   pageSize: 10,
-  total: 0
+  total: 0,
 })
 
 // 处理异常对话框
@@ -316,14 +300,14 @@ const handleFormRef = ref<FormInstance>()
 const currentException = ref<OrderException | null>(null)
 
 const handleForm = reactive({
-  resolution: ''
+  resolution: '',
 })
 
 const handleFormRules: FormRules = {
   resolution: [
     { required: true, message: '请输入处理方案', trigger: 'blur' },
-    { min: 10, message: '处理方案至少10个字符', trigger: 'blur' }
-  ]
+    { min: 10, message: '处理方案至少10个字符', trigger: 'blur' },
+  ],
 }
 
 // 异常分配对话框
@@ -343,10 +327,10 @@ const loadExceptionList = async () => {
     const params: ExceptionListParams = {
       page: pagination.page,
       pageSize: pagination.pageSize,
-      ...searchForm
+      ...searchForm,
     }
 
-    const res = await getExceptionList(params) as any
+    const res = (await getExceptionList(params)) as any
     exceptionList.value = res.data.list
     pagination.total = res.data.total
   } catch (error) {
@@ -359,7 +343,7 @@ const loadExceptionList = async () => {
 // 加载统计数据
 const loadStats = async () => {
   try {
-    const res = await getExceptionStats() as any
+    const res = (await getExceptionStats()) as any
     stats.totalExceptions = res.data.totalExceptions
     stats.pending = res.data.pending
     stats.processing = res.data.processing
@@ -408,7 +392,7 @@ const handleEscalate = async (row: OrderException) => {
       {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
+        type: 'warning',
       }
     )
 
@@ -443,9 +427,9 @@ const handleViewTimeline = async (row: OrderException) => {
       details: [
         { label: '异常类型', value: getExceptionTypeLabel(row.type) },
         { label: '优先级', value: getPriorityLabel(row.priority) },
-        { label: '预估损失', value: `¥${row.estimatedLoss.toFixed(2)}` }
-      ]
-    }
+        { label: '预估损失', value: `¥${row.estimatedLoss.toFixed(2)}` },
+      ],
+    },
   ]
   timelineDialogVisible.value = true
 }
@@ -454,7 +438,7 @@ const handleViewTimeline = async (row: OrderException) => {
 const handleSubmit = async () => {
   if (!handleFormRef.value || !currentException.value) return
 
-  await handleFormRef.value.validate(async (valid) => {
+  await handleFormRef.value.validate(async valid => {
     if (!valid) return
 
     handleLoading.value = true
@@ -525,7 +509,9 @@ const handleCurrentChange = (page: number) => {
 }
 
 // 获取异常类型标签类型
-const getExceptionTypeTag = (type: string): 'primary' | 'success' | 'warning' | 'info' | 'danger' => {
+const getExceptionTypeTag = (
+  type: string
+): 'primary' | 'success' | 'warning' | 'info' | 'danger' => {
   const tagMap: Record<string, 'primary' | 'success' | 'warning' | 'info' | 'danger'> = {
     vehicle_damage: 'danger',
     late_return: 'warning',
@@ -533,7 +519,7 @@ const getExceptionTypeTag = (type: string): 'primary' | 'success' | 'warning' | 
     accident: 'danger',
     customer_complaint: 'info',
     payment_dispute: 'warning',
-    other: 'info'
+    other: 'info',
   }
   return tagMap[type] || 'info'
 }
@@ -547,18 +533,20 @@ const getExceptionTypeLabel = (type: string) => {
     accident: '交通事故',
     customer_complaint: '客户投诉',
     payment_dispute: '支付纠纷',
-    other: '其他异常'
+    other: '其他异常',
   }
   return labelMap[type] || type
 }
 
 // 获取异常状态标签类型
-const getExceptionStatusTag = (status: string): 'primary' | 'success' | 'warning' | 'info' | 'danger' => {
+const getExceptionStatusTag = (
+  status: string
+): 'primary' | 'success' | 'warning' | 'info' | 'danger' => {
   const tagMap: Record<string, 'primary' | 'success' | 'warning' | 'info' | 'danger'> = {
     pending: 'danger',
     processing: 'warning',
     resolved: 'success',
-    closed: 'info'
+    closed: 'info',
   }
   return tagMap[status] || 'info'
 }
@@ -569,18 +557,20 @@ const getExceptionStatusLabel = (status: string) => {
     pending: '待处理',
     processing: '处理中',
     resolved: '已解决',
-    closed: '已关闭'
+    closed: '已关闭',
   }
   return labelMap[status] || status
 }
 
 // 获取优先级标签类型
-const getPriorityTag = (priority: string): 'primary' | 'success' | 'warning' | 'info' | 'danger' => {
+const getPriorityTag = (
+  priority: string
+): 'primary' | 'success' | 'warning' | 'info' | 'danger' => {
   const tagMap: Record<string, 'primary' | 'success' | 'warning' | 'info' | 'danger'> = {
     low: 'info',
     medium: 'warning',
     high: 'danger',
-    urgent: 'danger'
+    urgent: 'danger',
   }
   return tagMap[priority] || 'info'
 }
@@ -591,7 +581,7 @@ const getPriorityLabel = (priority: string) => {
     low: '低',
     medium: '中',
     high: '高',
-    urgent: '紧急'
+    urgent: '紧急',
   }
   return labelMap[priority] || priority
 }

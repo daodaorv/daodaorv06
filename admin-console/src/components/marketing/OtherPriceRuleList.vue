@@ -2,11 +2,7 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="other-price-rule-list">
-    <el-alert
-      type="info"
-      :closable="false"
-      style="margin-bottom: 16px"
-    >
+    <el-alert type="info" :closable="false" style="margin-bottom: 16px">
       <template #title>
         <div style="font-size: 13px">
           其他价格规则包括长租优惠、会员折扣等，所有命中的规则都会生效并累加
@@ -47,8 +43,11 @@
         </el-tag>
       </template>
       <template #adjustmentValue="{ row }">
-        <span :style="{ color: row.adjustmentValue > 0 ? '#f56c6c' : '#67c23a', fontWeight: 'bold' }">
-          {{ row.adjustmentValue > 0 ? '+' : '' }}{{ row.adjustmentValue }}{{ row.adjustmentType === 'percentage' ? '%' : '元' }}
+        <span
+          :style="{ color: row.adjustmentValue > 0 ? '#f56c6c' : '#67c23a', fontWeight: 'bold' }"
+        >
+          {{ row.adjustmentValue > 0 ? '+' : '' }}{{ row.adjustmentValue
+          }}{{ row.adjustmentType === 'percentage' ? '%' : '元' }}
         </span>
       </template>
       <template #targetUserTags="{ row }">
@@ -100,7 +99,7 @@ const RULE_TYPE_OPTIONS = [
   { label: '早鸟优惠', value: 'early_bird' },
   { label: '团购优惠', value: 'group_discount' },
   { label: '新用户优惠', value: 'new_user_discount' },
-  { label: '老用户回馈', value: 'loyalty_reward' }
+  { label: '老用户回馈', value: 'loyalty_reward' },
 ]
 
 // 标签列表
@@ -108,7 +107,7 @@ const tagList = ref<Tag[]>([])
 const tagOptions = computed(() =>
   tagList.value.map(tag => ({
     label: tag.name,
-    value: tag.id
+    value: tag.id,
   }))
 )
 
@@ -116,7 +115,7 @@ const tagOptions = computed(() =>
 const searchForm = reactive({
   keyword: '',
   ruleType: undefined,
-  status: undefined
+  status: undefined,
 })
 
 // 搜索字段配置
@@ -126,7 +125,7 @@ const searchFields = computed<SearchField[]>(() => [
     label: '关键词',
     type: 'input',
     placeholder: '规则名称',
-    width: '200px'
+    width: '200px',
   },
   {
     prop: 'ruleType',
@@ -134,7 +133,7 @@ const searchFields = computed<SearchField[]>(() => [
     type: 'select',
     placeholder: '请选择类型',
     width: '150px',
-    options: RULE_TYPE_OPTIONS
+    options: RULE_TYPE_OPTIONS,
   },
   {
     prop: 'status',
@@ -144,9 +143,9 @@ const searchFields = computed<SearchField[]>(() => [
     width: '150px',
     options: [
       { label: '生效中', value: 'active' },
-      { label: '未生效', value: 'inactive' }
-    ]
-  }
+      { label: '未生效', value: 'inactive' },
+    ],
+  },
 ])
 
 // 表格列配置
@@ -159,7 +158,7 @@ const tableColumns: TableColumn[] = [
   { prop: 'adjustmentValue', label: '调整值', width: 120, slot: 'adjustmentValue' },
   { prop: 'targetUserTags', label: '目标用户', minWidth: 150, slot: 'targetUserTags' },
   { prop: 'minDays', label: '最少天数', width: 100 },
-  { prop: 'description', label: '说明', minWidth: 200 }
+  { prop: 'description', label: '说明', minWidth: 200 },
 ]
 
 // 工具栏按钮配置
@@ -168,8 +167,8 @@ const toolbarButtons: ToolbarButton[] = [
     label: '新增规则',
     type: 'primary',
     icon: Plus,
-    onClick: () => handleCreate()
-  }
+    onClick: () => handleCreate(),
+  },
 ]
 
 // 表格操作列配置
@@ -177,13 +176,13 @@ const tableActions: TableAction[] = [
   {
     label: '编辑',
     type: 'primary',
-    onClick: (row: any) => handleEdit(row)
+    onClick: (row: any) => handleEdit(row),
   },
   {
     label: '删除',
     type: 'danger',
-    onClick: (row: any) => handleDelete(row)
-  }
+    onClick: (row: any) => handleDelete(row),
+  },
 ]
 
 // Mock 数据
@@ -197,7 +196,7 @@ const ruleList = ref([
     adjustmentValue: -10,
     targetUserTags: [],
     minDays: 7,
-    description: '租期满7天享受9折优惠'
+    description: '租期满7天享受9折优惠',
   },
   {
     id: 2,
@@ -208,7 +207,7 @@ const ruleList = ref([
     adjustmentValue: -15,
     targetUserTags: [],
     minDays: 15,
-    description: '租期满15天享受85折优惠'
+    description: '租期满15天享受85折优惠',
   },
   {
     id: 3,
@@ -219,7 +218,7 @@ const ruleList = ref([
     adjustmentValue: -20,
     targetUserTags: [],
     minDays: 30,
-    description: '租期满30天享受8折优惠'
+    description: '租期满30天享受8折优惠',
   },
   {
     id: 4,
@@ -230,7 +229,7 @@ const ruleList = ref([
     adjustmentValue: -15,
     targetUserTags: [1],
     minDays: 1,
-    description: 'VIP会员享受85折优惠'
+    description: 'VIP会员享受85折优惠',
   },
   {
     id: 5,
@@ -241,7 +240,7 @@ const ruleList = ref([
     adjustmentValue: -12,
     targetUserTags: [],
     minDays: 1,
-    description: '提前30天预订享受88折优惠'
+    description: '提前30天预订享受88折优惠',
   },
   {
     id: 6,
@@ -252,8 +251,8 @@ const ruleList = ref([
     adjustmentValue: -200,
     targetUserTags: [3],
     minDays: 1,
-    description: '新用户首单立减200元'
-  }
+    description: '新用户首单立减200元',
+  },
 ])
 
 const loading = ref(false)
@@ -262,7 +261,7 @@ const loading = ref(false)
 const pagination = reactive({
   page: 1,
   pageSize: 10,
-  total: ruleList.value.length
+  total: ruleList.value.length,
 })
 
 // 对话框状态
@@ -281,14 +280,14 @@ const formData = reactive({
   adjustmentValue: 0,
   targetUserTags: [] as number[],
   minDays: 1,
-  description: ''
+  description: '',
 })
 
 // 表单字段配置
 const formFields = computed<FormField[]>(() => [
   {
     type: 'divider',
-    label: '基本信息'
+    label: '基本信息',
   },
   {
     type: 'row',
@@ -298,16 +297,16 @@ const formFields = computed<FormField[]>(() => [
         label: '规则名称',
         type: 'input',
         placeholder: '请输入规则名称',
-        span: 12
+        span: 12,
       },
       {
         prop: 'ruleType',
         label: '规则类型',
         type: 'select',
         options: RULE_TYPE_OPTIONS,
-        span: 12
-      }
-    ]
+        span: 12,
+      },
+    ],
   },
   {
     type: 'row',
@@ -318,9 +317,9 @@ const formFields = computed<FormField[]>(() => [
         type: 'select',
         options: [
           { label: '生效中', value: 'active' },
-          { label: '未生效', value: 'inactive' }
+          { label: '未生效', value: 'inactive' },
         ],
-        span: 12
+        span: 12,
       },
       {
         prop: 'minDays',
@@ -328,13 +327,13 @@ const formFields = computed<FormField[]>(() => [
         type: 'number',
         min: 1,
         span: 12,
-        tip: '规则生效的最少租期天数'
-      }
-    ]
+        tip: '规则生效的最少租期天数',
+      },
+    ],
   },
   {
     type: 'divider',
-    label: '价格调整'
+    label: '价格调整',
   },
   {
     type: 'row',
@@ -345,22 +344,22 @@ const formFields = computed<FormField[]>(() => [
         type: 'select',
         options: [
           { label: '百分比', value: 'percentage' },
-          { label: '固定金额', value: 'fixed' }
+          { label: '固定金额', value: 'fixed' },
         ],
-        span: 12
+        span: 12,
       },
       {
         prop: 'adjustmentValue',
         label: '调整值',
         type: 'number',
         span: 12,
-        tip: '正数表示涨价，负数表示降价'
-      }
-    ]
+        tip: '正数表示涨价，负数表示降价',
+      },
+    ],
   },
   {
     type: 'divider',
-    label: '适用范围'
+    label: '适用范围',
   },
   {
     prop: 'targetUserTags',
@@ -369,7 +368,7 @@ const formFields = computed<FormField[]>(() => [
     multiple: true,
     options: tagOptions.value,
     placeholder: '请选择目标用户标签（不选则全部用户可用）',
-    tip: '选择可使用此规则的用户标签，不选则全部用户可用'
+    tip: '选择可使用此规则的用户标签，不选则全部用户可用',
   },
   {
     prop: 'description',
@@ -377,8 +376,8 @@ const formFields = computed<FormField[]>(() => [
     type: 'textarea',
     rows: 3,
     placeholder: '请输入规则说明',
-    maxlength: 200
-  }
+    maxlength: 200,
+  },
 ])
 
 // 表单验证规则
@@ -388,7 +387,7 @@ const formRules = {
   status: [{ required: true, message: '请选择状态', trigger: 'change' }],
   adjustmentType: [{ required: true, message: '请选择调整类型', trigger: 'change' }],
   adjustmentValue: [{ required: true, message: '请输入调整值', trigger: 'blur' }],
-  minDays: [{ required: true, message: '请输入最少天数', trigger: 'blur' }]
+  minDays: [{ required: true, message: '请输入最少天数', trigger: 'blur' }],
 }
 
 // 获取规则类型标签类型
@@ -399,7 +398,7 @@ const getRuleTypeTag = (type: string) => {
     early_bird: 'primary',
     group_discount: 'danger',
     new_user_discount: 'info',
-    loyalty_reward: 'success'
+    loyalty_reward: 'success',
   }
   return tagMap[type] || 'info'
 }
@@ -412,7 +411,7 @@ const getRuleTypeLabel = (type: string) => {
     early_bird: '早鸟优惠',
     group_discount: '团购优惠',
     new_user_discount: '新用户优惠',
-    loyalty_reward: '老用户回馈'
+    loyalty_reward: '老用户回馈',
   }
   return labelMap[type] || type
 }
@@ -426,11 +425,11 @@ const getTagName = (tagId: number) => {
 // 加载标签列表
 const loadTagList = async () => {
   try {
-    const res = await tagApi.getTagList({
+    const res = (await tagApi.getTagList({
       page: 1,
       pageSize: 100,
-      status: 'active'
-    }) as any
+      status: 'active',
+    })) as any
 
     if (res && res.data) {
       tagList.value = res.data.list || res.data || []
@@ -503,15 +502,11 @@ const handleEdit = (row: any) => {
 // 删除
 const handleDelete = async (row: any) => {
   try {
-    await ElMessageBox.confirm(
-      `确定要删除其他价格规则"${row.name}"吗？`,
-      '删除确认',
-      {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }
-    )
+    await ElMessageBox.confirm(`确定要删除其他价格规则"${row.name}"吗？`, '删除确认', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    })
 
     ElMessage.success('删除成功')
     // TODO: 调用删除API

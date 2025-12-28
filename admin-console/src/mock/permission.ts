@@ -72,22 +72,22 @@ const mockPermissions: Permission[] = [
 ]
 
 export const mockGetPermissionList = (params: PermissionListParams) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       let filteredData = [...mockPermissions]
 
       if (params.keyword) {
         filteredData = filteredData.filter(
-          (item) => item.name.includes(params.keyword!) || item.code.includes(params.keyword!)
+          item => item.name.includes(params.keyword!) || item.code.includes(params.keyword!)
         )
       }
 
       if (params.type) {
-        filteredData = filteredData.filter((item) => item.type === params.type)
+        filteredData = filteredData.filter(item => item.type === params.type)
       }
 
       if (params.enabled !== undefined) {
-        filteredData = filteredData.filter((item) => item.enabled === params.enabled)
+        filteredData = filteredData.filter(item => item.enabled === params.enabled)
       }
 
       const page = params.page || 1
@@ -108,7 +108,7 @@ export const mockGetPermissionList = (params: PermissionListParams) => {
 }
 
 export const mockGetPermissionTree = () => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       resolve({
         code: 200,
@@ -120,9 +120,9 @@ export const mockGetPermissionTree = () => {
 }
 
 export const mockUpdatePermission = (data: UpdatePermissionParams) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
-      const permission = mockPermissions.find((p) => p.id === data.id)
+      const permission = mockPermissions.find(p => p.id === data.id)
       if (permission) {
         Object.assign(permission, data)
       }
@@ -183,16 +183,16 @@ const mockMenuPermissions: MenuPermission[] = [
 ]
 
 export const mockGetMenuPermissionList = (params: MenuPermissionListParams) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       let filteredData = [...mockMenuPermissions]
 
       if (params.roleId) {
-        filteredData = filteredData.filter((item) => item.roleId === params.roleId)
+        filteredData = filteredData.filter(item => item.roleId === params.roleId)
       }
 
       if (params.menuId) {
-        filteredData = filteredData.filter((item) => item.menuId === params.menuId)
+        filteredData = filteredData.filter(item => item.menuId === params.menuId)
       }
 
       const page = params.page || 1
@@ -213,9 +213,9 @@ export const mockGetMenuPermissionList = (params: MenuPermissionListParams) => {
 }
 
 export const mockUpdateMenuPermission = (data: UpdateMenuPermissionParams) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
-      const permission = mockMenuPermissions.find((p) => p.id === data.id)
+      const permission = mockMenuPermissions.find(p => p.id === data.id)
       if (permission) {
         Object.assign(permission, data)
       }
@@ -270,16 +270,16 @@ const mockDataPermissions: DataPermission[] = [
 ]
 
 export const mockGetDataPermissionList = (params: DataPermissionListParams) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       let filteredData = [...mockDataPermissions]
 
       if (params.roleId) {
-        filteredData = filteredData.filter((item) => item.roleId === params.roleId)
+        filteredData = filteredData.filter(item => item.roleId === params.roleId)
       }
 
       if (params.resourceType) {
-        filteredData = filteredData.filter((item) => item.resourceType === params.resourceType)
+        filteredData = filteredData.filter(item => item.resourceType === params.resourceType)
       }
 
       const page = params.page || 1
@@ -300,9 +300,9 @@ export const mockGetDataPermissionList = (params: DataPermissionListParams) => {
 }
 
 export const mockUpdateDataPermission = (data: UpdateDataPermissionParams) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
-      const permission = mockDataPermissions.find((p) => p.id === data.id)
+      const permission = mockDataPermissions.find(p => p.id === data.id)
       if (permission) {
         Object.assign(permission, data)
       }

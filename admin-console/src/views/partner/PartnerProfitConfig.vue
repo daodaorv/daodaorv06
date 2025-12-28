@@ -4,36 +4,16 @@
     <!-- 统计卡片 -->
     <el-row :gutter="20" class="stats-row">
       <el-col :span="6">
-        <StatsCard
-          title="配置总数"
-          :value="stats.totalCount"
-          icon="Document"
-          color="#409eff"
-        />
+        <StatsCard title="配置总数" :value="stats.totalCount" icon="Document" color="#409eff" />
       </el-col>
       <el-col :span="6">
-        <StatsCard
-          title="启用配置"
-          :value="stats.enabledCount"
-          icon="Check"
-          color="#67c23a"
-        />
+        <StatsCard title="启用配置" :value="stats.enabledCount" icon="Check" color="#67c23a" />
       </el-col>
       <el-col :span="6">
-        <StatsCard
-          title="全局配置"
-          :value="stats.globalCount"
-          icon="Setting"
-          color="#e6a23c"
-        />
+        <StatsCard title="全局配置" :value="stats.globalCount" icon="Setting" color="#e6a23c" />
       </el-col>
       <el-col :span="6">
-        <StatsCard
-          title="自定义配置"
-          :value="stats.customCount"
-          icon="Edit"
-          color="#f56c6c"
-        />
+        <StatsCard title="自定义配置" :value="stats.customCount" icon="Edit" color="#f56c6c" />
       </el-col>
     </el-row>
 
@@ -76,10 +56,7 @@
         </div>
       </template>
       <template #enabled="{ row }">
-        <el-switch
-          v-model="row.enabled"
-          @change="handleToggleEnabled(row)"
-        />
+        <el-switch v-model="row.enabled" @change="handleToggleEnabled(row)" />
       </template>
     </DataTable>
 
@@ -334,25 +311,31 @@ const formRules = {
           callback()
         }
       },
-      trigger: 'blur'
-    }
+      trigger: 'blur',
+    },
   ],
   effectiveDate: [{ required: true, message: '请选择生效日期', trigger: 'change' }],
   priority: [{ required: true, message: '请输入优先级', trigger: 'blur' }],
 }
 
 // 监听门店分润比例变化，自动计算平台分润比例
-watch(() => formData.storeProfitRatio, (newValue) => {
-  formData.platformProfitRatio = 100 - newValue
-})
+watch(
+  () => formData.storeProfitRatio,
+  newValue => {
+    formData.platformProfitRatio = 100 - newValue
+  }
+)
 
 // 监听配置类型变化
-watch(() => formData.configType, (newValue) => {
-  if (newValue === 'global') {
-    formData.targetId = null
-    formData.targetName = ''
+watch(
+  () => formData.configType,
+  newValue => {
+    if (newValue === 'global') {
+      formData.targetId = null
+      formData.targetName = ''
+    }
   }
-})
+)
 
 // 加载配置列表
 const loadConfigList = async () => {

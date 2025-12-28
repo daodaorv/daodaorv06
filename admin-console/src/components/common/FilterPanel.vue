@@ -8,13 +8,7 @@
           <span class="filter-title">{{ title }}</span>
         </div>
         <div class="header-right">
-          <el-button
-            v-if="showReset"
-            size="small"
-            @click="handleReset"
-          >
-            重置
-          </el-button>
+          <el-button v-if="showReset" size="small" @click="handleReset"> 重置 </el-button>
           <el-button
             v-if="collapsible"
             :icon="collapsed ? ArrowDown : ArrowUp"
@@ -218,7 +212,9 @@
                     :active-text="filter.activeText"
                     :inactive-text="filter.inactiveText"
                     :active-value="filter.activeValue !== undefined ? filter.activeValue : true"
-                    :inactive-value="filter.inactiveValue !== undefined ? filter.inactiveValue : false"
+                    :inactive-value="
+                      filter.inactiveValue !== undefined ? filter.inactiveValue : false
+                    "
                     @change="handleFilterChange"
                   />
 
@@ -254,64 +250,73 @@
 <script setup lang="ts">
 import { ref, reactive, watch } from 'vue'
 import type { FormInstance } from 'element-plus'
-import {
-  Filter,
-  Search,
-  ArrowDown,
-  ArrowUp,
-} from '@element-plus/icons-vue'
+import { Filter, Search, ArrowDown, ArrowUp } from '@element-plus/icons-vue'
 
 // 筛选项配置接口
 export interface FilterConfig {
-  prop: string                    // 字段名
-  label: string                   // 标签文本
-  type: 'input' | 'number' | 'select' | 'cascader' | 'date' | 'daterange' |
-        'time' | 'timerange' | 'datetime' | 'radio' | 'checkbox' | 'slider' | 'switch' | 'custom'
-  span?: number                   // 栅格占位
-  placeholder?: string            // 占位符
-  clearable?: boolean             // 是否可清空
-  options?: Array<{               // 选项列表（select/radio/checkbox）
+  prop: string // 字段名
+  label: string // 标签文本
+  type:
+    | 'input'
+    | 'number'
+    | 'select'
+    | 'cascader'
+    | 'date'
+    | 'daterange'
+    | 'time'
+    | 'timerange'
+    | 'datetime'
+    | 'radio'
+    | 'checkbox'
+    | 'slider'
+    | 'switch'
+    | 'custom'
+  span?: number // 栅格占位
+  placeholder?: string // 占位符
+  clearable?: boolean // 是否可清空
+  options?: Array<{
+    // 选项列表（select/radio/checkbox）
     label: string
     value: any
     disabled?: boolean
   }>
-  cascaderProps?: any             // 级联选择器配置
-  multiple?: boolean              // 是否多选（select）
-  collapseTags?: boolean          // 是否折叠标签（select multiple）
-  filterable?: boolean            // 是否可搜索（select）
-  min?: number                    // 最小值（number/slider）
-  max?: number                    // 最大值（number/slider）
-  step?: number                   // 步长（number/slider）
-  precision?: number              // 精度（number）
+  cascaderProps?: any // 级联选择器配置
+  multiple?: boolean // 是否多选（select）
+  collapseTags?: boolean // 是否折叠标签（select multiple）
+  filterable?: boolean // 是否可搜索（select）
+  min?: number // 最小值（number/slider）
+  max?: number // 最大值（number/slider）
+  step?: number // 步长（number/slider）
+  precision?: number // 精度（number）
   controlsPosition?: 'right' | '' // 控制按钮位置（number）
-  format?: string                 // 显示格式（date/time）
-  valueFormat?: string            // 值格式（date/time）
-  range?: boolean                 // 是否范围选择（slider）
-  showStops?: boolean             // 是否显示间断点（slider）
-  showTooltip?: boolean           // 是否显示提示（slider）
-  activeText?: string             // 开启文本（switch）
-  inactiveText?: string           // 关闭文本（switch）
-  activeValue?: any               // 开启值（switch）
-  inactiveValue?: any             // 关闭值（switch）
-  slotName?: string               // 自定义插槽名称（custom）
+  format?: string // 显示格式（date/time）
+  valueFormat?: string // 值格式（date/time）
+  range?: boolean // 是否范围选择（slider）
+  showStops?: boolean // 是否显示间断点（slider）
+  showTooltip?: boolean // 是否显示提示（slider）
+  activeText?: string // 开启文本（switch）
+  inactiveText?: string // 关闭文本（switch）
+  activeValue?: any // 开启值（switch）
+  inactiveValue?: any // 关闭值（switch）
+  slotName?: string // 自定义插槽名称（custom）
 }
 
 // Props 定义
 interface Props {
-  title?: string                  // 面板标题
-  filters: FilterConfig[]         // 筛选项配置
+  title?: string // 面板标题
+  filters: FilterConfig[] // 筛选项配置
   modelValue?: Record<string, any> // v-model 绑定的筛选值
-  defaultSpan?: number            // 默认栅格占位
-  gutter?: number                 // 栅格间距
-  labelWidth?: string             // 标签宽度
+  defaultSpan?: number // 默认栅格占位
+  gutter?: number // 栅格间距
+  labelWidth?: string // 标签宽度
   labelPosition?: 'left' | 'right' | 'top' // 标签位置
-  collapsible?: boolean           // 是否可折叠
-  defaultCollapsed?: boolean      // 默认是否折叠
-  showActions?: boolean           // 是否显示操作按钮
-  showReset?: boolean             // 是否显示重置按钮
-  searchText?: string             // 搜索按钮文本
-  resetText?: string              // 重置按钮文本
-  autoSearch?: boolean            // 是否自动搜索（值变化时）
+  collapsible?: boolean // 是否可折叠
+  defaultCollapsed?: boolean // 默认是否折叠
+  showActions?: boolean // 是否显示操作按钮
+  showReset?: boolean // 是否显示重置按钮
+  searchText?: string // 搜索按钮文本
+  resetText?: string // 重置按钮文本
+  autoSearch?: boolean // 是否自动搜索（值变化时）
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -333,9 +338,9 @@ const props = withDefaults(defineProps<Props>(), {
 // Emits 定义
 const emit = defineEmits<{
   'update:modelValue': [value: Record<string, any>]
-  'search': [filters: Record<string, any>]
-  'reset': []
-  'change': [filters: Record<string, any>]
+  search: [filters: Record<string, any>]
+  reset: []
+  change: [filters: Record<string, any>]
 }>()
 
 // 响应式数据
@@ -353,7 +358,8 @@ const initFilters = () => {
       if (filter.type === 'checkbox') {
         localFilters[filter.prop] = []
       } else if (filter.type === 'switch') {
-        localFilters[filter.prop] = filter.inactiveValue !== undefined ? filter.inactiveValue : false
+        localFilters[filter.prop] =
+          filter.inactiveValue !== undefined ? filter.inactiveValue : false
       } else {
         localFilters[filter.prop] = ''
       }
@@ -366,7 +372,7 @@ initFilters()
 // 监听 modelValue 变化
 watch(
   () => props.modelValue,
-  (newVal) => {
+  newVal => {
     Object.keys(newVal).forEach(key => {
       if (localFilters[key] !== newVal[key]) {
         localFilters[key] = newVal[key]

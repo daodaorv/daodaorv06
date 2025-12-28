@@ -217,9 +217,14 @@ export const systemApi = {
   // 系统参数
   getSystemParams: (params: SystemParamListParams) => {
     if (USE_MOCK) {
-      return mockGetSystemParams(params) as Promise<ApiResponse<{ list: SystemParam[]; total: number }>>
+      return mockGetSystemParams(params) as Promise<
+        ApiResponse<{ list: SystemParam[]; total: number }>
+      >
     }
-    return request.get<ApiResponse<{ list: SystemParam[]; total: number }>>('/system/params', params)
+    return request.get<ApiResponse<{ list: SystemParam[]; total: number }>>(
+      '/system/params',
+      params
+    )
   },
 
   createSystemParam: (data: CreateSystemParamParams) => {
@@ -253,9 +258,14 @@ export const systemApi = {
   // 智能预警
   getSystemAlerts: (params: SystemAlertListParams) => {
     if (USE_MOCK) {
-      return mockGetSystemAlerts(params) as Promise<ApiResponse<{ list: SystemAlert[]; total: number }>>
+      return mockGetSystemAlerts(params) as Promise<
+        ApiResponse<{ list: SystemAlert[]; total: number }>
+      >
     }
-    return request.get<ApiResponse<{ list: SystemAlert[]; total: number }>>('/system/alerts', params)
+    return request.get<ApiResponse<{ list: SystemAlert[]; total: number }>>(
+      '/system/alerts',
+      params
+    )
   },
 
   getSystemAlertDetail: (id: number) => {
@@ -325,9 +335,14 @@ export const systemApi = {
   // 数据备份
   getSystemBackups: (params: SystemBackupListParams) => {
     if (USE_MOCK) {
-      return mockGetSystemBackups(params) as Promise<ApiResponse<{ list: SystemBackup[]; total: number }>>
+      return mockGetSystemBackups(params) as Promise<
+        ApiResponse<{ list: SystemBackup[]; total: number }>
+      >
     }
-    return request.get<ApiResponse<{ list: SystemBackup[]; total: number }>>('/system/backups', params)
+    return request.get<ApiResponse<{ list: SystemBackup[]; total: number }>>(
+      '/system/backups',
+      params
+    )
   },
 
   createSystemBackup: (data: CreateSystemBackupParams) => {

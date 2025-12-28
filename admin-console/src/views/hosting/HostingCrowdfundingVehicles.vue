@@ -206,9 +206,7 @@
               </template>
             </el-table-column>
             <el-table-column prop="shareRatio" label="份额占比" width="100">
-              <template #default="{ row }">
-                {{ row.shareRatio }}%
-              </template>
+              <template #default="{ row }"> {{ row.shareRatio }}% </template>
             </el-table-column>
             <el-table-column prop="investment" label="投资金额" width="120">
               <template #default="{ row }">
@@ -266,9 +264,7 @@
               />
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" @click="handleStatusUpdate">
-                更新状态
-              </el-button>
+              <el-button type="primary" @click="handleStatusUpdate"> 更新状态 </el-button>
             </el-form-item>
           </el-form>
         </el-card>
@@ -646,9 +642,7 @@ const getAvailableStatusOptions = (currentStatus: string) => {
       { label: '托管中', value: 'hosting' },
       { label: '已下线', value: 'offline' },
     ],
-    owner_use: [
-      { label: '托管中', value: 'hosting' },
-    ],
+    owner_use: [{ label: '托管中', value: 'hosting' }],
   }
   return statusFlow[currentStatus] || []
 }

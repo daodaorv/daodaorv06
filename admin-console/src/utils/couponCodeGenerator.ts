@@ -8,9 +8,9 @@
  * 优惠码生成选项
  */
 export interface CodeGenerateOptions {
-  prefix?: string  // 前缀，默认 'COUP'
-  randomLength?: number  // 随机码长度，默认 4
-  includeDate?: boolean  // 是否包含日期，默认 true
+  prefix?: string // 前缀，默认 'COUP'
+  randomLength?: number // 随机码长度，默认 4
+  includeDate?: boolean // 是否包含日期，默认 true
 }
 
 /**
@@ -27,11 +27,7 @@ function formatDate(date: Date): string {
  * 生成单个优惠码
  */
 export function generateCouponCode(options: CodeGenerateOptions = {}): string {
-  const {
-    prefix = 'COUP',
-    randomLength = 4,
-    includeDate = true
-  } = options
+  const { prefix = 'COUP', randomLength = 4, includeDate = true } = options
 
   let code = prefix.toUpperCase()
 
@@ -59,7 +55,7 @@ export function generateUniqueCouponCodes(
   existingCodes: Set<string> = new Set()
 ): string[] {
   const codes: string[] = []
-  const maxAttempts = count * 10  // 最大尝试次数
+  const maxAttempts = count * 10 // 最大尝试次数
   let attempts = 0
 
   while (codes.length < count && attempts < maxAttempts) {

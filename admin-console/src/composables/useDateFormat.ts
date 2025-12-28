@@ -18,7 +18,10 @@ export function useDateFormat() {
    * @param dateStr 日期字符串
    * @param format 格式化模板，默认 'YYYY-MM-DD HH:mm:ss'
    */
-  const formatDateTime = (dateStr?: string | Date | null, format = 'YYYY-MM-DD HH:mm:ss'): string => {
+  const formatDateTime = (
+    dateStr?: string | Date | null,
+    format = 'YYYY-MM-DD HH:mm:ss'
+  ): string => {
     if (!dateStr) return '-'
 
     try {
@@ -143,10 +146,7 @@ export function useDateFormat() {
    * @param startDate 开始日期
    * @param endDate 结束日期
    */
-  const getDaysDiff = (
-    startDate: string | Date,
-    endDate: string | Date = new Date()
-  ): number => {
+  const getDaysDiff = (startDate: string | Date, endDate: string | Date = new Date()): number => {
     try {
       const start = new Date(startDate)
       const end = new Date(endDate)
@@ -209,6 +209,6 @@ export function useDateFormat() {
     formatDateRange,
     getDaysDiff,
     isExpired,
-    isExpiringSoon
+    isExpiringSoon,
   }
 }

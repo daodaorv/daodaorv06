@@ -1,8 +1,6 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="finance-expenses-container">
-    
-
     <!-- 搜索和操作 -->
     <div class="toolbar">
       <SearchForm
@@ -105,9 +103,7 @@
 
       <template #footer>
         <el-button @click="editDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="handleEditSubmit" :loading="submitting">
-          确定
-        </el-button>
+        <el-button type="primary" @click="handleEditSubmit" :loading="submitting"> 确定 </el-button>
       </template>
     </el-dialog>
   </div>
@@ -126,7 +122,7 @@ import {
   updateExpense,
   deleteExpense,
   type ExpenseRecord,
-  type ExpenseCategory
+  type ExpenseCategory,
 } from '@/api/finance'
 
 // 搜索表单
@@ -135,7 +131,7 @@ const searchForm = ref({
   storeId: '',
   startDate: '',
   endDate: '',
-  keyword: ''
+  keyword: '',
 })
 
 // 搜索字段配置
@@ -152,8 +148,8 @@ const searchFields = [
       { label: '员工工资', value: 'salary' },
       { label: '门店租金', value: 'rent' },
       { label: '市场推广', value: 'marketing' },
-      { label: '其他费用', value: 'other' }
-    ]
+      { label: '其他费用', value: 'other' },
+    ],
   },
   {
     type: 'select',
@@ -165,27 +161,27 @@ const searchFields = [
       { label: '上海浦东门店', value: 2 },
       { label: '深圳南山门店', value: 3 },
       { label: '成都高新门店', value: 4 },
-      { label: '杭州西湖门店', value: 5 }
-    ]
+      { label: '杭州西湖门店', value: 5 },
+    ],
   },
   {
     type: 'date',
     prop: 'startDate',
     label: '开始日期',
-    placeholder: '请选择开始日期'
+    placeholder: '请选择开始日期',
   },
   {
     type: 'date',
     prop: 'endDate',
     label: '结束日期',
-    placeholder: '请选择结束日期'
+    placeholder: '请选择结束日期',
   },
   {
     type: 'input',
     prop: 'keyword',
     label: '关键词',
-    placeholder: '收款方/凭证号'
-  }
+    placeholder: '收款方/凭证号',
+  },
 ]
 
 // 支出列表
@@ -196,7 +192,7 @@ const loading = ref(false)
 const pagination = reactive({
   currentPage: 1,
   pageSize: 10,
-  total: 0
+  total: 0,
 })
 
 // 表格列配置
@@ -209,7 +205,7 @@ const tableColumns = [
   { prop: 'approver', label: '审批人', width: 120 },
   { prop: 'voucher', label: '凭证号', width: 150 },
   { prop: 'description', label: '说明', minWidth: 200 },
-  { prop: 'createdAt', label: '创建时间', width: 160 }
+  { prop: 'createdAt', label: '创建时间', width: 160 },
 ]
 
 // 表格操作
@@ -218,14 +214,14 @@ const tableActions = [
     label: '编辑',
     type: 'primary',
     link: true,
-    onClick: (row: ExpenseRecord) => handleEdit(row)
+    onClick: (row: ExpenseRecord) => handleEdit(row),
   },
   {
     label: '删除',
     type: 'danger',
     link: true,
-    onClick: (row: ExpenseRecord) => handleDelete(row)
-  }
+    onClick: (row: ExpenseRecord) => handleDelete(row),
+  },
 ]
 
 // 编辑对话框
@@ -240,19 +236,19 @@ const editForm = reactive({
   payee: '',
   approver: '',
   description: '',
-  voucher: ''
+  voucher: '',
 })
 const editFormRef = ref()
 const editRules = {
   category: [{ required: true, message: '请选择支出类别', trigger: 'change' }],
   amount: [
     { required: true, message: '请输入支出金额', trigger: 'blur' },
-    { type: 'number', min: 0, message: '金额必须大于0', trigger: 'blur' }
+    { type: 'number', min: 0, message: '金额必须大于0', trigger: 'blur' },
   ],
   storeId: [{ required: true, message: '请选择门店', trigger: 'change' }],
   payee: [{ required: true, message: '请输入收款方', trigger: 'blur' }],
   approver: [{ required: true, message: '请输入审批人', trigger: 'blur' }],
-  description: [{ required: true, message: '请输入支出说明', trigger: 'blur' }]
+  description: [{ required: true, message: '请输入支出说明', trigger: 'blur' }],
 }
 const submitting = ref(false)
 
@@ -267,7 +263,7 @@ const fetchExpenseList = async () => {
       storeId: searchForm.value.storeId ? Number(searchForm.value.storeId) : undefined,
       startDate: searchForm.value.startDate,
       endDate: searchForm.value.endDate,
-      keyword: searchForm.value.keyword
+      keyword: searchForm.value.keyword,
     }
     const { list, total } = await getExpenseList(params)
     expenseList.value = list
@@ -293,7 +289,7 @@ const handleReset = () => {
     storeId: '',
     startDate: '',
     endDate: '',
-    keyword: ''
+    keyword: '',
   }
   handleSearch()
 }
@@ -345,7 +341,7 @@ const handleDelete = async (row: ExpenseRecord) => {
     await ElMessageBox.confirm(`确定要删除支出记录"${row.description}"吗？`, '提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
-      type: 'warning'
+      type: 'warning',
     })
 
     await deleteExpense(row.id)
@@ -369,7 +365,14 @@ const handleEditSubmit = async () => {
     submitting.value = true
     try {
       // 获取门店名称
-      const storeNames = ['', '北京朝阳门店', '上海浦东门店', '深圳南山门店', '成都高新门店', '杭州西湖门店']
+      const storeNames = [
+        '',
+        '北京朝阳门店',
+        '上海浦东门店',
+        '深圳南山门店',
+        '成都高新门店',
+        '杭州西湖门店',
+      ]
       editForm.storeName = storeNames[editForm.storeId]
 
       if (editForm.id) {
@@ -404,7 +407,7 @@ const getCategoryTagType = (category: ExpenseCategory) => {
     salary: '',
     rent: 'info',
     marketing: 'warning',
-    other: 'info'
+    other: 'info',
   }
   return categoryMap[category] || 'info'
 }
@@ -418,7 +421,7 @@ const getCategoryLabel = (category: ExpenseCategory) => {
     salary: '员工工资',
     rent: '门店租金',
     marketing: '市场推广',
-    other: '其他费用'
+    other: '其他费用',
   }
   return categoryMap[category] || category
 }

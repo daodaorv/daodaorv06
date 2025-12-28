@@ -23,11 +23,11 @@ export interface Rule {
 export interface UserData {
   id: number
   username: string
-  register_days: number      // 注册天数
-  order_count: number         // 订单数量
-  total_amount: number        // 消费总额
-  last_login_days: number     // 最后登录天数
-  violation_count: number     // 违规次数
+  register_days: number // 注册天数
+  order_count: number // 订单数量
+  total_amount: number // 消费总额
+  last_login_days: number // 最后登录天数
+  violation_count: number // 违规次数
 }
 
 /**
@@ -83,9 +83,7 @@ export function evaluateRule(rule: Rule, userData: UserData): boolean {
  * 返回匹配规则的用户ID列表
  */
 export function evaluateUsers(rule: Rule, users: UserData[]): number[] {
-  return users
-    .filter(user => evaluateRule(rule, user))
-    .map(user => user.id)
+  return users.filter(user => evaluateRule(rule, user)).map(user => user.id)
 }
 
 /**
@@ -101,7 +99,7 @@ export function generateRuleDescription(rule: Rule): string {
     order_count: '订单数量',
     total_amount: '消费总额',
     last_login_days: '最后登录天数',
-    violation_count: '违规次数'
+    violation_count: '违规次数',
   }
 
   const operatorNames: Record<string, string> = {
@@ -109,7 +107,7 @@ export function generateRuleDescription(rule: Rule): string {
     lt: '小于',
     eq: '等于',
     gte: '大于等于',
-    lte: '小于等于'
+    lte: '小于等于',
   }
 
   const conditionTexts = rule.conditions.map(condition => {
@@ -130,11 +128,17 @@ export function generateUserData(userId: number): UserData {
   // 这里使用简单的随机数生成Mock数据
   // 实际项目中应该从数据库查询真实数据
   const now = new Date()
-  const registerDate = new Date(2024, Math.floor(Math.random() * 12), Math.floor(Math.random() * 28))
+  const registerDate = new Date(
+    2024,
+    Math.floor(Math.random() * 12),
+    Math.floor(Math.random() * 28)
+  )
   const lastLoginDate = new Date(now.getTime() - Math.random() * 30 * 24 * 60 * 60 * 1000)
 
   const registerDays = Math.floor((now.getTime() - registerDate.getTime()) / (24 * 60 * 60 * 1000))
-  const lastLoginDays = Math.floor((now.getTime() - lastLoginDate.getTime()) / (24 * 60 * 60 * 1000))
+  const lastLoginDays = Math.floor(
+    (now.getTime() - lastLoginDate.getTime()) / (24 * 60 * 60 * 1000)
+  )
 
   return {
     id: userId,
@@ -143,6 +147,6 @@ export function generateUserData(userId: number): UserData {
     order_count: Math.floor(Math.random() * 50),
     total_amount: Math.floor(Math.random() * 50000),
     last_login_days: lastLoginDays,
-    violation_count: Math.floor(Math.random() * 5)
+    violation_count: Math.floor(Math.random() * 5),
   }
 }

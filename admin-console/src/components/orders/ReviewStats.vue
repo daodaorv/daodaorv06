@@ -70,11 +70,7 @@
         </div>
       </template>
       <div class="rating-distribution">
-        <div
-          v-for="item in ratingDistribution"
-          :key="item.rating"
-          class="rating-item"
-        >
+        <div v-for="item in ratingDistribution" :key="item.rating" class="rating-item">
           <div class="rating-label">
             <el-rate
               :model-value="item.rating"
@@ -104,12 +100,7 @@
         <el-table-column prop="reviewCount" label="评价数量" width="120" align="center" />
         <el-table-column label="平均评分" width="200" align="center">
           <template #default="{ row }">
-            <el-rate
-              :model-value="row.averageRating"
-              disabled
-              show-score
-              text-color="#ff9900"
-            />
+            <el-rate :model-value="row.averageRating" disabled show-score text-color="#ff9900" />
           </template>
         </el-table-column>
         <el-table-column prop="satisfactionRate" label="满意度" width="150" align="center">
@@ -122,25 +113,13 @@
         <el-table-column label="评分趋势" align="center">
           <template #default="{ row }">
             <div class="trend-indicator">
-              <el-icon
-                v-if="row.trend === 'up'"
-                :size="20"
-                color="#67c23a"
-              >
+              <el-icon v-if="row.trend === 'up'" :size="20" color="#67c23a">
                 <TrendCharts />
               </el-icon>
-              <el-icon
-                v-else-if="row.trend === 'down'"
-                :size="20"
-                color="#f56c6c"
-              >
+              <el-icon v-else-if="row.trend === 'down'" :size="20" color="#f56c6c">
                 <TrendCharts style="transform: rotate(180deg)" />
               </el-icon>
-              <el-icon
-                v-else
-                :size="20"
-                color="#909399"
-              >
+              <el-icon v-else :size="20" color="#909399">
                 <Minus />
               </el-icon>
               <span class="trend-text">{{ getTrendText(row.trend) }}</span>
@@ -160,12 +139,7 @@
         <el-table-column prop="reviewCount" label="评价数量" width="120" align="center" />
         <el-table-column label="平均评分" width="200" align="center">
           <template #default="{ row }">
-            <el-rate
-              :model-value="row.averageRating"
-              disabled
-              show-score
-              text-color="#ff9900"
-            />
+            <el-rate :model-value="row.averageRating" disabled show-score text-color="#ff9900" />
           </template>
         </el-table-column>
         <el-table-column prop="satisfactionRate" label="满意度" width="150" align="center">
@@ -210,11 +184,7 @@
           </div>
         </div>
         <div class="trend-data">
-          <div
-            v-for="item in trendData"
-            :key="item.date"
-            class="trend-data-item"
-          >
+          <div v-for="item in trendData" :key="item.date" class="trend-data-item">
             <div class="trend-date">{{ item.date }}</div>
             <div class="trend-bars">
               <div class="trend-bar-wrapper">
@@ -243,21 +213,14 @@
 
 <script setup lang="ts">
 import { ref, reactive, computed } from 'vue'
-import {
-  Document,
-  Star,
-  Picture,
-  ChatDotRound,
-  TrendCharts,
-  Minus
-} from '@element-plus/icons-vue'
+import { Document, Star, Picture, ChatDotRound, TrendCharts, Minus } from '@element-plus/icons-vue'
 
 // 总体统计数据
 const stats = reactive({
   totalReviews: 1248,
   averageRating: 4.6,
   withImages: 856,
-  replyRate: 92
+  replyRate: 92,
 })
 
 // 评分类型
@@ -272,29 +235,29 @@ const ratingDistribution = computed(() => {
       { rating: 4, count: 374, percentage: 30 },
       { rating: 3, count: 100, percentage: 8 },
       { rating: 2, count: 37, percentage: 3 },
-      { rating: 1, count: 17, percentage: 1 }
+      { rating: 1, count: 17, percentage: 1 },
     ],
     vehicle: [
       { rating: 5, count: 780, percentage: 62 },
       { rating: 4, count: 350, percentage: 28 },
       { rating: 3, count: 87, percentage: 7 },
       { rating: 2, count: 25, percentage: 2 },
-      { rating: 1, count: 6, percentage: 1 }
+      { rating: 1, count: 6, percentage: 1 },
     ],
     service: [
       { rating: 5, count: 810, percentage: 65 },
       { rating: 4, count: 312, percentage: 25 },
       { rating: 3, count: 87, percentage: 7 },
       { rating: 2, count: 25, percentage: 2 },
-      { rating: 1, count: 14, percentage: 1 }
+      { rating: 1, count: 14, percentage: 1 },
     ],
     cleanliness: [
       { rating: 5, count: 750, percentage: 60 },
       { rating: 4, count: 362, percentage: 29 },
       { rating: 3, count: 100, percentage: 8 },
       { rating: 2, count: 25, percentage: 2 },
-      { rating: 1, count: 11, percentage: 1 }
-    ]
+      { rating: 1, count: 11, percentage: 1 },
+    ],
   }
   return distributions[ratingType.value] || distributions.overall
 })
@@ -306,36 +269,36 @@ const vehicleStats = ref([
     reviewCount: 328,
     averageRating: 4.8,
     satisfactionRate: 96,
-    trend: 'up'
+    trend: 'up',
   },
   {
     vehicleName: '大通V90',
     reviewCount: 285,
     averageRating: 4.6,
     satisfactionRate: 92,
-    trend: 'up'
+    trend: 'up',
   },
   {
     vehicleName: '福特全顺',
     reviewCount: 256,
     averageRating: 4.5,
     satisfactionRate: 90,
-    trend: 'stable'
+    trend: 'stable',
   },
   {
     vehicleName: '依维柯欧胜',
     reviewCount: 198,
     averageRating: 4.4,
     satisfactionRate: 88,
-    trend: 'down'
+    trend: 'down',
   },
   {
     vehicleName: '上汽大通RG10',
     reviewCount: 181,
     averageRating: 4.3,
     satisfactionRate: 86,
-    trend: 'stable'
-  }
+    trend: 'stable',
+  },
 ])
 
 // 按门店统计数据（Mock）
@@ -345,29 +308,29 @@ const storeStats = ref([
     reviewCount: 412,
     averageRating: 4.7,
     satisfactionRate: 94,
-    serviceQuality: 95
+    serviceQuality: 95,
   },
   {
     storeName: '上海浦东门店',
     reviewCount: 385,
     averageRating: 4.6,
     satisfactionRate: 92,
-    serviceQuality: 93
+    serviceQuality: 93,
   },
   {
     storeName: '广州天河门店',
     reviewCount: 298,
     averageRating: 4.5,
     satisfactionRate: 90,
-    serviceQuality: 91
+    serviceQuality: 91,
   },
   {
     storeName: '深圳南山门店',
     reviewCount: 153,
     averageRating: 4.4,
     satisfactionRate: 88,
-    serviceQuality: 89
-  }
+    serviceQuality: 89,
+  },
 ])
 
 // 时间趋势周期
@@ -383,20 +346,20 @@ const trendData = computed(() => {
       { date: '12-19', count: 61, rating: 4.7 },
       { date: '12-20', count: 48, rating: 4.5 },
       { date: '12-21', count: 55, rating: 4.6 },
-      { date: '12-22', count: 42, rating: 4.5 }
+      { date: '12-22', count: 42, rating: 4.5 },
     ],
     month: [
       { date: '11-23', count: 280, rating: 4.4 },
       { date: '11-30', count: 310, rating: 4.5 },
       { date: '12-07', count: 295, rating: 4.5 },
       { date: '12-14', count: 325, rating: 4.6 },
-      { date: '12-21', count: 341, rating: 4.6 }
+      { date: '12-21', count: 341, rating: 4.6 },
     ],
     quarter: [
       { date: '10月', count: 1180, rating: 4.4 },
       { date: '11月', count: 1250, rating: 4.5 },
-      { date: '12月', count: 1351, rating: 4.6 }
-    ]
+      { date: '12月', count: 1351, rating: 4.6 },
+    ],
   }
   return data[trendPeriod.value] || data.week
 })
@@ -432,7 +395,7 @@ const getTrendText = (trend: string) => {
   const trendMap: Record<string, string> = {
     up: '上升',
     down: '下降',
-    stable: '稳定'
+    stable: '稳定',
   }
   return trendMap[trend] || '稳定'
 }

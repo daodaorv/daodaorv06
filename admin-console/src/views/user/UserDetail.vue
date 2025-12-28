@@ -14,9 +14,7 @@
         <template #header>
           <div class="card-header">
             <span>基本信息</span>
-            <el-button type="primary" size="small" @click="handleEdit">
-              编辑
-            </el-button>
+            <el-button type="primary" size="small" @click="handleEdit"> 编辑 </el-button>
           </div>
         </template>
         <div class="user-info">
@@ -155,18 +153,8 @@
     </div>
 
     <!-- 编辑用户对话框 -->
-    <el-dialog
-      v-model="dialogVisible"
-      title="编辑用户"
-      width="600px"
-      @close="handleDialogClose"
-    >
-      <el-form
-        ref="userFormRef"
-        :model="userForm"
-        :rules="userFormRules"
-        label-width="100px"
-      >
+    <el-dialog v-model="dialogVisible" title="编辑用户" width="600px" @close="handleDialogClose">
+      <el-form ref="userFormRef" :model="userForm" :rules="userFormRules" label-width="100px">
         <el-form-item label="用户名" prop="username">
           <el-input v-model="userForm.username" placeholder="请输入用户名" />
         </el-form-item>
@@ -186,9 +174,7 @@
       </el-form>
       <template #footer>
         <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" :loading="submitLoading" @click="handleSubmit">
-          确定
-        </el-button>
+        <el-button type="primary" :loading="submitLoading" @click="handleSubmit"> 确定 </el-button>
       </template>
     </el-dialog>
   </div>
@@ -255,9 +241,7 @@ const userFormRules: FormRules = {
     { required: true, message: '请输入用户名', trigger: 'blur' },
     { min: 2, max: 20, message: '用户名长度在 2 到 20 个字符', trigger: 'blur' },
   ],
-  email: [
-    { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' },
-  ],
+  email: [{ type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' }],
 }
 
 // 获取用户详情
@@ -303,7 +287,7 @@ const handleEdit = () => {
 const handleSubmit = async () => {
   if (!userFormRef.value) return
 
-  await userFormRef.value.validate(async (valid) => {
+  await userFormRef.value.validate(async valid => {
     if (!valid) return
 
     submitLoading.value = true
@@ -410,7 +394,9 @@ const handleDelete = async () => {
 }
 
 // 获取状态标签类型
-const getStatusTagType = (status: string): 'primary' | 'success' | 'warning' | 'info' | 'danger' => {
+const getStatusTagType = (
+  status: string
+): 'primary' | 'success' | 'warning' | 'info' | 'danger' => {
   const statusMap: Record<string, any> = {
     active: 'success',
     inactive: 'warning',

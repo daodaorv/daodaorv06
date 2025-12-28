@@ -34,7 +34,7 @@ import {
   type CouponRecordListParams,
   type CouponRecordType,
   type CouponRecordSource,
-  type ApplicableProductType
+  type ApplicableProductType,
 } from '@/mock/marketing'
 
 // 导出类型
@@ -60,7 +60,7 @@ export type {
   CouponRecordListParams,
   CouponRecordType,
   CouponRecordSource,
-  ApplicableProductType
+  ApplicableProductType,
 }
 
 // ==================== 价格策略管理 ====================
@@ -338,7 +338,7 @@ export const calculateSpecialFeePreview = (data: {
   returnStoreId: number
 }) => {
   // return request.post('/marketing/special-fees/preview', data)
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       // 这里可以调用费用分配计算工具进行预览计算
       resolve({
@@ -346,8 +346,8 @@ export const calculateSpecialFeePreview = (data: {
         message: '计算成功',
         data: {
           totalAmount: 0,
-          allocations: []
-        }
+          allocations: [],
+        },
       })
     }, 200)
   })

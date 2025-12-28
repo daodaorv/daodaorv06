@@ -55,19 +55,31 @@ export const menuConfig: MenuItem[] = [
       {
         path: '/users/membership-migration',
         name: 'MembershipMigration',
-        meta: { title: '数据迁移', description: '迁移历史会员数据', roles: [UserRole.PLATFORM_ADMIN] },
+        meta: {
+          title: '数据迁移',
+          description: '迁移历史会员数据',
+          roles: [UserRole.PLATFORM_ADMIN],
+        },
         component: () => import('@/views/user/MembershipMigration.vue'),
       },
       {
         path: '/users/risk',
         name: 'UserRisk',
-        meta: { title: '风控管理', description: '监控和管理平台风险用户，及时处理异常行为', roles: [UserRole.PLATFORM_ADMIN] },
+        meta: {
+          title: '风控管理',
+          description: '监控和管理平台风险用户，及时处理异常行为',
+          roles: [UserRole.PLATFORM_ADMIN],
+        },
         component: () => import('@/views/user/UserRisk.vue'),
       },
       {
         path: '/users/blacklist',
         name: 'UserBlacklist',
-        meta: { title: '黑名单', description: '管理平台黑名单用户，防范风险行为', roles: [UserRole.PLATFORM_ADMIN] },
+        meta: {
+          title: '黑名单',
+          description: '管理平台黑名单用户，防范风险行为',
+          roles: [UserRole.PLATFORM_ADMIN],
+        },
         component: () => import('@/views/user/UserBlacklist.vue'),
       },
     ],
@@ -91,7 +103,10 @@ export const menuConfig: MenuItem[] = [
       {
         path: '/vehicles/list',
         name: 'VehicleList',
-        meta: { title: '车辆列表', description: '管理平台所有车辆档案、状态跟踪和位置管理(包含平台自有、托管、合作车辆)' },
+        meta: {
+          title: '车辆列表',
+          description: '管理平台所有车辆档案、状态跟踪和位置管理(包含平台自有、托管、合作车辆)',
+        },
         component: () => import('@/views/vehicle/VehicleList.vue'),
       },
       {
@@ -151,7 +166,11 @@ export const menuConfig: MenuItem[] = [
       {
         path: '/stores/regions',
         name: 'StoreRegions',
-        meta: { title: '区域管理', description: '管理业务区域和区域经理分配', roles: [UserRole.PLATFORM_ADMIN] },
+        meta: {
+          title: '区域管理',
+          description: '管理业务区域和区域经理分配',
+          roles: [UserRole.PLATFORM_ADMIN],
+        },
         component: () => import('@/views/store/RegionManagement.vue'),
       },
     ],
@@ -234,7 +253,10 @@ export const menuConfig: MenuItem[] = [
           {
             path: '/hosting/owner-usage',
             name: 'HostingOwnerUsage',
-            meta: { title: '车主自用审核', description: '审核车主自用申请，管理自用费用和订单冲突' },
+            meta: {
+              title: '车主自用审核',
+              description: '审核车主自用申请，管理自用费用和订单冲突',
+            },
             component: () => import('@/views/hosting/HostingOwnerUsage.vue'),
           },
           {
@@ -356,7 +378,10 @@ export const menuConfig: MenuItem[] = [
       {
         path: '/partners/orders',
         name: 'PartnerOrders',
-        meta: { title: '合作商订单', description: '管理合作商订单信息，填写订单号和价格，自动计算差价和分润' },
+        meta: {
+          title: '合作商订单',
+          description: '管理合作商订单信息，填写订单号和价格，自动计算差价和分润',
+        },
         component: () => import('@/views/partner/PartnerOrders.vue'),
       },
       {
@@ -774,6 +799,12 @@ export const menuConfig: MenuItem[] = [
         name: 'SystemBackup',
         meta: { title: '数据备份', description: '管理系统数据备份和恢复' },
         component: () => import('@/views/system/SystemBackup.vue'),
+      },
+      {
+        path: '/system/miniprogram-resources',
+        name: 'MiniprogramResources',
+        meta: { title: '小程序资源', description: '管理小程序端的图片、文本、配置等资源' },
+        component: () => import('@/views/system/miniprogram-resources/MiniprogramResources.vue'),
       },
     ],
   },

@@ -1,48 +1,23 @@
 <template>
   <div class="business-rules">
-    <el-form
-      ref="formRef"
-      :model="form"
-      :rules="formRules"
-      label-width="180px"
-    >
+    <el-form ref="formRef" :model="form" :rules="formRules" label-width="180px">
       <!-- 订单规则 -->
       <div class="config-section">
         <h3 class="section-title">订单规则</h3>
         <el-form-item label="订单自动取消时间" prop="orderAutoCancelTime">
-          <el-input-number
-            v-model="form.orderAutoCancelTime"
-            :min="5"
-            :max="120"
-            :step="5"
-          />
+          <el-input-number v-model="form.orderAutoCancelTime" :min="5" :max="120" :step="5" />
           <span class="form-tip">分钟（未支付订单）</span>
         </el-form-item>
         <el-form-item label="订单自动完成时间" prop="orderAutoCompleteTime">
-          <el-input-number
-            v-model="form.orderAutoCompleteTime"
-            :min="1"
-            :max="30"
-            :step="1"
-          />
+          <el-input-number v-model="form.orderAutoCompleteTime" :min="1" :max="30" :step="1" />
           <span class="form-tip">天（还车后）</span>
         </el-form-item>
         <el-form-item label="订单可取消时间" prop="orderCancelableTime">
-          <el-input-number
-            v-model="form.orderCancelableTime"
-            :min="1"
-            :max="72"
-            :step="1"
-          />
+          <el-input-number v-model="form.orderCancelableTime" :min="1" :max="72" :step="1" />
           <span class="form-tip">小时（取车前）</span>
         </el-form-item>
         <el-form-item label="订单可评价时间" prop="orderReviewableTime">
-          <el-input-number
-            v-model="form.orderReviewableTime"
-            :min="1"
-            :max="30"
-            :step="1"
-          />
+          <el-input-number v-model="form.orderReviewableTime" :min="1" :max="30" :step="1" />
           <span class="form-tip">天（订单完成后）</span>
         </el-form-item>
       </div>
@@ -51,38 +26,19 @@
       <div class="config-section">
         <h3 class="section-title">租赁规则</h3>
         <el-form-item label="最短租赁天数" prop="minRentalDays">
-          <el-input-number
-            v-model="form.minRentalDays"
-            :min="1"
-            :max="7"
-            :step="1"
-          />
+          <el-input-number v-model="form.minRentalDays" :min="1" :max="7" :step="1" />
           <span class="form-tip">天</span>
         </el-form-item>
         <el-form-item label="最长租赁天数" prop="maxRentalDays">
-          <el-input-number
-            v-model="form.maxRentalDays"
-            :min="7"
-            :max="365"
-            :step="1"
-          />
+          <el-input-number v-model="form.maxRentalDays" :min="7" :max="365" :step="1" />
           <span class="form-tip">天</span>
         </el-form-item>
         <el-form-item label="提前预订天数" prop="advanceBookingDays">
-          <el-input-number
-            v-model="form.advanceBookingDays"
-            :min="0"
-            :max="180"
-            :step="1"
-          />
+          <el-input-number v-model="form.advanceBookingDays" :min="0" :max="180" :step="1" />
           <span class="form-tip">天（最多提前）</span>
         </el-form-item>
         <el-form-item label="最晚取车时间" prop="latestPickupTime">
-          <el-time-picker
-            v-model="form.latestPickupTime"
-            format="HH:mm"
-            placeholder="选择时间"
-          />
+          <el-time-picker v-model="form.latestPickupTime" format="HH:mm" placeholder="选择时间" />
         </el-form-item>
         <el-form-item label="超时费用标准" prop="overtimeFeeRate">
           <el-input-number
@@ -100,21 +56,11 @@
       <div class="config-section">
         <h3 class="section-title">押金规则</h3>
         <el-form-item label="基础押金金额" prop="baseDepositAmount">
-          <el-input-number
-            v-model="form.baseDepositAmount"
-            :min="0"
-            :max="50000"
-            :step="1000"
-          />
+          <el-input-number v-model="form.baseDepositAmount" :min="0" :max="50000" :step="1000" />
           <span class="form-tip">元</span>
         </el-form-item>
         <el-form-item label="押金退还时间" prop="depositRefundTime">
-          <el-input-number
-            v-model="form.depositRefundTime"
-            :min="1"
-            :max="30"
-            :step="1"
-          />
+          <el-input-number v-model="form.depositRefundTime" :min="1" :max="30" :step="1" />
           <span class="form-tip">天（还车后）</span>
         </el-form-item>
         <el-form-item label="违章押金扣除" prop="violationDepositDeduction">
@@ -131,11 +77,7 @@
       <div class="config-section">
         <h3 class="section-title">优惠券规则</h3>
         <el-form-item label="优惠券叠加使用" prop="couponStackable">
-          <el-switch
-            v-model="form.couponStackable"
-            active-text="允许"
-            inactive-text="不允许"
-          />
+          <el-switch v-model="form.couponStackable" active-text="允许" inactive-text="不允许" />
         </el-form-item>
         <el-form-item label="最多叠加数量" prop="maxCouponStack">
           <el-input-number
@@ -148,12 +90,7 @@
           <span class="form-tip">张</span>
         </el-form-item>
         <el-form-item label="优惠券过期提醒" prop="couponExpiryReminder">
-          <el-input-number
-            v-model="form.couponExpiryReminder"
-            :min="1"
-            :max="30"
-            :step="1"
-          />
+          <el-input-number v-model="form.couponExpiryReminder" :min="1" :max="30" :step="1" />
           <span class="form-tip">天（过期前）</span>
         </el-form-item>
       </div>
@@ -171,12 +108,7 @@
           <span class="form-tip">元</span>
         </el-form-item>
         <el-form-item label="最小份额购买数" prop="minSharePurchase">
-          <el-input-number
-            v-model="form.minSharePurchase"
-            :min="1"
-            :max="100"
-            :step="1"
-          />
+          <el-input-number v-model="form.minSharePurchase" :min="1" :max="100" :step="1" />
           <span class="form-tip">份</span>
         </el-form-item>
         <el-form-item label="份额转让手续费" prop="shareTransferFeeRate">
@@ -297,21 +229,15 @@ const form = reactive({
 })
 
 const formRules: FormRules = {
-  orderAutoCancelTime: [
-    { required: true, message: '请设置订单自动取消时间', trigger: 'blur' },
-  ],
-  minRentalDays: [
-    { required: true, message: '请设置最短租赁天数', trigger: 'blur' },
-  ],
-  baseDepositAmount: [
-    { required: true, message: '请设置基础押金金额', trigger: 'blur' },
-  ],
+  orderAutoCancelTime: [{ required: true, message: '请设置订单自动取消时间', trigger: 'blur' }],
+  minRentalDays: [{ required: true, message: '请设置最短租赁天数', trigger: 'blur' }],
+  baseDepositAmount: [{ required: true, message: '请设置基础押金金额', trigger: 'blur' }],
 }
 
 const handleSubmit = async () => {
   if (!formRef.value) return
 
-  await formRef.value.validate(async (valid) => {
+  await formRef.value.validate(async valid => {
     if (!valid) return
 
     submitLoading.value = true

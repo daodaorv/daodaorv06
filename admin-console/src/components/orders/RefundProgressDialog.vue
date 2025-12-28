@@ -31,12 +31,7 @@
         <template #header>
           <div class="card-header-with-action">
             <span class="card-title">当前状态</span>
-            <el-button
-              type="primary"
-              size="small"
-              :loading="refreshing"
-              @click="handleRefresh"
-            >
+            <el-button type="primary" size="small" :loading="refreshing" @click="handleRefresh">
               刷新状态
             </el-button>
           </div>
@@ -75,7 +70,11 @@
       </el-card>
 
       <!-- 处理详情 -->
-      <el-card v-if="progress.details && progress.details.length > 0" class="details-card" shadow="never">
+      <el-card
+        v-if="progress.details && progress.details.length > 0"
+        class="details-card"
+        shadow="never"
+      >
         <template #header><span class="card-title">处理详情</span></template>
         <el-timeline>
           <el-timeline-item
@@ -135,9 +134,7 @@
 
     <template #footer>
       <el-button @click="handleClose">关闭</el-button>
-      <el-button type="primary" @click="handleRefresh" :loading="refreshing">
-        刷新状态
-      </el-button>
+      <el-button type="primary" @click="handleRefresh" :loading="refreshing"> 刷新状态 </el-button>
     </template>
   </el-dialog>
 </template>
@@ -154,13 +151,13 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: false,
-  refundInfo: null
+  refundInfo: null,
 })
 
 // Emits
 const emit = defineEmits<{
   'update:modelValue': [value: boolean]
-  'refresh': [refundId: number]
+  refresh: [refundId: number]
 }>()
 
 // 响应式数据
@@ -181,36 +178,39 @@ const progress = reactive({
       title: '退款申请已提交',
       description: '用户提交退款申请',
       success: true,
-      code: 'REFUND_SUBMITTED'
+      code: 'REFUND_SUBMITTED',
     },
     {
       timestamp: '2024-01-20 10:05:00',
       title: '退款审核通过',
       description: '管理员审核通过退款申请',
       success: true,
-      code: 'REFUND_APPROVED'
+      code: 'REFUND_APPROVED',
     },
     {
       timestamp: '2024-01-20 10:10:00',
       title: '退款处理中',
       description: '正在向第三方支付平台发起退款',
       success: true,
-      code: 'REFUND_PROCESSING'
-    }
+      code: 'REFUND_PROCESSING',
+    },
   ],
-  error: null as any
+  error: null as any,
 })
 
 // 监听 modelValue 变化
-watch(() => props.modelValue, (val) => {
-  visible.value = val
-  if (val && props.refundInfo) {
-    // 加载退款进度
-    loadProgress()
+watch(
+  () => props.modelValue,
+  val => {
+    visible.value = val
+    if (val && props.refundInfo) {
+      // 加载退款进度
+      loadProgress()
+    }
   }
-})
+)
 
-watch(visible, (val) => {
+watch(visible, val => {
   emit('update:modelValue', val)
 })
 
@@ -228,7 +228,7 @@ const loadProgress = () => {
       title: '退款成功',
       description: '退款已成功到账',
       success: true,
-      code: 'REFUND_SUCCESS'
+      code: 'REFUND_SUCCESS',
     })
   } else if (props.refundInfo?.status === 'failed') {
     progress.status = 'failed'
@@ -237,7 +237,7 @@ const loadProgress = () => {
     progress.error = {
       title: '退款失败',
       message: props.refundInfo.failureReason || '未知错误',
-      solution: '请联系技术支持或尝试切换退款方式'
+      solution: '请联系技术支持或尝试切换退款方式',
     }
   }
 }
@@ -269,7 +269,7 @@ const getRefundMethodLabel = (method: string) => {
     balance: '退到余额',
     bank_card: '银行卡',
     alipay: '支付宝',
-    wechat: '微信'
+    wechat: '微信',
   }
   return labelMap[method] || method
 }
@@ -280,7 +280,7 @@ const getStatusTag = (status: string) => {
     pending: 'info',
     processing: 'warning',
     success: 'success',
-    failed: 'danger'
+    failed: 'danger',
   }
   return tagMap[status] || 'info'
 }
@@ -291,7 +291,7 @@ const getStatusLabel = (status: string) => {
     pending: '待处理',
     processing: '处理中',
     success: '已完成',
-    failed: '失败'
+    failed: '失败',
   }
   return labelMap[status] || status
 }
@@ -301,7 +301,7 @@ const getProgressStatus = (status: string) => {
   const statusMap: Record<string, any> = {
     success: 'success',
     failed: 'exception',
-    processing: undefined
+    processing: undefined,
   }
   return statusMap[status]
 }

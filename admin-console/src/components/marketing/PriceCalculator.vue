@@ -1,14 +1,11 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="price-calculator">
-    <el-alert
-      type="info"
-      :closable="false"
-      style="margin-bottom: 20px"
-    >
+    <el-alert type="info" :closable="false" style="margin-bottom: 20px">
       <template #title>
         <div style="font-size: 13px">
-          价格计算演示工具可以帮助您理解价格计算逻辑：最终价格 = 基础价 + 城市因子 + 时间因子 + 其他因子
+          价格计算演示工具可以帮助您理解价格计算逻辑：最终价格 = 基础价 + 城市因子 + 时间因子 +
+          其他因子
         </div>
       </template>
     </el-alert>
@@ -148,7 +145,10 @@
                   <el-icon><Clock /></el-icon>
                   时间因子（平均）
                 </div>
-                <div class="item-value" :class="getValueClass(result.timeFactorSummary.averageAmount)">
+                <div
+                  class="item-value"
+                  :class="getValueClass(result.timeFactorSummary.averageAmount)"
+                >
                   {{ formatAmount(result.timeFactorSummary.averageAmount) }}/天
                 </div>
               </div>
@@ -175,9 +175,7 @@
                 <div class="item-label">
                   <strong>平均每日租金</strong>
                 </div>
-                <div class="item-value final-price">
-                  ¥{{ result.averageDailyRental }}/天
-                </div>
+                <div class="item-value final-price">¥{{ result.averageDailyRental }}/天</div>
               </div>
             </div>
 
@@ -219,16 +217,40 @@
                 <el-table-column label="价格变化" width="100">
                   <template #default="{ row, $index }">
                     <div v-if="$index > 0" class="price-change">
-                      <template v-if="row.dailyRental > result.timeFactorSummary.dailyDetails[$index - 1].dailyRental">
+                      <template
+                        v-if="
+                          row.dailyRental >
+                          result.timeFactorSummary.dailyDetails[$index - 1].dailyRental
+                        "
+                      >
                         <el-icon color="#f56c6c"><CaretTop /></el-icon>
                         <span style="color: #f56c6c">
-                          +{{ Math.round(((row.dailyRental - result.timeFactorSummary.dailyDetails[$index - 1].dailyRental) / result.timeFactorSummary.dailyDetails[$index - 1].dailyRental) * 100) }}%
+                          +{{
+                            Math.round(
+                              ((row.dailyRental -
+                                result.timeFactorSummary.dailyDetails[$index - 1].dailyRental) /
+                                result.timeFactorSummary.dailyDetails[$index - 1].dailyRental) *
+                                100
+                            )
+                          }}%
                         </span>
                       </template>
-                      <template v-else-if="row.dailyRental < result.timeFactorSummary.dailyDetails[$index - 1].dailyRental">
+                      <template
+                        v-else-if="
+                          row.dailyRental <
+                          result.timeFactorSummary.dailyDetails[$index - 1].dailyRental
+                        "
+                      >
                         <el-icon color="#67c23a"><CaretBottom /></el-icon>
                         <span style="color: #67c23a">
-                          {{ Math.round(((row.dailyRental - result.timeFactorSummary.dailyDetails[$index - 1].dailyRental) / result.timeFactorSummary.dailyDetails[$index - 1].dailyRental) * 100) }}%
+                          {{
+                            Math.round(
+                              ((row.dailyRental -
+                                result.timeFactorSummary.dailyDetails[$index - 1].dailyRental) /
+                                result.timeFactorSummary.dailyDetails[$index - 1].dailyRental) *
+                                100
+                            )
+                          }}%
                         </span>
                       </template>
                       <span v-else style="color: #909399">-</span>
@@ -267,7 +289,7 @@ import {
   Clock,
   Star,
   CaretTop,
-  CaretBottom
+  CaretBottom,
 } from '@element-plus/icons-vue'
 import { getVehicleModels, type VehicleModel } from '@/api/vehicle'
 import { getStoreList, type Store } from '@/api/store'
@@ -277,7 +299,7 @@ import type { PriceCalculationResult } from '@/utils/pricingHelper'
 const params = reactive({
   modelId: undefined as number | undefined,
   storeId: undefined as number | undefined,
-  dateRange: [] as Date[]
+  dateRange: [] as Date[],
 })
 
 // 数据
@@ -305,7 +327,7 @@ const loadVehicleModels = async () => {
 // 加载门店列表
 const loadStores = async () => {
   try {
-    const res = await getStoreList({ page: 1, pageSize: 100, status: 'active' }) as any
+    const res = (await getStoreList({ page: 1, pageSize: 100, status: 'active' })) as any
     stores.value = res.data.list
   } catch (error) {
     console.error('加载门店列表失败:', error)
@@ -349,7 +371,7 @@ const calculatePrice = async () => {
       cityId: store.cityId,
       cityName: store.cityName,
       startDate,
-      endDate
+      endDate,
     }
 
     result.value = calculateMultiFactorPrice(request)

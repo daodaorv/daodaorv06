@@ -1,8 +1,6 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="vehicle-models-container">
-    
-
     <SearchForm
       v-model="searchForm"
       :fields="searchFields"
@@ -39,22 +37,16 @@
       </template>
 
       <template #vehicleType="{ row }">
-        <el-tag :type="(getVehicleTypeTag(row.vehicleType)) as any" size="small">
+        <el-tag :type="getVehicleTypeTag(row.vehicleType) as any" size="small">
           {{ getVehicleTypeLabel(row.vehicleType) }}
         </el-tag>
       </template>
 
-      <template #seats="{ row }">
-        {{ row.seats }}人
-      </template>
+      <template #seats="{ row }"> {{ row.seats }}人 </template>
 
-      <template #beds="{ row }">
-        {{ row.beds }}个
-      </template>
+      <template #beds="{ row }"> {{ row.beds }}个 </template>
 
-      <template #dailyPrice="{ row }">
-        ¥{{ row.dailyPrice }}
-      </template>
+      <template #dailyPrice="{ row }"> ¥{{ row.dailyPrice }} </template>
 
       <template #crowdfundingStatus="{ row }">
         <el-tag :type="row.supportCrowdfunding ? 'success' : 'info'" size="small">
@@ -75,12 +67,8 @@
       </template>
 
       <template #actions="{ row }">
-        <el-button link type="primary" size="small" @click="handleView(row)">
-          查看
-        </el-button>
-        <el-button link type="primary" size="small" @click="handleEdit(row)">
-          编辑
-        </el-button>
+        <el-button link type="primary" size="small" @click="handleView(row)"> 查看 </el-button>
+        <el-button link type="primary" size="small" @click="handleEdit(row)"> 编辑 </el-button>
         <el-button link type="primary" size="small" @click="handleAdjustPrice(row)">
           调整价格
         </el-button>
@@ -104,9 +92,7 @@
         >
           {{ row.status === 'active' ? '禁用' : '启用' }}
         </el-button>
-        <el-button link type="danger" size="small" @click="handleDelete(row)">
-          删除
-        </el-button>
+        <el-button link type="danger" size="small" @click="handleDelete(row)"> 删除 </el-button>
       </template>
     </DataTable>
 
@@ -145,8 +131,9 @@
         </el-form-item>
         <el-form-item label="价格变化">
           <span v-if="priceChange !== 0" :class="priceChange > 0 ? 'price-up' : 'price-down'">
-            {{ priceChange > 0 ? '+' : '' }}¥{{ priceChange }}
-            ({{ priceChangePercent > 0 ? '+' : '' }}{{ priceChangePercent }}%)
+            {{ priceChange > 0 ? '+' : '' }}¥{{ priceChange }} ({{
+              priceChangePercent > 0 ? '+' : ''
+            }}{{ priceChangePercent }}%)
           </span>
           <span v-else>-</span>
         </el-form-item>
@@ -190,12 +177,7 @@
       width="800px"
       @close="handleBatchPriceDialogClose"
     >
-      <el-alert
-        title="提示"
-        type="info"
-        :closable="false"
-        style="margin-bottom: 20px"
-      >
+      <el-alert title="提示" type="info" :closable="false" style="margin-bottom: 20px">
         已选择 {{ selectedModels.length }} 个车型
       </el-alert>
 
@@ -223,8 +205,15 @@
           <span style="margin-left: 10px">
             {{ batchPriceFormData.adjustType === 'percentage' ? '%' : '元/天' }}
           </span>
-          <span v-if="batchPriceFormData.adjustType !== 'unified'" style="margin-left: 10px; color: #909399">
-            {{ batchPriceFormData.adjustType === 'percentage' ? '(正数涨价，负数降价)' : '(正数涨价，负数降价)' }}
+          <span
+            v-if="batchPriceFormData.adjustType !== 'unified'"
+            style="margin-left: 10px; color: #909399"
+          >
+            {{
+              batchPriceFormData.adjustType === 'percentage'
+                ? '(正数涨价，负数降价)'
+                : '(正数涨价，负数降价)'
+            }}
           </span>
         </el-form-item>
         <el-form-item label="变更原因" prop="changeReason">
@@ -257,9 +246,7 @@
       <el-table :data="batchPricePreview" border max-height="300">
         <el-table-column prop="modelName" label="车型名称" width="200" />
         <el-table-column prop="oldPrice" label="当前价格" width="120">
-          <template #default="{ row }">
-            ¥{{ row.oldPrice }}
-          </template>
+          <template #default="{ row }"> ¥{{ row.oldPrice }} </template>
         </el-table-column>
         <el-table-column prop="newPrice" label="调整后价格" width="120">
           <template #default="{ row }">
@@ -320,22 +307,40 @@
       <el-table :data="priceHistoryList" border v-loading="historyLoading" max-height="400">
         <el-table-column prop="changedAt" label="变更时间" width="180" />
         <el-table-column prop="oldPrice" label="原价格" width="100">
-          <template #default="{ row }">
-            ¥{{ row.oldPrice }}
-          </template>
+          <template #default="{ row }"> ¥{{ row.oldPrice }} </template>
         </el-table-column>
         <el-table-column prop="newPrice" label="新价格" width="100">
           <template #default="{ row }">
-            <span :class="row.newPrice > row.oldPrice ? 'price-up' : row.newPrice < row.oldPrice ? 'price-down' : ''">
+            <span
+              :class="
+                row.newPrice > row.oldPrice
+                  ? 'price-up'
+                  : row.newPrice < row.oldPrice
+                    ? 'price-down'
+                    : ''
+              "
+            >
               ¥{{ row.newPrice }}
             </span>
           </template>
         </el-table-column>
         <el-table-column prop="change" label="价格变化" width="120">
           <template #default="{ row }">
-            <span :class="row.newPrice > row.oldPrice ? 'price-up' : row.newPrice < row.oldPrice ? 'price-down' : ''">
-              {{ row.newPrice > row.oldPrice ? '+' : '' }}¥{{ row.newPrice - row.oldPrice }}
-              ({{ row.oldPrice > 0 ? (row.newPrice > row.oldPrice ? '+' : '') + Math.round(((row.newPrice - row.oldPrice) / row.oldPrice) * 100) : 0 }}%)
+            <span
+              :class="
+                row.newPrice > row.oldPrice
+                  ? 'price-up'
+                  : row.newPrice < row.oldPrice
+                    ? 'price-down'
+                    : ''
+              "
+            >
+              {{ row.newPrice > row.oldPrice ? '+' : '' }}¥{{ row.newPrice - row.oldPrice }} ({{
+                row.oldPrice > 0
+                  ? (row.newPrice > row.oldPrice ? '+' : '') +
+                    Math.round(((row.newPrice - row.oldPrice) / row.oldPrice) * 100)
+                  : 0
+              }}%)
             </span>
           </template>
         </el-table-column>
@@ -349,7 +354,12 @@
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="changeReason" label="变更原因" min-width="150" show-overflow-tooltip />
+        <el-table-column
+          prop="changeReason"
+          label="变更原因"
+          min-width="150"
+          show-overflow-tooltip
+        />
         <el-table-column prop="changedBy" label="操作人" width="100" />
       </el-table>
 
@@ -365,12 +375,7 @@
 import { ref, reactive, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import {
-  Plus,
-  Download,
-  Upload,
-  Picture,
-} from '@element-plus/icons-vue'
+import { Plus, Download, Upload, Picture } from '@element-plus/icons-vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'
 import VehicleModelDetailDialog from '@/components/vehicle/VehicleModelDetailDialog.vue'
@@ -579,7 +584,10 @@ const batchPricePreview = computed(() => {
       oldPrice: model.dailyPrice,
       newPrice,
       change: newPrice - model.dailyPrice,
-      changePercent: model.dailyPrice > 0 ? Math.round(((newPrice - model.dailyPrice) / model.dailyPrice) * 100) : 0,
+      changePercent:
+        model.dailyPrice > 0
+          ? Math.round(((newPrice - model.dailyPrice) / model.dailyPrice) * 100)
+          : 0,
     }
   })
 })
@@ -699,15 +707,11 @@ const handleStatusChange = async (row: VehicleModel) => {
   const newStatus = row.status === 'active' ? 'inactive' : 'active'
 
   try {
-    await ElMessageBox.confirm(
-      `确定要${action}车型 "${row.modelName}" 吗？`,
-      `${action}确认`,
-      {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      }
-    )
+    await ElMessageBox.confirm(`确定要${action}车型 "${row.modelName}" 吗？`, `${action}确认`, {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    })
 
     await changeVehicleModelStatus(row.id, newStatus)
     row.status = newStatus
@@ -722,15 +726,11 @@ const handleStatusChange = async (row: VehicleModel) => {
 // 删除车型
 const handleDelete = async (row: VehicleModel) => {
   try {
-    await ElMessageBox.confirm(
-      `确定要删除车型 "${row.modelName}" 吗？`,
-      '删除确认',
-      {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      }
-    )
+    await ElMessageBox.confirm(`确定要删除车型 "${row.modelName}" 吗？`, '删除确认', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    })
 
     await deleteVehicleModel(row.id)
     ElMessage.success('删除成功')
@@ -798,7 +798,7 @@ const handlePriceSubmit = async () => {
     submitLoading.value = true
 
     // Mock API call - 实际应该调用真实的 API
-    const res = await new Promise<any>((resolve) => {
+    const res = await new Promise<any>(resolve => {
       setTimeout(() => {
         resolve({
           success: true,
@@ -883,7 +883,9 @@ const handleBatchPriceSubmit = async () => {
     }
 
     // 检查是否有大幅度变化
-    const maxChangePercent = Math.max(...batchPricePreview.value.map(item => Math.abs(item.changePercent)))
+    const maxChangePercent = Math.max(
+      ...batchPricePreview.value.map(item => Math.abs(item.changePercent))
+    )
     if (maxChangePercent > 30) {
       await ElMessageBox.confirm(
         `部分车型价格变化幅度较大（最大${maxChangePercent}%），确定要继续吗？`,
@@ -902,7 +904,7 @@ const handleBatchPriceSubmit = async () => {
     batchPriceFormData.remark
 
     // Mock API call - 实际应该调用真实的 API
-    const res = await new Promise<any>((resolve) => {
+    const res = await new Promise<any>(resolve => {
       setTimeout(() => {
         resolve({
           success: true,
@@ -949,8 +951,8 @@ const handleViewPriceCalendar = (row: VehicleModel) => {
     name: 'PriceCalendar',
     query: {
       modelId: row.id,
-      modelName: row.modelName
-    }
+      modelName: row.modelName,
+    },
   })
 }
 
@@ -962,7 +964,7 @@ const handleViewHistory = async (row: VehicleModel) => {
   historyLoading.value = true
   try {
     // Mock API call - 实际应该调用真实的 API
-    await new Promise((resolve) => setTimeout(resolve, 500))
+    await new Promise(resolve => setTimeout(resolve, 500))
     priceHistoryList.value = [
       {
         id: 1,
@@ -1015,7 +1017,7 @@ const handleCrowdfundingConfig = (row: VehicleModel) => {
   router.push({
     name: 'VehicleModelEdit',
     params: { id: row.id },
-    query: { tab: 'crowdfunding' }
+    query: { tab: 'crowdfunding' },
   })
 }
 

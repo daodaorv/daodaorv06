@@ -12,11 +12,11 @@ export type { PriceCalculationResult }
  * 根据车型类型定义默认的日租金
  */
 export const VEHICLE_TYPE_BASE_PRICE: Record<string, number> = {
-  'A型房车': 800,
-  'B型房车': 600,
-  'C型房车': 500,
-  '拖挂房车': 400,
-  '其他': 300
+  A型房车: 800,
+  B型房车: 600,
+  C型房车: 500,
+  拖挂房车: 400,
+  其他: 300,
 }
 
 /**
@@ -24,11 +24,11 @@ export const VEHICLE_TYPE_BASE_PRICE: Record<string, number> = {
  * 定义每种车型的合理租金范围
  */
 export const VEHICLE_TYPE_PRICE_RANGE: Record<string, { min: number; max: number }> = {
-  'A型房车': { min: 600, max: 1500 },
-  'B型房车': { min: 400, max: 1000 },
-  'C型房车': { min: 300, max: 800 },
-  '拖挂房车': { min: 200, max: 600 },
-  '其他': { min: 100, max: 500 }
+  A型房车: { min: 600, max: 1500 },
+  B型房车: { min: 400, max: 1000 },
+  C型房车: { min: 300, max: 800 },
+  拖挂房车: { min: 200, max: 600 },
+  其他: { min: 100, max: 500 },
 }
 
 /**
@@ -38,7 +38,7 @@ export const VEHICLE_TYPE_PRICE_RANGE: Record<string, { min: number; max: number
 export const OWNERSHIP_TYPE_MULTIPLIER: Record<string, number> = {
   platform: 1.0, // 平台自有：标准价格
   hosting: 0.95, // 托管：略低于标准价格
-  cooperative: 0.9 // 合作商：最低价格
+  cooperative: 0.9, // 合作商：最低价格
 }
 
 /**
@@ -56,9 +56,7 @@ export function getBasePrice(vehicleType: string): number {
  * @returns 租金范围对象 { min, max }
  */
 export function getPriceRange(vehicleType: string): { min: number; max: number } {
-  return (
-    VEHICLE_TYPE_PRICE_RANGE[vehicleType] || VEHICLE_TYPE_PRICE_RANGE['其他']
-  )
+  return VEHICLE_TYPE_PRICE_RANGE[vehicleType] || VEHICLE_TYPE_PRICE_RANGE['其他']
 }
 
 /**
@@ -85,7 +83,13 @@ export function calculateSuggestedPrice(options: {
   mileage?: number
   age?: number
 }): number {
-  const { vehicleType, ownershipType = 'platform', condition = 'good', mileage = 0, age = 0 } = options
+  const {
+    vehicleType,
+    ownershipType = 'platform',
+    condition = 'good',
+    mileage = 0,
+    age = 0,
+  } = options
 
   // 1. 获取基础价格
   let price = getBasePrice(vehicleType)
@@ -99,7 +103,7 @@ export function calculateSuggestedPrice(options: {
     excellent: 1.2, // 优秀：+20%
     good: 1.0, // 良好：标准价格
     fair: 0.85, // 一般：-15%
-    poor: 0.7 // 较差：-30%
+    poor: 0.7, // 较差：-30%
   }
   price *= conditionMultiplier[condition] || 1.0
 
@@ -209,7 +213,7 @@ export function calculateTotalPrice(
 export function formatPrice(price: number, showUnit = true): string {
   const formattedPrice = price.toLocaleString('zh-CN', {
     minimumFractionDigits: 0,
-    maximumFractionDigits: 2
+    maximumFractionDigits: 2,
   })
 
   return showUnit ? `¥${formattedPrice}` : formattedPrice
@@ -292,11 +296,7 @@ export function calculateDeposit(dailyPrice: number, multiplier = 3): number {
  * @param insuranceRate 保险费率（默认5%）
  * @returns 保险费用
  */
-export function calculateInsurance(
-  dailyPrice: number,
-  days: number,
-  insuranceRate = 0.05
-): number {
+export function calculateInsurance(dailyPrice: number, days: number, insuranceRate = 0.05): number {
   const totalRent = dailyPrice * days
   return Math.round(totalRent * insuranceRate)
 }
@@ -329,7 +329,7 @@ export function calculateOrderTotal(options: {
     includeDeposit = true,
     includeInsurance = true,
     depositMultiplier = 3,
-    insuranceRate = 0.05
+    insuranceRate = 0.05,
   } = options
 
   // 计算租金总额
@@ -353,7 +353,7 @@ export function calculateOrderTotal(options: {
     deposit,
     insurance,
     total,
-    discount
+    discount,
   }
 }
 
@@ -385,7 +385,7 @@ export function getVehicleTypePriceInfo(vehicleType: string): {
     basePrice,
     priceRange,
     formattedBasePrice: formatPrice(basePrice),
-    formattedRange: `${formatPrice(priceRange.min)} - ${formatPrice(priceRange.max)}`
+    formattedRange: `${formatPrice(priceRange.min)} - ${formatPrice(priceRange.max)}`,
   }
 }
 
@@ -492,19 +492,23 @@ function applyMinimumPriceRule(dailyRental: number, basePrice: number): number {
  * @param factors 因子列表
  * @returns 是否超过折扣限制
  */
-function checkDiscountLimit(factors: Array<{ adjustmentType: 'percentage' | 'fixed'; adjustmentValue: number }>): {
+function checkDiscountLimit(
+  factors: Array<{ adjustmentType: 'percentage' | 'fixed'; adjustmentValue: number }>
+): {
   valid: boolean
   totalDiscount: number
   message?: string
 } {
-  const percentageFactors = factors.filter(f => f.adjustmentType === 'percentage' && f.adjustmentValue < 0)
+  const percentageFactors = factors.filter(
+    f => f.adjustmentType === 'percentage' && f.adjustmentValue < 0
+  )
   const totalDiscount = percentageFactors.reduce((sum, f) => sum + Math.abs(f.adjustmentValue), 0)
 
   if (totalDiscount > 80) {
     return {
       valid: false,
       totalDiscount,
-      message: `累计折扣 ${totalDiscount}% 超过限制（最大80%）`
+      message: `累计折扣 ${totalDiscount}% 超过限制（最大80%）`,
     }
   }
 
@@ -525,7 +529,7 @@ function selectEffectiveCityFactor(
     adjustmentValue: number
     priority: number
   }>
-): typeof cityFactors[0] | undefined {
+): (typeof cityFactors)[0] | undefined {
   if (!cityFactors || cityFactors.length === 0) {
     return undefined
   }
@@ -552,7 +556,7 @@ function selectEffectiveTimeFactor(
     priority: number
   }>,
   date: string
-): typeof timeFactors[0] | undefined {
+): (typeof timeFactors)[0] | undefined {
   const factorsForDate = timeFactors.filter(f => f.date === date)
 
   if (factorsForDate.length === 0) {
@@ -607,7 +611,9 @@ function generateDateRange(startDate: string, endDate: string): string[] {
  * @param request 价格计算请求
  * @returns 价格计算结果
  */
-export function calculateMultiFactorPrice(request: PriceCalculationRequest): PriceCalculationResult {
+export function calculateMultiFactorPrice(
+  request: PriceCalculationRequest
+): PriceCalculationResult {
   const {
     modelId,
     modelName,
@@ -618,7 +624,7 @@ export function calculateMultiFactorPrice(request: PriceCalculationRequest): Pri
     endDate,
     cityFactors = [],
     timeFactors = [],
-    otherFactors = []
+    otherFactors = [],
   } = request
 
   // 步骤1：选择生效的城市因子（优先级最高的）
@@ -641,7 +647,7 @@ export function calculateMultiFactorPrice(request: PriceCalculationRequest): Pri
       adjustmentType: effectiveCityFactor.adjustmentType,
       configValue: effectiveCityFactor.adjustmentValue,
       calculatedAmount: cityFactorAmount,
-      priority: effectiveCityFactor.priority
+      priority: effectiveCityFactor.priority,
     }
   }
 
@@ -671,7 +677,7 @@ export function calculateMultiFactorPrice(request: PriceCalculationRequest): Pri
         adjustmentType: effectiveTimeFactor.adjustmentType,
         configValue: effectiveTimeFactor.adjustmentValue,
         calculatedAmount: timeFactorAmount,
-        priority: effectiveTimeFactor.priority
+        priority: effectiveTimeFactor.priority,
       }
     }
 
@@ -680,11 +686,7 @@ export function calculateMultiFactorPrice(request: PriceCalculationRequest): Pri
     let otherFactorsAmount = 0
 
     for (const factor of otherFactors) {
-      const amount = calculateFactorAmount(
-        basePrice,
-        factor.adjustmentType,
-        factor.adjustmentValue
-      )
+      const amount = calculateFactorAmount(basePrice, factor.adjustmentType, factor.adjustmentValue)
 
       otherFactorsAmount += amount
 
@@ -694,7 +696,7 @@ export function calculateMultiFactorPrice(request: PriceCalculationRequest): Pri
         factorType: 'other',
         adjustmentType: factor.adjustmentType,
         configValue: factor.adjustmentValue,
-        calculatedAmount: amount
+        calculatedAmount: amount,
       })
     }
 
@@ -715,7 +717,7 @@ export function calculateMultiFactorPrice(request: PriceCalculationRequest): Pri
       cityFactor: cityFactorDetail,
       timeFactor: timeFactorDetail,
       otherFactors: otherFactorDetails,
-      dailyRental
+      dailyRental,
     })
   }
 
@@ -726,7 +728,10 @@ export function calculateMultiFactorPrice(request: PriceCalculationRequest): Pri
   const averageDailyRental = Math.round(totalRental / rentalDays)
 
   // 计算时间因子平均金额
-  const totalTimeFactor = dailyDetails.reduce((sum, d) => sum + (d.timeFactor?.calculatedAmount || 0), 0)
+  const totalTimeFactor = dailyDetails.reduce(
+    (sum, d) => sum + (d.timeFactor?.calculatedAmount || 0),
+    0
+  )
   const averageTimeFactor = Math.round(totalTimeFactor / rentalDays)
 
   // 生成计算说明
@@ -737,7 +742,7 @@ export function calculateMultiFactorPrice(request: PriceCalculationRequest): Pri
     otherFactors: dailyDetails[0]?.otherFactors || [],
     averageDailyRental,
     rentalDays,
-    totalPrice: totalRental
+    totalPrice: totalRental,
   })
 
   return {
@@ -752,13 +757,13 @@ export function calculateMultiFactorPrice(request: PriceCalculationRequest): Pri
     cityFactor: cityFactorDetail,
     timeFactorSummary: {
       averageAmount: averageTimeFactor,
-      dailyDetails
+      dailyDetails,
     },
     otherFactors: dailyDetails[0]?.otherFactors || [],
     averageDailyRental,
     totalPrice: totalRental,
     calculationExplanation: explanation,
-    calculatedAt: new Date().toISOString()
+    calculatedAt: new Date().toISOString(),
   }
 }
 
@@ -783,7 +788,7 @@ function generateCalculationExplanation(params: {
     otherFactors,
     averageDailyRental,
     rentalDays,
-    totalPrice
+    totalPrice,
   } = params
 
   const lines: string[] = []
@@ -819,9 +824,10 @@ function generateCalculationExplanation(params: {
  * @param request 价格计算请求
  * @returns 验证结果
  */
-export function validatePriceCalculationRequest(
-  request: PriceCalculationRequest
-): { valid: boolean; message?: string } {
+export function validatePriceCalculationRequest(request: PriceCalculationRequest): {
+  valid: boolean
+  message?: string
+} {
   if (!request.modelId || !request.modelName) {
     return { valid: false, message: '车型信息不完整' }
   }
@@ -853,7 +859,7 @@ export function validatePriceCalculationRequest(
   const allFactors = [
     ...(request.cityFactors || []),
     ...(request.timeFactors || []),
-    ...(request.otherFactors || [])
+    ...(request.otherFactors || []),
   ]
 
   const discountCheck = checkDiscountLimit(allFactors)

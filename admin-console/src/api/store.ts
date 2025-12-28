@@ -24,7 +24,7 @@ import {
   type Region,
   type CityTier,
   type CityListParams,
-  type StoreSpecialService
+  type StoreSpecialService,
 } from '@/mock/stores'
 
 // 导出类型
@@ -38,7 +38,7 @@ export type {
   Region,
   CityTier,
   CityListParams,
-  StoreSpecialService
+  StoreSpecialService,
 }
 
 /**

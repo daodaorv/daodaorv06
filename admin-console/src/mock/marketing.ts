@@ -22,7 +22,7 @@ export interface PricingStrategy {
   startDate: string
   endDate: string
   priority: number
-  targetUserTags: number[]  // 目标用户标签ID数组（双向关联）
+  targetUserTags: number[] // 目标用户标签ID数组（双向关联）
   description: string
   createdBy: string
   createdAt: string
@@ -42,11 +42,11 @@ const mockPricingStrategies: PricingStrategy[] = [
     startDate: '2025-01-28',
     endDate: '2025-02-04',
     priority: 1,
-    targetUserTags: [],  // 所有用户
+    targetUserTags: [], // 所有用户
     description: '春节假期期间价格上浮50%',
     createdBy: '运营经理-张三',
     createdAt: '2025-01-01T10:00:00.000Z',
-    updatedAt: '2025-01-01T10:00:00.000Z'
+    updatedAt: '2025-01-01T10:00:00.000Z',
   },
   {
     id: 2,
@@ -59,11 +59,11 @@ const mockPricingStrategies: PricingStrategy[] = [
     startDate: '2025-11-15',
     endDate: '2026-03-15',
     priority: 2,
-    targetUserTags: [3],  // 新用户标签
+    targetUserTags: [3], // 新用户标签
     description: '淡季期间价格下调20%',
     createdBy: '运营经理-张三',
     createdAt: '2024-11-01T10:00:00.000Z',
-    updatedAt: '2024-11-01T10:00:00.000Z'
+    updatedAt: '2024-11-01T10:00:00.000Z',
   },
   {
     id: 3,
@@ -76,12 +76,12 @@ const mockPricingStrategies: PricingStrategy[] = [
     startDate: '2025-01-01',
     endDate: '2025-12-31',
     priority: 3,
-    targetUserTags: [],  // 所有用户
+    targetUserTags: [], // 所有用户
     description: '周末价格上浮30%',
     createdBy: '运营经理-张三',
     createdAt: '2025-01-01T10:00:00.000Z',
-    updatedAt: '2025-01-01T10:00:00.000Z'
-  }
+    updatedAt: '2025-01-01T10:00:00.000Z',
+  },
 ]
 
 // 价格策略列表查询参数
@@ -95,7 +95,7 @@ export interface PricingStrategyListParams {
 
 // Mock 获取价格策略列表
 export const mockGetPricingStrategyList = (params: PricingStrategyListParams) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       let filtered = [...mockPricingStrategies]
 
@@ -117,7 +117,7 @@ export const mockGetPricingStrategyList = (params: PricingStrategyListParams) =>
       resolve({
         code: 200,
         message: '获取成功',
-        data: { list, total: filtered.length, page, pageSize }
+        data: { list, total: filtered.length, page, pageSize },
       })
     }, 300)
   })
@@ -142,24 +142,24 @@ export interface Coupon {
   code: string
   discountType: 'percentage' | 'fixed' | 'daily_rental'
   discountValue: number
-  dailyRentalDays?: number  // 日租抵扣券：可抵扣天数
+  dailyRentalDays?: number // 日租抵扣券：可抵扣天数
   minAmount: number
   maxDiscount: number
   totalQuantity: number
   usedQuantity: number
   remainingQuantity: number
-  receivedQuantity: number  // 已领取数量
+  receivedQuantity: number // 已领取数量
   startDate: string
   endDate: string
   status: CouponStatus
-  applicableProductTypes: ApplicableProductType[]  // 适用产品类型
+  applicableProductTypes: ApplicableProductType[] // 适用产品类型
   applicableVehicles: string[]
-  applicableCampsites?: number[]  // 适用营地ID
-  applicableTours?: number[]  // 适用旅游线路ID
-  targetUserTags: number[]  // 目标用户标签ID数组（双向关联）
+  applicableCampsites?: number[] // 适用营地ID
+  applicableTours?: number[] // 适用旅游线路ID
+  targetUserTags: number[] // 目标用户标签ID数组（双向关联）
   description: string
-  autoGenerateCode: boolean  // 是否自动生成优惠码
-  codePrefix?: string  // 优惠码前缀
+  autoGenerateCode: boolean // 是否自动生成优惠码
+  codePrefix?: string // 优惠码前缀
   createdBy: string
   createdAt: string
   updatedAt: string
@@ -185,12 +185,12 @@ const mockCoupons: Coupon[] = [
     status: 'active',
     applicableProductTypes: ['vehicle_rental'],
     applicableVehicles: ['所有车型'],
-    targetUserTags: [3],  // 新用户标签
+    targetUserTags: [3], // 新用户标签
     description: '新用户首单立减20%，最高减200元',
     autoGenerateCode: false,
     createdBy: '运营经理-张三',
     createdAt: '2025-01-01T10:00:00.000Z',
-    updatedAt: '2025-01-01T10:00:00.000Z'
+    updatedAt: '2025-01-01T10:00:00.000Z',
   },
   {
     id: 2,
@@ -210,12 +210,12 @@ const mockCoupons: Coupon[] = [
     status: 'active',
     applicableProductTypes: ['vehicle_rental'],
     applicableVehicles: ['C型房车', 'B型房车'],
-    targetUserTags: [100],  // PLUS会员专享
+    targetUserTags: [100], // PLUS会员专享
     description: '春节期间满2000减300',
     autoGenerateCode: false,
     createdBy: '运营经理-张三',
     createdAt: '2025-01-10T10:00:00.000Z',
-    updatedAt: '2025-01-10T10:00:00.000Z'
+    updatedAt: '2025-01-10T10:00:00.000Z',
   },
   {
     id: 3,
@@ -235,12 +235,12 @@ const mockCoupons: Coupon[] = [
     status: 'active',
     applicableProductTypes: ['all'],
     applicableVehicles: ['所有车型'],
-    targetUserTags: [1, 2],  // VIP用户和活跃用户
+    targetUserTags: [1, 2], // VIP用户和活跃用户
     description: '周末订单立减15%，最高减150元',
     autoGenerateCode: false,
     createdBy: '运营经理-张三',
     createdAt: '2025-01-01T10:00:00.000Z',
-    updatedAt: '2025-01-01T10:00:00.000Z'
+    updatedAt: '2025-01-01T10:00:00.000Z',
   },
   {
     id: 4,
@@ -261,14 +261,14 @@ const mockCoupons: Coupon[] = [
     status: 'active',
     applicableProductTypes: ['vehicle_rental'],
     applicableVehicles: ['所有车型'],
-    targetUserTags: [],  // 全部用户
+    targetUserTags: [], // 全部用户
     description: '每张券可全额抵扣一天租金，适用于所有车型',
     autoGenerateCode: true,
     codePrefix: 'COUP',
     createdBy: '运营经理-张三',
     createdAt: '2025-01-15T10:00:00.000Z',
-    updatedAt: '2025-01-15T10:00:00.000Z'
-  }
+    updatedAt: '2025-01-15T10:00:00.000Z',
+  },
 ]
 
 // 优惠券列表查询参数
@@ -282,12 +282,14 @@ export interface CouponListParams {
 
 // Mock 获取优惠券列表
 export const mockGetCouponList = (params: CouponListParams) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       let filtered = [...mockCoupons]
 
       if (params.keyword) {
-        filtered = filtered.filter(c => c.name.includes(params.keyword!) || c.code.includes(params.keyword!))
+        filtered = filtered.filter(
+          c => c.name.includes(params.keyword!) || c.code.includes(params.keyword!)
+        )
       }
       if (params.type) {
         filtered = filtered.filter(c => c.type === params.type)
@@ -304,7 +306,7 @@ export const mockGetCouponList = (params: CouponListParams) => {
       resolve({
         code: 200,
         message: '获取成功',
-        data: { list, total: filtered.length, page, pageSize }
+        data: { list, total: filtered.length, page, pageSize },
       })
     }, 300)
   })
@@ -328,8 +330,8 @@ export interface MarketingActivity {
   endDate: string
   budget: number
   actualCost: number
-  targetUsers: string  // 保留文本描述字段
-  targetUserTags: number[]  // 目标用户标签ID数组（双向关联）
+  targetUsers: string // 保留文本描述字段
+  targetUserTags: number[] // 目标用户标签ID数组（双向关联）
   participantCount: number
   orderCount: number
   revenue: number
@@ -353,7 +355,7 @@ const mockActivities: MarketingActivity[] = [
     budget: 50000,
     actualCost: 28500,
     targetUsers: '所有用户',
-    targetUserTags: [],  // 所有用户
+    targetUserTags: [], // 所有用户
     participantCount: 856,
     orderCount: 234,
     revenue: 468000,
@@ -362,7 +364,7 @@ const mockActivities: MarketingActivity[] = [
     rules: '1. 活动期间下单享8折优惠\n2. 满3天送1天\n3. 推荐好友各得200元优惠券',
     createdBy: '运营经理-张三',
     createdAt: '2025-01-05T10:00:00.000Z',
-    updatedAt: '2025-01-20T10:00:00.000Z'
+    updatedAt: '2025-01-20T10:00:00.000Z',
   },
   {
     id: 2,
@@ -374,7 +376,7 @@ const mockActivities: MarketingActivity[] = [
     budget: 100000,
     actualCost: 45600,
     targetUsers: '新注册用户',
-    targetUserTags: [3],  // 新用户标签
+    targetUserTags: [3], // 新用户标签
     participantCount: 2280,
     orderCount: 892,
     revenue: 1784000,
@@ -383,8 +385,8 @@ const mockActivities: MarketingActivity[] = [
     rules: '1. 新用户注册即送200元券包\n2. 首单再享9折优惠\n3. 完成首单送积分',
     createdBy: '运营经理-张三',
     createdAt: '2024-12-20T10:00:00.000Z',
-    updatedAt: '2025-01-01T10:00:00.000Z'
-  }
+    updatedAt: '2025-01-01T10:00:00.000Z',
+  },
 ]
 
 // 营销活动列表查询参数
@@ -398,7 +400,7 @@ export interface ActivityListParams {
 
 // Mock 获取营销活动列表
 export const mockGetActivityList = (params: ActivityListParams) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       let filtered = [...mockActivities]
 
@@ -420,7 +422,7 @@ export const mockGetActivityList = (params: ActivityListParams) => {
       resolve({
         code: 200,
         message: '获取成功',
-        data: { list, total: filtered.length, page, pageSize }
+        data: { list, total: filtered.length, page, pageSize },
       })
     }, 300)
   })
@@ -436,17 +438,17 @@ export interface SpecialOffer {
   id: number
   // 路线信息
   route: {
-    fromCityId: number        // 出发城市ID
-    fromCityName: string      // 出发城市名称
-    toCityId: number          // 目的地城市ID
-    toCityName: string        // 目的地城市名称
+    fromCityId: number // 出发城市ID
+    fromCityName: string // 出发城市名称
+    toCityId: number // 目的地城市ID
+    toCityName: string // 目的地城市名称
   }
   // 车辆信息
-  vehicleId: number           // 执行车辆ID
-  vehicleNumber: string       // 车牌号
-  modelId: number             // 车型ID
-  modelName: string           // 车型名称
-  brandName: string           // 品牌名称
+  vehicleId: number // 执行车辆ID
+  vehicleNumber: string // 车牌号
+  modelId: number // 车型ID
+  modelName: string // 车型名称
+  brandName: string // 品牌名称
   vehicle: {
     images: string[]
     specifications: Array<{
@@ -463,12 +465,12 @@ export interface SpecialOffer {
   remainingQuota: number
   totalQuota: number
   // 门店信息
-  pickupStoreId: number       // 取车门店ID
-  pickupStoreName: string     // 取车门店名称
-  pickupStoreAddress: string  // 取车门店地址
-  returnStoreId: number       // 还车门店ID
-  returnStoreName: string     // 还车门店名称
-  returnStoreAddress: string  // 还车门店地址
+  pickupStoreId: number // 取车门店ID
+  pickupStoreName: string // 取车门店名称
+  pickupStoreAddress: string // 取车门店地址
+  returnStoreId: number // 还车门店ID
+  returnStoreName: string // 还车门店名称
+  returnStoreAddress: string // 还车门店地址
   // 时间范围
   availableTimeRange: {
     start: string
@@ -503,10 +505,10 @@ const mockSpecialOffers: SpecialOffer[] = [
     id: 1,
     // 路线信息（使用门店管理中的真实城市）
     route: {
-      fromCityId: 6,           // 杭州（门店ID: 6）
+      fromCityId: 6, // 杭州（门店ID: 6）
       fromCityName: '杭州',
-      toCityId: 6,             // 杭州（同城还车）
-      toCityName: '杭州'
+      toCityId: 6, // 杭州（同城还车）
+      toCityName: '杭州',
     },
     // 车辆信息
     vehicleId: 1,
@@ -518,7 +520,7 @@ const mockSpecialOffers: SpecialOffer[] = [
       images: [
         '/static/vehicles/iveco-c-1.jpg',
         '/static/vehicles/iveco-c-2.jpg',
-        '/static/vehicles/iveco-c-3.jpg'
+        '/static/vehicles/iveco-c-3.jpg',
       ],
       specifications: [
         { label: '车型', value: 'C型房车' },
@@ -526,9 +528,18 @@ const mockSpecialOffers: SpecialOffer[] = [
         { label: '变速箱', value: '自动挡' },
         { label: '燃料类型', value: '柴油' },
         { label: '车长', value: '5.99米' },
-        { label: '核载人数', value: '6人' }
+        { label: '核载人数', value: '6人' },
       ],
-      features: ['独立卫浴', '太阳能系统', '驻车空调', '智能导航', '倒车影像', '冰箱', '微波炉', '热水器']
+      features: [
+        '独立卫浴',
+        '太阳能系统',
+        '驻车空调',
+        '智能导航',
+        '倒车影像',
+        '冰箱',
+        '微波炉',
+        '热水器',
+      ],
     },
     packagePrice: 1280,
     originalPrice: 1680,
@@ -544,15 +555,16 @@ const mockSpecialOffers: SpecialOffer[] = [
     returnStoreAddress: '杭州市西湖区文三路456号',
     availableTimeRange: {
       start: '2025-12-01',
-      end: '2025-12-31'
+      end: '2025-12-31',
     },
-    announcement: '【限时特惠】杭州西湖店专线套餐，仅剩3个名额！本套餐为固定路线，不支持更改取还车门店。春节期间（1月25日-2月10日）不可用。预订成功后不可退改，请确认行程后再下单。',
+    announcement:
+      '【限时特惠】杭州西湖店专线套餐，仅剩3个名额！本套餐为固定路线，不支持更改取还车门店。春节期间（1月25日-2月10日）不可用。预订成功后不可退改，请确认行程后再下单。',
     packageIncludes: [
       { name: '车辆租金', description: '3天2晚固定租期' },
       { name: '基础保险', description: '第三者责任险' },
       { name: '首箱燃油', description: '满油交付' },
       { name: '不限公里数', description: '无里程限制' },
-      { name: '24小时道路救援', description: '全程保障' }
+      { name: '24小时道路救援', description: '全程保障' },
     ],
     bookingNotices: [
       '本套餐为特惠固定套餐，取车门店、还车门店、租期均不可更改',
@@ -561,27 +573,27 @@ const mockSpecialOffers: SpecialOffer[] = [
       '可选择附加服务（如儿童座椅、GPS等），费用另计',
       '取车时需支付押金，还车后无违章自动退还',
       '驾驶人需持有效驾驶证满1年以上',
-      '名额有限，预订成功后不可退改，请谨慎下单'
+      '名额有限，预订成功后不可退改，请谨慎下单',
     ],
     cancellationPolicy: [
       { condition: '出发前7天以上取消', result: '全额退款' },
       { condition: '出发前3-7天取消', result: '退款70%' },
       { condition: '出发前1-3天取消', result: '退款30%' },
-      { condition: '出发当天取消', result: '不予退款' }
+      { condition: '出发当天取消', result: '不予退款' },
     ],
     status: 'active',
     createdBy: '运营经理-张三',
     createdAt: '2025-01-01T10:00:00.000Z',
-    updatedAt: '2025-01-10T10:00:00.000Z'
+    updatedAt: '2025-01-10T10:00:00.000Z',
   },
   {
     id: 2,
     // 路线信息（使用门店管理中的真实城市）
     route: {
-      fromCityId: 2,           // 上海（门店ID: 2）
+      fromCityId: 2, // 上海（门店ID: 2）
       fromCityName: '上海',
-      toCityId: 2,             // 上海（同城还车）
-      toCityName: '上海'
+      toCityId: 2, // 上海（同城还车）
+      toCityName: '上海',
     },
     // 车辆信息
     vehicleId: 2,
@@ -590,19 +602,16 @@ const mockSpecialOffers: SpecialOffer[] = [
     modelName: 'V90 B型房车',
     brandName: '大通',
     vehicle: {
-      images: [
-        '/static/vehicles/maxus-b-1.jpg',
-        '/static/vehicles/maxus-b-2.jpg'
-      ],
+      images: ['/static/vehicles/maxus-b-1.jpg', '/static/vehicles/maxus-b-2.jpg'],
       specifications: [
         { label: '车型', value: 'B型房车' },
         { label: '座位数', value: '4座' },
         { label: '变速箱', value: '自动挡' },
         { label: '燃料类型', value: '柴油' },
         { label: '车长', value: '5.7米' },
-        { label: '核载人数', value: '4人' }
+        { label: '核载人数', value: '4人' },
       ],
-      features: ['独立卫浴', '驻车空调', '智能导航', '倒车影像', '冰箱', '热水器']
+      features: ['独立卫浴', '驻车空调', '智能导航', '倒车影像', '冰箱', '热水器'],
     },
     packagePrice: 999,
     originalPrice: 1200,
@@ -618,32 +627,33 @@ const mockSpecialOffers: SpecialOffer[] = [
     returnStoreAddress: '上海市浦东新区世纪大道1000号',
     availableTimeRange: {
       start: '2025-01-01',
-      end: '2025-12-31'
+      end: '2025-12-31',
     },
-    announcement: '【周末特惠】上海浦东店周末游套餐，轻松享受周边游。周末及节假日可用，工作日不可用。',
+    announcement:
+      '【周末特惠】上海浦东店周末游套餐，轻松享受周边游。周末及节假日可用，工作日不可用。',
     packageIncludes: [
       { name: '车辆租金', description: '2天1晚固定租期' },
       { name: '基础保险', description: '第三者责任险' },
       { name: '首箱燃油', description: '满油交付' },
-      { name: '不限公里数', description: '无里程限制' }
+      { name: '不限公里数', description: '无里程限制' },
     ],
     bookingNotices: [
       '本套餐为周末特惠套餐，仅限周五-周日使用',
       '取车时间可在可选时间段内自由选择',
       '必须选择保险方案，保险费用另计',
       '取车时需支付押金，还车后无违章自动退还',
-      '驾驶人需持有效驾驶证满1年以上'
+      '驾驶人需持有效驾驶证满1年以上',
     ],
     cancellationPolicy: [
       { condition: '出发前3天以上取消', result: '全额退款' },
       { condition: '出发前1-3天取消', result: '退款50%' },
-      { condition: '出发当天取消', result: '不予退款' }
+      { condition: '出发当天取消', result: '不予退款' },
     ],
     status: 'active',
     createdBy: '运营经理-张三',
     createdAt: '2025-01-01T10:00:00.000Z',
-    updatedAt: '2025-01-01T10:00:00.000Z'
-  }
+    updatedAt: '2025-01-01T10:00:00.000Z',
+  },
 ]
 
 // 兼容旧的变量名
@@ -660,17 +670,18 @@ export interface PackageListParams {
 
 // Mock 获取特惠租车列表
 export const mockGetPackageList = (params: PackageListParams) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       let filtered = [...mockSpecialOffers]
 
       if (params.keyword) {
         // 搜索路线（fromCityName/toCityName）或车辆名称
-        filtered = filtered.filter(p =>
-          p.route.fromCityName.includes(params.keyword!) ||
-          p.route.toCityName.includes(params.keyword!) ||
-          p.brandName.includes(params.keyword!) ||
-          p.modelName.includes(params.keyword!)
+        filtered = filtered.filter(
+          p =>
+            p.route.fromCityName.includes(params.keyword!) ||
+            p.route.toCityName.includes(params.keyword!) ||
+            p.brandName.includes(params.keyword!) ||
+            p.modelName.includes(params.keyword!)
         )
       }
       if (params.status) {
@@ -679,8 +690,8 @@ export const mockGetPackageList = (params: PackageListParams) => {
       if (params.vehicleType) {
         // 搜索车辆规格中的车型
         filtered = filtered.filter(p =>
-          p.vehicle.specifications.some(spec =>
-            spec.label === '车型' && spec.value.includes(params.vehicleType!)
+          p.vehicle.specifications.some(
+            spec => spec.label === '车型' && spec.value.includes(params.vehicleType!)
           )
         )
       }
@@ -693,7 +704,7 @@ export const mockGetPackageList = (params: PackageListParams) => {
       resolve({
         code: 200,
         message: '获取成功',
-        data: { list, total: filtered.length, page, pageSize }
+        data: { list, total: filtered.length, page, pageSize },
       })
     }, 300)
   })
@@ -710,22 +721,22 @@ export type BatchStatus = 'recruiting' | 'confirmed' | 'departed' | 'finished'
 // 房车旅游路线信息
 export interface Tour {
   id: number
-  title: string                    // 线路标题
-  images: string[]                 // 线路图片
-  tags: string[]                   // 线路标签
-  destination: string              // 目的地
-  duration: number                 // 行程天数
+  title: string // 线路标题
+  images: string[] // 线路图片
+  tags: string[] // 线路标签
+  destination: string // 目的地
+  duration: number // 行程天数
   // 门店信息
-  pickupStoreId?: number           // 取车门店ID
-  pickupStoreName?: string         // 取车门店名称
-  returnStoreId?: number           // 还车门店ID
-  returnStoreName?: string         // 还车门店名称
+  pickupStoreId?: number // 取车门店ID
+  pickupStoreName?: string // 取车门店名称
+  returnStoreId?: number // 还车门店ID
+  returnStoreName?: string // 还车门店名称
   // 成团设置
-  minPeople: number                // 最少成团人数
-  maxPeople: number                // 最多容纳人数
+  minPeople: number // 最少成团人数
+  maxPeople: number // 最多容纳人数
   // 价格设置（按人头计价）
-  pricePerPerson: number           // 成人价格/人
-  childPrice: number               // 儿童价格/人
+  pricePerPerson: number // 成人价格/人
+  childPrice: number // 儿童价格/人
   // 批次管理
   batches: Array<{
     id: string
@@ -754,7 +765,7 @@ export interface Tour {
   status: TourStatus
   isHot: boolean
   // 元数据
-  vehicleType: string              // 适用车型（保留用于筛选）
+  vehicleType: string // 适用车型（保留用于筛选）
   createdBy: string
   createdAt: string
   updatedAt: string
@@ -768,7 +779,7 @@ const mockTours: Tour[] = [
     images: [
       '/static/tours/daocheng-1.jpg',
       '/static/tours/daocheng-2.jpg',
-      '/static/tours/daocheng-3.jpg'
+      '/static/tours/daocheng-3.jpg',
     ],
     tags: ['高原风光', '摄影天堂', '藏族文化', '深度体验'],
     destination: '四川·稻城亚丁',
@@ -784,66 +795,69 @@ const mockTours: Tour[] = [
         departureDate: '2025-12-15',
         status: 'recruiting',
         currentPeople: 8,
-        maxPeople: 12
+        maxPeople: 12,
       },
       {
         id: '2',
         departureDate: '2025-12-22',
         status: 'recruiting',
         currentPeople: 3,
-        maxPeople: 12
+        maxPeople: 12,
       },
       {
         id: '3',
         departureDate: '2026-01-05',
         status: 'recruiting',
         currentPeople: 5,
-        maxPeople: 12
+        maxPeople: 12,
       },
       {
         id: '4',
         departureDate: '2025-12-08',
         status: 'confirmed',
         currentPeople: 12,
-        maxPeople: 12
-      }
+        maxPeople: 12,
+      },
     ],
     itinerary: [
       {
         title: '成都集合',
         content: '全天成都集合，入住酒店。可自由活动，品尝成都美食，游览宽窄巷子、锦里等景点。',
-        highlights: ['成都美食', '自由活动']
+        highlights: ['成都美食', '自由活动'],
       },
       {
         title: '成都 - 新都桥',
-        content: '早餐后出发，经雅安、泸定，翻越折多山（海拔4298米），抵达摄影天堂新都桥。沿途欣赏大渡河峡谷风光、泸定桥、折多山云海。',
-        highlights: ['泸定桥', '折多山', '新都桥']
+        content:
+          '早餐后出发，经雅安、泸定，翻越折多山（海拔4298米），抵达摄影天堂新都桥。沿途欣赏大渡河峡谷风光、泸定桥、折多山云海。',
+        highlights: ['泸定桥', '折多山', '新都桥'],
       },
       {
         title: '新都桥 - 稻城',
-        content: '早起拍摄新都桥晨曦，后经雅江、理塘，抵达稻城县。途经高尔寺山、剪子弯山、卡子拉山、海子山，欣赏高原风光。',
-        highlights: ['新都桥晨曦', '理塘', '海子山']
+        content:
+          '早起拍摄新都桥晨曦，后经雅江、理塘，抵达稻城县。途经高尔寺山、剪子弯山、卡子拉山、海子山，欣赏高原风光。',
+        highlights: ['新都桥晨曦', '理塘', '海子山'],
       },
       {
         title: '稻城 - 亚丁',
-        content: '前往亚丁景区，游览冲古寺、珍珠海、仙乃日神山。下午自由活动，可选择徒步或骑马游览。',
-        highlights: ['亚丁景区', '仙乃日', '珍珠海']
+        content:
+          '前往亚丁景区，游览冲古寺、珍珠海、仙乃日神山。下午自由活动，可选择徒步或骑马游览。',
+        highlights: ['亚丁景区', '仙乃日', '珍珠海'],
       },
       {
         title: '亚丁深度游',
         content: '全天深度游览亚丁景区，徒步洛绒牛场、牛奶海、五色海。欣赏央迈勇、夏诺多吉神山。',
-        highlights: ['牛奶海', '五色海', '三神山']
+        highlights: ['牛奶海', '五色海', '三神山'],
       },
       {
         title: '亚丁 - 新都桥',
         content: '早起拍摄亚丁晨曦，后返回新都桥。途经理塘、雅江，欣赏沿途风光。',
-        highlights: ['亚丁晨曦', '返程风光']
+        highlights: ['亚丁晨曦', '返程风光'],
       },
       {
         title: '新都桥 - 成都',
         content: '早餐后返回成都，结束愉快的川西之旅。预计下午抵达成都，可根据返程时间安排。',
-        highlights: ['返回成都', '行程结束']
-      }
+        highlights: ['返回成都', '行程结束'],
+      },
     ],
     priceIncludes: [
       '全程房车使用费（含油费、过路费）',
@@ -853,7 +867,7 @@ const mockTours: Tour[] = [
       '景区门票（亚丁景区）',
       '旅游意外保险',
       '对讲机使用',
-      '24小时道路救援'
+      '24小时道路救援',
     ],
     priceExcludes: [
       '往返成都大交通',
@@ -861,9 +875,10 @@ const mockTours: Tour[] = [
       '景区内观光车、索道等费用',
       '个人消费及自费项目',
       '单房差（如需单独住宿）',
-      '因不可抗力产生的额外费用'
+      '因不可抗力产生的额外费用',
     ],
-    announcement: '【行程提醒】本线路为高原地区旅行，海拔最高达4700米，请提前做好身体准备。12月15日批次即将成团，仅剩4个名额。出发前7天确认成团，未成团全额退款。建议购买高原旅游保险，携带防寒衣物和常用药品。',
+    announcement:
+      '【行程提醒】本线路为高原地区旅行，海拔最高达4700米，请提前做好身体准备。12月15日批次即将成团，仅剩4个名额。出发前7天确认成团，未成团全额退款。建议购买高原旅游保险，携带防寒衣物和常用药品。',
     bookingNotices: [
       '本线路为成团产品，最少5人成团，最多12人',
       '出发前7天确认是否成团，未成团全额退款',
@@ -871,27 +886,24 @@ const mockTours: Tour[] = [
       '行程中如遇天气、路况等不可抗力因素，领队有权调整行程',
       '请携带身份证、驾驶证等有效证件',
       '建议购买高原旅游保险',
-      '儿童价格适用于12岁以下，不占床位'
+      '儿童价格适用于12岁以下，不占床位',
     ],
     cancellationPolicy: [
       { condition: '出发前7天以上取消', result: '全额退款' },
       { condition: '出发前3-7天取消', result: '退款70%' },
       { condition: '出发前1-3天取消', result: '退款30%' },
-      { condition: '出发当天取消', result: '不予退款' }
+      { condition: '出发当天取消', result: '不予退款' },
     ],
     status: 'published',
     vehicleType: 'C型房车',
     createdBy: '旅游部-李四',
     createdAt: '2025-01-10T10:00:00.000Z',
-    updatedAt: '2025-01-15T10:00:00.000Z'
+    updatedAt: '2025-01-15T10:00:00.000Z',
   },
   {
     id: 2,
     title: '新疆环线房车之旅',
-    images: [
-      '/static/tours/xinjiang-1.jpg',
-      '/static/tours/xinjiang-2.jpg'
-    ],
+    images: ['/static/tours/xinjiang-1.jpg', '/static/tours/xinjiang-2.jpg'],
     tags: ['西域风情', '自然风光', '多元文化'],
     destination: '新疆',
     duration: 12,
@@ -906,27 +918,27 @@ const mockTours: Tour[] = [
         departureDate: '2025-06-15',
         status: 'recruiting',
         currentPeople: 8,
-        maxPeople: 15
+        maxPeople: 15,
       },
       {
         id: '2',
         departureDate: '2025-07-01',
         status: 'recruiting',
         currentPeople: 5,
-        maxPeople: 15
-      }
+        maxPeople: 15,
+      },
     ],
     itinerary: [
       {
         title: '乌鲁木齐集合',
         content: '全天乌鲁木齐集合，入住酒店。可自由活动，品尝新疆美食，游览国际大巴扎等景点。',
-        highlights: ['新疆美食', '国际大巴扎']
+        highlights: ['新疆美食', '国际大巴扎'],
       },
       {
         title: '乌鲁木齐 - 天山天池',
         content: '前往天山天池景区，欣赏高山湖泊美景，远眺博格达峰。',
-        highlights: ['天山天池', '博格达峰']
-      }
+        highlights: ['天山天池', '博格达峰'],
+      },
     ],
     priceIncludes: [
       '全程房车使用费（含油费、过路费）',
@@ -934,33 +946,29 @@ const mockTours: Tour[] = [
       '全程早餐',
       '专业领队服务',
       '部分景点门票',
-      '旅游意外保险'
+      '旅游意外保险',
     ],
-    priceExcludes: [
-      '往返乌鲁木齐大交通',
-      '午餐和晚餐',
-      '自费景点门票',
-      '个人消费及自费项目'
-    ],
-    announcement: '【行程提醒】新疆地域辽阔，行程较长，请做好心理准备。建议携带防晒用品和常用药品。',
+    priceExcludes: ['往返乌鲁木齐大交通', '午餐和晚餐', '自费景点门票', '个人消费及自费项目'],
+    announcement:
+      '【行程提醒】新疆地域辽阔，行程较长，请做好心理准备。建议携带防晒用品和常用药品。',
     bookingNotices: [
       '本线路为成团产品，最少6人成团，最多15人',
       '出发前7天确认是否成团，未成团全额退款',
       '请携带身份证等有效证件',
-      '儿童价格适用于12岁以下，不占床位'
+      '儿童价格适用于12岁以下，不占床位',
     ],
     cancellationPolicy: [
       { condition: '出发前7天以上取消', result: '全额退款' },
       { condition: '出发前3-7天取消', result: '退款70%' },
       { condition: '出发前1-3天取消', result: '退款30%' },
-      { condition: '出发当天取消', result: '不予退款' }
+      { condition: '出发当天取消', result: '不予退款' },
     ],
     status: 'published',
     vehicleType: 'C型房车',
     createdBy: '旅游部-李四',
     createdAt: '2025-01-12T10:00:00.000Z',
-    updatedAt: '2025-01-12T10:00:00.000Z'
-  }
+    updatedAt: '2025-01-12T10:00:00.000Z',
+  },
 ]
 
 // 房车旅游列表查询参数
@@ -974,12 +982,14 @@ export interface TourListParams {
 
 // Mock 获取房车旅游列表
 export const mockGetTourList = (params: TourListParams) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       let filtered = [...mockTours]
 
       if (params.keyword) {
-        filtered = filtered.filter(t => t.title.includes(params.keyword!) || t.destination.includes(params.keyword!))
+        filtered = filtered.filter(
+          t => t.title.includes(params.keyword!) || t.destination.includes(params.keyword!)
+        )
       }
       if (params.status) {
         filtered = filtered.filter(t => t.status === params.status)
@@ -996,7 +1006,7 @@ export const mockGetTourList = (params: TourListParams) => {
       resolve({
         code: 200,
         message: '获取成功',
-        data: { list, total: filtered.length, page, pageSize }
+        data: { list, total: filtered.length, page, pageSize },
       })
     }, 300)
   })
@@ -1006,34 +1016,34 @@ export const mockGetTourList = (params: TourListParams) => {
 
 // 增值费用类型（扩展）
 export type ExtraFeeType =
-  | 'insurance'      // 保险服务
-  | 'equipment'      // 设备租赁
-  | 'service'        // 增值服务
-  | 'store_special'  // 门店特色服务（新增）
-  | 'special'        // 特殊费用（新增）
-  | 'other'          // 其他费用
+  | 'insurance' // 保险服务
+  | 'equipment' // 设备租赁
+  | 'service' // 增值服务
+  | 'store_special' // 门店特色服务（新增）
+  | 'special' // 特殊费用（新增）
+  | 'other' // 其他费用
 
 // 增值费用状态
 export type ExtraFeeStatus = 'active' | 'inactive'
 
 // 费用归属方类型（扩展）
 export type ExtraFeeOwnerType =
-  | 'platform'       // 平台
-  | 'store'          // 门店（单一门店）
-  | 'multi_party'    // 多方分配（新增）
+  | 'platform' // 平台
+  | 'store' // 门店（单一门店）
+  | 'multi_party' // 多方分配（新增）
 
 // 特殊费用计算方式
 export type SpecialFeeCalculationType =
-  | 'fixed'          // 固定金额
-  | 'distance'       // 按距离计算（公里数 × 单价）
+  | 'fixed' // 固定金额
+  | 'distance' // 按距离计算（公里数 × 单价）
 
 // 费用分配规则
 export interface FeeAllocationRule {
   partyType: 'platform' | 'pickup_store' | 'return_store' | 'service_store'
   partyId?: number
   partyName?: string
-  percentage: number         // 分配比例（0-100）
-  amount?: number            // 实际分配金额（计算后填充）
+  percentage: number // 分配比例（0-100）
+  amount?: number // 实际分配金额（计算后填充）
 }
 
 // 增值费用信息（完整扩展）
@@ -1048,22 +1058,22 @@ export interface ExtraFee {
   description: string
 
   // 归属方配置
-  ownerType: ExtraFeeOwnerType                    // 归属方（平台/门店/多方）
-  storeId?: number                                // 门店ID（当ownerType为store时）
-  storeName?: string                              // 门店名称
+  ownerType: ExtraFeeOwnerType // 归属方（平台/门店/多方）
+  storeId?: number // 门店ID（当ownerType为store时）
+  storeName?: string // 门店名称
 
   // 门店特色服务配置（当type为store_special时）
-  isStoreSpecial?: boolean                        // 是否为门店特色服务
-  applicableStoreIds?: number[]                   // 适用门店ID列表
+  isStoreSpecial?: boolean // 是否为门店特色服务
+  applicableStoreIds?: number[] // 适用门店ID列表
 
   // 特殊费用配置（当type为special时）
-  calculationType?: SpecialFeeCalculationType     // 计算方式
-  distanceUnitPrice?: number                      // 距离单价（元/公里）
-  allocationRules?: FeeAllocationRule[]           // 分配规则列表
+  calculationType?: SpecialFeeCalculationType // 计算方式
+  distanceUnitPrice?: number // 距离单价（元/公里）
+  allocationRules?: FeeAllocationRule[] // 分配规则列表
 
   // 自动分配配置（用于常规增值费用）
-  autoAllocate?: boolean                          // 是否自动分配给取还车门店
-  allocationStrategy?: 'same_store' | 'split_evenly' | 'custom'  // 分配策略
+  autoAllocate?: boolean // 是否自动分配给取还车门店
+  allocationStrategy?: 'same_store' | 'split_evenly' | 'custom' // 分配策略
 
   createdBy: string
   createdAt: string
@@ -1084,7 +1094,7 @@ const mockExtraFees: ExtraFee[] = [
     ownerType: 'platform',
     createdBy: '运营经理-张三',
     createdAt: '2025-01-01T10:00:00.000Z',
-    updatedAt: '2025-01-01T10:00:00.000Z'
+    updatedAt: '2025-01-01T10:00:00.000Z',
   },
   {
     id: 2,
@@ -1098,7 +1108,7 @@ const mockExtraFees: ExtraFee[] = [
     ownerType: 'platform',
     createdBy: '运营经理-张三',
     createdAt: '2025-01-01T10:00:00.000Z',
-    updatedAt: '2025-01-01T10:00:00.000Z'
+    updatedAt: '2025-01-01T10:00:00.000Z',
   },
   {
     id: 3,
@@ -1112,7 +1122,7 @@ const mockExtraFees: ExtraFee[] = [
     ownerType: 'platform',
     createdBy: '运营经理-张三',
     createdAt: '2025-01-01T10:00:00.000Z',
-    updatedAt: '2025-01-01T10:00:00.000Z'
+    updatedAt: '2025-01-01T10:00:00.000Z',
   },
   {
     id: 4,
@@ -1126,7 +1136,7 @@ const mockExtraFees: ExtraFee[] = [
     ownerType: 'platform',
     createdBy: '运营经理-张三',
     createdAt: '2025-01-01T10:00:00.000Z',
-    updatedAt: '2025-01-01T10:00:00.000Z'
+    updatedAt: '2025-01-01T10:00:00.000Z',
   },
   {
     id: 5,
@@ -1140,7 +1150,7 @@ const mockExtraFees: ExtraFee[] = [
     ownerType: 'platform',
     createdBy: '运营经理-张三',
     createdAt: '2025-01-01T10:00:00.000Z',
-    updatedAt: '2025-01-01T10:00:00.000Z'
+    updatedAt: '2025-01-01T10:00:00.000Z',
   },
   // 门店归属示例数据
   {
@@ -1157,7 +1167,7 @@ const mockExtraFees: ExtraFee[] = [
     storeName: '北京朝阳店',
     createdBy: '门店经理-王五',
     createdAt: '2025-01-05T10:00:00.000Z',
-    updatedAt: '2025-01-05T10:00:00.000Z'
+    updatedAt: '2025-01-05T10:00:00.000Z',
   },
   {
     id: 7,
@@ -1171,7 +1181,7 @@ const mockExtraFees: ExtraFee[] = [
     ownerType: 'platform',
     createdBy: '运营经理-张三',
     createdAt: '2025-01-06T10:00:00.000Z',
-    updatedAt: '2025-01-06T10:00:00.000Z'
+    updatedAt: '2025-01-06T10:00:00.000Z',
   },
   {
     id: 8,
@@ -1187,7 +1197,7 @@ const mockExtraFees: ExtraFee[] = [
     storeName: '上海浦东店',
     createdBy: '门店经理-孙七',
     createdAt: '2025-01-07T10:00:00.000Z',
-    updatedAt: '2025-01-07T10:00:00.000Z'
+    updatedAt: '2025-01-07T10:00:00.000Z',
   },
   // 门店特色服务示例数据
   {
@@ -1206,7 +1216,7 @@ const mockExtraFees: ExtraFee[] = [
     applicableStoreIds: [1],
     createdBy: '门店经理-王五',
     createdAt: '2025-01-08T10:00:00.000Z',
-    updatedAt: '2025-01-08T10:00:00.000Z'
+    updatedAt: '2025-01-08T10:00:00.000Z',
   },
   {
     id: 10,
@@ -1224,7 +1234,7 @@ const mockExtraFees: ExtraFee[] = [
     applicableStoreIds: [2],
     createdBy: '门店经理-孙七',
     createdAt: '2025-01-09T10:00:00.000Z',
-    updatedAt: '2025-01-09T10:00:00.000Z'
+    updatedAt: '2025-01-09T10:00:00.000Z',
   },
   {
     id: 11,
@@ -1242,7 +1252,7 @@ const mockExtraFees: ExtraFee[] = [
     applicableStoreIds: [1],
     createdBy: '门店经理-王五',
     createdAt: '2025-01-10T10:00:00.000Z',
-    updatedAt: '2025-01-10T10:00:00.000Z'
+    updatedAt: '2025-01-10T10:00:00.000Z',
   },
   // 特殊费用示例数据
   {
@@ -1250,7 +1260,7 @@ const mockExtraFees: ExtraFee[] = [
     name: '异地还车费',
     type: 'special',
     status: 'active',
-    price: 0,  // 动态计算
+    price: 0, // 动态计算
     unit: '次',
     isRequired: false,
     description: '根据取还车门店距离自动计算，1.5元/公里',
@@ -1260,18 +1270,18 @@ const mockExtraFees: ExtraFee[] = [
     allocationRules: [
       { partyType: 'pickup_store', percentage: 40, partyName: '取车门店' },
       { partyType: 'return_store', percentage: 40, partyName: '还车门店' },
-      { partyType: 'platform', percentage: 20, partyName: '平台' }
+      { partyType: 'platform', percentage: 20, partyName: '平台' },
     ],
     createdBy: '运营经理-张三',
     createdAt: '2025-01-11T10:00:00.000Z',
-    updatedAt: '2025-01-11T10:00:00.000Z'
+    updatedAt: '2025-01-11T10:00:00.000Z',
   },
   {
     id: 101,
     name: '跨省调度费',
     type: 'special',
     status: 'active',
-    price: 0,  // 动态计算
+    price: 0, // 动态计算
     unit: '次',
     isRequired: false,
     description: '跨省还车需支付调度费用，2元/公里',
@@ -1281,12 +1291,12 @@ const mockExtraFees: ExtraFee[] = [
     allocationRules: [
       { partyType: 'pickup_store', percentage: 30, partyName: '取车门店' },
       { partyType: 'return_store', percentage: 30, partyName: '还车门店' },
-      { partyType: 'platform', percentage: 40, partyName: '平台' }
+      { partyType: 'platform', percentage: 40, partyName: '平台' },
     ],
     createdBy: '运营经理-张三',
     createdAt: '2025-01-12T10:00:00.000Z',
-    updatedAt: '2025-01-12T10:00:00.000Z'
-  }
+    updatedAt: '2025-01-12T10:00:00.000Z',
+  },
 ]
 
 // 增值费用列表查询参数
@@ -1300,7 +1310,7 @@ export interface ExtraFeeListParams {
 
 // Mock 获取增值费用列表
 export const mockGetExtraFeeList = (params: ExtraFeeListParams) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       let filtered = [...mockExtraFees]
 
@@ -1322,7 +1332,7 @@ export const mockGetExtraFeeList = (params: ExtraFeeListParams) => {
       resolve({
         code: 200,
         message: '获取成功',
-        data: { list, total: filtered.length, page, pageSize }
+        data: { list, total: filtered.length, page, pageSize },
       })
     }, 300)
   })
@@ -1330,7 +1340,7 @@ export const mockGetExtraFeeList = (params: ExtraFeeListParams) => {
 
 // Mock 创建增值费用
 export const mockCreateExtraFee = (data: Partial<ExtraFee>) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const newExtraFee: ExtraFee = {
         id: mockExtraFees.length + 1,
@@ -1346,13 +1356,13 @@ export const mockCreateExtraFee = (data: Partial<ExtraFee>) => {
         storeName: data.storeName,
         createdBy: '系统管理员',
         createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
+        updatedAt: new Date().toISOString(),
       }
       mockExtraFees.push(newExtraFee)
       resolve({
         code: 200,
         message: '创建成功',
-        data: newExtraFee
+        data: newExtraFee,
       })
     }, 300)
   })
@@ -1366,7 +1376,7 @@ export const mockUpdateExtraFee = (id: number, data: Partial<ExtraFee>) => {
       if (index === -1) {
         reject({
           code: 404,
-          message: '增值费用不存在'
+          message: '增值费用不存在',
         })
         return
       }
@@ -1374,13 +1384,13 @@ export const mockUpdateExtraFee = (id: number, data: Partial<ExtraFee>) => {
       mockExtraFees[index] = {
         ...mockExtraFees[index],
         ...data,
-        updatedAt: new Date().toISOString()
+        updatedAt: new Date().toISOString(),
       }
 
       resolve({
         code: 200,
         message: '更新成功',
-        data: mockExtraFees[index]
+        data: mockExtraFees[index],
       })
     }, 300)
   })
@@ -1394,7 +1404,7 @@ export const mockDeleteExtraFee = (id: number) => {
       if (index === -1) {
         reject({
           code: 404,
-          message: '增值费用不存在'
+          message: '增值费用不存在',
         })
         return
       }
@@ -1402,7 +1412,7 @@ export const mockDeleteExtraFee = (id: number) => {
       mockExtraFees.splice(index, 1)
       resolve({
         code: 200,
-        message: '删除成功'
+        message: '删除成功',
       })
     }, 300)
   })
@@ -1423,7 +1433,7 @@ export interface MarketingStats {
 
 // Mock 获取营销统计
 export const mockGetMarketingStats = () => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const stats: MarketingStats = {
         totalCoupons: mockCoupons.length,
@@ -1432,12 +1442,12 @@ export const mockGetMarketingStats = () => {
         totalActivities: mockActivities.length,
         activeActivities: mockActivities.filter(a => a.status === 'active').length,
         totalRevenue: mockActivities.reduce((sum, a) => sum + a.revenue, 0),
-        averageROI: mockActivities.reduce((sum, a) => sum + a.roi, 0) / mockActivities.length
+        averageROI: mockActivities.reduce((sum, a) => sum + a.roi, 0) / mockActivities.length,
       }
       resolve({
         code: 200,
         message: '获取成功',
-        data: stats
+        data: stats,
       })
     }, 200)
   })
@@ -1464,12 +1474,12 @@ export interface CouponRecord {
   // 记录信息
   recordType: CouponRecordType
   source: CouponRecordSource
-  sourceDetail?: string  // 来源详情（如活动名称、订单号等）
+  sourceDetail?: string // 来源详情（如活动名称、订单号等）
 
   // 使用信息（仅 type=use 时）
   orderId?: number
   orderNo?: string
-  actualDiscountAmount?: number  // 实际优惠金额
+  actualDiscountAmount?: number // 实际优惠金额
 
   // 转赠信息（仅 type=transfer 时）
   transferToUserId?: number
@@ -1508,7 +1518,7 @@ const mockCouponRecords: CouponRecord[] = [
     createdAt: '2025-01-15T10:30:00.000Z',
     remark: '新用户注册自动发放',
     ipAddress: '192.168.1.100',
-    deviceInfo: 'iPhone 13 Pro'
+    deviceInfo: 'iPhone 13 Pro',
   },
   {
     id: 2,
@@ -1528,7 +1538,7 @@ const mockCouponRecords: CouponRecord[] = [
     createdAt: '2025-01-16T14:20:00.000Z',
     remark: '首单使用优惠券',
     ipAddress: '192.168.1.100',
-    deviceInfo: 'iPhone 13 Pro'
+    deviceInfo: 'iPhone 13 Pro',
   },
   {
     id: 3,
@@ -1545,7 +1555,7 @@ const mockCouponRecords: CouponRecord[] = [
     createdAt: '2025-01-20T09:00:00.000Z',
     remark: '参与活动领取',
     ipAddress: '192.168.1.101',
-    deviceInfo: 'Android Xiaomi 12'
+    deviceInfo: 'Android Xiaomi 12',
   },
   {
     id: 4,
@@ -1562,7 +1572,7 @@ const mockCouponRecords: CouponRecord[] = [
     createdAt: '2025-01-18T16:45:00.000Z',
     remark: '通过分享链接领取',
     ipAddress: '192.168.1.102',
-    deviceInfo: 'iPhone 14'
+    deviceInfo: 'iPhone 14',
   },
   {
     id: 5,
@@ -1582,7 +1592,7 @@ const mockCouponRecords: CouponRecord[] = [
     createdAt: '2025-01-19T11:30:00.000Z',
     remark: '周末订单使用',
     ipAddress: '192.168.1.102',
-    deviceInfo: 'iPhone 14'
+    deviceInfo: 'iPhone 14',
   },
   {
     id: 6,
@@ -1599,7 +1609,7 @@ const mockCouponRecords: CouponRecord[] = [
     createdAt: '2025-01-21T10:00:00.000Z',
     remark: '客服补偿发放',
     ipAddress: '192.168.1.103',
-    deviceInfo: 'Web Chrome'
+    deviceInfo: 'Web Chrome',
   },
   {
     id: 7,
@@ -1615,7 +1625,7 @@ const mockCouponRecords: CouponRecord[] = [
     recordTime: '2025-01-17T08:20:00.000Z',
     createdAt: '2025-01-17T08:20:00.000Z',
     ipAddress: '192.168.1.104',
-    deviceInfo: 'Android Huawei P50'
+    deviceInfo: 'Android Huawei P50',
   },
   {
     id: 8,
@@ -1632,7 +1642,7 @@ const mockCouponRecords: CouponRecord[] = [
     createdAt: '2025-01-20T23:59:59.000Z',
     remark: '系统自动过期',
     ipAddress: '127.0.0.1',
-    deviceInfo: 'System'
+    deviceInfo: 'System',
   },
   {
     id: 9,
@@ -1649,7 +1659,7 @@ const mockCouponRecords: CouponRecord[] = [
     createdAt: '2025-01-21T14:00:00.000Z',
     remark: '投诉补偿',
     ipAddress: '192.168.1.105',
-    deviceInfo: 'Web Safari'
+    deviceInfo: 'Web Safari',
   },
   {
     id: 10,
@@ -1669,8 +1679,8 @@ const mockCouponRecords: CouponRecord[] = [
     createdAt: '2025-01-20T18:30:00.000Z',
     remark: '用户主动转赠',
     ipAddress: '192.168.1.106',
-    deviceInfo: 'iPhone 15'
-  }
+    deviceInfo: 'iPhone 15',
+  },
 ]
 
 // 优惠券记录列表查询参数
@@ -1683,20 +1693,21 @@ export interface CouponRecordListParams {
   source?: CouponRecordSource
   startDate?: string
   endDate?: string
-  keyword?: string  // 搜索优惠券名称、用户名、手机号
+  keyword?: string // 搜索优惠券名称、用户名、手机号
 }
 
 // Mock 获取优惠券记录列表
 export const mockGetCouponRecordList = (params: CouponRecordListParams) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       let filtered = [...mockCouponRecords]
 
       if (params.keyword) {
-        filtered = filtered.filter(r =>
-          r.couponName.includes(params.keyword!) ||
-          r.userName.includes(params.keyword!) ||
-          r.userPhone.includes(params.keyword!)
+        filtered = filtered.filter(
+          r =>
+            r.couponName.includes(params.keyword!) ||
+            r.userName.includes(params.keyword!) ||
+            r.userPhone.includes(params.keyword!)
         )
       }
       if (params.couponId) {
@@ -1726,7 +1737,7 @@ export const mockGetCouponRecordList = (params: CouponRecordListParams) => {
       resolve({
         code: 200,
         message: '获取成功',
-        data: { list, total: filtered.length, page, pageSize }
+        data: { list, total: filtered.length, page, pageSize },
       })
     }, 300)
   })

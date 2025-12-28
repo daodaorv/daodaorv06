@@ -6,12 +6,7 @@
       </template>
     </el-page-header>
 
-    <el-alert
-      title="配置说明"
-      type="info"
-      :closable="false"
-      style="margin-bottom: 20px"
-    >
+    <el-alert title="配置说明" type="info" :closable="false" style="margin-bottom: 20px">
       <p>统一管理所有产品类型的分润配置，包括推广分润、托管分润、营地分润和旅游分润</p>
     </el-alert>
 
@@ -32,10 +27,20 @@
           <el-table-column prop="level2Ratio" label="二级推广比例" width="130" align="right">
             <template #default="{ row }">{{ row.level2Ratio }}%</template>
           </el-table-column>
-          <el-table-column prop="plusMemberDirectReward" label="PLUS直推奖励" width="140" align="right">
+          <el-table-column
+            prop="plusMemberDirectReward"
+            label="PLUS直推奖励"
+            width="140"
+            align="right"
+          >
             <template #default="{ row }">¥{{ row.plusMemberDirectReward }}</template>
           </el-table-column>
-          <el-table-column prop="plusMemberAssistReward" label="PLUS助力奖励" width="140" align="right">
+          <el-table-column
+            prop="plusMemberAssistReward"
+            label="PLUS助力奖励"
+            width="140"
+            align="right"
+          >
             <template #default="{ row }">¥{{ row.plusMemberAssistReward }}</template>
           </el-table-column>
           <el-table-column prop="enabled" label="状态" width="100">

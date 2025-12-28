@@ -115,22 +115,22 @@ interface StepExtra {
 
 // 时间线步骤接口
 export interface TimelineStep {
-  name: string                    // 步骤名称
-  status: StepStatus              // 步骤状态
-  timestamp?: string              // 时间戳
-  operator?: string               // 操作人
-  operatorAvatar?: string         // 操作人头像
-  description?: string            // 步骤描述
-  details?: StepDetail[]          // 步骤详情
-  extra?: StepExtra               // 附加信息
-  estimatedTime?: string          // 预计时间（待处理状态）
-  duration?: string               // 耗时（已完成状态）
+  name: string // 步骤名称
+  status: StepStatus // 步骤状态
+  timestamp?: string // 时间戳
+  operator?: string // 操作人
+  operatorAvatar?: string // 操作人头像
+  description?: string // 步骤描述
+  details?: StepDetail[] // 步骤详情
+  extra?: StepExtra // 附加信息
+  estimatedTime?: string // 预计时间（待处理状态）
+  duration?: string // 耗时（已完成状态）
 }
 
 // Props 定义
 interface Props {
-  steps: TimelineStep[]           // 时间线步骤数组
-  reverse?: boolean               // 是否倒序显示
+  steps: TimelineStep[] // 时间线步骤数组
+  reverse?: boolean // 是否倒序显示
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -180,7 +180,9 @@ const getStepColor = (status: StepStatus): string => {
 }
 
 // 获取状态标签类型
-const getStatusTagType = (status: StepStatus): 'primary' | 'success' | 'warning' | 'info' | 'danger' => {
+const getStatusTagType = (
+  status: StepStatus
+): 'primary' | 'success' | 'warning' | 'info' | 'danger' => {
   const tagTypeMap: Record<StepStatus, 'primary' | 'success' | 'warning' | 'info' | 'danger'> = {
     pending: 'info',
     current: 'primary',

@@ -1,27 +1,14 @@
 <template>
   <div class="notification-config">
-    <el-form
-      ref="formRef"
-      :model="form"
-      :rules="formRules"
-      label-width="180px"
-    >
+    <el-form ref="formRef" :model="form" :rules="formRules" label-width="180px">
       <!-- 短信通知配置 -->
       <div class="config-section">
         <h3 class="section-title">短信通知配置</h3>
         <el-form-item label="启用短信通知" prop="smsEnabled">
-          <el-switch
-            v-model="form.smsEnabled"
-            active-text="启用"
-            inactive-text="禁用"
-          />
+          <el-switch v-model="form.smsEnabled" active-text="启用" inactive-text="禁用" />
         </el-form-item>
         <el-form-item label="短信服务商" prop="smsProvider">
-          <el-select
-            v-model="form.smsProvider"
-            placeholder="请选择"
-            :disabled="!form.smsEnabled"
-          >
+          <el-select v-model="form.smsProvider" placeholder="请选择" :disabled="!form.smsEnabled">
             <el-option label="阿里云" value="aliyun" />
             <el-option label="腾讯云" value="tencent" />
             <el-option label="华为云" value="huawei" />
@@ -56,11 +43,7 @@
       <div class="config-section">
         <h3 class="section-title">邮件通知配置</h3>
         <el-form-item label="启用邮件通知" prop="emailEnabled">
-          <el-switch
-            v-model="form.emailEnabled"
-            active-text="启用"
-            inactive-text="禁用"
-          />
+          <el-switch v-model="form.emailEnabled" active-text="启用" inactive-text="禁用" />
         </el-form-item>
         <el-form-item label="SMTP服务器" prop="smtpHost">
           <el-input
@@ -107,11 +90,7 @@
       <div class="config-section">
         <h3 class="section-title">微信通知配置</h3>
         <el-form-item label="启用微信通知" prop="wechatNotifyEnabled">
-          <el-switch
-            v-model="form.wechatNotifyEnabled"
-            active-text="启用"
-            inactive-text="禁用"
-          />
+          <el-switch v-model="form.wechatNotifyEnabled" active-text="启用" inactive-text="禁用" />
         </el-form-item>
         <el-form-item label="小程序AppID" prop="wechatAppId">
           <el-input
@@ -214,12 +193,8 @@ const form = reactive({
 })
 
 const formRules: FormRules = {
-  smsAccessKeyId: [
-    { required: true, message: '请输入AccessKey ID', trigger: 'blur' },
-  ],
-  smtpHost: [
-    { required: true, message: '请输入SMTP服务器地址', trigger: 'blur' },
-  ],
+  smsAccessKeyId: [{ required: true, message: '请输入AccessKey ID', trigger: 'blur' }],
+  smtpHost: [{ required: true, message: '请输入SMTP服务器地址', trigger: 'blur' }],
   emailFrom: [
     { required: true, message: '请输入发件人邮箱', trigger: 'blur' },
     { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' },
@@ -229,7 +204,7 @@ const formRules: FormRules = {
 const handleSubmit = async () => {
   if (!formRef.value) return
 
-  await formRef.value.validate(async (valid) => {
+  await formRef.value.validate(async valid => {
     if (!valid) return
 
     submitLoading.value = true

@@ -1,8 +1,6 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="finance-invoices-container">
-    
-
     <!-- 搜索和操作 -->
     <div class="toolbar">
       <SearchForm
@@ -100,9 +98,7 @@
 
       <template #footer>
         <el-button @click="editDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="handleEditSubmit" :loading="submitting">
-          确定
-        </el-button>
+        <el-button type="primary" @click="handleEditSubmit" :loading="submitting"> 确定 </el-button>
       </template>
     </el-dialog>
 
@@ -138,9 +134,7 @@
           <el-descriptions-item label="价税合计">
             <span class="total-amount">¥{{ currentInvoice.totalAmount.toLocaleString() }}</span>
           </el-descriptions-item>
-          <el-descriptions-item label="税率">
-            13%
-          </el-descriptions-item>
+          <el-descriptions-item label="税率"> 13% </el-descriptions-item>
           <el-descriptions-item label="购买方名称" :span="2">
             {{ currentInvoice.buyerName }}
           </el-descriptions-item>
@@ -213,7 +207,7 @@ import {
   createInvoice,
   updateInvoice,
   type Invoice,
-  type InvoiceStatus
+  type InvoiceStatus,
 } from '@/api/finance'
 
 // 搜索表单
@@ -221,7 +215,7 @@ const searchForm = ref({
   status: '',
   startDate: '',
   endDate: '',
-  keyword: ''
+  keyword: '',
 })
 
 // 搜索字段配置
@@ -236,27 +230,27 @@ const searchFields = [
       { label: '已开具', value: 'issued' },
       { label: '已发送', value: 'sent' },
       { label: '已支付', value: 'paid' },
-      { label: '已作废', value: 'cancelled' }
-    ]
+      { label: '已作废', value: 'cancelled' },
+    ],
   },
   {
     type: 'date',
     prop: 'startDate',
     label: '开始日期',
-    placeholder: '请选择开始日期'
+    placeholder: '请选择开始日期',
   },
   {
     type: 'date',
     prop: 'endDate',
     label: '结束日期',
-    placeholder: '请选择结束日期'
+    placeholder: '请选择结束日期',
   },
   {
     type: 'input',
     prop: 'keyword',
     label: '关键词',
-    placeholder: '发票号/订单号/购买方'
-  }
+    placeholder: '发票号/订单号/购买方',
+  },
 ]
 
 // 发票列表
@@ -267,7 +261,7 @@ const loading = ref(false)
 const pagination = reactive({
   currentPage: 1,
   pageSize: 10,
-  total: 0
+  total: 0,
 })
 
 // 表格列配置
@@ -279,7 +273,7 @@ const tableColumns = [
   { prop: 'amount', label: '金额信息', width: 180, slot: 'amount' },
   { prop: 'buyerName', label: '购买方', minWidth: 200 },
   { prop: 'status', label: '状态', width: 100, slot: 'status' },
-  { prop: 'createdAt', label: '创建时间', width: 160 }
+  { prop: 'createdAt', label: '创建时间', width: 160 },
 ]
 
 // 表格操作
@@ -288,8 +282,8 @@ const tableActions = [
     label: '详情',
     type: 'primary',
     link: true,
-    onClick: (row: Invoice) => handleDetail(row)
-  }
+    onClick: (row: Invoice) => handleDetail(row),
+  },
 ]
 
 // 编辑对话框
@@ -303,7 +297,7 @@ const editForm = reactive({
   taxAmount: 0,
   totalAmount: 0,
   buyerName: '',
-  buyerTaxNo: ''
+  buyerTaxNo: '',
 })
 const editFormRef = ref()
 const editRules = {
@@ -311,13 +305,13 @@ const editRules = {
   type: [{ required: true, message: '请选择发票类型', trigger: 'change' }],
   amount: [
     { required: true, message: '请输入开票金额', trigger: 'blur' },
-    { type: 'number', min: 0, message: '金额必须大于0', trigger: 'blur' }
+    { type: 'number', min: 0, message: '金额必须大于0', trigger: 'blur' },
   ],
   buyerName: [{ required: true, message: '请输入购买方名称', trigger: 'blur' }],
   buyerTaxNo: [
     { required: true, message: '请输入纳税人识别号', trigger: 'blur' },
-    { pattern: /^\d{15}$|^\d{18}$|^\d{20}$/, message: '纳税人识别号格式不正确', trigger: 'blur' }
-  ]
+    { pattern: /^\d{15}$|^\d{18}$|^\d{20}$/, message: '纳税人识别号格式不正确', trigger: 'blur' },
+  ],
 }
 const submitting = ref(false)
 
@@ -335,7 +329,7 @@ const fetchInvoiceList = async () => {
       status: searchForm.value.status as InvoiceStatus | undefined,
       startDate: searchForm.value.startDate,
       endDate: searchForm.value.endDate,
-      keyword: searchForm.value.keyword
+      keyword: searchForm.value.keyword,
     }
     const { list, total } = await getInvoiceList(params)
     invoiceList.value = list
@@ -360,7 +354,7 @@ const handleReset = () => {
     status: '',
     startDate: '',
     endDate: '',
-    keyword: ''
+    keyword: '',
   }
   handleSearch()
 }
@@ -410,18 +404,14 @@ const handleUpdateStatus = async (invoice: Invoice, status: InvoiceStatus) => {
       issued: '已开具',
       sent: '已发送',
       paid: '已支付',
-      cancelled: '已作废'
+      cancelled: '已作废',
     }
 
-    await ElMessageBox.confirm(
-      `确定要将发票状态更新为"${statusMap[status]}"吗？`,
-      '提示',
-      {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }
-    )
+    await ElMessageBox.confirm(`确定要将发票状态更新为"${statusMap[status]}"吗？`, '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    })
 
     const updateData: Partial<Invoice> = { status }
     const now = new Date().toISOString()
@@ -485,7 +475,7 @@ const getStatusTagType = (status: InvoiceStatus) => {
     issued: 'warning',
     sent: '',
     paid: 'success',
-    cancelled: 'danger'
+    cancelled: 'danger',
   }
   return statusMap[status] || 'info'
 }
@@ -497,7 +487,7 @@ const getStatusLabel = (status: InvoiceStatus) => {
     issued: '已开具',
     sent: '已发送',
     paid: '已支付',
-    cancelled: '已作废'
+    cancelled: '已作废',
   }
   return statusMap[status] || status
 }

@@ -46,7 +46,7 @@
             <el-dropdown
               v-else
               :disabled="action.disabled || selectedCount === 0"
-              @command="(command) => handleDropdownCommand(action, command)"
+              @command="command => handleDropdownCommand(action, command)"
             >
               <el-button
                 :type="action.type || 'default'"
@@ -75,10 +75,7 @@
           </template>
 
           <!-- 更多操作 -->
-          <el-dropdown
-            v-if="moreActions.length > 0"
-            @command="handleMoreCommand"
-          >
+          <el-dropdown v-if="moreActions.length > 0" @command="handleMoreCommand">
             <el-button size="small">
               更多
               <el-icon class="el-icon--right"><ArrowDown /></el-icon>
@@ -162,40 +159,41 @@ import type { Component } from 'vue'
 
 // 批量操作配置接口
 export interface BatchAction {
-  label: string                   // 按钮文本
-  command?: string                // 操作命令
+  label: string // 按钮文本
+  command?: string // 操作命令
   type?: 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'default'
-  icon?: Component                // 按钮图标
+  icon?: Component // 按钮图标
   size?: 'large' | 'default' | 'small'
-  disabled?: boolean              // 是否禁用
-  loading?: boolean               // 加载状态
-  confirm?: boolean               // 是否需要确认
-  confirmTitle?: string           // 确认对话框标题
-  confirmMessage?: string         // 确认对话框消息
+  disabled?: boolean // 是否禁用
+  loading?: boolean // 加载状态
+  confirm?: boolean // 是否需要确认
+  confirmTitle?: string // 确认对话框标题
+  confirmMessage?: string // 确认对话框消息
   confirmType?: 'warning' | 'info' | 'success' | 'danger'
-  showSelectedItems?: boolean     // 是否显示选中项
-  dropdown?: boolean              // 是否为下拉菜单
-  items?: Array<{                 // 下拉菜单项
+  showSelectedItems?: boolean // 是否显示选中项
+  dropdown?: boolean // 是否为下拉菜单
+  items?: Array<{
+    // 下拉菜单项
     label: string
     command: string
     icon?: Component
     disabled?: boolean
     divided?: boolean
   }>
-  divided?: boolean               // 是否显示分割线
+  divided?: boolean // 是否显示分割线
   onClick?: (selectedIds: any[], selectedRows: any[]) => void | Promise<void>
 }
 
 // Props 定义
 interface Props {
-  selectedIds?: any[]             // 选中的 ID 数组
-  selectedRows?: any[]            // 选中的行数据数组
-  total?: number                  // 总数据量
-  actions?: BatchAction[]         // 批量操作配置
-  maxVisibleActions?: number      // 最大显示操作数
-  showSelectAll?: boolean         // 是否显示全选
-  showClearSelection?: boolean    // 是否显示清空选择
-  maxPreviewItems?: number        // 最大预览项数
+  selectedIds?: any[] // 选中的 ID 数组
+  selectedRows?: any[] // 选中的行数据数组
+  total?: number // 总数据量
+  actions?: BatchAction[] // 批量操作配置
+  maxVisibleActions?: number // 最大显示操作数
+  showSelectAll?: boolean // 是否显示全选
+  showClearSelection?: boolean // 是否显示清空选择
+  maxPreviewItems?: number // 最大预览项数
   getItemLabel?: (row: any) => string // 获取项目标签的方法
 }
 
@@ -215,7 +213,7 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<{
   'select-all': [selected: boolean]
   'clear-selection': []
-  'action': [action: BatchAction, selectedIds: any[], selectedRows: any[]]
+  action: [action: BatchAction, selectedIds: any[], selectedRows: any[]]
 }>()
 
 // 响应式数据
@@ -241,9 +239,7 @@ const moreActions = computed(() => {
 })
 
 const selectedItemsPreview = computed(() => {
-  return props.selectedRows
-    .slice(0, props.maxPreviewItems)
-    .map(row => props.getItemLabel(row))
+  return props.selectedRows.slice(0, props.maxPreviewItems).map(row => props.getItemLabel(row))
 })
 
 const confirmIconComponent = computed(() => {
@@ -292,7 +288,8 @@ const handleAction = async (action: BatchAction) => {
   // 如果需要确认
   if (action.confirm) {
     confirmTitle.value = action.confirmTitle || '确认操作'
-    confirmMessage.value = action.confirmMessage || `确定要对选中的 ${selectedCount.value} 项执行此操作吗？`
+    confirmMessage.value =
+      action.confirmMessage || `确定要对选中的 ${selectedCount.value} 项执行此操作吗？`
     confirmType.value = action.confirmType || 'warning'
     showSelectedItems.value = action.showSelectedItems || false
     confirmDialogVisible.value = true

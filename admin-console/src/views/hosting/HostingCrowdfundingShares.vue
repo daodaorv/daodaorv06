@@ -132,9 +132,7 @@
               {{ currentShare.ownerName }} ({{ currentShare.ownerPhone }})
             </el-descriptions-item>
             <el-descriptions-item label="份额数量">
-              <span style="color: #409eff; font-weight: bold">
-                {{ currentShare.shares }}份
-              </span>
+              <span style="color: #409eff; font-weight: bold"> {{ currentShare.shares }}份 </span>
             </el-descriptions-item>
             <el-descriptions-item label="购买价格">
               <span style="color: #f56c6c; font-weight: bold">
@@ -155,7 +153,12 @@
               </span>
             </el-descriptions-item>
             <el-descriptions-item label="收益率">
-              <span :style="{ color: currentShare.returnRate >= 0 ? '#67c23a' : '#f56c6c', fontWeight: 'bold' }">
+              <span
+                :style="{
+                  color: currentShare.returnRate >= 0 ? '#67c23a' : '#f56c6c',
+                  fontWeight: 'bold',
+                }"
+              >
                 {{ currentShare.returnRate >= 0 ? '+' : '' }}{{ currentShare.returnRate }}%
               </span>
             </el-descriptions-item>
@@ -596,7 +599,11 @@ const getPriceChangeColor = (row: any) => {
 const getPriceChangeText = (row: any) => {
   const change = row.currentPrice - row.purchasePrice
   const percent = row.purchasePrice > 0 ? ((change / row.purchasePrice) * 100).toFixed(2) : '0.00'
-  return change > 0 ? `+¥${change.toLocaleString()} (+${percent}%)` : change < 0 ? `-¥${Math.abs(change).toLocaleString()} (${percent}%)` : '无变化'
+  return change > 0
+    ? `+¥${change.toLocaleString()} (+${percent}%)`
+    : change < 0
+      ? `-¥${Math.abs(change).toLocaleString()} (${percent}%)`
+      : '无变化'
 }
 
 // 获取状态标签类型
@@ -620,7 +627,9 @@ const getStatusLabel = (status: string) => {
 }
 
 // 获取转移状态标签类型
-const getTransferStatusTag = (status: string): 'success' | 'warning' | 'danger' | 'info' | 'primary' => {
+const getTransferStatusTag = (
+  status: string
+): 'success' | 'warning' | 'danger' | 'info' | 'primary' => {
   const tagMap: Record<string, 'success' | 'warning' | 'danger' | 'info' | 'primary'> = {
     pending: 'warning',
     completed: 'success',

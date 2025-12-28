@@ -51,13 +51,7 @@
           >
             添加标签
           </el-button>
-          <el-button
-            v-else
-            link
-            type="primary"
-            size="small"
-            @click="handleManageTags(row)"
-          >
+          <el-button v-else link type="primary" size="small" @click="handleManageTags(row)">
             管理
           </el-button>
         </div>
@@ -76,7 +70,6 @@
       <template #createdAt="{ row }">
         {{ formatDateTime(row.createdAt) }}
       </template>
-
     </DataTable>
 
     <!-- 用户表单对话框 -->
@@ -91,11 +84,7 @@
     />
 
     <!-- 标签管理对话框 -->
-    <el-dialog
-      v-model="tagManageDialogVisible"
-      title="管理用户标签"
-      width="600px"
-    >
+    <el-dialog v-model="tagManageDialogVisible" title="管理用户标签" width="600px">
       <div v-if="currentUser">
         <h4>当前标签</h4>
         <div class="current-tags">
@@ -113,9 +102,7 @@
             </el-icon>
             {{ tag.name }}
           </el-tag>
-          <span v-if="!currentUser.tags || currentUser.tags.length === 0">
-            暂无标签
-          </span>
+          <span v-if="!currentUser.tags || currentUser.tags.length === 0"> 暂无标签 </span>
         </div>
 
         <!-- PLUS会员权益信息 -->
@@ -132,7 +119,9 @@
             </el-descriptions-item>
             <el-descriptions-item label="价格折扣">
               <el-tag type="warning" size="small">
-                {{ (getPlusMemberTag(currentUser)?.benefits?.priceDiscount * 100).toFixed(0) }}折优惠
+                {{
+                  (getPlusMemberTag(currentUser)?.benefits?.priceDiscount * 100).toFixed(0)
+                }}折优惠
               </el-tag>
             </el-descriptions-item>
             <el-descriptions-item label="专属优惠券">
@@ -141,10 +130,19 @@
               </el-tag>
             </el-descriptions-item>
             <el-descriptions-item label="增值服务">
-              <el-tag v-if="getPlusMemberTag(currentUser)?.benefits?.priorityService" type="info" size="small" style="margin-right: 4px">
+              <el-tag
+                v-if="getPlusMemberTag(currentUser)?.benefits?.priorityService"
+                type="info"
+                size="small"
+                style="margin-right: 4px"
+              >
                 优先服务
               </el-tag>
-              <el-tag v-if="getPlusMemberTag(currentUser)?.benefits?.freeInsurance" type="info" size="small">
+              <el-tag
+                v-if="getPlusMemberTag(currentUser)?.benefits?.freeInsurance"
+                type="info"
+                size="small"
+              >
                 免费保险
               </el-tag>
             </el-descriptions-item>
@@ -154,12 +152,7 @@
         <el-divider />
 
         <h4>添加标签</h4>
-        <el-select
-          v-model="selectedTagIds"
-          multiple
-          placeholder="请选择标签"
-          style="width: 100%"
-        >
+        <el-select v-model="selectedTagIds" multiple placeholder="请选择标签" style="width: 100%">
           <el-option
             v-for="tag in availableTags"
             :key="tag.id"
@@ -172,25 +165,14 @@
 
       <template #footer>
         <el-button @click="tagManageDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="handleAddTags">
-          添加标签
-        </el-button>
+        <el-button type="primary" @click="handleAddTags"> 添加标签 </el-button>
       </template>
     </el-dialog>
 
     <!-- 用户导入对话框 -->
-    <el-dialog
-      v-model="importDialogVisible"
-      title="导入用户"
-      width="600px"
-    >
+    <el-dialog v-model="importDialogVisible" title="导入用户" width="600px">
       <div class="import-container">
-        <el-alert
-          title="导入说明"
-          type="info"
-          :closable="false"
-          style="margin-bottom: 16px"
-        >
+        <el-alert title="导入说明" type="info" :closable="false" style="margin-bottom: 16px">
           <ul>
             <li>支持 CSV、Excel 格式文件</li>
             <li>文件大小不超过 10MB</li>
@@ -200,12 +182,7 @@
           </ul>
         </el-alert>
 
-        <el-button
-          type="primary"
-          link
-          @click="handleDownloadTemplate"
-          style="margin-bottom: 16px"
-        >
+        <el-button type="primary" link @click="handleDownloadTemplate" style="margin-bottom: 16px">
           <el-icon><Download /></el-icon>
           下载导入模板
         </el-button>
@@ -219,9 +196,7 @@
           drag
         >
           <el-icon class="el-icon--upload"><UploadFilled /></el-icon>
-          <div class="el-upload__text">
-            将文件拖到此处,或<em>点击上传</em>
-          </div>
+          <div class="el-upload__text">将文件拖到此处,或<em>点击上传</em></div>
         </el-upload>
 
         <!-- 导入结果 -->
@@ -245,11 +220,7 @@
 
       <template #footer>
         <el-button @click="importDialogVisible = false">取消</el-button>
-        <el-button
-          type="primary"
-          :loading="importLoading"
-          @click="handleImportSubmit"
-        >
+        <el-button type="primary" :loading="importLoading" @click="handleImportSubmit">
           开始导入
         </el-button>
       </template>
@@ -262,7 +233,7 @@
 import { ref, reactive, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { Plus, Download, Upload,  UploadFilled, Star } from '@element-plus/icons-vue'
+import { Plus, Download, Upload, UploadFilled, Star } from '@element-plus/icons-vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'
 import FormDialog from '@/components/common/FormDialog.vue'
@@ -295,7 +266,7 @@ const {
   handleReset,
   handleSizeChange,
   handleCurrentChange,
-  refresh
+  refresh,
 } = useListPage<UserInfo>(userApi.getUserList, {
   phone: '',
   username: '',
@@ -327,7 +298,7 @@ const searchFields = computed<SearchField[]>(() => [
     width: '150px',
     options: tagList.value.map(tag => ({
       label: tag.name,
-      value: tag.id
+      value: tag.id,
     })),
   },
   {
@@ -380,18 +351,18 @@ const tableActions: TableAction[] = [
   {
     label: '查看',
     type: 'primary',
-    onClick: (row: UserInfo) => handleView(row)
+    onClick: (row: UserInfo) => handleView(row),
   },
   {
     label: '编辑',
     type: 'primary',
-    onClick: (row: UserInfo) => handleEdit(row)
+    onClick: (row: UserInfo) => handleEdit(row),
   },
   {
     label: '删除',
     type: 'danger',
-    onClick: (row: UserInfo) => handleDelete(row)
-  }
+    onClick: (row: UserInfo) => handleDelete(row),
+  },
 ]
 
 // 选中的用户
@@ -463,19 +434,25 @@ const formFields = computed(() => [
     prop: 'row3',
     label: '',
     columns: [
-      ...(isEdit.value ? [{
-        prop: 'status',
-        label: '状态',
-        type: 'radio',
-        options: USER_STATUS_OPTIONS,
-        span: 12,
-      }] : [{
-        prop: 'password',
-        label: '密码',
-        type: 'password',
-        placeholder: '请输入密码',
-        span: 12,
-      }]),
+      ...(isEdit.value
+        ? [
+            {
+              prop: 'status',
+              label: '状态',
+              type: 'radio',
+              options: USER_STATUS_OPTIONS,
+              span: 12,
+            },
+          ]
+        : [
+            {
+              prop: 'password',
+              label: '密码',
+              type: 'password',
+              placeholder: '请输入密码',
+              span: 12,
+            },
+          ]),
     ],
   },
 ]) as any
@@ -489,9 +466,7 @@ const formRules = {
     { required: true, message: '请输入手机号', trigger: 'blur' },
     { pattern: /^1[3-9]\d{9}$/, message: '请输入正确的手机号', trigger: 'blur' },
   ],
-  email: [
-    { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' },
-  ],
+  email: [{ type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' }],
   password: [
     { required: true, message: '请输入密码', trigger: 'blur' },
     { min: 6, max: 20, message: '密码长度在 6 到 20 个字符', trigger: 'blur' },
@@ -564,15 +539,11 @@ function handleEdit(row: UserInfo) {
 // 删除用户
 async function handleDelete(row: UserInfo) {
   try {
-    await ElMessageBox.confirm(
-      `确定要删除用户 "${row.username}" 吗?此操作不可恢复。`,
-      '删除确认',
-      {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      }
-    )
+    await ElMessageBox.confirm(`确定要删除用户 "${row.username}" 吗?此操作不可恢复。`, '删除确认', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    })
 
     await userApi.deleteUser(row.id)
     ElMessage.success('删除成功')
@@ -688,7 +659,7 @@ async function handleRemoveTag(user: UserInfo, tagId: number) {
     await ElMessageBox.confirm('确定要移除该标签吗?', '提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
-      type: 'warning'
+      type: 'warning',
     })
 
     await tagApi.removeUserTag(user.id, tagId)
@@ -745,7 +716,7 @@ function handleDownloadTemplate() {
   const template = [
     ['用户名', '真实姓名', '手机号', '邮箱', '备注'],
     ['zhangsan', '张三', '13800138001', 'zhangsan@example.com', '示例用户1'],
-    ['lisi', '李四', '13800138002', 'lisi@example.com', '示例用户2']
+    ['lisi', '李四', '13800138002', 'lisi@example.com', '示例用户2'],
   ]
 
   const csvContent = template.map(row => row.join(',')).join('\n')
@@ -773,7 +744,7 @@ function handleExport() {
     { key: 'tags', label: '用户标签' },
     { key: 'status', label: '状态' },
     { key: 'lastLoginAt', label: '最后登录时间' },
-    { key: 'createdAt', label: '注册时间' }
+    { key: 'createdAt', label: '注册时间' },
   ]
 
   // 处理数据
@@ -782,7 +753,7 @@ function handleExport() {
     tags: user.tags?.map(tag => tag.name).join('、') || 'info',
     status: getUserStatusLabel(user.status),
     lastLoginAt: formatDateTime(user.lastLoginAt),
-    createdAt: formatDateTime(user.createdAt)
+    createdAt: formatDateTime(user.createdAt),
   }))
 
   // 导出

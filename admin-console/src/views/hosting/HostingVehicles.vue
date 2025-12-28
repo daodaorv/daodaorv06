@@ -1,8 +1,6 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="hosting-vehicles-container">
-    
-
     <SearchForm
       v-model="searchForm"
       :fields="searchFields"
@@ -49,7 +47,9 @@
       </template>
       <template #income="{ row }">
         <div style="font-size: 12px">
-          <div style="color: #f56c6c; font-weight: bold">总: ¥{{ row.totalIncome.toLocaleString() }}</div>
+          <div style="color: #f56c6c; font-weight: bold">
+            总: ¥{{ row.totalIncome.toLocaleString() }}
+          </div>
           <div style="color: #67c23a">车主: ¥{{ row.ownerIncome.toLocaleString() }}</div>
           <div style="color: #409eff">平台: ¥{{ row.platformIncome.toLocaleString() }}</div>
         </div>
@@ -85,7 +85,10 @@
               {{ currentVehicle.vehicleNo }}
             </el-descriptions-item>
             <el-descriptions-item label="托管类型">
-              <el-tag :type="currentVehicle.hostingType === 'old_car' ? 'success' : 'primary'" size="small">
+              <el-tag
+                :type="currentVehicle.hostingType === 'old_car' ? 'success' : 'primary'"
+                size="small"
+              >
                 {{ currentVehicle.hostingType === 'old_car' ? '自有车托管' : '购车托管' }}
               </el-tag>
             </el-descriptions-item>
@@ -221,7 +224,7 @@ import {
   getHostingVehicleList,
   updateHostingVehicleStatus,
   type HostingVehicle,
-  type HostingVehicleListParams
+  type HostingVehicleListParams,
 } from '@/api/hosting'
 import { useErrorHandler } from '@/composables'
 
@@ -231,7 +234,7 @@ const { handleApiError } = useErrorHandler()
 // 托管类型选项
 const HOSTING_TYPE_OPTIONS = [
   { label: '自有车托管', value: 'old_car' },
-  { label: '购车托管', value: 'new_car' }
+  { label: '购车托管', value: 'new_car' },
 ]
 
 // 车辆状态选项
@@ -239,14 +242,14 @@ const VEHICLE_STATUS_OPTIONS = [
   { label: '运营中', value: 'operating' },
   { label: '维护中', value: 'maintenance' },
   { label: '车主自用', value: 'owner_using' },
-  { label: '已下线', value: 'offline' }
+  { label: '已下线', value: 'offline' },
 ]
 
 // 搜索表单
 const searchForm = reactive<HostingVehicleListParams>({
   keyword: '',
   hostingType: undefined,
-  status: undefined
+  status: undefined,
 })
 
 // 搜索字段配置
@@ -256,7 +259,7 @@ const searchFields = computed<SearchField[]>(() => [
     label: '关键词',
     type: 'input',
     placeholder: '车辆编号/车主姓名/车牌号',
-    width: '220px'
+    width: '220px',
   },
   {
     prop: 'hostingType',
@@ -264,7 +267,7 @@ const searchFields = computed<SearchField[]>(() => [
     type: 'select',
     placeholder: '全部类型',
     options: HOSTING_TYPE_OPTIONS,
-    width: '150px'
+    width: '150px',
   },
   {
     prop: 'status',
@@ -272,8 +275,8 @@ const searchFields = computed<SearchField[]>(() => [
     type: 'select',
     placeholder: '全部状态',
     options: VEHICLE_STATUS_OPTIONS,
-    width: '150px'
-  }
+    width: '150px',
+  },
 ])
 
 // 表格列配置
@@ -286,7 +289,7 @@ const tableColumns = computed(() => [
   { prop: 'orderCount', label: '订单数', width: 80 },
   { prop: 'income', label: '收益统计', width: 150, slot: true },
   { prop: 'utilizationRate', label: '使用率', width: 150, slot: true },
-  { prop: 'hostingStartDate', label: '托管开始日期', width: 120 }
+  { prop: 'hostingStartDate', label: '托管开始日期', width: 120 },
 ]) as any
 
 // 表格操作配置
@@ -294,8 +297,8 @@ const tableActions = computed<TableAction[]>(() => [
   {
     label: '查看详情',
     type: 'primary',
-    onClick: handleViewDetail
-  }
+    onClick: handleViewDetail,
+  },
 ])
 
 // 数据列表
@@ -306,7 +309,7 @@ const loading = ref(false)
 const pagination = reactive({
   total: 0,
   page: 1,
-  pageSize: 10
+  pageSize: 10,
 })
 
 // 详情对话框
@@ -315,7 +318,7 @@ const currentVehicle = ref<HostingVehicle | null>(null)
 
 // 状态更新表单
 const statusForm = reactive({
-  status: ''
+  status: '',
 })
 
 // 获取车辆列表
@@ -325,7 +328,7 @@ const fetchVehicleList = async () => {
     const res: any = await getHostingVehicleList({
       ...searchForm,
       page: pagination.page,
-      pageSize: pagination.pageSize
+      pageSize: pagination.pageSize,
     })
     vehicleList.value = res.data.list
     pagination.total = res.data.total
@@ -393,7 +396,7 @@ const getStatusTag = (status: string) => {
     operating: 'success',
     maintenance: 'warning',
     owner_using: 'primary',
-    offline: 'info'
+    offline: 'info',
   }
   return tagMap[status] || 'info'
 }
@@ -404,7 +407,7 @@ const getStatusLabel = (status: string) => {
     operating: '运营中',
     maintenance: '维护中',
     owner_using: '车主自用',
-    offline: '已下线'
+    offline: '已下线',
   }
   return labelMap[status] || status
 }

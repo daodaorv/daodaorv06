@@ -81,7 +81,10 @@ const iconComponent = computed(() => {
   return props.icon
 })
 
-const formatValue = (value: number | string | undefined, format?: 'number' | 'currency' | 'percent') => {
+const formatValue = (
+  value: number | string | undefined,
+  format?: 'number' | 'currency' | 'percent'
+) => {
   if (value === undefined || value === null) return '0'
   if (typeof value === 'string') return value
 

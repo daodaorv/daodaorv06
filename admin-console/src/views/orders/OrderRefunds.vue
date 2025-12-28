@@ -1,8 +1,6 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="order-refunds-container">
-    
-
     <StatsCard :stats="statsConfig" />
 
     <SearchForm
@@ -47,13 +45,17 @@
     >
       <el-descriptions :column="1" border>
         <el-descriptions-item label="订单号">{{ currentRefund?.orderNo }}</el-descriptions-item>
-        <el-descriptions-item label="用户">{{ currentRefund?.userName }} - {{ currentRefund?.userPhone }}</el-descriptions-item>
+        <el-descriptions-item label="用户"
+          >{{ currentRefund?.userName }} - {{ currentRefund?.userPhone }}</el-descriptions-item
+        >
         <el-descriptions-item label="退款金额">
           <span style="color: #f56c6c; font-weight: bold">
             ¥{{ currentRefund?.refundAmount.toLocaleString() }}
           </span>
         </el-descriptions-item>
-        <el-descriptions-item label="退款原因">{{ currentRefund?.refundReason }}</el-descriptions-item>
+        <el-descriptions-item label="退款原因">{{
+          currentRefund?.refundReason
+        }}</el-descriptions-item>
         <el-descriptions-item label="申请时间">{{ currentRefund?.applyTime }}</el-descriptions-item>
       </el-descriptions>
 
@@ -138,7 +140,7 @@ import {
   getRefundStats,
   approveRefund,
   type Refund,
-  type RefundListParams
+  type RefundListParams,
 } from '@/api/order'
 import { useErrorHandler } from '@/composables'
 
@@ -152,13 +154,13 @@ const REFUND_STATUS_OPTIONS = [
   { label: '已拒绝', value: 'rejected' },
   { label: '退款中', value: 'processing' },
   { label: '已完成', value: 'completed' },
-  { label: '退款失败', value: 'failed' }
+  { label: '退款失败', value: 'failed' },
 ]
 
 // 搜索表单
 const searchForm = reactive<RefundListParams>({
   keyword: '',
-  status: undefined
+  status: undefined,
 })
 
 // 统计数据
@@ -167,7 +169,7 @@ const stats = reactive({
   pending: 0,
   processing: 0,
   completed: 0,
-  totalAmount: 0
+  totalAmount: 0,
 })
 
 // 统计卡片配置
@@ -176,27 +178,27 @@ const statsConfig = computed<StatItem[]>(() => [
     label: '退款总数',
     value: stats.totalRefunds,
     icon: Document,
-    color: '#409eff'
+    color: '#409eff',
   },
   {
     label: '待审核',
     value: stats.pending,
     icon: Clock,
-    color: '#e6a23c'
+    color: '#e6a23c',
   },
   {
     label: '退款中',
     value: stats.processing,
     icon: CircleCheck,
-    color: '#67c23a'
+    color: '#67c23a',
   },
   {
     label: '退款总额',
     value: stats.totalAmount,
     icon: Money,
     color: '#f56c6c',
-    format: 'currency'
-  }
+    format: 'currency',
+  },
 ])
 
 // 搜索字段配置
@@ -206,7 +208,7 @@ const searchFields = computed<SearchField[]>(() => [
     label: '关键词',
     type: 'input',
     placeholder: '订单号/用户/手机号',
-    width: '200px'
+    width: '200px',
   },
   {
     prop: 'status',
@@ -214,8 +216,8 @@ const searchFields = computed<SearchField[]>(() => [
     type: 'select',
     placeholder: '请选择状态',
     width: '150px',
-    options: REFUND_STATUS_OPTIONS
-  }
+    options: REFUND_STATUS_OPTIONS,
+  },
 ])
 
 // 表格列配置
@@ -230,7 +232,7 @@ const tableColumns: TableColumn[] = [
   { prop: 'refundMethod', label: '退款方式', width: 120, slot: 'refundMethod' },
   { prop: 'applyTime', label: '申请时间', width: 180 },
   { prop: 'approvedBy', label: '审核人', width: 120 },
-  { prop: 'completedTime', label: '完成时间', width: 180 }
+  { prop: 'completedTime', label: '完成时间', width: 180 },
 ]
 
 // 表格操作列配置
@@ -239,32 +241,32 @@ const tableActions: TableAction[] = [
     label: '审核',
     type: 'primary',
     onClick: (row: Refund) => handleApprove(row),
-    show: (row: Refund) => row.status === 'pending'
+    show: (row: Refund) => row.status === 'pending',
   },
   {
     label: '重试',
     type: 'warning',
     onClick: (row: Refund) => handleRetry(row),
-    show: (row: Refund) => row.status === 'failed'
+    show: (row: Refund) => row.status === 'failed',
   },
   {
     label: '切换方式',
     type: 'primary',
     onClick: (row: Refund) => handleChangeMethod(row),
-    show: (row: Refund) => row.status === 'failed' || row.status === 'processing'
+    show: (row: Refund) => row.status === 'failed' || row.status === 'processing',
   },
   {
     label: '线下登记',
     type: 'success',
     onClick: (row: Refund) => handleOfflineRefund(row),
-    show: (row: Refund) => row.status === 'failed' || row.status === 'approved'
+    show: (row: Refund) => row.status === 'failed' || row.status === 'approved',
   },
   {
     label: '查询进度',
     type: 'info',
     onClick: (row: Refund) => handleCheckProgress(row),
-    show: (row: Refund) => row.status === 'processing' || row.status === 'approved'
-  }
+    show: (row: Refund) => row.status === 'processing' || row.status === 'approved',
+  },
 ]
 
 // 退款列表
@@ -275,7 +277,7 @@ const loading = ref(false)
 const pagination = reactive({
   page: 1,
   pageSize: 10,
-  total: 0
+  total: 0,
 })
 
 // 审核退款对话框
@@ -286,17 +288,15 @@ const currentRefund = ref<Refund | null>(null)
 
 const approveForm = reactive({
   approved: true,
-  reason: ''
+  reason: '',
 })
 
 const approveFormRules: FormRules = {
-  approved: [
-    { required: true, message: '请选择审核结果', trigger: 'change' }
-  ],
+  approved: [{ required: true, message: '请选择审核结果', trigger: 'change' }],
   reason: [
     { required: true, message: '请输入拒绝原因', trigger: 'blur' },
-    { min: 5, message: '拒绝原因至少5个字符', trigger: 'blur' }
-  ]
+    { min: 5, message: '拒绝原因至少5个字符', trigger: 'blur' },
+  ],
 }
 
 // 退款重试对话框
@@ -318,10 +318,10 @@ const loadRefundList = async () => {
     const params: RefundListParams = {
       page: pagination.page,
       pageSize: pagination.pageSize,
-      ...searchForm
+      ...searchForm,
     }
 
-    const res = await getRefundList(params) as any
+    const res = (await getRefundList(params)) as any
     refundList.value = res.data.list
     pagination.total = res.data.total
   } catch (error) {
@@ -334,7 +334,7 @@ const loadRefundList = async () => {
 // 加载统计数据
 const loadStats = async () => {
   try {
-    const res = await getRefundStats() as any
+    const res = (await getRefundStats()) as any
     stats.totalRefunds = res.data.totalRefunds
     stats.pending = res.data.pending
     stats.processing = res.data.processing
@@ -397,7 +397,7 @@ const handleApproveSubmit = async () => {
 
   // 如果拒绝，需要验证拒绝原因
   if (!approveForm.approved) {
-    await approveFormRef.value.validate(async (valid) => {
+    await approveFormRef.value.validate(async valid => {
       if (!valid) return
       await submitApprove()
     })
@@ -409,11 +409,7 @@ const handleApproveSubmit = async () => {
 const submitApprove = async () => {
   approveLoading.value = true
   try {
-    await approveRefund(
-      currentRefund.value!.id,
-      approveForm.approved,
-      approveForm.reason
-    )
+    await approveRefund(currentRefund.value!.id, approveForm.approved, approveForm.reason)
     ElMessage.success(approveForm.approved ? '审核通过' : '审核拒绝')
     approveDialogVisible.value = false
     loadRefundList()
@@ -506,7 +502,7 @@ const getRefundStatusTag = (status: string) => {
     rejected: 'danger',
     processing: 'primary',
     completed: 'success',
-    failed: 'danger'
+    failed: 'danger',
   }
   return tagMap[status] || 'info'
 }
@@ -519,7 +515,7 @@ const getRefundStatusLabel = (status: string) => {
     rejected: '已拒绝',
     processing: '退款中',
     completed: '已完成',
-    failed: '退款失败'
+    failed: '退款失败',
   }
   return labelMap[status] || status
 }
@@ -530,7 +526,7 @@ const getRefundMethodLabel = (method: string) => {
     original: '原路退回',
     bank: '银行卡',
     alipay: '支付宝',
-    wechat: '微信'
+    wechat: '微信',
   }
   return labelMap[method] || method
 }

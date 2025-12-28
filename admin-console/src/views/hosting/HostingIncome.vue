@@ -1,8 +1,6 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="hosting-income-container">
-    
-
     <!-- 统计卡片 -->
     <el-row :gutter="20" class="stats-row">
       <el-col :span="6">
@@ -155,8 +153,12 @@
       </template>
       <template #distribution="{ row }">
         <div style="font-size: 12px">
-          <div style="color: #67c23a">车主: ¥{{ row.ownerAmount.toLocaleString() }} ({{ row.ownerShare }}%)</div>
-          <div style="color: #409eff">平台: ¥{{ row.platformAmount.toLocaleString() }} ({{ row.platformShare }}%)</div>
+          <div style="color: #67c23a">
+            车主: ¥{{ row.ownerAmount.toLocaleString() }} ({{ row.ownerShare }}%)
+          </div>
+          <div style="color: #409eff">
+            平台: ¥{{ row.platformAmount.toLocaleString() }} ({{ row.platformShare }}%)
+          </div>
         </div>
       </template>
       <template #settlementStatus="{ row }">
@@ -225,11 +227,16 @@
             </el-descriptions-item>
             <el-descriptions-item label="平台分成">
               <span style="color: #409eff; font-weight: bold">
-                {{ currentRecord.platformShare }}% = ¥{{ currentRecord.platformAmount.toLocaleString() }}
+                {{ currentRecord.platformShare }}% = ¥{{
+                  currentRecord.platformAmount.toLocaleString()
+                }}
               </span>
             </el-descriptions-item>
             <el-descriptions-item label="结算状态">
-              <el-tag :type="currentRecord.settlementStatus === 'settled' ? 'success' : 'warning'" size="small">
+              <el-tag
+                :type="currentRecord.settlementStatus === 'settled' ? 'success' : 'warning'"
+                size="small"
+              >
                 {{ currentRecord.settlementStatus === 'settled' ? '已结算' : '待结算' }}
               </el-tag>
             </el-descriptions-item>
@@ -259,7 +266,7 @@ import {
   Van,
   CircleCheck,
   DataLine,
-  Download
+  Download,
 } from '@element-plus/icons-vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'
@@ -271,7 +278,7 @@ import {
   exportIncomeRecords,
   type IncomeRecord,
   type IncomeRecordListParams,
-  type IncomeStats
+  type IncomeStats,
 } from '@/api/hosting'
 import { useErrorHandler } from '@/composables'
 
@@ -284,13 +291,13 @@ const INCOME_TYPE_OPTIONS = [
   { label: '车主自用', value: 'owner_usage' },
   { label: '违约罚款', value: 'penalty' },
   { label: '淡季补贴', value: 'subsidy' },
-  { label: '其他', value: 'other' }
+  { label: '其他', value: 'other' },
 ]
 
 // 结算状态选项
 const SETTLEMENT_STATUS_OPTIONS = [
   { label: '待结算', value: 'pending' },
-  { label: '已结算', value: 'settled' }
+  { label: '已结算', value: 'settled' },
 ]
 
 // 搜索表单
@@ -299,7 +306,7 @@ const searchForm = reactive<IncomeRecordListParams>({
   type: undefined,
   settlementStatus: undefined,
   startDate: '',
-  endDate: ''
+  endDate: '',
 })
 
 // 搜索字段配置
@@ -309,7 +316,7 @@ const searchFields = computed<SearchField[]>(() => [
     label: '关键词',
     type: 'input',
     placeholder: '记录编号/车辆编号/车主姓名',
-    width: '220px'
+    width: '220px',
   },
   {
     prop: 'type',
@@ -317,7 +324,7 @@ const searchFields = computed<SearchField[]>(() => [
     type: 'select',
     placeholder: '全部类型',
     options: INCOME_TYPE_OPTIONS,
-    width: '150px'
+    width: '150px',
   },
   {
     prop: 'settlementStatus',
@@ -325,22 +332,22 @@ const searchFields = computed<SearchField[]>(() => [
     type: 'select',
     placeholder: '全部状态',
     options: SETTLEMENT_STATUS_OPTIONS,
-    width: '150px'
+    width: '150px',
   },
   {
     prop: 'startDate',
     label: '开始日期',
     type: 'date',
     placeholder: '开始日期',
-    width: '150px'
+    width: '150px',
   },
   {
     prop: 'endDate',
     label: '结束日期',
     type: 'date',
     placeholder: '结束日期',
-    width: '150px'
-  }
+    width: '150px',
+  },
 ])
 
 // 表格列配置
@@ -353,7 +360,7 @@ const tableColumns = computed(() => [
   { prop: 'amount', label: '总金额', width: 120, slot: true },
   { prop: 'distribution', label: '收益分配', width: 180, slot: true },
   { prop: 'settlementStatus', label: '结算状态', width: 100, slot: true },
-  { prop: 'recordDate', label: '记录日期', width: 120 }
+  { prop: 'recordDate', label: '记录日期', width: 120 },
 ]) as any
 
 // 表格操作配置
@@ -361,8 +368,8 @@ const tableActions = computed<TableAction[]>(() => [
   {
     label: '查看详情',
     type: 'primary',
-    onClick: handleViewDetail
-  }
+    onClick: handleViewDetail,
+  },
 ])
 
 // 数据列表
@@ -377,14 +384,14 @@ const stats = ref<IncomeStats>({
   monthlyIncome: 0,
   vehicleCount: 0,
   activeVehicleCount: 0,
-  averageUtilization: 0
+  averageUtilization: 0,
 })
 
 // 分页
 const pagination = reactive({
   total: 0,
   page: 1,
-  pageSize: 10
+  pageSize: 10,
 })
 
 // 详情对话框
@@ -408,7 +415,7 @@ const fetchRecordList = async () => {
     const res: any = await getIncomeRecordList({
       ...searchForm,
       page: pagination.page,
-      pageSize: pagination.pageSize
+      pageSize: pagination.pageSize,
     })
     recordList.value = res.data.list
     pagination.total = res.data.total
@@ -475,7 +482,7 @@ const formatDateTime = (dateStr: string) => {
     month: '2-digit',
     day: '2-digit',
     hour: '2-digit',
-    minute: '2-digit'
+    minute: '2-digit',
   })
 }
 
@@ -486,7 +493,7 @@ const getTypeTag = (type: string) => {
     owner_usage: 'primary',
     penalty: 'danger',
     subsidy: 'warning',
-    other: 'info'
+    other: 'info',
   }
   return tagMap[type] || 'info'
 }
@@ -498,7 +505,7 @@ const getTypeLabel = (type: string) => {
     owner_usage: '车主自用',
     penalty: '违约罚款',
     subsidy: '淡季补贴',
-    other: '其他'
+    other: '其他',
   }
   return labelMap[type] || type
 }

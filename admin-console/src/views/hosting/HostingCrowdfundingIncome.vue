@@ -200,9 +200,7 @@
               </template>
             </el-table-column>
             <el-table-column prop="shareRatio" label="份额占比" width="100">
-              <template #default="{ row }">
-                {{ row.shareRatio }}%
-              </template>
+              <template #default="{ row }"> {{ row.shareRatio }}% </template>
             </el-table-column>
             <el-table-column prop="income" label="分配收益" width="120">
               <template #default="{ row }">
@@ -658,7 +656,9 @@ const getRoleLabel = (role: string) => {
 }
 
 // 获取分配状态标签类型
-const getDistributionStatusTag = (status: string): 'success' | 'warning' | 'danger' | 'info' | 'primary' => {
+const getDistributionStatusTag = (
+  status: string
+): 'success' | 'warning' | 'danger' | 'info' | 'primary' => {
   const tagMap: Record<string, 'success' | 'warning' | 'danger' | 'info' | 'primary'> = {
     pending: 'warning',
     success: 'success',

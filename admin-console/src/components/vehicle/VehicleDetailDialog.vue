@@ -13,7 +13,7 @@
         <el-tab-pane label="基础信息" name="basic">
           <el-descriptions :column="2" border v-if="vehicleDetail">
             <el-descriptions-item label="车牌号">
-              <span style="font-weight: bold; font-size: 16px;">
+              <span style="font-weight: bold; font-size: 16px">
                 {{ vehicleDetail.vehicleNumber }}
               </span>
             </el-descriptions-item>
@@ -40,7 +40,7 @@
               {{ formatDate(vehicleDetail.purchaseDate) }}
             </el-descriptions-item>
             <el-descriptions-item label="购入价格">
-              <span style="color: #909399;">
+              <span style="color: #909399">
                 ¥{{ vehicleDetail.purchasePrice?.toLocaleString() }}
               </span>
             </el-descriptions-item>
@@ -53,7 +53,7 @@
               </el-tag>
             </el-descriptions-item>
             <el-descriptions-item label="日租金">
-              <span style="color: #f56c6c; font-weight: bold; font-size: 18px;">
+              <span style="color: #f56c6c; font-weight: bold; font-size: 18px">
                 ¥{{ vehicleDetail.dailyPrice }}
               </span>
             </el-descriptions-item>
@@ -69,14 +69,18 @@
               {{ formatDate(vehicleDetail.updatedAt) }}
             </el-descriptions-item>
             <el-descriptions-item label="车辆图片" :span="2">
-              <el-carousel v-if="vehicleDetail.images && vehicleDetail.images.length > 0" height="200px" indicator-position="outside">
+              <el-carousel
+                v-if="vehicleDetail.images && vehicleDetail.images.length > 0"
+                height="200px"
+                indicator-position="outside"
+              >
                 <el-carousel-item v-for="(image, index) in vehicleDetail.images" :key="index">
                   <el-image
                     :src="image"
                     :preview-src-list="vehicleDetail.images"
                     :initial-index="index"
                     fit="contain"
-                    style="width: 100%; height: 200px;"
+                    style="width: 100%; height: 200px"
                   >
                     <template #error>
                       <div class="image-slot">
@@ -114,12 +118,7 @@
             />
 
             <!-- 保险记录表格 -->
-            <el-table
-              :data="insuranceList"
-              border
-              stripe
-              style="width: 100%"
-            >
+            <el-table :data="insuranceList" border stripe style="width: 100%">
               <el-table-column prop="insuranceType" label="保险类型" width="120">
                 <template #default="{ row }">
                   <el-tag :type="getInsuranceTypeTag(row.insuranceType)" size="small">
@@ -127,8 +126,18 @@
                   </el-tag>
                 </template>
               </el-table-column>
-              <el-table-column prop="insuranceCompany" label="保险公司" width="150" show-overflow-tooltip />
-              <el-table-column prop="policyNumber" label="保单号" width="150" show-overflow-tooltip />
+              <el-table-column
+                prop="insuranceCompany"
+                label="保险公司"
+                width="150"
+                show-overflow-tooltip
+              />
+              <el-table-column
+                prop="policyNumber"
+                label="保单号"
+                width="150"
+                show-overflow-tooltip
+              />
               <el-table-column prop="startDate" label="生效日期" width="120">
                 <template #default="{ row }">
                   {{ formatDate(row.startDate) }}
@@ -140,9 +149,7 @@
                 </template>
               </el-table-column>
               <el-table-column prop="premium" label="保费" width="100">
-                <template #default="{ row }">
-                  ¥{{ row.premium.toLocaleString() }}
-                </template>
+                <template #default="{ row }"> ¥{{ row.premium.toLocaleString() }} </template>
               </el-table-column>
               <el-table-column prop="status" label="状态" width="100">
                 <template #default="{ row }">
@@ -164,10 +171,8 @@
             <el-empty v-if="insuranceList.length === 0" description="暂无保险记录" />
 
             <!-- 跳转按钮 -->
-            <div style="margin-top: 16px; text-align: right;">
-              <el-button type="primary" @click="handleJumpToInsurance">
-                跳转到保险管理
-              </el-button>
+            <div style="margin-top: 16px; text-align: right">
+              <el-button type="primary" @click="handleJumpToInsurance"> 跳转到保险管理 </el-button>
             </div>
           </div>
         </el-tab-pane>
@@ -183,12 +188,7 @@
             />
 
             <!-- 维保记录表格 -->
-            <el-table
-              :data="maintenanceList"
-              border
-              stripe
-              style="width: 100%"
-            >
+            <el-table :data="maintenanceList" border stripe style="width: 100%">
               <el-table-column prop="type" label="维保类型" width="120">
                 <template #default="{ row }">
                   <el-tag :type="getMaintenanceTypeTag(row.type)" size="small">
@@ -196,8 +196,18 @@
                   </el-tag>
                 </template>
               </el-table-column>
-              <el-table-column prop="description" label="维保内容" min-width="150" show-overflow-tooltip />
-              <el-table-column prop="serviceProvider" label="服务商" width="150" show-overflow-tooltip />
+              <el-table-column
+                prop="description"
+                label="维保内容"
+                min-width="150"
+                show-overflow-tooltip
+              />
+              <el-table-column
+                prop="serviceProvider"
+                label="服务商"
+                width="150"
+                show-overflow-tooltip
+              />
               <el-table-column prop="maintenanceDate" label="计划日期" width="120">
                 <template #default="{ row }">
                   {{ formatDate(row.maintenanceDate) }}
@@ -209,9 +219,7 @@
                 </template>
               </el-table-column>
               <el-table-column prop="cost" label="费用" width="100">
-                <template #default="{ row }">
-                  ¥{{ row.totalCost.toLocaleString() }}
-                </template>
+                <template #default="{ row }"> ¥{{ row.totalCost.toLocaleString() }} </template>
               </el-table-column>
               <el-table-column prop="status" label="状态" width="100">
                 <template #default="{ row }">
@@ -233,7 +241,7 @@
             <el-empty v-if="maintenanceList.length === 0" description="暂无维保记录" />
 
             <!-- 跳转按钮 -->
-            <div style="margin-top: 16px; text-align: right;">
+            <div style="margin-top: 16px; text-align: right">
               <el-button type="primary" @click="handleJumpToMaintenance">
                 跳转到维保管理
               </el-button>
@@ -252,12 +260,7 @@
             />
 
             <!-- 违章记录表格 -->
-            <el-table
-              :data="violationList"
-              border
-              stripe
-              style="width: 100%"
-            >
+            <el-table :data="violationList" border stripe style="width: 100%">
               <el-table-column prop="violationType" label="违章类型" width="120">
                 <template #default="{ row }">
                   <el-tag :type="getViolationTypeTag(row.violationType)" size="small">
@@ -270,16 +273,17 @@
                   {{ formatDate(row.violationDate) }}
                 </template>
               </el-table-column>
-              <el-table-column prop="violationLocation" label="违章地点" min-width="150" show-overflow-tooltip />
+              <el-table-column
+                prop="violationLocation"
+                label="违章地点"
+                min-width="150"
+                show-overflow-tooltip
+              />
               <el-table-column prop="penaltyPoints" label="扣分" width="80">
-                <template #default="{ row }">
-                  {{ row.penaltyPoints }} 分
-                </template>
+                <template #default="{ row }"> {{ row.penaltyPoints }} 分 </template>
               </el-table-column>
               <el-table-column prop="fineAmount" label="罚款" width="100">
-                <template #default="{ row }">
-                  ¥{{ row.fineAmount.toLocaleString() }}
-                </template>
+                <template #default="{ row }"> ¥{{ row.fineAmount.toLocaleString() }} </template>
               </el-table-column>
               <el-table-column prop="status" label="状态" width="100">
                 <template #default="{ row }">
@@ -301,10 +305,8 @@
             <el-empty v-if="violationList.length === 0" description="暂无违章记录" />
 
             <!-- 跳转按钮 -->
-            <div style="margin-top: 16px; text-align: right;">
-              <el-button type="primary" @click="handleJumpToViolation">
-                跳转到违章管理
-              </el-button>
+            <div style="margin-top: 16px; text-align: right">
+              <el-button type="primary" @click="handleJumpToViolation"> 跳转到违章管理 </el-button>
             </div>
           </div>
         </el-tab-pane>
@@ -408,7 +410,11 @@
         {{ formatDate(currentMaintenanceRecord.maintenanceDate) }}
       </el-descriptions-item>
       <el-descriptions-item label="完成日期">
-        {{ currentMaintenanceRecord.completionDate ? formatDate(currentMaintenanceRecord.completionDate) : '-' }}
+        {{
+          currentMaintenanceRecord.completionDate
+            ? formatDate(currentMaintenanceRecord.completionDate)
+            : '-'
+        }}
       </el-descriptions-item>
       <el-descriptions-item label="工时费">
         ¥{{ currentMaintenanceRecord.laborCost.toLocaleString() }}
@@ -477,10 +483,14 @@
         {{ currentViolationRecord.driverLicense || '-' }}
       </el-descriptions-item>
       <el-descriptions-item label="处理日期">
-        {{ currentViolationRecord.processDate ? formatDate(currentViolationRecord.processDate) : '-' }}
+        {{
+          currentViolationRecord.processDate ? formatDate(currentViolationRecord.processDate) : '-'
+        }}
       </el-descriptions-item>
       <el-descriptions-item label="缴款日期">
-        {{ currentViolationRecord.paymentDate ? formatDate(currentViolationRecord.paymentDate) : '-' }}
+        {{
+          currentViolationRecord.paymentDate ? formatDate(currentViolationRecord.paymentDate) : '-'
+        }}
       </el-descriptions-item>
       <el-descriptions-item label="缴款方式">
         {{ currentViolationRecord.paymentMethod || '-' }}
@@ -534,8 +544,8 @@ const props = withDefaults(defineProps<Props>(), {
 // Emits
 const emit = defineEmits<{
   'update:modelValue': [value: boolean]
-  'edit': [vehicle: Vehicle]
-  'refresh': []
+  edit: [vehicle: Vehicle]
+  refresh: []
 }>()
 
 // Composables
@@ -591,15 +601,18 @@ const violationDetailDialogVisible = ref(false)
 const currentViolationRecord = ref<ViolationRecord | null>(null)
 
 // 监听 modelValue 变化
-watch(() => props.modelValue, (val) => {
-  visible.value = val
-  if (val && props.vehicleId) {
-    loadVehicleDetail()
+watch(
+  () => props.modelValue,
+  val => {
+    visible.value = val
+    if (val && props.vehicleId) {
+      loadVehicleDetail()
+    }
   }
-})
+)
 
 // 监听 visible 变化
-watch(visible, (val) => {
+watch(visible, val => {
   emit('update:modelValue', val)
   if (!val) {
     // 关闭时重置数据
@@ -844,7 +857,9 @@ const getMaintenanceTypeLabel = (type: string) => {
   return labelMap[type] || type
 }
 
-const getMaintenanceTypeTag = (type: string): 'primary' | 'warning' | 'success' | 'danger' | 'info' => {
+const getMaintenanceTypeTag = (
+  type: string
+): 'primary' | 'warning' | 'success' | 'danger' | 'info' => {
   const tagMap: Record<string, 'primary' | 'warning' | 'success' | 'danger' | 'info'> = {
     regular: 'primary',
     repair: 'warning',
@@ -965,7 +980,9 @@ const getViolationStatusLabel = (status: string) => {
   return labelMap[status] || status
 }
 
-const getViolationStatusTag = (status: string): 'warning' | 'primary' | 'success' | 'info' | 'danger' => {
+const getViolationStatusTag = (
+  status: string
+): 'warning' | 'primary' | 'success' | 'info' | 'danger' => {
   const tagMap: Record<string, 'warning' | 'primary' | 'success' | 'info' | 'danger'> = {
     pending: 'warning',
     processing: 'primary',

@@ -2,10 +2,20 @@
   <div class="balance-management">
     <el-form :inline="true" :model="queryForm" class="search-form">
       <el-form-item label="用户">
-        <el-input v-model="queryForm.userId" placeholder="请输入用户ID或姓名" clearable style="width: 200px" />
+        <el-input
+          v-model="queryForm.userId"
+          placeholder="请输入用户ID或姓名"
+          clearable
+          style="width: 200px"
+        />
       </el-form-item>
       <el-form-item label="最低余额">
-        <el-input-number v-model="queryForm.minBalance" :min="0" :precision="2" style="width: 150px" />
+        <el-input-number
+          v-model="queryForm.minBalance"
+          :min="0"
+          :precision="2"
+          style="width: 150px"
+        />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="handleSearch">
@@ -28,7 +38,9 @@
       </el-table-column>
       <el-table-column prop="frozenBalance" label="冻结余额" width="120" align="right">
         <template #default="{ row }">
-          <span v-if="row.frozenBalance > 0" style="color: #f56c6c">¥{{ formatNumber(row.frozenBalance) }}</span>
+          <span v-if="row.frozenBalance > 0" style="color: #f56c6c"
+            >¥{{ formatNumber(row.frozenBalance) }}</span
+          >
           <span v-else>-</span>
         </template>
       </el-table-column>

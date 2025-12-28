@@ -22,12 +22,7 @@
       @selection-change="handleSelectionChange"
     >
       <!-- 批量选择列 -->
-      <el-table-column
-        v-if="selectable"
-        type="selection"
-        width="55"
-        fixed="left"
-      />
+      <el-table-column v-if="selectable" type="selection" width="55" fixed="left" />
 
       <el-table-column
         v-for="column in columns"

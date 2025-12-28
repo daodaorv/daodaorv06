@@ -72,7 +72,12 @@
           </div>
         </template>
 
-        <el-form :model="approvalForm" :rules="approvalRules" ref="approvalFormRef" label-width="100px">
+        <el-form
+          :model="approvalForm"
+          :rules="approvalRules"
+          ref="approvalFormRef"
+          label-width="100px"
+        >
           <!-- 审批结果 -->
           <el-form-item label="审批结果" prop="result" required>
             <el-radio-group v-model="approvalForm.result">
@@ -154,27 +159,28 @@ type StepStatus = 'pending' | 'approved' | 'rejected' | 'returned' | 'processing
 
 // 审批步骤接口
 interface ApprovalStep {
-  name: string                    // 步骤名称
-  status: StepStatus              // 步骤状态
-  operator?: string               // 操作人
-  operatorAvatar?: string         // 操作人头像
-  timestamp?: string              // 操作时间
-  comment?: string                // 审批意见
-  attachments?: Array<{           // 附件
+  name: string // 步骤名称
+  status: StepStatus // 步骤状态
+  operator?: string // 操作人
+  operatorAvatar?: string // 操作人头像
+  timestamp?: string // 操作时间
+  comment?: string // 审批意见
+  attachments?: Array<{
+    // 附件
     name: string
     url: string
   }>
-  deadline?: string               // 截止时间
+  deadline?: string // 截止时间
 }
 
 // Props 定义
 interface Props {
-  steps: ApprovalStep[]           // 审批流程步骤
-  currentStepIndex?: number       // 当前步骤索引
-  showApprovalActions?: boolean   // 是否显示审批操作区
-  allowReturn?: boolean           // 是否允许退回
-  allowAttachment?: boolean       // 是否允许上传附件
-  uploadUrl?: string              // 附件上传地址
+  steps: ApprovalStep[] // 审批流程步骤
+  currentStepIndex?: number // 当前步骤索引
+  showApprovalActions?: boolean // 是否显示审批操作区
+  allowReturn?: boolean // 是否允许退回
+  allowAttachment?: boolean // 是否允许上传附件
+  uploadUrl?: string // 附件上传地址
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -188,11 +194,13 @@ const props = withDefaults(defineProps<Props>(), {
 
 // Emits 定义
 const emit = defineEmits<{
-  'submit': [data: {
-    result: 'approved' | 'rejected' | 'returned'
-    comment: string
-    attachments: any[]
-  }]
+  submit: [
+    data: {
+      result: 'approved' | 'rejected' | 'returned'
+      comment: string
+      attachments: any[]
+    },
+  ]
 }>()
 
 // 响应式数据
@@ -206,9 +214,7 @@ const approvalForm = ref({
 
 // 表单验证规则
 const approvalRules: FormRules = {
-  result: [
-    { required: true, message: '请选择审批结果', trigger: 'change' },
-  ],
+  result: [{ required: true, message: '请选择审批结果', trigger: 'change' }],
   comment: [
     { required: true, message: '请输入审批意见', trigger: 'blur' },
     { min: 5, message: '审批意见至少5个字符', trigger: 'blur' },
@@ -268,7 +274,9 @@ const getStepColor = (status: StepStatus) => {
 }
 
 // 获取状态标签类型
-const getStatusTagType = (status: StepStatus): 'primary' | 'success' | 'warning' | 'info' | 'danger' => {
+const getStatusTagType = (
+  status: StepStatus
+): 'primary' | 'success' | 'warning' | 'info' | 'danger' => {
   const tagTypeMap: Record<any, 'primary' | 'success' | 'warning' | 'info' | 'danger'> = {
     pending: 'info',
     approved: 'success',
@@ -332,7 +340,7 @@ const handleExceed: UploadProps['onExceed'] = () => {
 const handleSubmit = async () => {
   if (!approvalFormRef.value) return
 
-  await approvalFormRef.value.validate(async (valid) => {
+  await approvalFormRef.value.validate(async valid => {
     if (!valid) return
 
     try {
@@ -520,7 +528,8 @@ export default {
 }
 
 @keyframes blink {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
   }
   50% {

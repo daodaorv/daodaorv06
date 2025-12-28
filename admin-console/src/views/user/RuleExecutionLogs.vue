@@ -38,12 +38,7 @@
             clearable
             style="width: 200px"
           >
-            <el-option
-              v-for="tag in tagList"
-              :key="tag.id"
-              :label="tag.name"
-              :value="tag.id"
-            />
+            <el-option v-for="tag in tagList" :key="tag.id" :label="tag.name" :value="tag.id" />
           </el-select>
         </el-form-item>
         <el-form-item label="状态">
@@ -68,9 +63,7 @@
           />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" :icon="Search" @click="handleSearch">
-            搜索
-          </el-button>
+          <el-button type="primary" :icon="Search" @click="handleSearch"> 搜索 </el-button>
           <el-button :icon="Refresh" @click="handleReset">重置</el-button>
         </el-form-item>
       </el-form>
@@ -78,12 +71,7 @@
 
     <!-- 日志列表 -->
     <el-card class="table-card" shadow="never">
-      <el-table
-        v-loading="loading"
-        :data="logList"
-        stripe
-        style="width: 100%"
-      >
+      <el-table v-loading="loading" :data="logList" stripe style="width: 100%">
         <el-table-column prop="id" label="ID" width="80" />
         <el-table-column label="标签" width="150">
           <template #default="{ row }">
@@ -106,11 +94,7 @@
         </el-table-column>
         <el-table-column label="匹配用户" width="100">
           <template #default="{ row }">
-            <el-button
-              type="primary"
-              link
-              @click="handleViewMatchedUsers(row)"
-            >
+            <el-button type="primary" link @click="handleViewMatchedUsers(row)">
               {{ row.matchedUserCount }} 人
             </el-button>
           </template>
@@ -128,9 +112,7 @@
           </template>
         </el-table-column>
         <el-table-column label="耗时" width="100">
-          <template #default="{ row }">
-            {{ row.duration }}ms
-          </template>
+          <template #default="{ row }"> {{ row.duration }}ms </template>
         </el-table-column>
         <el-table-column prop="executionTime" label="执行时间" width="180">
           <template #default="{ row }">
@@ -154,11 +136,7 @@
     </el-card>
 
     <!-- 匹配用户对话框 -->
-    <el-dialog
-      v-model="matchedUsersDialogVisible"
-      title="匹配的用户列表"
-      width="600px"
-    >
+    <el-dialog v-model="matchedUsersDialogVisible" title="匹配的用户列表" width="600px">
       <el-table :data="matchedUsers" stripe max-height="400">
         <el-table-column prop="id" label="用户ID" width="80" />
         <el-table-column prop="username" label="用户名" />
@@ -185,7 +163,7 @@ import { mockUserList } from '@/mock/users'
 import {
   mockGetRuleExecutionLogs,
   mockGetRuleExecutionStats,
-  type RuleExecutionLog
+  type RuleExecutionLog,
 } from '@/mock/ruleExecutionLogs'
 
 const router = useRouter()
@@ -203,21 +181,21 @@ const stats = reactive({
   successExecutions: 0,
   failedExecutions: 0,
   totalMatchedUsers: 0,
-  averageDuration: 0
+  averageDuration: 0,
 })
 
 // 搜索表单
 const searchForm = reactive({
   tagId: undefined as number | undefined,
   status: '',
-  dateRange: [] as Date[]
+  dateRange: [] as Date[],
 })
 
 // 分页
 const pagination = reactive({
   page: 1,
   pageSize: 10,
-  total: 0
+  total: 0,
 })
 
 // 匹配用户对话框
@@ -240,7 +218,7 @@ const loadLogs = async () => {
   try {
     const params: any = {
       page: pagination.page,
-      pageSize: pagination.pageSize
+      pageSize: pagination.pageSize,
     }
 
     if (searchForm.tagId) {
@@ -317,7 +295,7 @@ const formatDateTime = (dateStr: string) => {
     day: '2-digit',
     hour: '2-digit',
     minute: '2-digit',
-    second: '2-digit'
+    second: '2-digit',
   })
 }
 

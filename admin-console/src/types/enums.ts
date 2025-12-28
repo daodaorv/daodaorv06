@@ -31,7 +31,7 @@ export enum OrderStatus {
   /** 已取消 */
   CANCELLED = 'cancelled',
   /** 已退款 */
-  REFUNDED = 'refunded'
+  REFUNDED = 'refunded',
 }
 
 /**
@@ -45,7 +45,7 @@ export const ORDER_STATUS_MAP = {
   [OrderStatus.IN_USE]: { code: 'in_use', name: '使用中', color: '#67C23A' },
   [OrderStatus.COMPLETED]: { code: 'completed', name: '已完成', color: '#909399' },
   [OrderStatus.CANCELLED]: { code: 'cancelled', name: '已取消', color: '#909399' },
-  [OrderStatus.REFUNDED]: { code: 'refunded', name: '已退款', color: '#F56C6C' }
+  [OrderStatus.REFUNDED]: { code: 'refunded', name: '已退款', color: '#F56C6C' },
 } as const
 
 /**
@@ -59,7 +59,7 @@ export enum OrderPaymentStatus {
   /** 已支付 */
   PAID = 'paid',
   /** 已退款 */
-  REFUNDED = 'refunded'
+  REFUNDED = 'refunded',
 }
 
 /**
@@ -77,7 +77,7 @@ export enum PaymentRecordStatus {
   /** 退款中 */
   REFUNDING = 'refunding',
   /** 已退款 */
-  REFUNDED = 'refunded'
+  REFUNDED = 'refunded',
 }
 
 /**
@@ -89,7 +89,7 @@ export enum PaymentMethod {
   /** 支付宝 */
   ALIPAY = 'alipay',
   /** 余额支付 */
-  BALANCE = 'balance'
+  BALANCE = 'balance',
 }
 
 // ============================================
@@ -107,7 +107,7 @@ export enum VehicleStatus {
   /** 维护中 */
   MAINTENANCE = 'maintenance',
   /** 不可用 */
-  UNAVAILABLE = 'unavailable'
+  UNAVAILABLE = 'unavailable',
 }
 
 /**
@@ -117,7 +117,7 @@ export const VEHICLE_STATUS_MAP = {
   [VehicleStatus.AVAILABLE]: { code: 'available', name: '可用', color: '#67C23A' },
   [VehicleStatus.RENTED]: { code: 'rented', name: '已出租', color: '#E6A23C' },
   [VehicleStatus.MAINTENANCE]: { code: 'maintenance', name: '维护中', color: '#909399' },
-  [VehicleStatus.UNAVAILABLE]: { code: 'unavailable', name: '不可用', color: '#F56C6C' }
+  [VehicleStatus.UNAVAILABLE]: { code: 'unavailable', name: '不可用', color: '#F56C6C' },
 } as const
 
 /**
@@ -131,7 +131,7 @@ export enum VehicleType {
   /** 露营车 */
   CAMPER_VAN = 'camper_van',
   /** 休闲车 */
-  RV = 'rv'
+  RV = 'rv',
 }
 
 /**
@@ -141,7 +141,7 @@ export enum Transmission {
   /** 手动 */
   MANUAL = 'manual',
   /** 自动 */
-  AUTOMATIC = 'automatic'
+  AUTOMATIC = 'automatic',
 }
 
 /**
@@ -155,7 +155,7 @@ export enum FuelType {
   /** 混合动力 */
   HYBRID = 'hybrid',
   /** 电动 */
-  ELECTRIC = 'electric'
+  ELECTRIC = 'electric',
 }
 
 // ============================================
@@ -169,7 +169,7 @@ export enum HostingType {
   /** 自有车托管 */
   OWN_VEHICLE = 'own_vehicle',
   /** 购车托管 */
-  PURCHASE_VEHICLE = 'purchase_vehicle'
+  PURCHASE_VEHICLE = 'purchase_vehicle',
 }
 
 /**
@@ -181,7 +181,7 @@ export enum HostingApplicationStatus {
   /** 已通过 */
   APPROVED = 'approved',
   /** 已拒绝 */
-  REJECTED = 'rejected'
+  REJECTED = 'rejected',
 }
 
 /**
@@ -193,7 +193,7 @@ export enum HostingVehicleStatus {
   /** 暂停 */
   PAUSED = 'paused',
   /** 已终止 */
-  TERMINATED = 'terminated'
+  TERMINATED = 'terminated',
 }
 
 /**
@@ -207,7 +207,7 @@ export enum WithdrawalStatus {
   /** 已拒绝 */
   REJECTED = 'rejected',
   /** 已完成 */
-  COMPLETED = 'completed'
+  COMPLETED = 'completed',
 }
 
 // ============================================
@@ -223,7 +223,7 @@ export enum UserType {
   /** 移动管理员 */
   MOBILE_ADMIN = 'mobile_admin',
   /** PC管理员 */
-  PC_ADMIN = 'pc_admin'
+  PC_ADMIN = 'pc_admin',
 }
 
 /**
@@ -235,7 +235,7 @@ export enum UserStatus {
   /** 未激活 */
   INACTIVE = 'inactive',
   /** 禁用 */
-  BANNED = 'banned'
+  BANNED = 'banned',
 }
 
 /**
@@ -245,7 +245,7 @@ export enum MembershipTier {
   /** 普通会员 */
   REGULAR = 'regular',
   /** PLUS会员 */
-  PLUS = 'plus'
+  PLUS = 'plus',
 }
 
 // ============================================
@@ -267,7 +267,7 @@ export enum CrowdfundingProjectStatus {
   /** 运营中 */
   OPERATING = 'operating',
   /** 已关闭 */
-  CLOSED = 'closed'
+  CLOSED = 'closed',
 }
 
 /**
@@ -279,7 +279,7 @@ export enum CrowdfundingShareStatus {
   /** 已转让 */
   TRANSFERRED = 'transferred',
   /** 已赎回 */
-  REDEEMED = 'redeemed'
+  REDEEMED = 'redeemed',
 }
 
 // ============================================
@@ -295,7 +295,7 @@ export enum CouponStatus {
   /** 已使用 */
   USED = 'used',
   /** 已过期 */
-  EXPIRED = 'expired'
+  EXPIRED = 'expired',
 }
 
 /**
@@ -307,7 +307,7 @@ export enum CouponType {
   /** 折扣券 */
   DISCOUNT = 'discount',
   /** 代金券 */
-  CASH = 'cash'
+  CASH = 'cash',
 }
 
 // ============================================
@@ -323,7 +323,7 @@ export enum CommunityContentStatus {
   /** 已发布 */
   PUBLISHED = 'published',
   /** 已隐藏 */
-  HIDDEN = 'hidden'
+  HIDDEN = 'hidden',
 }
 
 /**
@@ -333,7 +333,7 @@ export enum CommunityContentType {
   /** 图文 */
   IMAGE_TEXT = 'image_text',
   /** 视频 */
-  VIDEO = 'video'
+  VIDEO = 'video',
 }
 
 // ============================================
@@ -351,5 +351,5 @@ export enum SpecialOfferStatus {
   /** 已售罄 */
   SOLD_OUT = 'soldout',
   /** 已过期 */
-  EXPIRED = 'expired'
+  EXPIRED = 'expired',
 }

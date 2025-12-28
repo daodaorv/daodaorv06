@@ -4,20 +4,10 @@
     <!-- 统计卡片 -->
     <el-row :gutter="20" class="stats-row">
       <el-col :span="6">
-        <StatsCard
-          title="配置总数"
-          :value="stats.totalCount"
-          icon="Document"
-          color="#409eff"
-        />
+        <StatsCard title="配置总数" :value="stats.totalCount" icon="Document" color="#409eff" />
       </el-col>
       <el-col :span="6">
-        <StatsCard
-          title="启用配置"
-          :value="stats.enabledCount"
-          icon="Check"
-          color="#67c23a"
-        />
+        <StatsCard title="启用配置" :value="stats.enabledCount" icon="Check" color="#67c23a" />
       </el-col>
       <el-col :span="6">
         <StatsCard
@@ -77,10 +67,7 @@
         </div>
       </template>
       <template #enabled="{ row }">
-        <el-switch
-          v-model="row.enabled"
-          @change="handleToggleEnabled(row)"
-        />
+        <el-switch v-model="row.enabled" @change="handleToggleEnabled(row)" />
       </template>
     </DataTable>
 

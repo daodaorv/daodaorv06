@@ -1,8 +1,6 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="marketing-coupons-container">
-    
-
     <SearchForm
       v-model="searchForm"
       :fields="searchFields"
@@ -22,18 +20,20 @@
       @current-change="handleCurrentChange"
     >
       <template #type="{ row }">
-        <el-tag :type="(getCouponTypeTag(row.type)) as any" size="small">
+        <el-tag :type="getCouponTypeTag(row.type) as any" size="small">
           {{ getCouponTypeLabel(row.type) }}
         </el-tag>
       </template>
       <template #status="{ row }">
-        <el-tag :type="(getCouponStatusTag(row.status)) as any" size="small">
+        <el-tag :type="getCouponStatusTag(row.status) as any" size="small">
           {{ getCouponStatusLabel(row.status) }}
         </el-tag>
       </template>
       <template #discount="{ row }">
         <span style="color: #f56c6c; font-weight: bold">
-          {{ row.discountType === 'percentage' ? `${row.discountValue}%` : `¥${row.discountValue}` }}
+          {{
+            row.discountType === 'percentage' ? `${row.discountValue}%` : `¥${row.discountValue}`
+          }}
         </span>
       </template>
       <template #quantity="{ row }">
@@ -88,12 +88,12 @@
         <el-descriptions-item label="优惠券名称">{{ currentCoupon.name }}</el-descriptions-item>
         <el-descriptions-item label="优惠码">{{ currentCoupon.code }}</el-descriptions-item>
         <el-descriptions-item label="优惠券类型">
-          <el-tag :type="(getCouponTypeTag(currentCoupon.type)) as any" size="small">
+          <el-tag :type="getCouponTypeTag(currentCoupon.type) as any" size="small">
             {{ getCouponTypeLabel(currentCoupon.type) }}
           </el-tag>
         </el-descriptions-item>
         <el-descriptions-item label="优惠券状态">
-          <el-tag :type="(getCouponStatusTag(currentCoupon.status)) as any" size="small">
+          <el-tag :type="getCouponStatusTag(currentCoupon.status) as any" size="small">
             {{ getCouponStatusLabel(currentCoupon.status) }}
           </el-tag>
         </el-descriptions-item>
@@ -102,34 +102,60 @@
         </el-descriptions-item>
         <el-descriptions-item label="优惠额度">
           <span style="color: #f56c6c; font-weight: bold">
-            {{ currentCoupon.discountType === 'percentage' ? `${currentCoupon.discountValue}%` : `¥${currentCoupon.discountValue}` }}
+            {{
+              currentCoupon.discountType === 'percentage'
+                ? `${currentCoupon.discountValue}%`
+                : `¥${currentCoupon.discountValue}`
+            }}
           </span>
         </el-descriptions-item>
         <el-descriptions-item label="最低消费">¥{{ currentCoupon.minAmount }}</el-descriptions-item>
-        <el-descriptions-item label="最高优惠">¥{{ currentCoupon.maxDiscount }}</el-descriptions-item>
-        <el-descriptions-item label="总发行量">{{ currentCoupon.totalQuantity }}</el-descriptions-item>
+        <el-descriptions-item label="最高优惠"
+          >¥{{ currentCoupon.maxDiscount }}</el-descriptions-item
+        >
+        <el-descriptions-item label="总发行量">{{
+          currentCoupon.totalQuantity
+        }}</el-descriptions-item>
         <el-descriptions-item label="已使用">{{ currentCoupon.usedQuantity }}</el-descriptions-item>
-        <el-descriptions-item label="剩余数量">{{ currentCoupon.remainingQuantity }}</el-descriptions-item>
+        <el-descriptions-item label="剩余数量">{{
+          currentCoupon.remainingQuantity
+        }}</el-descriptions-item>
         <el-descriptions-item label="开始日期">{{ currentCoupon.startDate }}</el-descriptions-item>
         <el-descriptions-item label="结束日期">{{ currentCoupon.endDate }}</el-descriptions-item>
         <el-descriptions-item label="创建人">{{ currentCoupon.createdBy }}</el-descriptions-item>
         <el-descriptions-item label="目标用户标签" :span="2">
-          <el-tag v-for="tagId in currentCoupon.targetUserTags" :key="tagId" size="small" style="margin-right: 8px">
+          <el-tag
+            v-for="tagId in currentCoupon.targetUserTags"
+            :key="tagId"
+            size="small"
+            style="margin-right: 8px"
+          >
             {{ getTagName(tagId) }}
           </el-tag>
-          <span v-if="!currentCoupon.targetUserTags || currentCoupon.targetUserTags.length === 0" style="color: #909399">
+          <span
+            v-if="!currentCoupon.targetUserTags || currentCoupon.targetUserTags.length === 0"
+            style="color: #909399"
+          >
             全部用户
           </span>
         </el-descriptions-item>
         <el-descriptions-item label="适用车型" :span="2">
-          <el-tag v-for="(type, index) in currentCoupon.applicableVehicles" :key="index" size="small" type="info" style="margin-right: 8px">
+          <el-tag
+            v-for="(type, index) in currentCoupon.applicableVehicles"
+            :key="index"
+            size="small"
+            type="info"
+            style="margin-right: 8px"
+          >
             {{ type }}
           </el-tag>
         </el-descriptions-item>
         <el-descriptions-item label="优惠券描述" :span="2">
           {{ currentCoupon.description }}
         </el-descriptions-item>
-        <el-descriptions-item label="创建时间" :span="2">{{ currentCoupon.createdAt }}</el-descriptions-item>
+        <el-descriptions-item label="创建时间" :span="2">{{
+          currentCoupon.createdAt
+        }}</el-descriptions-item>
       </el-descriptions>
       <template #footer>
         <el-button @click="detailDialogVisible = false">关闭</el-button>
@@ -154,7 +180,7 @@ import {
   updateCoupon,
   deleteCoupon,
   type Coupon,
-  type CouponListParams
+  type CouponListParams,
 } from '@/api/marketing'
 import { tagApi, type Tag } from '@/api/user'
 import { useErrorHandler } from '@/composables'
@@ -169,7 +195,7 @@ const tagList = ref<Tag[]>([])
 const tagOptions = computed(() =>
   tagList.value.map(tag => ({
     label: tag.name,
-    value: tag.id
+    value: tag.id,
   }))
 )
 
@@ -178,7 +204,7 @@ const COUPON_TYPE_OPTIONS = [
   { label: '折扣券', value: 'discount' },
   { label: '代金券', value: 'cash' },
   { label: '礼品券', value: 'gift' },
-  { label: '日租抵扣券', value: 'daily_rental' }
+  { label: '日租抵扣券', value: 'daily_rental' },
 ]
 
 // 适用产品类型选项
@@ -186,20 +212,20 @@ const PRODUCT_TYPE_OPTIONS = [
   { label: '房车租赁', value: 'vehicle_rental' },
   { label: '营地预定', value: 'campsite' },
   { label: '房车旅游', value: 'tour' },
-  { label: '全场通用', value: 'all' }
+  { label: '全场通用', value: 'all' },
 ]
 
 // 优惠券状态选项
 const COUPON_STATUS_OPTIONS = [
   { label: '生效中', value: 'active' },
   { label: '未生效', value: 'inactive' },
-  { label: '已过期', value: 'expired' }
+  { label: '已过期', value: 'expired' },
 ]
 
 // 优惠类型选项
 const DISCOUNT_TYPE_OPTIONS = [
   { label: '百分比折扣', value: 'percentage' },
-  { label: '固定金额', value: 'fixed' }
+  { label: '固定金额', value: 'fixed' },
 ]
 
 // 车型选项
@@ -208,7 +234,7 @@ const VEHICLE_TYPE_OPTIONS = [
   { label: 'B型房车', value: 'B型房车' },
   { label: 'C型房车', value: 'C型房车' },
   { label: '拖挂房车', value: '拖挂房车' },
-  { label: '所有车型', value: '所有车型' }
+  { label: '所有车型', value: '所有车型' },
 ]
 
 // 搜索表单
@@ -217,7 +243,7 @@ const searchForm = reactive<CouponListParams>({
   type: undefined,
   status: undefined,
   tagId: undefined,
-  productType: undefined
+  productType: undefined,
 })
 
 // 搜索字段配置
@@ -227,7 +253,7 @@ const searchFields = computed<SearchField[]>(() => [
     label: '关键词',
     type: 'input',
     placeholder: '优惠券名称/代码',
-    width: '200px'
+    width: '200px',
   },
   {
     prop: 'type',
@@ -235,7 +261,7 @@ const searchFields = computed<SearchField[]>(() => [
     type: 'select',
     placeholder: '请选择类型',
     width: '150px',
-    options: COUPON_TYPE_OPTIONS
+    options: COUPON_TYPE_OPTIONS,
   },
   {
     prop: 'status',
@@ -243,7 +269,7 @@ const searchFields = computed<SearchField[]>(() => [
     type: 'select',
     placeholder: '请选择状态',
     width: '150px',
-    options: COUPON_STATUS_OPTIONS
+    options: COUPON_STATUS_OPTIONS,
   },
   {
     prop: 'productType',
@@ -251,7 +277,7 @@ const searchFields = computed<SearchField[]>(() => [
     type: 'select',
     placeholder: '请选择产品类型',
     width: '150px',
-    options: PRODUCT_TYPE_OPTIONS
+    options: PRODUCT_TYPE_OPTIONS,
   },
   {
     prop: 'tagId',
@@ -259,8 +285,8 @@ const searchFields = computed<SearchField[]>(() => [
     type: 'select',
     placeholder: '请选择标签',
     width: '150px',
-    options: tagOptions.value
-  }
+    options: tagOptions.value,
+  },
 ])
 
 // 表格列配置
@@ -275,7 +301,7 @@ const tableColumns: TableColumn[] = [
   { prop: 'targetUserTags', label: '目标用户标签', width: 150, slot: 'targetUserTags' },
   { prop: 'quantity', label: '数量统计', width: 120, slot: 'quantity' },
   { prop: 'dateRange', label: '有效期', width: 180, slot: 'dateRange' },
-  { prop: 'createdBy', label: '创建人', width: 120 }
+  { prop: 'createdBy', label: '创建人', width: 120 },
 ]
 
 // 工具栏按钮配置
@@ -284,8 +310,8 @@ const toolbarButtons: ToolbarButton[] = [
     label: '新增优惠券',
     type: 'primary',
     icon: Plus,
-    onClick: () => handleCreate()
-  }
+    onClick: () => handleCreate(),
+  },
 ]
 
 // 表格操作列配置
@@ -293,18 +319,18 @@ const tableActions: TableAction[] = [
   {
     label: '查看',
     type: 'primary',
-    onClick: (row: Coupon) => handleView(row)
+    onClick: (row: Coupon) => handleView(row),
   },
   {
     label: '编辑',
     type: 'primary',
-    onClick: (row: Coupon) => handleEdit(row)
+    onClick: (row: Coupon) => handleEdit(row),
   },
   {
     label: '删除',
     type: 'danger',
-    onClick: (row: Coupon) => handleDelete(row)
-  }
+    onClick: (row: Coupon) => handleDelete(row),
+  },
 ]
 
 // 优惠券列表
@@ -315,7 +341,7 @@ const loading = ref(false)
 const pagination = reactive({
   page: 1,
   pageSize: 10,
-  total: 0
+  total: 0,
 })
 
 // 对话框状态
@@ -350,14 +376,14 @@ const formData = reactive({
   dailyRentalDays: 1,
   autoGenerateCode: true,
   codePrefix: 'COUP',
-  description: ''
+  description: '',
 })
 
 // 表单字段配置
 const formFields = computed(() => [
   {
     type: 'divider',
-    label: '基本信息'
+    label: '基本信息',
   },
   {
     type: 'row',
@@ -367,16 +393,16 @@ const formFields = computed(() => [
         label: '优惠券名称',
         type: 'input',
         placeholder: '请输入优惠券名称',
-        span: 12
+        span: 12,
       },
       {
         prop: 'type',
         label: '优惠券类型',
         type: 'select',
         options: COUPON_TYPE_OPTIONS,
-        span: 12
-      }
-    ]
+        span: 12,
+      },
+    ],
   },
   {
     type: 'row',
@@ -386,19 +412,19 @@ const formFields = computed(() => [
         label: '优惠券状态',
         type: 'select',
         options: COUPON_STATUS_OPTIONS,
-        span: 12
-      }
-    ]
+        span: 12,
+      },
+    ],
   },
   {
     type: 'divider',
-    label: '优惠码设置'
+    label: '优惠码设置',
   },
   {
     prop: 'autoGenerateCode',
     label: '自动生成优惠码',
     type: 'switch',
-    tip: '开启后系统将自动生成唯一优惠码'
+    tip: '开启后系统将自动生成唯一优惠码',
   },
   {
     type: 'row',
@@ -409,7 +435,7 @@ const formFields = computed(() => [
         type: 'input',
         placeholder: '如：COUP',
         span: 12,
-        disabled: !formData.autoGenerateCode
+        disabled: !formData.autoGenerateCode,
       },
       {
         prop: 'code',
@@ -417,71 +443,73 @@ const formFields = computed(() => [
         type: 'input',
         placeholder: formData.autoGenerateCode ? '自动生成' : '请输入优惠码',
         span: 12,
-        disabled: formData.autoGenerateCode
-      }
-    ]
+        disabled: formData.autoGenerateCode,
+      },
+    ],
   },
   {
     type: 'divider',
-    label: '优惠设置'
+    label: '优惠设置',
   },
   // 日租抵扣券特殊配置
-  ...(formData.type === 'daily_rental' ? [
-    {
-      prop: 'dailyRentalDays',
-      label: '可抵扣天数',
-      type: 'number',
-      min: 1,
-      max: 30,
-      tip: '每张券可全额抵扣的租赁天数'
-    }
-  ] : [
-    // 原有的折扣/代金券配置
-    {
-      type: 'row',
-      columns: [
+  ...(formData.type === 'daily_rental'
+    ? [
         {
-          prop: 'discountType',
-          label: '优惠类型',
-          type: 'select',
-          options: DISCOUNT_TYPE_OPTIONS,
-          span: 12
+          prop: 'dailyRentalDays',
+          label: '可抵扣天数',
+          type: 'number',
+          min: 1,
+          max: 30,
+          tip: '每张券可全额抵扣的租赁天数',
+        },
+      ]
+    : [
+        // 原有的折扣/代金券配置
+        {
+          type: 'row',
+          columns: [
+            {
+              prop: 'discountType',
+              label: '优惠类型',
+              type: 'select',
+              options: DISCOUNT_TYPE_OPTIONS,
+              span: 12,
+            },
+            {
+              prop: 'discountValue',
+              label: '优惠额度',
+              type: 'number',
+              min: 0,
+              span: 12,
+              tip: '百分比填1-100，固定金额填具体数值',
+            },
+          ],
         },
         {
-          prop: 'discountValue',
-          label: '优惠额度',
-          type: 'number',
-          min: 0,
-          span: 12,
-          tip: '百分比填1-100，固定金额填具体数值'
-        }
-      ]
-    },
-    {
-      type: 'row',
-      columns: [
-        {
-          prop: 'minAmount',
-          label: '最低消费',
-          type: 'number',
-          min: 0,
-          span: 12,
-          tip: '满多少元可用'
+          type: 'row',
+          columns: [
+            {
+              prop: 'minAmount',
+              label: '最低消费',
+              type: 'number',
+              min: 0,
+              span: 12,
+              tip: '满多少元可用',
+            },
+            {
+              prop: 'maxDiscount',
+              label: '最高优惠',
+              type: 'number',
+              min: 0,
+              span: 12,
+              tip: '最多优惠多少元',
+            },
+          ],
         },
-        {
-          prop: 'maxDiscount',
-          label: '最高优惠',
-          type: 'number',
-          min: 0,
-          span: 12,
-          tip: '最多优惠多少元'
-        }
-      ]
-    }
-  ]),
+      ]),
   {
     type: 'divider',
-    label: '发行设置'
+    label: '发行设置',
   },
   {
     type: 'row',
@@ -491,44 +519,46 @@ const formFields = computed(() => [
         label: '发行数量',
         type: 'number',
         min: 1,
-        span: 12
+        span: 12,
       },
       {
         prop: 'startDate',
         label: '开始日期',
         type: 'date',
         valueFormat: 'YYYY-MM-DD',
-        span: 12
-      }
-    ]
+        span: 12,
+      },
+    ],
   },
   {
     prop: 'endDate',
     label: '结束日期',
     type: 'date',
-    valueFormat: 'YYYY-MM-DD'
+    valueFormat: 'YYYY-MM-DD',
   },
   {
     type: 'divider',
-    label: '适用范围'
+    label: '适用范围',
   },
   {
     prop: 'applicableProductTypes',
     label: '适用产品类型',
     type: 'checkbox',
     options: PRODUCT_TYPE_OPTIONS,
-    tip: '选择优惠券可用于哪些产品类型'
+    tip: '选择优惠券可用于哪些产品类型',
   },
   // 根据选择的产品类型动态显示
-  ...(formData.applicableProductTypes.includes('vehicle_rental') ? [
-    {
-      prop: 'applicableVehicles',
-      label: '适用车型',
-      type: 'checkbox',
-      options: VEHICLE_TYPE_OPTIONS,
-      tip: '仅限房车租赁时可选'
-    }
-  ] : []),
+  ...(formData.applicableProductTypes.includes('vehicle_rental')
+    ? [
+        {
+          prop: 'applicableVehicles',
+          label: '适用车型',
+          type: 'checkbox',
+          options: VEHICLE_TYPE_OPTIONS,
+          tip: '仅限房车租赁时可选',
+        },
+      ]
+    : []),
   {
     prop: 'targetUserTags',
     label: '目标用户标签',
@@ -536,7 +566,7 @@ const formFields = computed(() => [
     multiple: true,
     options: tagOptions.value,
     placeholder: '请选择目标用户标签（不选则全部用户可用）',
-    tip: '选择可使用此优惠券的用户标签，不选则全部用户可用'
+    tip: '选择可使用此优惠券的用户标签，不选则全部用户可用',
   },
   {
     prop: 'description',
@@ -544,8 +574,8 @@ const formFields = computed(() => [
     type: 'textarea',
     rows: 4,
     placeholder: '请输入优惠券描述',
-    maxlength: 500
-  }
+    maxlength: 500,
+  },
 ]) as any
 
 // 表单验证规则
@@ -561,9 +591,11 @@ const formRules = {
   totalQuantity: [{ required: true, message: '请输入发行数量', trigger: 'blur' }],
   startDate: [{ required: true, message: '请选择开始日期', trigger: 'change' }],
   endDate: [{ required: true, message: '请选择结束日期', trigger: 'change' }],
-  applicableProductTypes: [{ required: true, message: '请选择适用产品类型', trigger: 'change', type: 'array', min: 1 }],
+  applicableProductTypes: [
+    { required: true, message: '请选择适用产品类型', trigger: 'change', type: 'array', min: 1 },
+  ],
   applicableVehicles: [{ required: true, message: '请选择适用车型', trigger: 'change' }],
-  dailyRentalDays: [{ required: true, message: '请输入可抵扣天数', trigger: 'blur' }]
+  dailyRentalDays: [{ required: true, message: '请输入可抵扣天数', trigger: 'blur' }],
 }
 
 // 加载优惠券列表
@@ -573,10 +605,10 @@ const loadCouponList = async () => {
     const params: CouponListParams = {
       page: pagination.page,
       pageSize: pagination.pageSize,
-      ...searchForm
+      ...searchForm,
     }
 
-    const res = await getCouponList(params) as any
+    const res = (await getCouponList(params)) as any
     couponList.value = res.data.list
     pagination.total = res.data.total
   } catch (error) {
@@ -657,7 +689,9 @@ const handleEdit = (row: Coupon) => {
   formData.endDate = row.endDate
   formData.targetUserTags = row.targetUserTags ? [...row.targetUserTags] : []
   formData.applicableVehicles = [...row.applicableVehicles]
-  formData.applicableProductTypes = row.applicableProductTypes ? [...row.applicableProductTypes] : []
+  formData.applicableProductTypes = row.applicableProductTypes
+    ? [...row.applicableProductTypes]
+    : []
   formData.applicableCampsites = row.applicableCampsites ? [...row.applicableCampsites] : []
   formData.applicableTours = row.applicableTours ? [...row.applicableTours] : []
   formData.dailyRentalDays = row.dailyRentalDays || 1
@@ -677,15 +711,11 @@ const handleView = (row: Coupon) => {
 // 删除优惠券
 const handleDelete = async (row: Coupon) => {
   try {
-    await ElMessageBox.confirm(
-      `确定要删除优惠券"${row.name}"吗？`,
-      '删除确认',
-      {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }
-    )
+    await ElMessageBox.confirm(`确定要删除优惠券"${row.name}"吗？`, '删除确认', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    })
 
     await deleteCoupon(row.id)
     ElMessage.success('删除成功')
@@ -708,7 +738,7 @@ const handleSubmit = async (data: any) => {
       discountType: data.type === 'daily_rental' ? 'daily_rental' : data.discountType,
       discountValue: data.type === 'daily_rental' ? 0 : data.discountValue,
       minAmount: data.type === 'daily_rental' ? 0 : data.minAmount,
-      maxDiscount: data.type === 'daily_rental' ? 0 : data.maxDiscount
+      maxDiscount: data.type === 'daily_rental' ? 0 : data.maxDiscount,
     }
 
     if (isEdit.value && currentCouponId.value) {
@@ -744,7 +774,7 @@ const getCouponTypeTag = (type: string) => {
   const tagMap: Record<string, string> = {
     discount: 'warning',
     cash: 'success',
-    gift: 'primary'
+    gift: 'primary',
   }
   return tagMap[type] || 'info'
 }
@@ -754,7 +784,7 @@ const getCouponTypeLabel = (type: string) => {
   const labelMap: Record<string, string> = {
     discount: '折扣券',
     cash: '代金券',
-    gift: '礼品券'
+    gift: '礼品券',
   }
   return labelMap[type] || type
 }
@@ -764,7 +794,7 @@ const getCouponStatusTag = (status: string) => {
   const tagMap: Record<string, string> = {
     active: 'success',
     inactive: 'info',
-    expired: 'danger'
+    expired: 'danger',
   }
   return tagMap[status] || 'info'
 }
@@ -774,7 +804,7 @@ const getCouponStatusLabel = (status: string) => {
   const labelMap: Record<string, string> = {
     active: '生效中',
     inactive: '未生效',
-    expired: '已过期'
+    expired: '已过期',
   }
   return labelMap[status] || status
 }
@@ -788,11 +818,11 @@ const getTagName = (tagId: number) => {
 // 加载标签列表
 const loadTagList = async () => {
   try {
-    const res = await tagApi.getTagList({
+    const res = (await tagApi.getTagList({
       page: 1,
       pageSize: 100,
-      status: 'active'
-    }) as any
+      status: 'active',
+    })) as any
     tagList.value = res.data.list
   } catch (error) {
     handleApiError(error, '加载标签列表失败')
@@ -800,37 +830,46 @@ const loadTagList = async () => {
 }
 
 // 监听自动生成开关，自动生成优惠码
-watch(() => formData.autoGenerateCode, (newVal) => {
-  if (newVal && !isEdit.value) {
-    formData.code = generateCouponCode({
-      prefix: formData.codePrefix || 'COUP',
-      randomLength: 4,
-      includeDate: true
-    })
+watch(
+  () => formData.autoGenerateCode,
+  newVal => {
+    if (newVal && !isEdit.value) {
+      formData.code = generateCouponCode({
+        prefix: formData.codePrefix || 'COUP',
+        randomLength: 4,
+        includeDate: true,
+      })
+    }
   }
-})
+)
 
 // 监听前缀变化，重新生成优惠码
-watch(() => formData.codePrefix, (newVal) => {
-  if (formData.autoGenerateCode && !isEdit.value) {
-    formData.code = generateCouponCode({
-      prefix: newVal || 'COUP',
-      randomLength: 4,
-      includeDate: true
-    })
+watch(
+  () => formData.codePrefix,
+  newVal => {
+    if (formData.autoGenerateCode && !isEdit.value) {
+      formData.code = generateCouponCode({
+        prefix: newVal || 'COUP',
+        randomLength: 4,
+        includeDate: true,
+      })
+    }
   }
-})
+)
 
 // 监听优惠券类型变化，重新生成优惠码
-watch(() => formData.type, () => {
-  if (formData.autoGenerateCode && !isEdit.value) {
-    formData.code = generateCouponCode({
-      prefix: formData.codePrefix || 'COUP',
-      randomLength: 4,
-      includeDate: true
-    })
+watch(
+  () => formData.type,
+  () => {
+    if (formData.autoGenerateCode && !isEdit.value) {
+      formData.code = generateCouponCode({
+        prefix: formData.codePrefix || 'COUP',
+        randomLength: 4,
+        includeDate: true,
+      })
+    }
   }
-})
+)
 
 // 页面加载
 onMounted(() => {

@@ -15,11 +15,7 @@
 
         <div class="tag-list">
           <!-- 按分类分组显示标签 -->
-          <div
-            v-for="(category, key) in groupedTags"
-            :key="key"
-            class="tag-category"
-          >
+          <div v-for="(category, key) in groupedTags" :key="key" class="tag-category">
             <div v-if="category.length > 0" class="category-header">
               {{ categoryNames[key] }}
             </div>
@@ -40,13 +36,18 @@
                     系统
                   </el-tag>
                   <!-- 自动化状态徽章 -->
-                  <el-icon v-if="hasEnabledTriggers(tag)" class="auto-icon" color="#67c23a" title="自动规则已启用">
+                  <el-icon
+                    v-if="hasEnabledTriggers(tag)"
+                    class="auto-icon"
+                    color="#67c23a"
+                    title="自动规则已启用"
+                  >
                     <CircleCheck />
                   </el-icon>
                 </div>
                 <span class="tag-count">{{ tag.userCount }}人</span>
               </div>
-              <el-dropdown @command="(cmd) => handleTagAction(tag, cmd)" trigger="click">
+              <el-dropdown @command="cmd => handleTagAction(tag, cmd)" trigger="click">
                 <el-icon class="more-icon" @click.stop><MoreFilled /></el-icon>
                 <template #dropdown>
                   <el-dropdown-menu>
@@ -77,9 +78,7 @@
               />
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" :icon="Search" @click="handleSearch">
-                搜索
-              </el-button>
+              <el-button type="primary" :icon="Search" @click="handleSearch"> 搜索 </el-button>
               <el-button :icon="Refresh" @click="handleReset">重置</el-button>
             </el-form-item>
           </el-form>
@@ -87,12 +86,7 @@
 
         <!-- 操作栏 -->
         <el-card class="toolbar-card" shadow="never">
-          <el-button
-            type="primary"
-            :icon="Plus"
-            :disabled="!currentTag"
-            @click="handleBatchAddTag"
-          >
+          <el-button type="primary" :icon="Plus" :disabled="!currentTag" @click="handleBatchAddTag">
             批量添加用户
           </el-button>
           <el-button
@@ -199,12 +193,7 @@
       <el-tabs v-model="activeTab">
         <!-- 基本信息标签页 -->
         <el-tab-pane label="基本信息" name="basic">
-          <el-form
-            ref="tagFormRef"
-            :model="tagForm"
-            :rules="tagFormRules"
-            label-width="100px"
-          >
+          <el-form ref="tagFormRef" :model="tagForm" :rules="tagFormRules" label-width="100px">
             <el-form-item label="标签名称" prop="name">
               <el-input v-model="tagForm.name" placeholder="请输入标签名称" />
             </el-form-item>
@@ -233,7 +222,7 @@
             </el-form-item>
             <el-form-item label="优先级" prop="priority">
               <el-input-number v-model="tagForm.priority" :min="1" :max="100" />
-              <span style="margin-left: 10px; color: #909399; font-size: 12px;">
+              <span style="margin-left: 10px; color: #909399; font-size: 12px">
                 数字越小优先级越高
               </span>
             </el-form-item>
@@ -271,11 +260,18 @@
                 添加触发器
               </el-button>
             </div>
-            
-            <el-empty v-if="!tagForm.triggers || tagForm.triggers.length === 0" description="暂无触发器配置" />
-            
+
+            <el-empty
+              v-if="!tagForm.triggers || tagForm.triggers.length === 0"
+              description="暂无触发器配置"
+            />
+
             <div v-else class="triggers-list">
-              <div v-for="(trigger, index) in tagForm.triggers" :key="trigger.id" class="trigger-item">
+              <div
+                v-for="(trigger, index) in tagForm.triggers"
+                :key="trigger.id"
+                class="trigger-item"
+              >
                 <div class="trigger-info">
                   <el-tag :type="getTriggerTypeTag(trigger.type)" size="large">
                     {{ getTriggerTypeName(trigger.type) }}
@@ -295,7 +291,6 @@
             </div>
           </div>
         </el-tab-pane>
-
 
         <!-- 业务关联标签页 -->
         <el-tab-pane label="业务关联" name="business">
@@ -348,12 +343,7 @@
                 <el-option label="推广分润比例" :value="4" />
               </el-select>
             </el-form-item>
-            <el-alert
-              title="业务关联说明"
-              type="info"
-              :closable="false"
-              show-icon
-            >
+            <el-alert title="业务关联说明" type="info" :closable="false" show-icon>
               关联后,拥有此标签的用户将自动享受对应的优惠券、价格策略、营销活动和分润配置
             </el-alert>
           </el-form>
@@ -370,7 +360,7 @@
                 :step="0.1"
                 :disabled="tagForm.name !== 'PLUS会员'"
               />
-              <span style="margin-left: 10px; color: #909399; font-size: 12px;">
+              <span style="margin-left: 10px; color: #909399; font-size: 12px">
                 例如: 2.0 表示双倍积分
               </span>
             </el-form-item>
@@ -380,9 +370,8 @@
                 :min="0.1"
                 :max="1"
                 :step="0.01"
-                
               />
-              <span style="margin-left: 10px; color: #909399; font-size: 12px;">
+              <span style="margin-left: 10px; color: #909399; font-size: 12px">
                 例如: 0.95 表示95折
               </span>
             </el-form-item>
@@ -392,7 +381,6 @@
                 multiple
                 placeholder="选择专属优惠券"
                 style="width: 100%"
-                
               >
                 <el-option label="新用户专享券" :value="1" />
                 <el-option label="春节特惠券" :value="2" />
@@ -406,10 +394,7 @@
               />
             </el-form-item>
             <el-form-item label="免费保险">
-              <el-switch
-                v-model="tagForm.benefits.freeInsurance"
-                :disabled="false"
-              />
+              <el-switch v-model="tagForm.benefits.freeInsurance" :disabled="false" />
             </el-form-item>
           </el-form>
         </el-tab-pane>
@@ -424,28 +409,14 @@
     </el-dialog>
 
     <!-- 为用户添加标签对话框 -->
-    <el-dialog
-      v-model="addTagDialogVisible"
-      title="为用户添加标签"
-      width="500px"
-    >
+    <el-dialog v-model="addTagDialogVisible" title="为用户添加标签" width="500px">
       <el-form label-width="100px">
         <el-form-item label="用户">
           <div>{{ currentUser?.username }} ({{ currentUser?.phone }})</div>
         </el-form-item>
         <el-form-item label="选择标签">
-          <el-select
-            v-model="selectedTagIds"
-            multiple
-            placeholder="请选择标签"
-            style="width: 100%"
-          >
-            <el-option
-              v-for="tag in availableTags"
-              :key="tag.id"
-              :label="tag.name"
-              :value="tag.id"
-            >
+          <el-select v-model="selectedTagIds" multiple placeholder="请选择标签" style="width: 100%">
+            <el-option v-for="tag in availableTags" :key="tag.id" :label="tag.name" :value="tag.id">
               <el-tag :type="getTagType(tag.color)" size="small">
                 {{ tag.name }}
               </el-tag>
@@ -455,20 +426,14 @@
       </el-form>
       <template #footer>
         <el-button @click="addTagDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="handleAddTagSubmit">
-          确定
-        </el-button>
+        <el-button type="primary" @click="handleAddTagSubmit"> 确定 </el-button>
       </template>
     </el-dialog>
 
     <!-- 批量添加用户对话框 -->
-    <el-dialog
-      v-model="batchAddDialogVisible"
-      title="批量添加用户到标签"
-      width="600px"
-    >
+    <el-dialog v-model="batchAddDialogVisible" title="批量添加用户到标签" width="600px">
       <el-form label-width="100px">
-  // @ts-ignore
+        // @ts-ignore
         <el-form-item label="当前标签">
           <el-tag :type="getTagType(currentTag?.color)" size="large">
             {{ currentTag?.name }}
@@ -493,18 +458,12 @@
       </el-form>
       <template #footer>
         <el-button @click="batchAddDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="handleBatchAddSubmit">
-          确定
-        </el-button>
+        <el-button type="primary" @click="handleBatchAddSubmit"> 确定 </el-button>
       </template>
     </el-dialog>
 
     <!-- 触发器配置对话框 -->
-    <el-dialog
-      v-model="triggerDialogVisible"
-      :title="triggerDialogTitle"
-      width="600px"
-    >
+    <el-dialog v-model="triggerDialogVisible" :title="triggerDialogTitle" width="600px">
       <el-form label-width="100px">
         <el-form-item label="触发器类型">
           <el-radio-group v-model="triggerForm.type">
@@ -545,14 +504,7 @@ import { ref, reactive, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox, ElLoading } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
-import {
-  Plus,
-  Search,
-  Refresh,
-  Delete,
-  MoreFilled,
-  CircleCheck,
-} from '@element-plus/icons-vue'
+import { Plus, Search, Refresh, Delete, MoreFilled, CircleCheck } from '@element-plus/icons-vue'
 import type { Tag, TagCategory, TagTriggerType } from '@/api/user'
 import { API_TRIGGER_SOURCES } from '@/types/tag'
 import { mockTags } from '@/mock/tags'
@@ -581,7 +533,7 @@ const groupedTags = computed(() => {
     value_level: [],
     behavior: [],
     user_attribute: [],
-    risk_control: []
+    risk_control: [],
   }
 
   tagList.value.forEach(tag => {
@@ -611,7 +563,7 @@ const hasRuleTrigger = (tag: Tag) => {
 // 分类名称映射
 const categoryNames: Record<string, string> = {
   value_level: '价值等级',
-  risk_control: '风险控制'
+  risk_control: '风险控制',
 }
 
 // 用户列表
@@ -658,7 +610,6 @@ const submitLoading = ref(false)
 const tagFormRef = ref<FormInstance>()
 const activeTab = ref('basic') // 当前激活的标签页: basic, business, benefits
 
-
 const tagForm = reactive({
   id: 0,
   name: '',
@@ -676,7 +627,7 @@ const tagForm = reactive({
     coupons: [] as number[],
     pricingStrategies: [] as number[],
     activities: [] as number[],
-    profitConfigs: [] as number[]
+    profitConfigs: [] as number[],
   },
   // 会员权益(仅PLUS会员)
   benefits: {
@@ -684,8 +635,8 @@ const tagForm = reactive({
     priceDiscount: 1,
     exclusiveCoupons: [] as number[],
     priorityService: false,
-    freeInsurance: false
-  }
+    freeInsurance: false,
+  },
 })
 
 const tagFormRules: FormRules = {
@@ -693,9 +644,7 @@ const tagFormRules: FormRules = {
     { required: true, message: '请输入标签名称', trigger: 'blur' },
     { min: 2, max: 20, message: '标签名称长度在 2 到 20 个字符', trigger: 'blur' },
   ],
-  color: [
-    { required: true, message: '请选择标签颜色', trigger: 'change' },
-  ],
+  color: [{ required: true, message: '请选择标签颜色', trigger: 'change' }],
 }
 
 // 添加标签对话框
@@ -706,18 +655,18 @@ const selectedTagIds = ref<number[]>([])
 // 批量添加对话框
 const batchAddDialogVisible = ref(false)
 const triggerDialogVisible = ref(false)
-const triggerDialogTitle = ref("添加触发器")
+const triggerDialogTitle = ref('添加触发器')
 const isEditTrigger = ref(false)
 const currentTriggerIndex = ref(-1)
 const batchSelectedUserIds = ref<number[]>([])
 
 // 触发器表单数据
 const triggerForm = reactive({
-  type: "manual" as "manual" | "rule_based" | "api_driven",
-  name: "",
-  description: "",
+  type: 'manual' as 'manual' | 'rule_based' | 'api_driven',
+  name: '',
+  description: '',
   enabled: true,
-  priority: 1
+  priority: 1,
 })
 
 // 可用标签（排除用户已有的标签）
@@ -729,23 +678,22 @@ const availableTags = computed(() => {
 // 获取触发器类型标签颜色
 const getTriggerTypeTag = (type: string) => {
   const map: Record<string, string> = {
-    manual: "info",
-    rule_based: "success",
-    api_driven: "warning"
+    manual: 'info',
+    rule_based: 'success',
+    api_driven: 'warning',
   }
-  return map[type] || "info"
+  return map[type] || 'info'
 }
 
 // 获取触发器类型名称
 const getTriggerTypeName = (type: string) => {
   const map: Record<string, string> = {
-    manual: "手动触发",
-    rule_based: "规则触发",
-    api_driven: "API触发"
+    manual: '手动触发',
+    rule_based: '规则触发',
+    api_driven: 'API触发',
   }
-  return map[type] || "未知类型"
+  return map[type] || '未知类型'
 }
-
 
 // 选择标签
 const handleSelectTag = (tag: Tag) => {
@@ -788,7 +736,6 @@ const handleTagAction = (tag: Tag, command: string) => {
 
 // 立即执行自动规则
 
-
 // 编辑标签
 const handleEditTag = (tag: Tag) => {
   tagDialogTitle.value = '编辑标签'
@@ -806,7 +753,6 @@ const handleEditTag = (tag: Tag) => {
   tagForm.status = tag.status || 'active'
   tagForm.expiresAt = tag.expiresAt || 'info'
 
-
   // 多触发器配置
   tagForm.triggers = tag.triggers ? [...tag.triggers] : []
 
@@ -816,7 +762,7 @@ const handleEditTag = (tag: Tag) => {
       coupons: tag.businessAssociation.coupons || [],
       pricingStrategies: tag.businessAssociation.pricingStrategies || [],
       activities: tag.businessAssociation.activities || [],
-      profitConfigs: tag.businessAssociation.profitConfigs || []
+      profitConfigs: tag.businessAssociation.profitConfigs || [],
     }
   }
 
@@ -827,7 +773,7 @@ const handleEditTag = (tag: Tag) => {
       priceDiscount: tag.benefits.priceDiscount || 1,
       exclusiveCoupons: tag.benefits.exclusiveCoupons || [],
       priorityService: tag.benefits.priorityService || false,
-      freeInsurance: tag.benefits.freeInsurance || false
+      freeInsurance: tag.benefits.freeInsurance || false,
     }
   }
 
@@ -837,15 +783,11 @@ const handleEditTag = (tag: Tag) => {
 // 删除标签
 const handleDeleteTag = async (tag: Tag) => {
   try {
-    await ElMessageBox.confirm(
-      `确定要删除标签 "${tag.name}" 吗？`,
-      '删除确认',
-      {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      }
-    )
+    await ElMessageBox.confirm(`确定要删除标签 "${tag.name}" 吗？`, '删除确认', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    })
     ElMessage.success('删除成功')
     const index = tagList.value.findIndex(t => t.id === tag.id)
     if (index > -1) {
@@ -864,14 +806,14 @@ const handleDeleteTag = async (tag: Tag) => {
 
 // 添加触发器
 const handleAddTrigger = () => {
-  triggerDialogTitle.value = "添加触发器"
+  triggerDialogTitle.value = '添加触发器'
   isEditTrigger.value = false
   currentTriggerIndex.value = -1
 
   // 重置表单
-  triggerForm.type = "manual"
-  triggerForm.name = ""
-  triggerForm.description = ""
+  triggerForm.type = 'manual'
+  triggerForm.name = ''
+  triggerForm.description = ''
   triggerForm.enabled = true
   triggerForm.priority = tagForm.triggers.length + 1
 
@@ -882,14 +824,14 @@ const handleAddTrigger = () => {
 const handleEditTrigger = (index: number) => {
   const trigger = tagForm.triggers[index]
 
-  triggerDialogTitle.value = "编辑触发器"
+  triggerDialogTitle.value = '编辑触发器'
   isEditTrigger.value = true
   currentTriggerIndex.value = index
 
   // 加载触发器数据
   triggerForm.type = trigger.type
   triggerForm.name = trigger.name
-  triggerForm.description = trigger.description || ""
+  triggerForm.description = trigger.description || ''
   triggerForm.enabled = trigger.enabled
   triggerForm.priority = trigger.priority
 
@@ -899,13 +841,13 @@ const handleEditTrigger = (index: number) => {
 // 删除触发器
 const handleDeleteTrigger = (index: number) => {
   tagForm.triggers.splice(index, 1)
-  ElMessage.success("删除成功")
+  ElMessage.success('删除成功')
 }
 
 // 提交触发器表单
 const handleTriggerSubmit = () => {
   if (!triggerForm.name) {
-    ElMessage.warning("请输入触发器名称")
+    ElMessage.warning('请输入触发器名称')
     return
   }
 
@@ -915,15 +857,15 @@ const handleTriggerSubmit = () => {
     name: triggerForm.name,
     description: triggerForm.description,
     enabled: triggerForm.enabled,
-    priority: triggerForm.priority
+    priority: triggerForm.priority,
   }
 
   if (isEditTrigger.value && currentTriggerIndex.value >= 0) {
     tagForm.triggers[currentTriggerIndex.value] = newTrigger
-    ElMessage.success("更新成功")
+    ElMessage.success('更新成功')
   } else {
     tagForm.triggers.push(newTrigger)
-    ElMessage.success("添加成功")
+    ElMessage.success('添加成功')
   }
 
   triggerDialogVisible.value = false
@@ -933,7 +875,7 @@ const handleTriggerSubmit = () => {
 const handleTagSubmit = async () => {
   if (!tagFormRef.value) return
 
-  await tagFormRef.value.validate(async (valid) => {
+  await tagFormRef.value.validate(async valid => {
     if (!valid) return
 
     submitLoading.value = true
@@ -989,7 +931,7 @@ const handleTagDialogClose = () => {
     coupons: [],
     pricingStrategies: [],
     activities: [],
-    profitConfigs: []
+    profitConfigs: [],
   }
 
   // 重置会员权益
@@ -998,7 +940,7 @@ const handleTagDialogClose = () => {
     priceDiscount: 1,
     exclusiveCoupons: [],
     priorityService: false,
-    freeInsurance: false
+    freeInsurance: false,
   }
 }
 

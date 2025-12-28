@@ -125,7 +125,7 @@ export const mockGetUserInfo = (token: string) => {
 
 // Mock 登出
 export const mockLogout = () => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       resolve({
         code: 200,

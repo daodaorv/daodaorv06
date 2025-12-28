@@ -14,16 +14,16 @@ export type StoreProfitConfigType = 'global' | 'store' | 'partner'
  */
 export interface StoreProfitConfig {
   id: number
-  configType: StoreProfitConfigType  // 配置类型
-  targetId?: number               // 目标ID（门店ID或合作商ID）
-  targetName?: string             // 目标名称
-  storeProfitRatio: number        // 门店分润比例（%）
-  platformProfitRatio: number     // 平台分润比例（%）
-  enabled: boolean                // 是否启用
-  effectiveDate: string           // 生效日期
-  expiryDate?: string             // 失效日期
-  description?: string            // 配置说明
-  priority: number                // 优先级（数字越大优先级越高）
+  configType: StoreProfitConfigType // 配置类型
+  targetId?: number // 目标ID（门店ID或合作商ID）
+  targetName?: string // 目标名称
+  storeProfitRatio: number // 门店分润比例（%）
+  platformProfitRatio: number // 平台分润比例（%）
+  enabled: boolean // 是否启用
+  effectiveDate: string // 生效日期
+  expiryDate?: string // 失效日期
+  description?: string // 配置说明
+  priority: number // 优先级（数字越大优先级越高）
   createdBy: string
   createdAt: string
   updatedBy?: string
@@ -47,9 +47,9 @@ export interface StoreProfitConfigHistory {
  * 门店分润配置列表查询参数
  */
 export interface StoreProfitConfigListParams {
-  keyword?: string                // 关键词搜索
-  configType?: StoreProfitConfigType  // 配置类型筛选
-  enabled?: boolean               // 状态筛选
+  keyword?: string // 关键词搜索
+  configType?: StoreProfitConfigType // 配置类型筛选
+  enabled?: boolean // 状态筛选
   page?: number
   pageSize?: number
 }

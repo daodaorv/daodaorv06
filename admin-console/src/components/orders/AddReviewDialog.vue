@@ -6,12 +6,7 @@
     :close-on-click-modal="false"
     @close="handleClose"
   >
-    <el-form
-      ref="formRef"
-      :model="form"
-      :rules="formRules"
-      label-width="120px"
-    >
+    <el-form ref="formRef" :model="form" :rules="formRules" label-width="120px">
       <!-- 订单选择 -->
       <el-form-item label="选择订单" prop="orderId">
         <el-select
@@ -147,23 +142,12 @@
 
       <!-- 是否显示 -->
       <el-form-item label="是否显示">
-        <el-switch
-          v-model="form.isPublished"
-          active-text="显示"
-          inactive-text="隐藏"
-        />
-        <div class="field-tip">
-          隐藏的评价不会在前端展示
-        </div>
+        <el-switch v-model="form.isPublished" active-text="显示" inactive-text="隐藏" />
+        <div class="field-tip">隐藏的评价不会在前端展示</div>
       </el-form-item>
 
       <!-- 温馨提示 -->
-      <el-alert
-        title="温馨提示"
-        type="info"
-        :closable="false"
-        show-icon
-      >
+      <el-alert title="温馨提示" type="info" :closable="false" show-icon>
         <template #default>
           <ul class="tips-list">
             <li>后台添加的评价会标记来源，便于区分</li>
@@ -177,9 +161,7 @@
 
     <template #footer>
       <el-button @click="handleClose">取消</el-button>
-      <el-button type="primary" :loading="loading" @click="handleSubmit">
-        确认添加
-      </el-button>
+      <el-button type="primary" :loading="loading" @click="handleSubmit"> 确认添加 </el-button>
     </template>
   </el-dialog>
 </template>
@@ -195,13 +177,13 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  modelValue: false
+  modelValue: false,
 })
 
 // Emits
 const emit = defineEmits<{
   'update:modelValue': [value: boolean]
-  'submit': [data: any]
+  submit: [data: any]
 }>()
 
 // 响应式数据
@@ -216,15 +198,15 @@ const orderList = ref([
     orderNo: 'ORD202401200001',
     userName: '张三',
     vehicleName: '奔驰V260',
-    completedAt: '2024-01-20 18:00:00'
+    completedAt: '2024-01-20 18:00:00',
   },
   {
     id: 2,
     orderNo: 'ORD202401200002',
     userName: '李四',
     vehicleName: '大通V90',
-    completedAt: '2024-01-20 19:00:00'
-  }
+    completedAt: '2024-01-20 19:00:00',
+  },
 ])
 
 // 选中的订单
@@ -241,49 +223,48 @@ const form = reactive({
   images: [] as any[],
   source: 'admin_offline',
   sourceNote: '',
-  isPublished: true
+  isPublished: true,
 })
 
 // 表单验证规则
 const formRules: FormRules = {
-  orderId: [
-    { required: true, message: '请选择订单', trigger: 'change' }
-  ],
+  orderId: [{ required: true, message: '请选择订单', trigger: 'change' }],
   overallRating: [
     { required: true, message: '请选择综合评分', trigger: 'change' },
-    { type: 'number', min: 1, max: 5, message: '评分范围为1-5星', trigger: 'change' }
+    { type: 'number', min: 1, max: 5, message: '评分范围为1-5星', trigger: 'change' },
   ],
   vehicleRating: [
     { required: true, message: '请选择车辆评分', trigger: 'change' },
-    { type: 'number', min: 1, max: 5, message: '评分范围为1-5星', trigger: 'change' }
+    { type: 'number', min: 1, max: 5, message: '评分范围为1-5星', trigger: 'change' },
   ],
   serviceRating: [
     { required: true, message: '请选择服务评分', trigger: 'change' },
-    { type: 'number', min: 1, max: 5, message: '评分范围为1-5星', trigger: 'change' }
+    { type: 'number', min: 1, max: 5, message: '评分范围为1-5星', trigger: 'change' },
   ],
   cleanlinessRating: [
     { required: true, message: '请选择清洁度评分', trigger: 'change' },
-    { type: 'number', min: 1, max: 5, message: '评分范围为1-5星', trigger: 'change' }
+    { type: 'number', min: 1, max: 5, message: '评分范围为1-5星', trigger: 'change' },
   ],
   content: [
     { required: true, message: '请输入评价内容', trigger: 'blur' },
-    { min: 10, message: '评价内容至少10个字符', trigger: 'blur' }
+    { min: 10, message: '评价内容至少10个字符', trigger: 'blur' },
   ],
-  source: [
-    { required: true, message: '请选择评价来源', trigger: 'change' }
-  ],
+  source: [{ required: true, message: '请选择评价来源', trigger: 'change' }],
   sourceNote: [
     { required: true, message: '请说明评价来源', trigger: 'blur' },
-    { min: 5, message: '来源说明至少5个字符', trigger: 'blur' }
-  ]
+    { min: 5, message: '来源说明至少5个字符', trigger: 'blur' },
+  ],
 }
 
 // 监听 modelValue 变化
-watch(() => props.modelValue, (val) => {
-  visible.value = val
-})
+watch(
+  () => props.modelValue,
+  val => {
+    visible.value = val
+  }
+)
 
-watch(visible, (val) => {
+watch(visible, val => {
   emit('update:modelValue', val)
 })
 
@@ -296,7 +277,7 @@ const handleOrderChange = (orderId: number) => {
 const handleSubmit = async () => {
   if (!formRef.value) return
 
-  await formRef.value.validate(async (valid) => {
+  await formRef.value.validate(async valid => {
     if (!valid) return
 
     loading.value = true
@@ -311,7 +292,7 @@ const handleSubmit = async () => {
         images: form.images.map(file => file.url || URL.createObjectURL(file.raw)),
         source: form.source,
         sourceNote: form.sourceNote,
-        isPublished: form.isPublished
+        isPublished: form.isPublished,
       }
 
       emit('submit', submitData)

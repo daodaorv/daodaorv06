@@ -115,9 +115,7 @@
           />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" :icon="Search" @click="handleSearch">
-            搜索
-          </el-button>
+          <el-button type="primary" :icon="Search" @click="handleSearch"> 搜索 </el-button>
           <el-button :icon="Refresh" @click="handleReset">重置</el-button>
         </el-form-item>
       </el-form>
@@ -125,24 +123,15 @@
 
     <!-- 操作栏 -->
     <el-card class="toolbar-card" shadow="never">
-      <el-button type="primary" :icon="Plus" @click="handleCreateRule">
-        新增预警规则
-      </el-button>
-      <el-button :icon="Setting" @click="handleManageRules">
-        管理规则
-      </el-button>
+      <el-button type="primary" :icon="Plus" @click="handleCreateRule"> 新增预警规则 </el-button>
+      <el-button :icon="Setting" @click="handleManageRules"> 管理规则 </el-button>
       <el-button type="danger" :icon="Delete">批量删除</el-button>
       <el-button :icon="Download">导出记录</el-button>
     </el-card>
 
     <!-- 预警列表 -->
     <el-card class="table-card" shadow="never">
-      <el-table
-        v-loading="loading"
-        :data="alertsList"
-        stripe
-        style="width: 100%"
-      >
+      <el-table v-loading="loading" :data="alertsList" stripe style="width: 100%">
         <el-table-column type="selection" width="55" />
         <el-table-column prop="id" label="ID" width="80" />
         <el-table-column label="预警级别" width="100">
@@ -212,11 +201,7 @@
     </el-card>
 
     <!-- 预警详情对话框 -->
-    <el-dialog
-      v-model="detailDialogVisible"
-      title="预警详情"
-      width="800px"
-    >
+    <el-dialog v-model="detailDialogVisible" title="预警详情" width="800px">
       <el-descriptions :column="2" border>
         <el-descriptions-item label="预警ID">
           {{ currentAlert?.id }}
@@ -249,13 +234,8 @@
           {{ currentAlert?.createdAt }}
         </el-descriptions-item>
         <el-descriptions-item label="详细信息" :span="2">
-      // @ts-ignore
-          <el-input
-            v-model="currentAlert.details"
-            type="textarea"
-            :rows="6"
-            readonly
-          />
+          // @ts-ignore
+          <el-input v-model="currentAlert.details" type="textarea" :rows="6" readonly />
         </el-descriptions-item>
       </el-descriptions>
       <template #footer>
@@ -426,15 +406,11 @@ const handleResolve = async (row: Alert | null) => {
   if (!row) return
 
   try {
-    await ElMessageBox.confirm(
-      `确定要将预警 "${row.title}" 标记为已处理吗？`,
-      '处理确认',
-      {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'success',
-      }
-    )
+    await ElMessageBox.confirm(`确定要将预警 "${row.title}" 标记为已处理吗？`, '处理确认', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'success',
+    })
     row.status = 'resolved'
     stats.resolved++
     if (row.level === 'critical') stats.critical--
@@ -452,15 +428,11 @@ const handleResolve = async (row: Alert | null) => {
 // 忽略预警
 const handleIgnore = async (row: Alert) => {
   try {
-    await ElMessageBox.confirm(
-      `确定要忽略预警 "${row.title}" 吗？`,
-      '忽略确认',
-      {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      }
-    )
+    await ElMessageBox.confirm(`确定要忽略预警 "${row.title}" 吗？`, '忽略确认', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    })
     row.status = 'ignored'
     ElMessage.success('已忽略')
   } catch (error) {

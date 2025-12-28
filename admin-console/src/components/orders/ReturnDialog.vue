@@ -6,12 +6,7 @@
     :close-on-click-modal="false"
     @close="handleClose"
   >
-    <el-form
-      ref="formRef"
-      :model="form"
-      :rules="formRules"
-      label-width="120px"
-    >
+    <el-form ref="formRef" :model="form" :rules="formRules" label-width="120px">
       <!-- 订单信息 -->
       <el-card class="info-card" shadow="never">
         <template #header><span class="card-title">订单信息</span></template>
@@ -74,9 +69,7 @@
               >
                 <template #append>公里</template>
               </el-input-number>
-              <div class="field-tip">
-                行驶里程：{{ traveledMileage }} 公里
-              </div>
+              <div class="field-tip">行驶里程：{{ traveledMileage }} 公里</div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -299,9 +292,7 @@
               >
                 <template #append>元</template>
               </el-input-number>
-              <div class="field-tip">
-                自动计算：{{ totalDamageCost.toFixed(2) }} 元
-              </div>
+              <div class="field-tip">自动计算：{{ totalDamageCost.toFixed(2) }} 元</div>
             </el-form-item>
           </el-col>
         </el-row>
@@ -313,7 +304,9 @@
             <el-col :span="12">
               <div class="summary-item">
                 <span class="summary-label">订单押金：</span>
-                <span class="summary-value">¥{{ orderInfo?.depositAmount?.toFixed(2) || '0.00' }}</span>
+                <span class="summary-value"
+                  >¥{{ orderInfo?.depositAmount?.toFixed(2) || '0.00' }}</span
+                >
               </div>
             </el-col>
             <el-col :span="12">
@@ -333,7 +326,9 @@
             <el-col :span="12">
               <div class="summary-item" v-if="depositRefund < 0">
                 <span class="summary-label">需补缴费用：</span>
-                <span class="summary-value text-danger">¥{{ Math.abs(depositRefund).toFixed(2) }}</span>
+                <span class="summary-value text-danger"
+                  >¥{{ Math.abs(depositRefund).toFixed(2) }}</span
+                >
               </div>
             </el-col>
           </el-row>
@@ -341,11 +336,7 @@
 
         <!-- 费用处理方式 -->
         <el-divider />
-        <el-form-item
-          label="费用处理方式"
-          prop="paymentMethod"
-          v-if="totalAdditionalFees > 0"
-        >
+        <el-form-item label="费用处理方式" prop="paymentMethod" v-if="totalAdditionalFees > 0">
           <el-radio-group v-model="form.paymentMethod">
             <el-radio value="deposit_deduction">
               <div class="payment-option">
@@ -397,7 +388,9 @@
               <ul>
                 <li>额外费用 ¥{{ totalAdditionalFees.toFixed(2) }} 将从押金中扣除</li>
                 <li>实际退还押金：¥{{ depositRefund.toFixed(2) }}</li>
-                <li v-if="depositRefund < 0">押金不足，需用户补缴：¥{{ Math.abs(depositRefund).toFixed(2) }}</li>
+                <li v-if="depositRefund < 0">
+                  押金不足，需用户补缴：¥{{ Math.abs(depositRefund).toFixed(2) }}
+                </li>
                 <li>押金退款将在还车确认后自动发起</li>
               </ul>
             </div>
@@ -414,8 +407,12 @@
             <div class="payment-tip">
               <p>用户支付说明：</p>
               <ul>
-                <li v-if="form.userPaymentType === 'miniprogram'">将发起支付订单，用户需在小程序端完成支付</li>
-                <li v-if="form.userPaymentType === 'qrcode'">将生成收款二维码，用户扫码后完成支付</li>
+                <li v-if="form.userPaymentType === 'miniprogram'">
+                  将发起支付订单，用户需在小程序端完成支付
+                </li>
+                <li v-if="form.userPaymentType === 'qrcode'">
+                  将生成收款二维码，用户扫码后完成支付
+                </li>
                 <li>支付金额：¥{{ totalAdditionalFees.toFixed(2) }}</li>
                 <li>押金将全额退还：¥{{ orderInfo?.depositAmount?.toFixed(2) || '0.00' }}</li>
                 <li>用户完成支付后，押金退款将自动发起</li>
@@ -464,13 +461,13 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   modelValue: false,
   orderInfo: null,
-  pickupRecord: null
+  pickupRecord: null,
 })
 
 // Emits
 const emit = defineEmits<{
   'update:modelValue': [value: boolean]
-  'submit': [data: any]
+  submit: [data: any]
 }>()
 
 // 响应式数据
@@ -485,7 +482,7 @@ const form = reactive({
     fuelLevel: 100,
     exterior: [] as any[],
     interior: [] as any[],
-    dashboard: [] as any[]
+    dashboard: [] as any[],
   },
   damages: [] as Array<{
     type: string
@@ -497,11 +494,11 @@ const form = reactive({
     overtimeFee: 0,
     fuelFee: 0,
     cleaningFee: 0,
-    damageFee: 0
+    damageFee: 0,
   },
   paymentMethod: 'deposit_deduction', // 费用处理方式: deposit_deduction(押金扣取) | user_payment(用户支付)
   userPaymentType: 'miniprogram', // 用户支付方式: miniprogram(小程序支付) | qrcode(扫码支付)
-  notes: ''
+  notes: '',
 })
 
 // 表单验证规则
@@ -517,24 +514,18 @@ const formRules: FormRules = {
           callback()
         }
       },
-      trigger: 'blur'
-    }
+      trigger: 'blur',
+    },
   ],
-  'vehicleCondition.fuelLevel': [
-    { required: true, message: '请选择还车油量', trigger: 'change' }
-  ],
+  'vehicleCondition.fuelLevel': [{ required: true, message: '请选择还车油量', trigger: 'change' }],
   'vehicleCondition.exterior': [
-    { required: true, message: '请上传车辆外观照片', trigger: 'change' }
+    { required: true, message: '请上传车辆外观照片', trigger: 'change' },
   ],
   'vehicleCondition.dashboard': [
-    { required: true, message: '请上传仪表盘照片', trigger: 'change' }
+    { required: true, message: '请上传仪表盘照片', trigger: 'change' },
   ],
-  paymentMethod: [
-    { required: true, message: '请选择费用处理方式', trigger: 'change' }
-  ],
-  userPaymentType: [
-    { required: true, message: '请选择支付方式', trigger: 'change' }
-  ]
+  paymentMethod: [{ required: true, message: '请选择费用处理方式', trigger: 'change' }],
+  userPaymentType: [{ required: true, message: '请选择支付方式', trigger: 'change' }],
 }
 
 // 油量标记
@@ -543,7 +534,7 @@ const fuelMarks = {
   25: '1/4',
   50: '1/2',
   75: '3/4',
-  100: '满'
+  100: '满',
 }
 
 // 计算属性
@@ -590,21 +581,24 @@ const fuelFeeTip = computed(() => {
 })
 
 // 监听 modelValue 变化
-watch(() => props.modelValue, (val) => {
-  visible.value = val
-  if (val && props.pickupRecord) {
-    // 初始化还车里程和油量
-    form.vehicleCondition.mileage = props.pickupRecord.vehicleCondition?.mileage || 0
-    form.vehicleCondition.fuelLevel = props.pickupRecord.vehicleCondition?.fuelLevel || 100
+watch(
+  () => props.modelValue,
+  val => {
+    visible.value = val
+    if (val && props.pickupRecord) {
+      // 初始化还车里程和油量
+      form.vehicleCondition.mileage = props.pickupRecord.vehicleCondition?.mileage || 0
+      form.vehicleCondition.fuelLevel = props.pickupRecord.vehicleCondition?.fuelLevel || 100
+    }
   }
-})
+)
 
-watch(visible, (val) => {
+watch(visible, val => {
   emit('update:modelValue', val)
 })
 
 // 监听损坏费用变化
-watch(totalDamageCost, (val) => {
+watch(totalDamageCost, val => {
   form.additionalFees.damageFee = val
 })
 
@@ -614,7 +608,7 @@ const handleAddDamage = () => {
     type: '',
     description: '',
     photos: [],
-    estimatedCost: 0
+    estimatedCost: 0,
   })
 }
 
@@ -627,7 +621,7 @@ const handleRemoveDamage = (index: number) => {
 const handleSubmit = async () => {
   if (!formRef.value) return
 
-  await formRef.value.validate(async (valid) => {
+  await formRef.value.validate(async valid => {
     if (!valid) return
 
     // 检查损坏项是否填写完整
@@ -652,24 +646,30 @@ const handleSubmit = async () => {
         vehicleCondition: {
           mileage: form.vehicleCondition.mileage,
           fuelLevel: form.vehicleCondition.fuelLevel,
-          exterior: form.vehicleCondition.exterior.map(file => file.url || URL.createObjectURL(file.raw)),
-          interior: form.vehicleCondition.interior.map(file => file.url || URL.createObjectURL(file.raw)),
-          dashboard: form.vehicleCondition.dashboard.map(file => file.url || URL.createObjectURL(file.raw))
+          exterior: form.vehicleCondition.exterior.map(
+            file => file.url || URL.createObjectURL(file.raw)
+          ),
+          interior: form.vehicleCondition.interior.map(
+            file => file.url || URL.createObjectURL(file.raw)
+          ),
+          dashboard: form.vehicleCondition.dashboard.map(
+            file => file.url || URL.createObjectURL(file.raw)
+          ),
         },
         damages: form.damages.map(damage => ({
           type: damage.type,
           description: damage.description,
           photos: damage.photos.map(file => file.url || URL.createObjectURL(file.raw)),
-          estimatedCost: damage.estimatedCost
+          estimatedCost: damage.estimatedCost,
         })),
         additionalFees: {
           overtimeFee: form.additionalFees.overtimeFee,
           fuelFee: form.additionalFees.fuelFee,
           cleaningFee: form.additionalFees.cleaningFee,
-          damageFee: form.additionalFees.damageFee
+          damageFee: form.additionalFees.damageFee,
         },
         depositRefund: depositRefund.value,
-        notes: form.notes
+        notes: form.notes,
       }
 
       emit('submit', submitData)
@@ -695,7 +695,7 @@ const handleClose = () => {
     overtimeFee: 0,
     fuelFee: 0,
     cleaningFee: 0,
-    damageFee: 0
+    damageFee: 0,
   }
   form.notes = ''
   visible.value = false

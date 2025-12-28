@@ -35,7 +35,11 @@
 
       <!-- 车辆价格 -->
       <template #vehiclePrice="{ row }">
-        <span class="price-text">¥{{ (row.purchaseHostingConfig?.guaranteedMonthlyIncome * 200 || 0).toLocaleString() }}</span>
+        <span class="price-text"
+          >¥{{
+            (row.purchaseHostingConfig?.guaranteedMonthlyIncome * 200 || 0).toLocaleString()
+          }}</span
+        >
       </template>
 
       <!-- 首付比例 -->
@@ -50,19 +54,21 @@
 
       <!-- 保底月收益 -->
       <template #guaranteedIncome="{ row }">
-        <span class="income-text">¥{{ row.purchaseHostingConfig?.guaranteedMonthlyIncome?.toLocaleString() || 0 }}/月</span>
+        <span class="income-text"
+          >¥{{ row.purchaseHostingConfig?.guaranteedMonthlyIncome?.toLocaleString() || 0 }}/月</span
+        >
       </template>
 
       <!-- 年化收益率 -->
       <template #annualReturn="{ row }">
-        <span class="return-text">{{ row.purchaseHostingConfig?.estimatedAnnualReturn || 0 }}%</span>
+        <span class="return-text"
+          >{{ row.purchaseHostingConfig?.estimatedAnnualReturn || 0 }}%</span
+        >
       </template>
 
       <!-- 操作列 -->
       <template #actions="{ row }">
-        <el-button link type="primary" size="small" @click="handleEdit(row)">
-          编辑配置
-        </el-button>
+        <el-button link type="primary" size="small" @click="handleEdit(row)"> 编辑配置 </el-button>
         <el-button link type="success" size="small" @click="handleViewApplications(row)">
           查看申请
         </el-button>
@@ -81,21 +87,11 @@
           <el-input v-model="editForm.modelName" disabled />
         </el-form-item>
         <el-form-item label="最低首付比例">
-          <el-input-number
-            v-model="editForm.minDownPaymentRatio"
-            :min="20"
-            :max="50"
-            :step="5"
-          />
+          <el-input-number v-model="editForm.minDownPaymentRatio" :min="20" :max="50" :step="5" />
           <span style="margin-left: 10px">%</span>
         </el-form-item>
         <el-form-item label="最长贷款期限">
-          <el-input-number
-            v-model="editForm.maxLoanTerm"
-            :min="12"
-            :max="60"
-            :step="12"
-          />
+          <el-input-number v-model="editForm.maxLoanTerm" :min="12" :max="60" :step="12" />
           <span style="margin-left: 10px">个月</span>
         </el-form-item>
         <el-form-item label="保底月收益">
@@ -194,14 +190,12 @@ const loadModelsList = async () => {
   loading.value = true
   try {
     // 筛选支持购车托管的车型
-    let filteredModels = mockVehicleModels.filter(
-      (model) => model.supportPurchaseHosting === true
-    )
+    let filteredModels = mockVehicleModels.filter(model => model.supportPurchaseHosting === true)
 
     // 搜索过滤
     if (searchForm.keyword) {
       filteredModels = filteredModels.filter(
-        (model) =>
+        model =>
           model.modelName.includes(searchForm.keyword) ||
           model.brandName.includes(searchForm.keyword)
       )

@@ -1,8 +1,6 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="partner-settlement-container">
-    
-
     <SearchForm
       v-model="searchForm"
       :fields="searchFields"
@@ -23,9 +21,7 @@
         ¥{{ row.totalPriceDifference.toLocaleString() }}
       </template>
       <template #totalStoreProfit="{ row }">
-        <el-tag type="warning" size="small">
-          ¥{{ row.totalStoreProfit.toLocaleString() }}
-        </el-tag>
+        <el-tag type="warning" size="small"> ¥{{ row.totalStoreProfit.toLocaleString() }} </el-tag>
       </template>
       <template #totalPlatformProfit="{ row }">
         <el-tag type="primary" size="small">
@@ -100,7 +96,7 @@ import { exportToCSV } from '@/utils/export'
 const searchForm = ref({
   partnerId: null as number | null,
   startDate: '',
-  endDate: ''
+  endDate: '',
 })
 
 // 合作商列表
@@ -113,20 +109,20 @@ const searchFields: SearchField[] = [
     prop: 'partnerId',
     label: '合作商',
     placeholder: '请选择合作商',
-    options: partnerOptions
+    options: partnerOptions,
   },
   {
     type: 'date',
     prop: 'startDate',
     label: '开始日期',
-    placeholder: '请选择开始日期'
+    placeholder: '请选择开始日期',
   },
   {
     type: 'date',
     prop: 'endDate',
     label: '结束日期',
-    placeholder: '请选择结束日期'
-  }
+    placeholder: '请选择结束日期',
+  },
 ]
 
 // 表格数据
@@ -135,7 +131,7 @@ const loading = ref(false)
 const pagination = reactive({
   page: 1,
   pageSize: 10,
-  total: 0
+  total: 0,
 })
 
 // 表格列配置
@@ -148,7 +144,7 @@ const tableColumns: TableColumn[] = [
   { prop: 'totalStoreProfit', label: '门店总分润', width: 120, slot: 'totalStoreProfit' },
   { prop: 'totalPlatformProfit', label: '平台总收益', width: 120, slot: 'totalPlatformProfit' },
   { prop: 'settlementStatus', label: '结算状态', width: 100, slot: 'settlementStatus' },
-  { prop: 'settlementDate', label: '结算日期', width: 120, slot: 'settlementDate' }
+  { prop: 'settlementDate', label: '结算日期', width: 120, slot: 'settlementDate' },
 ]
 
 // 工具栏按钮配置
@@ -156,17 +152,23 @@ const toolbarButtons: ToolbarButton[] = [
   {
     label: '导出',
     icon: Download,
-    onClick: handleExport
-  }
+    onClick: handleExport,
+  },
 ]
 
 // 统计数据
 const totalStats = computed(() => {
   return {
     totalOrders: settlementList.value.reduce((sum, item) => sum + item.totalOrders, 0),
-    totalPriceDifference: settlementList.value.reduce((sum, item) => sum + item.totalPriceDifference, 0),
+    totalPriceDifference: settlementList.value.reduce(
+      (sum, item) => sum + item.totalPriceDifference,
+      0
+    ),
     totalStoreProfit: settlementList.value.reduce((sum, item) => sum + item.totalStoreProfit, 0),
-    totalPlatformProfit: settlementList.value.reduce((sum, item) => sum + item.totalPlatformProfit, 0)
+    totalPlatformProfit: settlementList.value.reduce(
+      (sum, item) => sum + item.totalPlatformProfit,
+      0
+    ),
   }
 })
 
@@ -174,9 +176,9 @@ const totalStats = computed(() => {
 async function fetchPartnerList() {
   try {
     const { list } = await getPartnerList({ page: 1, pageSize: 100 })
-    partnerOptions.value = list.map((partner) => ({
+    partnerOptions.value = list.map(partner => ({
       label: partner.name,
-      value: partner.id
+      value: partner.id,
     }))
   } catch (error) {
     console.error('获取合作商列表失败:', error)
@@ -190,7 +192,7 @@ async function fetchSettlementList() {
     const params = {
       partnerId: searchForm.value.partnerId || undefined,
       startDate: searchForm.value.startDate || undefined,
-      endDate: searchForm.value.endDate || undefined
+      endDate: searchForm.value.endDate || undefined,
     }
     const list = await getPartnerSettlement(params)
 
@@ -218,7 +220,7 @@ function handleReset() {
   searchForm.value = {
     partnerId: null,
     startDate: '',
-    endDate: ''
+    endDate: '',
   }
   pagination.page = 1
   fetchSettlementList()
@@ -240,13 +242,13 @@ function handleExport() {
     { key: 'totalStoreProfit', label: '门店总分润' },
     { key: 'totalPlatformProfit', label: '平台总收益' },
     { key: 'settlementStatus', label: '结算状态' },
-    { key: 'settlementDate', label: '结算日期' }
+    { key: 'settlementDate', label: '结算日期' },
   ]
 
-  const exportData = settlementList.value.map((item) => ({
+  const exportData = settlementList.value.map(item => ({
     ...item,
     settlementStatus: item.settlementStatus === 'completed' ? '已结算' : '待结算',
-    settlementDate: item.settlementDate ? formatDate(item.settlementDate) : '-'
+    settlementDate: item.settlementDate ? formatDate(item.settlementDate) : '-',
   }))
 
   exportToCSV(exportData, columns, '合作商结算统计')

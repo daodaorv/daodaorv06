@@ -1,8 +1,6 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="price-calendar-container">
-    
-
     <!-- 筛选器 -->
     <el-card class="filter-card">
       <el-form :inline="true" :model="filters">
@@ -43,9 +41,7 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" :loading="loading" @click="loadCalendar">
-            查询
-          </el-button>
+          <el-button type="primary" :loading="loading" @click="loadCalendar"> 查询 </el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -64,7 +60,9 @@
         <el-card>
           <div class="stat-item">
             <div class="stat-label">最高价格</div>
-            <div class="stat-value" style="color: #f56c6c">¥{{ calendarData.summary.maxPrice }}</div>
+            <div class="stat-value" style="color: #f56c6c">
+              ¥{{ calendarData.summary.maxPrice }}
+            </div>
           </div>
         </el-card>
       </el-col>
@@ -72,7 +70,9 @@
         <el-card>
           <div class="stat-item">
             <div class="stat-label">最低价格</div>
-            <div class="stat-value" style="color: #67c23a">¥{{ calendarData.summary.minPrice }}</div>
+            <div class="stat-value" style="color: #67c23a">
+              ¥{{ calendarData.summary.minPrice }}
+            </div>
           </div>
         </el-card>
       </el-col>
@@ -101,17 +101,10 @@
           </el-button-group>
           <div class="calendar-actions">
             <el-button type="primary" @click="goToToday">今天</el-button>
-            <el-button
-              v-if="selectedDates.length > 0"
-              type="success"
-              @click="handleBatchAdjust"
-            >
+            <el-button v-if="selectedDates.length > 0" type="success" @click="handleBatchAdjust">
               批量调价 ({{ selectedDates.length }})
             </el-button>
-            <el-button
-              v-if="selectedDates.length > 0"
-              @click="clearSelection"
-            >
+            <el-button v-if="selectedDates.length > 0" @click="clearSelection">
               清空选择
             </el-button>
           </div>
@@ -143,9 +136,7 @@
       <el-table :data="calendarData?.calendar || []" border stripe>
         <el-table-column prop="date" label="日期" width="120" />
         <el-table-column prop="basePrice" label="基础价" width="100">
-          <template #default="{ row }">
-            ¥{{ row.basePrice }}
-          </template>
+          <template #default="{ row }"> ¥{{ row.basePrice }} </template>
         </el-table-column>
         <el-table-column label="城市因子" width="150">
           <template #default="{ row }">
@@ -184,13 +175,25 @@
               <template v-if="row.dailyRental > calendarData.calendar[$index - 1].dailyRental">
                 <el-icon color="#f56c6c"><CaretTop /></el-icon>
                 <span style="color: #f56c6c">
-                  +{{ Math.round(((row.dailyRental - calendarData.calendar[$index - 1].dailyRental) / calendarData.calendar[$index - 1].dailyRental) * 100) }}%
+                  +{{
+                    Math.round(
+                      ((row.dailyRental - calendarData.calendar[$index - 1].dailyRental) /
+                        calendarData.calendar[$index - 1].dailyRental) *
+                        100
+                    )
+                  }}%
                 </span>
               </template>
               <template v-else-if="row.dailyRental < calendarData.calendar[$index - 1].dailyRental">
                 <el-icon color="#67c23a"><CaretBottom /></el-icon>
                 <span style="color: #67c23a">
-                  {{ Math.round(((row.dailyRental - calendarData.calendar[$index - 1].dailyRental) / calendarData.calendar[$index - 1].dailyRental) * 100) }}%
+                  {{
+                    Math.round(
+                      ((row.dailyRental - calendarData.calendar[$index - 1].dailyRental) /
+                        calendarData.calendar[$index - 1].dailyRental) *
+                        100
+                    )
+                  }}%
                 </span>
               </template>
               <span v-else style="color: #909399">-</span>
@@ -209,12 +212,7 @@
     </el-card>
 
     <!-- 价格详情抽屉 -->
-    <el-drawer
-      v-model="drawerVisible"
-      title="价格详情"
-      size="600px"
-      :close-on-click-modal="false"
-    >
+    <el-drawer v-model="drawerVisible" title="价格详情" size="600px" :close-on-click-modal="false">
       <PriceDayDetail
         v-if="selectedDate && filters.modelId && filters.storeId"
         :date="selectedDate"
@@ -251,7 +249,7 @@ import { getStoreList, type Store } from '@/api/store'
 // 筛选条件
 const filters = reactive({
   modelId: undefined as number | undefined,
-  storeId: undefined as number | undefined
+  storeId: undefined as number | undefined,
 })
 
 // 视图模式
@@ -346,7 +344,7 @@ const getPriceInfo = (date: string) => {
     factors.push({
       id: priceDetail.cityFactor.factorId,
       name: priceDetail.cityFactor.factorName,
-      type: 'city'
+      type: 'city',
     })
   }
 
@@ -354,7 +352,7 @@ const getPriceInfo = (date: string) => {
     factors.push({
       id: priceDetail.timeFactor.factorId,
       name: priceDetail.timeFactor.factorName,
-      type: 'time'
+      type: 'time',
     })
   }
 
@@ -370,7 +368,7 @@ const getPriceInfo = (date: string) => {
   return {
     ...priceDetail,
     factors,
-    priceChange
+    priceChange,
   }
 }
 
@@ -401,7 +399,7 @@ const loadVehicleModels = async () => {
 // 加载门店列表
 const loadStores = async () => {
   try {
-    const res = await getStoreList({ page: 1, pageSize: 100, status: 'active' }) as any
+    const res = (await getStoreList({ page: 1, pageSize: 100, status: 'active' })) as any
     stores.value = res.data.list
     if (stores.value.length > 0 && !filters.storeId) {
       filters.storeId = stores.value[0].id
@@ -431,7 +429,7 @@ const loadCalendar = async () => {
       modelId: filters.modelId,
       storeId: filters.storeId,
       startDate,
-      endDate
+      endDate,
     })
 
     if (res.success) {

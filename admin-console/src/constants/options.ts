@@ -39,7 +39,7 @@ import {
   STORE_MAP,
   ROLE_STATUS_MAP,
   ROLE_TYPE_MAP,
-  DATA_SCOPE_MAP
+  DATA_SCOPE_MAP,
 } from './enums'
 
 /**
@@ -58,7 +58,7 @@ export interface Option {
 const mapToOptions = (map: Record<string, string>): Option[] => {
   return Object.entries(map).map(([value, label]) => ({
     label,
-    value
+    value,
   }))
 }
 
@@ -222,7 +222,7 @@ export const VEHICLE_TYPE_OPTIONS = mapToOptions(VEHICLE_TYPE_MAP)
  */
 export const STORE_OPTIONS: Option[] = Object.entries(STORE_MAP).map(([value, label]) => ({
   label,
-  value: Number(value)
+  value: Number(value),
 }))
 
 /**
@@ -245,7 +245,7 @@ export const DATA_SCOPE_OPTIONS = mapToOptions(DATA_SCOPE_MAP)
  */
 export const YES_NO_OPTIONS: Option[] = [
   { label: '是', value: 1 },
-  { label: '否', value: 0 }
+  { label: '否', value: 0 },
 ]
 
 /**
@@ -253,7 +253,7 @@ export const YES_NO_OPTIONS: Option[] = [
  */
 export const ENABLE_DISABLE_OPTIONS: Option[] = [
   { label: '启用', value: 1 },
-  { label: '禁用', value: 0 }
+  { label: '禁用', value: 0 },
 ]
 
 /**
@@ -273,7 +273,7 @@ export const DATE_SHORTCUTS = [
       const end = new Date()
       end.setHours(23, 59, 59, 999)
       return [start, end]
-    }
+    },
   },
   {
     text: '昨天',
@@ -285,7 +285,7 @@ export const DATE_SHORTCUTS = [
       end.setDate(end.getDate() - 1)
       end.setHours(23, 59, 59, 999)
       return [start, end]
-    }
+    },
   },
   {
     text: '最近7天',
@@ -296,7 +296,7 @@ export const DATE_SHORTCUTS = [
       start.setHours(0, 0, 0, 0)
       end.setHours(23, 59, 59, 999)
       return [start, end]
-    }
+    },
   },
   {
     text: '最近30天',
@@ -307,7 +307,7 @@ export const DATE_SHORTCUTS = [
       start.setHours(0, 0, 0, 0)
       end.setHours(23, 59, 59, 999)
       return [start, end]
-    }
+    },
   },
   {
     text: '本月',
@@ -319,7 +319,7 @@ export const DATE_SHORTCUTS = [
       end.setMonth(end.getMonth() + 1, 0)
       end.setHours(23, 59, 59, 999)
       return [start, end]
-    }
+    },
   },
   {
     text: '上月',
@@ -331,6 +331,6 @@ export const DATE_SHORTCUTS = [
       end.setDate(0)
       end.setHours(23, 59, 59, 999)
       return [start, end]
-    }
-  }
+    },
+  },
 ]

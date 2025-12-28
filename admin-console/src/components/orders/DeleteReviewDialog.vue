@@ -17,12 +17,7 @@
           {{ reviewInfo?.userName }}
         </el-descriptions-item>
         <el-descriptions-item label="综合评分">
-          <el-rate
-            v-model="reviewInfo.overallRating"
-            disabled
-            show-score
-            text-color="#ff9900"
-          />
+          <el-rate v-model="reviewInfo.overallRating" disabled show-score text-color="#ff9900" />
         </el-descriptions-item>
         <el-descriptions-item label="评价时间">
           {{ reviewInfo?.createdAt }}
@@ -55,20 +50,10 @@
 
       <el-descriptions :column="2" size="small">
         <el-descriptions-item label="车辆评分">
-          <el-rate
-            v-model="reviewInfo.vehicleRating"
-            disabled
-            show-score
-            text-color="#ff9900"
-          />
+          <el-rate v-model="reviewInfo.vehicleRating" disabled show-score text-color="#ff9900" />
         </el-descriptions-item>
         <el-descriptions-item label="服务评分">
-          <el-rate
-            v-model="reviewInfo.serviceRating"
-            disabled
-            show-score
-            text-color="#ff9900"
-          />
+          <el-rate v-model="reviewInfo.serviceRating" disabled show-score text-color="#ff9900" />
         </el-descriptions-item>
         <el-descriptions-item label="清洁度评分" :span="2">
           <el-rate
@@ -112,12 +97,7 @@
     </el-form>
 
     <!-- 重要提示 -->
-    <el-alert
-      title="重要提示"
-      type="warning"
-      :closable="false"
-      show-icon
-    >
+    <el-alert title="重要提示" type="warning" :closable="false" show-icon>
       <template #default>
         <ul class="tips-list">
           <li>删除操作为软删除，评价数据将被保留但不再显示</li>
@@ -130,9 +110,7 @@
 
     <template #footer>
       <el-button @click="handleClose">取消</el-button>
-      <el-button type="danger" :loading="loading" @click="handleSubmit">
-        确认删除
-      </el-button>
+      <el-button type="danger" :loading="loading" @click="handleSubmit"> 确认删除 </el-button>
     </template>
   </el-dialog>
 </template>
@@ -149,13 +127,13 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: false,
-  reviewInfo: null
+  reviewInfo: null,
 })
 
 // Emits
 const emit = defineEmits<{
   'update:modelValue': [value: boolean]
-  'submit': [data: any]
+  submit: [data: any]
 }>()
 
 // 响应式数据
@@ -166,26 +144,27 @@ const formRef = ref<FormInstance>()
 // 表单数据
 const form = reactive({
   reason: '',
-  deleteType: 'inappropriate'
+  deleteType: 'inappropriate',
 })
 
 // 表单验证规则
 const formRules: FormRules = {
   reason: [
     { required: true, message: '请输入删除原因', trigger: 'blur' },
-    { min: 10, message: '删除原因至少10个字符', trigger: 'blur' }
+    { min: 10, message: '删除原因至少10个字符', trigger: 'blur' },
   ],
-  deleteType: [
-    { required: true, message: '请选择删除类型', trigger: 'change' }
-  ]
+  deleteType: [{ required: true, message: '请选择删除类型', trigger: 'change' }],
 }
 
 // 监听 modelValue 变化
-watch(() => props.modelValue, (val) => {
-  visible.value = val
-})
+watch(
+  () => props.modelValue,
+  val => {
+    visible.value = val
+  }
+)
 
-watch(visible, (val) => {
+watch(visible, val => {
   emit('update:modelValue', val)
 })
 
@@ -193,7 +172,7 @@ watch(visible, (val) => {
 const handleSubmit = async () => {
   if (!formRef.value) return
 
-  await formRef.value.validate(async (valid) => {
+  await formRef.value.validate(async valid => {
     if (!valid) return
 
     try {
@@ -205,7 +184,7 @@ const handleSubmit = async () => {
           confirmButtonText: '确定删除',
           cancelButtonText: '取消',
           type: 'warning',
-          distinguishCancelAndClose: true
+          distinguishCancelAndClose: true,
         }
       )
 
@@ -215,7 +194,7 @@ const handleSubmit = async () => {
         reviewId: props.reviewInfo?.id,
         reason: form.reason,
         deleteType: form.deleteType,
-        deletedAt: new Date().toISOString()
+        deletedAt: new Date().toISOString(),
       }
 
       emit('submit', submitData)

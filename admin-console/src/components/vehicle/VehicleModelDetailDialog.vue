@@ -31,9 +31,7 @@
             <el-descriptions-item label="核载人数">
               {{ modelDetail.seats }} 人
             </el-descriptions-item>
-            <el-descriptions-item label="床位数">
-              {{ modelDetail.beds }} 张
-            </el-descriptions-item>
+            <el-descriptions-item label="床位数"> {{ modelDetail.beds }} 张 </el-descriptions-item>
             <el-descriptions-item label="车身尺寸">
               {{ modelDetail.length }}m × {{ modelDetail.width }}m × {{ modelDetail.height }}m
             </el-descriptions-item>
@@ -41,7 +39,7 @@
               {{ modelDetail.fuelCapacity }} L
             </el-descriptions-item>
             <el-descriptions-item label="日租金">
-              <span style="color: #f56c6c; font-weight: bold; font-size: 16px;">
+              <span style="color: #f56c6c; font-weight: bold; font-size: 16px">
                 ¥{{ modelDetail.dailyPrice }}
               </span>
             </el-descriptions-item>
@@ -60,7 +58,7 @@
                 :src="modelDetail.image"
                 :preview-src-list="[modelDetail.image]"
                 fit="cover"
-                style="width: 200px; height: 150px; border-radius: 4px;"
+                style="width: 200px; height: 150px; border-radius: 4px"
               >
                 <template #error>
                   <div class="image-slot">
@@ -71,7 +69,10 @@
               <span v-else>暂无图片</span>
             </el-descriptions-item>
             <el-descriptions-item label="车型描述" :span="2">
-              <div v-html="modelDetail.description || '暂无描述'" style="max-height: 200px; overflow-y: auto;"></div>
+              <div
+                v-html="modelDetail.description || '暂无描述'"
+                style="max-height: 200px; overflow-y: auto"
+              ></div>
             </el-descriptions-item>
           </el-descriptions>
         </el-tab-pane>
@@ -91,15 +92,11 @@
               </template>
             </el-table-column>
             <el-table-column prop="oldPrice" label="原价格" width="120">
-              <template #default="{ row }">
-                ¥{{ row.oldPrice }}
-              </template>
+              <template #default="{ row }"> ¥{{ row.oldPrice }} </template>
             </el-table-column>
             <el-table-column prop="newPrice" label="新价格" width="120">
               <template #default="{ row }">
-                <span style="color: #f56c6c; font-weight: bold;">
-                  ¥{{ row.newPrice }}
-                </span>
+                <span style="color: #f56c6c; font-weight: bold"> ¥{{ row.newPrice }} </span>
               </template>
             </el-table-column>
             <el-table-column prop="priceChange" label="变更金额" width="120">
@@ -109,10 +106,18 @@
                 </span>
               </template>
             </el-table-column>
-            <el-table-column prop="changeReason" label="变更原因" min-width="150" show-overflow-tooltip />
+            <el-table-column
+              prop="changeReason"
+              label="变更原因"
+              min-width="150"
+              show-overflow-tooltip
+            />
             <el-table-column prop="operatorName" label="操作人" width="100" />
           </el-table>
-          <el-empty v-if="!priceHistoryLoading && priceHistoryList.length === 0" description="暂无价格历史记录" />
+          <el-empty
+            v-if="!priceHistoryLoading && priceHistoryList.length === 0"
+            description="暂无价格历史记录"
+          />
         </el-tab-pane>
 
         <!-- Tab 3: 关联车辆 -->
@@ -140,11 +145,14 @@
               </template>
             </el-table-column>
             <el-table-column prop="storeName" label="所属门店" width="150" show-overflow-tooltip />
-            <el-table-column prop="location" label="当前位置" min-width="150" show-overflow-tooltip />
+            <el-table-column
+              prop="location"
+              label="当前位置"
+              min-width="150"
+              show-overflow-tooltip
+            />
             <el-table-column prop="dailyPrice" label="日租金" width="100">
-              <template #default="{ row }">
-                ¥{{ row.dailyPrice }}
-              </template>
+              <template #default="{ row }"> ¥{{ row.dailyPrice }} </template>
             </el-table-column>
             <el-table-column label="操作" width="100" fixed="right">
               <template #default="{ row }">
@@ -154,7 +162,10 @@
               </template>
             </el-table-column>
           </el-table>
-          <el-empty v-if="!relatedVehiclesLoading && relatedVehiclesList.length === 0" description="暂无关联车辆" />
+          <el-empty
+            v-if="!relatedVehiclesLoading && relatedVehiclesList.length === 0"
+            description="暂无关联车辆"
+          />
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -190,9 +201,9 @@ const props = withDefaults(defineProps<Props>(), {
 // Emits
 const emit = defineEmits<{
   'update:modelValue': [value: boolean]
-  'edit': [model: VehicleModel]
-  'adjustPrice': [model: VehicleModel]
-  'viewVehicle': [vehicle: Vehicle]
+  edit: [model: VehicleModel]
+  adjustPrice: [model: VehicleModel]
+  viewVehicle: [vehicle: Vehicle]
 }>()
 
 // Composables
@@ -221,15 +232,18 @@ const relatedVehiclesList = ref<Vehicle[]>([])
 const relatedVehiclesLoading = ref(false)
 
 // 监听 modelValue 变化
-watch(() => props.modelValue, (val) => {
-  visible.value = val
-  if (val && props.modelId) {
-    loadModelDetail()
+watch(
+  () => props.modelValue,
+  val => {
+    visible.value = val
+    if (val && props.modelId) {
+      loadModelDetail()
+    }
   }
-})
+)
 
 // 监听 visible 变化
-watch(visible, (val) => {
+watch(visible, val => {
   emit('update:modelValue', val)
   if (!val) {
     // 关闭时重置数据

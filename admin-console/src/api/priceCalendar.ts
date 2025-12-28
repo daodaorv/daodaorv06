@@ -3,14 +3,9 @@
  * 提供价格日历查询、单日价格详情、批量调价等功能
  */
 
-import type {
-  PriceCalculationRequest,
-  PriceCalculationResult
-} from '@/utils/pricingHelper'
+import type { PriceCalculationRequest, PriceCalculationResult } from '@/utils/pricingHelper'
 
-import type {
-  DailyPriceDetail
-} from '@/types/pricing'
+import type { DailyPriceDetail } from '@/types/pricing'
 
 /**
  * 价格日历查询参数
@@ -117,7 +112,7 @@ export async function getPriceCalendar(query: PriceCalendarQuery): Promise<Price
     const model = modelRes.data
 
     // 获取门店信息
-    const storeRes = await getStoreDetail(storeId) as any
+    const storeRes = (await getStoreDetail(storeId)) as any
     const store = storeRes.data
 
     // 获取时间因子日历（包括法定节假日和自定义规则）
@@ -142,16 +137,17 @@ export async function getPriceCalendar(query: PriceCalendarQuery): Promise<Price
       const timeFactorItem = timeFactorCalendar.find(item => item.date === date)
 
       // 构建时间因子数组
-      const timeFactors = timeFactorItem?.appliedRules
-        .filter(rule => rule.ruleType === 'holiday' || rule.ruleType === 'custom')
-        .map(rule => ({
-          id: rule.ruleId,
-          name: rule.ruleName,
-          date,
-          adjustmentType: rule.adjustmentType,
-          adjustmentValue: rule.adjustmentValue,
-          priority: rule.priority
-        })) || []
+      const timeFactors =
+        timeFactorItem?.appliedRules
+          .filter(rule => rule.ruleType === 'holiday' || rule.ruleType === 'custom')
+          .map(rule => ({
+            id: rule.ruleId,
+            name: rule.ruleName,
+            date,
+            adjustmentType: rule.adjustmentType,
+            adjustmentValue: rule.adjustmentValue,
+            priority: rule.priority,
+          })) || []
 
       const request: PriceCalculationRequest = {
         modelId,
@@ -161,7 +157,7 @@ export async function getPriceCalendar(query: PriceCalendarQuery): Promise<Price
         cityName: store.cityName,
         startDate: date,
         endDate: date,
-        timeFactors
+        timeFactors,
       }
 
       // 调用价格计算引擎
@@ -179,7 +175,7 @@ export async function getPriceCalendar(query: PriceCalendarQuery): Promise<Price
         dailyRental: dailyDetail?.dailyRental || model.dailyPrice,
         // 添加节假日信息
         isHoliday: timeFactorItem?.isHoliday || false,
-        holidayName: timeFactorItem?.holidayName
+        holidayName: timeFactorItem?.holidayName,
       })
 
       totalPrice += dailyDetail?.dailyRental || model.dailyPrice
@@ -191,7 +187,7 @@ export async function getPriceCalendar(query: PriceCalendarQuery): Promise<Price
       avgPrice: Math.round(totalPrice / dates.length),
       maxPrice: Math.max(...prices),
       minPrice: Math.min(...prices),
-      totalDays: dates.length
+      totalDays: dates.length,
     }
 
     return {
@@ -200,18 +196,18 @@ export async function getPriceCalendar(query: PriceCalendarQuery): Promise<Price
         modelInfo: {
           id: model.id,
           name: model.modelName,
-          basePrice: model.dailyPrice
+          basePrice: model.dailyPrice,
         },
         storeInfo: {
           id: store.id,
           name: store.name,
           cityId: store.cityId,
-          cityName: store.cityName
+          cityName: store.cityName,
         },
         calendar,
-        summary
+        summary,
       },
-      message: '获取价格日历成功'
+      message: '获取价格日历成功',
     }
   } catch (error) {
     console.error('获取价格日历失败:', error)
@@ -221,9 +217,9 @@ export async function getPriceCalendar(query: PriceCalendarQuery): Promise<Price
         modelInfo: { id: 0, name: '', basePrice: 0 },
         storeInfo: { id: 0, name: '', cityId: 0, cityName: '' },
         calendar: [],
-        summary: { avgPrice: 0, maxPrice: 0, minPrice: 0, totalDays: 0 }
+        summary: { avgPrice: 0, maxPrice: 0, minPrice: 0, totalDays: 0 },
       },
-      message: '获取价格日历失败'
+      message: '获取价格日历失败',
     }
   }
 }
@@ -250,7 +246,7 @@ export async function getDayPriceDetail(query: DayPriceDetailQuery): Promise<{
     const model = modelRes.data
 
     // 通过门店列表获取城市信息
-    const storesRes = await getStoreList({ page: 1, pageSize: 100 }) as any
+    const storesRes = (await getStoreList({ page: 1, pageSize: 100 })) as any
     const store = storesRes.data.list.find((s: any) => s.cityId === cityId)
     const cityName = store?.cityName || '未知城市'
 
@@ -261,7 +257,7 @@ export async function getDayPriceDetail(query: DayPriceDetailQuery): Promise<{
       cityId,
       cityName,
       startDate: date,
-      endDate: date
+      endDate: date,
     }
 
     const result = calculateMultiFactorPrice(request)
@@ -269,7 +265,7 @@ export async function getDayPriceDetail(query: DayPriceDetailQuery): Promise<{
     return {
       success: true,
       data: result,
-      message: '获取单日价格详情成功'
+      message: '获取单日价格详情成功',
     }
   } catch (error) {
     console.error('获取单日价格详情失败:', error)
@@ -308,7 +304,7 @@ export async function batchAdjustPrice(request: BatchAdjustRequest): Promise<Bat
       oldPrice: Math.round(oldPrice),
       newPrice: Math.round(newPrice),
       changeAmount: Math.round(newPrice - oldPrice),
-      changePercentage: Math.round(((newPrice - oldPrice) / oldPrice) * 100)
+      changePercentage: Math.round(((newPrice - oldPrice) / oldPrice) * 100),
     }
   })
 
@@ -317,8 +313,8 @@ export async function batchAdjustPrice(request: BatchAdjustRequest): Promise<Bat
     data: {
       affectedDates: dates,
       affectedCount: dates.length,
-      previewData
+      previewData,
     },
-    message: `批量调价成功，共影响 ${dates.length} 天，原因：${changeReason}`
+    message: `批量调价成功，共影响 ${dates.length} 天，原因：${changeReason}`,
   }
 }

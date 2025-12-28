@@ -1,8 +1,6 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="user-risk-container">
-    
-
     <StatsCard :stats="statsConfig" />
 
     <SearchForm
@@ -63,9 +61,7 @@
       </template>
 
       <template #actions="{ row }">
-        <el-button link type="primary" size="small" @click="handleView(row)">
-          查看详情
-        </el-button>
+        <el-button link type="primary" size="small" @click="handleView(row)"> 查看详情 </el-button>
         <el-button
           v-if="row.status === 'pending'"
           link
@@ -75,12 +71,7 @@
         >
           处理
         </el-button>
-        <el-button
-          link
-          type="danger"
-          size="small"
-          @click="handleAddBlacklist(row)"
-        >
+        <el-button link type="danger" size="small" @click="handleAddBlacklist(row)">
           加入黑名单
         </el-button>
       </template>
@@ -96,8 +87,8 @@
       @submit="handleSubmit"
     >
       <template #header>
-        <div style="margin-bottom: 16px;">
-          <div style="margin-bottom: 8px;">
+        <div style="margin-bottom: 16px">
+          <div style="margin-bottom: 8px">
             <strong>用户信息：</strong>{{ currentRisk?.username }} ({{ currentRisk?.phone }})
           </div>
           <div>
@@ -174,12 +165,7 @@
 // @ts-nocheck
 import { ref, reactive, computed } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import {
-  WarningFilled,
-  Warning,
-  InfoFilled,
-  User,
-} from '@element-plus/icons-vue'
+import { WarningFilled, Warning, InfoFilled, User } from '@element-plus/icons-vue'
 import StatsCard from '@/components/common/StatsCard.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'
@@ -378,12 +364,8 @@ const formFields: FormField[] = [
 ]
 
 const formRules = {
-  action: [
-    { required: true, message: '请选择处理方式', trigger: 'change' },
-  ],
-  remark: [
-    { required: true, message: '请输入处理说明', trigger: 'blur' },
-  ],
+  action: [{ required: true, message: '请选择处理方式', trigger: 'change' }],
+  remark: [{ required: true, message: '请输入处理说明', trigger: 'blur' }],
 }
 
 // 搜索
@@ -446,15 +428,11 @@ function handleProcessFromDetail() {
 // 加入黑名单
 async function handleAddBlacklist(row: RiskUser) {
   try {
-    await ElMessageBox.confirm(
-      `确定要将用户 "${row.username}" 加入黑名单吗？`,
-      '加入黑名单确认',
-      {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      }
-    )
+    await ElMessageBox.confirm(`确定要将用户 "${row.username}" 加入黑名单吗？`, '加入黑名单确认', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    })
 
     ElMessage.success('已加入黑名单')
   } catch (error) {

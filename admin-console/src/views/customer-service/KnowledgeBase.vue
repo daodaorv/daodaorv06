@@ -1,16 +1,10 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="knowledge-base-container">
-
     <!-- 统计卡片 -->
     <el-row :gutter="16" class="stats-row">
       <el-col :span="4">
-        <StatsCard
-          title="总文章数"
-          :value="stats.totalArticles"
-          icon="Document"
-          color="#409EFF"
-        />
+        <StatsCard title="总文章数" :value="stats.totalArticles" icon="Document" color="#409EFF" />
       </el-col>
       <el-col :span="4">
         <StatsCard
@@ -21,36 +15,16 @@
         />
       </el-col>
       <el-col :span="4">
-        <StatsCard
-          title="热门文章"
-          :value="stats.hotArticles"
-          icon="TrendCharts"
-          color="#F56C6C"
-        />
+        <StatsCard title="热门文章" :value="stats.hotArticles" icon="TrendCharts" color="#F56C6C" />
       </el-col>
       <el-col :span="4">
-        <StatsCard
-          title="总浏览量"
-          :value="stats.totalViews"
-          icon="View"
-          color="#E6A23C"
-        />
+        <StatsCard title="总浏览量" :value="stats.totalViews" icon="View" color="#E6A23C" />
       </el-col>
       <el-col :span="4">
-        <StatsCard
-          title="总点赞数"
-          :value="stats.totalLikes"
-          icon="Star"
-          color="#F7BA2A"
-        />
+        <StatsCard title="总点赞数" :value="stats.totalLikes" icon="Star" color="#F7BA2A" />
       </el-col>
       <el-col :span="4">
-        <StatsCard
-          title="有用数"
-          :value="stats.totalHelpful"
-          icon="Select"
-          color="#67C23A"
-        />
+        <StatsCard title="有用数" :value="stats.totalHelpful" icon="Select" color="#67C23A" />
       </el-col>
     </el-row>
 
@@ -129,9 +103,15 @@
       <!-- 统计 -->
       <template #stats="{ row }">
         <div class="article-stats">
-          <span><el-icon><View /></el-icon> {{ row.viewCount }}</span>
-          <span><el-icon><Star /></el-icon> {{ row.likeCount }}</span>
-          <span><el-icon><Select /></el-icon> {{ row.helpfulCount }}</span>
+          <span
+            ><el-icon><View /></el-icon> {{ row.viewCount }}</span
+          >
+          <span
+            ><el-icon><Star /></el-icon> {{ row.likeCount }}</span
+          >
+          <span
+            ><el-icon><Select /></el-icon> {{ row.helpfulCount }}</span
+          >
         </div>
       </template>
     </DataTable>
@@ -162,7 +142,11 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="文章分类" prop="categoryCode">
-              <el-select v-model="editForm.categoryCode" placeholder="请选择分类" style="width: 100%">
+              <el-select
+                v-model="editForm.categoryCode"
+                placeholder="请选择分类"
+                style="width: 100%"
+              >
                 <el-option
                   v-for="cat in categoryList"
                   :key="cat.code"
@@ -174,7 +158,11 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="展示范围" prop="visibility">
-              <el-select v-model="editForm.visibility" placeholder="请选择展示范围" style="width: 100%">
+              <el-select
+                v-model="editForm.visibility"
+                placeholder="请选择展示范围"
+                style="width: 100%"
+              >
                 <el-option label="双端可见" value="both" />
                 <el-option label="仅客服可见" value="admin_only" />
                 <el-option label="仅小程序可见" value="miniprogram_only" />
@@ -220,20 +208,12 @@
         <el-row :gutter="20">
           <el-col :span="8">
             <el-form-item label="发布状态" prop="isPublished">
-              <el-switch
-                v-model="editForm.isPublished"
-                active-text="发布"
-                inactive-text="草稿"
-              />
+              <el-switch v-model="editForm.isPublished" active-text="发布" inactive-text="草稿" />
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="热门标记" prop="isHot">
-              <el-switch
-                v-model="editForm.isHot"
-                active-text="热门"
-                inactive-text="普通"
-              />
+              <el-switch v-model="editForm.isHot" active-text="热门" inactive-text="普通" />
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -252,9 +232,7 @@
 
       <template #footer>
         <el-button @click="editDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="handleEditSubmit" :loading="submitting">
-          确定
-        </el-button>
+        <el-button type="primary" @click="handleEditSubmit" :loading="submitting"> 确定 </el-button>
       </template>
     </el-dialog>
 
@@ -274,7 +252,11 @@
           <el-tag :type="getCategoryTagType(currentArticle.categoryCode)" size="small">
             {{ currentArticle.categoryName || getCategoryLabel(currentArticle.categoryCode) }}
           </el-tag>
-          <el-tag :type="getVisibilityTagType(currentArticle.visibility)" size="small" style="margin-left: 8px">
+          <el-tag
+            :type="getVisibilityTagType(currentArticle.visibility)"
+            size="small"
+            style="margin-left: 8px"
+          >
             {{ getVisibilityLabel(currentArticle.visibility) }}
           </el-tag>
           <el-tag
@@ -292,9 +274,15 @@
           {{ currentArticle.summary }}
         </div>
         <div class="article-stats-bar">
-          <span><el-icon><View /></el-icon> {{ currentArticle.viewCount }} 浏览</span>
-          <span><el-icon><Star /></el-icon> {{ currentArticle.likeCount }} 点赞</span>
-          <span><el-icon><Select /></el-icon> {{ currentArticle.helpfulCount }} 有用</span>
+          <span
+            ><el-icon><View /></el-icon> {{ currentArticle.viewCount }} 浏览</span
+          >
+          <span
+            ><el-icon><Star /></el-icon> {{ currentArticle.likeCount }} 点赞</span
+          >
+          <span
+            ><el-icon><Select /></el-icon> {{ currentArticle.helpfulCount }} 有用</span
+          >
         </div>
         <div class="article-content" v-html="currentArticle.content"></div>
       </div>
@@ -327,7 +315,7 @@ import {
   type KnowledgeStats,
   type KnowledgeCategoryCode,
   type KnowledgeCategoryEntity,
-  type ArticleVisibility
+  type ArticleVisibility,
 } from '@/api/customerService'
 
 // 统计数据
@@ -342,7 +330,7 @@ const stats = ref<KnowledgeStats>({
   adminOnlyArticles: 0,
   miniprogramOnlyArticles: 0,
   bothVisibleArticles: 0,
-  topArticles: []
+  topArticles: [],
 })
 
 // 分类列表
@@ -354,7 +342,7 @@ const searchForm = ref({
   visibility: '',
   isPublished: '',
   isHot: '',
-  keyword: ''
+  keyword: '',
 })
 
 // 搜索字段配置
@@ -369,8 +357,8 @@ const searchFields = [
       { label: '使用指南', value: 'guide' },
       { label: '政策说明', value: 'policy' },
       { label: '技术文档', value: 'technical' },
-      { label: '其他', value: 'other' }
-    ]
+      { label: '其他', value: 'other' },
+    ],
   },
   {
     type: 'select',
@@ -380,8 +368,8 @@ const searchFields = [
     options: [
       { label: '双端可见', value: 'both' },
       { label: '仅客服可见', value: 'admin_only' },
-      { label: '仅小程序可见', value: 'miniprogram_only' }
-    ]
+      { label: '仅小程序可见', value: 'miniprogram_only' },
+    ],
   },
   {
     type: 'select',
@@ -390,8 +378,8 @@ const searchFields = [
     placeholder: '请选择状态',
     options: [
       { label: '已发布', value: 'true' },
-      { label: '草稿', value: 'false' }
-    ]
+      { label: '草稿', value: 'false' },
+    ],
   },
   {
     type: 'select',
@@ -400,15 +388,15 @@ const searchFields = [
     placeholder: '请选择',
     options: [
       { label: '热门', value: 'true' },
-      { label: '普通', value: 'false' }
-    ]
+      { label: '普通', value: 'false' },
+    ],
   },
   {
     type: 'input',
     prop: 'keyword',
     label: '关键词',
-    placeholder: '请输入标题或内容'
-  }
+    placeholder: '请输入标题或内容',
+  },
 ]
 
 // 表格数据
@@ -419,7 +407,7 @@ const loading = ref(false)
 const pagination = reactive({
   currentPage: 1,
   pageSize: 10,
-  total: 0
+  total: 0,
 })
 
 // 表格列配置
@@ -432,7 +420,7 @@ const tableColumns = [
   { prop: 'authorName', label: '作者', width: 100 },
   { prop: 'isPublished', label: '状态', width: 80, slot: 'isPublished' },
   { prop: 'stats', label: '统计', width: 160, slot: 'stats' },
-  { prop: 'updatedAt', label: '更新时间', width: 150 }
+  { prop: 'updatedAt', label: '更新时间', width: 150 },
 ]
 
 // 表格操作
@@ -441,20 +429,20 @@ const tableActions = [
     label: '预览',
     type: 'primary',
     link: true,
-    onClick: (row: KnowledgeArticle) => handlePreview(row)
+    onClick: (row: KnowledgeArticle) => handlePreview(row),
   },
   {
     label: '编辑',
     type: 'success',
     link: true,
-    onClick: (row: KnowledgeArticle) => handleEdit(row)
+    onClick: (row: KnowledgeArticle) => handleEdit(row),
   },
   {
     label: '删除',
     type: 'danger',
     link: true,
-    onClick: (row: KnowledgeArticle) => handleDelete(row)
-  }
+    onClick: (row: KnowledgeArticle) => handleDelete(row),
+  },
 ]
 
 // 编辑对话框
@@ -470,7 +458,7 @@ const editForm = reactive({
   tags: [] as string[],
   isPublished: false,
   isHot: false,
-  order: 0
+  order: 0,
 })
 const editFormRef = ref()
 const editRules = {
@@ -478,7 +466,7 @@ const editRules = {
   summary: [{ required: true, message: '请输入文章摘要', trigger: 'blur' }],
   categoryCode: [{ required: true, message: '请选择分类', trigger: 'change' }],
   visibility: [{ required: true, message: '请选择展示范围', trigger: 'change' }],
-  content: [{ required: true, message: '请输入文章内容', trigger: 'blur' }]
+  content: [{ required: true, message: '请输入文章内容', trigger: 'blur' }],
 }
 const submitting = ref(false)
 
@@ -517,9 +505,11 @@ const fetchArticleList = async () => {
       pageSize: pagination.pageSize,
       categoryCode: searchForm.value.categoryCode as KnowledgeCategoryCode | undefined,
       visibility: searchForm.value.visibility as ArticleVisibility | undefined,
-      isPublished: searchForm.value.isPublished ? searchForm.value.isPublished === 'true' : undefined,
+      isPublished: searchForm.value.isPublished
+        ? searchForm.value.isPublished === 'true'
+        : undefined,
       isHot: searchForm.value.isHot ? searchForm.value.isHot === 'true' : undefined,
-      keyword: searchForm.value.keyword
+      keyword: searchForm.value.keyword,
     }
     const { list, total } = await getKnowledgeArticles(params)
     articleList.value = list
@@ -545,7 +535,7 @@ const handleReset = () => {
     visibility: '',
     isPublished: '',
     isHot: '',
-    keyword: ''
+    keyword: '',
   }
   handleSearch()
 }
@@ -599,7 +589,7 @@ const handleDelete = async (row: KnowledgeArticle) => {
     await ElMessageBox.confirm(`确定要删除文章"${row.title}"吗？`, '提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
-      type: 'warning'
+      type: 'warning',
     })
 
     await deleteKnowledgeArticle(row.id)
@@ -687,7 +677,7 @@ const getCategoryTagType = (categoryCode: KnowledgeCategoryCode) => {
     guide: 'success',
     policy: 'warning',
     technical: 'danger',
-    other: 'info'
+    other: 'info',
   }
   return categoryMap[categoryCode] || 'info'
 }
@@ -699,7 +689,7 @@ const getCategoryLabel = (categoryCode: KnowledgeCategoryCode) => {
     guide: '使用指南',
     policy: '政策说明',
     technical: '技术文档',
-    other: '其他'
+    other: '其他',
   }
   return categoryMap[categoryCode] || categoryCode
 }
@@ -709,7 +699,7 @@ const getVisibilityTagType = (visibility: ArticleVisibility) => {
   const visibilityMap: Record<ArticleVisibility, any> = {
     both: 'primary',
     admin_only: 'warning',
-    miniprogram_only: 'success'
+    miniprogram_only: 'success',
   }
   return visibilityMap[visibility] || 'info'
 }
@@ -719,7 +709,7 @@ const getVisibilityLabel = (visibility: ArticleVisibility) => {
   const visibilityMap: Record<ArticleVisibility, string> = {
     both: '双端可见',
     admin_only: '仅客服',
-    miniprogram_only: '仅小程序'
+    miniprogram_only: '仅小程序',
   }
   return visibilityMap[visibility] || visibility
 }

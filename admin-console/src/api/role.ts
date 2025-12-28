@@ -127,8 +127,13 @@ export const roleApi = {
   // 获取角色下的用户列表
   getRoleUsers: (roleId: number, params?: { page?: number; pageSize?: number }) => {
     if (USE_MOCK) {
-      return mockGetRoleUsers(roleId, params) as Promise<ApiResponse<{ list: RoleUser[]; total: number }>>
+      return mockGetRoleUsers(roleId, params) as Promise<
+        ApiResponse<{ list: RoleUser[]; total: number }>
+      >
     }
-    return request.get<ApiResponse<{ list: RoleUser[]; total: number }>>(`/roles/${roleId}/users`, params)
+    return request.get<ApiResponse<{ list: RoleUser[]; total: number }>>(
+      `/roles/${roleId}/users`,
+      params
+    )
   },
 }

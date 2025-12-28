@@ -1,7 +1,5 @@
 <template>
   <div class="campsite-reservations-container">
-    
-
     <StatsCard :stats="statsConfig" />
 
     <SearchForm
@@ -22,7 +20,7 @@
       @current-change="handleCurrentChange"
     >
       <template #status="{ row }">
-        <el-tag :type="(getReservationStatusTag(row.status)) as any" size="small">
+        <el-tag :type="getReservationStatusTag(row.status) as any" size="small">
           {{ getReservationStatusLabel(row.status) }}
         </el-tag>
       </template>
@@ -57,7 +55,10 @@
           {{ currentReservation?.id }}
         </el-descriptions-item>
         <el-descriptions-item label="预订状态">
-          <el-tag :type="(getReservationStatusTag(currentReservation?.status || 'info')) as any" size="small">
+          <el-tag
+            :type="getReservationStatusTag(currentReservation?.status || 'info') as any"
+            size="small"
+          >
             {{ getReservationStatusLabel(currentReservation?.status || 'info') }}
           </el-tag>
         </el-descriptions-item>
@@ -124,7 +125,7 @@ import {
   confirmReservation,
   cancelReservation,
   type CampsiteReservation,
-  type ReservationListParams
+  type ReservationListParams,
 } from '@/api/campsite'
 import { useErrorHandler } from '@/composables'
 
@@ -137,14 +138,14 @@ const RESERVATION_STATUS_OPTIONS = [
   { label: '已确认', value: 'confirmed' },
   { label: '已入住', value: 'checked_in' },
   { label: '已退房', value: 'checked_out' },
-  { label: '已取消', value: 'cancelled' }
+  { label: '已取消', value: 'cancelled' },
 ]
 
 // 搜索表单
 const searchForm = reactive<ReservationListParams>({
   keyword: '',
   campsiteId: undefined,
-  status: undefined
+  status: undefined,
 })
 
 // 统计数据
@@ -152,7 +153,7 @@ const stats = reactive({
   totalReservations: 0,
   pending: 0,
   confirmed: 0,
-  checkedIn: 0
+  checkedIn: 0,
 })
 
 // 统计卡片配置
@@ -161,26 +162,26 @@ const statsConfig = computed<StatItem[]>(() => [
     label: '预订总数',
     value: stats.totalReservations,
     icon: Document,
-    color: '#409eff'
+    color: '#409eff',
   },
   {
     label: '待确认',
     value: stats.pending,
     icon: Clock,
-    color: '#e6a23c'
+    color: '#e6a23c',
   },
   {
     label: '已确认',
     value: stats.confirmed,
     icon: CircleCheck,
-    color: '#67c23a'
+    color: '#67c23a',
   },
   {
     label: '已入住',
     value: stats.checkedIn,
     icon: CircleCheck,
-    color: '#409eff'
-  }
+    color: '#409eff',
+  },
 ])
 
 // 搜索字段配置
@@ -190,7 +191,7 @@ const searchFields = computed<SearchField[]>(() => [
     label: '关键词',
     type: 'input',
     placeholder: '营地名称/用户/手机号',
-    width: '200px'
+    width: '200px',
   },
   {
     prop: 'status',
@@ -198,8 +199,8 @@ const searchFields = computed<SearchField[]>(() => [
     type: 'select',
     placeholder: '请选择状态',
     width: '150px',
-    options: RESERVATION_STATUS_OPTIONS
-  }
+    options: RESERVATION_STATUS_OPTIONS,
+  },
 ])
 
 // 表格列配置
@@ -212,7 +213,7 @@ const tableColumns: TableColumn[] = [
   { prop: 'spots', label: '车位数', width: 80 },
   { prop: 'totalAmount', label: '金额', width: 140, slot: 'totalAmount' },
   { prop: 'status', label: '状态', width: 100, slot: 'status' },
-  { prop: 'createdAt', label: '预订时间', width: 180 }
+  { prop: 'createdAt', label: '预订时间', width: 180 },
 ]
 
 // 表格操作列配置
@@ -221,19 +222,19 @@ const tableActions: TableAction[] = [
     label: '确认',
     type: 'success',
     onClick: (row: CampsiteReservation) => handleConfirm(row),
-    show: (row: CampsiteReservation) => row.status === 'pending'
+    show: (row: CampsiteReservation) => row.status === 'pending',
   },
   {
     label: '取消',
     type: 'danger',
     onClick: (row: CampsiteReservation) => handleCancel(row),
-    show: (row: CampsiteReservation) => row.status === 'pending' || row.status === 'confirmed'
+    show: (row: CampsiteReservation) => row.status === 'pending' || row.status === 'confirmed',
   },
   {
     label: '查看',
     type: 'primary',
-    onClick: (row: CampsiteReservation) => handleView(row)
-  }
+    onClick: (row: CampsiteReservation) => handleView(row),
+  },
 ]
 
 // 预订列表
@@ -244,7 +245,7 @@ const loading = ref(false)
 const pagination = reactive({
   page: 1,
   pageSize: 10,
-  total: 0
+  total: 0,
 })
 
 // 预订详情对话框
@@ -258,10 +259,10 @@ const loadReservationList = async () => {
     const params: ReservationListParams = {
       page: pagination.page,
       pageSize: pagination.pageSize,
-      ...searchForm
+      ...searchForm,
     }
 
-    const res = await getReservationList(params) as any
+    const res = (await getReservationList(params)) as any
     reservationList.value = res.data.list
     pagination.total = res.data.total
 
@@ -306,7 +307,7 @@ const handleConfirm = async (row: CampsiteReservation) => {
       {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
+        type: 'warning',
       }
     )
 
@@ -329,7 +330,7 @@ const handleCancel = async (row: CampsiteReservation) => {
       {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
+        type: 'warning',
       }
     )
 
@@ -372,7 +373,7 @@ const getReservationStatusTag = (status: string) => {
     confirmed: 'success',
     checked_in: 'primary',
     checked_out: 'info',
-    cancelled: 'danger'
+    cancelled: 'danger',
   }
   return tagMap[status] || 'info'
 }
@@ -384,7 +385,7 @@ const getReservationStatusLabel = (status: string) => {
     confirmed: '已确认',
     checked_in: '已入住',
     checked_out: '已退房',
-    cancelled: '已取消'
+    cancelled: '已取消',
   }
   return labelMap[status] || status
 }

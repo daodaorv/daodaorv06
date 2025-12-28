@@ -1,10 +1,13 @@
 <!-- 菜单权限管理页面 -->
 <template>
   <div class="permission-menu-container">
-    
-
     <!-- 搜索表单 -->
-    <SearchForm v-model="searchParams" :fields="searchFields" @search="handleSearch" @reset="handleReset" />
+    <SearchForm
+      v-model="searchParams"
+      :fields="searchFields"
+      @search="handleSearch"
+      @reset="handleReset"
+    />
 
     <!-- 数据表格 -->
     <DataTable
@@ -17,10 +20,18 @@
       @current-change="handleCurrentChange"
     >
       <template #permissions="{ row }">
-        <el-tag v-if="row.canView" type="success" size="small" style="margin-right: 5px">查看</el-tag>
-        <el-tag v-if="row.canCreate" type="primary" size="small" style="margin-right: 5px">创建</el-tag>
-        <el-tag v-if="row.canEdit" type="warning" size="small" style="margin-right: 5px">编辑</el-tag>
-        <el-tag v-if="row.canDelete" type="danger" size="small" style="margin-right: 5px">删除</el-tag>
+        <el-tag v-if="row.canView" type="success" size="small" style="margin-right: 5px"
+          >查看</el-tag
+        >
+        <el-tag v-if="row.canCreate" type="primary" size="small" style="margin-right: 5px"
+          >创建</el-tag
+        >
+        <el-tag v-if="row.canEdit" type="warning" size="small" style="margin-right: 5px"
+          >编辑</el-tag
+        >
+        <el-tag v-if="row.canDelete" type="danger" size="small" style="margin-right: 5px"
+          >删除</el-tag
+        >
         <el-tag v-if="row.canExport" type="info" size="small">导出</el-tag>
       </template>
 
@@ -36,11 +47,7 @@
       width="600px"
       @close="handleDialogClose"
     >
-      <el-form
-        ref="formRef"
-        :model="formData"
-        label-width="100px"
-      >
+      <el-form ref="formRef" :model="formData" label-width="100px">
         <el-form-item label="角色">
           <el-input v-model="formData.roleName" disabled />
         </el-form-item>
@@ -58,9 +65,7 @@
 
       <template #footer>
         <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" :loading="submitLoading" @click="handleSubmit">
-          保存
-        </el-button>
+        <el-button type="primary" :loading="submitLoading" @click="handleSubmit"> 保存 </el-button>
       </template>
     </el-dialog>
   </div>

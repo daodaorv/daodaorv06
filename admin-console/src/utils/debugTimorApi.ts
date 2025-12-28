@@ -83,10 +83,10 @@ export async function testFullSync() {
  * 在浏览器控制台中暴露调试函数
  */
 if (typeof window !== 'undefined') {
-  (window as any).debugTimorApi = {
+  ;(window as any).debugTimorApi = {
     testCalculateSyncYears,
     testFetchTimorHolidays,
-    testFullSync
+    testFullSync,
   }
   console.log('调试工具已加载，可以在控制台使用以下命令：')
   console.log('- window.debugTimorApi.testCalculateSyncYears()')

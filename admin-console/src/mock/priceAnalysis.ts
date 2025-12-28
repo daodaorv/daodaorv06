@@ -18,7 +18,7 @@ export const mockGetPriceAnalysisStats = (): Promise<{
   message: string
   data: PriceAnalysisStats
 }> => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       resolve({
         code: 200,
@@ -74,7 +74,7 @@ export const mockGetPriceAnalysisStats = (): Promise<{
               grade: 'A',
               count: 5,
               averagePrice: 850,
-              expectedPremium: 1.30,
+              expectedPremium: 1.3,
               actualPremium: 1.28,
             },
             {
@@ -88,7 +88,7 @@ export const mockGetPriceAnalysisStats = (): Promise<{
               grade: 'C',
               count: 5,
               averagePrice: 550,
-              expectedPremium: 0.90,
+              expectedPremium: 0.9,
               actualPremium: 0.92,
             },
             {
@@ -116,7 +116,7 @@ export const mockGetVehiclePricingAnalysis = (params?: {
   message: string
   data: VehiclePricingAnalysis[]
 }> => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const allData: VehiclePricingAnalysis[] = [
         {
@@ -189,9 +189,7 @@ export const mockGetVehiclePricingAnalysis = (params?: {
       // 根据参数筛选
       let filteredData = allData
       if (params?.deviationLevel) {
-        filteredData = filteredData.filter(
-          (item) => item.deviationLevel === params.deviationLevel
-        )
+        filteredData = filteredData.filter(item => item.deviationLevel === params.deviationLevel)
       }
 
       resolve({
@@ -214,7 +212,7 @@ export const mockGetRevenueForecast = (params?: {
   message: string
   data: RevenueForecast[]
 }> => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       let data: RevenueForecast[] = [
         {
@@ -267,7 +265,7 @@ export const mockGetRevenueForecast = (params?: {
           purchasePrice: 290000,
           annualOperatingDays: 110,
           expectedAnnualRevenue: 95700,
-          expectedROI: 0.0330,
+          expectedROI: 0.033,
           paybackPeriod: 3.03,
           optimizedPrice: 850,
           optimizedRevenue: 93500,
@@ -300,7 +298,7 @@ export const mockGetRevenueForecast = (params?: {
 
       // 根据 vehicleId 筛选
       if (params?.vehicleId) {
-        data = data.filter((item) => item.vehicleId === params.vehicleId)
+        data = data.filter(item => item.vehicleId === params.vehicleId)
       }
 
       resolve({
@@ -325,7 +323,7 @@ export const mockGetPriceTrendData = (_params: {
   message: string
   data: PriceTrendData[]
 }> => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       // 模拟单个车辆的价格趋势数据
       const data: PriceTrendData[] = [
@@ -373,12 +371,14 @@ export const mockGetPriceTrendData = (_params: {
 /**
  * 获取智能定价建议
  */
-export const mockGetSmartPricingSuggestion = (vehicleId: number): Promise<{
+export const mockGetSmartPricingSuggestion = (
+  vehicleId: number
+): Promise<{
   code: number
   message: string
   data: SmartPricingSuggestion
 }> => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       resolve({
         code: 200,
@@ -483,14 +483,16 @@ export const mockGetSmartPricingSuggestion = (vehicleId: number): Promise<{
 /**
  * 批量获取智能定价建议
  */
-export const mockGetBatchPricingSuggestions = (vehicleIds: number[]): Promise<{
+export const mockGetBatchPricingSuggestions = (
+  vehicleIds: number[]
+): Promise<{
   code: number
   message: string
   data: BatchPricingSuggestion
 }> => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
-      const suggestions: SmartPricingSuggestion[] = vehicleIds.map((id) => ({
+      const suggestions: SmartPricingSuggestion[] = vehicleIds.map(id => ({
         vehicleId: id,
         vehicleNumber: `京A${10000 + id}`,
         modelName: '大通 RV80',
@@ -526,8 +528,8 @@ export const mockGetBatchPricingSuggestions = (vehicleIds: number[]): Promise<{
         },
       }))
 
-      const currentPrices = suggestions.map((s) => s.currentPrice)
-      const suggestedPrices = suggestions.map((s) => s.suggestions[0].suggestedPrice)
+      const currentPrices = suggestions.map(s => s.currentPrice)
+      const suggestedPrices = suggestions.map(s => s.suggestions[0].suggestedPrice)
 
       resolve({
         code: 200,
@@ -561,7 +563,7 @@ export const mockApplySmartPricing = (
   code: number
   message: string
 }> => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       resolve({
         code: 200,
@@ -580,7 +582,7 @@ export const mockBatchApplySmartPricing = (
   code: number
   message: string
 }> => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       resolve({
         code: 200,

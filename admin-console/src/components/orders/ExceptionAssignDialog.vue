@@ -6,12 +6,7 @@
     :close-on-click-modal="false"
     @close="handleClose"
   >
-    <el-form
-      ref="formRef"
-      :model="form"
-      :rules="formRules"
-      label-width="100px"
-    >
+    <el-form ref="formRef" :model="form" :rules="formRules" label-width="100px">
       <!-- 异常信息 -->
       <el-card class="info-card" shadow="never">
         <template #header><span class="card-title">异常信息</span></template>
@@ -76,9 +71,7 @@
           <el-radio value="high">高</el-radio>
           <el-radio value="critical">紧急</el-radio>
         </el-radio-group>
-        <div class="field-tip">
-          当前优先级：{{ getPriorityLabel(exceptionInfo?.priority) }}
-        </div>
+        <div class="field-tip">当前优先级：{{ getPriorityLabel(exceptionInfo?.priority) }}</div>
       </el-form-item>
 
       <el-form-item label="分配说明" prop="assignNote">
@@ -93,14 +86,8 @@
       </el-form-item>
 
       <el-form-item label="是否通知">
-        <el-switch
-          v-model="form.notifyAssignee"
-          active-text="发送通知"
-          inactive-text="不通知"
-        />
-        <div class="field-tip">
-          开启后将通过系统消息和邮件通知处理人员
-        </div>
+        <el-switch v-model="form.notifyAssignee" active-text="发送通知" inactive-text="不通知" />
+        <div class="field-tip">开启后将通过系统消息和邮件通知处理人员</div>
       </el-form-item>
     </el-form>
 
@@ -123,13 +110,13 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: false,
-  exceptionInfo: null
+  exceptionInfo: null,
 })
 
 // Emits
 const emit = defineEmits<{
   'update:modelValue': [value: boolean]
-  'submit': [data: any]
+  submit: [data: any]
 }>()
 
 // 响应式数据
@@ -143,20 +130,14 @@ const form = reactive({
   deadline: '',
   priority: 'medium',
   assignNote: '',
-  notifyAssignee: true
+  notifyAssignee: true,
 })
 
 // 表单验证规则
 const formRules: FormRules = {
-  assignedTo: [
-    { required: true, message: '请选择处理人员', trigger: 'change' }
-  ],
-  deadline: [
-    { required: true, message: '请选择处理期限', trigger: 'change' }
-  ],
-  priority: [
-    { required: true, message: '请选择优先级', trigger: 'change' }
-  ]
+  assignedTo: [{ required: true, message: '请选择处理人员', trigger: 'change' }],
+  deadline: [{ required: true, message: '请选择处理期限', trigger: 'change' }],
+  priority: [{ required: true, message: '请选择优先级', trigger: 'change' }],
 }
 
 // 员工列表（Mock数据，实际应从API获取）
@@ -165,19 +146,22 @@ const staffList = ref([
   { id: 2, name: '李四', department: '客服部' },
   { id: 3, name: '王五', department: '运营部' },
   { id: 4, name: '赵六', department: '运营部' },
-  { id: 5, name: '钱七', department: '技术部' }
+  { id: 5, name: '钱七', department: '技术部' },
 ])
 
 // 监听 modelValue 变化
-watch(() => props.modelValue, (val) => {
-  visible.value = val
-  if (val && props.exceptionInfo) {
-    // 初始化表单数据
-    form.priority = props.exceptionInfo.priority || 'medium'
+watch(
+  () => props.modelValue,
+  val => {
+    visible.value = val
+    if (val && props.exceptionInfo) {
+      // 初始化表单数据
+      form.priority = props.exceptionInfo.priority || 'medium'
+    }
   }
-})
+)
 
-watch(visible, (val) => {
+watch(visible, val => {
   emit('update:modelValue', val)
 })
 
@@ -195,7 +179,7 @@ const getExceptionTypeTag = (type: string) => {
     accident: 'danger',
     complaint: 'info',
     payment: 'warning',
-    other: 'info'
+    other: 'info',
   }
   return tagMap[type] || 'info'
 }
@@ -209,7 +193,7 @@ const getExceptionTypeLabel = (type: string) => {
     accident: '交通事故',
     complaint: '客户投诉',
     payment: '支付纠纷',
-    other: '其他'
+    other: '其他',
   }
   return labelMap[type] || type
 }
@@ -220,7 +204,7 @@ const getPriorityTag = (priority: string) => {
     low: 'info',
     medium: 'primary',
     high: 'warning',
-    critical: 'danger'
+    critical: 'danger',
   }
   return tagMap[priority] || 'info'
 }
@@ -231,7 +215,7 @@ const getPriorityLabel = (priority: string) => {
     low: '低',
     medium: '中',
     high: '高',
-    critical: '紧急'
+    critical: '紧急',
   }
   return labelMap[priority] || priority
 }
@@ -240,7 +224,7 @@ const getPriorityLabel = (priority: string) => {
 const handleSubmit = async () => {
   if (!formRef.value) return
 
-  await formRef.value.validate(async (valid) => {
+  await formRef.value.validate(async valid => {
     if (!valid) return
 
     loading.value = true
@@ -251,7 +235,7 @@ const handleSubmit = async () => {
         deadline: form.deadline,
         priority: form.priority,
         assignNote: form.assignNote,
-        notifyAssignee: form.notifyAssignee
+        notifyAssignee: form.notifyAssignee,
       }
 
       emit('submit', submitData)

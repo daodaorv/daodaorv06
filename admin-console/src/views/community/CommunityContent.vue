@@ -1,13 +1,16 @@
 <!-- 社区内容管理页面 -->
 <template>
   <div class="community-content-container">
-    
-
     <!-- 统计卡片 -->
     <StatsCard :stats="statsCards" />
 
     <!-- 搜索表单 -->
-    <SearchForm v-model="searchParams" :fields="searchFields" @search="handleSearch" @reset="handleReset" />
+    <SearchForm
+      v-model="searchParams"
+      :fields="searchFields"
+      @search="handleSearch"
+      @reset="handleReset"
+    />
 
     <!-- 数据表格 -->
     <DataTable
@@ -127,9 +130,7 @@
           <div v-if="currentContent.title" class="detail-title">
             <strong>标题：</strong>{{ currentContent.title }}
           </div>
-          <div class="detail-content">
-            <strong>内容：</strong>{{ currentContent.content }}
-          </div>
+          <div class="detail-content"><strong>内容：</strong>{{ currentContent.content }}</div>
 
           <!-- 图片 -->
           <div v-if="currentContent.images.length > 0" class="detail-images">
@@ -339,7 +340,8 @@ const mockContents: CommunityContent[] = [
     userName: '房车爱好者',
     userAvatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=1',
     title: '川藏线房车自驾游攻略分享',
-    content: '刚从川藏线回来，分享一下这次房车自驾的经验和注意事项。路况整体不错，但有几个地方需要特别注意...',
+    content:
+      '刚从川藏线回来，分享一下这次房车自驾的经验和注意事项。路况整体不错，但有几个地方需要特别注意...',
     images: [
       'https://picsum.photos/400/300?random=1',
       'https://picsum.photos/400/300?random=2',
@@ -406,7 +408,8 @@ const mockContents: CommunityContent[] = [
     userName: '老司机',
     userAvatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=4',
     title: '',
-    content: '楼主说得很详细，我补充几点：1. 高原地区要注意高反；2. 提前规划好加油站位置；3. 带好常用药品。',
+    content:
+      '楼主说得很详细，我补充几点：1. 高原地区要注意高反；2. 提前规划好加油站位置；3. 带好常用药品。',
     images: [],
     videos: [],
     sectionId: 1,
@@ -428,10 +431,7 @@ const mockContents: CommunityContent[] = [
     userAvatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=5',
     title: '房车旅行摄影技巧分享',
     content: '作为一名摄影师，分享一些房车旅行中的摄影技巧和经验，希望能帮助大家拍出更美的照片...',
-    images: [
-      'https://picsum.photos/400/300?random=5',
-      'https://picsum.photos/400/300?random=6',
-    ],
+    images: ['https://picsum.photos/400/300?random=5', 'https://picsum.photos/400/300?random=6'],
     videos: ['https://example.com/video1.mp4'],
     sectionId: 4,
     sectionName: '经验分享',
@@ -450,12 +450,12 @@ const fetchStats = async () => {
   try {
     // Mock统计数据
     stats.value = {
-      totalPosts: mockContents.filter((c) => c.contentType === 'post').length,
-      totalComments: mockContents.filter((c) => c.contentType === 'comment').length,
+      totalPosts: mockContents.filter(c => c.contentType === 'post').length,
+      totalComments: mockContents.filter(c => c.contentType === 'comment').length,
       todayPosts: mockContents.filter(
-        (c) => c.contentType === 'post' && c.createdAt.startsWith('2025-12-03')
+        c => c.contentType === 'post' && c.createdAt.startsWith('2025-12-03')
       ).length,
-      topPosts: mockContents.filter((c) => c.isTop).length,
+      topPosts: mockContents.filter(c => c.isTop).length,
     }
   } catch (error) {
     console.error('获取统计数据失败:', error)
@@ -469,20 +469,20 @@ const fetchList = async () => {
     let filteredData = [...mockContents]
 
     if (searchParams.contentType) {
-      filteredData = filteredData.filter((item) => item.contentType === searchParams.contentType)
+      filteredData = filteredData.filter(item => item.contentType === searchParams.contentType)
     }
 
     if (searchParams.sectionId) {
-      filteredData = filteredData.filter((item) => item.sectionId === searchParams.sectionId)
+      filteredData = filteredData.filter(item => item.sectionId === searchParams.sectionId)
     }
 
     if (searchParams.status) {
-      filteredData = filteredData.filter((item) => item.status === searchParams.status)
+      filteredData = filteredData.filter(item => item.status === searchParams.status)
     }
 
     if (searchParams.keyword) {
       filteredData = filteredData.filter(
-        (item) =>
+        item =>
           item.title.includes(searchParams.keyword) ||
           item.content.includes(searchParams.keyword) ||
           item.userName.includes(searchParams.keyword)
@@ -535,15 +535,11 @@ const handleView = (row: CommunityContent) => {
 
 const handleToggleTop = async (row: CommunityContent) => {
   try {
-    await ElMessageBox.confirm(
-      `确定要${row.isTop ? '取消置顶' : '置顶'}该内容吗？`,
-      '提示',
-      {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      }
-    )
+    await ElMessageBox.confirm(`确定要${row.isTop ? '取消置顶' : '置顶'}该内容吗？`, '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    })
 
     // Mock操作
     row.isTop = !row.isTop
@@ -566,7 +562,7 @@ const handleDelete = async (row: CommunityContent) => {
     })
 
     // Mock操作
-    const index = mockContents.findIndex((item) => item.id === row.id)
+    const index = mockContents.findIndex(item => item.id === row.id)
     if (index > -1) {
       mockContents.splice(index, 1)
     }

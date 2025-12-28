@@ -1,15 +1,9 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="national-holiday-list">
-    <el-alert
-      type="warning"
-      :closable="false"
-      style="margin-bottom: 16px"
-    >
+    <el-alert type="warning" :closable="false" style="margin-bottom: 16px">
       <template #title>
-        <div style="font-size: 13px">
-          法定节假日价格调整优先级固定为 90，高于所有自定义时间规则
-        </div>
+        <div style="font-size: 13px">法定节假日价格调整优先级固定为 90，高于所有自定义时间规则</div>
       </template>
     </el-alert>
 
@@ -93,8 +87,11 @@
         </el-tag>
       </template>
       <template #adjustmentValue="{ row }">
-        <span :style="{ color: row.adjustmentValue > 0 ? '#f56c6c' : '#67c23a', fontWeight: 'bold' }">
-          {{ row.adjustmentValue > 0 ? '+' : '' }}{{ row.adjustmentValue }}{{ row.adjustmentType === 'percentage' ? '%' : '元' }}
+        <span
+          :style="{ color: row.adjustmentValue > 0 ? '#f56c6c' : '#67c23a', fontWeight: 'bold' }"
+        >
+          {{ row.adjustmentValue > 0 ? '+' : '' }}{{ row.adjustmentValue
+          }}{{ row.adjustmentType === 'percentage' ? '%' : '元' }}
         </span>
       </template>
       <template #dateRange="{ row }">
@@ -135,7 +132,7 @@ import {
   getLastSyncTime,
   saveLastSyncTime,
   saveSyncLog,
-  formatNextSyncTime
+  formatNextSyncTime,
 } from '@/services/holidaySyncService'
 import { calculateSyncYears } from '@/utils/timorApi'
 import { getNationalHolidayList } from '@/api/timeFactor'
@@ -148,7 +145,7 @@ if (import.meta.env.DEV) {
 // 搜索表单
 const searchForm = reactive({
   keyword: '',
-  year: new Date().getFullYear()
+  year: new Date().getFullYear(),
 })
 
 // 搜索字段配置
@@ -158,7 +155,7 @@ const searchFields = computed<SearchField[]>(() => [
     label: '关键词',
     type: 'input',
     placeholder: '节假日名称',
-    width: '200px'
+    width: '200px',
   },
   {
     prop: 'year',
@@ -169,9 +166,9 @@ const searchFields = computed<SearchField[]>(() => [
     options: [
       { label: '2024年', value: 2024 },
       { label: '2025年', value: 2025 },
-      { label: '2026年', value: 2026 }
-    ]
-  }
+      { label: '2026年', value: 2026 },
+    ],
+  },
 ])
 
 // 表格列配置
@@ -182,7 +179,7 @@ const tableColumns: TableColumn[] = [
   { prop: 'adjustmentType', label: '调整类型', width: 120, slot: 'adjustmentType' },
   { prop: 'adjustmentValue', label: '调整值', width: 120, slot: 'adjustmentValue' },
   { prop: 'priority', label: '优先级', width: 100 },
-  { prop: 'description', label: '说明', minWidth: 200 }
+  { prop: 'description', label: '说明', minWidth: 200 },
 ]
 
 // 工具栏按钮配置
@@ -191,8 +188,8 @@ const toolbarButtons: ToolbarButton[] = [
     label: '新增节假日',
     type: 'primary',
     icon: Plus,
-    onClick: () => handleCreate()
-  }
+    onClick: () => handleCreate(),
+  },
 ]
 
 // 表格操作列配置
@@ -200,13 +197,13 @@ const tableActions: TableAction[] = [
   {
     label: '编辑',
     type: 'primary',
-    onClick: (row: any) => handleEdit(row)
+    onClick: (row: any) => handleEdit(row),
   },
   {
     label: '删除',
     type: 'danger',
-    onClick: (row: any) => handleDelete(row)
-  }
+    onClick: (row: any) => handleDelete(row),
+  },
 ]
 
 // 节假日列表数据
@@ -227,7 +224,7 @@ const totalHolidaysCount = ref(0)
 const pagination = reactive({
   page: 1,
   pageSize: 10,
-  total: holidayList.value.length
+  total: holidayList.value.length,
 })
 
 // 对话框状态
@@ -244,7 +241,7 @@ const formData = reactive({
   endDate: '',
   adjustmentType: 'percentage',
   adjustmentValue: 0,
-  description: ''
+  description: '',
 })
 
 // 表单字段配置
@@ -253,7 +250,7 @@ const formFields = computed<FormField[]>(() => [
     prop: 'name',
     label: '节假日名称',
     type: 'input',
-    placeholder: '请输入节假日名称'
+    placeholder: '请输入节假日名称',
   },
   {
     type: 'row',
@@ -263,16 +260,16 @@ const formFields = computed<FormField[]>(() => [
         label: '开始日期',
         type: 'date',
         valueFormat: 'YYYY-MM-DD',
-        span: 12
+        span: 12,
       },
       {
         prop: 'endDate',
         label: '结束日期',
         type: 'date',
         valueFormat: 'YYYY-MM-DD',
-        span: 12
-      }
-    ]
+        span: 12,
+      },
+    ],
   },
   {
     type: 'row',
@@ -283,18 +280,18 @@ const formFields = computed<FormField[]>(() => [
         type: 'select',
         options: [
           { label: '百分比', value: 'percentage' },
-          { label: '固定金额', value: 'fixed' }
+          { label: '固定金额', value: 'fixed' },
         ],
-        span: 12
+        span: 12,
       },
       {
         prop: 'adjustmentValue',
         label: '调整值',
         type: 'number',
         span: 12,
-        tip: '正数表示涨价，负数表示降价'
-      }
-    ]
+        tip: '正数表示涨价，负数表示降价',
+      },
+    ],
   },
   {
     prop: 'description',
@@ -302,8 +299,8 @@ const formFields = computed<FormField[]>(() => [
     type: 'textarea',
     rows: 3,
     placeholder: '请输入节假日说明',
-    maxlength: 200
-  }
+    maxlength: 200,
+  },
 ])
 
 // 表单验证规则
@@ -312,7 +309,7 @@ const formRules = {
   startDate: [{ required: true, message: '请选择开始日期', trigger: 'change' }],
   endDate: [{ required: true, message: '请选择结束日期', trigger: 'change' }],
   adjustmentType: [{ required: true, message: '请选择调整类型', trigger: 'change' }],
-  adjustmentValue: [{ required: true, message: '请输入调整值', trigger: 'blur' }]
+  adjustmentValue: [{ required: true, message: '请输入调整值', trigger: 'blur' }],
 }
 
 // 加载节假日列表
@@ -324,7 +321,7 @@ const loadHolidayList = async () => {
       pageSize: pagination.pageSize,
       type: 'national',
       keyword: searchForm.keyword,
-      year: searchForm.year
+      year: searchForm.year,
     })
 
     holidayList.value = response.list
@@ -393,15 +390,11 @@ const handleEdit = (row: any) => {
 // 删除
 const handleDelete = async (row: any) => {
   try {
-    await ElMessageBox.confirm(
-      `确定要删除法定节假日"${row.name}"吗？`,
-      '删除确认',
-      {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }
-    )
+    await ElMessageBox.confirm(`确定要删除法定节假日"${row.name}"吗？`, '删除确认', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    })
 
     ElMessage.success('删除成功')
     // TODO: 调用删除API
@@ -445,15 +438,11 @@ const handleCurrentChange = (page: number) => {
 // 手动同步节假日
 const handleManualSync = async () => {
   try {
-    await ElMessageBox.confirm(
-      '确认同步当前日期向后1年的法定节假日数据？',
-      '同步确认',
-      {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'info'
-      }
-    )
+    await ElMessageBox.confirm('确认同步当前日期向后1年的法定节假日数据？', '同步确认', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'info',
+    })
 
     syncLoading.value = true
     syncProgress.value = 0
@@ -461,10 +450,10 @@ const handleManualSync = async () => {
 
     const result = await syncNationalHolidays({
       defaultAdjustmentValue: 30,
-      onProgress: (progress) => {
+      onProgress: progress => {
         syncProgress.value = Math.round((progress.current / progress.total) * 100)
         syncProgressMessage.value = progress.message
-      }
+      },
     })
 
     if (result.success) {
@@ -497,7 +486,7 @@ const handleManualSync = async () => {
         '同步完成',
         {
           dangerouslyUseHTMLString: true,
-          confirmButtonText: '确定'
+          confirmButtonText: '确定',
         }
       )
     } else {
@@ -525,7 +514,8 @@ const updateSyncStatus = () => {
 
   // 已获取年份范围
   const years = calculateSyncYears()
-  syncedYearsRange.value = years.length > 1 ? `${years[0]}-${years[years.length - 1]}` : `${years[0]}`
+  syncedYearsRange.value =
+    years.length > 1 ? `${years[0]}-${years[years.length - 1]}` : `${years[0]}`
 
   // 已获取节假日总数
   totalHolidaysCount.value = holidayList.value.length

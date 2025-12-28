@@ -26,7 +26,7 @@ import {
   type Report,
   type ReportStats,
   type HandleStatus,
-  type CommunityConfig
+  type CommunityConfig,
 } from '@/mock/community'
 
 // 导出类型
@@ -41,7 +41,7 @@ export type {
   Report,
   ReportStats,
   HandleStatus,
-  CommunityConfig
+  CommunityConfig,
 }
 
 /**
@@ -159,10 +159,7 @@ export function createCommunitySection(data: Partial<CommunitySection>): Promise
 /**
  * 更新社区版块
  */
-export function updateCommunitySection(
-  id: number,
-  data: Partial<CommunitySection>
-): Promise<void> {
+export function updateCommunitySection(id: number, data: Partial<CommunitySection>): Promise<void> {
   // 使用 Mock 数据
   return mockUpdateCommunitySection(id, data)
 

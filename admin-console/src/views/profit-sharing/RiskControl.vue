@@ -38,8 +38,12 @@
             <el-table-column prop="updatedAt" label="更新时间" width="160" />
             <el-table-column label="操作" width="150" fixed="right">
               <template #default="{ row }">
-                <el-button link type="primary" size="small" @click="handleEdit(row)">编辑</el-button>
-                <el-button link type="danger" size="small" @click="handleDelete(row)">删除</el-button>
+                <el-button link type="primary" size="small" @click="handleEdit(row)"
+                  >编辑</el-button
+                >
+                <el-button link type="danger" size="small" @click="handleDelete(row)"
+                  >删除</el-button
+                >
               </template>
             </el-table-column>
           </el-table>
@@ -67,7 +71,12 @@
           </el-select>
         </el-form-item>
         <el-form-item label="阈值" prop="threshold">
-          <el-input-number v-model="formData.threshold" :min="0" :precision="2" style="width: 100%" />
+          <el-input-number
+            v-model="formData.threshold"
+            :min="0"
+            :precision="2"
+            style="width: 100%"
+          />
         </el-form-item>
         <el-form-item label="动作" prop="action">
           <el-select v-model="formData.action" placeholder="请选择">
@@ -77,7 +86,12 @@
           </el-select>
         </el-form-item>
         <el-form-item label="说明" prop="description">
-          <el-input v-model="formData.description" type="textarea" :rows="3" placeholder="请输入规则说明" />
+          <el-input
+            v-model="formData.description"
+            type="textarea"
+            :rows="3"
+            placeholder="请输入规则说明"
+          />
         </el-form-item>
       </el-form>
       <template #footer>
@@ -193,7 +207,7 @@ const handleDelete = async (row: RiskControlRule) => {
 
 const handleSubmit = async () => {
   if (!formRef.value) return
-  await formRef.value.validate(async (valid) => {
+  await formRef.value.validate(async valid => {
     if (!valid) return
     submitting.value = true
     try {

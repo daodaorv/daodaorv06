@@ -61,7 +61,8 @@ const mockOperationLogs: OperationLog[] = [
     userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0',
     status: 'success',
     duration: 156,
-    requestParams: '{"roleId":2,"menuPermissions":["/dashboard","/users"],"functionPermissions":["user:view"]}',
+    requestParams:
+      '{"roleId":2,"menuPermissions":["/dashboard","/users"],"functionPermissions":["user:view"]}',
     responseData: '{"code":200,"message":"配置成功"}',
     createdAt: '2024-11-30T07:45:00.000Z',
   },
@@ -84,28 +85,28 @@ const mockOperationLogs: OperationLog[] = [
 
 // Mock 获取操作日志列表
 export const mockGetOperationLogList = (params: OperationLogListParams) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       let filteredLogs = [...mockOperationLogs]
 
       // 操作人搜索
       if (params.operator) {
-        filteredLogs = filteredLogs.filter((log) => log.operator.includes(params.operator!))
+        filteredLogs = filteredLogs.filter(log => log.operator.includes(params.operator!))
       }
 
       // 模块筛选
       if (params.module) {
-        filteredLogs = filteredLogs.filter((log) => log.module === params.module)
+        filteredLogs = filteredLogs.filter(log => log.module === params.module)
       }
 
       // 操作类型筛选
       if (params.action) {
-        filteredLogs = filteredLogs.filter((log) => log.action === params.action)
+        filteredLogs = filteredLogs.filter(log => log.action === params.action)
       }
 
       // 日期范围筛选
       if (params.startDate && params.endDate) {
-        filteredLogs = filteredLogs.filter((log) => {
+        filteredLogs = filteredLogs.filter(log => {
           const logDate = new Date(log.createdAt)
           return logDate >= new Date(params.startDate!) && logDate <= new Date(params.endDate!)
         })
@@ -136,7 +137,7 @@ export const mockGetOperationLogList = (params: OperationLogListParams) => {
 export const mockGetOperationLogDetail = (id: number) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      const log = mockOperationLogs.find((l) => l.id === id)
+      const log = mockOperationLogs.find(l => l.id === id)
       if (log) {
         resolve({
           code: 200,
@@ -155,7 +156,7 @@ export const mockGetOperationLogDetail = (id: number) => {
 
 // Mock 导出操作日志
 export const mockExportOperationLogs = () => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       resolve({
         code: 200,
@@ -170,7 +171,7 @@ export const mockExportOperationLogs = () => {
 
 // Mock 清理操作日志
 export const mockCleanOperationLogs = (_beforeDate: string) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       resolve({
         code: 200,

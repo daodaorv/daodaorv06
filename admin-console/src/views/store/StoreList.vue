@@ -1,8 +1,6 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="store-list-container">
-    
-
     <StatsCard :stats="statsConfig" />
 
     <SearchForm
@@ -35,9 +33,7 @@
           {{ getStoreStatusLabel(row.status) }}
         </el-tag>
       </template>
-      <template #monthlyRevenue="{ row }">
-        ¥{{ row.monthlyRevenue.toLocaleString() }}
-      </template>
+      <template #monthlyRevenue="{ row }"> ¥{{ row.monthlyRevenue.toLocaleString() }} </template>
       <template #rating="{ row }">
         <el-rate v-model="row.rating" disabled show-score text-color="#ff9900" />
       </template>
@@ -50,12 +46,7 @@
       width="900px"
       @close="handleDialogClose"
     >
-      <el-form
-        ref="formRef"
-        :model="form"
-        :rules="formRules"
-        label-width="120px"
-      >
+      <el-form ref="formRef" :model="form" :rules="formRules" label-width="120px">
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="门店名称" prop="name">
@@ -97,7 +88,11 @@
         <el-row v-if="form.type === 'cooperative'" :gutter="20">
           <el-col :span="12">
             <el-form-item label="协助门店" prop="assistStoreId">
-              <el-select v-model="form.assistStoreId" placeholder="请选择协助门店" style="width: 100%">
+              <el-select
+                v-model="form.assistStoreId"
+                placeholder="请选择协助门店"
+                style="width: 100%"
+              >
                 <el-option
                   v-for="store in assistStoreOptions"
                   :key="store.id"
@@ -105,7 +100,7 @@
                   :value="store.id"
                 />
               </el-select>
-              <div style="color: #909399; font-size: 12px; margin-top: 4px;">
+              <div style="color: #909399; font-size: 12px; margin-top: 4px">
                 合作商门店只负责车辆取还服务，订单咨询及管理由协助门店完成
               </div>
             </el-form-item>
@@ -231,21 +226,13 @@
           </el-col>
         </el-row>
         <el-form-item label="可托管验车">
-          <el-switch
-            v-model="form.canHostingInspection"
-            active-text="是"
-            inactive-text="否"
-          />
-          <div style="color: #909399; font-size: 12px; margin-top: 4px;">
+          <el-switch v-model="form.canHostingInspection" active-text="是" inactive-text="否" />
+          <div style="color: #909399; font-size: 12px; margin-top: 4px">
             开启后，该门店将在小程序托管页面显示，用户可选择此门店进行线下车辆核验及交付
           </div>
         </el-form-item>
         <el-form-item label="门店图片">
-          <ImageUploader
-            v-model="form.images"
-            :limit="12"
-            :max-size="5"
-          />
+          <ImageUploader v-model="form.images" :limit="12" :max-size="5" />
         </el-form-item>
         <el-form-item label="门店描述">
           <el-input
@@ -258,9 +245,7 @@
       </el-form>
       <template #footer>
         <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" :loading="submitLoading" @click="handleSubmit">
-          确定
-        </el-button>
+        <el-button type="primary" :loading="submitLoading" @click="handleSubmit"> 确定 </el-button>
       </template>
     </el-dialog>
   </div>
@@ -272,14 +257,7 @@ import { ref, reactive, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
-import {
-  Plus,
-  Download,
-  Shop,
-  TrendCharts,
-  User,
-  Money
-} from '@element-plus/icons-vue'
+import { Plus, Download, Shop, TrendCharts, User, Money } from '@element-plus/icons-vue'
 import StatsCard from '@/components/common/StatsCard.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'
@@ -298,7 +276,7 @@ import {
   type Store,
   type StoreListParams,
   type City,
-  type Region
+  type Region,
 } from '@/api/store'
 import { useErrorHandler } from '@/composables'
 import { exportToCSV } from '@/utils/export'
@@ -311,14 +289,14 @@ const { handleApiError } = useErrorHandler()
 const STORE_TYPE_OPTIONS = [
   { label: '直营店', value: 'direct' },
   { label: '加盟店', value: 'franchise' },
-  { label: '合作商户', value: 'cooperative' }
+  { label: '合作商户', value: 'cooperative' },
 ]
 
 // 门店状态选项
 const STORE_STATUS_OPTIONS = [
   { label: '营业中', value: 'active' },
   { label: '已停业', value: 'inactive' },
-  { label: '已暂停', value: 'suspended' }
+  { label: '已暂停', value: 'suspended' },
 ]
 
 // 门店经理选项 (Mock数据)
@@ -328,7 +306,7 @@ const MANAGER_OPTIONS = [
   { label: '孙七', value: 5 },
   { label: '周八', value: 6 },
   { label: '吴九', value: 7 },
-  { label: '郑十', value: 8 }
+  { label: '郑十', value: 8 },
 ]
 
 // 搜索表单
@@ -337,7 +315,7 @@ const searchForm = reactive<StoreListParams>({
   type: undefined,
   status: undefined,
   cityId: undefined,
-  regionId: undefined
+  regionId: undefined,
 })
 
 // 统计数据
@@ -345,7 +323,7 @@ const stats = reactive({
   totalStores: 0,
   activeStores: 0,
   directStores: 0,
-  totalRevenue: 0
+  totalRevenue: 0,
 })
 
 // 统计卡片配置
@@ -354,27 +332,27 @@ const statsConfig = computed<StatItem[]>(() => [
     label: '门店总数',
     value: stats.totalStores,
     icon: Shop,
-    color: '#409eff'
+    color: '#409eff',
   },
   {
     label: '营业中',
     value: stats.activeStores,
     icon: TrendCharts,
-    color: '#67c23a'
+    color: '#67c23a',
   },
   {
     label: '直营店',
     value: stats.directStores,
     icon: User,
-    color: '#e6a23c'
+    color: '#e6a23c',
   },
   {
     label: '月度营收',
     value: stats.totalRevenue,
     icon: Money,
     color: '#f56c6c',
-    format: 'currency'
-  }
+    format: 'currency',
+  },
 ])
 
 // 城市和区域列表
@@ -383,9 +361,7 @@ const regionList = ref<Region[]>([])
 
 // 协助门店选项（只包含直营店和加盟店，排除合作商户）
 const assistStoreOptions = computed(() => {
-  return storeList.value.filter(store =>
-    store.type === 'direct' || store.type === 'franchise'
-  )
+  return storeList.value.filter(store => store.type === 'direct' || store.type === 'franchise')
 })
 
 // 根据选择的城市筛选区域
@@ -401,7 +377,7 @@ const searchFields = computed<SearchField[]>(() => [
     label: '关键词',
     type: 'input',
     placeholder: '门店名称/编码/地址',
-    width: '200px'
+    width: '200px',
   },
   {
     prop: 'type',
@@ -409,7 +385,7 @@ const searchFields = computed<SearchField[]>(() => [
     type: 'select',
     placeholder: '请选择类型',
     width: '150px',
-    options: STORE_TYPE_OPTIONS
+    options: STORE_TYPE_OPTIONS,
   },
   {
     prop: 'status',
@@ -417,7 +393,7 @@ const searchFields = computed<SearchField[]>(() => [
     type: 'select',
     placeholder: '请选择状态',
     width: '150px',
-    options: STORE_STATUS_OPTIONS
+    options: STORE_STATUS_OPTIONS,
   },
   {
     prop: 'regionId',
@@ -425,7 +401,7 @@ const searchFields = computed<SearchField[]>(() => [
     type: 'select',
     placeholder: '请选择区域',
     width: '150px',
-    options: regionList.value.map((r) => ({ label: r.name, value: r.id }))
+    options: regionList.value.map(r => ({ label: r.name, value: r.id })),
   },
   {
     prop: 'cityId',
@@ -433,8 +409,8 @@ const searchFields = computed<SearchField[]>(() => [
     type: 'select',
     placeholder: '请选择城市',
     width: '150px',
-    options: cityList.value.map((c) => ({ label: c.name, value: c.id }))
-  }
+    options: cityList.value.map(c => ({ label: c.name, value: c.id })),
+  },
 ])
 
 // 表格列配置
@@ -451,7 +427,7 @@ const tableColumns: TableColumn[] = [
   { prop: 'vehicleCount', label: '车辆数', width: 80 },
   { prop: 'employeeCount', label: '员工数', width: 80 },
   { prop: 'monthlyRevenue', label: '月度营收', width: 120, slot: 'monthlyRevenue' },
-  { prop: 'rating', label: '评分', width: 150, slot: 'rating' }
+  { prop: 'rating', label: '评分', width: 150, slot: 'rating' },
 ]
 
 // 工具栏按钮配置
@@ -460,13 +436,13 @@ const toolbarButtons: ToolbarButton[] = [
     label: '新增门店',
     type: 'primary',
     icon: Plus,
-    onClick: () => handleCreate()
+    onClick: () => handleCreate(),
   },
   {
     label: '导出数据',
     icon: Download,
-    onClick: handleExport
-  }
+    onClick: handleExport,
+  },
 ]
 
 // 表格操作列配置
@@ -474,18 +450,18 @@ const tableActions: TableAction[] = [
   {
     label: '查看',
     type: 'primary',
-    onClick: (row: Store) => handleView(row)
+    onClick: (row: Store) => handleView(row),
   },
   {
     label: '编辑',
     type: 'primary',
-    onClick: (row: Store) => handleEdit(row)
+    onClick: (row: Store) => handleEdit(row),
   },
   {
     label: '删除',
     type: 'danger',
-    onClick: (row: Store) => handleDelete(row)
-  }
+    onClick: (row: Store) => handleDelete(row),
+  },
 ]
 
 // 门店列表
@@ -496,7 +472,7 @@ const loading = ref(false)
 const pagination = reactive({
   page: 1,
   pageSize: 10,
-  total: 0
+  total: 0,
 })
 
 // 对话框
@@ -525,38 +501,24 @@ const form = reactive({
   description: '',
   canHostingInspection: false,
   assistStoreId: undefined as number | undefined,
-  images: [] as string[]
+  images: [] as string[],
 })
 
 const formRules: FormRules = {
-  name: [
-    { required: true, message: '请输入门店名称', trigger: 'blur' }
-  ],
-  code: [
-    { required: true, message: '请输入门店编码', trigger: 'blur' }
-  ],
-  type: [
-    { required: true, message: '请选择门店类型', trigger: 'change' }
-  ],
-  status: [
-    { required: true, message: '请选择门店状态', trigger: 'change' }
-  ],
-  regionId: [
-    { required: true, message: '请选择所属区域', trigger: 'change' }
-  ],
-  cityId: [
-    { required: true, message: '请选择所属城市', trigger: 'change' }
-  ],
-  address: [
-    { required: true, message: '请输入门店地址', trigger: 'blur' }
-  ],
+  name: [{ required: true, message: '请输入门店名称', trigger: 'blur' }],
+  code: [{ required: true, message: '请输入门店编码', trigger: 'blur' }],
+  type: [{ required: true, message: '请选择门店类型', trigger: 'change' }],
+  status: [{ required: true, message: '请选择门店状态', trigger: 'change' }],
+  regionId: [{ required: true, message: '请选择所属区域', trigger: 'change' }],
+  cityId: [{ required: true, message: '请选择所属城市', trigger: 'change' }],
+  address: [{ required: true, message: '请输入门店地址', trigger: 'blur' }],
   phone: [
     { required: true, message: '请输入联系电话', trigger: 'blur' },
     {
       pattern: /^(1[3-9]\d{9}|0\d{2,3}-?\d{7,8})$/,
       message: '请输入正确的手机号码或座机号码',
-      trigger: 'blur'
-    }
+      trigger: 'blur',
+    },
   ],
   email: [
     {
@@ -572,15 +534,11 @@ const formRules: FormRules = {
           callback()
         }
       },
-      trigger: 'blur'
-    }
+      trigger: 'blur',
+    },
   ],
-  managerId: [
-    { required: true, message: '请选择门店经理', trigger: 'change' }
-  ],
-  businessHours: [
-    { required: true, message: '请输入营业时间', trigger: 'blur' }
-  ],
+  managerId: [{ required: true, message: '请选择门店经理', trigger: 'change' }],
+  businessHours: [{ required: true, message: '请输入营业时间', trigger: 'blur' }],
   assistStoreId: [
     {
       validator: (rule: any, value: any, callback: any) => {
@@ -590,9 +548,9 @@ const formRules: FormRules = {
           callback()
         }
       },
-      trigger: 'change'
-    }
-  ]
+      trigger: 'change',
+    },
+  ],
 }
 
 // 加载门店列表
@@ -602,10 +560,10 @@ const loadStoreList = async () => {
     const params: StoreListParams = {
       page: pagination.page,
       pageSize: pagination.pageSize,
-      ...searchForm
+      ...searchForm,
     }
 
-    const res = await getStoreList(params) as any
+    const res = (await getStoreList(params)) as any
     storeList.value = res.data.list
     pagination.total = res.data.total
   } catch (error) {
@@ -618,7 +576,7 @@ const loadStoreList = async () => {
 // 加载统计数据
 const loadStats = async () => {
   try {
-    const res = await getStoreStats() as any
+    const res = (await getStoreStats()) as any
     stats.totalStores = res.data.totalStores
     stats.activeStores = res.data.activeStores
     stats.directStores = res.data.directStores
@@ -631,7 +589,7 @@ const loadStats = async () => {
 // 加载城市列表
 const loadCityList = async () => {
   try {
-    const res = await getCityList() as any
+    const res = (await getCityList()) as any
     cityList.value = res.data
   } catch (error) {
     handleApiError(error, '加载城市列表失败')
@@ -641,7 +599,7 @@ const loadCityList = async () => {
 // 加载区域列表
 const loadRegionList = async () => {
   try {
-    const res = await getRegionList() as any
+    const res = (await getRegionList()) as any
     regionList.value = res.data
   } catch (error) {
     handleApiError(error, '加载区域列表失败')
@@ -706,15 +664,11 @@ const handleEdit = (row: Store) => {
 // 删除门店
 const handleDelete = async (row: Store) => {
   try {
-    await ElMessageBox.confirm(
-      `确定要删除门店 "${row.name}" 吗？`,
-      '删除确认',
-      {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }
-    )
+    await ElMessageBox.confirm(`确定要删除门店 "${row.name}" 吗？`, '删除确认', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    })
 
     await deleteStore(row.id)
     ElMessage.success('删除成功')
@@ -731,7 +685,7 @@ const handleDelete = async (row: Store) => {
 const handleSubmit = async () => {
   if (!formRef.value) return
 
-  await formRef.value.validate(async (valid) => {
+  await formRef.value.validate(async valid => {
     if (!valid) return
 
     submitLoading.value = true
@@ -753,7 +707,7 @@ const handleSubmit = async () => {
         serviceScope: form.serviceScope,
         description: form.description,
         canHostingInspection: form.canHostingInspection,
-        images: form.images
+        images: form.images,
       }
 
       // 如果是合作商门店，添加协助门店信息
@@ -805,12 +759,12 @@ const handleGeocodeAddress = () => {
   // 模拟地理编码 - 实际项目中应调用高德地图或百度地图API
   // 这里根据城市名称提供一些模拟的经纬度
   const cityCoordinates: Record<string, { lat: number; lng: number }> = {
-    '北京': { lat: 39.9042, lng: 116.4074 },
-    '上海': { lat: 31.2304, lng: 121.4737 },
-    '广州': { lat: 23.1291, lng: 113.2644 },
-    '深圳': { lat: 22.5431, lng: 114.0579 },
-    '成都': { lat: 30.5728, lng: 104.0668 },
-    '杭州': { lat: 30.2741, lng: 120.1551 }
+    北京: { lat: 39.9042, lng: 116.4074 },
+    上海: { lat: 31.2304, lng: 121.4737 },
+    广州: { lat: 23.1291, lng: 113.2644 },
+    深圳: { lat: 22.5431, lng: 114.0579 },
+    成都: { lat: 30.5728, lng: 104.0668 },
+    杭州: { lat: 30.2741, lng: 120.1551 },
   }
 
   // 从地址中提取城市名称
@@ -870,7 +824,7 @@ const getStoreTypeTag = (type: string) => {
   const tagMap: Record<string, string> = {
     direct: 'primary',
     franchise: 'success',
-    cooperative: 'warning'
+    cooperative: 'warning',
   }
   return tagMap[type] || 'info'
 }
@@ -880,7 +834,7 @@ const getStoreTypeLabel = (type: string) => {
   const labelMap: Record<string, string> = {
     direct: '直营店',
     franchise: '加盟店',
-    cooperative: '合作商户'
+    cooperative: '合作商户',
   }
   return labelMap[type] || type
 }
@@ -890,7 +844,7 @@ const getStoreStatusTag = (status: string) => {
   const tagMap: Record<string, string> = {
     active: 'success',
     inactive: 'danger',
-    suspended: 'warning'
+    suspended: 'warning',
   }
   return tagMap[status] || 'info'
 }
@@ -900,7 +854,7 @@ const getStoreStatusLabel = (status: string) => {
   const labelMap: Record<string, string> = {
     active: '营业中',
     inactive: '已停业',
-    suspended: '已暂停'
+    suspended: '已暂停',
   }
   return labelMap[status] || status
 }

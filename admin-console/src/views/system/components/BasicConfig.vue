@@ -1,11 +1,6 @@
 <template>
   <div class="basic-config">
-    <el-form
-      ref="formRef"
-      :model="form"
-      :rules="formRules"
-      label-width="150px"
-    >
+    <el-form ref="formRef" :model="form" :rules="formRules" label-width="150px">
       <!-- 平台基础信息 -->
       <div class="config-section">
         <h3 class="section-title">平台基础信息</h3>
@@ -13,12 +8,7 @@
           <el-input v-model="form.platformName" placeholder="请输入平台名称" />
         </el-form-item>
         <el-form-item label="平台Logo" prop="platformLogo">
-          <el-upload
-            class="logo-uploader"
-            action="#"
-            :show-file-list="false"
-            :auto-upload="false"
-          >
+          <el-upload class="logo-uploader" action="#" :show-file-list="false" :auto-upload="false">
             <img v-if="form.platformLogo" :src="form.platformLogo" class="logo" />
             <el-icon v-else class="logo-uploader-icon"><Plus /></el-icon>
           </el-upload>
@@ -38,11 +28,7 @@
       <div class="config-section">
         <h3 class="section-title">系统运行参数</h3>
         <el-form-item label="系统维护模式" prop="maintenanceMode">
-          <el-switch
-            v-model="form.maintenanceMode"
-            active-text="开启"
-            inactive-text="关闭"
-          />
+          <el-switch v-model="form.maintenanceMode" active-text="开启" inactive-text="关闭" />
           <span class="form-tip">开启后用户端将无法访问</span>
         </el-form-item>
         <el-form-item label="维护提示信息" prop="maintenanceMessage">
@@ -54,21 +40,11 @@
           />
         </el-form-item>
         <el-form-item label="会话超时时间" prop="sessionTimeout">
-          <el-input-number
-            v-model="form.sessionTimeout"
-            :min="5"
-            :max="1440"
-            :step="5"
-          />
+          <el-input-number v-model="form.sessionTimeout" :min="5" :max="1440" :step="5" />
           <span class="form-tip">分钟</span>
         </el-form-item>
         <el-form-item label="文件上传大小限制" prop="uploadSizeLimit">
-          <el-input-number
-            v-model="form.uploadSizeLimit"
-            :min="1"
-            :max="100"
-            :step="1"
-          />
+          <el-input-number v-model="form.uploadSizeLimit" :min="1" :max="100" :step="1" />
           <span class="form-tip">MB</span>
         </el-form-item>
       </div>
@@ -77,12 +53,7 @@
       <div class="config-section">
         <h3 class="section-title">安全设置</h3>
         <el-form-item label="密码最小长度" prop="passwordMinLength">
-          <el-input-number
-            v-model="form.passwordMinLength"
-            :min="6"
-            :max="20"
-            :step="1"
-          />
+          <el-input-number v-model="form.passwordMinLength" :min="6" :max="20" :step="1" />
           <span class="form-tip">字符</span>
         </el-form-item>
         <el-form-item label="密码复杂度要求" prop="passwordComplexity">
@@ -94,11 +65,7 @@
           </el-checkbox-group>
         </el-form-item>
         <el-form-item label="登录失败锁定" prop="loginFailLock">
-          <el-switch
-            v-model="form.loginFailLock"
-            active-text="开启"
-            inactive-text="关闭"
-          />
+          <el-switch v-model="form.loginFailLock" active-text="开启" inactive-text="关闭" />
         </el-form-item>
         <el-form-item label="失败次数阈值" prop="loginFailThreshold">
           <el-input-number
@@ -165,9 +132,7 @@ const form = reactive({
 })
 
 const formRules: FormRules = {
-  platformName: [
-    { required: true, message: '请输入平台名称', trigger: 'blur' },
-  ],
+  platformName: [{ required: true, message: '请输入平台名称', trigger: 'blur' }],
   servicePhone: [
     { required: true, message: '请输入客服电话', trigger: 'blur' },
     { pattern: /^[\d-]+$/, message: '请输入正确的电话号码', trigger: 'blur' },
@@ -181,7 +146,7 @@ const formRules: FormRules = {
 const handleSubmit = async () => {
   if (!formRef.value) return
 
-  await formRef.value.validate(async (valid) => {
+  await formRef.value.validate(async valid => {
     if (!valid) return
 
     submitLoading.value = true

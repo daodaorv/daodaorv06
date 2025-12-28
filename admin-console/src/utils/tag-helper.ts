@@ -43,7 +43,10 @@ export function createTagTypeMapper<T extends string | number>(
  * safeTagType('success') // 'success'
  * safeTagType('invalid') // 'info'
  */
-export function safeTagType(value: string | undefined | null, defaultType: ElTagType = 'info'): ElTagType {
+export function safeTagType(
+  value: string | undefined | null,
+  defaultType: ElTagType = 'info'
+): ElTagType {
   const validTypes: ElTagType[] = ['primary', 'success', 'info', 'warning', 'danger']
 
   if (!value || value === '') {

@@ -2,7 +2,6 @@
 <template>
   <div class="permission-logs-container">
     <!-- 页面标题 -->
-    
 
     <!-- 搜索表单 -->
     <SearchForm
@@ -62,18 +61,12 @@
 
       <!-- 自定义操作列 -->
       <template #actions="{ row }">
-        <el-button link type="primary" size="small" @click="handleView(row)">
-          查看详情
-        </el-button>
+        <el-button link type="primary" size="small" @click="handleView(row)"> 查看详情 </el-button>
       </template>
     </DataTable>
 
     <!-- 日志详情对话框 -->
-    <el-dialog
-      v-model="detailDialogVisible"
-      title="操作日志详情"
-      width="800px"
-    >
+    <el-dialog v-model="detailDialogVisible" title="操作日志详情" width="800px">
       <el-descriptions :column="2" border>
         <el-descriptions-item label="日志ID">
           {{ currentLog?.id }}
@@ -106,26 +99,14 @@
             {{ currentLog?.status === 'success' ? '成功' : '失败' }}
           </el-tag>
         </el-descriptions-item>
-        <el-descriptions-item label="执行耗时">
-          {{ currentLog?.duration }}ms
-        </el-descriptions-item>
+        <el-descriptions-item label="执行耗时"> {{ currentLog?.duration }}ms </el-descriptions-item>
         <el-descriptions-item label="请求参数" :span="2">
-      // @ts-ignore
-          <el-input
-            v-model="currentLog.requestParams"
-            type="textarea"
-            :rows="4"
-            readonly
-          />
+          // @ts-ignore
+          <el-input v-model="currentLog.requestParams" type="textarea" :rows="4" readonly />
         </el-descriptions-item>
         <el-descriptions-item label="响应结果" :span="2">
-      // @ts-ignore
-          <el-input
-            v-model="currentLog.responseData"
-            type="textarea"
-            :rows="4"
-            readonly
-          />
+          // @ts-ignore
+          <el-input v-model="currentLog.responseData" type="textarea" :rows="4" readonly />
         </el-descriptions-item>
       </el-descriptions>
     </el-dialog>

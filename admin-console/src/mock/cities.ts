@@ -15,7 +15,7 @@ export const hotCities: City[] = [
   { code: '510100', name: '成都', province: '四川省', pinyin: 'chengdu', initial: 'C' },
   { code: '420100', name: '武汉', province: '湖北省', pinyin: 'wuhan', initial: 'W' },
   { code: '610100', name: '西安', province: '陕西省', pinyin: 'xian', initial: 'X' },
-  { code: '500000', name: '重庆', province: '重庆市', pinyin: 'chongqing', initial: 'C' }
+  { code: '500000', name: '重庆', province: '重庆市', pinyin: 'chongqing', initial: 'C' },
 ]
 
 // 全国城市列表（按首字母分组）
@@ -116,88 +116,88 @@ export const allCities: City[] = [
   { code: '410100', name: '郑州', province: '河南省', pinyin: 'zhengzhou', initial: 'Z' },
   { code: '440800', name: '珠海', province: '广东省', pinyin: 'zhuhai', initial: 'Z' },
   { code: '440200', name: '中山', province: '广东省', pinyin: 'zhongshan', initial: 'Z' },
-  { code: '330800', name: '衢州', province: '浙江省', pinyin: 'quzhou', initial: 'Q' }
+  { code: '330800', name: '衢州', province: '浙江省', pinyin: 'quzhou', initial: 'Q' },
 ]
 
 // 按首字母分组
 export const cityGroups: CityGroup[] = [
   {
     initial: 'A',
-    cities: allCities.filter((city) => city.initial === 'A')
+    cities: allCities.filter(city => city.initial === 'A'),
   },
   {
     initial: 'B',
-    cities: allCities.filter((city) => city.initial === 'B')
+    cities: allCities.filter(city => city.initial === 'B'),
   },
   {
     initial: 'C',
-    cities: allCities.filter((city) => city.initial === 'C')
+    cities: allCities.filter(city => city.initial === 'C'),
   },
   {
     initial: 'D',
-    cities: allCities.filter((city) => city.initial === 'D')
+    cities: allCities.filter(city => city.initial === 'D'),
   },
   {
     initial: 'F',
-    cities: allCities.filter((city) => city.initial === 'F')
+    cities: allCities.filter(city => city.initial === 'F'),
   },
   {
     initial: 'G',
-    cities: allCities.filter((city) => city.initial === 'G')
+    cities: allCities.filter(city => city.initial === 'G'),
   },
   {
     initial: 'H',
-    cities: allCities.filter((city) => city.initial === 'H')
+    cities: allCities.filter(city => city.initial === 'H'),
   },
   {
     initial: 'J',
-    cities: allCities.filter((city) => city.initial === 'J')
+    cities: allCities.filter(city => city.initial === 'J'),
   },
   {
     initial: 'K',
-    cities: allCities.filter((city) => city.initial === 'K')
+    cities: allCities.filter(city => city.initial === 'K'),
   },
   {
     initial: 'L',
-    cities: allCities.filter((city) => city.initial === 'L')
+    cities: allCities.filter(city => city.initial === 'L'),
   },
   {
     initial: 'N',
-    cities: allCities.filter((city) => city.initial === 'N')
+    cities: allCities.filter(city => city.initial === 'N'),
   },
   {
     initial: 'Q',
-    cities: allCities.filter((city) => city.initial === 'Q')
+    cities: allCities.filter(city => city.initial === 'Q'),
   },
   {
     initial: 'S',
-    cities: allCities.filter((city) => city.initial === 'S')
+    cities: allCities.filter(city => city.initial === 'S'),
   },
   {
     initial: 'T',
-    cities: allCities.filter((city) => city.initial === 'T')
+    cities: allCities.filter(city => city.initial === 'T'),
   },
   {
     initial: 'W',
-    cities: allCities.filter((city) => city.initial === 'W')
+    cities: allCities.filter(city => city.initial === 'W'),
   },
   {
     initial: 'X',
-    cities: allCities.filter((city) => city.initial === 'X')
+    cities: allCities.filter(city => city.initial === 'X'),
   },
   {
     initial: 'Y',
-    cities: allCities.filter((city) => city.initial === 'Y')
+    cities: allCities.filter(city => city.initial === 'Y'),
   },
   {
     initial: 'Z',
-    cities: allCities.filter((city) => city.initial === 'Z')
-  }
-].filter((group) => group.cities.length > 0) // 过滤掉空分组
+    cities: allCities.filter(city => city.initial === 'Z'),
+  },
+].filter(group => group.cities.length > 0) // 过滤掉空分组
 
 // Mock API 实现
 export function mockGetCityList(): Promise<City[]> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       resolve(allCities)
     }, 200)
@@ -205,7 +205,7 @@ export function mockGetCityList(): Promise<City[]> {
 }
 
 export function mockGetCityGroups(): Promise<CityGroup[]> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       resolve(cityGroups)
     }, 200)
@@ -213,7 +213,7 @@ export function mockGetCityGroups(): Promise<CityGroup[]> {
 }
 
 export function mockGetHotCities(): Promise<City[]> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       resolve(hotCities)
     }, 200)

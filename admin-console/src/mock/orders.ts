@@ -4,14 +4,14 @@
 
 // 订单状态
 export type OrderStatus =
-  | 'pending_payment'    // 待支付
-  | 'pending_confirm'    // 待确认
-  | 'confirmed'          // 已确认
-  | 'in_use'            // 使用中
-  | 'completed'         // 已完成
-  | 'cancelled'         // 已取消
-  | 'refunding'         // 退款中
-  | 'refunded'          // 已退款
+  | 'pending_payment' // 待支付
+  | 'pending_confirm' // 待确认
+  | 'confirmed' // 已确认
+  | 'in_use' // 使用中
+  | 'completed' // 已完成
+  | 'cancelled' // 已取消
+  | 'refunding' // 退款中
+  | 'refunded' // 已退款
 
 // 支付状态
 export type PaymentStatus = 'unpaid' | 'paid' | 'refunding' | 'refunded'
@@ -24,8 +24,8 @@ export interface FeeAllocationRule {
   partyType: 'platform' | 'pickup_store' | 'return_store' | 'service_store'
   partyId?: number
   partyName?: string
-  percentage: number         // 分配比例（0-100）
-  amount?: number            // 实际分配金额（计算后填充）
+  percentage: number // 分配比例（0-100）
+  amount?: number // 实际分配金额（计算后填充）
 }
 
 // 特殊费用计算方式
@@ -33,26 +33,26 @@ export type SpecialFeeCalculationType = 'fixed' | 'distance'
 
 // 订单增值费用明细（扩展）
 export interface OrderExtraFee {
-  extraFeeId: number                  // 增值费用ID
-  name: string                        // 费用名称
-  type: string                        // 费用类型
-  price: number                       // 单价
-  quantity: number                    // 数量
-  unit: string                        // 计费单位
-  totalAmount: number                 // 总金额
-  ownerType: 'platform' | 'store' | 'multi_party'  // 归属方（扩展）
-  storeId?: number                    // 门店ID
-  storeName?: string                  // 门店名称
+  extraFeeId: number // 增值费用ID
+  name: string // 费用名称
+  type: string // 费用类型
+  price: number // 单价
+  quantity: number // 数量
+  unit: string // 计费单位
+  totalAmount: number // 总金额
+  ownerType: 'platform' | 'store' | 'multi_party' // 归属方（扩展）
+  storeId?: number // 门店ID
+  storeName?: string // 门店名称
 
   // 多方分配信息（新增）
-  allocations?: FeeAllocationRule[]   // 分配明细
+  allocations?: FeeAllocationRule[] // 分配明细
 
   // 特殊费用计算信息（新增）
   calculationType?: SpecialFeeCalculationType
-  distanceKm?: number                 // 计算使用的公里数
-  distanceUnitPrice?: number          // 距离单价
+  distanceKm?: number // 计算使用的公里数
+  distanceUnitPrice?: number // 距离单价
 
-  addedAt: string                     // 添加时间
+  addedAt: string // 添加时间
 }
 
 // 订单信息
@@ -85,10 +85,10 @@ export interface Order {
   refundAmount: number
 
   // 取车还车门店信息（扩展）
-  pickupStoreId?: number               // 取车门店ID（新增）
-  pickupStore?: string                 // 取车门店名称
-  returnStoreId?: number               // 还车门店ID（新增）
-  returnStore?: string                 // 还车门店名称
+  pickupStoreId?: number // 取车门店ID（新增）
+  pickupStore?: string // 取车门店名称
+  returnStoreId?: number // 还车门店ID（新增）
+  returnStore?: string // 还车门店名称
 
   pickupTime?: string
   returnTime?: string
@@ -112,9 +112,9 @@ export interface Order {
   priceDifference?: number // 差价（平台订单价格 - 合作商订单价格）
 
   // 新增字段：增值费用
-  extraFees: OrderExtraFee[]          // 增值费用明细列表
-  extraFeesAmount: number             // 增值费用总额
-  
+  extraFees: OrderExtraFee[] // 增值费用明细列表
+  extraFeesAmount: number // 增值费用总额
+
   // 会员信息（仅当订单类型为 plus_member 时使用）
   memberInfo?: {
     type: 'regular' | 'plus'
@@ -184,7 +184,7 @@ const mockOrders: Order[] = [
     completedAt: '',
     cancelledAt: '',
     extraFees: [],
-    extraFeesAmount: 0
+    extraFeesAmount: 0,
   },
   {
     id: 2,
@@ -233,7 +233,7 @@ const mockOrders: Order[] = [
     completedAt: '',
     cancelledAt: '',
     extraFees: [],
-    extraFeesAmount: 0
+    extraFeesAmount: 0,
   },
   {
     id: 3,
@@ -281,7 +281,7 @@ const mockOrders: Order[] = [
     completedAt: '2025-11-25T18:30:00.000Z',
     cancelledAt: '',
     extraFees: [],
-    extraFeesAmount: 0
+    extraFeesAmount: 0,
   },
   {
     id: 4,
@@ -329,7 +329,7 @@ const mockOrders: Order[] = [
     completedAt: '',
     cancelledAt: '',
     extraFees: [],
-    extraFeesAmount: 0
+    extraFeesAmount: 0,
   },
   {
     id: 5,
@@ -377,7 +377,7 @@ const mockOrders: Order[] = [
     completedAt: '',
     cancelledAt: '2025-12-01T16:00:00.000Z',
     extraFees: [],
-    extraFeesAmount: 0
+    extraFeesAmount: 0,
   },
   {
     id: 6,
@@ -425,7 +425,7 @@ const mockOrders: Order[] = [
     completedAt: '',
     cancelledAt: '',
     extraFees: [],
-    extraFeesAmount: 0
+    extraFeesAmount: 0,
   },
   {
     id: 7,
@@ -478,7 +478,7 @@ const mockOrders: Order[] = [
     partnerOrderPrice: 2800,
     priceDifference: 730, // 3530 - 2800 = 730
     extraFees: [],
-    extraFeesAmount: 0
+    extraFeesAmount: 0,
   },
   {
     id: 1001,
@@ -517,9 +517,9 @@ const mockOrders: Order[] = [
       type: 'plus',
       discountRate: 0.95,
       benefits: ['双倍积分', '95折优惠', '专属优惠券', '优先服务', '免费保险'],
-      expiryDate: '2025-12-25'
-    }
-  }
+      expiryDate: '2025-12-25',
+    },
+  },
 ]
 
 // 订单列表查询参数
@@ -563,14 +563,14 @@ export interface UpdateOrderParams {
 
 // Mock 获取订单列表
 export const mockGetOrderList = (params: OrderListParams) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       let filteredOrders = [...mockOrders]
 
       // 关键词搜索
       if (params.keyword) {
         filteredOrders = filteredOrders.filter(
-          (order) =>
+          order =>
             order.orderNo.includes(params.keyword!) ||
             order.userName.includes(params.keyword!) ||
             order.userPhone.includes(params.keyword!) ||
@@ -581,34 +581,37 @@ export const mockGetOrderList = (params: OrderListParams) => {
 
       // 订单类型筛选
       if (params.type) {
-        filteredOrders = filteredOrders.filter((order) => order.type === params.type)
+        filteredOrders = filteredOrders.filter(order => order.type === params.type)
       }
 
       // 订单状态筛选
       if (params.status) {
-        filteredOrders = filteredOrders.filter((order) => order.status === params.status)
+        filteredOrders = filteredOrders.filter(order => order.status === params.status)
       }
 
       // 支付状态筛选
       if (params.paymentStatus) {
-        filteredOrders = filteredOrders.filter((order) => order.paymentStatus === params.paymentStatus)
+        filteredOrders = filteredOrders.filter(
+          order => order.paymentStatus === params.paymentStatus
+        )
       }
 
       // 门店筛选
       if (params.storeId) {
-        filteredOrders = filteredOrders.filter((order) => order.storeId === params.storeId)
+        filteredOrders = filteredOrders.filter(order => order.storeId === params.storeId)
       }
 
       // 日期范围筛选
       if (params.startDate && params.endDate) {
         filteredOrders = filteredOrders.filter(
-          (order) =>
-            order.startDate >= params.startDate! && order.startDate <= params.endDate!
+          order => order.startDate >= params.startDate! && order.startDate <= params.endDate!
         )
       }
 
       // 按创建时间倒序排序
-      filteredOrders.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+      filteredOrders.sort(
+        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      )
 
       // 分页
       const page = params.page || 1
@@ -624,8 +627,8 @@ export const mockGetOrderList = (params: OrderListParams) => {
           list,
           total: filteredOrders.length,
           page,
-          pageSize
-        }
+          pageSize,
+        },
       })
     }, 300)
   })
@@ -635,17 +638,17 @@ export const mockGetOrderList = (params: OrderListParams) => {
 export const mockGetOrderDetail = (id: number) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      const order = mockOrders.find((o) => o.id === id)
+      const order = mockOrders.find(o => o.id === id)
       if (order) {
         resolve({
           code: 200,
           message: '获取成功',
-          data: order
+          data: order,
         })
       } else {
         reject({
           code: 404,
-          message: '订单不存在'
+          message: '订单不存在',
         })
       }
     }, 200)
@@ -654,9 +657,9 @@ export const mockGetOrderDetail = (id: number) => {
 
 // Mock 通过订单号查找订单
 export const mockGetOrderByOrderNo = (orderNo: string) => {
-  return new Promise<{ id: number; orderNo: string } | null>((resolve) => {
+  return new Promise<{ id: number; orderNo: string } | null>(resolve => {
     setTimeout(() => {
-      const order = mockOrders.find((o) => o.orderNo === orderNo)
+      const order = mockOrders.find(o => o.orderNo === orderNo)
       if (order) {
         resolve({ id: order.id, orderNo: order.orderNo })
       } else {
@@ -668,7 +671,7 @@ export const mockGetOrderByOrderNo = (orderNo: string) => {
 
 // Mock 创建订单
 export const mockCreateOrder = (params: CreateOrderParams) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const startDate = new Date(params.startDate)
       const endDate = new Date(params.endDate)
@@ -718,13 +721,13 @@ export const mockCreateOrder = (params: CreateOrderParams) => {
         completedAt: '',
         cancelledAt: '',
         extraFees: [],
-        extraFeesAmount: 0
+        extraFeesAmount: 0,
       }
       mockOrders.unshift(newOrder)
       resolve({
         code: 200,
         message: '创建成功',
-        data: newOrder
+        data: newOrder,
       })
     }, 500)
   })
@@ -734,22 +737,22 @@ export const mockCreateOrder = (params: CreateOrderParams) => {
 export const mockUpdateOrder = (id: number, params: UpdateOrderParams) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      const index = mockOrders.findIndex((o) => o.id === id)
+      const index = mockOrders.findIndex(o => o.id === id)
       if (index !== -1) {
         mockOrders[index] = {
           ...mockOrders[index],
           ...params,
-          updatedAt: new Date().toISOString()
+          updatedAt: new Date().toISOString(),
         }
         resolve({
           code: 200,
           message: '更新成功',
-          data: mockOrders[index]
+          data: mockOrders[index],
         })
       } else {
         reject({
           code: 404,
-          message: '订单不存在'
+          message: '订单不存在',
         })
       }
     }, 500)
@@ -760,24 +763,24 @@ export const mockUpdateOrder = (id: number, params: UpdateOrderParams) => {
 export const mockCancelOrder = (id: number, reason: string) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      const index = mockOrders.findIndex((o) => o.id === id)
+      const index = mockOrders.findIndex(o => o.id === id)
       if (index !== -1) {
         mockOrders[index] = {
           ...mockOrders[index],
           status: 'cancelled',
           cancelReason: reason,
           cancelledAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString()
+          updatedAt: new Date().toISOString(),
         }
         resolve({
           code: 200,
           message: '取消成功',
-          data: mockOrders[index]
+          data: mockOrders[index],
         })
       } else {
         reject({
           code: 404,
-          message: '订单不存在'
+          message: '订单不存在',
         })
       }
     }, 500)
@@ -788,23 +791,23 @@ export const mockCancelOrder = (id: number, reason: string) => {
 export const mockConfirmOrder = (id: number) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      const index = mockOrders.findIndex((o) => o.id === id)
+      const index = mockOrders.findIndex(o => o.id === id)
       if (index !== -1) {
         mockOrders[index] = {
           ...mockOrders[index],
           status: 'confirmed',
           confirmedAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString()
+          updatedAt: new Date().toISOString(),
         }
         resolve({
           code: 200,
           message: '确认成功',
-          data: mockOrders[index]
+          data: mockOrders[index],
         })
       } else {
         reject({
           code: 404,
-          message: '订单不存在'
+          message: '订单不存在',
         })
       }
     }, 500)
@@ -815,23 +818,23 @@ export const mockConfirmOrder = (id: number) => {
 export const mockCompleteOrder = (id: number) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      const index = mockOrders.findIndex((o) => o.id === id)
+      const index = mockOrders.findIndex(o => o.id === id)
       if (index !== -1) {
         mockOrders[index] = {
           ...mockOrders[index],
           status: 'completed',
           completedAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString()
+          updatedAt: new Date().toISOString(),
         }
         resolve({
           code: 200,
           message: '完成成功',
-          data: mockOrders[index]
+          data: mockOrders[index],
         })
       } else {
         reject({
           code: 404,
-          message: '订单不存在'
+          message: '订单不存在',
         })
       }
     }, 500)
@@ -840,26 +843,26 @@ export const mockCompleteOrder = (id: number) => {
 
 // Mock 获取订单统计
 export const mockGetOrderStats = () => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const stats: OrderStats = {
         totalOrders: mockOrders.length,
-        pendingPayment: mockOrders.filter((o) => o.status === 'pending_payment').length,
-        pendingConfirm: mockOrders.filter((o) => o.status === 'pending_confirm').length,
-        inUse: mockOrders.filter((o) => o.status === 'in_use').length,
-        completed: mockOrders.filter((o) => o.status === 'completed').length,
-        cancelled: mockOrders.filter((o) => o.status === 'cancelled').length,
+        pendingPayment: mockOrders.filter(o => o.status === 'pending_payment').length,
+        pendingConfirm: mockOrders.filter(o => o.status === 'pending_confirm').length,
+        inUse: mockOrders.filter(o => o.status === 'in_use').length,
+        completed: mockOrders.filter(o => o.status === 'completed').length,
+        cancelled: mockOrders.filter(o => o.status === 'cancelled').length,
         totalRevenue: mockOrders
-          .filter((o) => o.status === 'completed')
+          .filter(o => o.status === 'completed')
           .reduce((sum, o) => sum + o.actualAmount, 0),
         todayOrders: mockOrders.filter(
-          (o) => new Date(o.createdAt).toDateString() === new Date().toDateString()
-        ).length
+          o => new Date(o.createdAt).toDateString() === new Date().toDateString()
+        ).length,
       }
       resolve({
         code: 200,
         message: '获取成功',
-        data: stats
+        data: stats,
       })
     }, 200)
   })
@@ -869,20 +872,20 @@ export const mockGetOrderStats = () => {
 
 // 异常类型
 export type ExceptionType =
-  | 'vehicle_damage'      // 车辆损坏
-  | 'late_return'         // 逾期未还
-  | 'traffic_violation'   // 交通违章
-  | 'accident'            // 交通事故
-  | 'customer_complaint'  // 客户投诉
-  | 'payment_dispute'     // 支付纠纷
-  | 'other'              // 其他异常
+  | 'vehicle_damage' // 车辆损坏
+  | 'late_return' // 逾期未还
+  | 'traffic_violation' // 交通违章
+  | 'accident' // 交通事故
+  | 'customer_complaint' // 客户投诉
+  | 'payment_dispute' // 支付纠纷
+  | 'other' // 其他异常
 
 // 异常状态
 export type ExceptionStatus =
-  | 'pending'    // 待处理
+  | 'pending' // 待处理
   | 'processing' // 处理中
-  | 'resolved'   // 已解决
-  | 'closed'     // 已关闭
+  | 'resolved' // 已解决
+  | 'closed' // 已关闭
 
 // 异常订单信息
 export interface OrderException {
@@ -924,7 +927,7 @@ const mockExceptions: OrderException[] = [
     resolution: '已联系客户紧急联系人，客户表示路上堵车，预计20:00前归还',
     resolvedAt: '',
     createdAt: '2025-12-05T19:00:00.000Z',
-    updatedAt: '2025-12-05T19:30:00.000Z'
+    updatedAt: '2025-12-05T19:30:00.000Z',
   },
   {
     id: 2,
@@ -943,7 +946,7 @@ const mockExceptions: OrderException[] = [
     resolution: '已与客户协商，客户同意承担维修费用1200元，已从押金中扣除，车辆已送修',
     resolvedAt: '2025-11-26T10:00:00.000Z',
     createdAt: '2025-11-25T18:30:00.000Z',
-    updatedAt: '2025-11-26T10:00:00.000Z'
+    updatedAt: '2025-11-26T10:00:00.000Z',
   },
   {
     id: 3,
@@ -962,7 +965,7 @@ const mockExceptions: OrderException[] = [
     resolution: '',
     resolvedAt: '',
     createdAt: '2025-12-04T10:00:00.000Z',
-    updatedAt: '2025-12-04T10:00:00.000Z'
+    updatedAt: '2025-12-04T10:00:00.000Z',
   },
   {
     id: 4,
@@ -981,7 +984,7 @@ const mockExceptions: OrderException[] = [
     resolution: '已向客户道歉，安排专人重新清洁车辆，赠送200元优惠券作为补偿',
     resolvedAt: '',
     createdAt: '2025-12-05T10:30:00.000Z',
-    updatedAt: '2025-12-05T11:00:00.000Z'
+    updatedAt: '2025-12-05T11:00:00.000Z',
   },
   {
     id: 5,
@@ -1000,8 +1003,8 @@ const mockExceptions: OrderException[] = [
     resolution: '已联系保险公司，等待定损结果，客户需承担保险免赔额500元',
     resolvedAt: '',
     createdAt: '2025-12-11T15:00:00.000Z',
-    updatedAt: '2025-12-11T16:00:00.000Z'
-  }
+    updatedAt: '2025-12-11T16:00:00.000Z',
+  },
 ]
 
 // 异常订单列表查询参数
@@ -1018,14 +1021,14 @@ export interface ExceptionListParams {
 
 // Mock 获取异常订单列表
 export const mockGetExceptionList = (params: ExceptionListParams) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       let filteredExceptions = [...mockExceptions]
 
       // 关键词搜索
       if (params.keyword) {
         filteredExceptions = filteredExceptions.filter(
-          (exception) =>
+          exception =>
             exception.orderNo.includes(params.keyword!) ||
             exception.title.includes(params.keyword!) ||
             exception.description.includes(params.keyword!)
@@ -1034,21 +1037,27 @@ export const mockGetExceptionList = (params: ExceptionListParams) => {
 
       // 异常类型筛选
       if (params.type) {
-        filteredExceptions = filteredExceptions.filter((exception) => exception.type === params.type)
+        filteredExceptions = filteredExceptions.filter(exception => exception.type === params.type)
       }
 
       // 异常状态筛选
       if (params.status) {
-        filteredExceptions = filteredExceptions.filter((exception) => exception.status === params.status)
+        filteredExceptions = filteredExceptions.filter(
+          exception => exception.status === params.status
+        )
       }
 
       // 优先级筛选
       if (params.priority) {
-        filteredExceptions = filteredExceptions.filter((exception) => exception.priority === params.priority)
+        filteredExceptions = filteredExceptions.filter(
+          exception => exception.priority === params.priority
+        )
       }
 
       // 按创建时间倒序排序
-      filteredExceptions.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+      filteredExceptions.sort(
+        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      )
 
       // 分页
       const page = params.page || 1
@@ -1064,8 +1073,8 @@ export const mockGetExceptionList = (params: ExceptionListParams) => {
           list,
           total: filteredExceptions.length,
           page,
-          pageSize
-        }
+          pageSize,
+        },
       })
     }, 300)
   })
@@ -1075,17 +1084,17 @@ export const mockGetExceptionList = (params: ExceptionListParams) => {
 export const mockGetExceptionDetail = (id: number) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      const exception = mockExceptions.find((e) => e.id === id)
+      const exception = mockExceptions.find(e => e.id === id)
       if (exception) {
         resolve({
           code: 200,
           message: '获取成功',
-          data: exception
+          data: exception,
         })
       } else {
         reject({
           code: 404,
-          message: '异常记录不存在'
+          message: '异常记录不存在',
         })
       }
     }, 200)
@@ -1096,24 +1105,24 @@ export const mockGetExceptionDetail = (id: number) => {
 export const mockHandleException = (id: number, resolution: string) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      const index = mockExceptions.findIndex((e) => e.id === id)
+      const index = mockExceptions.findIndex(e => e.id === id)
       if (index !== -1) {
         mockExceptions[index] = {
           ...mockExceptions[index],
           status: 'resolved',
           resolution,
           resolvedAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString()
+          updatedAt: new Date().toISOString(),
         }
         resolve({
           code: 200,
           message: '处理成功',
-          data: mockExceptions[index]
+          data: mockExceptions[index],
         })
       } else {
         reject({
           code: 404,
-          message: '异常记录不存在'
+          message: '异常记录不存在',
         })
       }
     }, 500)
@@ -1122,19 +1131,19 @@ export const mockHandleException = (id: number, resolution: string) => {
 
 // Mock 获取异常统计
 export const mockGetExceptionStats = () => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const stats = {
         totalExceptions: mockExceptions.length,
-        pending: mockExceptions.filter((e) => e.status === 'pending').length,
-        processing: mockExceptions.filter((e) => e.status === 'processing').length,
-        resolved: mockExceptions.filter((e) => e.status === 'resolved').length,
-        totalLoss: mockExceptions.reduce((sum, e) => sum + e.actualLoss, 0)
+        pending: mockExceptions.filter(e => e.status === 'pending').length,
+        processing: mockExceptions.filter(e => e.status === 'processing').length,
+        resolved: mockExceptions.filter(e => e.status === 'resolved').length,
+        totalLoss: mockExceptions.reduce((sum, e) => sum + e.actualLoss, 0),
       }
       resolve({
         code: 200,
         message: '获取成功',
-        data: stats
+        data: stats,
       })
     }, 200)
   })
@@ -1144,12 +1153,12 @@ export const mockGetExceptionStats = () => {
 
 // 退款状态
 export type RefundStatus =
-  | 'pending'   // 待审核
-  | 'approved'  // 已批准
-  | 'rejected'  // 已拒绝
+  | 'pending' // 待审核
+  | 'approved' // 已批准
+  | 'rejected' // 已拒绝
   | 'processing' // 退款中
   | 'completed' // 已完成
-  | 'failed'    // 退款失败
+  | 'failed' // 退款失败
 
 // 退款信息
 export interface Refund {
@@ -1193,7 +1202,7 @@ const mockRefunds: Refund[] = [
     refundMethod: 'original',
     bankAccount: '',
     createdAt: '2025-12-01T15:00:00.000Z',
-    updatedAt: '2025-12-01T16:00:00.000Z'
+    updatedAt: '2025-12-01T16:00:00.000Z',
   },
   {
     id: 2,
@@ -1213,7 +1222,7 @@ const mockRefunds: Refund[] = [
     refundMethod: 'original',
     bankAccount: '',
     createdAt: '2025-12-03T10:00:00.000Z',
-    updatedAt: '2025-12-03T10:00:00.000Z'
+    updatedAt: '2025-12-03T10:00:00.000Z',
   },
   {
     id: 3,
@@ -1233,8 +1242,8 @@ const mockRefunds: Refund[] = [
     refundMethod: 'original',
     bankAccount: '',
     createdAt: '2025-11-25T18:30:00.000Z',
-    updatedAt: '2025-11-25T19:00:00.000Z'
-  }
+    updatedAt: '2025-11-25T19:00:00.000Z',
+  },
 ]
 
 // 退款列表查询参数
@@ -1249,14 +1258,14 @@ export interface RefundListParams {
 
 // Mock 获取退款列表
 export const mockGetRefundList = (params: RefundListParams) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       let filteredRefunds = [...mockRefunds]
 
       // 关键词搜索
       if (params.keyword) {
         filteredRefunds = filteredRefunds.filter(
-          (refund) =>
+          refund =>
             refund.orderNo.includes(params.keyword!) ||
             refund.userName.includes(params.keyword!) ||
             refund.userPhone.includes(params.keyword!)
@@ -1265,11 +1274,13 @@ export const mockGetRefundList = (params: RefundListParams) => {
 
       // 状态筛选
       if (params.status) {
-        filteredRefunds = filteredRefunds.filter((refund) => refund.status === params.status)
+        filteredRefunds = filteredRefunds.filter(refund => refund.status === params.status)
       }
 
       // 按申请时间倒序排序
-      filteredRefunds.sort((a, b) => new Date(b.applyTime).getTime() - new Date(a.applyTime).getTime())
+      filteredRefunds.sort(
+        (a, b) => new Date(b.applyTime).getTime() - new Date(a.applyTime).getTime()
+      )
 
       // 分页
       const page = params.page || 1
@@ -1285,8 +1296,8 @@ export const mockGetRefundList = (params: RefundListParams) => {
           list,
           total: filteredRefunds.length,
           page,
-          pageSize
-        }
+          pageSize,
+        },
       })
     }, 300)
   })
@@ -1296,7 +1307,7 @@ export const mockGetRefundList = (params: RefundListParams) => {
 export const mockApproveRefund = (id: number, approved: boolean, reason?: string) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      const index = mockRefunds.findIndex((r) => r.id === id)
+      const index = mockRefunds.findIndex(r => r.id === id)
       if (index !== -1) {
         if (approved) {
           mockRefunds[index] = {
@@ -1304,7 +1315,7 @@ export const mockApproveRefund = (id: number, approved: boolean, reason?: string
             status: 'processing',
             approvedBy: '财务专员-吴九',
             approvedTime: new Date().toISOString(),
-            updatedAt: new Date().toISOString()
+            updatedAt: new Date().toISOString(),
           }
         } else {
           mockRefunds[index] = {
@@ -1313,18 +1324,18 @@ export const mockApproveRefund = (id: number, approved: boolean, reason?: string
             approvedBy: '财务专员-吴九',
             approvedTime: new Date().toISOString(),
             rejectedReason: reason || '',
-            updatedAt: new Date().toISOString()
+            updatedAt: new Date().toISOString(),
           }
         }
         resolve({
           code: 200,
           message: approved ? '审核通过' : '审核拒绝',
-          data: mockRefunds[index]
+          data: mockRefunds[index],
         })
       } else {
         reject({
           code: 404,
-          message: '退款记录不存在'
+          message: '退款记录不存在',
         })
       }
     }, 500)
@@ -1333,21 +1344,21 @@ export const mockApproveRefund = (id: number, approved: boolean, reason?: string
 
 // Mock 获取退款统计
 export const mockGetRefundStats = () => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const stats = {
         totalRefunds: mockRefunds.length,
-        pending: mockRefunds.filter((r) => r.status === 'pending').length,
-        processing: mockRefunds.filter((r) => r.status === 'processing').length,
-        completed: mockRefunds.filter((r) => r.status === 'completed').length,
+        pending: mockRefunds.filter(r => r.status === 'pending').length,
+        processing: mockRefunds.filter(r => r.status === 'processing').length,
+        completed: mockRefunds.filter(r => r.status === 'completed').length,
         totalAmount: mockRefunds
-          .filter((r) => r.status === 'completed')
-          .reduce((sum, r) => sum + r.refundAmount, 0)
+          .filter(r => r.status === 'completed')
+          .reduce((sum, r) => sum + r.refundAmount, 0),
       }
       resolve({
         code: 200,
         message: '获取成功',
-        data: stats
+        data: stats,
       })
     }, 200)
   })
@@ -1396,14 +1407,15 @@ const mockReviews: OrderReview[] = [
     vehicleRating: 5,
     serviceRating: 5,
     cleanlinessRating: 5,
-    comment: '非常满意的一次租车体验！车辆状况很好，内部设施齐全，工作人员服务态度也很好。强烈推荐！',
+    comment:
+      '非常满意的一次租车体验！车辆状况很好，内部设施齐全，工作人员服务态度也很好。强烈推荐！',
     images: ['/images/review1-1.jpg', '/images/review1-2.jpg'],
     reply: '感谢您的好评！我们会继续努力为您提供更好的服务。',
     repliedBy: '门店经理-孙七',
     repliedAt: '2025-11-26T10:00:00.000Z',
     status: 'published',
     createdAt: '2025-11-25T20:00:00.000Z',
-    updatedAt: '2025-11-26T10:00:00.000Z'
+    updatedAt: '2025-11-26T10:00:00.000Z',
   },
   {
     id: 2,
@@ -1426,7 +1438,7 @@ const mockReviews: OrderReview[] = [
     repliedAt: '',
     status: 'pending',
     createdAt: '2025-12-05T20:00:00.000Z',
-    updatedAt: '2025-12-05T20:00:00.000Z'
+    updatedAt: '2025-12-05T20:00:00.000Z',
   },
   {
     id: 3,
@@ -1449,8 +1461,8 @@ const mockReviews: OrderReview[] = [
     repliedAt: '2025-12-11T10:00:00.000Z',
     status: 'published',
     createdAt: '2025-12-10T19:00:00.000Z',
-    updatedAt: '2025-12-11T10:00:00.000Z'
-  }
+    updatedAt: '2025-12-11T10:00:00.000Z',
+  },
 ]
 
 // 评价列表查询参数
@@ -1467,14 +1479,14 @@ export interface ReviewListParams {
 
 // Mock 获取评价列表
 export const mockGetReviewList = (params: ReviewListParams) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       let filteredReviews = [...mockReviews]
 
       // 关键词搜索
       if (params.keyword) {
         filteredReviews = filteredReviews.filter(
-          (review) =>
+          review =>
             review.orderNo.includes(params.keyword!) ||
             review.userName.includes(params.keyword!) ||
             review.comment.includes(params.keyword!)
@@ -1483,19 +1495,25 @@ export const mockGetReviewList = (params: ReviewListParams) => {
 
       // 状态筛选
       if (params.status) {
-        filteredReviews = filteredReviews.filter((review) => review.status === params.status)
+        filteredReviews = filteredReviews.filter(review => review.status === params.status)
       }
 
       // 评分筛选
       if (params.minRating) {
-        filteredReviews = filteredReviews.filter((review) => review.overallRating >= params.minRating!)
+        filteredReviews = filteredReviews.filter(
+          review => review.overallRating >= params.minRating!
+        )
       }
       if (params.maxRating) {
-        filteredReviews = filteredReviews.filter((review) => review.overallRating <= params.maxRating!)
+        filteredReviews = filteredReviews.filter(
+          review => review.overallRating <= params.maxRating!
+        )
       }
 
       // 按创建时间倒序排序
-      filteredReviews.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+      filteredReviews.sort(
+        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      )
 
       // 分页
       const page = params.page || 1
@@ -1511,8 +1529,8 @@ export const mockGetReviewList = (params: ReviewListParams) => {
           list,
           total: filteredReviews.length,
           page,
-          pageSize
-        }
+          pageSize,
+        },
       })
     }, 300)
   })
@@ -1522,7 +1540,7 @@ export const mockGetReviewList = (params: ReviewListParams) => {
 export const mockReplyReview = (id: number, reply: string) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      const index = mockReviews.findIndex((r) => r.id === id)
+      const index = mockReviews.findIndex(r => r.id === id)
       if (index !== -1) {
         mockReviews[index] = {
           ...mockReviews[index],
@@ -1530,17 +1548,17 @@ export const mockReplyReview = (id: number, reply: string) => {
           repliedBy: '客服专员-周八',
           repliedAt: new Date().toISOString(),
           status: 'published',
-          updatedAt: new Date().toISOString()
+          updatedAt: new Date().toISOString(),
         }
         resolve({
           code: 200,
           message: '回复成功',
-          data: mockReviews[index]
+          data: mockReviews[index],
         })
       } else {
         reject({
           code: 404,
-          message: '评价不存在'
+          message: '评价不存在',
         })
       }
     }, 500)
@@ -1551,22 +1569,22 @@ export const mockReplyReview = (id: number, reply: string) => {
 export const mockToggleReviewStatus = (id: number, status: 'published' | 'hidden') => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      const index = mockReviews.findIndex((r) => r.id === id)
+      const index = mockReviews.findIndex(r => r.id === id)
       if (index !== -1) {
         mockReviews[index] = {
           ...mockReviews[index],
           status,
-          updatedAt: new Date().toISOString()
+          updatedAt: new Date().toISOString(),
         }
         resolve({
           code: 200,
           message: status === 'published' ? '已显示' : '已隐藏',
-          data: mockReviews[index]
+          data: mockReviews[index],
         })
       } else {
         reject({
           code: 404,
-          message: '评价不存在'
+          message: '评价不存在',
         })
       }
     }, 500)
@@ -1575,18 +1593,19 @@ export const mockToggleReviewStatus = (id: number, status: 'published' | 'hidden
 
 // Mock 获取评价统计
 export const mockGetReviewStats = () => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const stats = {
         totalReviews: mockReviews.length,
-        pending: mockReviews.filter((r) => r.status === 'pending').length,
-        published: mockReviews.filter((r) => r.status === 'published').length,
-        averageRating: mockReviews.reduce((sum, r) => sum + r.overallRating, 0) / mockReviews.length
+        pending: mockReviews.filter(r => r.status === 'pending').length,
+        published: mockReviews.filter(r => r.status === 'published').length,
+        averageRating:
+          mockReviews.reduce((sum, r) => sum + r.overallRating, 0) / mockReviews.length,
       }
       resolve({
         code: 200,
         message: '获取成功',
-        data: stats
+        data: stats,
       })
     }, 200)
   })
@@ -1651,8 +1670,8 @@ const mockPickupRecords: PickupRecord[] = [
     mileage: 15000,
     images: ['/images/pickup1-1.jpg', '/images/pickup1-2.jpg'],
     remark: '车辆状况良好，已完成交接',
-    createdAt: '2025-12-01T09:00:00.000Z'
-  }
+    createdAt: '2025-12-01T09:00:00.000Z',
+  },
 ]
 
 // 取车参数
@@ -1685,7 +1704,7 @@ export interface ReturnOrderParams {
 export const mockPickupOrder = (orderId: number, params: PickupOrderParams) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      const orderIndex = mockOrders.findIndex((o) => o.id === orderId)
+      const orderIndex = mockOrders.findIndex(o => o.id === orderId)
       if (orderIndex !== -1) {
         const order = mockOrders[orderIndex]
 
@@ -1693,7 +1712,7 @@ export const mockPickupOrder = (orderId: number, params: PickupOrderParams) => {
         mockOrders[orderIndex] = {
           ...order,
           status: 'in_use',
-          updatedAt: new Date().toISOString()
+          updatedAt: new Date().toISOString(),
         }
 
         // 创建取车记录
@@ -1712,19 +1731,19 @@ export const mockPickupOrder = (orderId: number, params: PickupOrderParams) => {
           mileage: params.mileage,
           images: params.images || [],
           remark: params.remark || '',
-          createdAt: new Date().toISOString()
+          createdAt: new Date().toISOString(),
         }
         mockPickupRecords.push(pickupRecord)
 
         resolve({
           code: 200,
           message: '取车登记成功',
-          data: pickupRecord
+          data: pickupRecord,
         })
       } else {
         reject({
           code: 404,
-          message: '订单不存在'
+          message: '订单不存在',
         })
       }
     }, 500)
@@ -1735,7 +1754,7 @@ export const mockPickupOrder = (orderId: number, params: PickupOrderParams) => {
 export const mockReturnOrder = (orderId: number, params: ReturnOrderParams) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      const orderIndex = mockOrders.findIndex((o) => o.id === orderId)
+      const orderIndex = mockOrders.findIndex(o => o.id === orderId)
       if (orderIndex !== -1) {
         const order = mockOrders[orderIndex]
 
@@ -1744,7 +1763,7 @@ export const mockReturnOrder = (orderId: number, params: ReturnOrderParams) => {
           ...order,
           status: 'completed',
           completedAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString()
+          updatedAt: new Date().toISOString(),
         }
 
         // 创建还车记录
@@ -1765,18 +1784,18 @@ export const mockReturnOrder = (orderId: number, params: ReturnOrderParams) => {
           damages: params.damages || [],
           additionalFees: params.additionalFees || 0,
           remark: params.remark || '',
-          createdAt: new Date().toISOString()
+          createdAt: new Date().toISOString(),
         }
 
         resolve({
           code: 200,
           message: '还车登记成功',
-          data: returnRecord
+          data: returnRecord,
         })
       } else {
         reject({
           code: 404,
-          message: '订单不存在'
+          message: '订单不存在',
         })
       }
     }, 500)
@@ -1787,17 +1806,17 @@ export const mockReturnOrder = (orderId: number, params: ReturnOrderParams) => {
 export const mockGetPickupRecord = (orderId: number) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      const pickupRecord = mockPickupRecords.find((r) => r.orderId === orderId)
+      const pickupRecord = mockPickupRecords.find(r => r.orderId === orderId)
       if (pickupRecord) {
         resolve({
           code: 200,
           message: '获取成功',
-          data: pickupRecord
+          data: pickupRecord,
         })
       } else {
         reject({
           code: 404,
-          message: '取车记录不存在'
+          message: '取车记录不存在',
         })
       }
     }, 200)

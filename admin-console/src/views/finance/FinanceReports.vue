@@ -1,13 +1,15 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="finance-reports-container">
-    
-
     <!-- 报表筛选 -->
     <div class="page-card filter-card">
       <el-form :model="filterForm" inline>
         <el-form-item label="报表类型">
-          <el-select v-model="filterForm.type" placeholder="请选择类型" @change="handleFilterChange">
+          <el-select
+            v-model="filterForm.type"
+            placeholder="请选择类型"
+            @change="handleFilterChange"
+          >
             <el-option label="日报" value="daily" />
             <el-option label="周报" value="weekly" />
             <el-option label="月报" value="monthly" />
@@ -37,7 +39,12 @@
         </el-form-item>
 
         <el-form-item label="门店">
-          <el-select v-model="filterForm.storeId" placeholder="全部门店" clearable @change="handleFilterChange">
+          <el-select
+            v-model="filterForm.storeId"
+            placeholder="全部门店"
+            clearable
+            @change="handleFilterChange"
+          >
             <el-option label="北京朝阳门店" :value="1" />
             <el-option label="上海浦东门店" :value="2" />
             <el-option label="深圳南山门店" :value="3" />
@@ -102,12 +109,7 @@
       </div>
       <el-row :gutter="16">
         <el-col :span="12">
-          <ChartCard
-            title=""
-            :chart-data="incomeChartData"
-            chart-type="pie"
-            :height="300"
-          />
+          <ChartCard title="" :chart-data="incomeChartData" chart-type="pie" :height="300" />
         </el-col>
         <el-col :span="12">
           <el-table :data="report.incomeDetails" border stripe>
@@ -134,12 +136,7 @@
       </div>
       <el-row :gutter="16">
         <el-col :span="12">
-          <ChartCard
-            title=""
-            :chart-data="expenseChartData"
-            chart-type="pie"
-            :height="300"
-          />
+          <ChartCard title="" :chart-data="expenseChartData" chart-type="pie" :height="300" />
         </el-col>
         <el-col :span="12">
           <el-table :data="report.expenseDetails" border stripe>
@@ -164,12 +161,7 @@
       <div class="card-header">
         <h3>趋势分析</h3>
       </div>
-      <ChartCard
-        title=""
-        :chart-data="trendChartData"
-        chart-type="line"
-        :height="350"
-      />
+      <ChartCard title="" :chart-data="trendChartData" chart-type="line" :height="350" />
     </div>
   </div>
 </template>
@@ -181,11 +173,7 @@ import { ElMessage } from 'element-plus'
 import { Document, Download } from '@element-plus/icons-vue'
 import StatsCard from '@/components/common/StatsCard.vue'
 import ChartCard from '@/components/common/ChartCard.vue'
-import {
-  getFinancialReports,
-  type FinancialReport,
-  type ReportType
-} from '@/api/finance'
+import { getFinancialReports, type FinancialReport, type ReportType } from '@/api/finance'
 import { exportToCSV } from '@/utils/export'
 
 // 筛选表单
@@ -193,7 +181,7 @@ const filterForm = reactive({
   type: 'monthly' as ReportType,
   startDate: '',
   endDate: '',
-  storeId: undefined as number | undefined
+  storeId: undefined as number | undefined,
 })
 
 // 报表数据
@@ -206,7 +194,7 @@ const report = ref<FinancialReport>({
   profitMargin: 0,
   incomeDetails: [],
   expenseDetails: [],
-  trends: []
+  trends: [],
 })
 
 const loading = ref(false)
@@ -217,15 +205,9 @@ const incomeChartData = computed(() => ({
   datasets: [
     {
       data: report.value.incomeDetails.map(item => item.amount),
-      backgroundColor: [
-        '#67C23A',
-        '#409EFF',
-        '#E6A23C',
-        '#F56C6C',
-        '#909399'
-      ]
-    }
-  ]
+      backgroundColor: ['#67C23A', '#409EFF', '#E6A23C', '#F56C6C', '#909399'],
+    },
+  ],
 }))
 
 // 支出饼图数据
@@ -234,15 +216,9 @@ const expenseChartData = computed(() => ({
   datasets: [
     {
       data: report.value.expenseDetails.map(item => item.amount),
-      backgroundColor: [
-        '#F56C6C',
-        '#E6A23C',
-        '#409EFF',
-        '#67C23A',
-        '#909399'
-      ]
-    }
-  ]
+      backgroundColor: ['#F56C6C', '#E6A23C', '#409EFF', '#67C23A', '#909399'],
+    },
+  ],
 }))
 
 // 趋势图数据
@@ -254,23 +230,23 @@ const trendChartData = computed(() => ({
       data: report.value.trends.map(item => item.income),
       borderColor: '#67C23A',
       backgroundColor: 'rgba(103, 194, 58, 0.1)',
-      tension: 0.4
+      tension: 0.4,
     },
     {
       label: '支出',
       data: report.value.trends.map(item => item.expense),
       borderColor: '#F56C6C',
       backgroundColor: 'rgba(245, 108, 108, 0.1)',
-      tension: 0.4
+      tension: 0.4,
     },
     {
       label: '利润',
       data: report.value.trends.map(item => item.profit),
       borderColor: '#409EFF',
       backgroundColor: 'rgba(64, 158, 255, 0.1)',
-      tension: 0.4
-    }
-  ]
+      tension: 0.4,
+    },
+  ],
 }))
 
 // 获取报表数据
@@ -290,7 +266,7 @@ const fetchReport = async () => {
       type: filterForm.type,
       startDate: filterForm.startDate,
       endDate: filterForm.endDate,
-      storeId: filterForm.storeId
+      storeId: filterForm.storeId,
     }
     report.value = await getFinancialReports(params)
   } catch (error) {
@@ -330,7 +306,7 @@ const handleExport = () => {
     const incomeColumns = [
       { key: 'category', label: '收入类别' },
       { key: 'amount', label: '金额' },
-      { key: 'percentage', label: '占比' }
+      { key: 'percentage', label: '占比' },
     ]
     exportToCSV(report.value.incomeDetails, incomeColumns, '收入明细')
   }
@@ -340,7 +316,7 @@ const handleExport = () => {
     const expenseColumns = [
       { key: 'category', label: '支出类别' },
       { key: 'amount', label: '金额' },
-      { key: 'percentage', label: '占比' }
+      { key: 'percentage', label: '占比' },
     ]
     exportToCSV(report.value.expenseDetails, expenseColumns, '支出明细')
   }

@@ -122,13 +122,7 @@
           </el-form>
 
           <!-- 数据表格 -->
-          <el-table
-            :data="recordList"
-            v-loading="loading"
-            border
-            stripe
-            style="width: 100%"
-          >
+          <el-table :data="recordList" v-loading="loading" border stripe style="width: 100%">
             <el-table-column prop="orderNo" label="订单号" width="160" />
             <el-table-column prop="productType" label="产品类型" width="120">
               <template #default="{ row }">
@@ -146,19 +140,13 @@
               </template>
             </el-table-column>
             <el-table-column prop="orderAmount" label="订单金额" width="120" align="right">
-              <template #default="{ row }">
-                ¥{{ formatNumber(row.orderAmount) }}
-              </template>
+              <template #default="{ row }"> ¥{{ formatNumber(row.orderAmount) }} </template>
             </el-table-column>
             <el-table-column prop="orderProfit" label="订单利润" width="120" align="right">
-              <template #default="{ row }">
-                ¥{{ formatNumber(row.orderProfit) }}
-              </template>
+              <template #default="{ row }"> ¥{{ formatNumber(row.orderProfit) }} </template>
             </el-table-column>
             <el-table-column prop="profitRatio" label="分润比例" width="100" align="right">
-              <template #default="{ row }">
-                {{ row.profitRatio }}%
-              </template>
+              <template #default="{ row }"> {{ row.profitRatio }}% </template>
             </el-table-column>
             <el-table-column prop="profitAmount" label="分润金额" width="120" align="right">
               <template #default="{ row }">
@@ -234,17 +222,15 @@
     </el-card>
 
     <!-- 详情对话框 -->
-    <el-dialog
-      v-model="detailDialogVisible"
-      title="推广分润详情"
-      width="800px"
-    >
+    <el-dialog v-model="detailDialogVisible" title="推广分润详情" width="800px">
       <el-descriptions :column="2" border v-if="currentRecord">
         <el-descriptions-item label="订单号">{{ currentRecord.orderNo }}</el-descriptions-item>
         <el-descriptions-item label="产品类型">
           {{ getProductTypeName(currentRecord.productType) }}
         </el-descriptions-item>
-        <el-descriptions-item label="推广者">{{ currentRecord.promoterUserName }}</el-descriptions-item>
+        <el-descriptions-item label="推广者">{{
+          currentRecord.promoterUserName
+        }}</el-descriptions-item>
         <el-descriptions-item label="推广级别">
           {{ currentRecord.promotionLevel === 1 ? '一级推广' : '二级推广' }}
         </el-descriptions-item>
@@ -284,15 +270,7 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted, computed } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import {
-  Download,
-  Search,
-  Refresh,
-  Money,
-  User,
-  TrendCharts,
-  Star,
-} from '@element-plus/icons-vue'
+import { Download, Search, Refresh, Money, User, TrendCharts, Star } from '@element-plus/icons-vue'
 import type { PromotionProfitRecord, ProductType, ProfitStatus } from '@/types/profit'
 import {
   getPromotionProfitRecords,

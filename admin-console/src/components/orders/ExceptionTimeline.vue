@@ -25,7 +25,13 @@
             <p v-if="item.description" class="description">{{ item.description }}</p>
 
             <!-- 详细信息 -->
-            <el-descriptions v-if="item.details && item.details.length > 0" :column="2" size="small" border class="details">
+            <el-descriptions
+              v-if="item.details && item.details.length > 0"
+              :column="2"
+              size="small"
+              border
+              class="details"
+            >
               <el-descriptions-item
                 v-for="(detail, idx) in item.details"
                 :key="idx"
@@ -45,9 +51,7 @@
                   </template>
                 </el-table-column>
                 <el-table-column prop="amount" label="金额" width="100">
-                  <template #default="{ row }">
-                    ¥{{ row.amount.toFixed(2) }}
-                  </template>
+                  <template #default="{ row }"> ¥{{ row.amount.toFixed(2) }} </template>
                 </el-table-column>
                 <el-table-column prop="description" label="说明" />
               </el-table>
@@ -93,15 +97,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import {
-  CircleCheck,
-  Clock,
-  Warning,
-  User,
-  Document,
-  Money,
-  Close
-} from '@element-plus/icons-vue'
+import { CircleCheck, Clock, Warning, User, Document, Money, Close } from '@element-plus/icons-vue'
 
 interface TimelineItem {
   action: string
@@ -123,7 +119,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  timeline: () => []
+  timeline: () => [],
 })
 
 const emit = defineEmits<{
@@ -136,50 +132,50 @@ const timelineConfig: Record<string, any> = {
     status: '异常创建',
     color: '#409eff',
     icon: Document,
-    tagType: 'primary'
+    tagType: 'primary',
   },
   assigned: {
     status: '已分配',
     color: '#67c23a',
     icon: User,
-    tagType: 'success'
+    tagType: 'success',
   },
   processing: {
     status: '处理中',
     color: '#e6a23c',
     icon: Clock,
-    tagType: 'warning'
+    tagType: 'warning',
   },
   escalated: {
     status: '已升级',
     color: '#f56c6c',
     icon: Warning,
-    tagType: 'danger'
+    tagType: 'danger',
   },
   settled: {
     status: '费用结算',
     color: '#409eff',
     icon: Money,
-    tagType: 'primary'
+    tagType: 'primary',
   },
   resolved: {
     status: '已解决',
     color: '#67c23a',
     icon: CircleCheck,
-    tagType: 'success'
+    tagType: 'success',
   },
   closed: {
     status: '已关闭',
     color: '#909399',
     icon: CircleCheck,
-    tagType: 'info'
+    tagType: 'info',
   },
   rejected: {
     status: '已驳回',
     color: '#f56c6c',
     icon: Close,
-    tagType: 'danger'
-  }
+    tagType: 'danger',
+  },
 }
 
 // 处理时间线数据
@@ -189,12 +185,12 @@ const timelineData = computed(() => {
       status: item.action,
       color: '#909399',
       icon: Document,
-      tagType: 'info'
+      tagType: 'info',
     }
 
     return {
       ...item,
-      ...config
+      ...config,
     }
   })
 })
@@ -208,7 +204,7 @@ const getFeeTypeLabel = (type: string) => {
     accident_compensation: '事故赔偿',
     towing: '拖车费用',
     parking: '停车费用',
-    other: '其他费用'
+    other: '其他费用',
   }
   return labelMap[type] || type
 }

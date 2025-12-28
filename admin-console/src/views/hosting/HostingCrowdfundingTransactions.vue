@@ -66,9 +66,7 @@
       <!-- 价格变化 -->
       <template #priceChange="{ row }">
         <div style="font-size: 12px">
-          <div style="color: #909399">
-            参考价: ¥{{ row.referencePrice.toLocaleString() }}
-          </div>
+          <div style="color: #909399">参考价: ¥{{ row.referencePrice.toLocaleString() }}</div>
           <div :style="{ color: getPriceChangeColor(row) }">
             {{ getPriceChangeText(row) }}
           </div>

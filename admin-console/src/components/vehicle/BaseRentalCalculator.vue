@@ -1,11 +1,7 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="base-rental-calculator">
-    <el-alert
-      type="info"
-      :closable="false"
-      style="margin-bottom: 16px"
-    >
+    <el-alert type="info" :closable="false" style="margin-bottom: 16px">
       <template #title>
         <div style="font-size: 13px">
           根据车辆购买价格、车况评级等参数，智能计算建议的基础日租金
@@ -72,11 +68,7 @@
 
       <!-- 高级参数(可折叠) -->
       <el-divider content-position="left">
-        <el-button
-          text
-          size="small"
-          @click="showAdvanced = !showAdvanced"
-        >
+        <el-button text size="small" @click="showAdvanced = !showAdvanced">
           高级参数
           <el-icon>
             <component :is="showAdvanced ? 'ArrowUp' : 'ArrowDown'" />
@@ -134,7 +126,7 @@
               @change="handleParamChange"
             />
             <div class="param-hint">
-              预计年运营{{ Math.round(365 * calcParams.annualOperatingRate / 100) }}天
+              预计年运营{{ Math.round((365 * calcParams.annualOperatingRate) / 100) }}天
             </div>
           </el-form-item>
 
@@ -150,9 +142,7 @@
           </el-form-item>
 
           <el-form-item>
-            <el-button size="small" @click="resetToDefaults">
-              恢复默认值
-            </el-button>
+            <el-button size="small" @click="resetToDefaults"> 恢复默认值 </el-button>
           </el-form-item>
         </div>
       </el-collapse-transition>
@@ -187,11 +177,7 @@
       <el-collapse v-model="activeCollapse" class="result-details">
         <el-collapse-item title="计算过程" name="process">
           <div class="calculation-steps">
-            <div
-              v-for="(step, index) in result.explanation"
-              :key="index"
-              class="step-item"
-            >
+            <div v-for="(step, index) in result.explanation" :key="index" class="step-item">
               <span class="step-number">{{ index + 1 }}</span>
               <span class="step-text">{{ step }}</span>
             </div>
@@ -247,9 +233,7 @@
           <el-icon><Check /></el-icon>
           应用此价格
         </el-button>
-        <el-button @click="result = null">
-          清除结果
-        </el-button>
+        <el-button @click="result = null"> 清除结果 </el-button>
       </div>
     </div>
   </div>
@@ -258,13 +242,13 @@
 <script setup lang="ts">
 import { ref, reactive, computed, watch } from 'vue'
 import { ElMessage } from 'element-plus'
-import {
-  InfoFilled,
-  Check,
-  Money,
-} from '@element-plus/icons-vue'
+import { InfoFilled, Check, Money } from '@element-plus/icons-vue'
 import { calculateBaseRental, detectConditionGrade } from '@/utils/baseRentalCalculator'
-import { CONDITION_GRADES, DEFAULT_FINANCIAL_PARAMS, DEFAULT_OPERATIONAL_PARAMS } from '@/constants/conditionGrades'
+import {
+  CONDITION_GRADES,
+  DEFAULT_FINANCIAL_PARAMS,
+  DEFAULT_OPERATIONAL_PARAMS,
+} from '@/constants/conditionGrades'
 import type { CalculationResult } from '@/types/system'
 
 // Props
@@ -289,7 +273,7 @@ const emit = defineEmits<{
 const calcParams = reactive({
   purchasePrice: props.purchasePrice || 0,
   purchaseDate: props.purchaseDate || '',
-  conditionGrade: props.conditionGrade || 'B' as 'A' | 'B' | 'C' | 'D',
+  conditionGrade: props.conditionGrade || ('B' as 'A' | 'B' | 'C' | 'D'),
   targetAnnualReturn: DEFAULT_FINANCIAL_PARAMS.TARGET_ANNUAL_RETURN * 100, // 转换为百分比
   investmentPeriod: DEFAULT_FINANCIAL_PARAMS.INVESTMENT_PERIOD,
   residualValueRate: DEFAULT_FINANCIAL_PARAMS.RESIDUAL_VALUE_RATE * 100, // 转换为百分比
@@ -303,7 +287,7 @@ const calculating = ref(false)
 const result = ref<CalculationResult | null>(null)
 const showAdvanced = ref(false)
 const activeCollapse = ref(['process'])
-const autoDetectedGrade = ref<typeof CONDITION_GRADES[0] | null>(null)
+const autoDetectedGrade = ref<(typeof CONDITION_GRADES)[0] | null>(null)
 
 // 是否可以计算
 const canCalculate = computed(() => {
@@ -311,20 +295,29 @@ const canCalculate = computed(() => {
 })
 
 // 监听 props 变化
-watch(() => props.purchasePrice, (val) => {
-  if (val) calcParams.purchasePrice = val
-})
-
-watch(() => props.purchaseDate, (val) => {
-  if (val) {
-    calcParams.purchaseDate = val
-    handlePurchaseDateChange()
+watch(
+  () => props.purchasePrice,
+  val => {
+    if (val) calcParams.purchasePrice = val
   }
-})
+)
 
-watch(() => props.conditionGrade, (val) => {
-  if (val) calcParams.conditionGrade = val
-})
+watch(
+  () => props.purchaseDate,
+  val => {
+    if (val) {
+      calcParams.purchaseDate = val
+      handlePurchaseDateChange()
+    }
+  }
+)
+
+watch(
+  () => props.conditionGrade,
+  val => {
+    if (val) calcParams.conditionGrade = val
+  }
+)
 
 // 购买日期变化 - 自动检测车况评级
 const handlePurchaseDateChange = () => {

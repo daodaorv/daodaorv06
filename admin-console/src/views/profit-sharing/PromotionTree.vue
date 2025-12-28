@@ -85,7 +85,9 @@
                   </div>
                   <div class="node-meta">
                     <span>ID: {{ data.userId }}</span>
-                    <span v-if="data.profitAmount">分润: ¥{{ formatNumber(data.profitAmount) }}</span>
+                    <span v-if="data.profitAmount"
+                      >分润: ¥{{ formatNumber(data.profitAmount) }}</span
+                    >
                     <span v-if="data.createdAt">加入: {{ data.createdAt }}</span>
                   </div>
                 </div>

@@ -20,11 +20,7 @@
       <template v-for="field in fields" :key="field.prop">
         <!-- 行布局 -->
         <el-row v-if="field.type === 'row'" :gutter="gutter">
-          <el-col
-            v-for="col in field.columns"
-            :key="col.prop"
-            :span="col.span || 12"
-          >
+          <el-col v-for="col in field.columns" :key="col.prop" :span="col.span || 12">
             <FormItem :field="col" :form-data="formData">
               <template v-if="col.slot" #default>
                 <slot :name="col.slot" :form-data="formData" :field="col" />
@@ -206,7 +202,7 @@ defineExpose({
 // 监听对话框关闭，重置表单
 watch(
   () => props.modelValue,
-  (val) => {
+  val => {
     if (!val && props.resetOnClose) {
       // 延迟重置，避免关闭动画时看到表单重置
       setTimeout(() => {

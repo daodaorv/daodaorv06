@@ -1,10 +1,6 @@
 <!-- @ts-nocheck -->
 <template>
-  <div
-    class="price-cell"
-    :class="cellClass"
-    @click="handleClick($event)"
-  >
+  <div class="price-cell" :class="cellClass" @click="handleClick($event)">
     <div class="cell-date">
       {{ dayOfMonth }}
       <el-tag v-if="priceInfo?.isHoliday" size="small" type="danger" class="holiday-tag">
@@ -59,7 +55,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   selected: false,
-  disabled: false
+  disabled: false,
 })
 
 const emit = defineEmits<{
@@ -80,7 +76,7 @@ const cellClass = computed(() => {
     'is-weekend': isWeekend.value,
     'is-today': isToday.value,
     'has-price-up': props.priceInfo?.priceChange && props.priceInfo.priceChange > 0,
-    'has-price-down': props.priceInfo?.priceChange && props.priceInfo.priceChange < 0
+    'has-price-down': props.priceInfo?.priceChange && props.priceInfo.priceChange < 0,
   }
 })
 
@@ -98,11 +94,13 @@ const isToday = computed(() => {
 })
 
 // 获取因子标签类型
-const getFactorTagType = (factor: { type: string }): 'primary' | 'success' | 'warning' | 'info' | 'danger' => {
+const getFactorTagType = (factor: {
+  type: string
+}): 'primary' | 'success' | 'warning' | 'info' | 'danger' => {
   const typeMap: Record<string, 'primary' | 'success' | 'warning' | 'info' | 'danger'> = {
     city: 'primary',
     time: 'danger',
-    other: 'warning'
+    other: 'warning',
   }
   return typeMap[factor.type] || 'info'
 }

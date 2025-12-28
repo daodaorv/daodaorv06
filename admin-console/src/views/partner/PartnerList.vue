@@ -1,8 +1,6 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="partner-list-container">
-    
-
     <StatsCard :stats="statsConfig" />
 
     <SearchForm
@@ -33,12 +31,8 @@
           {{ row.creditRating }}级
         </el-tag>
       </template>
-      <template #profitSharingRatio="{ row }">
-        {{ row.profitSharingRatio }}%
-      </template>
-      <template #totalRevenue="{ row }">
-        ¥{{ row.totalRevenue.toLocaleString() }}
-      </template>
+      <template #profitSharingRatio="{ row }"> {{ row.profitSharingRatio }}% </template>
+      <template #totalRevenue="{ row }"> ¥{{ row.totalRevenue.toLocaleString() }} </template>
     </DataTable>
 
     <!-- 新增/编辑合作商对话框 -->
@@ -48,12 +42,7 @@
       width="800px"
       @close="handleDialogClose"
     >
-      <el-form
-        ref="formRef"
-        :model="form"
-        :rules="formRules"
-        label-width="120px"
-      >
+      <el-form ref="formRef" :model="form" :rules="formRules" label-width="120px">
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="合作商名称" prop="name">
@@ -84,7 +73,11 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="合作状态" prop="cooperationStatus">
-              <el-select v-model="form.cooperationStatus" placeholder="请选择合作状态" style="width: 100%">
+              <el-select
+                v-model="form.cooperationStatus"
+                placeholder="请选择合作状态"
+                style="width: 100%"
+              >
                 <el-option label="合作中" value="active" />
                 <el-option label="已停止" value="inactive" />
               </el-select>
@@ -92,7 +85,11 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="信用评级" prop="creditRating">
-              <el-select v-model="form.creditRating" placeholder="请选择信用评级" style="width: 100%">
+              <el-select
+                v-model="form.creditRating"
+                placeholder="请选择信用评级"
+                style="width: 100%"
+              >
                 <el-option label="A级" value="A" />
                 <el-option label="B级" value="B" />
                 <el-option label="C级" value="C" />
@@ -111,7 +108,7 @@
                 :precision="0"
                 style="width: 100%"
               />
-              <span style="margin-left: 8px; color: #909399;">%</span>
+              <span style="margin-left: 8px; color: #909399">%</span>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -123,9 +120,7 @@
       </el-form>
       <template #footer>
         <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" :loading="submitLoading" @click="handleSubmit">
-          确定
-        </el-button>
+        <el-button type="primary" :loading="submitLoading" @click="handleSubmit"> 确定 </el-button>
       </template>
     </el-dialog>
   </div>
@@ -150,7 +145,7 @@ import {
   deletePartner,
   type Partner,
   type PartnerListParams,
-  type CreatePartnerParams
+  type CreatePartnerParams,
 } from '@/api/partner'
 
 const router = useRouter()
@@ -159,7 +154,7 @@ const router = useRouter()
 const searchForm = ref({
   keyword: '',
   cooperationStatus: '',
-  creditRating: ''
+  creditRating: '',
 })
 
 // 搜索字段配置
@@ -168,7 +163,7 @@ const searchFields: SearchField[] = [
     type: 'input',
     prop: 'keyword',
     label: '关键词',
-    placeholder: '合作商名称/联系人/电话'
+    placeholder: '合作商名称/联系人/电话',
   },
   {
     type: 'select',
@@ -177,8 +172,8 @@ const searchFields: SearchField[] = [
     placeholder: '请选择合作状态',
     options: [
       { label: '合作中', value: 'active' },
-      { label: '已停止', value: 'inactive' }
-    ]
+      { label: '已停止', value: 'inactive' },
+    ],
   },
   {
     type: 'select',
@@ -189,9 +184,9 @@ const searchFields: SearchField[] = [
       { label: 'A级', value: 'A' },
       { label: 'B级', value: 'B' },
       { label: 'C级', value: 'C' },
-      { label: 'D级', value: 'D' }
-    ]
-  }
+      { label: 'D级', value: 'D' },
+    ],
+  },
 ]
 
 // 统计数据
@@ -203,7 +198,7 @@ const stats = ref({
   totalOrders: 0,
   totalRevenue: 0,
   monthlyRevenue: 0,
-  averagePriceDifference: 0
+  averagePriceDifference: 0,
 })
 
 const statsConfig = computed(() => [
@@ -211,50 +206,50 @@ const statsConfig = computed(() => [
     label: '合作商总数',
     value: stats.value.totalPartners,
     icon: 'User',
-    color: '#409EFF'
+    color: '#409EFF',
   },
   {
     label: '合作中',
     value: stats.value.activePartners,
     icon: 'Check',
-    color: '#67C23A'
+    color: '#67C23A',
   },
   {
     label: '合作门店',
     value: stats.value.totalStores,
     icon: 'Shop',
-    color: '#E6A23C'
+    color: '#E6A23C',
   },
   {
     label: '合作车辆',
     value: stats.value.totalVehicles,
     icon: 'Van',
-    color: '#909399'
+    color: '#909399',
   },
   {
     label: '总订单数',
     value: stats.value.totalOrders,
     icon: 'Document',
-    color: '#409EFF'
+    color: '#409EFF',
   },
   {
     label: '总营收',
     value: `¥${stats.value.totalRevenue.toLocaleString()}`,
     icon: 'Money',
-    color: '#F56C6C'
+    color: '#F56C6C',
   },
   {
     label: '本月营收',
     value: `¥${stats.value.monthlyRevenue.toLocaleString()}`,
     icon: 'TrendCharts',
-    color: '#67C23A'
+    color: '#67C23A',
   },
   {
     label: '平均差价',
     value: `¥${stats.value.averagePriceDifference}`,
     icon: 'Coin',
-    color: '#E6A23C'
-  }
+    color: '#E6A23C',
+  },
 ])
 
 // 表格数据
@@ -263,7 +258,7 @@ const loading = ref(false)
 const pagination = reactive({
   page: 1,
   pageSize: 10,
-  total: 0
+  total: 0,
 })
 
 // 表格列配置
@@ -278,7 +273,7 @@ const tableColumns: TableColumn[] = [
   { prop: 'storeCount', label: '门店数', width: 80 },
   { prop: 'vehicleCount', label: '车辆数', width: 80 },
   { prop: 'totalOrders', label: '订单数', width: 80 },
-  { prop: 'totalRevenue', label: '总营收', width: 120, slot: 'totalRevenue' }
+  { prop: 'totalRevenue', label: '总营收', width: 120, slot: 'totalRevenue' },
 ]
 
 // 表格操作列配置
@@ -287,20 +282,20 @@ const tableActions: TableAction[] = [
     label: '查看',
     type: 'primary',
     icon: View,
-    onClick: (row: Partner) => handleView(row)
+    onClick: (row: Partner) => handleView(row),
   },
   {
     label: '编辑',
     type: 'primary',
     icon: Edit,
-    onClick: (row: Partner) => handleEdit(row)
+    onClick: (row: Partner) => handleEdit(row),
   },
   {
     label: '删除',
     type: 'danger',
     icon: Delete,
-    onClick: (row: Partner) => handleDelete(row)
-  }
+    onClick: (row: Partner) => handleDelete(row),
+  },
 ]
 
 // 工具栏按钮配置
@@ -309,8 +304,8 @@ const toolbarButtons: ToolbarButton[] = [
     label: '新增合作商',
     type: 'primary',
     icon: Plus,
-    onClick: handleCreate
-  }
+    onClick: handleCreate,
+  },
 ]
 
 // 对话框
@@ -329,7 +324,7 @@ const form = reactive<CreatePartnerParams>({
   cooperationStatus: 'active',
   creditRating: 'A',
   contractUrl: '',
-  profitSharingRatio: 30
+  profitSharingRatio: 30,
 })
 
 const formRules: FormRules = {
@@ -337,15 +332,15 @@ const formRules: FormRules = {
   contactPerson: [{ required: true, message: '请输入联系人', trigger: 'blur' }],
   phone: [
     { required: true, message: '请输入联系电话', trigger: 'blur' },
-    { pattern: /^1[3-9]\d{9}$/, message: '请输入正确的手机号', trigger: 'blur' }
+    { pattern: /^1[3-9]\d{9}$/, message: '请输入正确的手机号', trigger: 'blur' },
   ],
   email: [
     { required: true, message: '请输入邮箱', trigger: 'blur' },
-    { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' }
+    { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' },
   ],
   address: [{ required: true, message: '请输入地址', trigger: 'blur' }],
   cooperationStatus: [{ required: true, message: '请选择合作状态', trigger: 'change' }],
-  creditRating: [{ required: true, message: '请选择信用评级', trigger: 'change' }]
+  creditRating: [{ required: true, message: '请选择信用评级', trigger: 'change' }],
 }
 
 // 获取统计数据
@@ -365,7 +360,7 @@ async function fetchPartnerList() {
     const params: PartnerListParams = {
       page: pagination.page,
       pageSize: pagination.pageSize,
-      ...searchForm.value
+      ...searchForm.value,
     }
     const { list, total } = await getPartnerList(params)
     partnerList.value = list
@@ -389,7 +384,7 @@ function handleReset() {
   searchForm.value = {
     keyword: '',
     cooperationStatus: '',
-    creditRating: ''
+    creditRating: '',
   }
   pagination.page = 1
   fetchPartnerList()
@@ -421,7 +416,7 @@ function handleEdit(row: Partner) {
     cooperationStatus: row.cooperationStatus,
     creditRating: row.creditRating,
     contractUrl: row.contractUrl,
-    profitSharingRatio: row.profitSharingRatio
+    profitSharingRatio: row.profitSharingRatio,
   })
   dialogVisible.value = true
 }
@@ -432,7 +427,7 @@ async function handleDelete(row: Partner) {
     await ElMessageBox.confirm(`确定要删除合作商"${row.name}"吗？`, '提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
-      type: 'warning'
+      type: 'warning',
     })
 
     await deletePartner(row.id)
@@ -492,7 +487,7 @@ function resetForm() {
     cooperationStatus: 'active',
     creditRating: 'A',
     contractUrl: '',
-    profitSharingRatio: 30
+    profitSharingRatio: 30,
   })
   formRef.value?.clearValidate()
 }
@@ -514,7 +509,7 @@ function getCreditRatingTag(rating: string) {
     A: 'success',
     B: 'primary',
     C: 'warning',
-    D: 'danger'
+    D: 'danger',
   }
   return map[rating] || 'info'
 }

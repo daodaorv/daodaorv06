@@ -1,20 +1,11 @@
 <template>
   <div class="payment-config">
-    <el-form
-      ref="formRef"
-      :model="form"
-      :rules="formRules"
-      label-width="180px"
-    >
+    <el-form ref="formRef" :model="form" :rules="formRules" label-width="180px">
       <!-- 微信支付配置 -->
       <div class="config-section">
         <h3 class="section-title">微信支付配置</h3>
         <el-form-item label="启用微信支付" prop="wechatPayEnabled">
-          <el-switch
-            v-model="form.wechatPayEnabled"
-            active-text="启用"
-            inactive-text="禁用"
-          />
+          <el-switch v-model="form.wechatPayEnabled" active-text="启用" inactive-text="禁用" />
         </el-form-item>
         <el-form-item label="商户号" prop="wechatMerchantId">
           <el-input
@@ -45,11 +36,7 @@
       <div class="config-section">
         <h3 class="section-title">支付宝配置</h3>
         <el-form-item label="启用支付宝" prop="alipayEnabled">
-          <el-switch
-            v-model="form.alipayEnabled"
-            active-text="启用"
-            inactive-text="禁用"
-          />
+          <el-switch v-model="form.alipayEnabled" active-text="启用" inactive-text="禁用" />
         </el-form-item>
         <el-form-item label="应用ID" prop="alipayAppId">
           <el-input
@@ -82,19 +69,11 @@
       <div class="config-section">
         <h3 class="section-title">退款配置</h3>
         <el-form-item label="自动退款" prop="autoRefund">
-          <el-switch
-            v-model="form.autoRefund"
-            active-text="开启"
-            inactive-text="关闭"
-          />
+          <el-switch v-model="form.autoRefund" active-text="开启" inactive-text="关闭" />
           <span class="form-tip">符合条件的退款申请自动处理</span>
         </el-form-item>
         <el-form-item label="退款审核" prop="refundReview">
-          <el-switch
-            v-model="form.refundReview"
-            active-text="需要审核"
-            inactive-text="自动通过"
-          />
+          <el-switch v-model="form.refundReview" active-text="需要审核" inactive-text="自动通过" />
         </el-form-item>
         <el-form-item label="退款手续费率" prop="refundFeeRate">
           <el-input-number
@@ -107,12 +86,7 @@
           <span class="form-tip">%</span>
         </el-form-item>
         <el-form-item label="退款到账时间" prop="refundArrivalTime">
-          <el-input-number
-            v-model="form.refundArrivalTime"
-            :min="1"
-            :max="15"
-            :step="1"
-          />
+          <el-input-number v-model="form.refundArrivalTime" :min="1" :max="15" :step="1" />
           <span class="form-tip">工作日</span>
         </el-form-item>
       </div>
@@ -158,18 +132,14 @@ const form = reactive({
 })
 
 const formRules: FormRules = {
-  wechatMerchantId: [
-    { required: true, message: '请输入微信支付商户号', trigger: 'blur' },
-  ],
-  alipayAppId: [
-    { required: true, message: '请输入支付宝应用ID', trigger: 'blur' },
-  ],
+  wechatMerchantId: [{ required: true, message: '请输入微信支付商户号', trigger: 'blur' }],
+  alipayAppId: [{ required: true, message: '请输入支付宝应用ID', trigger: 'blur' }],
 }
 
 const handleSubmit = async () => {
   if (!formRef.value) return
 
-  await formRef.value.validate(async (valid) => {
+  await formRef.value.validate(async valid => {
     if (!valid) return
 
     submitLoading.value = true

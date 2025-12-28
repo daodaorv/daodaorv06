@@ -26,7 +26,11 @@
  */
 
 import type { CalculationParams, CalculationResult } from '@/types/system'
-import { CONDITION_GRADES, DEFAULT_FINANCIAL_PARAMS, DEFAULT_OPERATIONAL_PARAMS } from '@/constants/conditionGrades'
+import {
+  CONDITION_GRADES,
+  DEFAULT_FINANCIAL_PARAMS,
+  DEFAULT_OPERATIONAL_PARAMS,
+} from '@/constants/conditionGrades'
 
 /**
  * 计算车龄(月)
@@ -79,7 +83,8 @@ export function calculateBaseRental(params: CalculationParams): CalculationResul
   const targetReturn = params.targetAnnualReturn ?? DEFAULT_FINANCIAL_PARAMS.TARGET_ANNUAL_RETURN
   const period = params.investmentPeriod ?? DEFAULT_FINANCIAL_PARAMS.INVESTMENT_PERIOD
   const residualRate = params.residualValueRate ?? DEFAULT_FINANCIAL_PARAMS.RESIDUAL_VALUE_RATE
-  const operatingRate = params.annualOperatingRate ?? DEFAULT_OPERATIONAL_PARAMS.ANNUAL_OPERATING_RATE
+  const operatingRate =
+    params.annualOperatingRate ?? DEFAULT_OPERATIONAL_PARAMS.ANNUAL_OPERATING_RATE
   const costRate = params.operatingCostRate ?? DEFAULT_OPERATIONAL_PARAMS.OPERATING_COST_RATE
 
   // 3. 参数范围验证

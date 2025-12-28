@@ -3,9 +3,7 @@
   <div class="campsite-list-container">
     <!-- 页面头部操作栏 -->
     <div class="page-header">
-      <el-button type="primary" :icon="Plus" @click="handleCreate">
-        新建营地
-      </el-button>
+      <el-button type="primary" :icon="Plus" @click="handleCreate"> 新建营地 </el-button>
     </div>
 
     <StatsCard :stats="statsConfig" />
@@ -28,17 +26,17 @@
       @current-change="handleCurrentChange"
     >
       <template #type="{ row }">
-        <el-tag :type="(getCampsiteTypeTag(row.type)) as any" size="small">
+        <el-tag :type="getCampsiteTypeTag(row.type) as any" size="small">
           {{ getCampsiteTypeLabel(row.type) }}
         </el-tag>
       </template>
       <template #status="{ row }">
-        <el-tag :type="(getCampsiteStatusTag(row.status)) as any" size="small">
+        <el-tag :type="getCampsiteStatusTag(row.status) as any" size="small">
           {{ getCampsiteStatusLabel(row.status) }}
         </el-tag>
       </template>
       <template #bookingMode="{ row }">
-        <el-tag :type="(getBookingModeTag(row.bookingMode)) as any" size="small">
+        <el-tag :type="getBookingModeTag(row.bookingMode) as any" size="small">
           {{ getBookingModeLabel(row.bookingMode) }}
         </el-tag>
       </template>
@@ -67,9 +65,7 @@
         </div>
       </template>
       <template #revenue="{ row }">
-        <span style="color: #67c23a; font-weight: bold">
-          ¥{{ row.revenue.toLocaleString() }}
-        </span>
+        <span style="color: #67c23a; font-weight: bold"> ¥{{ row.revenue.toLocaleString() }} </span>
       </template>
     </DataTable>
 
@@ -85,12 +81,15 @@
           {{ currentCampsite?.name }}
         </el-descriptions-item>
         <el-descriptions-item label="营地类型">
-          <el-tag :type="(getCampsiteTypeTag(currentCampsite?.type || 'info')) as any" size="small">
+          <el-tag :type="getCampsiteTypeTag(currentCampsite?.type || 'info') as any" size="small">
             {{ getCampsiteTypeLabel(currentCampsite?.type || 'info') }}
           </el-tag>
         </el-descriptions-item>
         <el-descriptions-item label="运营状态">
-          <el-tag :type="(getCampsiteStatusTag(currentCampsite?.status || 'info')) as any" size="small">
+          <el-tag
+            :type="getCampsiteStatusTag(currentCampsite?.status || 'info') as any"
+            size="small"
+          >
             {{ getCampsiteStatusLabel(currentCampsite?.status || 'info') }}
           </el-tag>
         </el-descriptions-item>
@@ -110,7 +109,12 @@
         </el-descriptions-item>
         <el-descriptions-item label="入住率">
           <span style="color: #409eff; font-weight: bold">
-            {{ ((1 - (currentCampsite?.availableSpots || 0) / (currentCampsite?.capacity || 1)) * 100).toFixed(1) }}%
+            {{
+              (
+                (1 - (currentCampsite?.availableSpots || 0) / (currentCampsite?.capacity || 1)) *
+                100
+              ).toFixed(1)
+            }}%
           </span>
         </el-descriptions-item>
         <el-descriptions-item label="平日价格">
@@ -218,7 +222,7 @@ import {
   getCampsiteDetail,
   type Campsite,
   type CampsiteListParams,
-  type CampsiteStats
+  type CampsiteStats,
 } from '@/api/campsite'
 import { useErrorHandler } from '@/composables'
 
@@ -233,21 +237,21 @@ const CAMPSITE_TYPE_OPTIONS = [
   { label: '湖畔营地', value: 'lakeside' },
   { label: '山地营地', value: 'mountain' },
   { label: '沙漠营地', value: 'desert' },
-  { label: '草原营地', value: 'grassland' }
+  { label: '草原营地', value: 'grassland' },
 ]
 
 // 营地状态选项
 const CAMPSITE_STATUS_OPTIONS = [
   { label: '运营中', value: 'active' },
   { label: '已停业', value: 'inactive' },
-  { label: '维护中', value: 'maintenance' }
+  { label: '维护中', value: 'maintenance' },
 ]
 
 // 预订模式选项
 const BOOKING_MODE_OPTIONS = [
   { label: '即时预订', value: 'instant' },
   { label: '审核预订', value: 'approval' },
-  { label: '咨询预订', value: 'inquiry' }
+  { label: '咨询预订', value: 'inquiry' },
 ]
 
 // 搜索表单
@@ -256,7 +260,7 @@ const searchForm = reactive<CampsiteListParams>({
   type: undefined,
   status: undefined,
   province: '',
-  city: ''
+  city: '',
 })
 
 // 统计数据
@@ -266,7 +270,7 @@ const stats = reactive<CampsiteStats>({
   totalCapacity: 0,
   occupancyRate: 0,
   totalRevenue: 0,
-  todayBookings: 0
+  todayBookings: 0,
 })
 
 // 统计卡片配置
@@ -275,41 +279,41 @@ const statsConfig = computed<StatItem[]>(() => [
     label: '营地总数',
     value: stats.totalCampsites,
     icon: House,
-    color: '#409eff'
+    color: '#409eff',
   },
   {
     label: '运营中',
     value: stats.activeCampsites,
     icon: TrendCharts,
-    color: '#67c23a'
+    color: '#67c23a',
   },
   {
     label: '总容量',
     value: stats.totalCapacity,
     icon: User,
     color: '#e6a23c',
-    suffix: '个车位'
+    suffix: '个车位',
   },
   {
     label: '入住率',
     value: (stats.occupancyRate * 100).toFixed(1),
     icon: TrendCharts,
     color: '#409eff',
-    suffix: '%'
+    suffix: '%',
   },
   {
     label: '总营收',
     value: stats.totalRevenue,
     icon: Money,
     color: '#f56c6c',
-    format: 'currency'
+    format: 'currency',
   },
   {
     label: '今日预订',
     value: stats.todayBookings,
     icon: User,
-    color: '#909399'
-  }
+    color: '#909399',
+  },
 ])
 
 // 搜索字段配置
@@ -319,7 +323,7 @@ const searchFields = computed<SearchField[]>(() => [
     label: '关键词',
     type: 'input',
     placeholder: '营地名称/地址',
-    width: '200px'
+    width: '200px',
   },
   {
     prop: 'type',
@@ -327,7 +331,7 @@ const searchFields = computed<SearchField[]>(() => [
     type: 'select',
     placeholder: '请选择类型',
     width: '150px',
-    options: CAMPSITE_TYPE_OPTIONS
+    options: CAMPSITE_TYPE_OPTIONS,
   },
   {
     prop: 'status',
@@ -335,21 +339,21 @@ const searchFields = computed<SearchField[]>(() => [
     type: 'select',
     placeholder: '请选择状态',
     width: '150px',
-    options: CAMPSITE_STATUS_OPTIONS
+    options: CAMPSITE_STATUS_OPTIONS,
   },
   {
     prop: 'province',
     label: '省份',
     type: 'input',
     placeholder: '请输入省份',
-    width: '120px'
+    width: '120px',
   },
   {
     prop: 'city',
     label: '城市',
     type: 'input',
     placeholder: '请输入城市',
-    width: '120px'
+    width: '120px',
   },
   {
     prop: 'bookingMode',
@@ -357,8 +361,8 @@ const searchFields = computed<SearchField[]>(() => [
     type: 'select',
     placeholder: '请选择预订模式',
     width: '150px',
-    options: BOOKING_MODE_OPTIONS
-  }
+    options: BOOKING_MODE_OPTIONS,
+  },
 ])
 
 // 表格列配置
@@ -373,7 +377,7 @@ const tableColumns: TableColumn[] = [
   { prop: 'pricing', label: '价格(元/晚)', width: 120, slot: 'pricing' },
   { prop: 'rating', label: '评分', width: 180, slot: 'rating' },
   { prop: 'bookingCount', label: '预订次数', width: 100 },
-  { prop: 'revenue', label: '累计营收', width: 120, slot: 'revenue' }
+  { prop: 'revenue', label: '累计营收', width: 120, slot: 'revenue' },
 ]
 
 // 表格操作列配置
@@ -381,13 +385,13 @@ const tableActions: TableAction[] = [
   {
     label: '查看',
     type: 'primary',
-    onClick: (row: Campsite) => handleView(row)
+    onClick: (row: Campsite) => handleView(row),
   },
   {
     label: '编辑',
     type: 'warning',
-    onClick: (row: Campsite) => handleEdit(row)
-  }
+    onClick: (row: Campsite) => handleEdit(row),
+  },
 ]
 
 // 营地列表
@@ -398,7 +402,7 @@ const loading = ref(false)
 const pagination = reactive({
   page: 1,
   pageSize: 10,
-  total: 0
+  total: 0,
 })
 
 // 营地详情对话框
@@ -412,10 +416,10 @@ const loadCampsiteList = async () => {
     const params: CampsiteListParams = {
       page: pagination.page,
       pageSize: pagination.pageSize,
-      ...searchForm
+      ...searchForm,
     }
 
-    const res = await getCampsiteList(params) as any
+    const res = (await getCampsiteList(params)) as any
     campsiteList.value = res.data.list
     pagination.total = res.data.total
   } catch (error) {
@@ -428,7 +432,7 @@ const loadCampsiteList = async () => {
 // 加载统计数据
 const loadStats = async () => {
   try {
-    const res = await getCampsiteStats() as any
+    const res = (await getCampsiteStats()) as any
     Object.assign(stats, res.data)
   } catch (error) {
     handleApiError(error, '加载统计数据失败')
@@ -460,7 +464,7 @@ const handleCreate = () => {
 // 查看营地详情
 const handleView = async (row: Campsite) => {
   try {
-    const res = await getCampsiteDetail(row.id) as any
+    const res = (await getCampsiteDetail(row.id)) as any
     currentCampsite.value = res.data
     detailDialogVisible.value = true
   } catch (error) {
@@ -497,7 +501,7 @@ const getCampsiteTypeTag = (type: string) => {
     lakeside: 'info',
     mountain: 'warning',
     desert: 'danger',
-    grassland: 'success'
+    grassland: 'success',
   }
   return tagMap[type] || 'info'
 }
@@ -510,7 +514,7 @@ const getCampsiteTypeLabel = (type: string) => {
     lakeside: '湖畔营地',
     mountain: '山地营地',
     desert: '沙漠营地',
-    grassland: '草原营地'
+    grassland: '草原营地',
   }
   return labelMap[type] || type
 }
@@ -520,7 +524,7 @@ const getCampsiteStatusTag = (status: string) => {
   const tagMap: Record<string, string> = {
     active: 'success',
     inactive: 'danger',
-    maintenance: 'warning'
+    maintenance: 'warning',
   }
   return tagMap[status] || 'info'
 }
@@ -530,7 +534,7 @@ const getCampsiteStatusLabel = (status: string) => {
   const labelMap: Record<string, string> = {
     active: '运营中',
     inactive: '已停业',
-    maintenance: '维护中'
+    maintenance: '维护中',
   }
   return labelMap[status] || status
 }
@@ -540,7 +544,7 @@ const getBookingModeTag = (mode: string) => {
   const tagMap: Record<string, string> = {
     instant: 'success',
     approval: 'warning',
-    inquiry: 'info'
+    inquiry: 'info',
   }
   return tagMap[mode] || 'info'
 }
@@ -550,7 +554,7 @@ const getBookingModeLabel = (mode: string) => {
   const labelMap: Record<string, string> = {
     instant: '即时预订',
     approval: '审核预订',
-    inquiry: '咨询预订'
+    inquiry: '咨询预订',
   }
   return labelMap[mode] || mode
 }

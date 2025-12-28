@@ -61,9 +61,9 @@ export async function fetchTimorHolidays(
       const response = await fetch(url, {
         method: 'GET',
         headers: {
-          'Accept': 'application/json'
+          Accept: 'application/json',
         },
-        signal: controller.signal
+        signal: controller.signal,
       })
 
       clearTimeout(timeoutId)
@@ -75,7 +75,7 @@ export async function fetchTimorHolidays(
         )
       }
 
-      const data = await response.json() as TimorYearHolidayResponse
+      const data = (await response.json()) as TimorYearHolidayResponse
 
       // 验证返回数据格式
       if (typeof data.code !== 'number') {
@@ -83,11 +83,7 @@ export async function fetchTimorHolidays(
       }
 
       if (data.code !== 0) {
-        throw new TimorApiError(
-          `API返回错误代码: ${data.code}`,
-          data.code,
-          data
-        )
+        throw new TimorApiError(`API返回错误代码: ${data.code}`, data.code, data)
       }
 
       if (!data.holiday || typeof data.holiday !== 'object') {
@@ -105,7 +101,7 @@ export async function fetchTimorHolidays(
 
       // 等待后重试（指数退避：5秒、10秒、15秒）
       const waitTime = attempt * 5000
-      console.warn(`Timor API调用失败（第${attempt}次），${waitTime/1000}秒后重试...`, error)
+      console.warn(`Timor API调用失败（第${attempt}次），${waitTime / 1000}秒后重试...`, error)
       await new Promise(resolve => setTimeout(resolve, waitTime))
     }
   }
@@ -143,11 +139,7 @@ export async function fetchMultipleYearsHolidays(
 
   // 如果所有年份都失败，抛出错误
   if (errors.length === years.length) {
-    throw new TimorApiError(
-      `所有年份的节假日数据获取均失败`,
-      undefined,
-      errors
-    )
+    throw new TimorApiError(`所有年份的节假日数据获取均失败`, undefined, errors)
   }
 
   // 如果部分失败，记录警告但继续
@@ -260,7 +252,7 @@ export function parseTimorHolidays(
         startDate: currentDate,
         endDate: currentDate,
         restDays: 1, // 初始为1天，后续会更新
-        wage: holidayData.wage
+        wage: holidayData.wage,
       })
     }
   }

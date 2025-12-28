@@ -154,9 +154,7 @@
               </template>
             </el-table-column>
             <el-table-column prop="shareRatio" label="份额占比" width="100">
-              <template #default="{ row }">
-                {{ row.shareRatio }}%
-              </template>
+              <template #default="{ row }"> {{ row.shareRatio }}% </template>
             </el-table-column>
             <el-table-column prop="income" label="累计收益" width="120">
               <template #default="{ row }">
@@ -576,7 +574,9 @@ const getRoleLabel = (role: string) => {
 }
 
 // 获取项目状态标签类型
-const getProjectStatusTag = (status: string): 'success' | 'warning' | 'danger' | 'info' | 'primary' => {
+const getProjectStatusTag = (
+  status: string
+): 'success' | 'warning' | 'danger' | 'info' | 'primary' => {
   const tagMap: Record<string, 'success' | 'warning' | 'danger' | 'info' | 'primary'> = {
     pending: 'warning',
     rejected: 'danger',

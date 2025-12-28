@@ -43,7 +43,7 @@ import {
   type OrderCardData,
   type VehicleCardData,
   type CampsiteCardData,
-  type TourCardData
+  type TourCardData,
 } from '@/mock/customerService'
 
 // 导出类型
@@ -71,7 +71,7 @@ export type {
   OrderCardData,
   VehicleCardData,
   CampsiteCardData,
-  TourCardData
+  TourCardData,
 }
 
 /**
@@ -246,9 +246,7 @@ export function getKnowledgeStats(): Promise<KnowledgeStats> {
 /**
  * 创建知识库文章
  */
-export function createKnowledgeArticle(
-  data: Partial<KnowledgeArticle>
-): Promise<KnowledgeArticle> {
+export function createKnowledgeArticle(data: Partial<KnowledgeArticle>): Promise<KnowledgeArticle> {
   // 使用 Mock 数据
   return mockCreateKnowledgeArticle(data)
 
@@ -263,10 +261,7 @@ export function createKnowledgeArticle(
 /**
  * 更新知识库文章
  */
-export function updateKnowledgeArticle(
-  id: number,
-  data: Partial<KnowledgeArticle>
-): Promise<void> {
+export function updateKnowledgeArticle(id: number, data: Partial<KnowledgeArticle>): Promise<void> {
   // 使用 Mock 数据
   return mockUpdateKnowledgeArticle(id, data)
 

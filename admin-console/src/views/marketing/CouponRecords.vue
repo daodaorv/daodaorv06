@@ -22,7 +22,7 @@
       @current-change="handleCurrentChange"
     >
       <template #recordType="{ row }">
-        <el-tag :type="(getRecordTypeTag(row.recordType)) as any" size="small">
+        <el-tag :type="getRecordTypeTag(row.recordType) as any" size="small">
           {{ getRecordTypeLabel(row.recordType) }}
         </el-tag>
       </template>
@@ -57,12 +57,14 @@
       <el-descriptions v-if="currentRecord" :column="2" border>
         <el-descriptions-item label="记录ID">{{ currentRecord.id }}</el-descriptions-item>
         <el-descriptions-item label="记录类型">
-          <el-tag :type="(getRecordTypeTag(currentRecord.recordType)) as any" size="small">
+          <el-tag :type="getRecordTypeTag(currentRecord.recordType) as any" size="small">
             {{ getRecordTypeLabel(currentRecord.recordType) }}
           </el-tag>
         </el-descriptions-item>
 
-        <el-descriptions-item label="优惠券名称">{{ currentRecord.couponName }}</el-descriptions-item>
+        <el-descriptions-item label="优惠券名称">{{
+          currentRecord.couponName
+        }}</el-descriptions-item>
         <el-descriptions-item label="优惠码">{{ currentRecord.couponCode }}</el-descriptions-item>
 
         <el-descriptions-item label="用户姓名">{{ currentRecord.userName }}</el-descriptions-item>
@@ -79,16 +81,24 @@
 
         <!-- 使用记录特有字段 -->
         <template v-if="currentRecord.recordType === 'use'">
-          <el-descriptions-item label="订单号">{{ currentRecord.orderNo || '-' }}</el-descriptions-item>
+          <el-descriptions-item label="订单号">{{
+            currentRecord.orderNo || '-'
+          }}</el-descriptions-item>
           <el-descriptions-item label="实际优惠金额">
-            <span style="color: #f56c6c; font-weight: bold">¥{{ currentRecord.actualDiscountAmount }}</span>
+            <span style="color: #f56c6c; font-weight: bold"
+              >¥{{ currentRecord.actualDiscountAmount }}</span
+            >
           </el-descriptions-item>
         </template>
 
         <!-- 转赠记录特有字段 -->
         <template v-if="currentRecord.recordType === 'transfer'">
-          <el-descriptions-item label="转赠给">{{ currentRecord.transferToUserName || '-' }}</el-descriptions-item>
-          <el-descriptions-item label="转赠原因">{{ currentRecord.transferReason || '-' }}</el-descriptions-item>
+          <el-descriptions-item label="转赠给">{{
+            currentRecord.transferToUserName || '-'
+          }}</el-descriptions-item>
+          <el-descriptions-item label="转赠原因">{{
+            currentRecord.transferReason || '-'
+          }}</el-descriptions-item>
         </template>
 
         <!-- 失效记录特有字段 -->
@@ -100,8 +110,12 @@
 
         <!-- 作废记录特有字段 -->
         <template v-if="currentRecord.recordType === 'revoke'">
-          <el-descriptions-item label="作废原因">{{ currentRecord.revokeReason || '-' }}</el-descriptions-item>
-          <el-descriptions-item label="作废操作人">{{ currentRecord.revokedBy || '-' }}</el-descriptions-item>
+          <el-descriptions-item label="作废原因">{{
+            currentRecord.revokeReason || '-'
+          }}</el-descriptions-item>
+          <el-descriptions-item label="作废操作人">{{
+            currentRecord.revokedBy || '-'
+          }}</el-descriptions-item>
         </template>
 
         <el-descriptions-item label="记录时间" :span="2">
@@ -112,8 +126,12 @@
           {{ currentRecord.remark || '-' }}
         </el-descriptions-item>
 
-        <el-descriptions-item label="IP地址">{{ currentRecord.ipAddress || '-' }}</el-descriptions-item>
-        <el-descriptions-item label="设备信息">{{ currentRecord.deviceInfo || '-' }}</el-descriptions-item>
+        <el-descriptions-item label="IP地址">{{
+          currentRecord.ipAddress || '-'
+        }}</el-descriptions-item>
+        <el-descriptions-item label="设备信息">{{
+          currentRecord.deviceInfo || '-'
+        }}</el-descriptions-item>
       </el-descriptions>
 
       <template #footer>
@@ -138,7 +156,7 @@ import {
   type CouponRecord,
   type CouponRecordListParams,
   type CouponRecordType,
-  type CouponRecordSource
+  type CouponRecordSource,
 } from '@/api/marketing'
 import { useErrorHandler } from '@/composables'
 
@@ -151,7 +169,7 @@ const RECORD_TYPE_OPTIONS = [
   { label: '使用', value: 'use' },
   { label: '失效', value: 'expire' },
   { label: '转赠', value: 'transfer' },
-  { label: '作废', value: 'revoke' }
+  { label: '作废', value: 'revoke' },
 ]
 
 // 记录来源选项
@@ -161,7 +179,7 @@ const RECORD_SOURCE_OPTIONS = [
   { label: '注册赠送', value: 'register' },
   { label: '订单使用', value: 'order' },
   { label: '分享获得', value: 'share' },
-  { label: '管理员操作', value: 'admin' }
+  { label: '管理员操作', value: 'admin' },
 ]
 
 // 搜索表单
@@ -170,7 +188,7 @@ const searchForm = reactive<CouponRecordListParams>({
   recordType: undefined,
   source: undefined,
   startDate: '',
-  endDate: ''
+  endDate: '',
 })
 
 // 搜索字段配置
@@ -180,7 +198,7 @@ const searchFields = computed<SearchField[]>(() => [
     label: '关键词',
     type: 'input',
     placeholder: '优惠券名称/用户名/手机号',
-    width: '220px'
+    width: '220px',
   },
   {
     prop: 'recordType',
@@ -188,7 +206,7 @@ const searchFields = computed<SearchField[]>(() => [
     type: 'select',
     placeholder: '请选择记录类型',
     width: '150px',
-    options: RECORD_TYPE_OPTIONS
+    options: RECORD_TYPE_OPTIONS,
   },
   {
     prop: 'source',
@@ -196,7 +214,7 @@ const searchFields = computed<SearchField[]>(() => [
     type: 'select',
     placeholder: '请选择来源',
     width: '150px',
-    options: RECORD_SOURCE_OPTIONS
+    options: RECORD_SOURCE_OPTIONS,
   },
   {
     prop: 'startDate',
@@ -204,7 +222,7 @@ const searchFields = computed<SearchField[]>(() => [
     type: 'date',
     placeholder: '请选择开始日期',
     width: '180px',
-    valueFormat: 'YYYY-MM-DD'
+    valueFormat: 'YYYY-MM-DD',
   },
   {
     prop: 'endDate',
@@ -212,8 +230,8 @@ const searchFields = computed<SearchField[]>(() => [
     type: 'date',
     placeholder: '请选择结束日期',
     width: '180px',
-    valueFormat: 'YYYY-MM-DD'
-  }
+    valueFormat: 'YYYY-MM-DD',
+  },
 ])
 
 // 表格列配置
@@ -226,7 +244,7 @@ const tableColumns: TableColumn[] = [
   { prop: 'recordType', label: '记录类型', width: 100, slot: 'recordType' },
   { prop: 'source', label: '来源', width: 120, slot: 'source' },
   { prop: 'actualDiscountAmount', label: '优惠金额', width: 100, slot: 'actualDiscountAmount' },
-  { prop: 'recordTime', label: '记录时间', width: 160, slot: 'recordTime' }
+  { prop: 'recordTime', label: '记录时间', width: 160, slot: 'recordTime' },
 ]
 
 // 表格操作列配置
@@ -234,8 +252,8 @@ const tableActions: TableAction[] = [
   {
     label: '查看详情',
     type: 'primary',
-    onClick: (row: CouponRecord) => handleView(row)
-  }
+    onClick: (row: CouponRecord) => handleView(row),
+  },
 ]
 
 // 工具栏按钮配置
@@ -244,8 +262,8 @@ const toolbarButtons: ToolbarButton[] = [
     label: '导出记录',
     type: 'success',
     icon: Download,
-    onClick: () => handleExport()
-  }
+    onClick: () => handleExport(),
+  },
 ]
 
 // 记录列表
@@ -256,7 +274,7 @@ const loading = ref(false)
 const pagination = reactive({
   page: 1,
   pageSize: 10,
-  total: 0
+  total: 0,
 })
 
 // 详情对话框状态
@@ -270,10 +288,10 @@ const loadRecordList = async () => {
     const params: CouponRecordListParams = {
       page: pagination.page,
       pageSize: pagination.pageSize,
-      ...searchForm
+      ...searchForm,
     }
 
-    const res = await getCouponRecordList(params) as any
+    const res = (await getCouponRecordList(params)) as any
     recordList.value = res.data.list
     pagination.total = res.data.total
   } catch (error) {
@@ -312,7 +330,7 @@ const handleExport = async () => {
     ElMessage.info('正在导出，请稍候...')
 
     const params: CouponRecordListParams = {
-      ...searchForm
+      ...searchForm,
     }
 
     await exportCouponRecords(params)
@@ -329,7 +347,18 @@ const handleExport = async () => {
 
 // 生成 CSV 数据
 const generateCSV = () => {
-  const headers = ['记录ID', '优惠券名称', '优惠码', '用户姓名', '用户手机', '记录类型', '来源', '优惠金额', '记录时间', '备注']
+  const headers = [
+    '记录ID',
+    '优惠券名称',
+    '优惠码',
+    '用户姓名',
+    '用户手机',
+    '记录类型',
+    '来源',
+    '优惠金额',
+    '记录时间',
+    '备注',
+  ]
   const rows = recordList.value.map(record => [
     record.id,
     record.couponName,
@@ -340,7 +369,7 @@ const generateCSV = () => {
     getSourceLabel(record.source),
     record.actualDiscountAmount || '-',
     formatDateTime(record.recordTime),
-    record.remark || '-'
+    record.remark || '-',
   ])
 
   return [headers, ...rows]
@@ -387,7 +416,7 @@ const getRecordTypeTag = (type: CouponRecordType) => {
     use: 'primary',
     expire: 'info',
     transfer: 'warning',
-    revoke: 'danger'
+    revoke: 'danger',
   }
   return tagMap[type] || 'info'
 }
@@ -399,7 +428,7 @@ const getRecordTypeLabel = (type: CouponRecordType) => {
     use: '使用',
     expire: '失效',
     transfer: '转赠',
-    revoke: '作废'
+    revoke: '作废',
   }
   return labelMap[type] || type
 }
@@ -412,7 +441,7 @@ const getSourceLabel = (source: CouponRecordSource) => {
     register: '注册赠送',
     order: '订单使用',
     share: '分享获得',
-    admin: '管理员操作'
+    admin: '管理员操作',
   }
   return labelMap[source] || source
 }

@@ -25,7 +25,7 @@
         :class="{
           'is-today': isToday(day.date),
           'is-weekend': isWeekend(day.date),
-          'is-selected': selectedDates.includes(day.date)
+          'is-selected': selectedDates.includes(day.date),
         }"
         @click="handleDayClick(day.date)"
       >
@@ -62,7 +62,10 @@
             </div>
           </div>
 
-          <div v-if="day.priceInfo.factors && day.priceInfo.factors.length > 0" class="factors-section">
+          <div
+            v-if="day.priceInfo.factors && day.priceInfo.factors.length > 0"
+            class="factors-section"
+          >
             <el-tag
               v-for="factor in day.priceInfo.factors"
               :key="factor.id"
@@ -124,7 +127,7 @@ interface Emits {
 const props = withDefaults(defineProps<Props>(), {
   priceData: () => [],
   loading: false,
-  selectedDates: () => []
+  selectedDates: () => [],
 })
 
 const emit = defineEmits<Emits>()
@@ -158,7 +161,7 @@ const weekDays = computed(() => {
 
     days.push({
       date: dateStr,
-      priceInfo
+      priceInfo,
     })
   }
 

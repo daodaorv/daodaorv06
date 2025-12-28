@@ -52,7 +52,7 @@ import {
   type CrowdfundingTransaction,
   type CrowdfundingIncomeListParams,
   type CrowdfundingIncomeRecord,
-  type CrowdfundingIncomeStats
+  type CrowdfundingIncomeStats,
 } from '@/mock/hosting'
 
 // 导出类型
@@ -79,7 +79,7 @@ export type {
   CrowdfundingTransaction,
   CrowdfundingIncomeListParams,
   CrowdfundingIncomeRecord,
-  CrowdfundingIncomeStats
+  CrowdfundingIncomeStats,
 }
 
 // ==================== 自有车托管申请 ====================
@@ -105,7 +105,7 @@ export const getOldCarApplicationDetail = (id: number) => {
     return {
       code: 200,
       data: application,
-      message: '获取成功'
+      message: '获取成功',
     }
   })
 
@@ -147,7 +147,7 @@ export const getNewCarApplicationDetail = (id: number) => {
     return {
       code: 200,
       data: application,
-      message: '获取成功'
+      message: '获取成功',
     }
   })
 
@@ -171,12 +171,12 @@ export const reviewNewCarApplication = (id: number, approved: boolean, comment: 
  */
 export const updatePurchaseProgress = (id: number, progress: number) => {
   // 🟡 使用 Mock 数据（前端独立开发阶段）
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       resolve({
         code: 200,
         data: { id, progress },
-        message: '更新成功'
+        message: '更新成功',
       })
     }, 300)
   })
@@ -208,7 +208,7 @@ export const getHostingVehicleDetail = (id: number) => {
     return {
       code: 200,
       data: vehicle,
-      message: '获取成功'
+      message: '获取成功',
     }
   })
 
@@ -221,12 +221,12 @@ export const getHostingVehicleDetail = (id: number) => {
  */
 export const updateHostingVehicleStatus = (id: number, status: string) => {
   // 🟡 使用 Mock 数据（前端独立开发阶段）
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       resolve({
         code: 200,
         data: { id, status },
-        message: '更新成功'
+        message: '更新成功',
       })
     }, 300)
   })
@@ -258,7 +258,7 @@ export const getOwnerUsageApplicationDetail = (id: number) => {
     return {
       code: 200,
       data: application,
-      message: '获取成功'
+      message: '获取成功',
     }
   })
 
@@ -306,12 +306,12 @@ export const getIncomeStats = () => {
  */
 export const exportIncomeRecords = (_params: IncomeRecordListParams) => {
   // 🟡 使用 Mock 数据（前端独立开发阶段）
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       resolve({
         code: 200,
         data: { url: 'https://example.com/income-records.xlsx' },
-        message: '导出成功'
+        message: '导出成功',
       })
     }, 1000)
   })
@@ -336,7 +336,10 @@ export const getCrowdfundingModelList = (params: CrowdfundingModelListParams) =>
 /**
  * 更新车型众筹配置
  */
-export const updateCrowdfundingModelConfig = (id: number, data: UpdateCrowdfundingModelConfigParams) => {
+export const updateCrowdfundingModelConfig = (
+  id: number,
+  data: UpdateCrowdfundingModelConfigParams
+) => {
   // 🟡 使用 Mock 数据（前端独立开发阶段）
   return mockUpdateCrowdfundingModelConfig(id, data)
 
@@ -532,8 +535,8 @@ export const getSeasonalSubsidyConfigList = (params: any) => {
   return Promise.resolve({
     data: {
       list: [],
-      total: 0
-    }
+      total: 0,
+    },
   })
 
   // 🔵 后端联调时使用真实 API(待后端开发)
@@ -596,15 +599,14 @@ export const getOwnerUsageFeeConfigList = (params: any) => {
   // 搜索过滤
   if (params.keyword) {
     filteredConfigs = filteredConfigs.filter(
-      (config) =>
-        config.configName.includes(params.keyword) ||
-        config.description?.includes(params.keyword)
+      config =>
+        config.configName.includes(params.keyword) || config.description?.includes(params.keyword)
     )
   }
 
   // 状态过滤
   if (params.enabled !== undefined) {
-    filteredConfigs = filteredConfigs.filter((config) => config.enabled === params.enabled)
+    filteredConfigs = filteredConfigs.filter(config => config.enabled === params.enabled)
   }
 
   // 分页
@@ -665,7 +667,7 @@ export const createOwnerUsageFeeConfig = (data: Partial<OwnerUsageFeeConfig>) =>
  */
 export const updateOwnerUsageFeeConfig = (id: number, data: Partial<OwnerUsageFeeConfig>) => {
   // 🟡 使用 Mock 数据(前端独立开发阶段)
-  const index = mockOwnerUsageFeeConfigs.findIndex((config) => config.id === id)
+  const index = mockOwnerUsageFeeConfigs.findIndex(config => config.id === id)
   if (index !== -1) {
     mockOwnerUsageFeeConfigs[index] = {
       ...mockOwnerUsageFeeConfigs[index],
@@ -686,7 +688,7 @@ export const updateOwnerUsageFeeConfig = (id: number, data: Partial<OwnerUsageFe
  */
 export const deleteOwnerUsageFeeConfig = (id: number) => {
   // 🟡 使用 Mock 数据(前端独立开发阶段)
-  const index = mockOwnerUsageFeeConfigs.findIndex((config) => config.id === id)
+  const index = mockOwnerUsageFeeConfigs.findIndex(config => config.id === id)
   if (index !== -1) {
     mockOwnerUsageFeeConfigs.splice(index, 1)
   }

@@ -1,8 +1,6 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="hosting-old-car-container">
-    
-
     <SearchForm
       v-model="searchForm"
       :fields="searchFields"
@@ -110,7 +108,10 @@
               {{ currentApplication.mileage.toLocaleString() }} 公里
             </el-descriptions-item>
             <el-descriptions-item label="车况评级">
-              <el-tag :type="getConditionRatingTag(currentApplication.conditionRating)" size="small">
+              <el-tag
+                :type="getConditionRatingTag(currentApplication.conditionRating)"
+                size="small"
+              >
                 {{ getConditionRatingLabel(currentApplication.conditionRating) }}
               </el-tag>
             </el-descriptions-item>
@@ -193,11 +194,7 @@
         </el-card>
 
         <!-- 审核信息 -->
-        <el-card
-          v-if="currentApplication.status !== 'pending'"
-          class="detail-card"
-          shadow="never"
-        >
+        <el-card v-if="currentApplication.status !== 'pending'" class="detail-card" shadow="never">
           <template #header>
             <span>审核信息</span>
           </template>
@@ -214,17 +211,15 @@
               {{ currentApplication.reviewedBy || '-' }}
             </el-descriptions-item>
             <el-descriptions-item label="审核时间">
-              {{ currentApplication.reviewedAt ? formatDateTime(currentApplication.reviewedAt) : '-' }}
+              {{
+                currentApplication.reviewedAt ? formatDateTime(currentApplication.reviewedAt) : '-'
+              }}
             </el-descriptions-item>
           </el-descriptions>
         </el-card>
 
         <!-- 审核操作 -->
-        <el-card
-          v-if="currentApplication.status === 'pending'"
-          class="detail-card"
-          shadow="never"
-        >
+        <el-card v-if="currentApplication.status === 'pending'" class="detail-card" shadow="never">
           <template #header>
             <span>审核操作</span>
           </template>
@@ -273,7 +268,7 @@ import {
   getOldCarApplicationList,
   reviewOldCarApplication,
   type OldCarHostingApplication,
-  type OldCarApplicationListParams
+  type OldCarApplicationListParams,
 } from '@/api/hosting'
 import { useErrorHandler } from '@/composables'
 
@@ -285,7 +280,7 @@ const APPLICATION_STATUS_OPTIONS = [
   { label: '待审核', value: 'pending' },
   { label: '已通过', value: 'approved' },
   { label: '已拒绝', value: 'rejected' },
-  { label: '已取消', value: 'cancelled' }
+  { label: '已取消', value: 'cancelled' },
 ]
 
 // 车况评级选项
@@ -293,13 +288,13 @@ const _CONDITION_RATING_OPTIONS = [
   { label: '优秀', value: 'excellent' },
   { label: '良好', value: 'good' },
   { label: '一般', value: 'fair' },
-  { label: '较差', value: 'poor' }
+  { label: '较差', value: 'poor' },
 ]
 
 // 搜索表单
 const searchForm = reactive<OldCarApplicationListParams>({
   keyword: '',
-  status: undefined
+  status: undefined,
 })
 
 // 搜索字段配置
@@ -309,7 +304,7 @@ const searchFields = computed<SearchField[]>(() => [
     label: '关键词',
     type: 'input',
     placeholder: '申请编号/车主姓名/手机号/车牌号',
-    width: '250px'
+    width: '250px',
   },
   {
     prop: 'status',
@@ -317,8 +312,8 @@ const searchFields = computed<SearchField[]>(() => [
     type: 'select',
     placeholder: '全部状态',
     options: APPLICATION_STATUS_OPTIONS,
-    width: '150px'
-  }
+    width: '150px',
+  },
 ])
 
 // 表格列配置
@@ -329,7 +324,7 @@ const tableColumns = computed(() => [
   { prop: 'conditionRating', label: '车况评级', width: 100, slot: true },
   { prop: 'expectedIncome', label: '预期收益', width: 150, slot: true },
   { prop: 'status', label: '申请状态', width: 100, slot: true },
-  { prop: 'createdAt', label: '申请时间', width: 160, formatter: formatDateTime }
+  { prop: 'createdAt', label: '申请时间', width: 160, formatter: formatDateTime },
 ]) as any
 
 // 表格操作配置
@@ -337,14 +332,14 @@ const tableActions = computed<TableAction[]>(() => [
   {
     label: '查看详情',
     type: 'primary',
-    onClick: handleViewDetail
+    onClick: handleViewDetail,
   },
   {
     label: '审核',
     type: 'success',
     onClick: handleReview,
-    show: (row: OldCarHostingApplication) => row.status === 'pending'
-  }
+    show: (row: OldCarHostingApplication) => row.status === 'pending',
+  },
 ])
 
 // 数据列表
@@ -355,7 +350,7 @@ const loading = ref(false)
 const pagination = reactive({
   total: 0,
   page: 1,
-  pageSize: 10
+  pageSize: 10,
 })
 
 // 详情对话框
@@ -364,7 +359,7 @@ const currentApplication = ref<OldCarHostingApplication | null>(null)
 
 // 审核表单
 const reviewForm = reactive({
-  comment: ''
+  comment: '',
 })
 
 // 获取申请列表
@@ -374,7 +369,7 @@ const fetchApplicationList = async () => {
     const res: any = await getOldCarApplicationList({
       ...searchForm,
       page: pagination.page,
-      pageSize: pagination.pageSize
+      pageSize: pagination.pageSize,
     })
     applicationList.value = res.data.list
     pagination.total = res.data.total
@@ -434,7 +429,7 @@ const handleApprove = async () => {
 
   try {
     await ElMessageBox.confirm('确认通过该托管申请吗？', '确认操作', {
-      type: 'warning'
+      type: 'warning',
     })
 
     await reviewOldCarApplication(currentApplication.value!.id, true, reviewForm.comment)
@@ -457,7 +452,7 @@ const handleReject = async () => {
 
   try {
     await ElMessageBox.confirm('确认拒绝该托管申请吗？', '确认操作', {
-      type: 'warning'
+      type: 'warning',
     })
 
     await reviewOldCarApplication(currentApplication.value!.id, false, reviewForm.comment)
@@ -480,7 +475,7 @@ const formatDateTime = (dateStr: string) => {
     month: '2-digit',
     day: '2-digit',
     hour: '2-digit',
-    minute: '2-digit'
+    minute: '2-digit',
   })
 }
 
@@ -490,7 +485,7 @@ const getStatusTag = (status: string) => {
     pending: 'warning',
     approved: 'success',
     rejected: 'danger',
-    cancelled: 'info'
+    cancelled: 'info',
   }
   return tagMap[status] || 'info'
 }
@@ -501,7 +496,7 @@ const getStatusLabel = (status: string) => {
     pending: '待审核',
     approved: '已通过',
     rejected: '已拒绝',
-    cancelled: '已取消'
+    cancelled: '已取消',
   }
   return labelMap[status] || status
 }
@@ -512,7 +507,7 @@ const getConditionRatingTag = (rating: string) => {
     excellent: 'success',
     good: '',
     fair: 'warning',
-    poor: 'danger'
+    poor: 'danger',
   }
   return tagMap[rating] || 'info'
 }
@@ -523,7 +518,7 @@ const getConditionRatingLabel = (rating: string) => {
     excellent: '优秀',
     good: '良好',
     fair: '一般',
-    poor: '较差'
+    poor: '较差',
   }
   return labelMap[rating] || rating
 }

@@ -2,13 +2,16 @@
 <!-- 客服质量监控页面 -->
 <template>
   <div class="customer-service-quality-container">
-    
-
     <!-- 统计卡片 -->
     <StatsCard :stats="statsCards" />
 
     <!-- 搜索表单 -->
-    <SearchForm v-model="searchParams" :fields="searchFields" @search="handleSearch" @reset="handleReset" />
+    <SearchForm
+      v-model="searchParams"
+      :fields="searchFields"
+      @search="handleSearch"
+      @reset="handleReset"
+    />
 
     <!-- 数据表格 -->
     <DataTable
@@ -141,9 +144,7 @@
                   <span class="time-value">{{ currentAgent.avgResponseTime }}</span>
                   <span class="time-unit">分钟</span>
                 </div>
-                <div class="metric-tip">
-                  目标: ≤ 5分钟
-                </div>
+                <div class="metric-tip">目标: ≤ 5分钟</div>
               </el-card>
             </el-col>
             <el-col :span="12">
@@ -155,9 +156,7 @@
                   <span class="time-value">{{ currentAgent.avgResolveTime }}</span>
                   <span class="time-unit">小时</span>
                 </div>
-                <div class="metric-tip">
-                  目标: ≤ 24小时
-                </div>
+                <div class="metric-tip">目标: ≤ 24小时</div>
               </el-card>
             </el-col>
           </el-row>
@@ -170,7 +169,9 @@
             <div class="satisfaction-detail">
               <div class="satisfaction-main">
                 <el-rate :model-value="currentAgent.satisfaction" disabled :size="32" />
-                <span class="satisfaction-score-large">{{ currentAgent.satisfaction.toFixed(1) }}</span>
+                <span class="satisfaction-score-large">{{
+                  currentAgent.satisfaction.toFixed(1)
+                }}</span>
               </div>
               <div class="satisfaction-breakdown">
                 <div class="breakdown-item">
@@ -230,15 +231,21 @@
               <div class="score-breakdown">
                 <div class="score-item">
                   <span class="score-item-label">响应率 (30%)</span>
-                  <span class="score-item-value">{{ (currentAgent.responseRate * 0.3).toFixed(1) }}分</span>
+                  <span class="score-item-value"
+                    >{{ (currentAgent.responseRate * 0.3).toFixed(1) }}分</span
+                  >
                 </div>
                 <div class="score-item">
                   <span class="score-item-label">解决率 (30%)</span>
-                  <span class="score-item-value">{{ (currentAgent.resolveRate * 0.3).toFixed(1) }}分</span>
+                  <span class="score-item-value"
+                    >{{ (currentAgent.resolveRate * 0.3).toFixed(1) }}分</span
+                  >
                 </div>
                 <div class="score-item">
                   <span class="score-item-label">满意度 (40%)</span>
-                  <span class="score-item-value">{{ (currentAgent.satisfaction * 20 * 0.4).toFixed(1) }}分</span>
+                  <span class="score-item-value"
+                    >{{ (currentAgent.satisfaction * 20 * 0.4).toFixed(1) }}分</span
+                  >
                 </div>
               </div>
             </div>
@@ -545,14 +552,14 @@ const fetchList = async () => {
 
     if (searchParams.keyword) {
       filteredData = filteredData.filter(
-        (item) =>
+        item =>
           item.agentName.includes(searchParams.keyword) ||
           item.agentId.includes(searchParams.keyword)
       )
     }
 
     if (searchParams.status) {
-      filteredData = filteredData.filter((item) => item.status === searchParams.status)
+      filteredData = filteredData.filter(item => item.status === searchParams.status)
     }
 
     // 分页

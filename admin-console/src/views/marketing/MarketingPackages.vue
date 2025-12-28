@@ -1,8 +1,6 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="marketing-packages-container">
-    
-
     <SearchForm
       v-model="searchForm"
       :fields="searchFields"
@@ -22,13 +20,15 @@
       @current-change="handleCurrentChange"
     >
       <template #status="{ row }">
-        <el-tag :type="(getPackageStatusTag(row.status)) as any" size="small">
+        <el-tag :type="getPackageStatusTag(row.status) as any" size="small">
           {{ getPackageStatusLabel(row.status) }}
         </el-tag>
       </template>
       <template #price="{ row }">
         <div style="font-size: 12px">
-          <div style="text-decoration: line-through; color: #909399">原价: ¥{{ row.originalPrice }}</div>
+          <div style="text-decoration: line-through; color: #909399">
+            原价: ¥{{ row.originalPrice }}
+          </div>
           <div style="color: #f56c6c; font-weight: bold">套餐价: ¥{{ row.packagePrice }}</div>
           <div style="color: #67c23a">优惠: {{ row.discount }}%</div>
         </div>
@@ -42,7 +42,12 @@
       </template>
       <template #includes="{ row }">
         <div style="display: flex; flex-wrap: wrap; gap: 4px">
-          <el-tag v-for="(item, index) in row.includes.slice(0, 3)" :key="index" size="small" type="info">
+          <el-tag
+            v-for="(item, index) in row.includes.slice(0, 3)"
+            :key="index"
+            size="small"
+            type="info"
+          >
             {{ item }}
           </el-tag>
           <el-tag v-if="row.includes.length > 3" size="small" type="warning">
@@ -75,30 +80,50 @@
         <el-descriptions-item label="套餐ID">{{ currentPackage.id }}</el-descriptions-item>
         <el-descriptions-item label="套餐名称">{{ currentPackage.name }}</el-descriptions-item>
         <el-descriptions-item label="套餐状态">
-          <el-tag :type="(getPackageStatusTag(currentPackage.status)) as any" size="small">
+          <el-tag :type="getPackageStatusTag(currentPackage.status) as any" size="small">
             {{ getPackageStatusLabel(currentPackage.status) }}
           </el-tag>
         </el-descriptions-item>
-        <el-descriptions-item label="适用车型">{{ currentPackage.vehicleType }}</el-descriptions-item>
+        <el-descriptions-item label="适用车型">{{
+          currentPackage.vehicleType
+        }}</el-descriptions-item>
         <el-descriptions-item label="租赁天数">{{ currentPackage.days }}天</el-descriptions-item>
-        <el-descriptions-item label="原价">¥{{ currentPackage.originalPrice }}</el-descriptions-item>
-        <el-descriptions-item label="套餐价">¥{{ currentPackage.packagePrice }}</el-descriptions-item>
+        <el-descriptions-item label="原价"
+          >¥{{ currentPackage.originalPrice }}</el-descriptions-item
+        >
+        <el-descriptions-item label="套餐价"
+          >¥{{ currentPackage.packagePrice }}</el-descriptions-item
+        >
         <el-descriptions-item label="优惠折扣">{{ currentPackage.discount }}%</el-descriptions-item>
-        <el-descriptions-item label="总发行量">{{ currentPackage.totalQuantity }}</el-descriptions-item>
-        <el-descriptions-item label="已售数量">{{ currentPackage.soldQuantity }}</el-descriptions-item>
-        <el-descriptions-item label="剩余数量">{{ currentPackage.remainingQuantity }}</el-descriptions-item>
+        <el-descriptions-item label="总发行量">{{
+          currentPackage.totalQuantity
+        }}</el-descriptions-item>
+        <el-descriptions-item label="已售数量">{{
+          currentPackage.soldQuantity
+        }}</el-descriptions-item>
+        <el-descriptions-item label="剩余数量">{{
+          currentPackage.remainingQuantity
+        }}</el-descriptions-item>
         <el-descriptions-item label="开始日期">{{ currentPackage.startDate }}</el-descriptions-item>
         <el-descriptions-item label="结束日期">{{ currentPackage.endDate }}</el-descriptions-item>
         <el-descriptions-item label="创建人">{{ currentPackage.createdBy }}</el-descriptions-item>
         <el-descriptions-item label="包含内容" :span="2">
-          <el-tag v-for="(item, index) in currentPackage.includes" :key="index" size="small" type="info" style="margin-right: 8px">
+          <el-tag
+            v-for="(item, index) in currentPackage.includes"
+            :key="index"
+            size="small"
+            type="info"
+            style="margin-right: 8px"
+          >
             {{ item }}
           </el-tag>
         </el-descriptions-item>
         <el-descriptions-item label="套餐描述" :span="2">
           {{ currentPackage.description }}
         </el-descriptions-item>
-        <el-descriptions-item label="创建时间" :span="2">{{ currentPackage.createdAt }}</el-descriptions-item>
+        <el-descriptions-item label="创建时间" :span="2">{{
+          currentPackage.createdAt
+        }}</el-descriptions-item>
       </el-descriptions>
       <template #footer>
         <el-button @click="detailDialogVisible = false">关闭</el-button>
@@ -117,11 +142,7 @@ import DataTable from '@/components/common/DataTable.vue'
 import FormDialog from '@/components/common/FormDialog.vue'
 import type { SearchField } from '@/components/common/SearchForm.vue'
 import type { TableColumn, TableAction, ToolbarButton } from '@/components/common/DataTable.vue'
-import {
-  getPackageList,
-  type Package,
-  type PackageListParams
-} from '@/api/marketing'
+import { getPackageList, type Package, type PackageListParams } from '@/api/marketing'
 import { useErrorHandler } from '@/composables'
 
 const { handleApiError } = useErrorHandler()
@@ -129,13 +150,13 @@ const { handleApiError } = useErrorHandler()
 const PACKAGE_STATUS_OPTIONS = [
   { label: '生效中', value: 'active' },
   { label: '未生效', value: 'inactive' },
-  { label: '已售罄', value: 'soldout' }
+  { label: '已售罄', value: 'soldout' },
 ]
 
 const searchForm = reactive<PackageListParams>({
   keyword: '',
   status: undefined,
-  vehicleType: ''
+  vehicleType: '',
 })
 
 const searchFields = computed<SearchField[]>(() => [
@@ -144,7 +165,7 @@ const searchFields = computed<SearchField[]>(() => [
     label: '关键词',
     type: 'input',
     placeholder: '套餐名称',
-    width: '200px'
+    width: '200px',
   },
   {
     prop: 'status',
@@ -152,15 +173,15 @@ const searchFields = computed<SearchField[]>(() => [
     type: 'select',
     placeholder: '请选择状态',
     width: '150px',
-    options: PACKAGE_STATUS_OPTIONS
+    options: PACKAGE_STATUS_OPTIONS,
   },
   {
     prop: 'vehicleType',
     label: '车型',
     type: 'input',
     placeholder: '车型名称',
-    width: '150px'
-  }
+    width: '150px',
+  },
 ])
 
 const tableColumns: TableColumn[] = [
@@ -173,7 +194,7 @@ const tableColumns: TableColumn[] = [
   { prop: 'quantity', label: '数量统计', width: 120, slot: 'quantity' },
   { prop: 'includes', label: '包含内容', minWidth: 250, slot: 'includes' },
   { prop: 'startDate', label: '开始时间', width: 120 },
-  { prop: 'endDate', label: '结束时间', width: 120 }
+  { prop: 'endDate', label: '结束时间', width: 120 },
 ]
 
 // 工具栏按钮配置
@@ -182,26 +203,26 @@ const toolbarButtons: ToolbarButton[] = [
     label: '新增套餐',
     type: 'primary',
     icon: Plus,
-    onClick: () => handleCreate()
-  }
+    onClick: () => handleCreate(),
+  },
 ]
 
 const tableActions: TableAction[] = [
   {
     label: '查看',
     type: 'primary',
-    onClick: (row: Package) => handleView(row)
+    onClick: (row: Package) => handleView(row),
   },
   {
     label: '编辑',
     type: 'primary',
-    onClick: (row: Package) => handleEdit(row)
+    onClick: (row: Package) => handleEdit(row),
   },
   {
     label: '删除',
     type: 'danger',
-    onClick: (row: Package) => handleDelete(row)
-  }
+    onClick: (row: Package) => handleDelete(row),
+  },
 ]
 
 const packageList = ref<Package[]>([])
@@ -210,7 +231,7 @@ const loading = ref(false)
 const pagination = reactive({
   page: 1,
   pageSize: 10,
-  total: 0
+  total: 0,
 })
 
 // 对话框状态
@@ -229,7 +250,7 @@ const VEHICLE_TYPE_OPTIONS = [
   { label: 'A型房车', value: 'A型房车' },
   { label: 'B型房车', value: 'B型房车' },
   { label: 'C型房车', value: 'C型房车' },
-  { label: '拖挂房车', value: '拖挂房车' }
+  { label: '拖挂房车', value: '拖挂房车' },
 ]
 
 // 表单数据
@@ -245,14 +266,14 @@ const formData = reactive({
   startDate: '',
   endDate: '',
   includes: [] as string[],
-  description: ''
+  description: '',
 })
 
 // 表单字段配置
 const formFields = computed(() => [
   {
     type: 'divider',
-    label: '基本信息'
+    label: '基本信息',
   },
   {
     type: 'row',
@@ -262,16 +283,16 @@ const formFields = computed(() => [
         label: '套餐名称',
         type: 'input',
         placeholder: '请输入套餐名称',
-        span: 12
+        span: 12,
       },
       {
         prop: 'status',
         label: '套餐状态',
         type: 'select',
         options: PACKAGE_STATUS_OPTIONS,
-        span: 12
-      }
-    ]
+        span: 12,
+      },
+    ],
   },
   {
     type: 'row',
@@ -281,7 +302,7 @@ const formFields = computed(() => [
         label: '适用车型',
         type: 'select',
         options: VEHICLE_TYPE_OPTIONS,
-        span: 12
+        span: 12,
       },
       {
         prop: 'days',
@@ -289,13 +310,13 @@ const formFields = computed(() => [
         type: 'number',
         min: 1,
         span: 12,
-        tip: '单位：天'
-      }
-    ]
+        tip: '单位：天',
+      },
+    ],
   },
   {
     type: 'divider',
-    label: '价格设置'
+    label: '价格设置',
   },
   {
     type: 'row',
@@ -306,7 +327,7 @@ const formFields = computed(() => [
         type: 'number',
         min: 0,
         span: 8,
-        tip: '单位：元'
+        tip: '单位：元',
       },
       {
         prop: 'packagePrice',
@@ -314,7 +335,7 @@ const formFields = computed(() => [
         type: 'number',
         min: 0,
         span: 8,
-        tip: '单位：元'
+        tip: '单位：元',
       },
       {
         prop: 'discount',
@@ -323,13 +344,13 @@ const formFields = computed(() => [
         min: 0,
         max: 100,
         span: 8,
-        tip: '单位：%'
-      }
-    ]
+        tip: '单位：%',
+      },
+    ],
   },
   {
     type: 'divider',
-    label: '发行设置'
+    label: '发行设置',
   },
   {
     type: 'row',
@@ -339,26 +360,26 @@ const formFields = computed(() => [
         label: '发行数量',
         type: 'number',
         min: 1,
-        span: 12
+        span: 12,
       },
       {
         prop: 'startDate',
         label: '开始日期',
         type: 'date',
         valueFormat: 'YYYY-MM-DD',
-        span: 12
-      }
-    ]
+        span: 12,
+      },
+    ],
   },
   {
     prop: 'endDate',
     label: '结束日期',
     type: 'date',
-    valueFormat: 'YYYY-MM-DD'
+    valueFormat: 'YYYY-MM-DD',
   },
   {
     type: 'divider',
-    label: '套餐内容'
+    label: '套餐内容',
   },
   {
     prop: 'includes',
@@ -366,7 +387,7 @@ const formFields = computed(() => [
     type: 'textarea',
     rows: 3,
     placeholder: '请输入包含内容，多项用逗号分隔',
-    tip: '例如：基础保险,GPS导航,户外桌椅'
+    tip: '例如：基础保险,GPS导航,户外桌椅',
   },
   {
     prop: 'description',
@@ -374,8 +395,8 @@ const formFields = computed(() => [
     type: 'textarea',
     rows: 4,
     placeholder: '请输入套餐描述',
-    maxlength: 500
-  }
+    maxlength: 500,
+  },
 ]) as any
 
 // 表单验证规则
@@ -389,7 +410,7 @@ const formRules = {
   discount: [{ required: true, message: '请输入优惠折扣', trigger: 'blur' }],
   totalQuantity: [{ required: true, message: '请输入发行数量', trigger: 'blur' }],
   startDate: [{ required: true, message: '请选择开始日期', trigger: 'change' }],
-  endDate: [{ required: true, message: '请选择结束日期', trigger: 'change' }]
+  endDate: [{ required: true, message: '请选择结束日期', trigger: 'change' }],
 }
 
 const loadPackageList = async () => {
@@ -398,10 +419,10 @@ const loadPackageList = async () => {
     const params: PackageListParams = {
       page: pagination.page,
       pageSize: pagination.pageSize,
-      ...searchForm
+      ...searchForm,
     }
 
-    const res = await getPackageList(params) as any
+    const res = (await getPackageList(params)) as any
     packageList.value = res.data.list
     pagination.total = res.data.total
   } catch (error) {
@@ -482,15 +503,11 @@ const handleView = (row: Package) => {
 // 删除套餐
 const handleDelete = async (row: Package) => {
   try {
-    await ElMessageBox.confirm(
-      `确定要删除特惠套餐"${row.name}"吗？`,
-      '删除确认',
-      {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }
-    )
+    await ElMessageBox.confirm(`确定要删除特惠套餐"${row.name}"吗？`, '删除确认', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    })
 
     // TODO: 调用删除API
     ElMessage.success('删除成功')
@@ -508,7 +525,10 @@ const handleSubmit = async (data: any) => {
   try {
     // 处理包含内容字段(将逗号分隔的字符串转为数组)
     if (typeof data.includes === 'string') {
-      data.includes = data.includes.split(',').map((item: string) => item.trim()).filter((item: string) => item)
+      data.includes = data.includes
+        .split(',')
+        .map((item: string) => item.trim())
+        .filter((item: string) => item)
     }
 
     if (isEdit.value) {
@@ -542,7 +562,7 @@ const getPackageStatusTag = (status: string) => {
   const tagMap: Record<string, string> = {
     active: 'success',
     inactive: 'info',
-    soldout: 'danger'
+    soldout: 'danger',
   }
   return tagMap[status] || 'info'
 }
@@ -551,7 +571,7 @@ const getPackageStatusLabel = (status: string) => {
   const labelMap: Record<string, string> = {
     active: '生效中',
     inactive: '未生效',
-    soldout: '已售罄'
+    soldout: '已售罄',
   }
   return labelMap[status] || status
 }

@@ -1,8 +1,6 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="partner-stores-container">
-    
-
     <SearchForm
       v-model="searchForm"
       :fields="searchFields"
@@ -44,7 +42,7 @@ import { exportToCSV } from '@/utils/export'
 const searchForm = ref({
   partnerId: null as number | null,
   keyword: '',
-  status: ''
+  status: '',
 })
 
 // 合作商列表
@@ -57,13 +55,13 @@ const searchFields: SearchField[] = [
     prop: 'partnerId',
     label: '合作商',
     placeholder: '请选择合作商',
-    options: partnerOptions
+    options: partnerOptions,
   },
   {
     type: 'input',
     prop: 'keyword',
     label: '关键词',
-    placeholder: '门店名称/门店编码/城市'
+    placeholder: '门店名称/门店编码/城市',
   },
   {
     type: 'select',
@@ -72,9 +70,9 @@ const searchFields: SearchField[] = [
     placeholder: '请选择状态',
     options: [
       { label: '营业中', value: 'active' },
-      { label: '已停业', value: 'inactive' }
-    ]
-  }
+      { label: '已停业', value: 'inactive' },
+    ],
+  },
 ]
 
 // 表格数据
@@ -83,7 +81,7 @@ const loading = ref(false)
 const pagination = reactive({
   page: 1,
   pageSize: 10,
-  total: 0
+  total: 0,
 })
 
 // 表格列配置
@@ -95,7 +93,7 @@ const tableColumns: TableColumn[] = [
   { prop: 'cityName', label: '城市', width: 100 },
   { prop: 'address', label: '地址', minWidth: 200 },
   { prop: 'vehicleCount', label: '车辆数', width: 100 },
-  { prop: 'status', label: '状态', width: 100, slot: 'status' }
+  { prop: 'status', label: '状态', width: 100, slot: 'status' },
 ]
 
 // 工具栏按钮配置
@@ -103,17 +101,17 @@ const toolbarButtons: ToolbarButton[] = [
   {
     label: '导出',
     icon: Download,
-    onClick: handleExport
-  }
+    onClick: handleExport,
+  },
 ]
 
 // 获取合作商列表
 async function fetchPartnerList() {
   try {
     const { list } = await getPartnerList({ page: 1, pageSize: 100 })
-    partnerOptions.value = list.map((partner) => ({
+    partnerOptions.value = list.map(partner => ({
       label: partner.name,
-      value: partner.id
+      value: partner.id,
     }))
   } catch (error) {
     console.error('获取合作商列表失败:', error)
@@ -140,7 +138,7 @@ async function fetchStoreList() {
       if (searchForm.value.keyword) {
         const keyword = searchForm.value.keyword.toLowerCase()
         filteredStores = filteredStores.filter(
-          (store) =>
+          store =>
             store.storeName.toLowerCase().includes(keyword) ||
             store.storeCode.toLowerCase().includes(keyword) ||
             store.cityName.toLowerCase().includes(keyword)
@@ -148,7 +146,7 @@ async function fetchStoreList() {
       }
 
       if (searchForm.value.status) {
-        filteredStores = filteredStores.filter((store) => store.status === searchForm.value.status)
+        filteredStores = filteredStores.filter(store => store.status === searchForm.value.status)
       }
 
       // 分页
@@ -166,7 +164,7 @@ async function fetchStoreList() {
       if (searchForm.value.keyword) {
         const keyword = searchForm.value.keyword.toLowerCase()
         filteredStores = filteredStores.filter(
-          (store) =>
+          store =>
             store.storeName.toLowerCase().includes(keyword) ||
             store.storeCode.toLowerCase().includes(keyword) ||
             store.cityName.toLowerCase().includes(keyword)
@@ -174,7 +172,7 @@ async function fetchStoreList() {
       }
 
       if (searchForm.value.status) {
-        filteredStores = filteredStores.filter((store) => store.status === searchForm.value.status)
+        filteredStores = filteredStores.filter(store => store.status === searchForm.value.status)
       }
 
       // 分页
@@ -202,7 +200,7 @@ function handleReset() {
   searchForm.value = {
     partnerId: null,
     keyword: '',
-    status: ''
+    status: '',
   }
   pagination.page = 1
   fetchStoreList()
@@ -223,12 +221,12 @@ function handleExport() {
     { key: 'cityName', label: '城市' },
     { key: 'address', label: '地址' },
     { key: 'vehicleCount', label: '车辆数' },
-    { key: 'status', label: '状态' }
+    { key: 'status', label: '状态' },
   ]
 
-  const exportData = storeList.value.map((store) => ({
+  const exportData = storeList.value.map(store => ({
     ...store,
-    status: store.status === 'active' ? '营业中' : '已停业'
+    status: store.status === 'active' ? '营业中' : '已停业',
   }))
 
   exportToCSV(exportData, columns, '合作商门店列表')

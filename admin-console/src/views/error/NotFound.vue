@@ -9,12 +9,8 @@
       <h1 class="error-title">404</h1>
       <p class="error-message">抱歉，您访问的页面不存在</p>
       <div class="error-actions">
-        <el-button type="primary" @click="$router.push('/dashboard')">
-          返回工作台
-        </el-button>
-        <el-button @click="$router.go(-1)">
-          返回上页
-        </el-button>
+        <el-button type="primary" @click="$router.push('/dashboard')"> 返回工作台 </el-button>
+        <el-button @click="$router.go(-1)"> 返回上页 </el-button>
       </div>
     </div>
   </div>

@@ -10,7 +10,7 @@
 const VIRTUAL_PLATE_PREFIX = {
   platform: 'DD', // 平台自有车辆
   hosting: 'TG', // 托管车辆
-  cooperative: 'HZ' // 合作商车辆
+  cooperative: 'HZ', // 合作商车辆
 } as const
 
 /**
@@ -38,9 +38,7 @@ export function generateVirtualPlate(
 
   // 从当前月份的虚拟牌照中找出最大序号
   const currentMonthPrefix = `${prefix}${year}${month}`
-  const currentMonthPlates = existingPlates.filter(plate =>
-    plate.startsWith(currentMonthPrefix)
-  )
+  const currentMonthPlates = existingPlates.filter(plate => plate.startsWith(currentMonthPrefix))
 
   let maxSequence = 0
   currentMonthPlates.forEach(plate => {
@@ -145,7 +143,7 @@ export function parseVirtualPlate(plate: string): {
     year: fullYear,
     month,
     sequence,
-    generatedDate
+    generatedDate,
   }
 }
 
@@ -198,7 +196,7 @@ export function getVirtualPlateDisplayText(plate: string): string {
   const typeMap = {
     platform: '平台自有',
     hosting: '托管',
-    cooperative: '合作商'
+    cooperative: '合作商',
   }
 
   const typeName = info.ownershipType ? typeMap[info.ownershipType] : '未知'
@@ -230,8 +228,10 @@ export function isValidRealPlate(plate: string): boolean {
   // 中国车牌格式：
   // 普通车牌：省份简称(1位) + 字母(1位) + 5位数字或字母
   // 新能源车牌：省份简称(1位) + 字母(1位) + 6位数字或字母
-  const normalPlateRegex = /^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领][A-Z][A-HJ-NP-Z0-9]{5}$/
-  const newEnergyPlateRegex = /^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领][A-Z][A-HJ-NP-Z0-9]{6}$/
+  const normalPlateRegex =
+    /^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领][A-Z][A-HJ-NP-Z0-9]{5}$/
+  const newEnergyPlateRegex =
+    /^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领][A-Z][A-HJ-NP-Z0-9]{6}$/
 
   return normalPlateRegex.test(plate) || newEnergyPlateRegex.test(plate)
 }

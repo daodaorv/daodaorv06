@@ -145,7 +145,7 @@ const mockPartners: Partner[] = [
     totalOrders: 856,
     totalRevenue: 2580000,
     createdAt: '2024-01-15T08:00:00.000Z',
-    updatedAt: '2024-12-05T10:00:00.000Z'
+    updatedAt: '2024-12-05T10:00:00.000Z',
   },
   {
     id: 2,
@@ -163,7 +163,7 @@ const mockPartners: Partner[] = [
     totalOrders: 678,
     totalRevenue: 2034000,
     createdAt: '2024-02-10T08:00:00.000Z',
-    updatedAt: '2024-12-05T10:00:00.000Z'
+    updatedAt: '2024-12-05T10:00:00.000Z',
   },
   {
     id: 3,
@@ -181,7 +181,7 @@ const mockPartners: Partner[] = [
     totalOrders: 432,
     totalRevenue: 1296000,
     createdAt: '2024-03-05T08:00:00.000Z',
-    updatedAt: '2024-12-05T10:00:00.000Z'
+    updatedAt: '2024-12-05T10:00:00.000Z',
   },
   {
     id: 4,
@@ -199,7 +199,7 @@ const mockPartners: Partner[] = [
     totalOrders: 325,
     totalRevenue: 975000,
     createdAt: '2024-04-12T08:00:00.000Z',
-    updatedAt: '2024-12-05T10:00:00.000Z'
+    updatedAt: '2024-12-05T10:00:00.000Z',
   },
   {
     id: 5,
@@ -217,8 +217,8 @@ const mockPartners: Partner[] = [
     totalOrders: 156,
     totalRevenue: 468000,
     createdAt: '2024-05-20T08:00:00.000Z',
-    updatedAt: '2024-11-15T10:00:00.000Z'
-  }
+    updatedAt: '2024-11-15T10:00:00.000Z',
+  },
 ]
 
 const mockPartnerStores: PartnerStore[] = [
@@ -231,7 +231,7 @@ const mockPartnerStores: PartnerStore[] = [
     cityName: '北京',
     address: '北京市朝阳区建国路88号',
     vehicleCount: 8,
-    status: 'active'
+    status: 'active',
   },
   {
     id: 2,
@@ -242,7 +242,7 @@ const mockPartnerStores: PartnerStore[] = [
     cityName: '北京',
     address: '北京市海淀区中关村大街1号',
     vehicleCount: 7,
-    status: 'active'
+    status: 'active',
   },
   {
     id: 3,
@@ -253,8 +253,8 @@ const mockPartnerStores: PartnerStore[] = [
     cityName: '上海',
     address: '上海市浦东新区世纪大道1000号',
     vehicleCount: 10,
-    status: 'active'
-  }
+    status: 'active',
+  },
 ]
 
 const mockPartnerOrders: PartnerOrder[] = [
@@ -275,7 +275,7 @@ const mockPartnerOrders: PartnerOrder[] = [
     storeName: '叨叨房车北京朝阳店',
     createdBy: '张三',
     createdAt: '2024-12-05T10:00:00.000Z',
-    updatedAt: '2024-12-05T10:00:00.000Z'
+    updatedAt: '2024-12-05T10:00:00.000Z',
   },
   {
     id: 2,
@@ -294,13 +294,15 @@ const mockPartnerOrders: PartnerOrder[] = [
     storeName: '叨叨房车上海浦东店',
     createdBy: '李四',
     createdAt: '2024-12-05T11:00:00.000Z',
-    updatedAt: '2024-12-05T11:00:00.000Z'
-  }
+    updatedAt: '2024-12-05T11:00:00.000Z',
+  },
 ]
 
 // Mock API 实现
-export function mockGetPartnerList(params: PartnerListParams): Promise<{ list: Partner[]; total: number }> {
-  return new Promise((resolve) => {
+export function mockGetPartnerList(
+  params: PartnerListParams
+): Promise<{ list: Partner[]; total: number }> {
+  return new Promise(resolve => {
     setTimeout(() => {
       let filteredList = [...mockPartners]
 
@@ -308,7 +310,7 @@ export function mockGetPartnerList(params: PartnerListParams): Promise<{ list: P
       if (params.keyword) {
         const keyword = params.keyword.toLowerCase()
         filteredList = filteredList.filter(
-          (partner) =>
+          partner =>
             partner.name.toLowerCase().includes(keyword) ||
             partner.contactPerson.toLowerCase().includes(keyword) ||
             partner.phone.includes(keyword)
@@ -317,12 +319,14 @@ export function mockGetPartnerList(params: PartnerListParams): Promise<{ list: P
 
       // 合作状态筛选
       if (params.cooperationStatus) {
-        filteredList = filteredList.filter((partner) => partner.cooperationStatus === params.cooperationStatus)
+        filteredList = filteredList.filter(
+          partner => partner.cooperationStatus === params.cooperationStatus
+        )
       }
 
       // 信用评级筛选
       if (params.creditRating) {
-        filteredList = filteredList.filter((partner) => partner.creditRating === params.creditRating)
+        filteredList = filteredList.filter(partner => partner.creditRating === params.creditRating)
       }
 
       // 分页
@@ -332,7 +336,7 @@ export function mockGetPartnerList(params: PartnerListParams): Promise<{ list: P
 
       resolve({
         list,
-        total: filteredList.length
+        total: filteredList.length,
       })
     }, 300)
   })
@@ -341,7 +345,7 @@ export function mockGetPartnerList(params: PartnerListParams): Promise<{ list: P
 export function mockGetPartnerDetail(id: number): Promise<Partner> {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      const partner = mockPartners.find((p) => p.id === id)
+      const partner = mockPartners.find(p => p.id === id)
       if (partner) {
         resolve(partner)
       } else {
@@ -352,7 +356,7 @@ export function mockGetPartnerDetail(id: number): Promise<Partner> {
 }
 
 export function mockCreatePartner(data: CreatePartnerParams): Promise<Partner> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const newPartner: Partner = {
         id: mockPartners.length + 1,
@@ -364,7 +368,7 @@ export function mockCreatePartner(data: CreatePartnerParams): Promise<Partner> {
         totalOrders: 0,
         totalRevenue: 0,
         createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
+        updatedAt: new Date().toISOString(),
       }
       mockPartners.push(newPartner)
       resolve(newPartner)
@@ -375,12 +379,12 @@ export function mockCreatePartner(data: CreatePartnerParams): Promise<Partner> {
 export function mockUpdatePartner(id: number, data: UpdatePartnerParams): Promise<Partner> {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      const index = mockPartners.findIndex((p) => p.id === id)
+      const index = mockPartners.findIndex(p => p.id === id)
       if (index !== -1) {
         mockPartners[index] = {
           ...mockPartners[index],
           ...data,
-          updatedAt: new Date().toISOString()
+          updatedAt: new Date().toISOString(),
         }
         resolve(mockPartners[index])
       } else {
@@ -393,7 +397,7 @@ export function mockUpdatePartner(id: number, data: UpdatePartnerParams): Promis
 export function mockDeletePartner(id: number): Promise<void> {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      const index = mockPartners.findIndex((p) => p.id === id)
+      const index = mockPartners.findIndex(p => p.id === id)
       if (index !== -1) {
         mockPartners.splice(index, 1)
         resolve()
@@ -405,17 +409,17 @@ export function mockDeletePartner(id: number): Promise<void> {
 }
 
 export function mockGetPartnerStats(): Promise<PartnerStats> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const stats: PartnerStats = {
         totalPartners: mockPartners.length,
-        activePartners: mockPartners.filter((p) => p.cooperationStatus === 'active').length,
+        activePartners: mockPartners.filter(p => p.cooperationStatus === 'active').length,
         totalStores: mockPartners.reduce((sum, p) => sum + p.storeCount, 0),
         totalVehicles: mockPartners.reduce((sum, p) => sum + p.vehicleCount, 0),
         totalOrders: mockPartners.reduce((sum, p) => sum + p.totalOrders, 0),
         totalRevenue: mockPartners.reduce((sum, p) => sum + p.totalRevenue, 0),
         monthlyRevenue: 856000,
-        averagePriceDifference: 650
+        averagePriceDifference: 650,
       }
       resolve(stats)
     }, 200)
@@ -423,9 +427,9 @@ export function mockGetPartnerStats(): Promise<PartnerStats> {
 }
 
 export function mockGetPartnerStores(partnerId: number): Promise<PartnerStore[]> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
-      const stores = mockPartnerStores.filter((s) => s.partnerId === partnerId)
+      const stores = mockPartnerStores.filter(s => s.partnerId === partnerId)
       resolve(stores)
     }, 200)
   })
@@ -436,13 +440,13 @@ export function mockGetPartnerOrders(params: {
   page: number
   pageSize: number
 }): Promise<{ list: PartnerOrder[]; total: number }> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       let filteredList = [...mockPartnerOrders]
 
       // 合作商筛选
       if (params.partnerId) {
-        filteredList = filteredList.filter((order) => order.partnerId === params.partnerId)
+        filteredList = filteredList.filter(order => order.partnerId === params.partnerId)
       }
 
       // 分页
@@ -452,14 +456,14 @@ export function mockGetPartnerOrders(params: {
 
       resolve({
         list,
-        total: filteredList.length
+        total: filteredList.length,
       })
     }, 300)
   })
 }
 
 export function mockCreatePartnerOrder(data: CreatePartnerOrderParams): Promise<PartnerOrder> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       // 模拟从订单表获取订单信息
       const daodaoOrderPrice = 3500 // 实际应该从订单表查询
@@ -473,7 +477,7 @@ export function mockCreatePartnerOrder(data: CreatePartnerOrderParams): Promise<
         orderId: data.orderId,
         orderNo: `DD${new Date().getTime()}`,
         partnerId: data.partnerId,
-        partnerName: mockPartners.find((p) => p.id === data.partnerId)?.name || '',
+        partnerName: mockPartners.find(p => p.id === data.partnerId)?.name || '',
         partnerOrderNo: data.partnerOrderNo,
         daodaoOrderPrice,
         partnerOrderPrice: data.partnerOrderPrice,
@@ -485,7 +489,7 @@ export function mockCreatePartnerOrder(data: CreatePartnerOrderParams): Promise<
         storeName: '叨叨房车北京朝阳店',
         createdBy: '当前用户',
         createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
+        updatedAt: new Date().toISOString(),
       }
       mockPartnerOrders.push(newOrder)
       resolve(newOrder)
@@ -493,10 +497,13 @@ export function mockCreatePartnerOrder(data: CreatePartnerOrderParams): Promise<
   })
 }
 
-export function mockUpdatePartnerOrder(id: number, data: UpdatePartnerOrderParams): Promise<PartnerOrder> {
+export function mockUpdatePartnerOrder(
+  id: number,
+  data: UpdatePartnerOrderParams
+): Promise<PartnerOrder> {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      const index = mockPartnerOrders.findIndex((o) => o.id === id)
+      const index = mockPartnerOrders.findIndex(o => o.id === id)
       if (index !== -1) {
         const order = mockPartnerOrders[index]
 
@@ -521,13 +528,15 @@ export function mockUpdatePartnerOrder(id: number, data: UpdatePartnerOrderParam
   })
 }
 
-export function mockGetPartnerSettlement(params: PartnerSettlementParams): Promise<PartnerSettlement[]> {
-  return new Promise((resolve) => {
+export function mockGetPartnerSettlement(
+  params: PartnerSettlementParams
+): Promise<PartnerSettlement[]> {
+  return new Promise(resolve => {
     setTimeout(() => {
       // 模拟结算数据
       const settlements: PartnerSettlement[] = mockPartners
-        .filter((p) => !params.partnerId || p.id === params.partnerId)
-        .map((partner) => ({
+        .filter(p => !params.partnerId || p.id === params.partnerId)
+        .map(partner => ({
           partnerId: partner.id,
           partnerName: partner.name,
           settlementPeriod: '2024-12',
@@ -536,7 +545,7 @@ export function mockGetPartnerSettlement(params: PartnerSettlementParams): Promi
           totalStoreProfit: Math.floor(Math.random() * 15000) + 9000,
           totalPlatformProfit: Math.floor(Math.random() * 35000) + 21000,
           settlementStatus: Math.random() > 0.5 ? 'completed' : 'pending',
-          settlementDate: Math.random() > 0.5 ? '2024-12-01T00:00:00.000Z' : null
+          settlementDate: Math.random() > 0.5 ? '2024-12-01T00:00:00.000Z' : null,
         }))
 
       resolve(settlements)

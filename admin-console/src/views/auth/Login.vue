@@ -37,18 +37,11 @@
         </el-form-item>
 
         <el-form-item>
-          <el-checkbox v-model="loginForm.remember">
-            记住密码
-          </el-checkbox>
+          <el-checkbox v-model="loginForm.remember"> 记住密码 </el-checkbox>
         </el-form-item>
 
         <el-form-item>
-          <el-button
-            type="primary"
-            :loading="loading"
-            @click="handleLogin"
-            class="login-btn"
-          >
+          <el-button type="primary" :loading="loading" @click="handleLogin" class="login-btn">
             {{ loading ? '登录中...' : '登录' }}
           </el-button>
         </el-form-item>

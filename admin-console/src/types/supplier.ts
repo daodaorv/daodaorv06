@@ -74,20 +74,23 @@ export const CONTRACT_STATUS_TEXT: Record<ContractStatus, string> = {
   pending: '待签署',
   signed: '已签署',
   expired: '已过期',
-  terminated: '已终止'
+  terminated: '已终止',
 }
 
 // 合作协议状态类型映射
-export const CONTRACT_STATUS_TYPE: Record<ContractStatus, 'info' | 'warning' | 'success' | 'danger'> = {
+export const CONTRACT_STATUS_TYPE: Record<
+  ContractStatus,
+  'info' | 'warning' | 'success' | 'danger'
+> = {
   draft: 'info',
   pending: 'warning',
   signed: 'success',
   expired: 'danger',
-  terminated: 'info'
+  terminated: 'info',
 }
 
 // 合作协议类型文本映射
 export const CONTRACT_TYPE_TEXT: Record<ContractType, string> = {
   electronic: '电子签署',
-  scanned: '扫描件'
+  scanned: '扫描件',
 }

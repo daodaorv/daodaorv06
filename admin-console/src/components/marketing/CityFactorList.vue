@@ -2,11 +2,7 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="city-factor-list">
-    <el-alert
-      type="info"
-      :closable="false"
-      style="margin-bottom: 16px"
-    >
+    <el-alert type="info" :closable="false" style="margin-bottom: 16px">
       <template #title>
         <div style="font-size: 13px">
           城市因子根据门店所在城市调整价格，同一城市只生效优先级最高的因子
@@ -47,13 +43,21 @@
         </el-tag>
       </template>
       <template #adjustmentValue="{ row }">
-        <span :style="{ color: row.adjustmentValue > 0 ? '#f56c6c' : '#67c23a', fontWeight: 'bold' }">
-          {{ row.adjustmentValue > 0 ? '+' : '' }}{{ row.adjustmentValue }}{{ row.adjustmentType === 'percentage' ? '%' : '元' }}
+        <span
+          :style="{ color: row.adjustmentValue > 0 ? '#f56c6c' : '#67c23a', fontWeight: 'bold' }"
+        >
+          {{ row.adjustmentValue > 0 ? '+' : '' }}{{ row.adjustmentValue
+          }}{{ row.adjustmentType === 'percentage' ? '%' : '元' }}
         </span>
       </template>
       <template #cities="{ row }">
         <div style="display: flex; flex-wrap: wrap; gap: 4px">
-          <el-tag v-for="(city, index) in row.cities.slice(0, 3)" :key="index" size="small" type="info">
+          <el-tag
+            v-for="(city, index) in row.cities.slice(0, 3)"
+            :key="index"
+            size="small"
+            type="info"
+          >
             {{ city }}
           </el-tag>
           <el-tag v-if="row.cities.length > 3" size="small" type="info">
@@ -96,7 +100,7 @@ const CITY_TIER_OPTIONS = [
   { label: '新一线城市', value: 'new_tier1' },
   { label: '二线城市', value: 'tier2' },
   { label: '三线城市', value: 'tier3' },
-  { label: '四线城市', value: 'tier4' }
+  { label: '四线城市', value: 'tier4' },
 ]
 
 // 城市选项（动态加载）
@@ -110,7 +114,7 @@ const loadCityOptions = async () => {
     const res = await getCityList({ status: 'active' })
     cityOptions.value = res.data.map((city: any) => ({
       label: city.name,
-      value: city.id
+      value: city.id,
     }))
   } catch (error) {
     console.error('加载城市列表失败:', error)
@@ -124,7 +128,7 @@ const loadCityOptions = async () => {
 const searchForm = reactive({
   keyword: '',
   cityTier: undefined,
-  status: undefined
+  status: undefined,
 })
 
 // 搜索字段配置
@@ -134,7 +138,7 @@ const searchFields = computed<SearchField[]>(() => [
     label: '关键词',
     type: 'input',
     placeholder: '因子名称或城市',
-    width: '200px'
+    width: '200px',
   },
   {
     prop: 'cityTier',
@@ -142,7 +146,7 @@ const searchFields = computed<SearchField[]>(() => [
     type: 'select',
     placeholder: '请选择分级',
     width: '150px',
-    options: CITY_TIER_OPTIONS
+    options: CITY_TIER_OPTIONS,
   },
   {
     prop: 'status',
@@ -152,9 +156,9 @@ const searchFields = computed<SearchField[]>(() => [
     width: '150px',
     options: [
       { label: '生效中', value: 'active' },
-      { label: '未生效', value: 'inactive' }
-    ]
-  }
+      { label: '未生效', value: 'inactive' },
+    ],
+  },
 ])
 
 // 表格列配置
@@ -167,7 +171,7 @@ const tableColumns: TableColumn[] = [
   { prop: 'adjustmentType', label: '调整类型', width: 120, slot: 'adjustmentType' },
   { prop: 'adjustmentValue', label: '调整值', width: 120, slot: 'adjustmentValue' },
   { prop: 'priority', label: '优先级', width: 100 },
-  { prop: 'description', label: '说明', minWidth: 200 }
+  { prop: 'description', label: '说明', minWidth: 200 },
 ]
 
 // 工具栏按钮配置
@@ -176,8 +180,8 @@ const toolbarButtons: ToolbarButton[] = [
     label: '新增城市因子',
     type: 'primary',
     icon: Plus,
-    onClick: () => handleCreate()
-  }
+    onClick: () => handleCreate(),
+  },
 ]
 
 // 表格操作列配置
@@ -185,13 +189,13 @@ const tableActions: TableAction[] = [
   {
     label: '编辑',
     type: 'primary',
-    onClick: (row: any) => handleEdit(row)
+    onClick: (row: any) => handleEdit(row),
   },
   {
     label: '删除',
     type: 'danger',
-    onClick: (row: any) => handleDelete(row)
-  }
+    onClick: (row: any) => handleDelete(row),
+  },
 ]
 
 // Mock 数据
@@ -205,7 +209,7 @@ const factorList = ref([
     adjustmentType: 'percentage',
     adjustmentValue: 30,
     priority: 80,
-    description: '一线城市基础价格上涨30%'
+    description: '一线城市基础价格上涨30%',
   },
   {
     id: 2,
@@ -216,7 +220,7 @@ const factorList = ref([
     adjustmentType: 'percentage',
     adjustmentValue: 20,
     priority: 70,
-    description: '新一线城市基础价格上涨20%'
+    description: '新一线城市基础价格上涨20%',
   },
   {
     id: 3,
@@ -227,7 +231,7 @@ const factorList = ref([
     adjustmentType: 'percentage',
     adjustmentValue: 10,
     priority: 60,
-    description: '二线城市基础价格上涨10%'
+    description: '二线城市基础价格上涨10%',
   },
   {
     id: 4,
@@ -238,8 +242,8 @@ const factorList = ref([
     adjustmentType: 'percentage',
     adjustmentValue: -10,
     priority: 50,
-    description: '三四线城市基础价格下降10%'
-  }
+    description: '三四线城市基础价格下降10%',
+  },
 ])
 
 const loading = ref(false)
@@ -248,7 +252,7 @@ const loading = ref(false)
 const pagination = reactive({
   page: 1,
   pageSize: 10,
-  total: factorList.value.length
+  total: factorList.value.length,
 })
 
 // 对话框状态
@@ -267,14 +271,14 @@ const formData = reactive({
   adjustmentType: 'percentage',
   adjustmentValue: 0,
   priority: 50,
-  description: ''
+  description: '',
 })
 
 // 表单字段配置
 const formFields = computed<FormField[]>(() => [
   {
     type: 'divider',
-    label: '基本信息'
+    label: '基本信息',
   },
   {
     type: 'row',
@@ -284,16 +288,16 @@ const formFields = computed<FormField[]>(() => [
         label: '因子名称',
         type: 'input',
         placeholder: '请输入因子名称',
-        span: 12
+        span: 12,
       },
       {
         prop: 'cityTier',
         label: '城市分级',
         type: 'select',
         options: CITY_TIER_OPTIONS,
-        span: 12
-      }
-    ]
+        span: 12,
+      },
+    ],
   },
   {
     type: 'row',
@@ -304,9 +308,9 @@ const formFields = computed<FormField[]>(() => [
         type: 'select',
         options: [
           { label: '生效中', value: 'active' },
-          { label: '未生效', value: 'inactive' }
+          { label: '未生效', value: 'inactive' },
         ],
-        span: 12
+        span: 12,
       },
       {
         prop: 'priority',
@@ -315,9 +319,9 @@ const formFields = computed<FormField[]>(() => [
         min: 1,
         max: 100,
         span: 12,
-        tip: '数字越大优先级越高，同一城市只生效优先级最高的因子'
-      }
-    ]
+        tip: '数字越大优先级越高，同一城市只生效优先级最高的因子',
+      },
+    ],
   },
   {
     prop: 'cityIds',
@@ -327,11 +331,11 @@ const formFields = computed<FormField[]>(() => [
     options: cityOptions.value,
     placeholder: '请选择适用城市',
     loading: loadingCities.value,
-    tip: '选择该因子适用的城市列表'
+    tip: '选择该因子适用的城市列表',
   },
   {
     type: 'divider',
-    label: '价格调整'
+    label: '价格调整',
   },
   {
     type: 'row',
@@ -342,18 +346,18 @@ const formFields = computed<FormField[]>(() => [
         type: 'select',
         options: [
           { label: '百分比', value: 'percentage' },
-          { label: '固定金额', value: 'fixed' }
+          { label: '固定金额', value: 'fixed' },
         ],
-        span: 12
+        span: 12,
       },
       {
         prop: 'adjustmentValue',
         label: '调整值',
         type: 'number',
         span: 12,
-        tip: '正数表示涨价，负数表示降价'
-      }
-    ]
+        tip: '正数表示涨价，负数表示降价',
+      },
+    ],
   },
   {
     prop: 'description',
@@ -361,8 +365,8 @@ const formFields = computed<FormField[]>(() => [
     type: 'textarea',
     rows: 3,
     placeholder: '请输入因子说明',
-    maxlength: 200
-  }
+    maxlength: 200,
+  },
 ])
 
 // 表单验证规则
@@ -373,7 +377,7 @@ const formRules = {
   cityIds: [{ required: true, message: '请选择适用城市', trigger: 'change' }],
   adjustmentType: [{ required: true, message: '请选择调整类型', trigger: 'change' }],
   adjustmentValue: [{ required: true, message: '请输入调整值', trigger: 'blur' }],
-  priority: [{ required: true, message: '请输入优先级', trigger: 'blur' }]
+  priority: [{ required: true, message: '请输入优先级', trigger: 'blur' }],
 }
 
 // 获取城市分级标签类型
@@ -383,7 +387,7 @@ const getCityTierTag = (tier: string) => {
     new_tier1: 'warning',
     tier2: 'primary',
     tier3: 'success',
-    tier4: 'info'
+    tier4: 'info',
   }
   return tagMap[tier] || 'info'
 }
@@ -395,7 +399,7 @@ const getCityTierLabel = (tier: string) => {
     new_tier1: '新一线城市',
     tier2: '二线城市',
     tier3: '三线城市',
-    tier4: '四线城市'
+    tier4: '四线城市',
   }
   return labelMap[tier] || tier
 }
@@ -458,15 +462,11 @@ const handleEdit = (row: any) => {
 // 删除
 const handleDelete = async (row: any) => {
   try {
-    await ElMessageBox.confirm(
-      `确定要删除城市因子"${row.name}"吗？`,
-      '删除确认',
-      {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }
-    )
+    await ElMessageBox.confirm(`确定要删除城市因子"${row.name}"吗？`, '删除确认', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    })
 
     ElMessage.success('删除成功')
     // TODO: 调用删除API

@@ -35,12 +35,7 @@ export function useListPage<T = any>(
     onError?: (error: any) => void
   } = {}
 ) {
-  const {
-    pageSize = 10,
-    immediate = true,
-    onSuccess,
-    onError
-  } = options
+  const { pageSize = 10, immediate = true, onSuccess, onError } = options
 
   // 搜索表单状态
   const searchForm = reactive({ ...initialSearchForm })
@@ -55,7 +50,7 @@ export function useListPage<T = any>(
   const pagination = reactive({
     page: 1,
     pageSize,
-    total: 0
+    total: 0,
   })
 
   // 是否有数据
@@ -73,7 +68,7 @@ export function useListPage<T = any>(
       const params = {
         ...searchForm,
         page: pagination.page,
-        pageSize: pagination.pageSize
+        pageSize: pagination.pageSize,
       }
 
       const response = await fetchFn(params)
@@ -203,6 +198,6 @@ export function useListPage<T = any>(
     handleSizeChange,
     handleCurrentChange,
     refresh,
-    refreshToFirst
+    refreshToFirst,
   }
 }

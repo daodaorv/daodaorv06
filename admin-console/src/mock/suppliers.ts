@@ -95,8 +95,8 @@ function generateContracts(supplierId: number, supplierName: string): SupplierCo
       jzqPdfUrl: `https://example.com/contracts/signed-${supplierId}-001.pdf`,
       remark: '当前有效合同',
       createdAt: oneYearAgo.toISOString(),
-      updatedAt: oneYearAgo.toISOString()
-    }
+      updatedAt: oneYearAgo.toISOString(),
+    },
   ]
 }
 
@@ -107,14 +107,14 @@ function generateServices(supplierId: number, type: SupplierType): SupplierServi
     { name: '深度保养', code: 'SRV_M_002', price: 1200, unit: '次' },
     { name: '年检服务', code: 'SRV_M_003', price: 800, unit: '次' },
     { name: '故障维修', code: 'SRV_M_004', price: 1500, unit: '次' },
-    { name: '零部件更换', code: 'SRV_M_005', price: 2000, unit: '次' }
+    { name: '零部件更换', code: 'SRV_M_005', price: 2000, unit: '次' },
   ]
 
   const insuranceServices = [
     { name: '交强险', code: 'SRV_I_001', price: 950, unit: '年' },
     { name: '商业险（基础）', code: 'SRV_I_002', price: 3500, unit: '年' },
     { name: '商业险（全面）', code: 'SRV_I_003', price: 8000, unit: '年' },
-    { name: '第三者责任险', code: 'SRV_I_004', price: 1200, unit: '年' }
+    { name: '第三者责任险', code: 'SRV_I_004', price: 1200, unit: '年' },
   ]
 
   const otherServices = [
@@ -122,11 +122,15 @@ function generateServices(supplierId: number, type: SupplierType): SupplierServi
     { name: '内饰清洁', code: 'SRV_O_002', price: 300, unit: '次' },
     { name: '深度清洁', code: 'SRV_O_003', price: 600, unit: '次' },
     { name: '道路救援', code: 'SRV_O_004', price: 500, unit: '次' },
-    { name: '拖车服务', code: 'SRV_O_005', price: 800, unit: '次' }
+    { name: '拖车服务', code: 'SRV_O_005', price: 800, unit: '次' },
   ]
 
-  const services = type === 'maintenance' ? maintenanceServices :
-                 type === 'insurance' ? insuranceServices : otherServices
+  const services =
+    type === 'maintenance'
+      ? maintenanceServices
+      : type === 'insurance'
+        ? insuranceServices
+        : otherServices
 
   return services.slice(0, Math.floor(Math.random() * 2) + 3).map((service, index) => ({
     id: supplierId * 100 + index + 1,
@@ -139,7 +143,7 @@ function generateServices(supplierId: number, type: SupplierType): SupplierServi
     status: 'active' as const,
     sortOrder: index + 1,
     createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString()
+    updatedAt: new Date().toISOString(),
   }))
 }
 
@@ -164,14 +168,14 @@ const mockSuppliers: Supplier[] = [
       serviceCount: 156,
       totalCost: 234000,
       createdAt: '2024-01-15T08:00:00.000Z',
-      updatedAt: '2024-12-05T10:00:00.000Z'
+      updatedAt: '2024-12-05T10:00:00.000Z',
     }
     const contracts = generateContracts(supplier.id, supplier.name)
     return {
       ...supplier,
       contracts,
       currentContract: contracts[0],
-      services: generateServices(supplier.id, supplier.type)
+      services: generateServices(supplier.id, supplier.type),
     }
   })(),
   (() => {
@@ -192,14 +196,14 @@ const mockSuppliers: Supplier[] = [
       serviceCount: 98,
       totalCost: 176400,
       createdAt: '2024-02-10T08:00:00.000Z',
-      updatedAt: '2024-12-05T10:00:00.000Z'
+      updatedAt: '2024-12-05T10:00:00.000Z',
     }
     const contracts = generateContracts(supplier.id, supplier.name)
     return {
       ...supplier,
       contracts,
       currentContract: contracts[0],
-      services: generateServices(supplier.id, supplier.type)
+      services: generateServices(supplier.id, supplier.type),
     }
   })(),
   (() => {
@@ -220,14 +224,14 @@ const mockSuppliers: Supplier[] = [
       serviceCount: 87,
       totalCost: 130500,
       createdAt: '2024-03-05T08:00:00.000Z',
-      updatedAt: '2024-12-05T10:00:00.000Z'
+      updatedAt: '2024-12-05T10:00:00.000Z',
     }
     const contracts = generateContracts(supplier.id, supplier.name)
     return {
       ...supplier,
       contracts,
       currentContract: contracts[0],
-      services: generateServices(supplier.id, supplier.type)
+      services: generateServices(supplier.id, supplier.type),
     }
   })(),
 
@@ -250,14 +254,14 @@ const mockSuppliers: Supplier[] = [
       serviceCount: 245,
       totalCost: 1960000,
       createdAt: '2024-01-20T08:00:00.000Z',
-      updatedAt: '2024-12-05T10:00:00.000Z'
+      updatedAt: '2024-12-05T10:00:00.000Z',
     }
     const contracts = generateContracts(supplier.id, supplier.name)
     return {
       ...supplier,
       contracts,
       currentContract: contracts[0],
-      services: generateServices(supplier.id, supplier.type)
+      services: generateServices(supplier.id, supplier.type),
     }
   })(),
   (() => {
@@ -278,14 +282,14 @@ const mockSuppliers: Supplier[] = [
       serviceCount: 198,
       totalCost: 1584000,
       createdAt: '2024-02-15T08:00:00.000Z',
-      updatedAt: '2024-12-05T10:00:00.000Z'
+      updatedAt: '2024-12-05T10:00:00.000Z',
     }
     const contracts = generateContracts(supplier.id, supplier.name)
     return {
       ...supplier,
       contracts,
       currentContract: contracts[0],
-      services: generateServices(supplier.id, supplier.type)
+      services: generateServices(supplier.id, supplier.type),
     }
   })(),
   (() => {
@@ -306,14 +310,14 @@ const mockSuppliers: Supplier[] = [
       serviceCount: 167,
       totalCost: 1336000,
       createdAt: '2024-03-10T08:00:00.000Z',
-      updatedAt: '2024-12-05T10:00:00.000Z'
+      updatedAt: '2024-12-05T10:00:00.000Z',
     }
     const contracts = generateContracts(supplier.id, supplier.name)
     return {
       ...supplier,
       contracts,
       currentContract: contracts[0],
-      services: generateServices(supplier.id, supplier.type)
+      services: generateServices(supplier.id, supplier.type),
     }
   })(),
 
@@ -336,14 +340,14 @@ const mockSuppliers: Supplier[] = [
       serviceCount: 432,
       totalCost: 172800,
       createdAt: '2024-04-05T08:00:00.000Z',
-      updatedAt: '2024-12-05T10:00:00.000Z'
+      updatedAt: '2024-12-05T10:00:00.000Z',
     }
     const contracts = generateContracts(supplier.id, supplier.name)
     return {
       ...supplier,
       contracts,
       currentContract: contracts[0],
-      services: generateServices(supplier.id, supplier.type)
+      services: generateServices(supplier.id, supplier.type),
     }
   })(),
   (() => {
@@ -364,34 +368,36 @@ const mockSuppliers: Supplier[] = [
       serviceCount: 89,
       totalCost: 89000,
       createdAt: '2024-05-12T08:00:00.000Z',
-      updatedAt: '2024-12-05T10:00:00.000Z'
+      updatedAt: '2024-12-05T10:00:00.000Z',
     }
     const contracts = generateContracts(supplier.id, supplier.name)
     return {
       ...supplier,
       contracts,
       currentContract: contracts[0],
-      services: generateServices(supplier.id, supplier.type)
+      services: generateServices(supplier.id, supplier.type),
     }
-  })()
+  })(),
 ]
 
 // Mock API 实现
-export function mockGetSupplierList(params: SupplierListParams): Promise<{ list: Supplier[]; total: number }> {
-  return new Promise((resolve) => {
+export function mockGetSupplierList(
+  params: SupplierListParams
+): Promise<{ list: Supplier[]; total: number }> {
+  return new Promise(resolve => {
     setTimeout(() => {
       let filteredList = [...mockSuppliers]
 
       // 类型筛选
       if (params.type) {
-        filteredList = filteredList.filter((supplier) => supplier.type === params.type)
+        filteredList = filteredList.filter(supplier => supplier.type === params.type)
       }
 
       // 关键词搜索
       if (params.keyword) {
         const keyword = params.keyword.toLowerCase()
         filteredList = filteredList.filter(
-          (supplier) =>
+          supplier =>
             supplier.name.toLowerCase().includes(keyword) ||
             supplier.contactPerson.toLowerCase().includes(keyword) ||
             supplier.phone.includes(keyword)
@@ -400,12 +406,14 @@ export function mockGetSupplierList(params: SupplierListParams): Promise<{ list:
 
       // 合作状态筛选
       if (params.cooperationStatus) {
-        filteredList = filteredList.filter((supplier) => supplier.cooperationStatus === params.cooperationStatus)
+        filteredList = filteredList.filter(
+          supplier => supplier.cooperationStatus === params.cooperationStatus
+        )
       }
 
       // 城市筛选
       if (params.city) {
-        filteredList = filteredList.filter((supplier) => supplier.city === params.city)
+        filteredList = filteredList.filter(supplier => supplier.city === params.city)
       }
 
       // 分页
@@ -415,7 +423,7 @@ export function mockGetSupplierList(params: SupplierListParams): Promise<{ list:
 
       resolve({
         list,
-        total: filteredList.length
+        total: filteredList.length,
       })
     }, 300)
   })
@@ -424,7 +432,7 @@ export function mockGetSupplierList(params: SupplierListParams): Promise<{ list:
 export function mockGetSupplierDetail(id: number): Promise<Supplier> {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      const supplier = mockSuppliers.find((s) => s.id === id)
+      const supplier = mockSuppliers.find(s => s.id === id)
       if (supplier) {
         resolve(supplier)
       } else {
@@ -435,7 +443,7 @@ export function mockGetSupplierDetail(id: number): Promise<Supplier> {
 }
 
 export function mockCreateSupplier(data: CreateSupplierParams): Promise<Supplier> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const newId = mockSuppliers.length + 1
       const contracts = generateContracts(newId, data.name)
@@ -449,7 +457,7 @@ export function mockCreateSupplier(data: CreateSupplierParams): Promise<Supplier
         serviceCount: 0,
         totalCost: 0,
         createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
+        updatedAt: new Date().toISOString(),
       }
       mockSuppliers.push(newSupplier)
       resolve(newSupplier)
@@ -460,12 +468,12 @@ export function mockCreateSupplier(data: CreateSupplierParams): Promise<Supplier
 export function mockUpdateSupplier(id: number, data: UpdateSupplierParams): Promise<Supplier> {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      const index = mockSuppliers.findIndex((s) => s.id === id)
+      const index = mockSuppliers.findIndex(s => s.id === id)
       if (index !== -1) {
         mockSuppliers[index] = {
           ...mockSuppliers[index],
           ...data,
-          updatedAt: new Date().toISOString()
+          updatedAt: new Date().toISOString(),
         }
         resolve(mockSuppliers[index])
       } else {
@@ -478,7 +486,7 @@ export function mockUpdateSupplier(id: number, data: UpdateSupplierParams): Prom
 export function mockDeleteSupplier(id: number): Promise<void> {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      const index = mockSuppliers.findIndex((s) => s.id === id)
+      const index = mockSuppliers.findIndex(s => s.id === id)
       if (index !== -1) {
         mockSuppliers.splice(index, 1)
         resolve()
@@ -490,17 +498,18 @@ export function mockDeleteSupplier(id: number): Promise<void> {
 }
 
 export function mockGetSupplierStats(): Promise<SupplierStats> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const stats: SupplierStats = {
         totalSuppliers: mockSuppliers.length,
-        maintenanceSuppliers: mockSuppliers.filter((s) => s.type === 'maintenance').length,
-        insuranceSuppliers: mockSuppliers.filter((s) => s.type === 'insurance').length,
-        otherSuppliers: mockSuppliers.filter((s) => s.type === 'other').length,
-        activeSuppliers: mockSuppliers.filter((s) => s.cooperationStatus === 'active').length,
+        maintenanceSuppliers: mockSuppliers.filter(s => s.type === 'maintenance').length,
+        insuranceSuppliers: mockSuppliers.filter(s => s.type === 'insurance').length,
+        otherSuppliers: mockSuppliers.filter(s => s.type === 'other').length,
+        activeSuppliers: mockSuppliers.filter(s => s.cooperationStatus === 'active').length,
         totalServiceCount: mockSuppliers.reduce((sum, s) => sum + s.serviceCount, 0),
         totalCost: mockSuppliers.reduce((sum, s) => sum + s.totalCost, 0),
-        averageRating: mockSuppliers.reduce((sum, s) => sum + s.qualityRating, 0) / mockSuppliers.length
+        averageRating:
+          mockSuppliers.reduce((sum, s) => sum + s.qualityRating, 0) / mockSuppliers.length,
       }
       resolve(stats)
     }, 200)

@@ -1,8 +1,6 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="supplier-list-container">
-    
-
     <StatsCard v-if="showStats" :stats="statsConfig" />
 
     <SearchForm
@@ -29,7 +27,11 @@
         </el-tag>
       </template>
       <template #contractStatus="{ row }">
-        <el-tag v-if="row.currentContract" :type="CONTRACT_STATUS_TYPE[row.currentContract.status]" size="small">
+        <el-tag
+          v-if="row.currentContract"
+          :type="CONTRACT_STATUS_TYPE[row.currentContract.status]"
+          size="small"
+        >
           {{ CONTRACT_STATUS_TEXT[row.currentContract.status] }}
         </el-tag>
         <el-tag v-else type="info" size="small">无合同</el-tag>
@@ -37,28 +39,16 @@
       <template #qualityRating="{ row }">
         <el-rate v-model="row.qualityRating" disabled show-score text-color="#ff9900" />
       </template>
-      <template #totalCost="{ row }">
-        ¥{{ row.totalCost.toLocaleString() }}
-      </template>
+      <template #totalCost="{ row }"> ¥{{ row.totalCost.toLocaleString() }} </template>
     </DataTable>
 
     <!-- 合作协议管理对话框 -->
-    <el-dialog
-      v-model="contractDialogVisible"
-      title="合作协议管理"
-      width="1200px"
-      destroy-on-close
-    >
+    <el-dialog v-model="contractDialogVisible" title="合作协议管理" width="1200px" destroy-on-close>
       <ContractManagement v-if="currentSupplierId" :supplier-id="currentSupplierId" />
     </el-dialog>
 
     <!-- 服务列表管理对话框 -->
-    <el-dialog
-      v-model="serviceDialogVisible"
-      title="服务列表管理"
-      width="1000px"
-      destroy-on-close
-    >
+    <el-dialog v-model="serviceDialogVisible" title="服务列表管理" width="1000px" destroy-on-close>
       <ServiceManagement v-if="currentSupplierId" :supplier-id="currentSupplierId" />
     </el-dialog>
 
@@ -69,12 +59,7 @@
       width="800px"
       @close="handleDialogClose"
     >
-      <el-form
-        ref="formRef"
-        :model="form"
-        :rules="formRules"
-        label-width="120px"
-      >
+      <el-form ref="formRef" :model="form" :rules="formRules" label-width="120px">
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="供应商名称" prop="name">
@@ -106,7 +91,12 @@
           <CitySelector v-model="form.city" width="100%" />
         </el-form-item>
         <el-form-item label="服务范围" prop="serviceScope">
-          <el-input v-model="form.serviceScope" type="textarea" :rows="2" placeholder="请输入服务范围" />
+          <el-input
+            v-model="form.serviceScope"
+            type="textarea"
+            :rows="2"
+            placeholder="请输入服务范围"
+          />
         </el-form-item>
         <el-row :gutter="20">
           <el-col :span="12">
@@ -123,7 +113,11 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="合作状态" prop="cooperationStatus">
-              <el-select v-model="form.cooperationStatus" placeholder="请选择合作状态" style="width: 100%">
+              <el-select
+                v-model="form.cooperationStatus"
+                placeholder="请选择合作状态"
+                style="width: 100%"
+              >
                 <el-option label="合作中" value="active" />
                 <el-option label="已停止" value="inactive" />
               </el-select>
@@ -138,9 +132,7 @@
       </el-form>
       <template #footer>
         <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" :loading="submitLoading" @click="handleSubmit">
-          确定
-        </el-button>
+        <el-button type="primary" :loading="submitLoading" @click="handleSubmit"> 确定 </el-button>
       </template>
     </el-dialog>
   </div>
@@ -168,7 +160,7 @@ import {
   type Supplier,
   type SupplierListParams,
   type CreateSupplierParams,
-  type SupplierType
+  type SupplierType,
 } from '@/api/supplier'
 import { CONTRACT_STATUS_TEXT, CONTRACT_STATUS_TYPE } from '@/types/supplier'
 
@@ -181,14 +173,14 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  showStats: true
+  showStats: true,
 })
 
 // 搜索表单
 const searchForm = ref({
   keyword: '',
   cooperationStatus: '',
-  city: ''
+  city: '',
 })
 
 // 搜索字段配置
@@ -197,7 +189,7 @@ const searchFields: SearchField[] = [
     type: 'input',
     prop: 'keyword',
     label: '关键词',
-    placeholder: '供应商名称/联系人/电话'
+    placeholder: '供应商名称/联系人/电话',
   },
   {
     type: 'select',
@@ -206,15 +198,15 @@ const searchFields: SearchField[] = [
     placeholder: '请选择合作状态',
     options: [
       { label: '合作中', value: 'active' },
-      { label: '已停止', value: 'inactive' }
-    ]
+      { label: '已停止', value: 'inactive' },
+    ],
   },
   {
     type: 'custom',
     prop: 'city',
     label: '城市',
-    component: CitySelector
-  }
+    component: CitySelector,
+  },
 ]
 
 // 统计数据
@@ -226,7 +218,7 @@ const stats = ref({
   activeSuppliers: 0,
   totalServiceCount: 0,
   totalCost: 0,
-  averageRating: 0
+  averageRating: 0,
 })
 
 const statsConfig = computed(() => {
@@ -235,32 +227,32 @@ const statsConfig = computed(() => {
       label: '供应商总数',
       value: stats.value.totalSuppliers,
       icon: 'OfficeBuilding',
-      color: '#409EFF'
+      color: '#409EFF',
     },
     {
       label: '合作中',
       value: stats.value.activeSuppliers,
       icon: 'Check',
-      color: '#67C23A'
+      color: '#67C23A',
     },
     {
       label: '服务次数',
       value: stats.value.totalServiceCount,
       icon: 'Document',
-      color: '#E6A23C'
+      color: '#E6A23C',
     },
     {
       label: '总成本',
       value: `¥${stats.value.totalCost.toLocaleString()}`,
       icon: 'Money',
-      color: '#F56C6C'
+      color: '#F56C6C',
     },
     {
       label: '平均评级',
       value: stats.value.averageRating.toFixed(1) + '星',
       icon: 'Star',
-      color: '#FF9900'
-    }
+      color: '#FF9900',
+    },
   ]
 
   if (!props.supplierType) {
@@ -270,20 +262,20 @@ const statsConfig = computed(() => {
         label: '维保供应商',
         value: stats.value.maintenanceSuppliers,
         icon: 'Tools',
-        color: '#909399'
+        color: '#909399',
       },
       {
         label: '保险供应商',
         value: stats.value.insuranceSuppliers,
         icon: 'Document',
-        color: '#409EFF'
+        color: '#409EFF',
       },
       {
         label: '其他供应商',
         value: stats.value.otherSuppliers,
         icon: 'More',
-        color: '#67C23A'
-      }
+        color: '#67C23A',
+      },
     ]
   }
 
@@ -296,7 +288,7 @@ const loading = ref(false)
 const pagination = reactive({
   page: 1,
   pageSize: 10,
-  total: 0
+  total: 0,
 })
 
 // 表格列配置
@@ -312,7 +304,7 @@ const tableColumns: TableColumn[] = [
   { prop: 'cooperationStatus', label: '合作状态', width: 100, slot: 'cooperationStatus' },
   { prop: 'contractStatus', label: '合同状态', width: 100, slot: 'contractStatus' },
   { prop: 'serviceCount', label: '服务次数', width: 100 },
-  { prop: 'totalCost', label: '总成本', width: 120, slot: 'totalCost' }
+  { prop: 'totalCost', label: '总成本', width: 120, slot: 'totalCost' },
 ]
 
 // 表格操作列配置
@@ -321,26 +313,26 @@ const tableActions: TableAction[] = [
     label: '编辑',
     type: 'primary',
     icon: Edit,
-    onClick: (row: Supplier) => handleEdit(row)
+    onClick: (row: Supplier) => handleEdit(row),
   },
   {
     label: '合作协议',
     type: 'primary',
     icon: Document,
-    onClick: (row: Supplier) => handleContractManage(row)
+    onClick: (row: Supplier) => handleContractManage(row),
   },
   {
     label: '服务列表',
     type: 'success',
     icon: List,
-    onClick: (row: Supplier) => handleServiceManage(row)
+    onClick: (row: Supplier) => handleServiceManage(row),
   },
   {
     label: '删除',
     type: 'danger',
     icon: Delete,
-    onClick: (row: Supplier) => handleDelete(row)
-  }
+    onClick: (row: Supplier) => handleDelete(row),
+  },
 ]
 
 // 工具栏按钮配置
@@ -349,8 +341,8 @@ const toolbarButtons: ToolbarButton[] = [
     label: '新增供应商',
     type: 'primary',
     icon: Plus,
-    onClick: handleCreate
-  }
+    onClick: handleCreate,
+  },
 ]
 
 // 对话框
@@ -379,7 +371,7 @@ const form = reactive<CreateSupplierParams>({
   priceRange: '',
   qualityRating: 5,
   cooperationStatus: 'active',
-  contractUrl: ''
+  contractUrl: '',
 })
 
 const formRules: FormRules = {
@@ -387,17 +379,17 @@ const formRules: FormRules = {
   contactPerson: [{ required: true, message: '请输入联系人', trigger: 'blur' }],
   phone: [
     { required: true, message: '请输入联系电话', trigger: 'blur' },
-    { pattern: /^1[3-9]\d{9}$/, message: '请输入正确的手机号', trigger: 'blur' }
+    { pattern: /^1[3-9]\d{9}$/, message: '请输入正确的手机号', trigger: 'blur' },
   ],
   email: [
     { required: true, message: '请输入邮箱', trigger: 'blur' },
-    { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' }
+    { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' },
   ],
   address: [{ required: true, message: '请输入地址', trigger: 'blur' }],
   city: [{ required: true, message: '请选择城市', trigger: 'change' }],
   serviceScope: [{ required: true, message: '请输入服务范围', trigger: 'blur' }],
   priceRange: [{ required: true, message: '请输入价格区间', trigger: 'blur' }],
-  cooperationStatus: [{ required: true, message: '请选择合作状态', trigger: 'change' }]
+  cooperationStatus: [{ required: true, message: '请选择合作状态', trigger: 'change' }],
 }
 
 // 获取统计数据
@@ -420,7 +412,7 @@ async function fetchSupplierList() {
       page: pagination.page,
       pageSize: pagination.pageSize,
       type: props.supplierType,
-      ...searchForm.value
+      ...searchForm.value,
     }
     const { list, total } = await getSupplierList(params)
     supplierList.value = list
@@ -444,7 +436,7 @@ function handleReset() {
   searchForm.value = {
     keyword: '',
     cooperationStatus: '',
-    city: ''
+    city: '',
   }
   pagination.page = 1
   fetchSupplierList()
@@ -474,7 +466,7 @@ function handleEdit(row: Supplier) {
     priceRange: row.priceRange,
     qualityRating: row.qualityRating,
     cooperationStatus: row.cooperationStatus,
-    contractUrl: row.contractUrl
+    contractUrl: row.contractUrl,
   })
   dialogVisible.value = true
 }
@@ -485,7 +477,7 @@ async function handleDelete(row: Supplier) {
     await ElMessageBox.confirm(`确定要删除供应商"${row.name}"吗？`, '提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
-      type: 'warning'
+      type: 'warning',
     })
 
     await deleteSupplier(row.id)
@@ -548,7 +540,7 @@ function resetForm() {
     priceRange: '',
     qualityRating: 5,
     cooperationStatus: 'active',
-    contractUrl: ''
+    contractUrl: '',
   })
   formRef.value?.clearValidate()
 }

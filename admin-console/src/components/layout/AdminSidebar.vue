@@ -73,7 +73,7 @@ const handleMenuSelect = (index: string) => {
 
   // 只有没有子菜单的菜单项才进行路由导航
   if (menuItem && (!menuItem.children || menuItem.children.length === 0)) {
-    router.push(index).catch((err) => {
+    router.push(index).catch(err => {
       // 捕获导航错误，避免控制台警告
       console.warn('Navigation error:', err)
     })

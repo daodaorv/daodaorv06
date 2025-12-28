@@ -1,8 +1,6 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="employee-roles-container">
-    
-
     <SearchForm
       v-model="searchForm"
       :fields="searchFields"
@@ -34,7 +32,7 @@
       </template>
 
       <template #role="{ row }">
-        <el-tag :type="(getRoleTypeTag(row.role)) as any" size="small">
+        <el-tag :type="getRoleTypeTag(row.role) as any" size="small">
           {{ row.role }}
         </el-tag>
       </template>
@@ -49,11 +47,7 @@
           >
             PC端
           </el-tag>
-          <el-tag
-            v-if="row.loginPlatforms.includes('mobile')"
-            type="success"
-            size="small"
-          >
+          <el-tag v-if="row.loginPlatforms.includes('mobile')" type="success" size="small">
             移动端
           </el-tag>
         </div>
@@ -82,7 +76,7 @@
       @submit="handleRoleSubmit"
     >
       <template #header>
-        <div style="margin-bottom: 16px;">
+        <div style="margin-bottom: 16px">
           <strong>员工:</strong>{{ currentEmployee?.realName }} ({{ currentEmployee?.jobNumber }})
         </div>
       </template>
@@ -337,10 +331,10 @@ function handleCurrentChange(page: number) {
 // 获取角色类型标签
 function getRoleTypeTag(role: string) {
   const typeMap: Record<string, string> = {
-    '平台管理员': 'danger',
-    '区域经理': 'warning',
-    '门店经理': 'success',
-    '门店员工': 'info',
+    平台管理员: 'danger',
+    区域经理: 'warning',
+    门店经理: 'success',
+    门店员工: 'info',
   }
   return typeMap[role] || 'info'
 }

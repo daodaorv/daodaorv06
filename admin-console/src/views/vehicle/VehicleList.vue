@@ -2,7 +2,6 @@
 <template>
   <div class="vehicle-list-container">
     <!-- 页面标题 -->
-    
 
     <!-- 搜索表单 -->
     <SearchForm
@@ -47,10 +46,16 @@
         <el-tag :type="getOwnershipTypeTag(row.ownershipType)" size="small">
           {{ getVehicleStatusLabel(row.ownershipType) }}
         </el-tag>
-        <div v-if="row.ownershipType === 'hosting'" style="font-size: 12px; color: #909399; margin-top: 2px;">
+        <div
+          v-if="row.ownershipType === 'hosting'"
+          style="font-size: 12px; color: #909399; margin-top: 2px"
+        >
           {{ row.hostingOwnerName }}
         </div>
-        <div v-if="row.ownershipType === 'cooperative'" style="font-size: 12px; color: #909399; margin-top: 2px;">
+        <div
+          v-if="row.ownershipType === 'cooperative'"
+          style="font-size: 12px; color: #909399; margin-top: 2px"
+        >
           {{ row.cooperativePartnerName }}
         </div>
       </template>
@@ -68,9 +73,7 @@
       </template>
 
       <!-- 日租金列 -->
-      <template #dailyPrice="{ row }">
-        ¥{{ row.dailyPrice }}
-      </template>
+      <template #dailyPrice="{ row }"> ¥{{ row.dailyPrice }} </template>
     </DataTable>
 
     <!-- 新增/编辑车辆对话框 -->
@@ -80,12 +83,7 @@
       width="900px"
       @close="handleDialogClose"
     >
-      <el-form
-        ref="formRef"
-        :model="form"
-        :rules="formRules"
-        label-width="120px"
-      >
+      <el-form ref="formRef" :model="form" :rules="formRules" label-width="120px">
         <el-tabs v-model="activeTab">
           <el-tab-pane label="基础信息" name="basic">
             <el-row :gutter="20">
@@ -96,7 +94,10 @@
                       <el-button @click="handleGenerateVirtualPlate">生成虚拟牌照</el-button>
                     </template>
                   </el-input>
-                  <div v-if="form.vehicleNumber" style="margin-top: 4px; font-size: 12px; color: #909399">
+                  <div
+                    v-if="form.vehicleNumber"
+                    style="margin-top: 4px; font-size: 12px; color: #909399"
+                  >
                     {{ formatPlateDisplay(form.vehicleNumber) }}
                   </div>
                 </el-form-item>
@@ -116,7 +117,10 @@
                       :value="model.id"
                     />
                   </el-select>
-                  <div v-if="selectedModelPriceInfo" style="margin-top: 4px; font-size: 12px; color: #909399">
+                  <div
+                    v-if="selectedModelPriceInfo"
+                    style="margin-top: 4px; font-size: 12px; color: #909399"
+                  >
                     建议租金范围: {{ selectedModelPriceInfo.formattedRange }}
                   </div>
                 </el-form-item>
@@ -125,7 +129,11 @@
             <el-row :gutter="20">
               <el-col :span="12">
                 <el-form-item label="所有权类型" prop="ownershipType">
-                  <el-select v-model="form.ownershipType" placeholder="请选择所有权类型" style="width: 100%">
+                  <el-select
+                    v-model="form.ownershipType"
+                    placeholder="请选择所有权类型"
+                    style="width: 100%"
+                  >
                     <el-option
                       v-for="option in VEHICLE_STATUS_OPTIONS"
                       :key="option.value"
@@ -208,7 +216,10 @@
                     :step="50"
                     style="width: 100%"
                   />
-                  <div v-if="form.priceSource" style="margin-top: 4px; font-size: 12px; color: #909399">
+                  <div
+                    v-if="form.priceSource"
+                    style="margin-top: 4px; font-size: 12px; color: #909399"
+                  >
                     价格来源:
                     <el-tag size="small" :type="getPriceSourceTagType(form.priceSource)">
                       {{ getPriceSourceLabel(form.priceSource) }}
@@ -308,9 +319,7 @@
       </el-form>
       <template #footer>
         <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" :loading="submitLoading" @click="handleSubmit">
-          确定
-        </el-button>
+        <el-button type="primary" :loading="submitLoading" @click="handleSubmit"> 确定 </el-button>
       </template>
     </el-dialog>
 
@@ -337,13 +346,7 @@ import { ref, reactive, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
-import {
-  Plus,
-  Download,
-  Upload,
-  Picture,
-  Operation,
-} from '@element-plus/icons-vue'
+import { Plus, Download, Upload, Picture, Operation } from '@element-plus/icons-vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'
 import BaseRentalCalculator from '@/components/vehicle/BaseRentalCalculator.vue'
@@ -367,15 +370,8 @@ import {
 import { useErrorHandler, useEnumLabel } from '@/composables'
 import { VEHICLE_STATUS_OPTIONS, VEHICLE_OWNERSHIP_TYPE_OPTIONS, STORE_OPTIONS } from '@/constants'
 import { exportToCSV } from '@/utils/export'
-import {
-  generateVirtualPlate,
-  formatPlateDisplay,
-  isVirtualPlate
-} from '@/utils/vehicleHelper'
-import {
-  calculateSuggestedPrice,
-  getVehicleTypePriceInfo
-} from '@/utils/pricingHelper'
+import { generateVirtualPlate, formatPlateDisplay, isVirtualPlate } from '@/utils/vehicleHelper'
+import { calculateSuggestedPrice, getVehicleTypePriceInfo } from '@/utils/pricingHelper'
 import { createPriceHistory, batchCreatePriceHistory } from '@/api/vehiclePriceHistory'
 
 // Composables
@@ -483,18 +479,18 @@ const tableActions: TableAction[] = [
   {
     label: '查看',
     type: 'primary',
-    onClick: (row: Vehicle) => handleView(row)
+    onClick: (row: Vehicle) => handleView(row),
   },
   {
     label: '编辑',
     type: 'primary',
-    onClick: (row: Vehicle) => handleEdit(row)
+    onClick: (row: Vehicle) => handleEdit(row),
   },
   {
     label: '删除',
     type: 'danger',
-    onClick: (row: Vehicle) => handleDelete(row)
-  }
+    onClick: (row: Vehicle) => handleDelete(row),
+  },
 ]
 
 // 车辆列表
@@ -558,21 +554,11 @@ const CONDITION_GRADE_OPTIONS = CONDITION_GRADES.map(grade => ({
 const selectedModelPriceInfo = ref<ReturnType<typeof getVehicleTypePriceInfo> | null>(null)
 
 const formRules: FormRules = {
-  vehicleNumber: [
-    { required: true, message: '请输入车牌号', trigger: 'blur' },
-  ],
-  modelId: [
-    { required: true, message: '请选择车型', trigger: 'change' },
-  ],
-  storeId: [
-    { required: true, message: '请选择所属门店', trigger: 'change' },
-  ],
-  purchaseDate: [
-    { required: true, message: '请选择购入日期', trigger: 'change' },
-  ],
-  purchasePrice: [
-    { required: true, message: '请输入购入价格', trigger: 'blur' },
-  ],
+  vehicleNumber: [{ required: true, message: '请输入车牌号', trigger: 'blur' }],
+  modelId: [{ required: true, message: '请选择车型', trigger: 'change' }],
+  storeId: [{ required: true, message: '请选择所属门店', trigger: 'change' }],
+  purchaseDate: [{ required: true, message: '请选择购入日期', trigger: 'change' }],
+  purchasePrice: [{ required: true, message: '请输入购入价格', trigger: 'blur' }],
 }
 
 // 加载车辆列表
@@ -705,15 +691,11 @@ const _handleStatusChange = async (row: Vehicle, status: string) => {
 // 删除车辆
 const handleDelete = async (row: Vehicle) => {
   try {
-    await ElMessageBox.confirm(
-      `确定要删除车辆 "${row.vehicleNumber}" 吗？`,
-      '删除确认',
-      {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      }
-    )
+    await ElMessageBox.confirm(`确定要删除车辆 "${row.vehicleNumber}" 吗？`, '删除确认', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    })
 
     await deleteVehicle(row.id)
     ElMessage.success('删除成功')
@@ -729,7 +711,7 @@ const handleDelete = async (row: Vehicle) => {
 const handleSubmit = async () => {
   if (!formRef.value) return
 
-  await formRef.value.validate(async (valid) => {
+  await formRef.value.validate(async valid => {
     if (!valid) return
 
     submitLoading.value = true
@@ -764,9 +746,7 @@ const handleSubmit = async () => {
         // 如果价格发生变化，创建历史记录
         if (oldPrice !== form.dailyPrice) {
           const priceChange = form.dailyPrice - oldPrice
-          const priceChangePercent = oldPrice > 0
-            ? Math.round((priceChange / oldPrice) * 100)
-            : 0
+          const priceChangePercent = oldPrice > 0 ? Math.round((priceChange / oldPrice) * 100) : 0
 
           try {
             await createPriceHistory({
@@ -884,7 +864,9 @@ const handleModelChange = (modelId: number) => {
   selectedModelPriceInfo.value = getVehicleTypePriceInfo(selectedModel.vehicleType)
 
   // 计算建议租金
-  const purchaseYear = form.purchaseDate ? new Date(form.purchaseDate).getFullYear() : new Date().getFullYear()
+  const purchaseYear = form.purchaseDate
+    ? new Date(form.purchaseDate).getFullYear()
+    : new Date().getFullYear()
   const currentYear = new Date().getFullYear()
   const vehicleAge = currentYear - purchaseYear
 
@@ -893,7 +875,7 @@ const handleModelChange = (modelId: number) => {
     ownershipType: form.ownershipType,
     condition: 'good', // 默认良好
     mileage: form.currentMileage,
-    age: vehicleAge
+    age: vehicleAge,
   })
 
   // 如果当前日租金为0,自动应用建议租金
@@ -906,9 +888,7 @@ const handleModelChange = (modelId: number) => {
 const handleApplyCalculatedPrice = async (price: number, result: CalculationResult) => {
   const oldPrice = form.dailyPrice
   const priceChange = price - oldPrice
-  const priceChangePercent = oldPrice > 0
-    ? Math.round((priceChange / oldPrice) * 100)
-    : 0
+  const priceChangePercent = oldPrice > 0 ? Math.round((priceChange / oldPrice) * 100) : 0
 
   form.dailyPrice = price
   form.priceSource = 'calculated'
@@ -1013,7 +993,9 @@ const handleBatchCalculate = () => {
 }
 
 // 批量应用成功
-const handleBatchApplySuccess = async (results: Array<{ vehicleId: number; dailyPrice: number; calculationParams: any }>) => {
+const handleBatchApplySuccess = async (
+  results: Array<{ vehicleId: number; dailyPrice: number; calculationParams: any }>
+) => {
   try {
     const priceHistoryRecords = []
 
@@ -1023,9 +1005,7 @@ const handleBatchApplySuccess = async (results: Array<{ vehicleId: number; daily
       if (vehicle) {
         const oldPrice = vehicle.dailyPrice
         const priceChange = result.dailyPrice - oldPrice
-        const priceChangePercent = oldPrice > 0
-          ? Math.round((priceChange / oldPrice) * 100)
-          : 0
+        const priceChangePercent = oldPrice > 0 ? Math.round((priceChange / oldPrice) * 100) : 0
 
         // 更新车辆
         await updateVehicle(result.vehicleId, {

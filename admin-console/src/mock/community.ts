@@ -6,19 +6,24 @@
 export type ContentType = 'post' | 'comment' | 'reply' | 'image' | 'video'
 
 // 审核状态
-export type ReviewStatus = 'pending' | 'ai_approved' | 'ai_rejected' | 'manual_approved' | 'manual_rejected'
+export type ReviewStatus =
+  | 'pending'
+  | 'ai_approved'
+  | 'ai_rejected'
+  | 'manual_approved'
+  | 'manual_rejected'
 
 // 违规类型
 export type ViolationType =
-  | 'spam'              // 垃圾广告
-  | 'pornography'       // 色情内容
-  | 'violence'          // 暴力内容
-  | 'politics'          // 政治敏感
-  | 'illegal'           // 违法信息
-  | 'fraud'             // 诈骗信息
-  | 'harassment'        // 骚扰辱骂
-  | 'copyright'         // 侵权内容
-  | 'other'             // 其他违规
+  | 'spam' // 垃圾广告
+  | 'pornography' // 色情内容
+  | 'violence' // 暴力内容
+  | 'politics' // 政治敏感
+  | 'illegal' // 违法信息
+  | 'fraud' // 诈骗信息
+  | 'harassment' // 骚扰辱骂
+  | 'copyright' // 侵权内容
+  | 'other' // 其他违规
 
 // 处理状态
 export type HandleStatus = 'pending' | 'processing' | 'resolved' | 'rejected'
@@ -39,8 +44,8 @@ export interface ContentReview {
   images: string[]
   videos: string[]
   status: ReviewStatus
-  aiScore: number              // AI审核分数 0-100
-  aiReason: string             // AI审核原因
+  aiScore: number // AI审核分数 0-100
+  aiReason: string // AI审核原因
   violationType: ViolationType | null
   reviewerId: number | null
   reviewerName: string | null
@@ -59,7 +64,7 @@ export interface ContentReviewStats {
   manualApproved: number
   manualRejected: number
   todayReviewed: number
-  avgReviewTime: number        // 平均审核时长（分钟）
+  avgReviewTime: number // 平均审核时长（分钟）
 }
 
 // 社区版块
@@ -74,9 +79,9 @@ export interface CommunitySection {
   memberCount: number
   moderatorIds: number[]
   moderatorNames: string[]
-  allowPost: boolean           // 是否允许发帖
-  allowComment: boolean        // 是否允许评论
-  requireReview: boolean       // 是否需要审核
+  allowPost: boolean // 是否允许发帖
+  allowComment: boolean // 是否允许评论
+  requireReview: boolean // 是否需要审核
   createdAt: string
   updatedAt: string
 }
@@ -84,15 +89,15 @@ export interface CommunitySection {
 // 社区配置
 export interface CommunityConfig {
   id: number
-  enableAiReview: boolean      // 启用AI审核
-  aiThreshold: number          // AI审核阈值 0-100
-  enableManualReview: boolean  // 启用人工审核
-  autoPublishScore: number     // 自动发布分数阈值
-  sensitiveWords: string[]     // 敏感词列表
-  maxPostLength: number        // 最大帖子长度
-  maxImageCount: number        // 最大图片数量
-  maxVideoCount: number        // 最大视频数量
-  allowAnonymous: boolean      // 允许匿名发帖
+  enableAiReview: boolean // 启用AI审核
+  aiThreshold: number // AI审核阈值 0-100
+  enableManualReview: boolean // 启用人工审核
+  autoPublishScore: number // 自动发布分数阈值
+  sensitiveWords: string[] // 敏感词列表
+  maxPostLength: number // 最大帖子长度
+  maxImageCount: number // 最大图片数量
+  maxVideoCount: number // 最大视频数量
+  allowAnonymous: boolean // 允许匿名发帖
   updatedAt: string
 }
 
@@ -126,7 +131,7 @@ export interface ReportStats {
   processingReports: number
   resolvedReports: number
   rejectedReports: number
-  avgHandleTime: number        // 平均处理时长（小时）
+  avgHandleTime: number // 平均处理时长（小时）
 }
 
 // Mock 内容审核数据
@@ -140,10 +145,7 @@ const mockContentReviews: ContentReview[] = [
     userAvatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=1',
     title: '川藏线房车自驾游攻略分享',
     content: '刚从川藏线回来，分享一下这次房车自驾的经验和注意事项...',
-    images: [
-      'https://picsum.photos/400/300?random=1',
-      'https://picsum.photos/400/300?random=2',
-    ],
+    images: ['https://picsum.photos/400/300?random=1', 'https://picsum.photos/400/300?random=2'],
     videos: [],
     status: 'ai_approved',
     aiScore: 95,
@@ -460,23 +462,23 @@ export function getContentReviews(params: {
   sectionId?: number
   keyword?: string
 }): Promise<{ list: ContentReview[]; total: number }> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       let filteredList = [...mockContentReviews]
 
       // 筛选
       if (params.status) {
-        filteredList = filteredList.filter((item) => item.status === params.status)
+        filteredList = filteredList.filter(item => item.status === params.status)
       }
       if (params.contentType) {
-        filteredList = filteredList.filter((item) => item.contentType === params.contentType)
+        filteredList = filteredList.filter(item => item.contentType === params.contentType)
       }
       if (params.sectionId) {
-        filteredList = filteredList.filter((item) => item.sectionId === params.sectionId)
+        filteredList = filteredList.filter(item => item.sectionId === params.sectionId)
       }
       if (params.keyword) {
         filteredList = filteredList.filter(
-          (item) =>
+          item =>
             item.title.includes(params.keyword!) ||
             item.content.includes(params.keyword!) ||
             item.userName.includes(params.keyword!)
@@ -500,16 +502,14 @@ export function getContentReviews(params: {
  * 获取内容审核统计
  */
 export function getContentReviewStats(): Promise<ContentReviewStats> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const stats: ContentReviewStats = {
-        totalPending: mockContentReviews.filter((item) => item.status === 'pending').length,
-        aiApproved: mockContentReviews.filter((item) => item.status === 'ai_approved').length,
-        aiRejected: mockContentReviews.filter((item) => item.status === 'ai_rejected').length,
-        manualApproved: mockContentReviews.filter((item) => item.status === 'manual_approved')
-          .length,
-        manualRejected: mockContentReviews.filter((item) => item.status === 'manual_rejected')
-          .length,
+        totalPending: mockContentReviews.filter(item => item.status === 'pending').length,
+        aiApproved: mockContentReviews.filter(item => item.status === 'ai_approved').length,
+        aiRejected: mockContentReviews.filter(item => item.status === 'ai_rejected').length,
+        manualApproved: mockContentReviews.filter(item => item.status === 'manual_approved').length,
+        manualRejected: mockContentReviews.filter(item => item.status === 'manual_rejected').length,
         todayReviewed: 45,
         avgReviewTime: 5.2,
       }
@@ -527,15 +527,18 @@ export function reviewContent(params: {
   reason: string
   violationType?: ViolationType
 }): Promise<void> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
-      const index = mockContentReviews.findIndex((item) => item.id === params.id)
+      const index = mockContentReviews.findIndex(item => item.id === params.id)
       if (index !== -1) {
         mockContentReviews[index].status = params.status
         mockContentReviews[index].reviewReason = params.reason
         mockContentReviews[index].reviewerId = 1
         mockContentReviews[index].reviewerName = '当前管理员'
-        mockContentReviews[index].reviewedAt = new Date().toISOString().slice(0, 19).replace('T', ' ')
+        mockContentReviews[index].reviewedAt = new Date()
+          .toISOString()
+          .slice(0, 19)
+          .replace('T', ' ')
         if (params.violationType) {
           mockContentReviews[index].violationType = params.violationType
         }
@@ -553,16 +556,19 @@ export function batchReviewContent(params: {
   status: 'manual_approved' | 'manual_rejected'
   reason: string
 }): Promise<void> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
-      params.ids.forEach((id) => {
-        const index = mockContentReviews.findIndex((item) => item.id === id)
+      params.ids.forEach(id => {
+        const index = mockContentReviews.findIndex(item => item.id === id)
         if (index !== -1) {
           mockContentReviews[index].status = params.status
           mockContentReviews[index].reviewReason = params.reason
           mockContentReviews[index].reviewerId = 1
           mockContentReviews[index].reviewerName = '当前管理员'
-          mockContentReviews[index].reviewedAt = new Date().toISOString().slice(0, 19).replace('T', ' ')
+          mockContentReviews[index].reviewedAt = new Date()
+            .toISOString()
+            .slice(0, 19)
+            .replace('T', ' ')
         }
       })
       resolve()
@@ -577,17 +583,16 @@ export function getCommunitySections(params?: {
   status?: SectionStatus
   keyword?: string
 }): Promise<CommunitySection[]> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       let filteredList = [...mockSections]
 
       if (params?.status) {
-        filteredList = filteredList.filter((item) => item.status === params.status)
+        filteredList = filteredList.filter(item => item.status === params.status)
       }
       if (params?.keyword) {
         filteredList = filteredList.filter(
-          (item) =>
-            item.name.includes(params.keyword!) || item.description.includes(params.keyword!)
+          item => item.name.includes(params.keyword!) || item.description.includes(params.keyword!)
         )
       }
 
@@ -600,7 +605,7 @@ export function getCommunitySections(params?: {
  * 创建社区版块
  */
 export function createCommunitySection(data: Partial<CommunitySection>): Promise<CommunitySection> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const newSection: CommunitySection = {
         id: mockSections.length + 1,
@@ -628,13 +633,10 @@ export function createCommunitySection(data: Partial<CommunitySection>): Promise
 /**
  * 更新社区版块
  */
-export function updateCommunitySection(
-  id: number,
-  data: Partial<CommunitySection>
-): Promise<void> {
-  return new Promise((resolve) => {
+export function updateCommunitySection(id: number, data: Partial<CommunitySection>): Promise<void> {
+  return new Promise(resolve => {
     setTimeout(() => {
-      const index = mockSections.findIndex((item) => item.id === id)
+      const index = mockSections.findIndex(item => item.id === id)
       if (index !== -1) {
         mockSections[index] = {
           ...mockSections[index],
@@ -651,9 +653,9 @@ export function updateCommunitySection(
  * 删除社区版块
  */
 export function deleteCommunitySection(id: number): Promise<void> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
-      const index = mockSections.findIndex((item) => item.id === id)
+      const index = mockSections.findIndex(item => item.id === id)
       if (index !== -1) {
         mockSections.splice(index, 1)
       }
@@ -673,23 +675,23 @@ export function getReports(params: {
   priority?: 'low' | 'medium' | 'high' | 'urgent'
   keyword?: string
 }): Promise<{ list: Report[]; total: number }> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       let filteredList = [...mockReports]
 
       // 筛选
       if (params.status) {
-        filteredList = filteredList.filter((item) => item.status === params.status)
+        filteredList = filteredList.filter(item => item.status === params.status)
       }
       if (params.reportType) {
-        filteredList = filteredList.filter((item) => item.reportType === params.reportType)
+        filteredList = filteredList.filter(item => item.reportType === params.reportType)
       }
       if (params.priority) {
-        filteredList = filteredList.filter((item) => item.priority === params.priority)
+        filteredList = filteredList.filter(item => item.priority === params.priority)
       }
       if (params.keyword) {
         filteredList = filteredList.filter(
-          (item) =>
+          item =>
             item.targetContent.includes(params.keyword!) ||
             item.targetUserName.includes(params.keyword!) ||
             item.reporterName.includes(params.keyword!)
@@ -713,14 +715,14 @@ export function getReports(params: {
  * 获取举报统计
  */
 export function getReportStats(): Promise<ReportStats> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const stats: ReportStats = {
         totalReports: mockReports.length,
-        pendingReports: mockReports.filter((item) => item.status === 'pending').length,
-        processingReports: mockReports.filter((item) => item.status === 'processing').length,
-        resolvedReports: mockReports.filter((item) => item.status === 'resolved').length,
-        rejectedReports: mockReports.filter((item) => item.status === 'rejected').length,
+        pendingReports: mockReports.filter(item => item.status === 'pending').length,
+        processingReports: mockReports.filter(item => item.status === 'processing').length,
+        resolvedReports: mockReports.filter(item => item.status === 'resolved').length,
+        rejectedReports: mockReports.filter(item => item.status === 'rejected').length,
         avgHandleTime: 2.5,
       }
       resolve(stats)
@@ -736,9 +738,9 @@ export function handleReport(params: {
   status: 'resolved' | 'rejected'
   handleResult: string
 }): Promise<void> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
-      const index = mockReports.findIndex((item) => item.id === params.id)
+      const index = mockReports.findIndex(item => item.id === params.id)
       if (index !== -1) {
         mockReports[index].status = params.status
         mockReports[index].handleResult = params.handleResult
@@ -755,9 +757,9 @@ export function handleReport(params: {
  * 分配举报处理人
  */
 export function assignReport(id: number, handlerId: number, handlerName: string): Promise<void> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
-      const index = mockReports.findIndex((item) => item.id === id)
+      const index = mockReports.findIndex(item => item.id === id)
       if (index !== -1) {
         mockReports[index].status = 'processing'
         mockReports[index].handlerId = handlerId
@@ -772,7 +774,7 @@ export function assignReport(id: number, handlerId: number, handlerName: string)
  * 获取社区配置
  */
 export function getCommunityConfig(): Promise<CommunityConfig> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       resolve(mockCommunityConfig)
     }, 200)
@@ -783,7 +785,7 @@ export function getCommunityConfig(): Promise<CommunityConfig> {
  * 更新社区配置
  */
 export function updateCommunityConfig(data: Partial<CommunityConfig>): Promise<void> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       mockCommunityConfig = {
         ...mockCommunityConfig,

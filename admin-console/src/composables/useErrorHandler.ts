@@ -11,7 +11,7 @@ export enum ErrorType {
   NOT_FOUND = 'not_found',
   SERVER = 'server',
   BUSINESS = 'business',
-  UNKNOWN = 'unknown'
+  UNKNOWN = 'unknown',
 }
 
 /**
@@ -94,11 +94,7 @@ export function useErrorHandler() {
    * @param defaultMessage 默认错误消息
    * @param showMessage 是否显示错误消息
    */
-  const handleError = (
-    error: any,
-    defaultMessage = '操作失败',
-    showMessage = true
-  ): void => {
+  const handleError = (error: any, defaultMessage = '操作失败', showMessage = true): void => {
     console.error('错误详情:', error)
 
     const errorType = getErrorType(error)
@@ -107,20 +103,18 @@ export function useErrorHandler() {
     if (showMessage) {
       // 未授权错误，显示确认框
       if (errorType === ErrorType.UNAUTHORIZED) {
-        ElMessageBox.confirm(
-          '登录已过期，请重新登录',
-          '提示',
-          {
-            confirmButtonText: '重新登录',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }
-        ).then(() => {
-          // 跳转到登录页
-          window.location.href = '/login'
-        }).catch(() => {
-          // 用户取消
+        ElMessageBox.confirm('登录已过期，请重新登录', '提示', {
+          confirmButtonText: '重新登录',
+          cancelButtonText: '取消',
+          type: 'warning',
         })
+          .then(() => {
+            // 跳转到登录页
+            window.location.href = '/login'
+          })
+          .catch(() => {
+            // 用户取消
+          })
       } else {
         // 其他错误，显示消息提示
         ElMessage.error(message)
@@ -161,19 +155,13 @@ export function useErrorHandler() {
    * @param successCount 成功数量
    * @param totalCount 总数量
    */
-  const handleBatchError = (
-    errors: any[],
-    successCount: number,
-    totalCount: number
-  ): void => {
+  const handleBatchError = (errors: any[], successCount: number, totalCount: number): void => {
     if (errors.length === 0) {
       ElMessage.success(`批量操作成功，共处理 ${totalCount} 条`)
     } else if (successCount === 0) {
       ElMessage.error(`批量操作失败，共 ${totalCount} 条`)
     } else {
-      ElMessage.warning(
-        `批量操作部分成功，成功 ${successCount} 条，失败 ${errors.length} 条`
-      )
+      ElMessage.warning(`批量操作部分成功，成功 ${successCount} 条，失败 ${errors.length} 条`)
     }
   }
 
@@ -224,6 +212,6 @@ export function useErrorHandler() {
     handleUploadError,
     handleBatchError,
     withErrorHandler,
-    safeExecute
+    safeExecute,
   }
 }

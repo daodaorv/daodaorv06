@@ -25,13 +25,15 @@
         </div>
       </template>
       <template #status="{ row }">
-        <el-tag :type="(getOfferStatusTag(row.status)) as any" size="small">
+        <el-tag :type="getOfferStatusTag(row.status) as any" size="small">
           {{ getOfferStatusLabel(row.status) }}
         </el-tag>
       </template>
       <template #price="{ row }">
         <div style="font-size: 12px">
-          <div style="text-decoration: line-through; color: #909399">原价: ¥{{ row.originalPrice }}</div>
+          <div style="text-decoration: line-through; color: #909399">
+            原价: ¥{{ row.originalPrice }}
+          </div>
           <div style="color: #f56c6c; font-weight: bold">套餐价: ¥{{ row.packagePrice }}</div>
           <div style="color: #67c23a">已省: ¥{{ row.originalPrice - row.packagePrice }}</div>
         </div>
@@ -77,18 +79,30 @@
           {{ currentOffer.route.fromCityName }} → {{ currentOffer.route.toCityName }}
         </el-descriptions-item>
         <el-descriptions-item label="状态">
-          <el-tag :type="(getOfferStatusTag(currentOffer.status)) as any" size="small">
+          <el-tag :type="getOfferStatusTag(currentOffer.status) as any" size="small">
             {{ getOfferStatusLabel(currentOffer.status) }}
           </el-tag>
         </el-descriptions-item>
-        <el-descriptions-item label="租期">{{ currentOffer.rentalDays }}天{{ currentOffer.rentalDays - 1 }}晚</el-descriptions-item>
+        <el-descriptions-item label="租期"
+          >{{ currentOffer.rentalDays }}天{{ currentOffer.rentalDays - 1 }}晚</el-descriptions-item
+        >
         <el-descriptions-item label="原价">¥{{ currentOffer.originalPrice }}</el-descriptions-item>
         <el-descriptions-item label="套餐价">¥{{ currentOffer.packagePrice }}</el-descriptions-item>
         <el-descriptions-item label="总配额">{{ currentOffer.totalQuota }}</el-descriptions-item>
-        <el-descriptions-item label="剩余配额">{{ currentOffer.remainingQuota }}</el-descriptions-item>
-        <el-descriptions-item label="车辆名称" :span="2">{{ currentOffer.vehicle.name }}</el-descriptions-item>
+        <el-descriptions-item label="剩余配额">{{
+          currentOffer.remainingQuota
+        }}</el-descriptions-item>
+        <el-descriptions-item label="车辆名称" :span="2">{{
+          currentOffer.vehicle.name
+        }}</el-descriptions-item>
         <el-descriptions-item label="车辆特色" :span="2">
-          <el-tag v-for="(feature, index) in currentOffer.vehicle.features" :key="index" size="small" type="success" style="margin-right: 8px">
+          <el-tag
+            v-for="(feature, index) in currentOffer.vehicle.features"
+            :key="index"
+            size="small"
+            type="success"
+            style="margin-right: 8px"
+          >
             {{ feature }}
           </el-tag>
         </el-descriptions-item>
@@ -104,13 +118,21 @@
           {{ currentOffer.availableTimeRange.start }} 至 {{ currentOffer.availableTimeRange.end }}
         </el-descriptions-item>
         <el-descriptions-item label="套餐包含" :span="2">
-          <div v-for="(item, index) in currentOffer.packageIncludes" :key="index" style="margin-bottom: 8px">
+          <div
+            v-for="(item, index) in currentOffer.packageIncludes"
+            :key="index"
+            style="margin-bottom: 8px"
+          >
             <span style="font-weight: 500">{{ item.name }}</span>
             <span style="color: #909399; margin-left: 8px">{{ item.description }}</span>
           </div>
         </el-descriptions-item>
         <el-descriptions-item label="预订须知" :span="2">
-          <div v-for="(notice, index) in currentOffer.bookingNotices" :key="index" style="margin-bottom: 4px">
+          <div
+            v-for="(notice, index) in currentOffer.bookingNotices"
+            :key="index"
+            style="margin-bottom: 4px"
+          >
             {{ index + 1 }}. {{ notice }}
           </div>
         </el-descriptions-item>
@@ -140,7 +162,7 @@ import {
   updateSpecialOffer,
   deleteSpecialOffer,
   type SpecialOffer,
-  type PackageListParams
+  type PackageListParams,
 } from '@/api/marketing'
 import { getStoreList, getCityList, type Store, type City } from '@/api/store'
 import { getVehicles, getVehicleModelDetail, type Vehicle } from '@/api/vehicle'
@@ -151,12 +173,12 @@ const { handleApiError } = useErrorHandler()
 const OFFER_STATUS_OPTIONS = [
   { label: '生效中', value: 'active' },
   { label: '未生效', value: 'inactive' },
-  { label: '已售罄', value: 'soldout' }
+  { label: '已售罄', value: 'soldout' },
 ]
 
 const searchForm = reactive<PackageListParams>({
   keyword: '',
-  status: undefined
+  status: undefined,
 })
 
 const searchFields = computed<SearchField[]>(() => [
@@ -165,7 +187,7 @@ const searchFields = computed<SearchField[]>(() => [
     label: '关键词',
     type: 'input',
     placeholder: '路线（如：杭州、千岛湖）',
-    width: '200px'
+    width: '200px',
   },
   {
     prop: 'status',
@@ -173,8 +195,8 @@ const searchFields = computed<SearchField[]>(() => [
     type: 'select',
     placeholder: '请选择状态',
     width: '150px',
-    options: OFFER_STATUS_OPTIONS
-  }
+    options: OFFER_STATUS_OPTIONS,
+  },
 ])
 
 const tableColumns: TableColumn[] = [
@@ -185,7 +207,7 @@ const tableColumns: TableColumn[] = [
   { prop: 'price', label: '价格信息', width: 160, slot: 'price' },
   { prop: 'quota', label: '配额统计', width: 120, slot: 'quota' },
   { prop: 'availableTimeRange.start', label: '开始时间', width: 120 },
-  { prop: 'availableTimeRange.end', label: '结束时间', width: 120 }
+  { prop: 'availableTimeRange.end', label: '结束时间', width: 120 },
 ]
 
 const toolbarButtons: ToolbarButton[] = [
@@ -193,26 +215,26 @@ const toolbarButtons: ToolbarButton[] = [
     label: '新增特惠租车',
     type: 'primary',
     icon: Plus,
-    onClick: () => handleCreate()
-  }
+    onClick: () => handleCreate(),
+  },
 ]
 
 const tableActions: TableAction[] = [
   {
     label: '查看',
     type: 'primary',
-    onClick: (row: SpecialOffer) => handleView(row)
+    onClick: (row: SpecialOffer) => handleView(row),
   },
   {
     label: '编辑',
     type: 'primary',
-    onClick: (row: SpecialOffer) => handleEdit(row)
+    onClick: (row: SpecialOffer) => handleEdit(row),
   },
   {
     label: '删除',
     type: 'danger',
-    onClick: (row: SpecialOffer) => handleDelete(row)
-  }
+    onClick: (row: SpecialOffer) => handleDelete(row),
+  },
 ]
 
 const offerList = ref<SpecialOffer[]>([])
@@ -221,7 +243,7 @@ const loading = ref(false)
 const pagination = reactive({
   page: 1,
   pageSize: 10,
-  total: 0
+  total: 0,
 })
 
 // 对话框状态
@@ -273,7 +295,7 @@ const formData = reactive({
   announcement: '',
   vehicleFeatures: '',
   packageIncludes: '',
-  bookingNotices: ''
+  bookingNotices: '',
 })
 
 // 城市、门店和车辆数据
@@ -286,7 +308,7 @@ const availableVehicles = ref<Vehicle[]>([])
 const cityOptions = computed(() =>
   cities.value.map(city => ({
     label: city.name,
-    value: city.id
+    value: city.id,
   }))
 )
 
@@ -294,14 +316,14 @@ const cityOptions = computed(() =>
 const pickupStoreOptions = computed(() =>
   pickupStores.value.map(store => ({
     label: `${store.name} (${store.address})`,
-    value: store.id
+    value: store.id,
   }))
 )
 
 const returnStoreOptions = computed(() =>
   returnStores.value.map(store => ({
     label: `${store.name} (${store.address})`,
-    value: store.id
+    value: store.id,
   }))
 )
 
@@ -311,7 +333,7 @@ const vehicleOptions = computed(() =>
     .filter(v => v.status === 'available')
     .map(vehicle => ({
       label: `${vehicle.vehicleNumber} - ${vehicle.brandName} ${vehicle.modelName}`,
-      value: vehicle.id
+      value: vehicle.id,
     }))
 )
 
@@ -319,7 +341,7 @@ const vehicleOptions = computed(() =>
 const formFields = computed(() => [
   {
     type: 'divider',
-    label: '路线信息'
+    label: '路线信息',
   },
   {
     type: 'row',
@@ -330,7 +352,7 @@ const formFields = computed(() => [
         type: 'select',
         placeholder: '请选择出发城市',
         options: cityOptions.value,
-        span: 12
+        span: 12,
       },
       {
         prop: 'toCityId',
@@ -338,13 +360,13 @@ const formFields = computed(() => [
         type: 'select',
         placeholder: '请选择目的地城市',
         options: cityOptions.value,
-        span: 12
-      }
-    ]
+        span: 12,
+      },
+    ],
   },
   {
     type: 'divider',
-    label: '门店信息'
+    label: '门店信息',
   },
   {
     type: 'row',
@@ -356,7 +378,7 @@ const formFields = computed(() => [
         placeholder: '请先选择出发城市',
         disabled: !formData.fromCityId,
         options: pickupStoreOptions.value,
-        span: 12
+        span: 12,
       },
       {
         prop: 'returnStoreId',
@@ -365,9 +387,9 @@ const formFields = computed(() => [
         placeholder: '请先选择目的地城市',
         disabled: !formData.toCityId,
         options: returnStoreOptions.value,
-        span: 12
-      }
-    ]
+        span: 12,
+      },
+    ],
   },
   {
     type: 'row',
@@ -379,7 +401,7 @@ const formFields = computed(() => [
         placeholder: '选择门店后自动填充',
         disabled: true,
         readonly: true,
-        span: 12
+        span: 12,
       },
       {
         prop: 'returnStoreAddress',
@@ -388,13 +410,13 @@ const formFields = computed(() => [
         placeholder: '选择门店后自动填充',
         disabled: true,
         readonly: true,
-        span: 12
-      }
-    ]
+        span: 12,
+      },
+    ],
   },
   {
     type: 'divider',
-    label: '车辆信息'
+    label: '车辆信息',
   },
   {
     prop: 'vehicleId',
@@ -402,11 +424,11 @@ const formFields = computed(() => [
     type: 'select',
     placeholder: '请先选择取车门店',
     disabled: !formData.pickupStoreId,
-    options: vehicleOptions.value
+    options: vehicleOptions.value,
   },
   {
     type: 'divider',
-    label: '价格配额'
+    label: '价格配额',
   },
   {
     type: 'row',
@@ -417,7 +439,7 @@ const formFields = computed(() => [
         type: 'number',
         min: 1,
         span: 8,
-        tip: '单位：天'
+        tip: '单位：天',
       },
       {
         prop: 'originalPrice',
@@ -425,7 +447,7 @@ const formFields = computed(() => [
         type: 'number',
         min: 0,
         span: 8,
-        tip: '单位：元'
+        tip: '单位：元',
       },
       {
         prop: 'packagePrice',
@@ -433,9 +455,9 @@ const formFields = computed(() => [
         type: 'number',
         min: 0,
         span: 8,
-        tip: '单位：元'
-      }
-    ]
+        tip: '单位：元',
+      },
+    ],
   },
   {
     type: 'row',
@@ -446,7 +468,7 @@ const formFields = computed(() => [
         type: 'number',
         min: 1,
         span: 12,
-        tip: '单位：个'
+        tip: '单位：个',
       },
       {
         prop: 'remainingQuota',
@@ -454,13 +476,13 @@ const formFields = computed(() => [
         type: 'number',
         min: 0,
         span: 12,
-        tip: '单位：个'
-      }
-    ]
+        tip: '单位：个',
+      },
+    ],
   },
   {
     type: 'divider',
-    label: '时间范围'
+    label: '时间范围',
   },
   {
     type: 'row',
@@ -470,20 +492,20 @@ const formFields = computed(() => [
         label: '开始时间',
         type: 'date',
         valueFormat: 'YYYY-MM-DD',
-        span: 12
+        span: 12,
       },
       {
         prop: 'availableEndDate',
         label: '结束时间',
         type: 'date',
         valueFormat: 'YYYY-MM-DD',
-        span: 12
-      }
-    ]
+        span: 12,
+      },
+    ],
   },
   {
     type: 'divider',
-    label: '套餐详情'
+    label: '套餐详情',
   },
   {
     prop: 'announcement',
@@ -491,7 +513,7 @@ const formFields = computed(() => [
     type: 'textarea',
     rows: 3,
     placeholder: '请输入套餐公告',
-    maxlength: 500
+    maxlength: 500,
   },
   {
     prop: 'packageIncludes',
@@ -499,7 +521,7 @@ const formFields = computed(() => [
     type: 'textarea',
     rows: 3,
     placeholder: '请输入套餐包含内容，每行一项',
-    tip: '格式：项目名称|项目描述，例如：车辆租金|3天2晚固定租期'
+    tip: '格式：项目名称|项目描述，例如：车辆租金|3天2晚固定租期',
   },
   {
     prop: 'bookingNotices',
@@ -507,18 +529,18 @@ const formFields = computed(() => [
     type: 'textarea',
     rows: 3,
     placeholder: '请输入预订须知，每行一条',
-    tip: '每行一条须知'
+    tip: '每行一条须知',
   },
   {
     type: 'divider',
-    label: '状态设置'
+    label: '状态设置',
   },
   {
     prop: 'status',
     label: '套餐状态',
     type: 'select',
-    options: OFFER_STATUS_OPTIONS
-  }
+    options: OFFER_STATUS_OPTIONS,
+  },
 ]) as any
 
 // 表单验证规则
@@ -546,13 +568,13 @@ const formRules = {
   availableEndDate: [{ required: true, message: '请选择结束时间', trigger: 'change' }],
 
   // 状态
-  status: [{ required: true, message: '请选择套餐状态', trigger: 'change' }]
+  status: [{ required: true, message: '请选择套餐状态', trigger: 'change' }],
 }
 
 // 加载城市列表
 const loadCities = async () => {
   try {
-    const res = await getCityList({ status: 'active', page: 1, pageSize: 100 }) as any
+    const res = (await getCityList({ status: 'active', page: 1, pageSize: 100 })) as any
     cities.value = res.data
   } catch (error) {
     handleApiError(error, '加载城市列表失败')
@@ -562,7 +584,7 @@ const loadCities = async () => {
 // 加载取车门店列表
 const loadPickupStores = async (cityId: number) => {
   try {
-    const res = await getStoreList({ cityId, status: 'active', page: 1, pageSize: 100 }) as any
+    const res = (await getStoreList({ cityId, status: 'active', page: 1, pageSize: 100 })) as any
     pickupStores.value = res.data.list
   } catch (error) {
     handleApiError(error, '加载取车门店失败')
@@ -572,7 +594,7 @@ const loadPickupStores = async (cityId: number) => {
 // 加载还车门店列表
 const loadReturnStores = async (cityId: number) => {
   try {
-    const res = await getStoreList({ cityId, status: 'active', page: 1, pageSize: 100 }) as any
+    const res = (await getStoreList({ cityId, status: 'active', page: 1, pageSize: 100 })) as any
     returnStores.value = res.data.list
   } catch (error) {
     handleApiError(error, '加载还车门店失败')
@@ -582,7 +604,7 @@ const loadReturnStores = async (cityId: number) => {
 // 加载可用车辆列表
 const loadAvailableVehicles = async (storeId: number) => {
   try {
-    const res = await getVehicles({ storeId, status: 'available', page: 1, pageSize: 100 }) as any
+    const res = (await getVehicles({ storeId, status: 'available', page: 1, pageSize: 100 })) as any
     availableVehicles.value = res.data.list
   } catch (error) {
     handleApiError(error, '加载可用车辆失败')
@@ -592,7 +614,7 @@ const loadAvailableVehicles = async (storeId: number) => {
 // 加载车型详情
 const loadVehicleModelDetails = async (modelId: number) => {
   try {
-    const res = await getVehicleModelDetail(modelId) as any
+    const res = (await getVehicleModelDetail(modelId)) as any
     const model = res.data
 
     // 自动填充规格和特色
@@ -600,7 +622,7 @@ const loadVehicleModelDetails = async (modelId: number) => {
       { label: '车型', value: model.vehicleType },
       { label: '座位数', value: `${model.seats}座` },
       { label: '床位数', value: `${model.beds}床` },
-      { label: '车长', value: `${model.length}米` }
+      { label: '车长', value: `${model.length}米` },
     ]
     formData.vehicleFeatures = model.features.join(',')
   } catch (error) {
@@ -614,10 +636,10 @@ const loadOfferList = async () => {
     const params: PackageListParams = {
       page: pagination.page,
       pageSize: pagination.pageSize,
-      ...searchForm
+      ...searchForm,
     }
 
-    const res = await getSpecialOfferList(params) as any
+    const res = (await getSpecialOfferList(params)) as any
     offerList.value = res.data.list
     pagination.total = res.data.total
   } catch (error) {
@@ -739,7 +761,9 @@ const handleEdit = (row: SpecialOffer) => {
   formData.status = row.status
   formData.announcement = row.announcement
   formData.vehicleFeatures = row.vehicle.features.join(',')
-  formData.packageIncludes = row.packageIncludes.map(item => `${item.name}|${item.description}`).join('\n')
+  formData.packageIncludes = row.packageIncludes
+    .map(item => `${item.name}|${item.description}`)
+    .join('\n')
   formData.bookingNotices = row.bookingNotices.join('\n')
 
   dialogVisible.value = true
@@ -755,7 +779,7 @@ const handleSubmit = async (data: any) => {
         fromCityId: data.fromCityId,
         fromCityName: data.fromCityName,
         toCityId: data.toCityId,
-        toCityName: data.toCityName
+        toCityName: data.toCityName,
       },
 
       // 车辆字段
@@ -768,7 +792,10 @@ const handleSubmit = async (data: any) => {
       vehicle: {
         images: data.vehicleImages || [],
         specifications: data.vehicleSpecifications || [],
-        features: data.vehicleFeatures.split(',').map((f: string) => f.trim()).filter((f: string) => f)
+        features: data.vehicleFeatures
+          .split(',')
+          .map((f: string) => f.trim())
+          .filter((f: string) => f),
       },
 
       // 门店字段
@@ -787,7 +814,7 @@ const handleSubmit = async (data: any) => {
       remainingQuota: data.remainingQuota,
       availableTimeRange: {
         start: data.availableStartDate,
-        end: data.availableEndDate
+        end: data.availableEndDate,
       },
       status: data.status,
       announcement: data.announcement,
@@ -802,7 +829,7 @@ const handleSubmit = async (data: any) => {
         .split('\n')
         .map((line: string) => line.trim())
         .filter((line: string) => line),
-      cancellationPolicy: []
+      cancellationPolicy: [],
     }
 
     if (isEdit.value && currentOfferId.value) {
@@ -837,7 +864,7 @@ const handleDelete = async (row: SpecialOffer) => {
       {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
+        type: 'warning',
       }
     )
 
@@ -865,7 +892,7 @@ const getOfferStatusTag = (status: string) => {
   const tagMap: Record<string, string> = {
     active: 'success',
     inactive: 'info',
-    soldout: 'danger'
+    soldout: 'danger',
   }
   return tagMap[status] || 'info'
 }
@@ -874,108 +901,123 @@ const getOfferStatusLabel = (status: string) => {
   const labelMap: Record<string, string> = {
     active: '生效中',
     inactive: '未生效',
-    soldout: '已售罄'
+    soldout: '已售罄',
   }
   return labelMap[status] || status
 }
 
 // 监听城市选择变化
-watch(() => formData.fromCityId, (newCityId) => {
-  if (newCityId) {
-    const city = cities.value.find(c => c.id === newCityId)
-    if (city) {
-      formData.fromCityName = city.name
+watch(
+  () => formData.fromCityId,
+  newCityId => {
+    if (newCityId) {
+      const city = cities.value.find(c => c.id === newCityId)
+      if (city) {
+        formData.fromCityName = city.name
+      }
+      // 清空取车门店和车辆
+      formData.pickupStoreId = null
+      formData.pickupStoreName = ''
+      formData.pickupStoreAddress = ''
+      formData.vehicleId = null
+      pickupStores.value = []
+      availableVehicles.value = []
+      // 加载取车门店列表
+      loadPickupStores(newCityId)
+    } else {
+      formData.fromCityName = ''
+      formData.pickupStoreId = null
+      formData.pickupStoreName = ''
+      formData.pickupStoreAddress = ''
+      formData.vehicleId = null
+      pickupStores.value = []
+      availableVehicles.value = []
     }
-    // 清空取车门店和车辆
-    formData.pickupStoreId = null
-    formData.pickupStoreName = ''
-    formData.pickupStoreAddress = ''
-    formData.vehicleId = null
-    pickupStores.value = []
-    availableVehicles.value = []
-    // 加载取车门店列表
-    loadPickupStores(newCityId)
-  } else {
-    formData.fromCityName = ''
-    formData.pickupStoreId = null
-    formData.pickupStoreName = ''
-    formData.pickupStoreAddress = ''
-    formData.vehicleId = null
-    pickupStores.value = []
-    availableVehicles.value = []
   }
-})
+)
 
-watch(() => formData.toCityId, (newCityId) => {
-  if (newCityId) {
-    const city = cities.value.find(c => c.id === newCityId)
-    if (city) {
-      formData.toCityName = city.name
+watch(
+  () => formData.toCityId,
+  newCityId => {
+    if (newCityId) {
+      const city = cities.value.find(c => c.id === newCityId)
+      if (city) {
+        formData.toCityName = city.name
+      }
+      // 清空还车门店
+      formData.returnStoreId = null
+      formData.returnStoreName = ''
+      formData.returnStoreAddress = ''
+      returnStores.value = []
+      // 加载还车门店列表
+      loadReturnStores(newCityId)
+    } else {
+      formData.toCityName = ''
+      formData.returnStoreId = null
+      formData.returnStoreName = ''
+      formData.returnStoreAddress = ''
+      returnStores.value = []
     }
-    // 清空还车门店
-    formData.returnStoreId = null
-    formData.returnStoreName = ''
-    formData.returnStoreAddress = ''
-    returnStores.value = []
-    // 加载还车门店列表
-    loadReturnStores(newCityId)
-  } else {
-    formData.toCityName = ''
-    formData.returnStoreId = null
-    formData.returnStoreName = ''
-    formData.returnStoreAddress = ''
-    returnStores.value = []
   }
-})
+)
 
 // 监听门店选择变化
-watch(() => formData.pickupStoreId, (newStoreId) => {
-  if (newStoreId) {
-    const store = pickupStores.value.find(s => s.id === newStoreId)
-    if (store) {
-      formData.pickupStoreName = store.name
-      formData.pickupStoreAddress = store.address
-    }
-    // 清空车辆选择
-    formData.vehicleId = null
-    formData.vehicleNumber = ''
-    formData.modelId = null
-    formData.modelName = ''
-    formData.brandName = ''
-    formData.vehicleName = ''
-    availableVehicles.value = []
-    // 加载可用车辆列表
-    loadAvailableVehicles(newStoreId)
-  }
-})
-
-watch(() => formData.returnStoreId, (newStoreId) => {
-  if (newStoreId) {
-    const store = returnStores.value.find(s => s.id === newStoreId)
-    if (store) {
-      formData.returnStoreName = store.name
-      formData.returnStoreAddress = store.address
+watch(
+  () => formData.pickupStoreId,
+  newStoreId => {
+    if (newStoreId) {
+      const store = pickupStores.value.find(s => s.id === newStoreId)
+      if (store) {
+        formData.pickupStoreName = store.name
+        formData.pickupStoreAddress = store.address
+      }
+      // 清空车辆选择
+      formData.vehicleId = null
+      formData.vehicleNumber = ''
+      formData.modelId = null
+      formData.modelName = ''
+      formData.brandName = ''
+      formData.vehicleName = ''
+      availableVehicles.value = []
+      // 加载可用车辆列表
+      loadAvailableVehicles(newStoreId)
     }
   }
-})
+)
 
-// 监听车辆选择变化
-watch(() => formData.vehicleId, (newVehicleId) => {
-  if (newVehicleId) {
-    const vehicle = availableVehicles.value.find(v => v.id === newVehicleId)
-    if (vehicle) {
-      formData.vehicleNumber = vehicle.vehicleNumber
-      formData.modelId = vehicle.modelId
-      formData.modelName = vehicle.modelName
-      formData.brandName = vehicle.brandName
-      formData.vehicleName = `${vehicle.brandName} ${vehicle.modelName}`
-      // 加载车型详情
-      if (vehicle.modelId) {
-        loadVehicleModelDetails(vehicle.modelId)
+watch(
+  () => formData.returnStoreId,
+  newStoreId => {
+    if (newStoreId) {
+      const store = returnStores.value.find(s => s.id === newStoreId)
+      if (store) {
+        formData.returnStoreName = store.name
+        formData.returnStoreAddress = store.address
       }
     }
   }
-})
+)
+
+// 监听车辆选择变化
+watch(
+  () => formData.vehicleId,
+  newVehicleId => {
+    if (newVehicleId) {
+      const vehicle = availableVehicles.value.find(v => v.id === newVehicleId)
+      if (vehicle) {
+        formData.vehicleNumber = vehicle.vehicleNumber
+        formData.modelId = vehicle.modelId
+        formData.modelName = vehicle.modelName
+        formData.brandName = vehicle.brandName
+        formData.vehicleName = `${vehicle.brandName} ${vehicle.modelName}`
+        // 加载车型详情
+        if (vehicle.modelId) {
+          loadVehicleModelDetails(vehicle.modelId)
+        }
+      }
+    }
+  }
+)
 
 onMounted(() => {
   loadCities()

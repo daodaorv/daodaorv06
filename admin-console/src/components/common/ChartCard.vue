@@ -49,11 +49,7 @@
       </div>
 
       <!-- 空状态 -->
-      <el-empty
-        v-if="!loading && isEmpty"
-        :description="emptyText"
-        :image-size="100"
-      />
+      <el-empty v-if="!loading && isEmpty" :description="emptyText" :image-size="100" />
     </div>
 
     <!-- 卡片底部 -->
@@ -69,14 +65,7 @@ import { ref, watch, onMounted, onBeforeUnmount, nextTick, computed } from 'vue'
 import { Refresh, Loading } from '@element-plus/icons-vue'
 import type { Component } from 'vue'
 import * as echarts from 'echarts/core'
-import {
-  BarChart,
-  LineChart,
-  PieChart,
-  ScatterChart,
-  RadarChart,
-  GaugeChart,
-} from 'echarts/charts'
+import { BarChart, LineChart, PieChart, ScatterChart, RadarChart, GaugeChart } from 'echarts/charts'
 import {
   TitleComponent,
   TooltipComponent,
@@ -107,19 +96,19 @@ echarts.use([
 
 // Props 定义
 interface Props {
-  title: string                   // 卡片标题
-  subtitle?: string               // 卡片副标题
-  icon?: Component                // 标题图标
-  iconColor?: string              // 图标颜色
+  title: string // 卡片标题
+  subtitle?: string // 卡片副标题
+  icon?: Component // 标题图标
+  iconColor?: string // 图标颜色
   chartType?: 'echarts' | 'custom' // 图表类型
-  options?: EChartsOption         // ECharts 配置项
-  height?: string                 // 图表高度
-  loading?: boolean               // 加载状态
-  isEmpty?: boolean               // 是否为空
-  emptyText?: string              // 空状态文本
+  options?: EChartsOption // ECharts 配置项
+  height?: string // 图表高度
+  loading?: boolean // 加载状态
+  isEmpty?: boolean // 是否为空
+  emptyText?: string // 空状态文本
   shadow?: 'always' | 'hover' | 'never' // 阴影显示时机
-  showRefresh?: boolean           // 是否显示刷新按钮
-  autoResize?: boolean            // 是否自动调整大小
+  showRefresh?: boolean // 是否显示刷新按钮
+  autoResize?: boolean // 是否自动调整大小
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -138,7 +127,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 // Emits 定义
 const emit = defineEmits<{
-  'refresh': []
+  refresh: []
   'chart-ready': [chart: ECharts]
 }>()
 
@@ -214,7 +203,7 @@ watch(
 // 监听加载状态
 watch(
   () => props.loading,
-  (newVal) => {
+  newVal => {
     if (!newVal && chartInstance.value) {
       // 加载完成后重新渲染
       nextTick(() => {

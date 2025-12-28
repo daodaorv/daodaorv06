@@ -13,12 +13,7 @@ import type {
   WithdrawalRequest,
   RiskControlRule,
 } from '@/types/profit'
-import {
-  ProductType,
-  HostingType,
-  ProfitStatus,
-  PromotionLevel,
-} from '@/types/profit'
+import { ProductType, HostingType, ProfitStatus, PromotionLevel } from '@/types/profit'
 
 // ==================== 推广关系数据 ====================
 

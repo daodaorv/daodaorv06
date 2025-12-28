@@ -1,8 +1,6 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="campsite-settings-container">
-    
-
     <el-card class="settings-card">
       <template #header>
         <div class="card-header">
@@ -104,23 +102,13 @@
         <el-row :gutter="20">
           <el-col :span="8">
             <el-form-item label="营地面积" prop="area">
-              <el-input-number
-                v-model="form.area"
-                :min="0"
-                :step="100"
-                style="width: 100%"
-              />
+              <el-input-number v-model="form.area" :min="0" :step="100" style="width: 100%" />
               <span style="margin-left: 10px">平方米</span>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="总车位数" prop="capacity">
-              <el-input-number
-                v-model="form.capacity"
-                :min="1"
-                :step="1"
-                style="width: 100%"
-              />
+              <el-input-number v-model="form.capacity" :min="1" :step="1" style="width: 100%" />
               <span style="margin-left: 10px">个</span>
             </el-form-item>
           </el-col>
@@ -237,11 +225,7 @@
         <el-form-item label="设施配置">
           <div class="facilities-section">
             <div class="facilities-grid">
-              <div
-                v-for="facility in availableFacilities"
-                :key="facility.id"
-                class="facility-item"
-              >
+              <div v-for="facility in availableFacilities" :key="facility.id" class="facility-item">
                 <el-checkbox v-model="facility.available" :label="facility.name" />
                 <el-button
                   v-if="facility.isCustom"
@@ -443,7 +427,7 @@ interface CampsiteFacility {
   name: string
   icon: string
   available: boolean
-  isCustom?: boolean  // 是否为自定义设施
+  isCustom?: boolean // 是否为自定义设施
 }
 import { ref, reactive, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -451,11 +435,7 @@ import { ElMessage } from 'element-plus'
 import { Plus, Delete, Picture, VideoCamera, Link } from '@element-plus/icons-vue'
 import type { FormInstance, FormRules, UploadProps, UploadUserFile, UploadFile } from 'element-plus'
 import { useErrorHandler } from '@/composables'
-import {
-  getCampsiteDetail,
-  createCampsite,
-  updateCampsite
-} from '@/api/campsite'
+import { getCampsiteDetail, createCampsite, updateCampsite } from '@/api/campsite'
 
 // Composables
 const route = useRoute()
@@ -503,7 +483,7 @@ const form = reactive({
   contactPhone: '',
   description: '',
   rules: '',
-  images: [] as string[]
+  images: [] as string[],
 })
 
 // 可用设施列表
@@ -519,7 +499,7 @@ const availableFacilities = ref<CampsiteFacility[]>([
   { id: 'restaurant', name: '餐厅', icon: 'restaurant', available: false, isCustom: false },
   { id: 'playground', name: '儿童游乐场', icon: 'playground', available: false, isCustom: false },
   { id: 'laundry', name: '洗衣房', icon: 'laundry', available: false, isCustom: false },
-  { id: 'security', name: '24小时安保', icon: 'security', available: false, isCustom: false }
+  { id: 'security', name: '24小时安保', icon: 'security', available: false, isCustom: false },
 ])
 
 // 自定义设施相关
@@ -533,9 +513,7 @@ const addCustomFacility = () => {
   }
 
   // 检查是否已存在
-  const exists = availableFacilities.value.some(
-    f => f.name === newFacilityName.value.trim()
-  )
+  const exists = availableFacilities.value.some(f => f.name === newFacilityName.value.trim())
   if (exists) {
     ElMessage.warning('该设施已存在')
     return
@@ -548,7 +526,7 @@ const addCustomFacility = () => {
     name: newFacilityName.value.trim(),
     icon: 'custom',
     available: true,
-    isCustom: true
+    isCustom: true,
   })
 
   ElMessage.success('添加成功')
@@ -642,10 +620,16 @@ const renderMarkdown = (text: string) => {
     .replace(/&(?!amp;|lt;|gt;|quot;|#)/g, '&amp;')
 
   // 图片 ![alt](url)
-  html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" style="max-width: 100%; height: auto; margin: 10px 0;" />')
+  html = html.replace(
+    /!\[([^\]]*)\]\(([^)]+)\)/g,
+    '<img src="$2" alt="$1" style="max-width: 100%; height: auto; margin: 10px 0;" />'
+  )
 
   // 链接 [text](url)
-  html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" style="color: #409eff; text-decoration: none;">$1</a>')
+  html = html.replace(
+    /\[([^\]]+)\]\(([^)]+)\)/g,
+    '<a href="$2" target="_blank" style="color: #409eff; text-decoration: none;">$1</a>'
+  )
 
   // 粗体
   html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
@@ -676,7 +660,7 @@ const handleEditorImageUpload = (uploadFile: UploadFile) => {
   if (!uploadFile.raw) return
 
   const reader = new FileReader()
-  reader.onload = (e) => {
+  reader.onload = e => {
     const base64 = e.target?.result as string
     insertImageUrl.value = base64
   }
@@ -779,83 +763,57 @@ const insertToEditor = (content: string) => {
 const formRules: FormRules = {
   name: [
     { required: true, message: '请输入营地名称', trigger: 'blur' },
-    { min: 2, max: 50, message: '长度在 2 到 50 个字符', trigger: 'blur' }
+    { min: 2, max: 50, message: '长度在 2 到 50 个字符', trigger: 'blur' },
   ],
-  type: [
-    { required: true, message: '请选择营地类型', trigger: 'change' }
-  ],
-  status: [
-    { required: true, message: '请选择运营状态', trigger: 'change' }
-  ],
-  province: [
-    { required: true, message: '请输入省份', trigger: 'blur' }
-  ],
-  city: [
-    { required: true, message: '请输入城市', trigger: 'blur' }
-  ],
-  district: [
-    { required: true, message: '请输入区县', trigger: 'blur' }
-  ],
-  address: [
-    { required: true, message: '请输入详细地址', trigger: 'blur' }
-  ],
-  longitude: [
-    { required: true, message: '请输入经度', trigger: 'blur' }
-  ],
-  latitude: [
-    { required: true, message: '请输入纬度', trigger: 'blur' }
-  ],
+  type: [{ required: true, message: '请选择营地类型', trigger: 'change' }],
+  status: [{ required: true, message: '请选择运营状态', trigger: 'change' }],
+  province: [{ required: true, message: '请输入省份', trigger: 'blur' }],
+  city: [{ required: true, message: '请输入城市', trigger: 'blur' }],
+  district: [{ required: true, message: '请输入区县', trigger: 'blur' }],
+  address: [{ required: true, message: '请输入详细地址', trigger: 'blur' }],
+  longitude: [{ required: true, message: '请输入经度', trigger: 'blur' }],
+  latitude: [{ required: true, message: '请输入纬度', trigger: 'blur' }],
   area: [
     { required: true, message: '请输入营地面积', trigger: 'blur' },
-    { type: 'number', min: 1, message: '面积必须大于0', trigger: 'blur' }
+    { type: 'number', min: 1, message: '面积必须大于0', trigger: 'blur' },
   ],
   capacity: [
     { required: true, message: '请输入总车位数', trigger: 'blur' },
-    { type: 'number', min: 1, message: '车位数必须大于0', trigger: 'blur' }
+    { type: 'number', min: 1, message: '车位数必须大于0', trigger: 'blur' },
   ],
   availableSpots: [
     { required: true, message: '请输入可用车位数', trigger: 'blur' },
-    { type: 'number', min: 0, message: '可用车位数不能小于0', trigger: 'blur' }
+    { type: 'number', min: 0, message: '可用车位数不能小于0', trigger: 'blur' },
   ],
   pricePerNight: [
     { required: true, message: '请输入平日价格', trigger: 'blur' },
-    { type: 'number', min: 0, message: '价格不能小于0', trigger: 'blur' }
+    { type: 'number', min: 0, message: '价格不能小于0', trigger: 'blur' },
   ],
   weekendPrice: [
     { required: true, message: '请输入周末价格', trigger: 'blur' },
-    { type: 'number', min: 0, message: '价格不能小于0', trigger: 'blur' }
+    { type: 'number', min: 0, message: '价格不能小于0', trigger: 'blur' },
   ],
   holidayPrice: [
     { required: true, message: '请输入假日价格', trigger: 'blur' },
-    { type: 'number', min: 0, message: '价格不能小于0', trigger: 'blur' }
+    { type: 'number', min: 0, message: '价格不能小于0', trigger: 'blur' },
   ],
-  openTime: [
-    { required: true, message: '请输入营业时间', trigger: 'blur' }
-  ],
-  checkInTime: [
-    { required: true, message: '请选择入住时间', trigger: 'change' }
-  ],
-  checkOutTime: [
-    { required: true, message: '请选择退房时间', trigger: 'change' }
-  ],
-  contactPerson: [
-    { required: true, message: '请输入联系人', trigger: 'blur' }
-  ],
+  openTime: [{ required: true, message: '请输入营业时间', trigger: 'blur' }],
+  checkInTime: [{ required: true, message: '请选择入住时间', trigger: 'change' }],
+  checkOutTime: [{ required: true, message: '请选择退房时间', trigger: 'change' }],
+  contactPerson: [{ required: true, message: '请输入联系人', trigger: 'blur' }],
   contactPhone: [
     { required: true, message: '请输入联系电话', trigger: 'blur' },
-    { pattern: /^1[3-9]\d{9}$/, message: '请输入正确的手机号', trigger: 'blur' }
+    { pattern: /^1[3-9]\d{9}$/, message: '请输入正确的手机号', trigger: 'blur' },
   ],
   description: [
     { required: true, message: '请输入营地描述', trigger: 'blur' },
-    { min: 10, message: '描述至少10个字符', trigger: 'blur' }
+    { min: 10, message: '描述至少10个字符', trigger: 'blur' },
   ],
-  rules: [
-    { required: true, message: '请输入营地规则', trigger: 'blur' }
-  ]
+  rules: [{ required: true, message: '请输入营地规则', trigger: 'blur' }],
 }
 
 // 图片预览
-const handlePictureCardPreview: UploadProps['onPreview'] = (uploadFile) => {
+const handlePictureCardPreview: UploadProps['onPreview'] = uploadFile => {
   previewImageUrl.value = uploadFile.url!
   imagePreviewVisible.value = true
 }
@@ -865,7 +823,7 @@ const handleImageChange: UploadProps['onChange'] = (uploadFile, uploadFiles) => 
   // 将上传的文件转换为base64或URL
   if (uploadFile.raw) {
     const reader = new FileReader()
-    reader.onload = (e) => {
+    reader.onload = e => {
       const base64 = e.target?.result as string
       // 更新form.images数组
       const index = uploadFiles.findIndex(f => f.uid === uploadFile.uid)
@@ -882,7 +840,7 @@ const handleImageChange: UploadProps['onChange'] = (uploadFile, uploadFiles) => 
 }
 
 // 删除图片
-const handleRemoveImage: UploadProps['onRemove'] = (uploadFile) => {
+const handleRemoveImage: UploadProps['onRemove'] = uploadFile => {
   const index = fileList.value.findIndex(f => f.uid === uploadFile.uid)
   if (index !== -1) {
     form.images.splice(index, 1)
@@ -894,7 +852,7 @@ const handleRemoveImage: UploadProps['onRemove'] = (uploadFile) => {
 const handleSave = async () => {
   if (!formRef.value) return
 
-  await formRef.value.validate(async (valid) => {
+  await formRef.value.validate(async valid => {
     if (!valid) return
 
     // 验证可用车位不能超过总车位
@@ -908,7 +866,7 @@ const handleSave = async () => {
       // 准备提交数据
       const submitData = {
         ...form,
-        facilities: availableFacilities.value.filter(f => f.available)
+        facilities: availableFacilities.value.filter(f => f.available),
       }
 
       if (isEditMode.value && campsiteId.value) {
@@ -944,7 +902,7 @@ const loadCampsiteData = async () => {
   }
 
   try {
-    const res = await getCampsiteDetail(campsiteId.value) as any
+    const res = (await getCampsiteDetail(campsiteId.value)) as any
     const data = res.data
 
     // 填充表单数据
@@ -972,7 +930,7 @@ const loadCampsiteData = async () => {
       contactPhone: data.contactPhone,
       description: data.description,
       rules: data.rules,
-      images: data.images || []
+      images: data.images || [],
     })
 
     // 设置设施状态
@@ -991,7 +949,7 @@ const loadCampsiteData = async () => {
         uid: Date.now() + index,
         name: `image-${index + 1}.jpg`,
         url: url,
-        status: 'success'
+        status: 'success',
       }))
     }
   } catch (error) {

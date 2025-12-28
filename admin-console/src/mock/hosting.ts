@@ -55,16 +55,16 @@ const mockOldCarApplications: OldCarHostingApplication[] = [
     conditionRating: 'good',
     registrationPhotos: [
       'https://picsum.photos/400/300?random=1',
-      'https://picsum.photos/400/300?random=2'
+      'https://picsum.photos/400/300?random=2',
     ],
     vehiclePhotos: [
       'https://picsum.photos/800/600?random=3',
       'https://picsum.photos/800/600?random=4',
-      'https://picsum.photos/800/600?random=5'
+      'https://picsum.photos/800/600?random=5',
     ],
     interiorPhotos: [
       'https://picsum.photos/800/600?random=6',
-      'https://picsum.photos/800/600?random=7'
+      'https://picsum.photos/800/600?random=7',
     ],
     status: 'pending',
     reviewComment: '',
@@ -74,7 +74,7 @@ const mockOldCarApplications: OldCarHostingApplication[] = [
     platformShare: 30,
     ownerShare: 70,
     createdAt: '2025-01-01T10:00:00.000Z',
-    updatedAt: '2025-01-01T10:00:00.000Z'
+    updatedAt: '2025-01-01T10:00:00.000Z',
   },
   {
     id: 2,
@@ -91,15 +91,13 @@ const mockOldCarApplications: OldCarHostingApplication[] = [
     conditionRating: 'excellent',
     registrationPhotos: [
       'https://picsum.photos/400/300?random=8',
-      'https://picsum.photos/400/300?random=9'
+      'https://picsum.photos/400/300?random=9',
     ],
     vehiclePhotos: [
       'https://picsum.photos/800/600?random=10',
-      'https://picsum.photos/800/600?random=11'
+      'https://picsum.photos/800/600?random=11',
     ],
-    interiorPhotos: [
-      'https://picsum.photos/800/600?random=12'
-    ],
+    interiorPhotos: ['https://picsum.photos/800/600?random=12'],
     status: 'approved',
     reviewComment: '车辆状况良好，手续齐全，同意托管',
     reviewedBy: '审核员-王五',
@@ -108,7 +106,7 @@ const mockOldCarApplications: OldCarHostingApplication[] = [
     platformShare: 30,
     ownerShare: 70,
     createdAt: '2025-01-02T09:00:00.000Z',
-    updatedAt: '2025-01-02T14:30:00.000Z'
+    updatedAt: '2025-01-02T14:30:00.000Z',
   },
   {
     id: 3,
@@ -123,16 +121,12 @@ const mockOldCarApplications: OldCarHostingApplication[] = [
     vehicleAge: 6,
     mileage: 65000,
     conditionRating: 'fair',
-    registrationPhotos: [
-      'https://picsum.photos/400/300?random=13'
-    ],
+    registrationPhotos: ['https://picsum.photos/400/300?random=13'],
     vehiclePhotos: [
       'https://picsum.photos/800/600?random=14',
-      'https://picsum.photos/800/600?random=15'
+      'https://picsum.photos/800/600?random=15',
     ],
-    interiorPhotos: [
-      'https://picsum.photos/800/600?random=16'
-    ],
+    interiorPhotos: ['https://picsum.photos/800/600?random=16'],
     status: 'rejected',
     reviewComment: '车辆年限过长，磨损较严重，不符合托管标准',
     reviewedBy: '审核员-赵六',
@@ -141,14 +135,20 @@ const mockOldCarApplications: OldCarHostingApplication[] = [
     platformShare: 30,
     ownerShare: 70,
     createdAt: '2025-01-03T11:00:00.000Z',
-    updatedAt: '2025-01-03T16:00:00.000Z'
-  }
+    updatedAt: '2025-01-03T16:00:00.000Z',
+  },
 ]
 
 // ==================== 购车托管申请 ====================
 
 // 购车托管申请状态
-export type NewCarApplicationStatus = 'pending' | 'approved' | 'rejected' | 'purchasing' | 'completed' | 'cancelled'
+export type NewCarApplicationStatus =
+  | 'pending'
+  | 'approved'
+  | 'rejected'
+  | 'purchasing'
+  | 'completed'
+  | 'cancelled'
 
 // 购车托管申请信息
 export interface NewCarHostingApplication {
@@ -204,7 +204,7 @@ const mockNewCarApplications: NewCarHostingApplication[] = [
     purchaseProgress: 0,
     deliveryDate: '',
     createdAt: '2025-01-01T13:00:00.000Z',
-    updatedAt: '2025-01-01T13:00:00.000Z'
+    updatedAt: '2025-01-01T13:00:00.000Z',
   },
   {
     id: 2,
@@ -230,7 +230,7 @@ const mockNewCarApplications: NewCarHostingApplication[] = [
     purchaseProgress: 60,
     deliveryDate: '2025-02-15',
     createdAt: '2025-01-02T10:00:00.000Z',
-    updatedAt: '2025-01-10T09:00:00.000Z'
+    updatedAt: '2025-01-10T09:00:00.000Z',
   },
   {
     id: 3,
@@ -256,8 +256,8 @@ const mockNewCarApplications: NewCarHostingApplication[] = [
     purchaseProgress: 0,
     deliveryDate: '',
     createdAt: '2025-01-03T12:00:00.000Z',
-    updatedAt: '2025-01-03T17:00:00.000Z'
-  }
+    updatedAt: '2025-01-03T17:00:00.000Z',
+  },
 ]
 
 // ==================== 托管车辆管理 ====================
@@ -311,7 +311,7 @@ const mockHostingVehicles: HostingVehicle[] = [
     insuranceExpireDate: '2025-12-31',
     hostingStartDate: '2024-06-01',
     createdAt: '2024-06-01T10:00:00.000Z',
-    updatedAt: '2025-01-10T15:00:00.000Z'
+    updatedAt: '2025-01-10T15:00:00.000Z',
   },
   {
     id: 2,
@@ -333,14 +333,20 @@ const mockHostingVehicles: HostingVehicle[] = [
     insuranceExpireDate: '2026-02-15',
     hostingStartDate: '2024-09-01',
     createdAt: '2024-09-01T10:00:00.000Z',
-    updatedAt: '2025-01-05T14:00:00.000Z'
-  }
+    updatedAt: '2025-01-05T14:00:00.000Z',
+  },
 ]
 
 // ==================== 车主自用申请 ====================
 
 // 车主自用申请状态
-export type OwnerUsageStatus = 'pending' | 'approved' | 'rejected' | 'using' | 'completed' | 'cancelled'
+export type OwnerUsageStatus =
+  | 'pending'
+  | 'approved'
+  | 'rejected'
+  | 'using'
+  | 'completed'
+  | 'cancelled'
 
 // 车主自用申请信息
 export interface OwnerUsageApplication {
@@ -394,7 +400,7 @@ const mockOwnerUsageApplications: OwnerUsageApplication[] = [
     reviewedAt: '',
     conflictOrders: 0,
     createdAt: '2025-01-10T10:00:00.000Z',
-    updatedAt: '2025-01-10T10:00:00.000Z'
+    updatedAt: '2025-01-10T10:00:00.000Z',
   },
   {
     id: 2,
@@ -419,8 +425,8 @@ const mockOwnerUsageApplications: OwnerUsageApplication[] = [
     reviewedAt: '2025-01-12T14:00:00.000Z',
     conflictOrders: 0,
     createdAt: '2025-01-12T10:00:00.000Z',
-    updatedAt: '2025-01-12T14:00:00.000Z'
-  }
+    updatedAt: '2025-01-12T14:00:00.000Z',
+  },
 ]
 
 // ==================== 收益管理 ====================
@@ -468,7 +474,7 @@ const mockIncomeRecords: IncomeRecord[] = [
     platformAmount: 1350,
     recordDate: '2025-01-01',
     settlementStatus: 'settled',
-    createdAt: '2025-01-01T18:00:00.000Z'
+    createdAt: '2025-01-01T18:00:00.000Z',
   },
   {
     id: 2,
@@ -487,7 +493,7 @@ const mockIncomeRecords: IncomeRecord[] = [
     platformAmount: 1560,
     recordDate: '2025-01-05',
     settlementStatus: 'settled',
-    createdAt: '2025-01-05T18:00:00.000Z'
+    createdAt: '2025-01-05T18:00:00.000Z',
   },
   {
     id: 3,
@@ -506,8 +512,8 @@ const mockIncomeRecords: IncomeRecord[] = [
     platformAmount: 3300,
     recordDate: '2025-01-08',
     settlementStatus: 'pending',
-    createdAt: '2025-01-08T18:00:00.000Z'
-  }
+    createdAt: '2025-01-08T18:00:00.000Z',
+  },
 ]
 
 // 收益统计信息
@@ -529,7 +535,7 @@ const mockIncomeStats: IncomeStats = {
   monthlyIncome: 42000,
   vehicleCount: 2,
   activeVehicleCount: 1,
-  averageUtilization: 67.5
+  averageUtilization: 67.5,
 }
 
 // ==================== API Mock 函数 ====================
@@ -544,7 +550,7 @@ export interface OldCarApplicationListParams {
 
 // Mock 获取自有车托管申请列表
 export const mockGetOldCarApplicationList = (params: OldCarApplicationListParams) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       let filtered = [...mockOldCarApplications]
 
@@ -573,9 +579,9 @@ export const mockGetOldCarApplicationList = (params: OldCarApplicationListParams
           list: filtered.slice(start, end),
           total: filtered.length,
           page,
-          pageSize
+          pageSize,
         },
-        message: '获取成功'
+        message: '获取成功',
       })
     }, 300)
   })
@@ -583,7 +589,7 @@ export const mockGetOldCarApplicationList = (params: OldCarApplicationListParams
 
 // Mock 审核自有车托管申请
 export const mockReviewOldCarApplication = (id: number, approved: boolean, comment: string) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const application = mockOldCarApplications.find(a => a.id === id)
       if (application) {
@@ -597,7 +603,7 @@ export const mockReviewOldCarApplication = (id: number, approved: boolean, comme
       resolve({
         code: 200,
         data: application,
-        message: '审核成功'
+        message: '审核成功',
       })
     }, 500)
   })
@@ -613,7 +619,7 @@ export interface NewCarApplicationListParams {
 
 // Mock 获取购车托管申请列表
 export const mockGetNewCarApplicationList = (params: NewCarApplicationListParams) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       let filtered = [...mockNewCarApplications]
 
@@ -641,9 +647,9 @@ export const mockGetNewCarApplicationList = (params: NewCarApplicationListParams
           list: filtered.slice(start, end),
           total: filtered.length,
           page,
-          pageSize
+          pageSize,
         },
-        message: '获取成功'
+        message: '获取成功',
       })
     }, 300)
   })
@@ -651,7 +657,7 @@ export const mockGetNewCarApplicationList = (params: NewCarApplicationListParams
 
 // Mock 审核购车托管申请
 export const mockReviewNewCarApplication = (id: number, approved: boolean, comment: string) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const application = mockNewCarApplications.find(a => a.id === id)
       if (application) {
@@ -665,7 +671,7 @@ export const mockReviewNewCarApplication = (id: number, approved: boolean, comme
       resolve({
         code: 200,
         data: application,
-        message: '审核成功'
+        message: '审核成功',
       })
     }, 500)
   })
@@ -682,7 +688,7 @@ export interface HostingVehicleListParams {
 
 // Mock 获取托管车辆列表
 export const mockGetHostingVehicleList = (params: HostingVehicleListParams) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       let filtered = [...mockHostingVehicles]
 
@@ -714,9 +720,9 @@ export const mockGetHostingVehicleList = (params: HostingVehicleListParams) => {
           list: filtered.slice(start, end),
           total: filtered.length,
           page,
-          pageSize
+          pageSize,
         },
-        message: '获取成功'
+        message: '获取成功',
       })
     }, 300)
   })
@@ -732,7 +738,7 @@ export interface OwnerUsageApplicationListParams {
 
 // Mock 获取车主自用申请列表
 export const mockGetOwnerUsageApplicationList = (params: OwnerUsageApplicationListParams) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       let filtered = [...mockOwnerUsageApplications]
 
@@ -760,9 +766,9 @@ export const mockGetOwnerUsageApplicationList = (params: OwnerUsageApplicationLi
           list: filtered.slice(start, end),
           total: filtered.length,
           page,
-          pageSize
+          pageSize,
         },
-        message: '获取成功'
+        message: '获取成功',
       })
     }, 300)
   })
@@ -770,7 +776,7 @@ export const mockGetOwnerUsageApplicationList = (params: OwnerUsageApplicationLi
 
 // Mock 审核车主自用申请
 export const mockReviewOwnerUsageApplication = (id: number, approved: boolean, comment: string) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const application = mockOwnerUsageApplications.find(a => a.id === id)
       if (application) {
@@ -784,7 +790,7 @@ export const mockReviewOwnerUsageApplication = (id: number, approved: boolean, c
       resolve({
         code: 200,
         data: application,
-        message: '审核成功'
+        message: '审核成功',
       })
     }, 500)
   })
@@ -803,7 +809,7 @@ export interface IncomeRecordListParams {
 
 // Mock 获取收益记录列表
 export const mockGetIncomeRecordList = (params: IncomeRecordListParams) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       let filtered = [...mockIncomeRecords]
 
@@ -844,9 +850,9 @@ export const mockGetIncomeRecordList = (params: IncomeRecordListParams) => {
           list: filtered.slice(start, end),
           total: filtered.length,
           page,
-          pageSize
+          pageSize,
         },
-        message: '获取成功'
+        message: '获取成功',
       })
     }, 300)
   })
@@ -854,12 +860,12 @@ export const mockGetIncomeRecordList = (params: IncomeRecordListParams) => {
 
 // Mock 获取收益统计
 export const mockGetIncomeStats = () => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       resolve({
         code: 200,
         data: mockIncomeStats,
-        message: '获取成功'
+        message: '获取成功',
       })
     }, 300)
   })
@@ -917,9 +923,10 @@ const mockCrowdfundingModels: CrowdfundingModel[] = [
     crowdfundingDisplayOrder: 100,
     crowdfundingCount: 5,
     successfulCrowdfundingCount: 4,
-    crowdfundingDescription: '专为川西环线打造的高端房车，配备完善的生活设施，适合长途旅行。众筹成功后将托管运营，预计年化收益率20%以上。',
+    crowdfundingDescription:
+      '专为川西环线打造的高端房车，配备完善的生活设施，适合长途旅行。众筹成功后将托管运营，预计年化收益率20%以上。',
     crowdfundingEnabledAt: '2025-01-01T10:00:00.000Z',
-    crowdfundingUpdatedAt: '2025-01-15T14:30:00.000Z'
+    crowdfundingUpdatedAt: '2025-01-15T14:30:00.000Z',
   },
   {
     id: 2,
@@ -933,9 +940,10 @@ const mockCrowdfundingModels: CrowdfundingModel[] = [
     crowdfundingDisplayOrder: 90,
     crowdfundingCount: 3,
     successfulCrowdfundingCount: 3,
-    crowdfundingDescription: '经典C型房车，性价比高，适合家庭出游。空间宽敞，配置齐全，托管收益稳定。',
+    crowdfundingDescription:
+      '经典C型房车，性价比高，适合家庭出游。空间宽敞，配置齐全，托管收益稳定。',
     crowdfundingEnabledAt: '2025-01-05T09:00:00.000Z',
-    crowdfundingUpdatedAt: '2025-01-10T16:20:00.000Z'
+    crowdfundingUpdatedAt: '2025-01-10T16:20:00.000Z',
   },
   {
     id: 3,
@@ -951,7 +959,7 @@ const mockCrowdfundingModels: CrowdfundingModel[] = [
     successfulCrowdfundingCount: 2,
     crowdfundingDescription: '紧凑型B型房车，适合城市出行和短途旅游。操控灵活，油耗经济。',
     crowdfundingEnabledAt: '2025-01-08T11:00:00.000Z',
-    crowdfundingUpdatedAt: '2025-01-12T10:15:00.000Z'
+    crowdfundingUpdatedAt: '2025-01-12T10:15:00.000Z',
   },
   {
     id: 4,
@@ -965,9 +973,10 @@ const mockCrowdfundingModels: CrowdfundingModel[] = [
     crowdfundingDisplayOrder: 95,
     crowdfundingCount: 4,
     successfulCrowdfundingCount: 3,
-    crowdfundingDescription: '豪华商务房车，高端配置，适合商务接待和高端旅游。预期年化收益率超过20%。',
+    crowdfundingDescription:
+      '豪华商务房车，高端配置，适合商务接待和高端旅游。预期年化收益率超过20%。',
     crowdfundingEnabledAt: '2025-01-03T08:30:00.000Z',
-    crowdfundingUpdatedAt: '2025-01-18T15:45:00.000Z'
+    crowdfundingUpdatedAt: '2025-01-18T15:45:00.000Z',
   },
   {
     id: 5,
@@ -983,22 +992,20 @@ const mockCrowdfundingModels: CrowdfundingModel[] = [
     successfulCrowdfundingCount: 1,
     crowdfundingDescription: '入门级C型房车，价格亲民，适合新手房车爱好者。托管收益稳定可靠。',
     crowdfundingEnabledAt: '2025-01-10T13:00:00.000Z',
-    crowdfundingUpdatedAt: '2025-01-10T13:00:00.000Z'
-  }
+    crowdfundingUpdatedAt: '2025-01-10T13:00:00.000Z',
+  },
 ]
 
 // Mock 获取众筹车型列表
 export const mockGetCrowdfundingModelList = (params: CrowdfundingModelListParams) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       let filtered = [...mockCrowdfundingModels]
 
       // 关键词搜索
       if (params.keyword) {
         filtered = filtered.filter(
-          m =>
-            m.modelName.includes(params.keyword!) ||
-            m.brandName.includes(params.keyword!)
+          m => m.modelName.includes(params.keyword!) || m.brandName.includes(params.keyword!)
         )
       }
 
@@ -1021,30 +1028,33 @@ export const mockGetCrowdfundingModelList = (params: CrowdfundingModelListParams
           list: filtered.slice(start, end),
           total: filtered.length,
           page,
-          pageSize
+          pageSize,
         },
-        message: '获取成功'
+        message: '获取成功',
       })
     }, 300)
   })
 }
 
 // Mock 更新车型众筹配置
-export const mockUpdateCrowdfundingModelConfig = (id: number, data: UpdateCrowdfundingModelConfigParams) => {
-  return new Promise((resolve) => {
+export const mockUpdateCrowdfundingModelConfig = (
+  id: number,
+  data: UpdateCrowdfundingModelConfigParams
+) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const model = mockCrowdfundingModels.find(m => m.id === id)
       if (model) {
         Object.assign(model, {
           ...data,
-          crowdfundingUpdatedAt: new Date().toISOString()
+          crowdfundingUpdatedAt: new Date().toISOString(),
         })
       }
 
       resolve({
         code: 200,
         data: model,
-        message: '更新成功'
+        message: '更新成功',
       })
     }, 300)
   })
@@ -1052,7 +1062,7 @@ export const mockUpdateCrowdfundingModelConfig = (id: number, data: UpdateCrowdf
 
 // Mock 批量设置热门推荐
 export const mockBatchSetHotCrowdfunding = (ids: number[], isHot: boolean) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       ids.forEach(id => {
         const model = mockCrowdfundingModels.find(m => m.id === id)
@@ -1065,7 +1075,7 @@ export const mockBatchSetHotCrowdfunding = (ids: number[], isHot: boolean) => {
       resolve({
         code: 200,
         data: { successCount: ids.length },
-        message: '批量设置成功'
+        message: '批量设置成功',
       })
     }, 300)
   })
@@ -1073,7 +1083,7 @@ export const mockBatchSetHotCrowdfunding = (ids: number[], isHot: boolean) => {
 
 // Mock 更新展示排序
 export const mockUpdateCrowdfundingModelOrder = (id: number, order: number) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const model = mockCrowdfundingModels.find(m => m.id === id)
       if (model) {
@@ -1084,7 +1094,7 @@ export const mockUpdateCrowdfundingModelOrder = (id: number, order: number) => {
       resolve({
         code: 200,
         data: model,
-        message: '更新成功'
+        message: '更新成功',
       })
     }, 300)
   })
@@ -1123,7 +1133,16 @@ export interface CrowdfundingProject {
   initiatorName: string
   initiatorPhone: string
   estimatedMonthlyIncome: number
-  status: 'pending' | 'rejected' | 'funding' | 'success' | 'failed' | 'purchasing' | 'hosting' | 'completed' | 'cancelled'
+  status:
+    | 'pending'
+    | 'rejected'
+    | 'funding'
+    | 'success'
+    | 'failed'
+    | 'purchasing'
+    | 'hosting'
+    | 'completed'
+    | 'cancelled'
   startDate: string
   endDate: string
   description: string
@@ -1166,7 +1185,8 @@ const mockCrowdfundingProjects: CrowdfundingProject[] = [
     status: 'funding',
     startDate: '2025-01-01',
     endDate: '2025-01-31',
-    description: '专为川西环线打造的高端房车，配备完善的生活设施，适合长途旅行。众筹成功后将托管运营，预计年化收益率20%以上。',
+    description:
+      '专为川西环线打造的高端房车，配备完善的生活设施，适合长途旅行。众筹成功后将托管运营，预计年化收益率20%以上。',
     createdAt: '2025-01-01 10:00:00',
     participants: [
       {
@@ -1448,7 +1468,7 @@ const mockCrowdfundingProjects: CrowdfundingProject[] = [
 
 // Mock 获取众筹项目列表
 export const mockGetCrowdfundingProjectList = (params: CrowdfundingProjectListParams) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       let filteredProjects = [...mockCrowdfundingProjects]
 
@@ -1508,7 +1528,7 @@ export const mockGetCrowdfundingProjectList = (params: CrowdfundingProjectListPa
 
 // Mock 获取众筹项目详情
 export const mockGetCrowdfundingProjectDetail = (id: number) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const project = mockCrowdfundingProjects.find(p => p.id === id)
 
@@ -1531,7 +1551,7 @@ export const mockGetCrowdfundingProjectDetail = (id: number) => {
 
 // Mock 审核众筹项目
 export const mockReviewCrowdfundingProject = (id: number, approved: boolean, comment: string) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const project = mockCrowdfundingProjects.find(p => p.id === id)
 
@@ -1561,7 +1581,7 @@ export const mockReviewCrowdfundingProject = (id: number, approved: boolean, com
 
 // Mock 更新众筹项目状态
 export const mockUpdateCrowdfundingProjectStatus = (id: number, status: string, remark: string) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const project = mockCrowdfundingProjects.find(p => p.id === id)
 
@@ -1829,7 +1849,7 @@ const mockCrowdfundingOwners: CrowdfundingOwner[] = [
 
 // Mock 获取众筹车主列表
 export const mockGetCrowdfundingOwnerList = (params: CrowdfundingOwnerListParams) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       let filteredOwners = [...mockCrowdfundingOwners]
 
@@ -1837,9 +1857,7 @@ export const mockGetCrowdfundingOwnerList = (params: CrowdfundingOwnerListParams
       if (params.keyword) {
         const keyword = params.keyword.toLowerCase()
         filteredOwners = filteredOwners.filter(
-          o =>
-            o.userName.toLowerCase().includes(keyword) ||
-            o.userPhone.includes(keyword)
+          o => o.userName.toLowerCase().includes(keyword) || o.userPhone.includes(keyword)
         )
       }
 
@@ -1870,7 +1888,7 @@ export const mockGetCrowdfundingOwnerList = (params: CrowdfundingOwnerListParams
 
 // Mock 获取用户众筹参与记录
 export const mockGetUserCrowdfundingRecords = (userId: number) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const owner = mockCrowdfundingOwners.find(o => o.userId === userId)
 
@@ -2052,7 +2070,7 @@ const mockCrowdfundingShares: CrowdfundingShare[] = [
 
 // Mock 获取份额列表
 export const mockGetCrowdfundingShareList = (params: CrowdfundingShareListParams) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       let filteredShares = [...mockCrowdfundingShares]
 
@@ -2104,7 +2122,7 @@ export const mockGetCrowdfundingShareList = (params: CrowdfundingShareListParams
 
 // Mock 锁定/解锁份额
 export const mockToggleShareLock = (id: number, locked: boolean) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const share = mockCrowdfundingShares.find(s => s.id === id)
 
@@ -2247,7 +2265,7 @@ const mockCrowdfundingTransactions: CrowdfundingTransaction[] = [
 
 // Mock 获取份额交易列表
 export const mockGetCrowdfundingTransactionList = (params: CrowdfundingTransactionListParams) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       let filteredTransactions = [...mockCrowdfundingTransactions]
 
@@ -2274,10 +2292,14 @@ export const mockGetCrowdfundingTransactionList = (params: CrowdfundingTransacti
 
       // 日期范围筛选
       if (params.startDate) {
-        filteredTransactions = filteredTransactions.filter(t => t.transactionTime >= params.startDate!)
+        filteredTransactions = filteredTransactions.filter(
+          t => t.transactionTime >= params.startDate!
+        )
       }
       if (params.endDate) {
-        filteredTransactions = filteredTransactions.filter(t => t.transactionTime <= params.endDate!)
+        filteredTransactions = filteredTransactions.filter(
+          t => t.transactionTime <= params.endDate!
+        )
       }
 
       // 分页
@@ -2302,7 +2324,7 @@ export const mockGetCrowdfundingTransactionList = (params: CrowdfundingTransacti
 
 // Mock 取消交易
 export const mockCancelCrowdfundingTransaction = (id: number, reason: string) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const transaction = mockCrowdfundingTransactions.find(t => t.id === id)
 
@@ -2520,7 +2542,7 @@ const mockCrowdfundingIncomeRecords: CrowdfundingIncomeRecord[] = [
 
 // Mock 获取收益分配列表
 export const mockGetCrowdfundingIncomeList = (params: CrowdfundingIncomeListParams) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       let filteredRecords = [...mockCrowdfundingIncomeRecords]
 
@@ -2529,8 +2551,7 @@ export const mockGetCrowdfundingIncomeList = (params: CrowdfundingIncomeListPara
         const keyword = params.keyword.toLowerCase()
         filteredRecords = filteredRecords.filter(
           r =>
-            r.recordNo.toLowerCase().includes(keyword) ||
-            r.orderNo.toLowerCase().includes(keyword)
+            r.recordNo.toLowerCase().includes(keyword) || r.orderNo.toLowerCase().includes(keyword)
         )
       }
 
@@ -2574,7 +2595,7 @@ export const mockGetCrowdfundingIncomeList = (params: CrowdfundingIncomeListPara
 
 // Mock 获取收益统计
 export const mockGetCrowdfundingIncomeStats = () => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const stats: CrowdfundingIncomeStats = {
         totalIncome: 125000,
@@ -2598,7 +2619,7 @@ export const mockDistributeCrowdfundingIncome = (data: {
   orderId: string
   totalIncome: number
 }) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       resolve({
         code: 200,

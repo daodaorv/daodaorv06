@@ -56,17 +56,9 @@
       />
 
       <!-- 评论项 -->
-      <div
-        v-for="comment in comments"
-        :key="comment.id"
-        class="comment-item"
-      >
+      <div v-for="comment in comments" :key="comment.id" class="comment-item">
         <!-- 头像 -->
-        <el-avatar
-          class="comment-avatar"
-          :size="avatarSize"
-          :src="comment.user.avatar"
-        >
+        <el-avatar class="comment-avatar" :size="avatarSize" :src="comment.user.avatar">
           {{ comment.user.name.charAt(0) }}
         </el-avatar>
 
@@ -88,9 +80,7 @@
 
           <!-- 评论文本 -->
           <div class="comment-text">
-            <span v-if="comment.replyTo" class="reply-to">
-              回复 @{{ comment.replyTo.name }}:
-            </span>
+            <span v-if="comment.replyTo" class="reply-to"> 回复 @{{ comment.replyTo.name }}: </span>
             {{ comment.content }}
           </div>
 
@@ -130,16 +120,12 @@
             <el-dropdown
               v-if="canOperate(comment)"
               trigger="click"
-              @command="(command) => handleAction(command, comment)"
+              @command="command => handleAction(command, comment)"
             >
               <el-button :icon="MoreFilled" text size="small" />
               <template #dropdown>
                 <el-dropdown-menu>
-                  <el-dropdown-item
-                    v-if="canEdit(comment)"
-                    command="edit"
-                    :icon="Edit"
-                  >
+                  <el-dropdown-item v-if="canEdit(comment)" command="edit" :icon="Edit">
                     编辑
                   </el-dropdown-item>
                   <el-dropdown-item
@@ -187,20 +173,9 @@
           </div>
 
           <!-- 子评论 -->
-          <div
-            v-if="comment.replies && comment.replies.length > 0"
-            class="comment-replies"
-          >
-            <div
-              v-for="reply in comment.replies"
-              :key="reply.id"
-              class="reply-item"
-            >
-              <el-avatar
-                class="reply-avatar"
-                :size="32"
-                :src="reply.user.avatar"
-              >
+          <div v-if="comment.replies && comment.replies.length > 0" class="comment-replies">
+            <div v-for="reply in comment.replies" :key="reply.id" class="reply-item">
+              <el-avatar class="reply-avatar" :size="32" :src="reply.user.avatar">
                 {{ reply.user.name.charAt(0) }}
               </el-avatar>
               <div class="reply-content">
@@ -224,11 +199,7 @@
                   >
                     {{ reply.likeCount > 0 ? reply.likeCount : '' }}
                   </el-button>
-                  <el-button
-                    text
-                    size="small"
-                    @click="handleReply(reply, comment)"
-                  >
+                  <el-button text size="small" @click="handleReply(reply, comment)">
                     回复
                   </el-button>
                 </div>
@@ -270,46 +241,46 @@ import {
 
 // 用户接口
 export interface CommentUser {
-  id: string | number           // 用户 ID
-  name: string                  // 用户名
-  avatar?: string               // 头像
-  badge?: string                // 徽章文本
+  id: string | number // 用户 ID
+  name: string // 用户名
+  avatar?: string // 头像
+  badge?: string // 徽章文本
   badgeType?: 'success' | 'warning' | 'danger' | 'info'
 }
 
 // 评论接口
 export interface Comment {
-  id: string | number           // 评论 ID
-  user: CommentUser             // 评论用户
-  content: string               // 评论内容
-  time: string | Date           // 评论时间
-  likeCount: number             // 点赞数
-  liked: boolean                // 是否已点赞
-  images?: string[]             // 图片附件
-  replyTo?: CommentUser         // 回复的用户
-  replies?: Comment[]           // 子评论
-  replyCount?: number           // 回复总数
+  id: string | number // 评论 ID
+  user: CommentUser // 评论用户
+  content: string // 评论内容
+  time: string | Date // 评论时间
+  likeCount: number // 点赞数
+  liked: boolean // 是否已点赞
+  images?: string[] // 图片附件
+  replyTo?: CommentUser // 回复的用户
+  replies?: Comment[] // 子评论
+  replyCount?: number // 回复总数
 }
 
 // Props 定义
 interface Props {
-  comments?: Comment[]          // 评论列表
-  currentUser?: CommentUser     // 当前用户
-  total?: number                // 评论总数
-  loading?: boolean             // 加载状态
-  hasMore?: boolean             // 是否有更多
-  showInput?: boolean           // 是否显示输入框
-  showReply?: boolean           // 是否显示回复按钮
-  showSort?: boolean            // 是否显示排序
-  showFilter?: boolean          // 是否显示筛选
-  placeholder?: string          // 输入框占位符
-  submitText?: string           // 提交按钮文本
-  emptyText?: string            // 空状态文本
-  maxLength?: number            // 最大字数
-  avatarSize?: number           // 头像大小
-  allowEdit?: boolean           // 是否允许编辑
-  allowDelete?: boolean         // 是否允许删除
-  allowReport?: boolean         // 是否允许举报
+  comments?: Comment[] // 评论列表
+  currentUser?: CommentUser // 当前用户
+  total?: number // 评论总数
+  loading?: boolean // 加载状态
+  hasMore?: boolean // 是否有更多
+  showInput?: boolean // 是否显示输入框
+  showReply?: boolean // 是否显示回复按钮
+  showSort?: boolean // 是否显示排序
+  showFilter?: boolean // 是否显示筛选
+  placeholder?: string // 输入框占位符
+  submitText?: string // 提交按钮文本
+  emptyText?: string // 空状态文本
+  maxLength?: number // 最大字数
+  avatarSize?: number // 头像大小
+  allowEdit?: boolean // 是否允许编辑
+  allowDelete?: boolean // 是否允许删除
+  allowReport?: boolean // 是否允许举报
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -333,12 +304,12 @@ const props = withDefaults(defineProps<Props>(), {
 
 // Emits 定义
 const emit = defineEmits<{
-  'submit': [content: string, images?: string[]]
-  'reply': [comment: Comment, content: string, parentComment?: Comment]
-  'like': [comment: Comment]
-  'edit': [comment: Comment]
-  'delete': [comment: Comment]
-  'report': [comment: Comment]
+  submit: [content: string, images?: string[]]
+  reply: [comment: Comment, content: string, parentComment?: Comment]
+  like: [comment: Comment]
+  edit: [comment: Comment]
+  delete: [comment: Comment]
+  report: [comment: Comment]
   'load-more': []
   'load-more-replies': [comment: Comment]
   'sort-change': [sort: string]

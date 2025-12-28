@@ -10,12 +10,7 @@
         </div>
       </template>
 
-      <el-alert
-        title="参数说明"
-        type="info"
-        :closable="false"
-        style="margin-bottom: 20px"
-      >
+      <el-alert title="参数说明" type="info" :closable="false" style="margin-bottom: 20px">
         <p>这些参数用于车辆基础租金计算器。修改后将影响所有新的租金计算建议。</p>
         <p>已保存的车辆租金不会自动更新，需要重新使用计算器计算。</p>
       </el-alert>
@@ -151,11 +146,9 @@ import type { BaseRentalCalculationConfig } from '@/types/system'
 const allConfigs = ref<BaseRentalCalculationConfig[]>([])
 
 // 按类别分组
-const financialConfigs = computed(() =>
-  allConfigs.value.filter((c) => c.category === 'financial')
-)
+const financialConfigs = computed(() => allConfigs.value.filter(c => c.category === 'financial'))
 const operationalConfigs = computed(() =>
-  allConfigs.value.filter((c) => c.category === 'operational')
+  allConfigs.value.filter(c => c.category === 'operational')
 )
 
 // 加载配置
@@ -237,13 +230,9 @@ const handleSave = async (row: BaseRentalCalculationConfig) => {
 // 重置单个配置
 const handleReset = async (row: BaseRentalCalculationConfig) => {
   try {
-    await ElMessageBox.confirm(
-      `确定要将"${row.configName}"重置为默认值吗？`,
-      '确认重置',
-      {
-        type: 'warning',
-      }
-    )
+    await ElMessageBox.confirm(`确定要将"${row.configName}"重置为默认值吗？`, '确认重置', {
+      type: 'warning',
+    })
 
     await resetCalculationConfig(row.id)
     ElMessage.success('重置成功')
@@ -264,15 +253,11 @@ const handleReset = async (row: BaseRentalCalculationConfig) => {
 // 重置所有配置
 const handleResetAll = async () => {
   try {
-    await ElMessageBox.confirm(
-      '确定要将所有参数重置为默认值吗？此操作不可撤销！',
-      '确认重置全部',
-      {
-        type: 'warning',
-        confirmButtonText: '确定重置',
-        cancelButtonText: '取消',
-      }
-    )
+    await ElMessageBox.confirm('确定要将所有参数重置为默认值吗？此操作不可撤销！', '确认重置全部', {
+      type: 'warning',
+      confirmButtonText: '确定重置',
+      cancelButtonText: '取消',
+    })
 
     await resetAllCalculationConfigs()
     ElMessage.success('全部重置成功')

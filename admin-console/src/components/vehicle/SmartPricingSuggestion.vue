@@ -34,8 +34,9 @@
             <div class="stat-item">
               <div class="stat-label">价格区间</div>
               <div class="stat-value">
-                ¥{{ suggestion?.marketComparison.priceRange.min }} -
-                ¥{{ suggestion?.marketComparison.priceRange.max }}
+                ¥{{ suggestion?.marketComparison.priceRange.min }} - ¥{{
+                  suggestion?.marketComparison.priceRange.max
+                }}
               </div>
             </div>
           </el-col>
@@ -113,7 +114,10 @@
                   <el-col :span="8">
                     <div class="impact-item">
                       <div class="impact-label">收益变化</div>
-                      <div class="impact-value" :class="item.expectedImpact.revenueChange > 0 ? 'positive' : 'negative'">
+                      <div
+                        class="impact-value"
+                        :class="item.expectedImpact.revenueChange > 0 ? 'positive' : 'negative'"
+                      >
                         {{ item.expectedImpact.revenueChange > 0 ? '+' : '' }}
                         {{ item.expectedImpact.revenueChange }}%
                       </div>
@@ -123,7 +127,9 @@
                     <div class="impact-item">
                       <div class="impact-label">竞争力</div>
                       <div class="impact-value">
-                        <el-tag :type="getCompetitivenessTagType(item.expectedImpact.competitiveness)">
+                        <el-tag
+                          :type="getCompetitivenessTagType(item.expectedImpact.competitiveness)"
+                        >
                           {{ getCompetitivenessLabel(item.expectedImpact.competitiveness) }}
                         </el-tag>
                       </div>
@@ -208,15 +214,18 @@ const suggestion = ref<SmartPricingSuggestion>()
 const activeStrategy = ref('balanced')
 
 // 监听 modelValue 变化
-watch(() => props.modelValue, (val) => {
-  visible.value = val
-  if (val) {
-    loadSuggestion()
+watch(
+  () => props.modelValue,
+  val => {
+    visible.value = val
+    if (val) {
+      loadSuggestion()
+    }
   }
-})
+)
 
 // 监听 visible 变化
-watch(visible, (val) => {
+watch(visible, val => {
   emit('update:modelValue', val)
 })
 

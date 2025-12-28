@@ -1,11 +1,6 @@
 <template>
   <div class="campsite-config">
-    <el-alert
-      title="营地配置说明"
-      type="info"
-      :closable="false"
-      style="margin-bottom: 20px"
-    >
+    <el-alert title="营地配置说明" type="info" :closable="false" style="margin-bottom: 20px">
       <p>配置不同合作类型的营地分润比例和捆绑销售加成</p>
     </el-alert>
 
@@ -109,7 +104,7 @@ const handleStatusChange = async (row: CampsiteProfitConfig) => {
 
 const handleSubmit = async () => {
   if (!formRef.value) return
-  await formRef.value.validate(async (valid) => {
+  await formRef.value.validate(async valid => {
     if (!valid) return
     submitting.value = true
     try {

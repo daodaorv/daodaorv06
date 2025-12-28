@@ -1,10 +1,13 @@
 <!-- 数据权限管理页面 -->
 <template>
   <div class="permission-data-container">
-    
-
     <!-- 搜索表单 -->
-    <SearchForm v-model="searchParams" :fields="searchFields" @search="handleSearch" @reset="handleReset" />
+    <SearchForm
+      v-model="searchParams"
+      :fields="searchFields"
+      @search="handleSearch"
+      @reset="handleReset"
+    />
 
     <!-- 数据表格 -->
     <DataTable
@@ -31,10 +34,7 @@
       </template>
 
       <template #enabled="{ row }">
-        <el-switch
-          v-model="row.enabled"
-          @change="handleToggleEnabled(row)"
-        />
+        <el-switch v-model="row.enabled" @change="handleToggleEnabled(row)" />
       </template>
 
       <template #actions="{ row }">
@@ -49,11 +49,7 @@
       width="600px"
       @close="handleDialogClose"
     >
-      <el-form
-        ref="formRef"
-        :model="formData"
-        label-width="100px"
-      >
+      <el-form ref="formRef" :model="formData" label-width="100px">
         <el-form-item label="角色">
           <el-input v-model="formData.roleName" disabled />
         </el-form-item>
@@ -83,9 +79,7 @@
 
       <template #footer>
         <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" :loading="submitLoading" @click="handleSubmit">
-          保存
-        </el-button>
+        <el-button type="primary" :loading="submitLoading" @click="handleSubmit"> 保存 </el-button>
       </template>
     </el-dialog>
   </div>

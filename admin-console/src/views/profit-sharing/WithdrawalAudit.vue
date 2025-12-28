@@ -12,7 +12,12 @@
         <el-tab-pane label="提现申请" name="requests">
           <el-form :inline="true" :model="queryForm" class="search-form">
             <el-form-item label="用户">
-              <el-input v-model="queryForm.userId" placeholder="请输入用户ID或姓名" clearable style="width: 200px" />
+              <el-input
+                v-model="queryForm.userId"
+                placeholder="请输入用户ID或姓名"
+                clearable
+                style="width: 200px"
+              />
             </el-form-item>
             <el-form-item label="状态">
               <el-select v-model="queryForm.status" placeholder="请选择" clearable>
@@ -45,7 +50,9 @@
             </el-table-column>
             <el-table-column prop="actualAmount" label="实际到账" width="120" align="right">
               <template #default="{ row }">
-                <span style="color: #67c23a; font-weight: bold">¥{{ formatNumber(row.actualAmount) }}</span>
+                <span style="color: #67c23a; font-weight: bold"
+                  >¥{{ formatNumber(row.actualAmount) }}</span
+                >
               </template>
             </el-table-column>
             <el-table-column prop="bankName" label="银行" width="150" />
@@ -58,13 +65,31 @@
             <el-table-column prop="createdAt" label="申请时间" width="160" />
             <el-table-column label="操作" width="200" fixed="right">
               <template #default="{ row }">
-                <el-button v-if="row.status === 'pending'" link type="success" size="small" @click="handleApprove(row)">
+                <el-button
+                  v-if="row.status === 'pending'"
+                  link
+                  type="success"
+                  size="small"
+                  @click="handleApprove(row)"
+                >
                   通过
                 </el-button>
-                <el-button v-if="row.status === 'pending'" link type="danger" size="small" @click="handleReject(row)">
+                <el-button
+                  v-if="row.status === 'pending'"
+                  link
+                  type="danger"
+                  size="small"
+                  @click="handleReject(row)"
+                >
                   拒绝
                 </el-button>
-                <el-button v-if="row.status === 'approved'" link type="primary" size="small" @click="handleComplete(row)">
+                <el-button
+                  v-if="row.status === 'approved'"
+                  link
+                  type="primary"
+                  size="small"
+                  @click="handleComplete(row)"
+                >
                   完成
                 </el-button>
               </template>

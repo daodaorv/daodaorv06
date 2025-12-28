@@ -1,11 +1,6 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <el-form-item
-    :label="field.label"
-    :prop="field.prop"
-    :class="field.class"
-    :style="field.style"
-  >
+  <el-form-item :label="field.label" :prop="field.prop" :class="field.class" :style="field.style">
     <!-- 输入框 -->
     <el-input
       v-if="field.type === 'input'"

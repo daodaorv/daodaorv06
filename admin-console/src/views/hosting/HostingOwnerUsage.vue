@@ -1,8 +1,6 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="hosting-owner-usage-container">
-    
-
     <SearchForm
       v-model="searchForm"
       :fields="searchFields"
@@ -60,9 +58,7 @@
         <el-tag v-if="row.conflictOrders > 0" type="danger" size="small">
           {{ row.conflictOrders }}个冲突
         </el-tag>
-        <el-tag v-else type="success" size="small">
-          无冲突
-        </el-tag>
+        <el-tag v-else type="success" size="small"> 无冲突 </el-tag>
       </template>
     </DataTable>
 
@@ -168,24 +164,13 @@
               发现 {{ currentApplication.conflictOrders }} 个订单冲突，请先处理冲突订单
             </template>
           </el-alert>
-          <el-alert
-            v-else
-            type="success"
-            :closable="false"
-            show-icon
-          >
-            <template #title>
-              无订单冲突，可以批准自用申请
-            </template>
+          <el-alert v-else type="success" :closable="false" show-icon>
+            <template #title> 无订单冲突，可以批准自用申请 </template>
           </el-alert>
         </el-card>
 
         <!-- 审核信息 -->
-        <el-card
-          v-if="currentApplication.status !== 'pending'"
-          class="detail-card"
-          shadow="never"
-        >
+        <el-card v-if="currentApplication.status !== 'pending'" class="detail-card" shadow="never">
           <template #header>
             <span>审核信息</span>
           </template>
@@ -202,17 +187,15 @@
               {{ currentApplication.reviewedBy || '-' }}
             </el-descriptions-item>
             <el-descriptions-item label="审核时间">
-              {{ currentApplication.reviewedAt ? formatDateTime(currentApplication.reviewedAt) : '-' }}
+              {{
+                currentApplication.reviewedAt ? formatDateTime(currentApplication.reviewedAt) : '-'
+              }}
             </el-descriptions-item>
           </el-descriptions>
         </el-card>
 
         <!-- 审核操作 -->
-        <el-card
-          v-if="currentApplication.status === 'pending'"
-          class="detail-card"
-          shadow="never"
-        >
+        <el-card v-if="currentApplication.status === 'pending'" class="detail-card" shadow="never">
           <template #header>
             <span>审核操作</span>
           </template>
@@ -265,7 +248,7 @@ import {
   getOwnerUsageApplicationList,
   reviewOwnerUsageApplication,
   type OwnerUsageApplication,
-  type OwnerUsageApplicationListParams
+  type OwnerUsageApplicationListParams,
 } from '@/api/hosting'
 import { useErrorHandler } from '@/composables'
 
@@ -279,13 +262,13 @@ const APPLICATION_STATUS_OPTIONS = [
   { label: '已拒绝', value: 'rejected' },
   { label: '使用中', value: 'using' },
   { label: '已完成', value: 'completed' },
-  { label: '已取消', value: 'cancelled' }
+  { label: '已取消', value: 'cancelled' },
 ]
 
 // 搜索表单
 const searchForm = reactive<OwnerUsageApplicationListParams>({
   keyword: '',
-  status: undefined
+  status: undefined,
 })
 
 // 搜索字段配置
@@ -295,7 +278,7 @@ const searchFields = computed<SearchField[]>(() => [
     label: '关键词',
     type: 'input',
     placeholder: '申请编号/车主姓名/车牌号',
-    width: '220px'
+    width: '220px',
   },
   {
     prop: 'status',
@@ -303,8 +286,8 @@ const searchFields = computed<SearchField[]>(() => [
     type: 'select',
     placeholder: '全部状态',
     options: APPLICATION_STATUS_OPTIONS,
-    width: '150px'
-  }
+    width: '150px',
+  },
 ])
 
 // 表格列配置
@@ -317,7 +300,7 @@ const tableColumns = computed(() => [
   { prop: 'fees', label: '费用信息', width: 140, slot: true },
   { prop: 'conflictOrders', label: '订单冲突', width: 100, slot: true },
   { prop: 'status', label: '申请状态', width: 100, slot: true },
-  { prop: 'createdAt', label: '申请时间', width: 160, formatter: formatDateTime }
+  { prop: 'createdAt', label: '申请时间', width: 160, formatter: formatDateTime },
 ]) as any
 
 // 表格操作配置
@@ -325,14 +308,14 @@ const tableActions = computed<TableAction[]>(() => [
   {
     label: '查看详情',
     type: 'primary',
-    onClick: handleViewDetail
+    onClick: handleViewDetail,
   },
   {
     label: '审核',
     type: 'success',
     onClick: handleReview,
-    show: (row: OwnerUsageApplication) => row.status === 'pending'
-  }
+    show: (row: OwnerUsageApplication) => row.status === 'pending',
+  },
 ])
 
 // 数据列表
@@ -343,7 +326,7 @@ const loading = ref(false)
 const pagination = reactive({
   total: 0,
   page: 1,
-  pageSize: 10
+  pageSize: 10,
 })
 
 // 详情对话框
@@ -352,7 +335,7 @@ const currentApplication = ref<OwnerUsageApplication | null>(null)
 
 // 审核表单
 const reviewForm = reactive({
-  comment: ''
+  comment: '',
 })
 
 // 获取申请列表
@@ -362,7 +345,7 @@ const fetchApplicationList = async () => {
     const res: any = await getOwnerUsageApplicationList({
       ...searchForm,
       page: pagination.page,
-      pageSize: pagination.pageSize
+      pageSize: pagination.pageSize,
     })
     applicationList.value = res.data.list
     pagination.total = res.data.total
@@ -422,7 +405,7 @@ const handleApprove = async () => {
 
   try {
     await ElMessageBox.confirm('确认通过该自用申请吗？', '确认操作', {
-      type: 'warning'
+      type: 'warning',
     })
 
     await reviewOwnerUsageApplication(currentApplication.value!.id, true, reviewForm.comment)
@@ -445,7 +428,7 @@ const handleReject = async () => {
 
   try {
     await ElMessageBox.confirm('确认拒绝该自用申请吗？', '确认操作', {
-      type: 'warning'
+      type: 'warning',
     })
 
     await reviewOwnerUsageApplication(currentApplication.value!.id, false, reviewForm.comment)
@@ -468,7 +451,7 @@ const formatDateTime = (dateStr: string) => {
     month: '2-digit',
     day: '2-digit',
     hour: '2-digit',
-    minute: '2-digit'
+    minute: '2-digit',
   })
 }
 
@@ -480,7 +463,7 @@ const getStatusTag = (status: string) => {
     rejected: 'danger',
     using: 'primary',
     completed: 'info',
-    cancelled: 'info'
+    cancelled: 'info',
   }
   return tagMap[status] || 'info'
 }
@@ -493,7 +476,7 @@ const getStatusLabel = (status: string) => {
     rejected: '已拒绝',
     using: '使用中',
     completed: '已完成',
-    cancelled: '已取消'
+    cancelled: '已取消',
   }
   return labelMap[status] || status
 }

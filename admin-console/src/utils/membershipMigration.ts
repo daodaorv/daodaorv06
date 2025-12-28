@@ -56,7 +56,7 @@ export async function migrateUsers(
 
       // 执行迁移
       const oldUserType = user.userType
-      user.userType = 'customer'  // 改为普通客户
+      user.userType = 'customer' // 改为普通客户
 
       // 添加PLUS会员标签
       if (!user.tags) {
@@ -72,7 +72,7 @@ export async function migrateUsers(
 
         const tagWithExpire = {
           ...plusMemberTag,
-          expiresAt: expireDate.toISOString()
+          expiresAt: expireDate.toISOString(),
         }
         user.tags.push(tagWithExpire)
       }
@@ -85,7 +85,7 @@ export async function migrateUsers(
         newUserType: user.userType,
         addedTags: ['PLUS会员'],
         migratedAt: new Date().toISOString(),
-        status: 'success'
+        status: 'success',
       })
 
       migratedCount++
@@ -99,7 +99,7 @@ export async function migrateUsers(
         addedTags: [],
         migratedAt: new Date().toISOString(),
         status: 'failed',
-        errorMessage: error instanceof Error ? error.message : '未知错误'
+        errorMessage: error instanceof Error ? error.message : '未知错误',
       })
 
       failedCount++
@@ -116,7 +116,7 @@ export async function migrateUsers(
     skippedUsers: skippedCount,
     startTime: startTime.toISOString(),
     endTime: endTime.toISOString(),
-    duration
+    duration,
   }
 
   return { logs, stats }
@@ -140,9 +140,8 @@ export function validateMigration(users: UserInfo[]): {
   }
 
   // 检查是否所有迁移的用户都有PLUS会员标签
-  const migratedUsers = users.filter(user =>
-    user.userType === 'customer' &&
-    user.tags?.some(tag => tag.name === 'PLUS会员')
+  const migratedUsers = users.filter(
+    user => user.userType === 'customer' && user.tags?.some(tag => tag.name === 'PLUS会员')
   )
 
   // 统计信息
@@ -153,7 +152,7 @@ export function validateMigration(users: UserInfo[]): {
 
   return {
     isValid: issues.length === 0,
-    issues
+    issues,
   }
 }
 
@@ -163,10 +162,7 @@ export function validateMigration(users: UserInfo[]): {
  * @param stats 迁移统计
  * @returns Markdown格式的报告
  */
-export function generateMigrationReport(
-  logs: MigrationLog[],
-  stats: MigrationStats
-): string {
+export function generateMigrationReport(logs: MigrationLog[], stats: MigrationStats): string {
   const successLogs = logs.filter(log => log.status === 'success')
   const failedLogs = logs.filter(log => log.status === 'failed')
 

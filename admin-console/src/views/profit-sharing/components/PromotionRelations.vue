@@ -31,13 +31,7 @@
     </el-form>
 
     <!-- 数据表格 -->
-    <el-table
-      :data="relationList"
-      v-loading="loading"
-      border
-      stripe
-      style="width: 100%"
-    >
+    <el-table :data="relationList" v-loading="loading" border stripe style="width: 100%">
       <el-table-column prop="userName" label="用户" width="120" />
       <el-table-column prop="userId" label="用户ID" width="150" />
       <el-table-column prop="level1PromoterUserName" label="一级推广者" width="120" />

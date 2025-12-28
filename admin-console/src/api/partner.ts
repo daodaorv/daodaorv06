@@ -23,7 +23,7 @@ import {
   type CreatePartnerOrderParams,
   type UpdatePartnerOrderParams,
   type PartnerSettlement,
-  type PartnerSettlementParams
+  type PartnerSettlementParams,
 } from '@/mock/partners'
 
 // 导出类型
@@ -38,7 +38,7 @@ export type {
   CreatePartnerOrderParams,
   UpdatePartnerOrderParams,
   PartnerSettlement,
-  PartnerSettlementParams
+  PartnerSettlementParams,
 }
 
 /**
@@ -100,7 +100,11 @@ export const getPartnerStores = (partnerId: number) => {
 /**
  * 获取合作商订单列表
  */
-export const getPartnerOrders = (params: { partnerId?: number; page: number; pageSize: number }) => {
+export const getPartnerOrders = (params: {
+  partnerId?: number
+  page: number
+  pageSize: number
+}) => {
   // return request.get('/partner-orders', { params })
   return mockGetPartnerOrders(params)
 }
@@ -139,8 +143,8 @@ export const getStoreProfitConfigList = (params: any) => {
   return Promise.resolve({
     data: {
       list: [],
-      total: 0
-    }
+      total: 0,
+    },
   })
 
   // 🔵 后端联调时使用真实 API(待后端开发)

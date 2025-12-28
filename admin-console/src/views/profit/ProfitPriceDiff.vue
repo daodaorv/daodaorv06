@@ -1,8 +1,6 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="profit-price-diff-container">
-    
-
     <!-- 统计卡片 -->
     <el-row :gutter="20" class="stats-row">
       <el-col :span="6">
@@ -116,11 +114,7 @@
     />
 
     <div class="table-toolbar">
-      <el-button
-        type="primary"
-        :disabled="selectedIds.length === 0"
-        @click="handleBatchSettle"
-      >
+      <el-button type="primary" :disabled="selectedIds.length === 0" @click="handleBatchSettle">
         <el-icon><DocumentChecked /></el-icon>
         批量结算
       </el-button>
@@ -168,8 +162,12 @@
       </template>
       <template #profitDistribution="{ row }">
         <div style="font-size: 12px">
-          <div style="color: #67c23a">合作商: ¥{{ row.partnerAmount }} ({{ row.profitShare }}%)</div>
-          <div style="color: #409eff">平台: ¥{{ row.platformAmount }} ({{ 100 - row.profitShare }}%)</div>
+          <div style="color: #67c23a">
+            合作商: ¥{{ row.partnerAmount }} ({{ row.profitShare }}%)
+          </div>
+          <div style="color: #409eff">
+            平台: ¥{{ row.platformAmount }} ({{ 100 - row.profitShare }}%)
+          </div>
         </div>
       </template>
       <template #settlementStatus="{ row }">
@@ -335,9 +333,7 @@
 
       <template #footer>
         <el-button @click="paymentDialogVisible = false">取消</el-button>
-        <el-button type="success" @click="handleConfirmPayment">
-          确认支付
-        </el-button>
+        <el-button type="success" @click="handleConfirmPayment"> 确认支付 </el-button>
       </template>
     </el-dialog>
   </div>
@@ -355,7 +351,7 @@ import {
   Clock,
   DocumentChecked,
   CircleCheck,
-  Download
+  Download,
 } from '@element-plus/icons-vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'
@@ -369,7 +365,7 @@ import {
   exportPriceDiffProfitRecords,
   type PriceDiffProfitRecord,
   type PriceDiffProfitListParams,
-  type PriceDiffProfitStats
+  type PriceDiffProfitStats,
 } from '@/api/profit'
 import { useErrorHandler } from '@/composables'
 
@@ -380,7 +376,7 @@ const { handleApiError } = useErrorHandler()
 const SETTLEMENT_STATUS_OPTIONS = [
   { label: '待结算', value: 'pending' },
   { label: '已结算', value: 'settled' },
-  { label: '已支付', value: 'paid' }
+  { label: '已支付', value: 'paid' },
 ]
 
 // 搜索表单
@@ -389,7 +385,7 @@ const searchForm = reactive<PriceDiffProfitListParams>({
   settlementStatus: undefined,
   settlementMonth: '',
   page: 1,
-  pageSize: 10
+  pageSize: 10,
 })
 
 // 搜索字段配置
@@ -399,7 +395,7 @@ const searchFields = computed(() => [
     label: '关键词',
     type: 'input',
     placeholder: '记录编号/合作商名称/订单编号',
-    width: '250px'
+    width: '250px',
   },
   {
     prop: 'settlementStatus',
@@ -407,7 +403,7 @@ const searchFields = computed(() => [
     type: 'select',
     placeholder: '全部状态',
     options: SETTLEMENT_STATUS_OPTIONS,
-    width: '150px'
+    width: '150px',
   },
   {
     prop: 'settlementMonth',
@@ -415,8 +411,8 @@ const searchFields = computed(() => [
     type: 'month',
     placeholder: '选择月份',
     valueFormat: 'YYYY-MM',
-    width: '150px'
-  }
+    width: '150px',
+  },
 ]) as any
 
 // 表格列配置
@@ -428,7 +424,7 @@ const tableColumns = computed(() => [
   { prop: 'priceInfo', label: '价格信息', width: 150, slot: true },
   { prop: 'profitDistribution', label: '分润分配', width: 180, slot: true },
   { prop: 'settlementStatus', label: '结算状态', width: 100, slot: true },
-  { prop: 'settlementDate', label: '结算日期', width: 120 }
+  { prop: 'settlementDate', label: '结算日期', width: 120 },
 ]) as any
 
 // 表格操作配置
@@ -436,20 +432,20 @@ const tableActions = computed<TableAction[]>(() => [
   {
     label: '查看详情',
     type: 'primary',
-    onClick: handleViewDetail
+    onClick: handleViewDetail,
   },
   {
     label: '结算',
     type: 'primary',
     onClick: handleSettle,
-    show: (row: PriceDiffProfitRecord) => row.settlementStatus === 'pending'
+    show: (row: PriceDiffProfitRecord) => row.settlementStatus === 'pending',
   },
   {
     label: '支付',
     type: 'success',
     onClick: handlePay,
-    show: (row: PriceDiffProfitRecord) => row.settlementStatus === 'settled'
-  }
+    show: (row: PriceDiffProfitRecord) => row.settlementStatus === 'settled',
+  },
 ])
 
 // 数据列表
@@ -464,14 +460,14 @@ const stats = ref<PriceDiffProfitStats>({
   totalOrderCount: 0,
   pendingCount: 0,
   settledCount: 0,
-  paidCount: 0
+  paidCount: 0,
 })
 
 // 分页
 const pagination = reactive({
   total: 0,
   page: 1,
-  pageSize: 10
+  pageSize: 10,
 })
 
 // 详情对话框
@@ -481,7 +477,7 @@ const currentRecord = ref<PriceDiffProfitRecord | null>(null)
 // 支付对话框
 const paymentDialogVisible = ref(false)
 const paymentForm = reactive({
-  paymentMethod: ''
+  paymentMethod: '',
 })
 
 // 选中的记录ID
@@ -504,7 +500,7 @@ const fetchRecordList = async () => {
     const res: any = await getPriceDiffProfitList({
       ...searchForm,
       page: pagination.page,
-      pageSize: pagination.pageSize
+      pageSize: pagination.pageSize,
     })
     recordList.value = res.data.list
     pagination.total = res.data.total
@@ -545,8 +541,8 @@ const handleCurrentChange = (page: number) => {
 // 选择变化
 const handleSelectionChange = (selection: PriceDiffProfitRecord[]) => {
   selectedIds.value = selection
-    .filter((record) => record.settlementStatus === 'pending')
-    .map((record) => record.id)
+    .filter(record => record.settlementStatus === 'pending')
+    .map(record => record.id)
 }
 
 // 查看详情
@@ -562,7 +558,7 @@ const handleSettle = async (row: PriceDiffProfitRecord) => {
       `确认结算记录"${row.recordNo}"吗？结算后将生成支付任务。`,
       '结算确认',
       {
-        type: 'warning'
+        type: 'warning',
       }
     )
 
@@ -590,7 +586,7 @@ const handleBatchSettle = async () => {
       `确认批量结算${selectedIds.value.length}条记录吗？`,
       '批量结算确认',
       {
-        type: 'warning'
+        type: 'warning',
       }
     )
 
@@ -647,7 +643,7 @@ const getSettlementStatusTag = (status: string) => {
   const tagMap: Record<string, any> = {
     pending: 'warning',
     settled: 'primary',
-    paid: 'success'
+    paid: 'success',
   }
   return tagMap[status] || 'info'
 }
@@ -657,7 +653,7 @@ const getSettlementStatusLabel = (status: string) => {
   const labelMap: Record<string, string> = {
     pending: '待结算',
     settled: '已结算',
-    paid: '已支付'
+    paid: '已支付',
   }
   return labelMap[status] || status
 }

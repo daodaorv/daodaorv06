@@ -1,11 +1,7 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="custom-time-rule-list">
-    <el-alert
-      type="info"
-      :closable="false"
-      style="margin-bottom: 16px"
-    >
+    <el-alert type="info" :closable="false" style="margin-bottom: 16px">
       <template #title>
         <div style="font-size: 13px">
           自定义时间规则用于设置特定日期或周期的价格调整，优先级低于法定节假日（优先级 &lt; 90）
@@ -46,8 +42,11 @@
         </el-tag>
       </template>
       <template #adjustmentValue="{ row }">
-        <span :style="{ color: row.adjustmentValue > 0 ? '#f56c6c' : '#67c23a', fontWeight: 'bold' }">
-          {{ row.adjustmentValue > 0 ? '+' : '' }}{{ row.adjustmentValue }}{{ row.adjustmentType === 'percentage' ? '%' : '元' }}
+        <span
+          :style="{ color: row.adjustmentValue > 0 ? '#f56c6c' : '#67c23a', fontWeight: 'bold' }"
+        >
+          {{ row.adjustmentValue > 0 ? '+' : '' }}{{ row.adjustmentValue
+          }}{{ row.adjustmentType === 'percentage' ? '%' : '元' }}
         </span>
       </template>
       <template #dateRange="{ row }">
@@ -90,14 +89,14 @@ const RULE_TYPE_OPTIONS = [
   { label: '旺季规则', value: 'peak_season' },
   { label: '淡季规则', value: 'low_season' },
   { label: '特殊活动', value: 'special_event' },
-  { label: '自定义日期', value: 'custom_date' }
+  { label: '自定义日期', value: 'custom_date' },
 ]
 
 // 搜索表单
 const searchForm = reactive({
   keyword: '',
   ruleType: undefined,
-  status: undefined
+  status: undefined,
 })
 
 // 搜索字段配置
@@ -107,7 +106,7 @@ const searchFields = computed<SearchField[]>(() => [
     label: '关键词',
     type: 'input',
     placeholder: '规则名称',
-    width: '200px'
+    width: '200px',
   },
   {
     prop: 'ruleType',
@@ -115,7 +114,7 @@ const searchFields = computed<SearchField[]>(() => [
     type: 'select',
     placeholder: '请选择类型',
     width: '150px',
-    options: RULE_TYPE_OPTIONS
+    options: RULE_TYPE_OPTIONS,
   },
   {
     prop: 'status',
@@ -125,9 +124,9 @@ const searchFields = computed<SearchField[]>(() => [
     width: '150px',
     options: [
       { label: '生效中', value: 'active' },
-      { label: '未生效', value: 'inactive' }
-    ]
-  }
+      { label: '未生效', value: 'inactive' },
+    ],
+  },
 ])
 
 // 表格列配置
@@ -140,7 +139,7 @@ const tableColumns: TableColumn[] = [
   { prop: 'adjustmentType', label: '调整类型', width: 120, slot: 'adjustmentType' },
   { prop: 'adjustmentValue', label: '调整值', width: 120, slot: 'adjustmentValue' },
   { prop: 'priority', label: '优先级', width: 100 },
-  { prop: 'description', label: '说明', minWidth: 200 }
+  { prop: 'description', label: '说明', minWidth: 200 },
 ]
 
 // 工具栏按钮配置
@@ -149,8 +148,8 @@ const toolbarButtons: ToolbarButton[] = [
     label: '新增规则',
     type: 'primary',
     icon: Plus,
-    onClick: () => handleCreate()
-  }
+    onClick: () => handleCreate(),
+  },
 ]
 
 // 表格操作列配置
@@ -158,13 +157,13 @@ const tableActions: TableAction[] = [
   {
     label: '编辑',
     type: 'primary',
-    onClick: (row: any) => handleEdit(row)
+    onClick: (row: any) => handleEdit(row),
   },
   {
     label: '删除',
     type: 'danger',
-    onClick: (row: any) => handleDelete(row)
-  }
+    onClick: (row: any) => handleDelete(row),
+  },
 ]
 
 // Mock 数据
@@ -179,7 +178,7 @@ const ruleList = ref([
     adjustmentType: 'percentage',
     adjustmentValue: 20,
     priority: 50,
-    description: '每周六日价格上涨20%'
+    description: '每周六日价格上涨20%',
   },
   {
     id: 2,
@@ -191,7 +190,7 @@ const ruleList = ref([
     adjustmentType: 'percentage',
     adjustmentValue: 30,
     priority: 60,
-    description: '暑期旺季价格上涨30%'
+    description: '暑期旺季价格上涨30%',
   },
   {
     id: 3,
@@ -203,7 +202,7 @@ const ruleList = ref([
     adjustmentType: 'percentage',
     adjustmentValue: -20,
     priority: 40,
-    description: '冬季淡季价格下降20%'
+    description: '冬季淡季价格下降20%',
   },
   {
     id: 4,
@@ -215,8 +214,8 @@ const ruleList = ref([
     adjustmentType: 'percentage',
     adjustmentValue: 40,
     priority: 70,
-    description: '音乐节期间价格上涨40%'
-  }
+    description: '音乐节期间价格上涨40%',
+  },
 ])
 
 const loading = ref(false)
@@ -225,7 +224,7 @@ const loading = ref(false)
 const pagination = reactive({
   page: 1,
   pageSize: 10,
-  total: ruleList.value.length
+  total: ruleList.value.length,
 })
 
 // 对话框状态
@@ -245,14 +244,14 @@ const formData = reactive({
   adjustmentType: 'percentage',
   adjustmentValue: 0,
   priority: 50,
-  description: ''
+  description: '',
 })
 
 // 表单字段配置
 const formFields = computed<FormField[]>(() => [
   {
     type: 'divider',
-    label: '基本信息'
+    label: '基本信息',
   },
   {
     type: 'row',
@@ -262,16 +261,16 @@ const formFields = computed<FormField[]>(() => [
         label: '规则名称',
         type: 'input',
         placeholder: '请输入规则名称',
-        span: 12
+        span: 12,
       },
       {
         prop: 'ruleType',
         label: '规则类型',
         type: 'select',
         options: RULE_TYPE_OPTIONS,
-        span: 12
-      }
-    ]
+        span: 12,
+      },
+    ],
   },
   {
     type: 'row',
@@ -282,9 +281,9 @@ const formFields = computed<FormField[]>(() => [
         type: 'select',
         options: [
           { label: '生效中', value: 'active' },
-          { label: '未生效', value: 'inactive' }
+          { label: '未生效', value: 'inactive' },
         ],
-        span: 12
+        span: 12,
       },
       {
         prop: 'priority',
@@ -293,13 +292,13 @@ const formFields = computed<FormField[]>(() => [
         min: 1,
         max: 89,
         span: 12,
-        tip: '数字越大优先级越高，最大89（法定节假日固定90）'
-      }
-    ]
+        tip: '数字越大优先级越高，最大89（法定节假日固定90）',
+      },
+    ],
   },
   {
     type: 'divider',
-    label: '生效时间'
+    label: '生效时间',
   },
   {
     type: 'row',
@@ -309,20 +308,20 @@ const formFields = computed<FormField[]>(() => [
         label: '开始日期',
         type: 'date',
         valueFormat: 'YYYY-MM-DD',
-        span: 12
+        span: 12,
       },
       {
         prop: 'endDate',
         label: '结束日期',
         type: 'date',
         valueFormat: 'YYYY-MM-DD',
-        span: 12
-      }
-    ]
+        span: 12,
+      },
+    ],
   },
   {
     type: 'divider',
-    label: '价格调整'
+    label: '价格调整',
   },
   {
     type: 'row',
@@ -333,18 +332,18 @@ const formFields = computed<FormField[]>(() => [
         type: 'select',
         options: [
           { label: '百分比', value: 'percentage' },
-          { label: '固定金额', value: 'fixed' }
+          { label: '固定金额', value: 'fixed' },
         ],
-        span: 12
+        span: 12,
       },
       {
         prop: 'adjustmentValue',
         label: '调整值',
         type: 'number',
         span: 12,
-        tip: '正数表示涨价，负数表示降价'
-      }
-    ]
+        tip: '正数表示涨价，负数表示降价',
+      },
+    ],
   },
   {
     prop: 'description',
@@ -352,8 +351,8 @@ const formFields = computed<FormField[]>(() => [
     type: 'textarea',
     rows: 3,
     placeholder: '请输入规则说明',
-    maxlength: 200
-  }
+    maxlength: 200,
+  },
 ])
 
 // 表单验证规则
@@ -365,7 +364,7 @@ const formRules = {
   endDate: [{ required: true, message: '请选择结束日期', trigger: 'change' }],
   adjustmentType: [{ required: true, message: '请选择调整类型', trigger: 'change' }],
   adjustmentValue: [{ required: true, message: '请输入调整值', trigger: 'blur' }],
-  priority: [{ required: true, message: '请输入优先级', trigger: 'blur' }]
+  priority: [{ required: true, message: '请输入优先级', trigger: 'blur' }],
 }
 
 // 获取规则类型标签类型
@@ -375,7 +374,7 @@ const getRuleTypeTag = (type: string) => {
     peak_season: 'danger',
     low_season: 'success',
     special_event: 'warning',
-    custom_date: 'info'
+    custom_date: 'info',
   }
   return tagMap[type] || 'info'
 }
@@ -387,7 +386,7 @@ const getRuleTypeLabel = (type: string) => {
     peak_season: '旺季规则',
     low_season: '淡季规则',
     special_event: '特殊活动',
-    custom_date: '自定义日期'
+    custom_date: '自定义日期',
   }
   return labelMap[type] || type
 }
@@ -452,15 +451,11 @@ const handleEdit = (row: any) => {
 // 删除
 const handleDelete = async (row: any) => {
   try {
-    await ElMessageBox.confirm(
-      `确定要删除自定义时间规则"${row.name}"吗？`,
-      '删除确认',
-      {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }
-    )
+    await ElMessageBox.confirm(`确定要删除自定义时间规则"${row.name}"吗？`, '删除确认', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    })
 
     ElMessage.success('删除成功')
     // TODO: 调用删除API

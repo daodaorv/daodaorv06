@@ -1,22 +1,9 @@
 <template>
-  <component
-    :is="componentType"
-    v-if="hasPermission"
-    v-bind="componentProps"
-    @click="handleClick"
-  >
+  <component :is="componentType" v-if="hasPermission" v-bind="componentProps" @click="handleClick">
     <slot>{{ label }}</slot>
   </component>
-  <el-tooltip
-    v-else-if="showTooltip"
-    :content="tooltipContent"
-    placement="top"
-  >
-    <component
-      :is="componentType"
-      v-bind="disabledProps"
-      disabled
-    >
+  <el-tooltip v-else-if="showTooltip" :content="tooltipContent" placement="top">
+    <component :is="componentType" v-bind="disabledProps" disabled>
       <slot>{{ label }}</slot>
     </component>
   </el-tooltip>
@@ -29,23 +16,23 @@ import type { Component } from 'vue'
 
 // Props 定义
 interface Props {
-  permission?: string | string[]  // 权限标识（单个或多个）
-  permissions?: string[]          // 用户拥有的权限列表
-  checkMode?: 'some' | 'every'    // 权限检查模式（满足任一 or 全部满足）
+  permission?: string | string[] // 权限标识（单个或多个）
+  permissions?: string[] // 用户拥有的权限列表
+  checkMode?: 'some' | 'every' // 权限检查模式（满足任一 or 全部满足）
   type?: 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'default'
   size?: 'large' | 'default' | 'small'
-  icon?: Component                // 按钮图标
-  plain?: boolean                 // 是否朴素按钮
-  round?: boolean                 // 是否圆角按钮
-  circle?: boolean                // 是否圆形按钮
-  text?: boolean                  // 是否文字按钮
-  link?: boolean                  // 是否链接按钮
-  loading?: boolean               // 是否加载中
-  disabled?: boolean              // 是否禁用
-  label?: string                  // 按钮文本
-  showTooltip?: boolean           // 无权限时是否显示提示
-  tooltipContent?: string         // 提示内容
-  hideWhenNoPermission?: boolean  // 无权限时是否隐藏
+  icon?: Component // 按钮图标
+  plain?: boolean // 是否朴素按钮
+  round?: boolean // 是否圆角按钮
+  circle?: boolean // 是否圆形按钮
+  text?: boolean // 是否文字按钮
+  link?: boolean // 是否链接按钮
+  loading?: boolean // 是否加载中
+  disabled?: boolean // 是否禁用
+  label?: string // 按钮文本
+  showTooltip?: boolean // 无权限时是否显示提示
+  tooltipContent?: string // 提示内容
+  hideWhenNoPermission?: boolean // 无权限时是否隐藏
   customCheck?: (permissions: string[]) => boolean // 自定义权限检查函数
 }
 
@@ -70,7 +57,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 // Emits 定义
 const emit = defineEmits<{
-  'click': [event: MouseEvent]
+  click: [event: MouseEvent]
   'permission-denied': []
 }>()
 

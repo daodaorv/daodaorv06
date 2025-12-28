@@ -1,33 +1,16 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="ticket-management-container">
-
-
     <!-- 统计卡片 -->
     <el-row :gutter="16" class="stats-row">
       <el-col :span="4">
-        <StatsCard
-          title="总工单数"
-          :value="stats.totalTickets"
-          icon="Tickets"
-          color="#409EFF"
-        />
+        <StatsCard title="总工单数" :value="stats.totalTickets" icon="Tickets" color="#409EFF" />
       </el-col>
       <el-col :span="4">
-        <StatsCard
-          title="待处理"
-          :value="stats.pendingTickets"
-          icon="Clock"
-          color="#E6A23C"
-        />
+        <StatsCard title="待处理" :value="stats.pendingTickets" icon="Clock" color="#E6A23C" />
       </el-col>
       <el-col :span="4">
-        <StatsCard
-          title="处理中"
-          :value="stats.processingTickets"
-          icon="Loading"
-          color="#409EFF"
-        />
+        <StatsCard title="处理中" :value="stats.processingTickets" icon="Loading" color="#409EFF" />
       </el-col>
       <el-col :span="4">
         <StatsCard
@@ -111,12 +94,7 @@
 
       <!-- 满意度 -->
       <template #satisfaction="{ row }">
-        <el-rate
-          v-if="row.satisfaction"
-          :model-value="row.satisfaction"
-          disabled
-          size="small"
-        />
+        <el-rate v-if="row.satisfaction" :model-value="row.satisfaction" disabled size="small" />
         <span v-else class="no-rating">未评价</span>
       </template>
     </DataTable>
@@ -130,7 +108,11 @@
     >
       <el-form :model="assignForm" :rules="assignRules" ref="assignFormRef" label-width="100px">
         <el-form-item label="客服人员" prop="assigneeId">
-          <el-select v-model="assignForm.assigneeId" placeholder="请选择客服人员" style="width: 100%">
+          <el-select
+            v-model="assignForm.assigneeId"
+            placeholder="请选择客服人员"
+            style="width: 100%"
+          >
             <el-option
               v-for="agent in availableAgents"
               :key="agent.id"
@@ -263,9 +245,7 @@
               <span>加载中...</span>
             </div>
             <template v-else>
-              <div v-if="messages.length === 0" class="no-messages">
-                暂无对话记录
-              </div>
+              <div v-if="messages.length === 0" class="no-messages">暂无对话记录</div>
               <div
                 v-for="msg in messages"
                 :key="msg.id"
@@ -293,25 +273,33 @@
                     <div class="message-bubble">
                       <!-- 文本消息 -->
                       <div v-if="msg.type === 'text'" class="message-text">
-                        <template v-for="(part, idx) in parseMessageContent(msg.content)" :key="idx">
+                        <template
+                          v-for="(part, idx) in parseMessageContent(msg.content)"
+                          :key="idx"
+                        >
                           <span v-if="part.type === 'text'">{{ part.value }}</span>
                           <span
                             v-else-if="part.type === 'order'"
                             class="order-link"
                             @click="handleOrderClick(part.value)"
-                          >{{ part.value }}</span>
+                            >{{ part.value }}</span
+                          >
                         </template>
                       </div>
                       <!-- 图片消息 -->
                       <div v-else-if="msg.type === 'image'" class="message-image">
                         <div v-if="msg.content" class="image-caption">
-                          <template v-for="(part, idx) in parseMessageContent(msg.content)" :key="idx">
+                          <template
+                            v-for="(part, idx) in parseMessageContent(msg.content)"
+                            :key="idx"
+                          >
                             <span v-if="part.type === 'text'">{{ part.value }}</span>
                             <span
                               v-else-if="part.type === 'order'"
                               class="order-link"
                               @click="handleOrderClick(part.value)"
-                            >{{ part.value }}</span>
+                              >{{ part.value }}</span
+                            >
                           </template>
                         </div>
                         <el-image
@@ -337,7 +325,11 @@
                         </el-link>
                       </div>
                       <!-- 卡片消息 -->
-                      <div v-else-if="msg.type === 'card'" class="message-card" @click="handleCardClick(msg.cardType, msg.cardData)">
+                      <div
+                        v-else-if="msg.type === 'card'"
+                        class="message-card"
+                        @click="handleCardClick(msg.cardType, msg.cardData)"
+                      >
                         <!-- 订单卡片 -->
                         <template v-if="msg.cardType === 'order'">
                           <div class="card-header">
@@ -348,11 +340,17 @@
                             </el-tag>
                           </div>
                           <div class="card-body order-card">
-                            <el-image :src="msg.cardData.vehicleImage" fit="cover" class="card-image" />
+                            <el-image
+                              :src="msg.cardData.vehicleImage"
+                              fit="cover"
+                              class="card-image"
+                            />
                             <div class="card-info">
                               <div class="card-title">{{ msg.cardData.vehicleName }}</div>
                               <div class="card-desc">订单号：{{ msg.cardData.orderNo }}</div>
-                              <div class="card-desc">{{ msg.cardData.startDate }} 至 {{ msg.cardData.endDate }}</div>
+                              <div class="card-desc">
+                                {{ msg.cardData.startDate }} 至 {{ msg.cardData.endDate }}
+                              </div>
                               <div class="card-price">¥{{ msg.cardData.totalAmount }}</div>
                             </div>
                           </div>
@@ -400,7 +398,12 @@
                               <div class="card-title">{{ msg.cardData.name }}</div>
                               <div class="card-desc">{{ msg.cardData.address }}</div>
                               <div class="card-tags">
-                                <el-tag v-for="(f, i) in msg.cardData.facilities.slice(0, 3)" :key="i" size="small" type="info">
+                                <el-tag
+                                  v-for="(f, i) in msg.cardData.facilities.slice(0, 3)"
+                                  :key="i"
+                                  size="small"
+                                  type="info"
+                                >
                                   {{ f }}
                                 </el-tag>
                               </div>
@@ -422,9 +425,16 @@
                             <el-image :src="msg.cardData.image" fit="cover" class="card-image" />
                             <div class="card-info">
                               <div class="card-title">{{ msg.cardData.name }}</div>
-                              <div class="card-desc">{{ msg.cardData.duration }} | {{ msg.cardData.departure }}出发</div>
+                              <div class="card-desc">
+                                {{ msg.cardData.duration }} | {{ msg.cardData.departure }}出发
+                              </div>
                               <div class="card-tags">
-                                <el-tag v-for="(h, i) in msg.cardData.highlights.slice(0, 2)" :key="i" size="small" type="success">
+                                <el-tag
+                                  v-for="(h, i) in msg.cardData.highlights.slice(0, 2)"
+                                  :key="i"
+                                  size="small"
+                                  type="success"
+                                >
                                   {{ h }}
                                 </el-tag>
                               </div>
@@ -473,12 +483,7 @@
             </div>
           </div>
           <div v-else class="chat-input-disabled">
-            <el-alert
-              :title="getDisabledReplyReason()"
-              type="info"
-              :closable="false"
-              show-icon
-            />
+            <el-alert :title="getDisabledReplyReason()" type="info" :closable="false" show-icon />
           </div>
         </div>
       </div>
@@ -509,7 +514,16 @@
 import { ref, reactive, onMounted, computed, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { Loading, Document, Tickets, Van, Place, Star, Compass, ArrowRight } from '@element-plus/icons-vue'
+import {
+  Loading,
+  Document,
+  Tickets,
+  Van,
+  Place,
+  Star,
+  Compass,
+  ArrowRight,
+} from '@element-plus/icons-vue'
 import StatsCard from '@/components/common/StatsCard.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'
@@ -531,7 +545,7 @@ import {
   type ServiceStatus,
   type TicketMessage,
   type CardType,
-  type CardData
+  type CardData,
 } from '@/api/customerService'
 import { getOrderByOrderNo } from '@/api/order'
 
@@ -547,7 +561,7 @@ const stats = ref<TicketStats>({
   avgResponseTime: 0,
   avgResolveTime: 0,
   avgSatisfaction: 0,
-  todayTickets: 0
+  todayTickets: 0,
 })
 
 // 搜索表单
@@ -556,7 +570,7 @@ const searchForm = ref({
   type: '',
   priority: '',
   assigneeId: '',
-  keyword: ''
+  keyword: '',
 })
 
 // 搜索字段配置
@@ -571,8 +585,8 @@ const searchFields = [
       { label: '处理中', value: 'processing' },
       { label: '已解决', value: 'resolved' },
       { label: '已关闭', value: 'closed' },
-      { label: '已重开', value: 'reopened' }
-    ]
+      { label: '已重开', value: 'reopened' },
+    ],
   },
   {
     type: 'select',
@@ -586,8 +600,8 @@ const searchFields = [
       { label: '技术问题', value: 'technical' },
       { label: '退款', value: 'refund' },
       { label: '营地咨询', value: 'campsite_inquiry' },
-      { label: '其他', value: 'other' }
-    ]
+      { label: '其他', value: 'other' },
+    ],
   },
   {
     type: 'select',
@@ -598,15 +612,15 @@ const searchFields = [
       { label: '低', value: 'low' },
       { label: '中', value: 'medium' },
       { label: '高', value: 'high' },
-      { label: '紧急', value: 'urgent' }
-    ]
+      { label: '紧急', value: 'urgent' },
+    ],
   },
   {
     type: 'input',
     prop: 'keyword',
     label: '关键词',
-    placeholder: '请输入工单编号、标题或用户名'
-  }
+    placeholder: '请输入工单编号、标题或用户名',
+  },
 ]
 
 // 表格数据
@@ -617,7 +631,7 @@ const loading = ref(false)
 const pagination = reactive({
   currentPage: 1,
   pageSize: 10,
-  total: 0
+  total: 0,
 })
 
 // 表格列配置
@@ -631,7 +645,7 @@ const tableColumns = [
   { prop: 'status', label: '状态', width: 100, slot: 'status' },
   { prop: 'assignee', label: '客服', width: 120, slot: 'assignee' },
   { prop: 'satisfaction', label: '满意度', width: 150, slot: 'satisfaction' },
-  { prop: 'createdAt', label: '创建时间', width: 160 }
+  { prop: 'createdAt', label: '创建时间', width: 160 },
 ]
 
 // 表格操作
@@ -640,33 +654,33 @@ const tableActions = [
     label: '查看',
     type: 'primary',
     link: true,
-    onClick: (row: Ticket) => handleViewDetail(row)
+    onClick: (row: Ticket) => handleViewDetail(row),
   },
   {
     label: '分配',
     type: 'success',
     link: true,
     onClick: (row: Ticket) => handleAssign(row),
-    show: (row: Ticket) => row.status === 'pending'
+    show: (row: Ticket) => row.status === 'pending',
   },
   {
     label: '标记已解决',
     type: 'warning',
     link: true,
     onClick: (row: Ticket) => handleResolve(row),
-    show: (row: Ticket) => row.status === 'processing'
-  }
+    show: (row: Ticket) => row.status === 'processing',
+  },
 ]
 
 // 分配对话框
 const assignDialogVisible = ref(false)
 const currentTicket = ref<Ticket | null>(null)
 const assignForm = reactive({
-  assigneeId: 0
+  assigneeId: 0,
 })
 const assignFormRef = ref()
 const assignRules = {
-  assigneeId: [{ required: true, message: '请选择客服人员', trigger: 'change' }]
+  assigneeId: [{ required: true, message: '请选择客服人员', trigger: 'change' }],
 }
 const assigning = ref(false)
 const availableAgents = ref<ServiceAgent[]>([])
@@ -683,7 +697,7 @@ const chatMessagesRef = ref<HTMLElement | null>(null)
 
 // 未读消息数
 const unreadCount = computed(() => {
-  return messages.value.filter((msg) => !msg.isRead && msg.sender === 'user').length
+  return messages.value.filter(msg => !msg.isRead && msg.sender === 'user').length
 })
 
 // 是否可以回复
@@ -715,7 +729,7 @@ const formatMessageTime = (time: string) => {
     month: '2-digit',
     day: '2-digit',
     hour: '2-digit',
-    minute: '2-digit'
+    minute: '2-digit',
   })
 }
 
@@ -808,7 +822,7 @@ const getOrderStatusType = (status: string) => {
     completed: 'info',
     cancelled: 'danger',
     refunding: 'warning',
-    refunded: 'info'
+    refunded: 'info',
   }
   return statusMap[status] || 'info'
 }
@@ -819,7 +833,7 @@ const getVehicleStatusType = (status: string) => {
     available: 'success',
     rented: 'primary',
     maintenance: 'warning',
-    offline: 'info'
+    offline: 'info',
   }
   return statusMap[status] || 'info'
 }
@@ -858,7 +872,7 @@ const handleSendMessage = async () => {
   try {
     const newMessage = await sendTicketMessage({
       ticketId: currentTicket.value.id,
-      content: messageInput.value.trim()
+      content: messageInput.value.trim(),
     })
     messages.value.push(newMessage)
     messageInput.value = ''
@@ -898,7 +912,7 @@ const fetchTicketList = async () => {
       type: searchForm.value.type as TicketType | undefined,
       priority: searchForm.value.priority as TicketPriority | undefined,
       assigneeId: searchForm.value.assigneeId ? Number(searchForm.value.assigneeId) : undefined,
-      keyword: searchForm.value.keyword
+      keyword: searchForm.value.keyword,
     }
     const { list, total } = await getTickets(params)
     ticketList.value = list
@@ -933,7 +947,7 @@ const handleReset = () => {
     type: '',
     priority: '',
     assigneeId: '',
-    keyword: ''
+    keyword: '',
   }
   handleSearch()
 }
@@ -980,7 +994,7 @@ const handleAssignSubmit = async () => {
 
     assigning.value = true
     try {
-      const agent = availableAgents.value.find((a) => a.id === assignForm.assigneeId)
+      const agent = availableAgents.value.find(a => a.id === assignForm.assigneeId)
       if (!agent) {
         ElMessage.error('客服人员不存在')
         return
@@ -1012,7 +1026,7 @@ const handleResolve = async (row: Ticket) => {
     await ElMessageBox.confirm('确定要将此工单标记为已解决吗？', '提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
-      type: 'warning'
+      type: 'warning',
     })
 
     await updateTicketStatus(row.id, 'resolved')
@@ -1051,7 +1065,7 @@ const getTypeTagType = (type: TicketType) => {
     technical: 'warning',
     refund: 'info',
     campsite_inquiry: 'primary',
-    other: ''
+    other: '',
   }
   return typeMap[type] || 'info'
 }
@@ -1065,7 +1079,7 @@ const getTypeLabel = (type: TicketType) => {
     technical: '技术问题',
     refund: '退款',
     campsite_inquiry: '营地咨询',
-    other: '其他'
+    other: '其他',
   }
   return typeMap[type] || type
 }
@@ -1076,7 +1090,7 @@ const getPriorityTagType = (priority: TicketPriority) => {
     low: 'info',
     medium: '',
     high: 'warning',
-    urgent: 'danger'
+    urgent: 'danger',
   }
   return priorityMap[priority] || 'info'
 }
@@ -1087,7 +1101,7 @@ const getPriorityLabel = (priority: TicketPriority) => {
     low: '低',
     medium: '中',
     high: '高',
-    urgent: '紧急'
+    urgent: '紧急',
   }
   return priorityMap[priority] || priority
 }
@@ -1099,7 +1113,7 @@ const getStatusTagType = (status: TicketStatus) => {
     processing: '',
     resolved: 'success',
     closed: 'info',
-    reopened: 'danger'
+    reopened: 'danger',
   }
   return statusMap[status] || 'info'
 }
@@ -1111,7 +1125,7 @@ const getStatusLabel = (status: TicketStatus) => {
     processing: '处理中',
     resolved: '已解决',
     closed: '已关闭',
-    reopened: '已重开'
+    reopened: '已重开',
   }
   return statusMap[status] || status
 }
@@ -1122,7 +1136,7 @@ const getAgentStatusType = (status: ServiceStatus) => {
     online: 'success',
     busy: 'warning',
     offline: 'info',
-    break: ''
+    break: '',
   }
   return statusMap[status] || 'info'
 }
@@ -1133,7 +1147,7 @@ const getAgentStatusLabel = (status: ServiceStatus) => {
     online: '在线',
     busy: '忙碌',
     offline: '离线',
-    break: '休息'
+    break: '休息',
   }
   return statusMap[status] || status
 }

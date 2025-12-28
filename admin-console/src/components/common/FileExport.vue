@@ -11,12 +11,7 @@
     </el-button>
 
     <!-- 导出配置对话框 -->
-    <el-dialog
-      v-model="configVisible"
-      title="导出配置"
-      width="600px"
-      @close="handleDialogClose"
-    >
+    <el-dialog v-model="configVisible" title="导出配置" width="600px" @close="handleDialogClose">
       <el-form :model="exportConfig" label-width="100px">
         <!-- 导出格式 -->
         <el-form-item label="导出格式">
@@ -30,11 +25,7 @@
         <!-- 导出字段选择 -->
         <el-form-item v-if="showFieldSelector" label="导出字段">
           <el-checkbox-group v-model="exportConfig.selectedFields">
-            <el-checkbox
-              v-for="field in availableFields"
-              :key="field.prop"
-              :label="field.prop"
-            >
+            <el-checkbox v-for="field in availableFields" :key="field.prop" :label="field.prop">
               {{ field.label }}
             </el-checkbox>
           </el-checkbox-group>
@@ -54,11 +45,7 @@
 
         <!-- 文件名 -->
         <el-form-item label="文件名">
-          <el-input
-            v-model="exportConfig.filename"
-            placeholder="请输入文件名"
-            maxlength="50"
-          >
+          <el-input v-model="exportConfig.filename" placeholder="请输入文件名" maxlength="50">
             <template #append>.{{ exportConfig.format }}</template>
           </el-input>
         </el-form-item>
@@ -112,21 +99,21 @@ interface FieldConfig {
 
 // Props 定义
 interface Props {
-  label?: string                    // 按钮文本
+  label?: string // 按钮文本
   type?: 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'default'
-  icon?: Component                  // 按钮图标
-  disabled?: boolean                // 是否禁用
-  data?: any[]                      // 导出数据
-  columns?: FieldConfig[]           // 列配置
-  formats?: ExportFormat[]          // 支持的导出格式
-  defaultFormat?: ExportFormat      // 默认导出格式
-  filename?: string                 // 默认文件名
-  showConfig?: boolean              // 是否显示配置对话框
-  showFieldSelector?: boolean       // 是否显示字段选择器
-  showRangeSelector?: boolean       // 是否显示范围选择器
-  selectedData?: any[]              // 已选数据
+  icon?: Component // 按钮图标
+  disabled?: boolean // 是否禁用
+  data?: any[] // 导出数据
+  columns?: FieldConfig[] // 列配置
+  formats?: ExportFormat[] // 支持的导出格式
+  defaultFormat?: ExportFormat // 默认导出格式
+  filename?: string // 默认文件名
+  showConfig?: boolean // 是否显示配置对话框
+  showFieldSelector?: boolean // 是否显示字段选择器
+  showRangeSelector?: boolean // 是否显示范围选择器
+  selectedData?: any[] // 已选数据
   fetchAllData?: () => Promise<any[]> // 获取全部数据的方法
-  batchSize?: number                // 批量导出大小
+  batchSize?: number // 批量导出大小
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -148,8 +135,8 @@ const props = withDefaults(defineProps<Props>(), {
 // Emits 定义
 const emit = defineEmits<{
   'before-export': []
-  'success': [data: { format: ExportFormat; filename: string }]
-  'error': [error: Error]
+  success: [data: { format: ExportFormat; filename: string }]
+  error: [error: Error]
 }>()
 
 // 响应式数据
@@ -349,10 +336,7 @@ const exportToCSV = async (data: any[]) => {
   exportProgress.value = 70
 
   // 生成 CSV 内容
-  const csvContent = [
-    headers.join(','),
-    ...rows.map(row => row.join(',')),
-  ].join('\n')
+  const csvContent = [headers.join(','), ...rows.map(row => row.join(','))].join('\n')
 
   // 添加 BOM 以支持中文
   const BOM = '\uFEFF'

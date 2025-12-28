@@ -15,7 +15,7 @@ export interface RuleExecutionLog {
   executedBy: string
   status: 'success' | 'failed'
   errorMessage?: string
-  duration: number  // 执行耗时(毫秒)
+  duration: number // 执行耗时(毫秒)
 }
 
 // Mock 规则执行日志数据
@@ -31,7 +31,7 @@ export const mockRuleExecutionLogs: RuleExecutionLog[] = [
     matchedUserIds: [1, 2, 9, 14, 15],
     executedBy: '管理员-张三',
     status: 'success',
-    duration: 1250
+    duration: 1250,
   },
   {
     id: 2,
@@ -44,7 +44,7 @@ export const mockRuleExecutionLogs: RuleExecutionLog[] = [
     matchedUserIds: [1, 2, 5, 6, 7, 9, 10, 11, 13, 14, 15, 18],
     executedBy: '管理员-张三',
     status: 'success',
-    duration: 980
+    duration: 980,
   },
   {
     id: 3,
@@ -57,7 +57,7 @@ export const mockRuleExecutionLogs: RuleExecutionLog[] = [
     matchedUserIds: [5, 19, 20],
     executedBy: '系统自动',
     status: 'success',
-    duration: 650
+    duration: 650,
   },
   {
     id: 4,
@@ -70,7 +70,7 @@ export const mockRuleExecutionLogs: RuleExecutionLog[] = [
     matchedUserIds: [4],
     executedBy: '管理员-李四',
     status: 'success',
-    duration: 450
+    duration: 450,
   },
   {
     id: 5,
@@ -83,8 +83,8 @@ export const mockRuleExecutionLogs: RuleExecutionLog[] = [
     matchedUserIds: [3, 22],
     executedBy: '管理员-张三',
     status: 'success',
-    duration: 820
-  }
+    duration: 820,
+  },
 ]
 
 // Mock 获取规则执行日志列表
@@ -96,7 +96,7 @@ export const mockGetRuleExecutionLogs = (params: {
   startDate?: string
   endDate?: string
 }) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       let filtered = [...mockRuleExecutionLogs]
 
@@ -119,7 +119,9 @@ export const mockGetRuleExecutionLogs = (params: {
       }
 
       // 按执行时间倒序排序
-      filtered.sort((a, b) => new Date(b.executionTime).getTime() - new Date(a.executionTime).getTime())
+      filtered.sort(
+        (a, b) => new Date(b.executionTime).getTime() - new Date(a.executionTime).getTime()
+      )
 
       // 分页
       const page = params.page || 1
@@ -134,8 +136,8 @@ export const mockGetRuleExecutionLogs = (params: {
           list,
           total: filtered.length,
           page,
-          pageSize
-        }
+          pageSize,
+        },
       })
     }, 300)
   })
@@ -149,7 +151,7 @@ export const mockGetRuleExecutionLogDetail = (id: number) => {
       if (!log) {
         reject({
           code: 404,
-          message: '日志不存在'
+          message: '日志不存在',
         })
         return
       }
@@ -157,7 +159,7 @@ export const mockGetRuleExecutionLogDetail = (id: number) => {
       resolve({
         code: 200,
         message: '获取成功',
-        data: log
+        data: log,
       })
     }, 200)
   })
@@ -165,18 +167,18 @@ export const mockGetRuleExecutionLogDetail = (id: number) => {
 
 // Mock 添加规则执行日志
 export const mockAddRuleExecutionLog = (log: Omit<RuleExecutionLog, 'id'>) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const newLog: RuleExecutionLog = {
         id: mockRuleExecutionLogs.length + 1,
-        ...log
+        ...log,
       }
       mockRuleExecutionLogs.unshift(newLog)
 
       resolve({
         code: 200,
         message: '添加成功',
-        data: newLog
+        data: newLog,
       })
     }, 200)
   })
@@ -184,7 +186,7 @@ export const mockAddRuleExecutionLog = (log: Omit<RuleExecutionLog, 'id'>) => {
 
 // Mock 获取规则执行统计
 export const mockGetRuleExecutionStats = () => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const stats = {
         totalExecutions: mockRuleExecutionLogs.length,
@@ -192,14 +194,15 @@ export const mockGetRuleExecutionStats = () => {
         failedExecutions: mockRuleExecutionLogs.filter(l => l.status === 'failed').length,
         totalMatchedUsers: mockRuleExecutionLogs.reduce((sum, l) => sum + l.matchedUserCount, 0),
         averageDuration: Math.round(
-          mockRuleExecutionLogs.reduce((sum, l) => sum + l.duration, 0) / mockRuleExecutionLogs.length
-        )
+          mockRuleExecutionLogs.reduce((sum, l) => sum + l.duration, 0) /
+            mockRuleExecutionLogs.length
+        ),
       }
 
       resolve({
         code: 200,
         message: '获取成功',
-        data: stats
+        data: stats,
       })
     }, 200)
   })

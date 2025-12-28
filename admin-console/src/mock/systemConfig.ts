@@ -109,28 +109,40 @@ export const mockUpdateCalculationConfig = (
 
   // 参数范围验证
   const config = mockCalculationConfigs[index]
-  if (config.configKey === 'TARGET_ANNUAL_RETURN' && (data.configValue < 0 || data.configValue > 50)) {
+  if (
+    config.configKey === 'TARGET_ANNUAL_RETURN' &&
+    (data.configValue < 0 || data.configValue > 50)
+  ) {
     return Promise.reject({
       code: 400,
       message: '目标年化收益率必须在0-50%之间',
     })
   }
 
-  if (config.configKey === 'RESIDUAL_VALUE_RATE' && (data.configValue < 0 || data.configValue > 100)) {
+  if (
+    config.configKey === 'RESIDUAL_VALUE_RATE' &&
+    (data.configValue < 0 || data.configValue > 100)
+  ) {
     return Promise.reject({
       code: 400,
       message: '残值率必须在0-100%之间',
     })
   }
 
-  if (config.configKey === 'ANNUAL_OPERATING_RATE' && (data.configValue <= 0 || data.configValue > 100)) {
+  if (
+    config.configKey === 'ANNUAL_OPERATING_RATE' &&
+    (data.configValue <= 0 || data.configValue > 100)
+  ) {
     return Promise.reject({
       code: 400,
       message: '年运营率必须在0-100%之间',
     })
   }
 
-  if (config.configKey === 'OPERATING_COST_RATE' && (data.configValue < 0 || data.configValue >= 100)) {
+  if (
+    config.configKey === 'OPERATING_COST_RATE' &&
+    (data.configValue < 0 || data.configValue >= 100)
+  ) {
     return Promise.reject({
       code: 400,
       message: '运营成本占比必须在0-100%之间(不含100%)',

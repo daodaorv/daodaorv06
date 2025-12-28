@@ -65,9 +65,7 @@
           <div style="color: #f56c6c; font-weight: bold">
             ¥{{ row.targetAmount.toLocaleString() }}
           </div>
-          <div style="color: #67c23a">
-            已筹: ¥{{ row.raisedAmount.toLocaleString() }}
-          </div>
+          <div style="color: #67c23a">已筹: ¥{{ row.raisedAmount.toLocaleString() }}</div>
         </div>
       </template>
 
@@ -183,9 +181,7 @@
               </template>
             </el-table-column>
             <el-table-column prop="shareRatio" label="份额占比" width="100">
-              <template #default="{ row }">
-                {{ row.shareRatio }}%
-              </template>
+              <template #default="{ row }"> {{ row.shareRatio }}% </template>
             </el-table-column>
             <el-table-column prop="role" label="角色" width="100">
               <template #default="{ row }">
@@ -226,9 +222,7 @@
               />
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" @click="handleReviewSubmit">
-                提交审核
-              </el-button>
+              <el-button type="primary" @click="handleReviewSubmit"> 提交审核 </el-button>
             </el-form-item>
           </el-form>
         </el-card>
@@ -270,9 +264,7 @@
               />
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" @click="handleStatusUpdate">
-                更新状态
-              </el-button>
+              <el-button type="primary" @click="handleStatusUpdate"> 更新状态 </el-button>
             </el-form-item>
           </el-form>
         </el-card>
@@ -759,12 +751,8 @@ const getAvailableStatusOptions = (currentStatus: string) => {
       { label: '众筹成功', value: 'success' },
       { label: '众筹失败', value: 'failed' },
     ],
-    success: [
-      { label: '购车中', value: 'purchasing' },
-    ],
-    purchasing: [
-      { label: '托管中', value: 'hosting' },
-    ],
+    success: [{ label: '购车中', value: 'purchasing' }],
+    purchasing: [{ label: '托管中', value: 'hosting' }],
   }
   return statusFlow[currentStatus] || []
 }

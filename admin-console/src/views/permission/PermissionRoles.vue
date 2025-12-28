@@ -2,7 +2,6 @@
 <template>
   <div class="permission-roles-container">
     <!-- 页面标题 -->
-    
 
     <!-- 搜索表单 -->
     <SearchForm
@@ -55,9 +54,7 @@
 
       <!-- 自定义操作列 -->
       <template #actions="{ row }">
-        <el-button link type="primary" size="small" @click="handleEdit(row)">
-          编辑
-        </el-button>
+        <el-button link type="primary" size="small" @click="handleEdit(row)"> 编辑 </el-button>
         <el-button link type="primary" size="small" @click="handlePermission(row)">
           配置权限
         </el-button>
@@ -83,21 +80,12 @@
       width="600px"
       @close="handleDialogClose"
     >
-      <el-form
-        ref="formRef"
-        :model="form"
-        :rules="formRules"
-        label-width="120px"
-      >
+      <el-form ref="formRef" :model="form" :rules="formRules" label-width="120px">
         <el-form-item label="角色名称" prop="name">
           <el-input v-model="form.name" placeholder="请输入角色名称" />
         </el-form-item>
         <el-form-item label="角色编码" prop="code">
-          <el-input
-            v-model="form.code"
-            placeholder="请输入角色编码（英文）"
-            :disabled="isEdit"
-          />
+          <el-input v-model="form.code" placeholder="请输入角色编码（英文）" :disabled="isEdit" />
         </el-form-item>
         <el-form-item label="角色类型" prop="type">
           <el-select v-model="form.type" placeholder="请选择角色类型" style="width: 100%">
@@ -136,18 +124,12 @@
       </el-form>
       <template #footer>
         <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" :loading="submitLoading" @click="handleSubmit">
-          确定
-        </el-button>
+        <el-button type="primary" :loading="submitLoading" @click="handleSubmit"> 确定 </el-button>
       </template>
     </el-dialog>
 
     <!-- 配置权限对话框 -->
-    <el-dialog
-      v-model="permissionDialogVisible"
-      title="配置角色权限"
-      width="800px"
-    >
+    <el-dialog v-model="permissionDialogVisible" title="配置角色权限" width="800px">
       <div class="permission-config">
         <el-tabs v-model="activeTab">
           <el-tab-pane label="菜单权限" name="menu">
@@ -178,18 +160,12 @@
       </div>
       <template #footer>
         <el-button @click="permissionDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="handlePermissionSubmit">
-          保存
-        </el-button>
+        <el-button type="primary" @click="handlePermissionSubmit"> 保存 </el-button>
       </template>
     </el-dialog>
 
     <!-- 查看用户对话框 -->
-    <el-dialog
-      v-model="usersDialogVisible"
-      title="角色用户列表"
-      width="800px"
-    >
+    <el-dialog v-model="usersDialogVisible" title="角色用户列表" width="800px">
       <el-table :data="roleUsers" stripe style="width: 100%">
         <el-table-column prop="id" label="ID" width="80" />
         <el-table-column prop="username" label="用户名" width="150" />
@@ -343,12 +319,8 @@ const formRules: FormRules = {
     { required: true, message: '请输入角色编码', trigger: 'blur' },
     { pattern: /^[a-z_]+$/, message: '角色编码只能包含小写字母和下划线', trigger: 'blur' },
   ],
-  type: [
-    { required: true, message: '请选择角色类型', trigger: 'change' },
-  ],
-  dataScope: [
-    { required: true, message: '请选择数据权限范围', trigger: 'change' },
-  ],
+  type: [{ required: true, message: '请选择角色类型', trigger: 'change' }],
+  dataScope: [{ required: true, message: '请选择数据权限范围', trigger: 'change' }],
 }
 
 // 权限配置对话框
@@ -451,15 +423,11 @@ const handleEdit = (row: Role) => {
 // 删除角色
 const handleDelete = async (row: Role) => {
   try {
-    await ElMessageBox.confirm(
-      `确定要删除角色 "${row.name}" 吗？`,
-      '删除确认',
-      {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      }
-    )
+    await ElMessageBox.confirm(`确定要删除角色 "${row.name}" 吗？`, '删除确认', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    })
     await roleApi.deleteRole(row.id)
     ElMessage.success('删除成功')
     loadRoleList()
@@ -515,7 +483,7 @@ const handleViewUsers = async (row: Role) => {
 const handleSubmit = async () => {
   if (!formRef.value) return
 
-  await formRef.value.validate(async (valid) => {
+  await formRef.value.validate(async valid => {
     if (!valid) return
 
     submitLoading.value = true

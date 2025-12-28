@@ -38,7 +38,7 @@ import {
   type ReviewListParams,
   type PickupRecord,
   type PickupOrderParams,
-  type ReturnOrderParams
+  type ReturnOrderParams,
 } from '@/mock/orders'
 
 // 导出类型
@@ -56,7 +56,7 @@ export type {
   ReviewListParams,
   PickupRecord,
   PickupOrderParams,
-  ReturnOrderParams
+  ReturnOrderParams,
 }
 
 /**
@@ -173,7 +173,7 @@ export const assignException = (id: number, data: any) => {
   return Promise.resolve({
     code: 200,
     message: '分配成功',
-    data: { id, ...data }
+    data: { id, ...data },
   })
 }
 
@@ -185,7 +185,7 @@ export const escalateException = (id: number, priority: string) => {
   return Promise.resolve({
     code: 200,
     message: '升级成功',
-    data: { id, priority }
+    data: { id, priority },
   })
 }
 
@@ -197,7 +197,7 @@ export const settleException = (id: number, data: any) => {
   return Promise.resolve({
     code: 200,
     message: '结算成功',
-    data: { id, ...data }
+    data: { id, ...data },
   })
 }
 
@@ -215,9 +215,9 @@ export const getExceptionTimeline = (id: number) => {
         timestamp: new Date().toISOString(),
         operator: '系统',
         description: '异常创建',
-        details: []
-      }
-    ]
+        details: [],
+      },
+    ],
   })
 }
 
@@ -255,7 +255,7 @@ export const retryRefund = (id: number, data: any) => {
   return Promise.resolve({
     code: 200,
     message: '退款重试成功',
-    data: { id, ...data }
+    data: { id, ...data },
   })
 }
 
@@ -267,7 +267,7 @@ export const changeRefundMethod = (id: number, data: any) => {
   return Promise.resolve({
     code: 200,
     message: '切换退款方式成功',
-    data: { id, ...data }
+    data: { id, ...data },
   })
 }
 
@@ -279,7 +279,7 @@ export const registerOfflineRefund = (id: number, data: any) => {
   return Promise.resolve({
     code: 200,
     message: '线下退款登记成功',
-    data: { id, ...data }
+    data: { id, ...data },
   })
 }
 
@@ -298,8 +298,8 @@ export const getRefundProgress = (id: number) => {
       estimatedTime: '2024-01-20 18:00',
       transactionNo: 'TXN202401200001',
       updatedAt: new Date().toISOString(),
-      details: []
-    }
+      details: [],
+    },
   })
 }
 
@@ -345,7 +345,7 @@ export const createReview = (data: any) => {
   return Promise.resolve({
     code: 200,
     message: '评价添加成功',
-    data: { id: Date.now(), ...data }
+    data: { id: Date.now(), ...data },
   })
 }
 
@@ -357,7 +357,7 @@ export const deleteReview = (id: number, data: any) => {
   return Promise.resolve({
     code: 200,
     message: '评价删除成功',
-    data: { id, ...data }
+    data: { id, ...data },
   })
 }
 
@@ -375,16 +375,16 @@ export const getReviewStatsByVehicle = () => {
         reviewCount: 328,
         averageRating: 4.8,
         satisfactionRate: 96,
-        trend: 'up'
+        trend: 'up',
       },
       {
         vehicleName: '大通V90',
         reviewCount: 285,
         averageRating: 4.6,
         satisfactionRate: 92,
-        trend: 'up'
-      }
-    ]
+        trend: 'up',
+      },
+    ],
   })
 }
 
@@ -402,16 +402,16 @@ export const getReviewStatsByStore = () => {
         reviewCount: 412,
         averageRating: 4.7,
         satisfactionRate: 94,
-        serviceQuality: 95
+        serviceQuality: 95,
       },
       {
         storeName: '上海浦东门店',
         reviewCount: 385,
         averageRating: 4.6,
         satisfactionRate: 92,
-        serviceQuality: 93
-      }
-    ]
+        serviceQuality: 93,
+      },
+    ],
   })
 }
 
@@ -426,8 +426,8 @@ export const getReviewTrend = (params: any) => {
     data: [
       { date: '12-16', count: 45, rating: 4.5 },
       { date: '12-17', count: 52, rating: 4.6 },
-      { date: '12-18', count: 38, rating: 4.4 }
-    ]
+      { date: '12-18', count: 38, rating: 4.4 },
+    ],
   })
 }
 
@@ -471,8 +471,8 @@ export const getOrderTimeline = (_orderId: number) => {
         timestamp: new Date().toISOString(),
         operator: '系统',
         description: '订单创建成功',
-        details: []
-      }
-    ]
+        details: [],
+      },
+    ],
   })
 }

@@ -9,9 +9,7 @@
       </div>
       <div class="header-right">
         <el-button @click="handleBack">取消</el-button>
-        <el-button type="primary" :loading="submitLoading" @click="handleSubmit">
-          保存
-        </el-button>
+        <el-button type="primary" :loading="submitLoading" @click="handleSubmit"> 保存 </el-button>
       </div>
     </div>
 
@@ -89,12 +87,7 @@
 
           <el-form-item prop="images">
             <div class="image-upload-container">
-              <draggable
-                v-model="form.images"
-                class="image-list"
-                item-key="uid"
-                :animation="200"
-              >
+              <draggable v-model="form.images" class="image-list" item-key="uid" :animation="200">
                 <template #item="{ element, index }">
                   <div class="image-item">
                     <el-image
@@ -168,22 +161,12 @@
           <el-row :gutter="20">
             <el-col :span="12">
               <el-form-item label="核载人数" prop="seats">
-                <el-input-number
-                  v-model="form.seats"
-                  :min="1"
-                  :max="20"
-                  style="width: 100%"
-                />
+                <el-input-number v-model="form.seats" :min="1" :max="20" style="width: 100%" />
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="床位数" prop="beds">
-                <el-input-number
-                  v-model="form.beds"
-                  :min="1"
-                  :max="10"
-                  style="width: 100%"
-                />
+                <el-input-number v-model="form.beds" :min="1" :max="10" style="width: 100%" />
               </el-form-item>
             </el-col>
           </el-row>
@@ -280,9 +263,7 @@
                     :precision="0"
                     style="width: 100%"
                   />
-                  <div class="form-tip">
-                    车辆购置价格(不含税费、上牌等附加费用)
-                  </div>
+                  <div class="form-tip">车辆购置价格(不含税费、上牌等附加费用)</div>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
@@ -310,9 +291,7 @@
                     :precision="0"
                     style="width: 100%"
                   />
-                  <div class="form-tip">
-                    预估年化收益率: {{ estimatedAnnualReturn }}%
-                  </div>
+                  <div class="form-tip">预估年化收益率: {{ estimatedAnnualReturn }}%</div>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
@@ -322,9 +301,7 @@
                     :min="0"
                     style="width: 100%"
                   />
-                  <div class="form-tip">
-                    数值越大越靠前
-                  </div>
+                  <div class="form-tip">数值越大越靠前</div>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -358,12 +335,7 @@ import { ref, reactive, computed, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
-import {
-  ArrowLeft,
-  Plus,
-  ZoomIn,
-  Delete,
-} from '@element-plus/icons-vue'
+import { ArrowLeft, Plus, ZoomIn, Delete } from '@element-plus/icons-vue'
 import draggable from 'vuedraggable'
 import RichTextEditor from '@/components/common/RichTextEditor.vue'
 import {
@@ -442,19 +414,13 @@ const form = reactive({
 
 // 表单验证规则
 const formRules: FormRules = {
-  brandId: [
-    { required: true, message: '请选择品牌', trigger: 'change' },
-  ],
+  brandId: [{ required: true, message: '请选择品牌', trigger: 'change' }],
   modelName: [
     { required: true, message: '请输入车型名称', trigger: 'blur' },
     { min: 2, max: 50, message: '长度在 2 到 50 个字符', trigger: 'blur' },
   ],
-  vehicleType: [
-    { required: true, message: '请选择车辆类型', trigger: 'change' },
-  ],
-  dailyPrice: [
-    { required: true, message: '请输入日租金', trigger: 'blur' },
-  ],
+  vehicleType: [{ required: true, message: '请选择车辆类型', trigger: 'change' }],
+  dailyPrice: [{ required: true, message: '请输入日租金', trigger: 'blur' }],
   images: [
     {
       validator: (_rule, value, callback) => {
@@ -508,7 +474,7 @@ const suggestedPricePerShare = computed(() => {
 // 计算属性：预估年化收益率
 const estimatedAnnualReturn = computed(() => {
   if (form.purchasePrice > 0 && form.estimatedMonthlyIncome > 0) {
-    return ((form.estimatedMonthlyIncome * 12 / form.purchasePrice) * 100).toFixed(2)
+    return (((form.estimatedMonthlyIncome * 12) / form.purchasePrice) * 100).toFixed(2)
   }
   return '0.00'
 })
@@ -533,7 +499,7 @@ const handleImageChange = (file: any) => {
 
   // 将图片转换为 base64
   const reader = new FileReader()
-  reader.onload = (e) => {
+  reader.onload = e => {
     const base64Url = e.target?.result as string
     form.images.push({
       uid: `${Date.now()}-${Math.random()}`,
@@ -648,7 +614,7 @@ const handleBack = () => {
 const handleSubmit = async () => {
   if (!formRef.value) return
 
-  await formRef.value.validate(async (valid) => {
+  await formRef.value.validate(async valid => {
     if (!valid) {
       ElMessage.warning('请完善表单信息')
       return

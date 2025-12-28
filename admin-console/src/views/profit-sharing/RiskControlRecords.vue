@@ -2,7 +2,12 @@
   <div class="risk-control-records">
     <el-form :inline="true" :model="queryForm" class="search-form">
       <el-form-item label="用户">
-        <el-input v-model="queryForm.userId" placeholder="请输入用户ID或姓名" clearable style="width: 200px" />
+        <el-input
+          v-model="queryForm.userId"
+          placeholder="请输入用户ID或姓名"
+          clearable
+          style="width: 200px"
+        />
       </el-form-item>
       <el-form-item label="风险级别">
         <el-select v-model="queryForm.riskLevel" placeholder="请选择" clearable>
@@ -36,7 +41,9 @@
       <el-table-column prop="ruleName" label="触发规则" width="150" />
       <el-table-column prop="riskLevel" label="风险级别" width="100">
         <template #default="{ row }">
-          <el-tag :type="getRiskLevelTag(row.riskLevel)">{{ getRiskLevelName(row.riskLevel) }}</el-tag>
+          <el-tag :type="getRiskLevelTag(row.riskLevel)">{{
+            getRiskLevelName(row.riskLevel)
+          }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column prop="action" label="执行动作" width="100" />
@@ -49,10 +56,22 @@
       <el-table-column prop="createdAt" label="触发时间" width="160" />
       <el-table-column label="操作" width="180" fixed="right">
         <template #default="{ row }">
-          <el-button v-if="row.status === 'pending'" link type="success" size="small" @click="handleConfirm(row)">
+          <el-button
+            v-if="row.status === 'pending'"
+            link
+            type="success"
+            size="small"
+            @click="handleConfirm(row)"
+          >
             确认
           </el-button>
-          <el-button v-if="row.status === 'pending'" link type="info" size="small" @click="handleDismiss(row)">
+          <el-button
+            v-if="row.status === 'pending'"
+            link
+            type="info"
+            size="small"
+            @click="handleDismiss(row)"
+          >
             忽略
           </el-button>
           <el-button link type="primary" size="small" @click="handleViewDetail(row)">

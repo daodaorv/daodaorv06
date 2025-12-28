@@ -33,7 +33,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   height: '100%',
   buffer: 5,
-  itemKey: 'id'
+  itemKey: 'id',
 })
 
 const containerRef = ref<HTMLElement>()
@@ -76,7 +76,7 @@ const endIndex = computed(() => {
 const visibleData = computed(() => {
   return props.data.slice(startIndex.value, endIndex.value).map((item, index) => ({
     ...item,
-    __index: startIndex.value + index
+    __index: startIndex.value + index,
   }))
 })
 
@@ -106,7 +106,7 @@ const scrollToIndex = (index: number, behavior: ScrollBehavior = 'smooth') => {
   const targetScrollTop = index * props.itemHeight
   containerRef.value.scrollTo({
     top: targetScrollTop,
-    behavior
+    behavior,
   })
 }
 
@@ -124,18 +124,21 @@ const scrollToBottom = (behavior: ScrollBehavior = 'smooth') => {
 defineExpose({
   scrollToIndex,
   scrollToTop,
-  scrollToBottom
+  scrollToBottom,
 })
 
 // 监听数据变化，重置滚动位置
-watch(() => props.data.length, () => {
-  if (scrollTop.value > totalHeight.value) {
-    scrollTop.value = 0
-    if (containerRef.value) {
-      containerRef.value.scrollTop = 0
+watch(
+  () => props.data.length,
+  () => {
+    if (scrollTop.value > totalHeight.value) {
+      scrollTop.value = 0
+      if (containerRef.value) {
+        containerRef.value.scrollTop = 0
+      }
     }
   }
-})
+)
 </script>
 
 <style scoped lang="scss">

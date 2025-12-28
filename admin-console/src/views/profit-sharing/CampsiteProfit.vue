@@ -66,10 +66,20 @@
         <el-tab-pane label="分润记录" name="records">
           <el-form :inline="true" :model="queryForm" class="search-form">
             <el-form-item label="业主">
-              <el-input v-model="queryForm.ownerId" placeholder="请输入业主ID或姓名" clearable style="width: 200px" />
+              <el-input
+                v-model="queryForm.ownerId"
+                placeholder="请输入业主ID或姓名"
+                clearable
+                style="width: 200px"
+              />
             </el-form-item>
             <el-form-item label="营地">
-              <el-input v-model="queryForm.campsiteId" placeholder="请输入营地ID或名称" clearable style="width: 200px" />
+              <el-input
+                v-model="queryForm.campsiteId"
+                placeholder="请输入营地ID或名称"
+                clearable
+                style="width: 200px"
+              />
             </el-form-item>
             <el-form-item label="分润状态">
               <el-select v-model="queryForm.status" placeholder="请选择" clearable>
@@ -104,7 +114,9 @@
             </el-table-column>
             <el-table-column prop="profitAmount" label="分润金额" width="120" align="right">
               <template #default="{ row }">
-                <span style="color: #f56c6c; font-weight: bold">¥{{ formatNumber(row.profitAmount) }}</span>
+                <span style="color: #f56c6c; font-weight: bold"
+                  >¥{{ formatNumber(row.profitAmount) }}</span
+                >
               </template>
             </el-table-column>
             <el-table-column prop="isBundled" label="捆绑销售" width="100">

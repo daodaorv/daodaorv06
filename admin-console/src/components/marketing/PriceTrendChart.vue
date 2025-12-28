@@ -43,7 +43,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   priceData: () => [],
-  loading: false
+  loading: false,
 })
 
 const chartRef = ref<HTMLDivElement>()
@@ -84,16 +84,16 @@ const updateChart = () => {
       left: 'center',
       textStyle: {
         fontSize: 16,
-        fontWeight: 'normal'
-      }
+        fontWeight: 'normal',
+      },
     },
     tooltip: {
       trigger: 'axis',
       axisPointer: {
         type: 'cross',
         label: {
-          backgroundColor: '#6a7985'
-        }
+          backgroundColor: '#6a7985',
+        },
       },
       formatter: (params: any) => {
         let result = `<div style="font-weight: bold; margin-bottom: 5px">${params[0].axisValue}</div>`
@@ -109,21 +109,21 @@ const updateChart = () => {
           `
         })
         return result
-      }
+      },
     },
     legend: {
       data: ['基础价格', '最终价格', '城市因子', '时间因子'],
       top: 30,
       textStyle: {
-        fontSize: 12
-      }
+        fontSize: 12,
+      },
     },
     grid: {
       left: '3%',
       right: '4%',
       bottom: '3%',
       top: 80,
-      containLabel: true
+      containLabel: true,
     },
     xAxis: {
       type: 'category',
@@ -131,15 +131,15 @@ const updateChart = () => {
       data: dates,
       axisLabel: {
         rotate: 45,
-        fontSize: 11
-      }
+        fontSize: 11,
+      },
     },
     yAxis: {
       type: 'value',
       name: '价格 (元)',
       axisLabel: {
-        formatter: '¥{value}'
-      }
+        formatter: '¥{value}',
+      },
     },
     series: [
       {
@@ -148,11 +148,11 @@ const updateChart = () => {
         data: basePrices,
         smooth: true,
         itemStyle: {
-          color: '#909399'
+          color: '#909399',
         },
         lineStyle: {
-          width: 2
-        }
+          width: 2,
+        },
       },
       {
         name: '最终价格',
@@ -160,14 +160,14 @@ const updateChart = () => {
         data: finalPrices,
         smooth: true,
         itemStyle: {
-          color: '#409eff'
+          color: '#409eff',
         },
         lineStyle: {
-          width: 3
+          width: 3,
         },
         emphasis: {
-          focus: 'series'
-        }
+          focus: 'series',
+        },
       },
       {
         name: '城市因子',
@@ -175,12 +175,12 @@ const updateChart = () => {
         data: cityFactors,
         smooth: true,
         itemStyle: {
-          color: '#67c23a'
+          color: '#67c23a',
         },
         lineStyle: {
           width: 2,
-          type: 'dashed'
-        }
+          type: 'dashed',
+        },
       },
       {
         name: '时间因子',
@@ -188,27 +188,27 @@ const updateChart = () => {
         data: timeFactors,
         smooth: true,
         itemStyle: {
-          color: '#f56c6c'
+          color: '#f56c6c',
         },
         lineStyle: {
           width: 2,
-          type: 'dashed'
-        }
-      }
+          type: 'dashed',
+        },
+      },
     ],
     dataZoom: [
       {
         type: 'inside',
         start: 0,
-        end: 100
+        end: 100,
       },
       {
         start: 0,
         end: 100,
         height: 20,
-        bottom: 10
-      }
-    ]
+        bottom: 10,
+      },
+    ],
   }
 
   chartInstance.setOption(option)
@@ -220,16 +220,23 @@ const handleResize = () => {
 }
 
 // 监听数据变化
-watch(() => props.priceData, () => {
-  updateChart()
-}, { deep: true })
+watch(
+  () => props.priceData,
+  () => {
+    updateChart()
+  },
+  { deep: true }
+)
 
 // 监听加载状态
-watch(() => props.loading, (newVal) => {
-  if (!newVal && chartInstance) {
-    updateChart()
+watch(
+  () => props.loading,
+  newVal => {
+    if (!newVal && chartInstance) {
+      updateChart()
+    }
   }
-})
+)
 
 // 生命周期
 onMounted(() => {

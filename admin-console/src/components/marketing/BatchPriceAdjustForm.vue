@@ -7,20 +7,12 @@
     :close-on-click-modal="false"
     @close="handleClose"
   >
-    <el-form
-      ref="formRef"
-      :model="formData"
-      :rules="formRules"
-      label-width="120px"
-    >
-      <el-alert
-        type="info"
-        :closable="false"
-        style="margin-bottom: 20px"
-      >
+    <el-form ref="formRef" :model="formData" :rules="formRules" label-width="120px">
+      <el-alert type="info" :closable="false" style="margin-bottom: 20px">
         <template #title>
           <div style="font-size: 13px">
-            已选择 <strong style="color: #409eff">{{ selectedDates.length }}</strong> 个日期进行批量调价
+            已选择
+            <strong style="color: #409eff">{{ selectedDates.length }}</strong> 个日期进行批量调价
           </div>
         </template>
       </el-alert>
@@ -76,7 +68,8 @@
           <div class="preview-item">
             <div class="preview-label">变化</div>
             <div class="preview-value" :style="{ color: getAdjustedPriceColor() }">
-              {{ formData.adjustmentValue > 0 ? '+' : '' }}{{ formData.adjustmentValue }}{{ formData.adjustmentType === 'percentage' ? '%' : '元' }}
+              {{ formData.adjustmentValue > 0 ? '+' : '' }}{{ formData.adjustmentValue
+              }}{{ formData.adjustmentType === 'percentage' ? '%' : '元' }}
             </div>
           </div>
         </div>
@@ -92,11 +85,7 @@
           >
             {{ date }}
           </el-tag>
-          <el-tag
-            v-if="selectedDates.length > 10"
-            size="small"
-            type="info"
-          >
+          <el-tag v-if="selectedDates.length > 10" size="small" type="info">
             +{{ selectedDates.length - 10 }} 个日期
           </el-tag>
         </div>
@@ -105,9 +94,7 @@
 
     <template #footer>
       <el-button @click="handleClose">取消</el-button>
-      <el-button type="primary" :loading="loading" @click="handleSubmit">
-        确认调价
-      </el-button>
+      <el-button type="primary" :loading="loading" @click="handleSubmit"> 确认调价 </el-button>
     </template>
   </el-dialog>
 </template>
@@ -131,7 +118,7 @@ interface Emits {
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: false,
-  selectedDates: () => []
+  selectedDates: () => [],
 })
 
 const emit = defineEmits<Emits>()
@@ -141,21 +128,19 @@ const loading = ref(false)
 
 const visible = computed({
   get: () => props.modelValue,
-  set: (value) => emit('update:modelValue', value)
+  set: value => emit('update:modelValue', value),
 })
 
 // 表单数据
 const formData = reactive({
   adjustmentType: 'percentage' as 'percentage' | 'fixed',
   adjustmentValue: 0,
-  reason: ''
+  reason: '',
 })
 
 // 表单验证规则
 const formRules: FormRules = {
-  adjustmentType: [
-    { required: true, message: '请选择调整类型', trigger: 'change' }
-  ],
+  adjustmentType: [{ required: true, message: '请选择调整类型', trigger: 'change' }],
   adjustmentValue: [
     { required: true, message: '请输入调整值', trigger: 'blur' },
     {
@@ -168,9 +153,9 @@ const formRules: FormRules = {
           callback()
         }
       },
-      trigger: 'blur'
-    }
-  ]
+      trigger: 'blur',
+    },
+  ],
 }
 
 // 计算调整后的价格
@@ -220,9 +205,9 @@ const handleSubmit = async () => {
         factorName: `批量调价-${new Date().toISOString().split('T')[0]}`,
         adjustmentType: formData.adjustmentType,
         adjustmentValue: formData.adjustmentValue,
-        priority: 50
+        priority: 50,
       },
-      changeReason: formData.reason || '批量调价'
+      changeReason: formData.reason || '批量调价',
     }
 
     // 调用批量调价API
@@ -256,7 +241,7 @@ const handleClose = () => {
 }
 
 // 监听对话框打开，重置表单
-watch(visible, (newVal) => {
+watch(visible, newVal => {
   if (newVal) {
     formRef.value?.clearValidate()
   }

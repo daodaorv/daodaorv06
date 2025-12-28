@@ -15,7 +15,12 @@
       </el-table-column>
       <el-table-column prop="satisfactionBonus" label="满意度加成" min-width="200">
         <template #default="{ row }">
-          <el-tag v-for="(bonus, index) in row.satisfactionBonus" :key="index" size="small" style="margin-right: 5px">
+          <el-tag
+            v-for="(bonus, index) in row.satisfactionBonus"
+            :key="index"
+            size="small"
+            style="margin-right: 5px"
+          >
             评分≥{{ bonus.minRating }}: +{{ bonus.bonusRatio }}%
           </el-tag>
         </template>
@@ -42,15 +47,37 @@
           <span style="margin-left: 10px">%</span>
         </el-form-item>
         <el-form-item label="众筹比例" prop="crowdfundingRatio">
-          <el-input-number v-model="formData.crowdfundingRatio" :min="0" :max="100" :precision="2" />
+          <el-input-number
+            v-model="formData.crowdfundingRatio"
+            :min="0"
+            :max="100"
+            :precision="2"
+          />
           <span style="margin-left: 10px">%</span>
         </el-form-item>
         <el-form-item label="满意度加成">
-          <div v-for="(bonus, index) in formData.satisfactionBonus" :key="index" style="margin-bottom: 10px">
+          <div
+            v-for="(bonus, index) in formData.satisfactionBonus"
+            :key="index"
+            style="margin-bottom: 10px"
+          >
             <span>评分≥</span>
-            <el-input-number v-model="bonus.minRating" :min="0" :max="5" :precision="1" :step="0.1" style="width: 100px; margin: 0 5px" />
+            <el-input-number
+              v-model="bonus.minRating"
+              :min="0"
+              :max="5"
+              :precision="1"
+              :step="0.1"
+              style="width: 100px; margin: 0 5px"
+            />
             <span>加成</span>
-            <el-input-number v-model="bonus.bonusRatio" :min="0" :max="100" :precision="2" style="width: 100px; margin: 0 5px" />
+            <el-input-number
+              v-model="bonus.bonusRatio"
+              :min="0"
+              :max="100"
+              :precision="2"
+              style="width: 100px; margin: 0 5px"
+            />
             <span>%</span>
             <el-button type="danger" size="small" @click="handleRemoveBonus(index)">删除</el-button>
           </div>
@@ -132,7 +159,7 @@ const handleRemoveBonus = (index: number) => {
 
 const handleSubmit = async () => {
   if (!formRef.value) return
-  await formRef.value.validate(async (valid) => {
+  await formRef.value.validate(async valid => {
     if (!valid) return
     submitting.value = true
     try {

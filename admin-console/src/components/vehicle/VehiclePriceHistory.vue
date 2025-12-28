@@ -16,11 +16,7 @@
       </div>
 
       <!-- 空状态 -->
-      <el-empty
-        v-else-if="history.length === 0"
-        description="暂无价格变更记录"
-        :image-size="100"
-      />
+      <el-empty v-else-if="history.length === 0" description="暂无价格变更记录" :image-size="100" />
 
       <!-- 时间线 -->
       <el-timeline v-else>
@@ -47,8 +43,9 @@
                 >
                   <el-icon v-if="item.priceChange > 0"><CaretTop /></el-icon>
                   <el-icon v-else><CaretBottom /></el-icon>
-                  {{ item.priceChange > 0 ? '+' : '' }}{{ item.priceChange }}
-                  ({{ item.priceChange > 0 ? '+' : '' }}{{ item.priceChangePercent }}%)
+                  {{ item.priceChange > 0 ? '+' : '' }}{{ item.priceChange }} ({{
+                    item.priceChange > 0 ? '+' : ''
+                  }}{{ item.priceChangePercent }}%)
                 </el-tag>
               </div>
               <el-tag :type="getReasonTagType(item.changeReason)" size="small">
@@ -115,9 +112,7 @@
           <el-col :span="8">
             <div class="stat-item">
               <div class="stat-label">当前价格</div>
-              <div class="stat-value" style="color: #409eff">
-                ¥{{ history[0]?.newPrice || 0 }}
-              </div>
+              <div class="stat-value" style="color: #409eff">¥{{ history[0]?.newPrice || 0 }}</div>
             </div>
           </el-col>
           <el-col :span="8">

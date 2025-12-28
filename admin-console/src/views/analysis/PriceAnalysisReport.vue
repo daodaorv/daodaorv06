@@ -142,7 +142,13 @@
         <el-table-column prop="deviation" label="偏离度" width="100">
           <template #default="{ row }">
             <el-tag
-              :type="row.deviationLevel === 'high' ? 'danger' : row.deviationLevel === 'low' ? 'warning' : 'success'"
+              :type="
+                row.deviationLevel === 'high'
+                  ? 'danger'
+                  : row.deviationLevel === 'low'
+                    ? 'warning'
+                    : 'success'
+              "
               size="small"
             >
               {{ row.deviation > 0 ? '+' : '' }}{{ row.deviation }}%
@@ -158,7 +164,13 @@
         <el-table-column prop="pricingStatus" label="定价状态" width="100">
           <template #default="{ row }">
             <el-tag
-              :type="row.pricingStatus === 'reasonable' ? 'success' : row.pricingStatus === 'overpriced' ? 'danger' : 'warning'"
+              :type="
+                row.pricingStatus === 'reasonable'
+                  ? 'success'
+                  : row.pricingStatus === 'overpriced'
+                    ? 'danger'
+                    : 'warning'
+              "
               size="small"
             >
               {{ getPricingStatusLabel(row.pricingStatus) }}
@@ -174,13 +186,7 @@
 <script setup lang="ts">
 import { ref, onMounted, nextTick } from 'vue'
 import { ElMessage } from 'element-plus'
-import {
-  Refresh,
-  TrendCharts,
-  DataLine,
-  Top,
-  Bottom,
-} from '@element-plus/icons-vue'
+import { Refresh, TrendCharts, DataLine, Top, Bottom } from '@element-plus/icons-vue'
 import * as echarts from 'echarts'
 import type { ECharts } from 'echarts'
 import {
@@ -188,11 +194,7 @@ import {
   getVehiclePricingAnalysis,
   getRevenueForecast,
 } from '@/api/priceAnalysis'
-import type {
-  PriceAnalysisStats,
-  VehiclePricingAnalysis,
-  RevenueForecast,
-} from '@/types/system'
+import type { PriceAnalysisStats, VehiclePricingAnalysis, RevenueForecast } from '@/types/system'
 
 // 数据
 const stats = ref<PriceAnalysisStats>()
@@ -463,11 +465,7 @@ const updateRevenueForecastChart = () => {
 const handleRefresh = async () => {
   loading.value = true
   try {
-    await Promise.all([
-      loadStats(),
-      loadPricingAnalysis(),
-      loadRevenueForecast(),
-    ])
+    await Promise.all([loadStats(), loadPricingAnalysis(), loadRevenueForecast()])
     ElMessage.success('数据刷新成功')
   } catch (error) {
     console.error('刷新数据失败:', error)
@@ -480,11 +478,7 @@ const handleRefresh = async () => {
 onMounted(async () => {
   loading.value = true
   try {
-    await Promise.all([
-      loadStats(),
-      loadPricingAnalysis(),
-      loadRevenueForecast(),
-    ])
+    await Promise.all([loadStats(), loadPricingAnalysis(), loadRevenueForecast()])
   } catch (error) {
     console.error('初始化失败:', error)
   } finally {

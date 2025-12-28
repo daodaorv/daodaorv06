@@ -10,20 +10,11 @@
   >
     <!-- 热门城市 -->
     <el-option-group v-if="hotCities.length > 0" label="热门城市">
-      <el-option
-        v-for="city in hotCities"
-        :key="city.code"
-        :label="city.name"
-        :value="city.name"
-      />
+      <el-option v-for="city in hotCities" :key="city.code" :label="city.name" :value="city.name" />
     </el-option-group>
 
     <!-- 按首字母分组 -->
-    <el-option-group
-      v-for="group in cityGroups"
-      :key="group.initial"
-      :label="group.initial"
-    >
+    <el-option-group v-for="group in cityGroups" :key="group.initial" :label="group.initial">
       <el-option
         v-for="city in group.cities"
         :key="city.code"
@@ -46,7 +37,7 @@ interface Props {
 const props = defineProps<Props>()
 const emit = defineEmits<{
   'update:modelValue': [value: string]
-  'change': [city: City | null]
+  change: [city: City | null]
 }>()
 
 const selectedCity = ref(props.modelValue || '')
@@ -55,9 +46,12 @@ const cityGroups = ref<CityGroup[]>([])
 const loading = ref(false)
 
 // 监听 modelValue 变化
-watch(() => props.modelValue, (newValue) => {
-  selectedCity.value = newValue || ''
-})
+watch(
+  () => props.modelValue,
+  newValue => {
+    selectedCity.value = newValue || ''
+  }
+)
 
 // 加载城市数据
 async function loadCities() {
@@ -65,10 +59,7 @@ async function loadCities() {
 
   loading.value = true
   try {
-    const [hot, groups] = await Promise.all([
-      getHotCities(),
-      getCityGroups()
-    ])
+    const [hot, groups] = await Promise.all([getHotCities(), getCityGroups()])
     hotCities.value = hot
     cityGroups.value = groups
   } catch (error) {

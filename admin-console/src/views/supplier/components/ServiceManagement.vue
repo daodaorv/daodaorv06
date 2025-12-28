@@ -5,9 +5,7 @@
       <template #header>
         <div class="card-header">
           <span>服务列表</span>
-          <el-button type="primary" :icon="Plus" @click="handleCreate">
-            新增服务
-          </el-button>
+          <el-button type="primary" :icon="Plus" @click="handleCreate"> 新增服务 </el-button>
         </div>
       </template>
 
@@ -16,12 +14,15 @@
         <el-table-column prop="serviceName" label="服务名称" min-width="150" />
         <el-table-column prop="serviceCode" label="服务编码" width="120" />
         <el-table-column prop="fixedPrice" label="固定价格" width="120">
-          <template #default="{ row }">
-            ¥{{ row.fixedPrice.toFixed(2) }}
-          </template>
+          <template #default="{ row }"> ¥{{ row.fixedPrice.toFixed(2) }} </template>
         </el-table-column>
         <el-table-column prop="unit" label="单位" width="80" />
-        <el-table-column prop="description" label="服务描述" min-width="200" show-overflow-tooltip />
+        <el-table-column
+          prop="description"
+          label="服务描述"
+          min-width="200"
+          show-overflow-tooltip
+        />
         <el-table-column prop="status" label="状态" width="100">
           <template #default="{ row }">
             <el-switch
@@ -101,9 +102,7 @@
 
       <template #footer>
         <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" :loading="submitLoading" @click="handleSubmit">
-          确定
-        </el-button>
+        <el-button type="primary" :loading="submitLoading" @click="handleSubmit"> 确定 </el-button>
       </template>
     </el-dialog>
   </div>
@@ -118,7 +117,7 @@ import {
   createSupplierService,
   updateSupplierService,
   deleteSupplierService,
-  type SupplierService
+  type SupplierService,
 } from '@/api/supplier'
 
 interface Props {
@@ -141,7 +140,7 @@ const form = ref({
   fixedPrice: 0,
   unit: '次',
   description: '',
-  status: 'active' as 'active' | 'inactive'
+  status: 'active' as 'active' | 'inactive',
 })
 
 const formRules: FormRules = {
@@ -149,7 +148,7 @@ const formRules: FormRules = {
   serviceCode: [{ required: true, message: '请输入服务编码', trigger: 'blur' }],
   fixedPrice: [{ required: true, message: '请输入固定价格', trigger: 'blur' }],
   unit: [{ required: true, message: '请选择单位', trigger: 'change' }],
-  status: [{ required: true, message: '请选择状态', trigger: 'change' }]
+  status: [{ required: true, message: '请选择状态', trigger: 'change' }],
 }
 
 // 获取服务列表
@@ -183,7 +182,7 @@ function handleEdit(row: SupplierService) {
     fixedPrice: row.fixedPrice,
     unit: row.unit,
     description: row.description || '',
-    status: row.status
+    status: row.status,
   }
   dialogVisible.value = true
 }
@@ -194,7 +193,7 @@ async function handleDelete(row: SupplierService) {
     await ElMessageBox.confirm(`确定要删除服务"${row.serviceName}"吗？`, '提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
-      type: 'warning'
+      type: 'warning',
     })
 
     await deleteSupplierService(row.id)
@@ -262,7 +261,7 @@ function resetForm() {
     fixedPrice: 0,
     unit: '次',
     description: '',
-    status: 'active'
+    status: 'active',
   }
   formRef.value?.clearValidate()
 }

@@ -7,13 +7,11 @@
           <el-icon :size="24" color="#409eff"><Operation /></el-icon>
           <span>PLUS会员数据迁移</span>
         </div>
-        <el-alert
-          title="数据迁移说明"
-          type="info"
-          :closable="false"
-          show-icon
-        >
-          <p>本工具用于将旧的 <code>plus_member</code> 用户类型迁移为 <code>customer</code> + PLUS会员标签的新模式。</p>
+        <el-alert title="数据迁移说明" type="info" :closable="false" show-icon>
+          <p>
+            本工具用于将旧的 <code>plus_member</code> 用户类型迁移为 <code>customer</code> +
+            PLUS会员标签的新模式。
+          </p>
           <p>迁移后，用户将保留所有PLUS会员权益，并获得1年的会员有效期。</p>
         </el-alert>
       </div>
@@ -24,9 +22,7 @@
       <template #header>
         <div class="card-header">
           <span>迁移前检查</span>
-          <el-button type="primary" :icon="Search" @click="handlePreCheck">
-            执行检查
-          </el-button>
+          <el-button type="primary" :icon="Search" @click="handlePreCheck"> 执行检查 </el-button>
         </div>
       </template>
 
@@ -47,12 +43,7 @@
         </el-descriptions>
 
         <div v-if="preCheckResult.needMigration > 0" class="migration-action">
-          <el-button
-            type="primary"
-            size="large"
-            :icon="Upload"
-            @click="handleStartMigration"
-          >
+          <el-button type="primary" size="large" :icon="Upload" @click="handleStartMigration">
             开始迁移 ({{ preCheckResult.needMigration }} 个用户)
           </el-button>
         </div>
@@ -81,9 +72,7 @@
           :status="migrationProgress === 100 ? 'success' : undefined"
           :stroke-width="20"
         />
-        <div class="progress-text">
-          正在迁移用户数据... {{ migrationProgress }}%
-        </div>
+        <div class="progress-text">正在迁移用户数据... {{ migrationProgress }}%</div>
       </div>
     </el-card>
 
@@ -128,11 +117,7 @@
         <div class="logs-section">
           <el-tabs v-model="activeTab">
             <el-tab-pane label="成功日志" name="success">
-              <el-table
-                :data="successLogs"
-                stripe
-                max-height="400"
-              >
+              <el-table :data="successLogs" stripe max-height="400">
                 <el-table-column prop="userId" label="用户ID" width="100" />
                 <el-table-column prop="username" label="用户名" width="150" />
                 <el-table-column prop="oldUserType" label="旧类型" width="150" />
@@ -159,11 +144,7 @@
             </el-tab-pane>
 
             <el-tab-pane label="失败日志" name="failed">
-              <el-table
-                :data="failedLogs"
-                stripe
-                max-height="400"
-              >
+              <el-table :data="failedLogs" stripe max-height="400">
                 <el-table-column prop="userId" label="用户ID" width="100" />
                 <el-table-column prop="username" label="用户名" width="150" />
                 <el-table-column prop="errorMessage" label="错误信息" />
@@ -179,9 +160,7 @@
 
         <!-- 验证结果 -->
         <div class="validation-section">
-          <el-button type="primary" :icon="Check" @click="handleValidate">
-            验证迁移结果
-          </el-button>
+          <el-button type="primary" :icon="Check" @click="handleValidate"> 验证迁移结果 </el-button>
 
           <el-alert
             v-if="validationResult"
@@ -208,13 +187,7 @@
 // @ts-nocheck
 import { ref, reactive, computed } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import {
-  Search,
-  Upload,
-  Download,
-  Check,
-  Operation
-} from '@element-plus/icons-vue'
+import { Search, Upload, Download, Check, Operation } from '@element-plus/icons-vue'
 import { mockUserList } from '@/mock/users'
 import { mockTags } from '@/mock/tags'
 import {
@@ -223,7 +196,7 @@ import {
   generateMigrationReport,
   exportMigrationReport,
   type MigrationLog,
-  type MigrationStats
+  type MigrationStats,
 } from '@/utils/membershipMigration'
 
 // 迁移状态
@@ -243,7 +216,7 @@ const migrationStats = reactive<MigrationStats>({
   skippedUsers: 0,
   startTime: '',
   endTime: '',
-  duration: 0
+  duration: 0,
 })
 
 // 验证结果
@@ -271,8 +244,8 @@ const failedLogs = computed(() => {
 const handlePreCheck = () => {
   const totalUsers = mockUserList.length
   const needMigration = mockUserList.filter(user => user.userType === 'plus_member').length
-  const alreadyMigrated = mockUserList.filter(user =>
-    user.userType === 'customer' && user.tags?.some(tag => tag.name === 'PLUS会员')
+  const alreadyMigrated = mockUserList.filter(
+    user => user.userType === 'customer' && user.tags?.some(tag => tag.name === 'PLUS会员')
   ).length
   const normalUsers = totalUsers - needMigration - alreadyMigrated
 
@@ -280,7 +253,7 @@ const handlePreCheck = () => {
     totalUsers,
     needMigration,
     alreadyMigrated,
-    normalUsers
+    normalUsers,
   }
 
   ElMessage.success('预检查完成')
@@ -363,7 +336,7 @@ const formatDateTime = (dateStr: string) => {
     day: '2-digit',
     hour: '2-digit',
     minute: '2-digit',
-    second: '2-digit'
+    second: '2-digit',
   })
 }
 </script>

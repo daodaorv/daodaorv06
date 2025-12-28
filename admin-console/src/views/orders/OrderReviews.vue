@@ -30,31 +30,31 @@
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
         >
-      <template #overallRating="{ row }">
-        <el-rate v-model="row.overallRating" disabled show-score />
-      </template>
-      // @ts-ignore
-      <template #status="{ row }">
-        <el-tag :type="getReviewStatusTag(row.status)" size="small">
-          {{ getReviewStatusLabel(row.status) }}
-        </el-tag>
-      </template>
-      <template #comment="{ row }">
-        <div class="comment-cell">
-          <div class="comment-text">{{ row.comment }}</div>
-          <div v-if="row.images && row.images.length > 0" class="comment-images">
-            <el-tag size="small" type="info">{{ row.images.length }}张图片</el-tag>
-          </div>
-        </div>
-      </template>
-      <template #reply="{ row }">
-        <div v-if="row.reply" class="reply-cell">
-          <div class="reply-text">{{ row.reply }}</div>
-          <div class="reply-info">{{ row.repliedBy }} - {{ row.repliedAt }}</div>
-        </div>
-        <span v-else style="color: #909399">未回复</span>
-      </template>
-    </DataTable>
+          <template #overallRating="{ row }">
+            <el-rate v-model="row.overallRating" disabled show-score />
+          </template>
+          // @ts-ignore
+          <template #status="{ row }">
+            <el-tag :type="getReviewStatusTag(row.status)" size="small">
+              {{ getReviewStatusLabel(row.status) }}
+            </el-tag>
+          </template>
+          <template #comment="{ row }">
+            <div class="comment-cell">
+              <div class="comment-text">{{ row.comment }}</div>
+              <div v-if="row.images && row.images.length > 0" class="comment-images">
+                <el-tag size="small" type="info">{{ row.images.length }}张图片</el-tag>
+              </div>
+            </div>
+          </template>
+          <template #reply="{ row }">
+            <div v-if="row.reply" class="reply-cell">
+              <div class="reply-text">{{ row.reply }}</div>
+              <div class="reply-info">{{ row.repliedBy }} - {{ row.repliedAt }}</div>
+            </div>
+            <span v-else style="color: #909399">未回复</span>
+          </template>
+        </DataTable>
       </el-tab-pane>
 
       <!-- 统计分析标签页 -->
@@ -64,10 +64,7 @@
     </el-tabs>
 
     <!-- 添加评价对话框 -->
-    <AddReviewDialog
-      v-model="addDialogVisible"
-      @submit="handleAddSubmit"
-    />
+    <AddReviewDialog v-model="addDialogVisible" @submit="handleAddSubmit" />
 
     <!-- 删除评价对话框 -->
     <DeleteReviewDialog
@@ -93,7 +90,10 @@
         </el-descriptions-item>
         <el-descriptions-item label="评价内容">
           <div>{{ currentReview?.comment }}</div>
-          <div v-if="currentReview?.images && currentReview.images.length > 0" style="margin-top: 10px">
+          <div
+            v-if="currentReview?.images && currentReview.images.length > 0"
+            style="margin-top: 10px"
+          >
             <el-tag size="small" type="info">{{ currentReview.images.length }}张图片</el-tag>
           </div>
         </el-descriptions-item>
@@ -146,7 +146,7 @@ import {
   replyReview,
   toggleReviewStatus,
   type OrderReview,
-  type ReviewListParams
+  type ReviewListParams,
 } from '@/api/order'
 import { useErrorHandler } from '@/composables'
 
@@ -160,7 +160,7 @@ const activeTab = ref('list')
 const REVIEW_STATUS_OPTIONS = [
   { label: '待审核', value: 'pending' },
   { label: '已发布', value: 'published' },
-  { label: '已隐藏', value: 'hidden' }
+  { label: '已隐藏', value: 'hidden' },
 ]
 
 // 搜索表单
@@ -168,7 +168,7 @@ const searchForm = reactive<ReviewListParams>({
   keyword: '',
   status: undefined,
   minRating: undefined,
-  maxRating: undefined
+  maxRating: undefined,
 })
 
 // 统计数据
@@ -176,7 +176,7 @@ const stats = reactive({
   totalReviews: 0,
   pending: 0,
   published: 0,
-  averageRating: 0
+  averageRating: 0,
 })
 
 // 统计卡片配置
@@ -185,26 +185,26 @@ const statsConfig = computed<StatItem[]>(() => [
     label: '评价总数',
     value: stats.totalReviews,
     icon: Document,
-    color: '#409eff'
+    color: '#409eff',
   },
   {
     label: '待审核',
     value: stats.pending,
     icon: Clock,
-    color: '#e6a23c'
+    color: '#e6a23c',
   },
   {
     label: '已发布',
     value: stats.published,
     icon: CircleCheck,
-    color: '#67c23a'
+    color: '#67c23a',
   },
   {
     label: '平均评分',
     value: stats.averageRating.toFixed(1),
     icon: Star,
-    color: '#f56c6c'
-  }
+    color: '#f56c6c',
+  },
 ])
 
 // 搜索字段配置
@@ -214,7 +214,7 @@ const searchFields = computed<SearchField[]>(() => [
     label: '关键词',
     type: 'input',
     placeholder: '订单号/用户/评价内容',
-    width: '200px'
+    width: '200px',
   },
   {
     prop: 'status',
@@ -222,7 +222,7 @@ const searchFields = computed<SearchField[]>(() => [
     type: 'select',
     placeholder: '请选择状态',
     width: '150px',
-    options: REVIEW_STATUS_OPTIONS
+    options: REVIEW_STATUS_OPTIONS,
   },
   {
     prop: 'minRating',
@@ -235,9 +235,9 @@ const searchFields = computed<SearchField[]>(() => [
       { label: '2分', value: 2 },
       { label: '3分', value: 3 },
       { label: '4分', value: 4 },
-      { label: '5分', value: 5 }
-    ]
-  }
+      { label: '5分', value: 5 },
+    ],
+  },
 ])
 
 // 表格列配置
@@ -251,7 +251,7 @@ const tableColumns: TableColumn[] = [
   { prop: 'comment', label: '评价内容', minWidth: 250, slot: 'comment' },
   { prop: 'reply', label: '回复内容', minWidth: 200, slot: 'reply' },
   { prop: 'status', label: '状态', width: 100, slot: 'status' },
-  { prop: 'createdAt', label: '评价时间', width: 180 }
+  { prop: 'createdAt', label: '评价时间', width: 180 },
 ]
 
 // 表格操作列配置
@@ -260,30 +260,30 @@ const tableActions: TableAction[] = [
     label: '回复',
     type: 'primary',
     onClick: (row: OrderReview) => handleReply(row),
-    show: (row: OrderReview) => !row.reply
+    show: (row: OrderReview) => !row.reply,
   },
   {
     label: '删除',
     type: 'danger',
-    onClick: (row: OrderReview) => handleDelete(row)
+    onClick: (row: OrderReview) => handleDelete(row),
   },
   {
     label: '隐藏',
     type: 'warning',
     onClick: (row: OrderReview) => handleToggleStatus(row, 'hidden'),
-    show: (row: OrderReview) => row.status === 'published'
+    show: (row: OrderReview) => row.status === 'published',
   },
   {
     label: '显示',
     type: 'success',
     onClick: (row: OrderReview) => handleToggleStatus(row, 'published'),
-    show: (row: OrderReview) => row.status === 'hidden'
+    show: (row: OrderReview) => row.status === 'hidden',
   },
   {
     label: '查看',
     type: 'info',
-    onClick: (row: OrderReview) => handleView(row)
-  }
+    onClick: (row: OrderReview) => handleView(row),
+  },
 ]
 
 // 评价列表
@@ -294,7 +294,7 @@ const loading = ref(false)
 const pagination = reactive({
   page: 1,
   pageSize: 10,
-  total: 0
+  total: 0,
 })
 
 // 回复评价对话框
@@ -304,14 +304,14 @@ const replyFormRef = ref<FormInstance>()
 const currentReview = ref<OrderReview | null>(null)
 
 const replyForm = reactive({
-  reply: ''
+  reply: '',
 })
 
 const replyFormRules: FormRules = {
   reply: [
     { required: true, message: '请输入回复内容', trigger: 'blur' },
-    { min: 5, message: '回复内容至少5个字符', trigger: 'blur' }
-  ]
+    { min: 5, message: '回复内容至少5个字符', trigger: 'blur' },
+  ],
 }
 
 // 添加评价对话框
@@ -327,10 +327,10 @@ const loadReviewList = async () => {
     const params: ReviewListParams = {
       page: pagination.page,
       pageSize: pagination.pageSize,
-      ...searchForm
+      ...searchForm,
     }
 
-    const res = await getReviewList(params) as any
+    const res = (await getReviewList(params)) as any
     reviewList.value = res.data.list
     pagination.total = res.data.total
   } catch (error) {
@@ -343,7 +343,7 @@ const loadReviewList = async () => {
 // 加载统计数据
 const loadStats = async () => {
   try {
-    const res = await getReviewStats() as any
+    const res = (await getReviewStats()) as any
     stats.totalReviews = res.data.totalReviews
     stats.pending = res.data.pending
     stats.published = res.data.published
@@ -401,7 +401,7 @@ const handleToggleStatus = async (row: OrderReview, status: 'published' | 'hidde
       {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
+        type: 'warning',
       }
     )
 
@@ -420,7 +420,7 @@ const handleToggleStatus = async (row: OrderReview, status: 'published' | 'hidde
 const handleReplySubmit = async () => {
   if (!replyFormRef.value || !currentReview.value) return
 
-  await replyFormRef.value.validate(async (valid) => {
+  await replyFormRef.value.validate(async valid => {
     if (!valid) return
 
     replyLoading.value = true
@@ -489,7 +489,7 @@ const getReviewStatusTag = (status: string) => {
   const tagMap: Record<string, string> = {
     pending: 'warning',
     published: 'success',
-    hidden: 'info'
+    hidden: 'info',
   }
   return tagMap[status] || 'info'
 }
@@ -499,7 +499,7 @@ const getReviewStatusLabel = (status: string) => {
   const labelMap: Record<string, string> = {
     pending: '待审核',
     published: '已发布',
-    hidden: '已隐藏'
+    hidden: '已隐藏',
   }
   return labelMap[status] || status
 }

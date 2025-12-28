@@ -1,33 +1,16 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="report-management-container">
-    
-
     <!-- 统计卡片 -->
     <el-row :gutter="16" class="stats-row">
       <el-col :span="6">
-        <StatsCard
-          title="总举报数"
-          :value="stats.totalReports"
-          icon="Warning"
-          color="#409EFF"
-        />
+        <StatsCard title="总举报数" :value="stats.totalReports" icon="Warning" color="#409EFF" />
       </el-col>
       <el-col :span="6">
-        <StatsCard
-          title="待处理"
-          :value="stats.pendingReports"
-          icon="Clock"
-          color="#E6A23C"
-        />
+        <StatsCard title="待处理" :value="stats.pendingReports" icon="Clock" color="#E6A23C" />
       </el-col>
       <el-col :span="6">
-        <StatsCard
-          title="处理中"
-          :value="stats.processingReports"
-          icon="Loading"
-          color="#409EFF"
-        />
+        <StatsCard title="处理中" :value="stats.processingReports" icon="Loading" color="#409EFF" />
       </el-col>
       <el-col :span="6">
         <StatsCard
@@ -187,9 +170,7 @@
 
       <template #footer>
         <el-button @click="handleDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="handleSubmit" :loading="submitting">
-          确定
-        </el-button>
+        <el-button type="primary" @click="handleSubmit" :loading="submitting"> 确定 </el-button>
       </template>
     </el-dialog>
 
@@ -306,7 +287,7 @@ import {
   type Report,
   type ReportStats,
   type HandleStatus,
-  type ViolationType
+  type ViolationType,
 } from '@/api/community'
 
 // 统计数据
@@ -316,7 +297,7 @@ const stats = ref<ReportStats>({
   processingReports: 0,
   resolvedReports: 0,
   rejectedReports: 0,
-  avgHandleTime: 0
+  avgHandleTime: 0,
 })
 
 // 搜索表单
@@ -324,7 +305,7 @@ const searchForm = ref({
   status: '',
   reportType: '',
   priority: '',
-  keyword: ''
+  keyword: '',
 })
 
 // 搜索字段配置
@@ -338,8 +319,8 @@ const searchFields = [
       { label: '待处理', value: 'pending' },
       { label: '处理中', value: 'processing' },
       { label: '已解决', value: 'resolved' },
-      { label: '已驳回', value: 'rejected' }
-    ]
+      { label: '已驳回', value: 'rejected' },
+    ],
   },
   {
     type: 'select',
@@ -348,8 +329,8 @@ const searchFields = [
     placeholder: '请选择举报类型',
     options: [
       { label: '内容举报', value: 'content' },
-      { label: '用户举报', value: 'user' }
-    ]
+      { label: '用户举报', value: 'user' },
+    ],
   },
   {
     type: 'select',
@@ -360,15 +341,15 @@ const searchFields = [
       { label: '低', value: 'low' },
       { label: '中', value: 'medium' },
       { label: '高', value: 'high' },
-      { label: '紧急', value: 'urgent' }
-    ]
+      { label: '紧急', value: 'urgent' },
+    ],
   },
   {
     type: 'input',
     prop: 'keyword',
     label: '关键词',
-    placeholder: '请输入举报人或被举报人'
-  }
+    placeholder: '请输入举报人或被举报人',
+  },
 ]
 
 // 表格数据
@@ -379,7 +360,7 @@ const loading = ref(false)
 const pagination = reactive({
   currentPage: 1,
   pageSize: 10,
-  total: 0
+  total: 0,
 })
 
 // 表格列配置
@@ -391,7 +372,7 @@ const tableColumns = [
   { prop: 'targetContent', label: '被举报内容', minWidth: 250, slot: 'targetContent' },
   { prop: 'reportReason', label: '举报原因', width: 120, slot: 'reportReason' },
   { prop: 'status', label: '状态', width: 100, slot: 'status' },
-  { prop: 'createdAt', label: '举报时间', width: 160 }
+  { prop: 'createdAt', label: '举报时间', width: 160 },
 ]
 
 // 表格操作
@@ -400,15 +381,15 @@ const tableActions = [
     label: '查看',
     type: 'primary',
     link: true,
-    onClick: (row: Report) => handleViewDetail(row)
+    onClick: (row: Report) => handleViewDetail(row),
   },
   {
     label: '处理',
     type: 'success',
     link: true,
     onClick: (row: Report) => handleProcess(row),
-    show: (row: Report) => row.status === 'pending' || row.status === 'processing'
-  }
+    show: (row: Report) => row.status === 'pending' || row.status === 'processing',
+  },
 ]
 
 // 处理对话框
@@ -416,12 +397,12 @@ const handleDialogVisible = ref(false)
 const currentReport = ref<Report | null>(null)
 const handleForm = reactive({
   status: 'resolved' as 'resolved' | 'rejected',
-  handleResult: ''
+  handleResult: '',
 })
 const handleFormRef = ref()
 const handleRules = {
   status: [{ required: true, message: '请选择处理结果', trigger: 'change' }],
-  handleResult: [{ required: true, message: '请输入处理说明', trigger: 'blur' }]
+  handleResult: [{ required: true, message: '请输入处理说明', trigger: 'blur' }],
 }
 const submitting = ref(false)
 
@@ -447,7 +428,7 @@ const fetchReportList = async () => {
       status: searchForm.value.status as HandleStatus | undefined,
       reportType: searchForm.value.reportType as 'content' | 'user' | undefined,
       priority: searchForm.value.priority as 'low' | 'medium' | 'high' | 'urgent' | undefined,
-      keyword: searchForm.value.keyword
+      keyword: searchForm.value.keyword,
     }
     const { list, total } = await getReports(params)
     reportList.value = list
@@ -472,7 +453,7 @@ const handleReset = () => {
     status: '',
     reportType: '',
     priority: '',
-    keyword: ''
+    keyword: '',
   }
   handleSearch()
 }
@@ -522,7 +503,7 @@ const handleSubmit = async () => {
       await handleReport({
         id: currentReport.value!.id,
         status: handleForm.status,
-        handleResult: handleForm.handleResult
+        handleResult: handleForm.handleResult,
       })
       ElMessage.success('处理成功')
       handleDialogVisible.value = false
@@ -554,7 +535,7 @@ const getPriorityTagType = (priority: string) => {
     low: 'info',
     medium: '',
     high: 'warning',
-    urgent: 'danger'
+    urgent: 'danger',
   }
   return priorityMap[priority] || 'info'
 }
@@ -565,7 +546,7 @@ const getPriorityLabel = (priority: string) => {
     low: '低',
     medium: '中',
     high: '高',
-    urgent: '紧急'
+    urgent: '紧急',
   }
   return priorityMap[priority] || priority
 }
@@ -576,7 +557,7 @@ const getStatusTagType = (status: HandleStatus) => {
     pending: 'warning',
     processing: '',
     resolved: 'success',
-    rejected: 'info'
+    rejected: 'info',
   }
   return statusMap[status] || 'info'
 }
@@ -587,7 +568,7 @@ const getStatusLabel = (status: HandleStatus) => {
     pending: '待处理',
     processing: '处理中',
     resolved: '已解决',
-    rejected: '已驳回'
+    rejected: '已驳回',
   }
   return statusMap[status] || status
 }
@@ -603,7 +584,7 @@ const getViolationTypeLabel = (type: ViolationType) => {
     fraud: '诈骗信息',
     harassment: '骚扰辱骂',
     copyright: '侵权内容',
-    other: '其他违规'
+    other: '其他违规',
   }
   return typeMap[type] || type
 }

@@ -11,7 +11,7 @@ import type {
   CityFactorListParams,
   CityFactorListResponse,
   CityFactor,
-  CityFactorFormData
+  CityFactorFormData,
 } from '@/types/pricing'
 
 import {
@@ -22,7 +22,7 @@ import {
   mockGetCityFactorDetail,
   mockCreateCityFactor,
   mockUpdateCityFactor,
-  mockDeleteCityFactor
+  mockDeleteCityFactor,
 } from '@/mock/pricing'
 
 // ==================== 城市分级相关API ====================
@@ -53,7 +53,9 @@ export const updateCityTier = (id: number, data: UpdateCityTierRequest): Promise
 /**
  * 获取自定义城市因子列表
  */
-export const getCityFactorList = (params: CityFactorListParams): Promise<CityFactorListResponse> => {
+export const getCityFactorList = (
+  params: CityFactorListParams
+): Promise<CityFactorListResponse> => {
   return mockGetCityFactorList(params)
 }
 

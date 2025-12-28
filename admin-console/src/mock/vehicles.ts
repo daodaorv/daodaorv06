@@ -790,7 +790,7 @@ export const mockCreateVehicle = (data: Partial<Vehicle>) => {
     brandName: mockVehicleModels.find(m => m.id === data.modelId)?.brandName || '',
     vehicleType: mockVehicleModels.find(m => m.id === data.modelId)?.vehicleType || 'c_type',
     ownershipType: data.ownershipType || 'cooperative',
-            storeId: data.storeId!,
+    storeId: data.storeId!,
     storeName: data.storeName || '',
     status: 'available',
     purchaseDate: data.purchaseDate!,

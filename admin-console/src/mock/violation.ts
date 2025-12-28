@@ -109,10 +109,7 @@ export const mockViolationRecords: ViolationRecord[] = [
     driverLicense: '110101199003033456',
     handler: '',
     remark: '待处理',
-    attachments: [
-      '/uploads/violations/v003_1.jpg',
-      '/uploads/violations/v003_2.jpg',
-    ],
+    attachments: ['/uploads/violations/v003_1.jpg', '/uploads/violations/v003_2.jpg'],
     createdBy: '系统',
     createdAt: '2024-11-26 14:00:00',
     updatedAt: '2024-11-26 14:00:00',
@@ -348,13 +345,16 @@ export const mockDeleteViolationRecord = (id: number) => {
 /**
  * 处理违章
  */
-export const mockProcessViolation = (id: number, data: {
-  processDate: string
-  paymentDate?: string
-  paymentMethod?: string
-  handler: string
-  remark?: string
-}) => {
+export const mockProcessViolation = (
+  id: number,
+  data: {
+    processDate: string
+    paymentDate?: string
+    paymentMethod?: string
+    handler: string
+    remark?: string
+  }
+) => {
   const index = mockViolationRecords.findIndex(item => item.id === id)
 
   if (index === -1) {

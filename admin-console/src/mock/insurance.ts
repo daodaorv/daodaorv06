@@ -396,7 +396,15 @@ export const mockGetInsuranceRecords = (params: {
   status?: string
   insuranceCompany?: string
 }) => {
-  const { page = 1, pageSize = 10, vehicleId, vehicleNumber, insuranceType, status, insuranceCompany } = params
+  const {
+    page = 1,
+    pageSize = 10,
+    vehicleId,
+    vehicleNumber,
+    insuranceType,
+    status,
+    insuranceCompany,
+  } = params
 
   // 过滤数据
   let filteredData = [...mockInsuranceRecords]
@@ -748,7 +756,9 @@ export const mockGetInsuranceStats = () => {
     }).length,
     totalPremium: mockInsuranceRecords.reduce((sum, r) => sum + r.premium, 0),
     totalClaims: mockClaimRecords.length,
-    pendingClaims: mockClaimRecords.filter(c => c.status === 'pending' || c.status === 'investigating').length,
+    pendingClaims: mockClaimRecords.filter(
+      c => c.status === 'pending' || c.status === 'investigating'
+    ).length,
     totalClaimAmount: mockClaimRecords
       .filter(c => c.status === 'paid')
       .reduce((sum, c) => sum + c.actualAmount, 0),

@@ -114,10 +114,7 @@ export const getBatchPricingSuggestions = async (
 /**
  * 应用智能定价建议
  */
-export const applySmartPricing = async (
-  vehicleId: number,
-  strategy: string
-): Promise<void> => {
+export const applySmartPricing = async (vehicleId: number, strategy: string): Promise<void> => {
   if (USE_MOCK) {
     await mockApplySmartPricing(vehicleId, strategy)
     return

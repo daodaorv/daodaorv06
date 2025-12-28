@@ -11,7 +11,10 @@
     <div class="image-viewer-container">
       <!-- 主图展示区 -->
       <div class="main-image-wrapper">
-        <div class="image-container" :class="{ 'compare-mode': compareMode && compareIndex !== null }">
+        <div
+          class="image-container"
+          :class="{ 'compare-mode': compareMode && compareIndex !== null }"
+        >
           <!-- 主图 -->
           <div class="image-box" :style="imageStyle">
             <img
@@ -23,7 +26,11 @@
           </div>
 
           <!-- 对比图（对比模式） -->
-          <div v-if="compareMode && compareIndex !== null" class="image-box compare-image" :style="imageStyle">
+          <div
+            v-if="compareMode && compareIndex !== null"
+            class="image-box compare-image"
+            :style="imageStyle"
+          >
             <img
               :src="images[compareIndex]"
               :style="{ transform: `scale(${scale}) rotate(${rotate}deg)` }"
@@ -44,13 +51,19 @@
           <div class="toolbar-left">
             <el-button-group>
               <el-button :icon="ZoomOut" @click="handleZoomOut" title="缩小">缩小</el-button>
-              <el-button @click="handleResetZoom" title="重置">{{ Math.round(scale * 100) }}%</el-button>
+              <el-button @click="handleResetZoom" title="重置"
+                >{{ Math.round(scale * 100) }}%</el-button
+              >
               <el-button :icon="ZoomIn" @click="handleZoomIn" title="放大">放大</el-button>
             </el-button-group>
 
             <el-button-group style="margin-left: 12px">
-              <el-button :icon="RefreshLeft" @click="handleRotateLeft" title="逆时针旋转">逆时针</el-button>
-              <el-button :icon="RefreshRight" @click="handleRotateRight" title="顺时针旋转">顺时针</el-button>
+              <el-button :icon="RefreshLeft" @click="handleRotateLeft" title="逆时针旋转"
+                >逆时针</el-button
+              >
+              <el-button :icon="RefreshRight" @click="handleRotateRight" title="顺时针旋转"
+                >顺时针</el-button
+              >
             </el-button-group>
 
             <el-button
@@ -136,13 +149,13 @@ import { ElMessage } from 'element-plus'
 
 // Props 定义
 interface Props {
-  modelValue: boolean           // 是否显示对话框
-  images: string[]              // 图片 URL 数组
-  initialIndex?: number         // 初始显示的图片索引
-  title?: string                // 对话框标题
-  showThumbnails?: boolean      // 是否显示缩略图
-  showFileName?: boolean        // 是否显示文件名
-  dialogWidth?: string          // 对话框宽度
+  modelValue: boolean // 是否显示对话框
+  images: string[] // 图片 URL 数组
+  initialIndex?: number // 初始显示的图片索引
+  title?: string // 对话框标题
+  showThumbnails?: boolean // 是否显示缩略图
+  showFileName?: boolean // 是否显示文件名
+  dialogWidth?: string // 对话框宽度
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -158,14 +171,14 @@ const props = withDefaults(defineProps<Props>(), {
 // Emits 定义
 const emit = defineEmits<{
   'update:modelValue': [value: boolean]
-  'change': [index: number]
-  'close': []
+  change: [index: number]
+  close: []
 }>()
 
 // 响应式数据
 const visible = computed({
   get: () => props.modelValue,
-  set: (val) => emit('update:modelValue', val),
+  set: val => emit('update:modelValue', val),
 })
 
 const currentIndex = ref(0)
@@ -192,14 +205,14 @@ const imageStyle = computed(() => ({
 // 监听初始索引变化
 watch(
   () => props.initialIndex,
-  (newVal) => {
+  newVal => {
     currentIndex.value = newVal
   },
   { immediate: true }
 )
 
 // 监听对话框显示状态
-watch(visible, (newVal) => {
+watch(visible, newVal => {
   if (newVal) {
     resetView()
     currentIndex.value = props.initialIndex
@@ -360,7 +373,7 @@ const handleKeydown = (e: KeyboardEvent) => {
 }
 
 // 挂载键盘事件
-watch(visible, (newVal) => {
+watch(visible, newVal => {
   if (newVal) {
     document.addEventListener('keydown', handleKeydown)
   } else {

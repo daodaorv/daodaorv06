@@ -6,12 +6,7 @@
       </template>
     </el-page-header>
 
-    <el-alert
-      title="模拟器说明"
-      type="info"
-      :closable="false"
-      style="margin-bottom: 20px"
-    >
+    <el-alert title="模拟器说明" type="info" :closable="false" style="margin-bottom: 20px">
       <p>输入订单参数，实时模拟分润计算结果，验证分润规则配置和总额平衡</p>
     </el-alert>
 
@@ -38,11 +33,21 @@
             </el-form-item>
 
             <el-form-item label="订单金额" prop="orderAmount">
-              <el-input-number v-model="formData.orderAmount" :min="0" :precision="2" style="width: 100%" />
+              <el-input-number
+                v-model="formData.orderAmount"
+                :min="0"
+                :precision="2"
+                style="width: 100%"
+              />
             </el-form-item>
 
             <el-form-item label="直接成本" prop="directCost">
-              <el-input-number v-model="formData.directCost" :min="0" :precision="2" style="width: 100%" />
+              <el-input-number
+                v-model="formData.directCost"
+                :min="0"
+                :precision="2"
+                style="width: 100%"
+              />
             </el-form-item>
 
             <el-divider />
@@ -132,7 +137,9 @@
                   <span class="profit-value">¥{{ formatNumber(result.totalDistributed) }}</span>
                 </el-descriptions-item>
                 <el-descriptions-item label="平台利润">
-                  <span class="profit-value platform">¥{{ formatNumber(result.platformProfit) }}</span>
+                  <span class="profit-value platform"
+                    >¥{{ formatNumber(result.platformProfit) }}</span
+                  >
                 </el-descriptions-item>
                 <el-descriptions-item label="平衡状态">
                   <el-tag :type="result.isBalanced ? 'success' : 'danger'">
@@ -153,7 +160,9 @@
                 </el-table-column>
                 <el-table-column prop="profitAmount" label="分润金额" width="120" align="right">
                   <template #default="{ row }">
-                    <span style="color: #f56c6c; font-weight: bold">¥{{ formatNumber(row.profitAmount) }}</span>
+                    <span style="color: #f56c6c; font-weight: bold"
+                      >¥{{ formatNumber(row.profitAmount) }}</span
+                    >
                   </template>
                 </el-table-column>
                 <el-table-column prop="description" label="说明" min-width="200" />
@@ -210,7 +219,7 @@ const result = ref<ProfitSimulatorOutput | null>(null)
 
 const handleSimulate = async () => {
   if (!formRef.value) return
-  await formRef.value.validate(async (valid) => {
+  await formRef.value.validate(async valid => {
     if (!valid) return
     simulating.value = true
     try {

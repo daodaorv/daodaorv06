@@ -1,8 +1,6 @@
 <!-- @ts-nocheck -->
 <template>
   <div class="partner-orders-container">
-    
-
     <SearchForm
       v-model="searchForm"
       :fields="searchFields"
@@ -28,14 +26,10 @@
         ¥{{ row.partnerOrderPrice.toLocaleString() }}
       </template>
       <template #priceDifference="{ row }">
-        <el-tag type="success" size="small">
-          ¥{{ row.priceDifference.toLocaleString() }}
-        </el-tag>
+        <el-tag type="success" size="small"> ¥{{ row.priceDifference.toLocaleString() }} </el-tag>
       </template>
       <template #storeProfitAmount="{ row }">
-        <el-tag type="warning" size="small">
-          ¥{{ row.storeProfitAmount.toLocaleString() }}
-        </el-tag>
+        <el-tag type="warning" size="small"> ¥{{ row.storeProfitAmount.toLocaleString() }} </el-tag>
       </template>
       <template #platformProfitAmount="{ row }">
         <el-tag type="primary" size="small">
@@ -51,12 +45,7 @@
       width="700px"
       @close="handleDialogClose"
     >
-      <el-form
-        ref="formRef"
-        :model="form"
-        :rules="formRules"
-        label-width="140px"
-      >
+      <el-form ref="formRef" :model="form" :rules="formRules" label-width="140px">
         <el-form-item label="叨叨订单号" prop="orderId">
           <el-input v-model="form.orderId" placeholder="请输入叨叨订单号" type="number" />
         </el-form-item>
@@ -82,13 +71,8 @@
           />
         </el-form-item>
         <el-divider />
-        <el-alert
-          title="差价和分润说明"
-          type="info"
-          :closable="false"
-          style="margin-bottom: 20px"
-        >
-          <ul style="margin: 0; padding-left: 20px;">
+        <el-alert title="差价和分润说明" type="info" :closable="false" style="margin-bottom: 20px">
+          <ul style="margin: 0; padding-left: 20px">
             <li>订单差价 = 叨叨订单价格 - 合作商订单价格</li>
             <li>门店分润金额 = 订单差价 × 门店分润比例（默认30%）</li>
             <li>平台收益 = 订单差价 - 门店分润金额</li>
@@ -97,9 +81,7 @@
       </el-form>
       <template #footer>
         <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" :loading="submitLoading" @click="handleSubmit">
-          确定
-        </el-button>
+        <el-button type="primary" :loading="submitLoading" @click="handleSubmit"> 确定 </el-button>
       </template>
     </el-dialog>
   </div>
@@ -120,13 +102,13 @@ import {
   createPartnerOrder,
   updatePartnerOrder,
   type PartnerOrder,
-  type CreatePartnerOrderParams
+  type CreatePartnerOrderParams,
 } from '@/api/partner'
 import { exportToCSV } from '@/utils/export'
 
 // 搜索表单
 const searchForm = ref({
-  partnerId: null as number | null
+  partnerId: null as number | null,
 })
 
 // 合作商列表
@@ -139,8 +121,8 @@ const searchFields: SearchField[] = [
     prop: 'partnerId',
     label: '合作商',
     placeholder: '请选择合作商',
-    options: partnerOptions
-  }
+    options: partnerOptions,
+  },
 ]
 
 // 表格数据
@@ -149,7 +131,7 @@ const loading = ref(false)
 const pagination = reactive({
   page: 1,
   pageSize: 10,
-  total: 0
+  total: 0,
 })
 
 // 表格列配置
@@ -165,7 +147,7 @@ const tableColumns: TableColumn[] = [
   { prop: 'storeProfitAmount', label: '门店分润', width: 100, slot: 'storeProfitAmount' },
   { prop: 'platformProfitAmount', label: '平台收益', width: 100, slot: 'platformProfitAmount' },
   { prop: 'storeName', label: '服务门店', width: 150 },
-  { prop: 'createdBy', label: '创建人', width: 100 }
+  { prop: 'createdBy', label: '创建人', width: 100 },
 ]
 
 // 表格操作列配置
@@ -174,8 +156,8 @@ const tableActions: TableAction[] = [
     label: '编辑',
     type: 'primary',
     icon: Edit,
-    onClick: (row: PartnerOrder) => handleEdit(row)
-  }
+    onClick: (row: PartnerOrder) => handleEdit(row),
+  },
 ]
 
 // 工具栏按钮配置
@@ -184,13 +166,13 @@ const toolbarButtons: ToolbarButton[] = [
     label: '新增订单信息',
     type: 'primary',
     icon: Plus,
-    onClick: handleCreate
+    onClick: handleCreate,
   },
   {
     label: '导出',
     icon: Download,
-    onClick: handleExport
-  }
+    onClick: handleExport,
+  },
 ]
 
 // 对话框
@@ -204,23 +186,23 @@ const form = reactive<CreatePartnerOrderParams>({
   orderId: 0,
   partnerId: 0,
   partnerOrderNo: '',
-  partnerOrderPrice: 0
+  partnerOrderPrice: 0,
 })
 
 const formRules: FormRules = {
   orderId: [{ required: true, message: '请输入叨叨订单号', trigger: 'blur' }],
   partnerId: [{ required: true, message: '请选择合作商', trigger: 'change' }],
   partnerOrderNo: [{ required: true, message: '请输入合作商订单号', trigger: 'blur' }],
-  partnerOrderPrice: [{ required: true, message: '请输入合作商订单价格', trigger: 'blur' }]
+  partnerOrderPrice: [{ required: true, message: '请输入合作商订单价格', trigger: 'blur' }],
 }
 
 // 获取合作商列表
 async function fetchPartnerList() {
   try {
     const { list } = await getPartnerList({ page: 1, pageSize: 100 })
-    partnerOptions.value = list.map((partner) => ({
+    partnerOptions.value = list.map(partner => ({
       label: partner.name,
-      value: partner.id
+      value: partner.id,
     }))
   } catch (error) {
     console.error('获取合作商列表失败:', error)
@@ -234,7 +216,7 @@ async function fetchOrderList() {
     const params = {
       partnerId: searchForm.value.partnerId || undefined,
       page: pagination.page,
-      pageSize: pagination.pageSize
+      pageSize: pagination.pageSize,
     }
     const { list, total } = await getPartnerOrders(params)
     orderList.value = list
@@ -256,7 +238,7 @@ function handleSearch() {
 // 重置
 function handleReset() {
   searchForm.value = {
-    partnerId: null
+    partnerId: null,
   }
   pagination.page = 1
   fetchOrderList()
@@ -278,7 +260,7 @@ function handleEdit(row: PartnerOrder) {
     orderId: row.orderId,
     partnerId: row.partnerId,
     partnerOrderNo: row.partnerOrderNo,
-    partnerOrderPrice: row.partnerOrderPrice
+    partnerOrderPrice: row.partnerOrderPrice,
   })
   dialogVisible.value = true
 }
@@ -303,7 +285,7 @@ function handleExport() {
     { key: 'platformProfitAmount', label: '平台收益' },
     { key: 'storeName', label: '服务门店' },
     { key: 'createdBy', label: '创建人' },
-    { key: 'createdAt', label: '创建时间' }
+    { key: 'createdAt', label: '创建时间' },
   ]
 
   exportToCSV(orderList.value, columns, '合作商订单列表')
@@ -320,7 +302,7 @@ async function handleSubmit() {
     if (editingId.value) {
       await updatePartnerOrder(editingId.value, {
         partnerOrderNo: form.partnerOrderNo,
-        partnerOrderPrice: form.partnerOrderPrice
+        partnerOrderPrice: form.partnerOrderPrice,
       })
       ElMessage.success('更新成功')
     } else {
@@ -351,7 +333,7 @@ function resetForm() {
     orderId: 0,
     partnerId: 0,
     partnerOrderNo: '',
-    partnerOrderPrice: 0
+    partnerOrderPrice: 0,
   })
   formRef.value?.clearValidate()
 }
