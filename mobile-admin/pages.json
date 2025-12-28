@@ -15,6 +15,20 @@
 			}
 		},
 		{
+			"path": "pages/business/index",
+			"style": {
+				"navigationBarTitleText": "业务管理",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/hosting/index",
+			"style": {
+				"navigationBarTitleText": "托管管理",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
 			"path": "pages/orders/index",
 			"style": {
 				"navigationBarTitleText": "订单管理",
@@ -234,22 +248,16 @@
 				"text": "工作台"
 			},
 			{
-				"pagePath": "pages/orders/index",
-				"iconPath": "static/tabbar/orders.png",
-				"selectedIconPath": "static/tabbar/orders-active.png",
-				"text": "订单"
+				"pagePath": "pages/business/index",
+				"iconPath": "static/tabbar/business.png",
+				"selectedIconPath": "static/tabbar/business-active.png",
+				"text": "业务"
 			},
 			{
-				"pagePath": "pages/vehicles/index",
-				"iconPath": "static/tabbar/vehicles.png",
-				"selectedIconPath": "static/tabbar/vehicles-active.png",
-				"text": "车辆"
-			},
-			{
-				"pagePath": "pages/messages/index",
-				"iconPath": "static/tabbar/messages.png",
-				"selectedIconPath": "static/tabbar/messages-active.png",
-				"text": "消息"
+				"pagePath": "pages/hosting/index",
+				"iconPath": "static/tabbar/hosting.png",
+				"selectedIconPath": "static/tabbar/hosting-active.png",
+				"text": "托管"
 			},
 			{
 				"pagePath": "pages/profile/index",

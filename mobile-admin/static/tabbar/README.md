@@ -6,16 +6,16 @@
 
 需要准备 **8 张图标**（4 个 Tab × 2 种状态）：
 
-| 文件名 | 尺寸 | 说明 |
-|--------|------|------|
-| `home.png` | 81×81 px | 工作台（未选中） |
-| `home-active.png` | 81×81 px | 工作台（选中） |
-| `order.png` | 81×81 px | 订单（未选中） |
-| `order-active.png` | 81×81 px | 订单（选中） |
-| `service.png` | 81×81 px | 客服（未选中） |
-| `service-active.png` | 81×81 px | 客服（选中） |
-| `mine.png` | 81×81 px | 我的（未选中） |
-| `mine-active.png` | 81×81 px | 我的（选中） |
+| 文件名 | 尺寸 | 说明 | 状态 |
+|--------|------|------|------|
+| `dashboard.png` | 81×81 px | 工作台（未选中） | ✅ 已有 |
+| `dashboard-active.png` | 81×81 px | 工作台（选中） | ✅ 已有 |
+| `business.png` | 81×81 px | 业务（未选中） | ✅ 已有 |
+| `business-active.png` | 81×81 px | 业务（选中） | ✅ 已有 |
+| `hosting.png` | 81×81 px | 托管（未选中） | ✅ 已有 |
+| `hosting-active.png` | 81×81 px | 托管（选中） | ✅ 已有 |
+| `profile.png` | 81×81 px | 我的（未选中） | ✅ 已有 |
+| `profile-active.png` | 81×81 px | 我的（选中） | ✅ 已有 |
 
 ### 图标规范
 

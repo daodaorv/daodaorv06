@@ -2,3 +2,52 @@
 @import 'uview-plus/theme.scss';
 
 @import '@/uni_modules/uni-scss/variables.scss';
+
+/* ==================== 项目自定义变量 ==================== */
+
+/* 主题色 */
+$primary-color: #3cc51f;
+$success-color: #4CD964;
+$warning-color: #F0AD4E;
+$error-color: #DD524D;
+$info-color: #909399;
+
+/* 文字颜色 */
+$text-primary: #333333;
+$text-regular: #666666;
+$text-secondary: #999999;
+$text-placeholder: #CCCCCC;
+
+/* 背景色 */
+$bg-color: #F8F8F8;
+$bg-white: #FFFFFF;
+$bg-gray: #F5F5F5;
+
+/* 边框颜色 */
+$border-color: #E5E5E5;
+$border-light: #F0F0F0;
+
+/* 间距变量 */
+$spacing-xs: 10rpx;
+$spacing-sm: 20rpx;
+$spacing-md: 30rpx;
+$spacing-lg: 40rpx;
+$spacing-xl: 60rpx;
+
+/* 圆角 */
+$radius-sm: 4rpx;
+$radius-md: 8rpx;
+$radius-lg: 16rpx;
+$radius-round: 50%;
+
+/* 字体大小 */
+$font-xs: 24rpx;
+$font-sm: 26rpx;
+$font-md: 28rpx;
+$font-lg: 32rpx;
+$font-xl: 36rpx;
+
+/* 阴影 */
+$shadow-sm: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+$shadow-md: 0 4rpx 16rpx rgba(0, 0, 0, 0.08);
+$shadow-lg: 0 8rpx 24rpx rgba(0, 0, 0, 0.12);
