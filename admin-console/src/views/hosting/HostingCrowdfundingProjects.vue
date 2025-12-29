@@ -209,8 +209,8 @@
           <el-form :model="reviewForm" label-width="100px">
             <el-form-item label="审核结果">
               <el-radio-group v-model="reviewForm.approved">
-                <el-radio :label="true">通过</el-radio>
-                <el-radio :label="false">拒绝</el-radio>
+                <el-radio :value="true">通过</el-radio>
+                <el-radio :value="false">拒绝</el-radio>
               </el-radio-group>
             </el-form-item>
             <el-form-item label="审核意见">

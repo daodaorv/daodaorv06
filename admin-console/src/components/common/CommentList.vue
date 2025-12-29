@@ -42,8 +42,8 @@
             size="small"
             @change="(val: any) => handleSortChange(String(val))"
           >
-            <el-radio-button label="time">最新</el-radio-button>
-            <el-radio-button label="hot">最热</el-radio-button>
+            <el-radio-button value="time">最新</el-radio-button>
+            <el-radio-button value="hot">最热</el-radio-button>
           </el-radio-group>
         </div>
       </div>

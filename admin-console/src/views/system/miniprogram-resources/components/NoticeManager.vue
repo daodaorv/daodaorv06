@@ -63,9 +63,9 @@
 
         <el-form-item label="公告类型" prop="type">
           <el-radio-group v-model="formData.type">
-            <el-radio label="info">普通</el-radio>
-            <el-radio label="warning">警告</el-radio>
-            <el-radio label="promotion">促销</el-radio>
+            <el-radio value="info">普通</el-radio>
+            <el-radio value="warning">警告</el-radio>
+            <el-radio value="promotion">促销</el-radio>
           </el-radio-group>
         </el-form-item>
 

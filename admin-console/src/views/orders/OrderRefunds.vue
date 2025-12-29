@@ -68,8 +68,8 @@
       >
         <el-form-item label="审核结果" prop="approved">
           <el-radio-group v-model="approveForm.approved">
-            <el-radio :label="true">通过</el-radio>
-            <el-radio :label="false">拒绝</el-radio>
+            <el-radio :value="true">通过</el-radio>
+            <el-radio :value="false">拒绝</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item v-if="!approveForm.approved" label="拒绝原因" prop="reason">

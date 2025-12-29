@@ -66,9 +66,12 @@ export const useUserStore = defineStore('user', () => {
     return user.value.permissions.includes(permission)
   }
 
-  // 检查角色
-  const hasRole = (role: string) => {
-    return userRole.value === role
+  // 检查角色（支持多角色系统）
+  const hasRole = (roleCode: string) => {
+    if (!user.value || !user.value.roles) {
+      return false
+    }
+    return user.value.roles.some(r => r.code === roleCode)
   }
 
   return {

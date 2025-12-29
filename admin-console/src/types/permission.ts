@@ -2,7 +2,18 @@
  * 权限相关类型定义
  */
 
-// 用户角色枚举
+// 角色类型
+export type RoleType = 'customer' | 'admin'
+
+// 角色接口
+export interface Role {
+  id: number
+  code: string
+  name: string
+  type: RoleType
+}
+
+// 用户角色枚举（保留用于兼容性）
 export enum UserRole {
   PLATFORM_ADMIN = 'platform_admin', // 平台管理员
   REGIONAL_MANAGER = 'regional_manager', // 区域经理

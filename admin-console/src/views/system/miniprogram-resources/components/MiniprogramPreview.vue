@@ -31,8 +31,7 @@
           <span class="status-time">9:41</span>
           <div class="status-icons">
             <el-icon><Connection /></el-icon>
-            <el-icon><Wifi /></el-icon>
-            <el-icon><Battery /></el-icon>
+            <span class="battery-icon">100%</span>
           </div>
         </div>
 
@@ -46,7 +45,7 @@
                 v-if="homeBanners.length > 0"
                 height="160px"
                 :interval="3000"
-                indicator-position="inside"
+                indicator-position="outside"
               >
                 <el-carousel-item v-for="banner in homeBanners" :key="banner.id">
                   <img :src="banner.image" class="banner-image" />
@@ -116,7 +115,7 @@
                 v-if="hostingBanners.length > 0"
                 height="160px"
                 :interval="3000"
-                indicator-position="inside"
+                indicator-position="outside"
               >
                 <el-carousel-item v-for="banner in hostingBanners" :key="banner.id">
                   <img :src="banner.image" class="banner-image" />
@@ -178,17 +177,15 @@
 import { ref, onMounted, computed } from 'vue'
 import {
   Connection,
-  Wifi,
-  Battery,
   Picture,
   Bell,
   HomeFilled,
   List,
   User,
-  CarFilled,
+  Van,
   Discount,
   Location,
-  Map,
+  MapLocation,
 } from '@element-plus/icons-vue'
 import {
   getBanners,
@@ -213,15 +210,15 @@ const serviceMenus = ref<ServiceMenuItem[]>([])
 
 // 图标映射
 const iconMap: Record<string, any> = {
-  car: CarFilled,
+  car: Van,
   discount: Discount,
   location: Location,
-  map: Map,
+  map: MapLocation,
 }
 
 // 获取菜单图标
 const getMenuIcon = (iconName: string) => {
-  return iconMap[iconName] || CarFilled
+  return iconMap[iconName] || Van
 }
 
 // 加载预览数据
@@ -312,6 +309,12 @@ onMounted(() => {
       .status-icons {
         display: flex;
         gap: 6px;
+        align-items: center;
+
+        .battery-icon {
+          font-size: 11px;
+          font-weight: 600;
+        }
       }
     }
 

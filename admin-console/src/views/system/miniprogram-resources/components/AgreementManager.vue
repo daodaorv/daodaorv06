@@ -7,9 +7,9 @@
       class="agreement-type-selector"
       @change="handleTypeChange as any"
     >
-      <el-radio-button label="user_agreement">用户服务协议</el-radio-button>
-      <el-radio-button label="privacy_policy">隐私政策</el-radio-button>
-      <el-radio-button label="cancellation_policy">取消政策</el-radio-button>
+      <el-radio-button value="user_agreement">用户服务协议</el-radio-button>
+      <el-radio-button value="privacy_policy">隐私政策</el-radio-button>
+      <el-radio-button value="cancellation_policy">取消政策</el-radio-button>
     </el-radio-group>
 
     <!-- 协议编辑器 -->

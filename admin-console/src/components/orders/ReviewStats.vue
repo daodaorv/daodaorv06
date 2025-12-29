@@ -62,10 +62,10 @@
         <div class="card-header">
           <span class="card-title">评分分布</span>
           <el-radio-group v-model="ratingType" size="small">
-            <el-radio-button label="overall">综合评分</el-radio-button>
-            <el-radio-button label="vehicle">车辆评分</el-radio-button>
-            <el-radio-button label="service">服务评分</el-radio-button>
-            <el-radio-button label="cleanliness">清洁度评分</el-radio-button>
+            <el-radio-button value="overall">综合评分</el-radio-button>
+            <el-radio-button value="vehicle">车辆评分</el-radio-button>
+            <el-radio-button value="service">服务评分</el-radio-button>
+            <el-radio-button value="cleanliness">清洁度评分</el-radio-button>
           </el-radio-group>
         </div>
       </template>
@@ -166,9 +166,9 @@
         <div class="card-header">
           <span class="card-title">评价趋势</span>
           <el-radio-group v-model="trendPeriod" size="small">
-            <el-radio-button label="week">最近7天</el-radio-button>
-            <el-radio-button label="month">最近30天</el-radio-button>
-            <el-radio-button label="quarter">最近3个月</el-radio-button>
+            <el-radio-button value="week">最近7天</el-radio-button>
+            <el-radio-button value="month">最近30天</el-radio-button>
+            <el-radio-button value="quarter">最近3个月</el-radio-button>
           </el-radio-group>
         </div>
       </template>

@@ -1,5 +1,5 @@
 // 用户相关类型
-import type { UserRole } from './permission'
+import type { UserRole, Role } from './permission'
 
 export interface User {
   id: number
@@ -7,8 +7,9 @@ export interface User {
   email: string
   phone: string
   avatar?: string
-  role: UserRole
-  permissions: string[]
+  role: UserRole // 保留用于兼容性
+  roles: Role[] // 新增：用户的角色列表
+  permissions: string[] // 用户的权限代码列表
   status: 'active' | 'inactive' | 'banned'
   storeId?: string // 所属门店ID
   regionId?: string // 所属区域ID
