@@ -1,4 +1,3 @@
-<!-- @ts-nocheck -->
 <template>
   <div class="national-holiday-list">
     <el-alert type="warning" :closable="false" style="margin-bottom: 16px">

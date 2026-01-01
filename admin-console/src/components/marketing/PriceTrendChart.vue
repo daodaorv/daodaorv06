@@ -1,4 +1,3 @@
-<!-- @ts-nocheck -->
 <template>
   <div class="price-trend-chart">
     <div class="chart-header">

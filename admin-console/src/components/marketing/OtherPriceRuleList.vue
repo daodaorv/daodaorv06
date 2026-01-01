@@ -1,5 +1,4 @@
 <!-- @ts-nocheck -->
-<!-- @ts-nocheck -->
 <template>
   <div class="other-price-rule-list">
     <el-alert type="info" :closable="false" style="margin-bottom: 16px">

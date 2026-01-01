@@ -1,4 +1,3 @@
-<!-- @ts-nocheck -->
 <template>
   <div class="price-cell" :class="cellClass" @click="handleClick($event)">
     <div class="cell-date">

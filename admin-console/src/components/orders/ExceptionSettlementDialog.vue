@@ -251,8 +251,8 @@ watch(visible, val => {
 })
 
 // 获取异常类型标签
-const getExceptionTypeTag = (type: string) => {
-  const tagMap: Record<string, string> = {
+const getExceptionTypeTag = (type: string): 'primary' | 'success' | 'warning' | 'info' | 'danger' => {
+  const tagMap: Record<string, 'primary' | 'success' | 'warning' | 'info' | 'danger'> = {
     damage: 'danger',
     overdue: 'warning',
     violation: 'warning',

@@ -1,4 +1,3 @@
-<!-- @ts-nocheck -->
 <template>
   <div class="batch-operation">
     <el-card shadow="never" :body-style="{ padding: '12px 16px' }">

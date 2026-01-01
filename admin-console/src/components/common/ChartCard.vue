@@ -1,4 +1,3 @@
-<!-- @ts-nocheck -->
 <template>
   <el-card class="chart-card" :shadow="shadow" :body-style="{ padding: '0' }">
     <!-- 卡片头部 -->

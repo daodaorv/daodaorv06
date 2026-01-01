@@ -1,4 +1,3 @@
-<!-- @ts-nocheck -->
 <template>
   <el-select
     v-model="selectedCity"

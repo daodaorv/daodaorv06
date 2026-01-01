@@ -1,4 +1,3 @@
-<!-- @ts-nocheck -->
 <template>
   <el-dialog
     v-model="visible"

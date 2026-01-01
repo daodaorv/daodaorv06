@@ -171,8 +171,8 @@ const disabledDate = (time: Date) => {
 }
 
 // 获取异常类型标签
-const getExceptionTypeTag = (type: string) => {
-  const tagMap: Record<string, string> = {
+const getExceptionTypeTag = (type: string): 'primary' | 'success' | 'warning' | 'info' | 'danger' => {
+  const tagMap: Record<string, 'primary' | 'success' | 'warning' | 'info' | 'danger'> = {
     damage: 'danger',
     overdue: 'warning',
     violation: 'warning',
@@ -199,8 +199,8 @@ const getExceptionTypeLabel = (type: string) => {
 }
 
 // 获取优先级标签
-const getPriorityTag = (priority: string) => {
-  const tagMap: Record<string, string> = {
+const getPriorityTag = (priority: string): 'primary' | 'success' | 'warning' | 'info' | 'danger' => {
+  const tagMap: Record<string, 'primary' | 'success' | 'warning' | 'info' | 'danger'> = {
     low: 'info',
     medium: 'primary',
     high: 'warning',

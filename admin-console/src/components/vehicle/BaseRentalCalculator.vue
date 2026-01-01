@@ -1,4 +1,3 @@
-<!-- @ts-nocheck -->
 <template>
   <div class="base-rental-calculator">
     <el-alert type="info" :closable="false" style="margin-bottom: 16px">

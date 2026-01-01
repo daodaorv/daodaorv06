@@ -1,4 +1,3 @@
-<!-- @ts-nocheck -->
 <template>
   <div class="custom-time-rule-list">
     <el-alert type="info" :closable="false" style="margin-bottom: 16px">

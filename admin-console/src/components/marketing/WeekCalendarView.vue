@@ -1,5 +1,4 @@
 <!-- @ts-nocheck -->
-<!-- @ts-nocheck -->
 <template>
   <div class="week-calendar-view">
     <div class="week-header">
