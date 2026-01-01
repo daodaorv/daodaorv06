@@ -1,4 +1,3 @@
-<!-- @ts-nocheck -->
 <template>
   <div class="community-settings-container">
     <el-tabs v-model="activeTab" class="settings-tabs">

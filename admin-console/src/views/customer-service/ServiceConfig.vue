@@ -1,4 +1,3 @@
-<!-- @ts-nocheck -->
 <template>
   <div class="service-config-container">
     <el-tabs v-model="activeTab" class="config-tabs">

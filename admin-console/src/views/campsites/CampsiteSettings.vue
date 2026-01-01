@@ -1,4 +1,3 @@
-<!-- @ts-nocheck -->
 <template>
   <div class="campsite-settings-container">
     <el-card class="settings-card">

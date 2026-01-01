@@ -1,4 +1,3 @@
-<!-- @ts-nocheck -->
 <template>
   <div class="content-review-container">
     <!-- 统计卡片 -->

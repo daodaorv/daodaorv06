@@ -1,4 +1,3 @@
-<!-- @ts-nocheck -->
 <!-- 客服质量监控页面 -->
 <template>
   <div class="customer-service-quality-container">

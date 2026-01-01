@@ -1,4 +1,3 @@
-<!-- @ts-nocheck -->
 <template>
   <div class="knowledge-base-container">
     <!-- 统计卡片 -->

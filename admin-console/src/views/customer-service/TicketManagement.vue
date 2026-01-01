@@ -1,4 +1,3 @@
-<!-- @ts-nocheck -->
 <template>
   <div class="ticket-management-container">
     <!-- 统计卡片 -->

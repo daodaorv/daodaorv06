@@ -1,4 +1,3 @@
-<!-- @ts-nocheck -->
 <template>
   <div class="report-management-container">
     <!-- 统计卡片 -->
