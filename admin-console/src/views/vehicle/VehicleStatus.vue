@@ -1,4 +1,3 @@
-<!-- @ts-nocheck -->
 <template>
   <div class="vehicle-status-container">
     <StatsCard :stats="statsConfig" />

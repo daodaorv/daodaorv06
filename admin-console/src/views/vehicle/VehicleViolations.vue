@@ -1,4 +1,3 @@
-<!-- @ts-nocheck -->
 <template>
   <div class="vehicle-violations-container">
     <StatsCard :stats="statsConfig" />

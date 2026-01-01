@@ -1,4 +1,3 @@
-<!-- @ts-nocheck -->
 <template>
   <div class="vehicle-model-edit-container">
     <!-- 页面头部 -->
