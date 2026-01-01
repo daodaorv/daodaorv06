@@ -123,6 +123,7 @@
 import { logger } from '@/utils/logger';
 import { ref, onMounted } from 'vue';
 import { onLoad, onPullDownRefresh, onReachBottom } from '@dcloudio/uni-app';
+import { mockTourList } from '@/mock';
 
 // 状态管理
 const tours = ref<any[]>([]);
@@ -153,84 +154,8 @@ const loadTours = async (isRefresh = false) => {
   try {
     loading.value = true;
 
-    // Mock数据 - 5个完整线路
-    const mockTours = [
-      {
-        id: '1',
-        title: '川西秘境·稻城亚丁房车深度游',
-        image: 'https://placehold.co/700x400/FF5722/FFFFFF?text=%E7%BA%BF%E8%B7%AF1',
-        tags: ['高原风光', '摄影天堂', '藏族文化'],
-        days: 7,
-        minPeople: 5,
-        maxPeople: 12,
-        currentPeople: 8,
-        price: 4980,
-        childPrice: 2490,
-        status: 'recruiting',
-        isHot: true,
-        available: 4
-      },
-      {
-        id: '2',
-        title: '大西北环线·青海湖敦煌房车之旅',
-        image: 'https://placehold.co/700x400/3F51B5/FFFFFF?text=%E7%BA%BF%E8%B7%AF2',
-        tags: ['大漠风光', '丝绸之路', '星空露营'],
-        days: 8,
-        minPeople: 5,
-        maxPeople: 10,
-        currentPeople: 10,
-        price: 5680,
-        childPrice: 2840,
-        status: 'confirmed',
-        isHot: true,
-        available: 0
-      },
-      {
-        id: '3',
-        title: '云南秘境·香格里拉梅里雪山行',
-        image: 'https://placehold.co/700x400/607D8B/FFFFFF?text=%E7%BA%BF%E8%B7%AF3',
-        tags: ['雪山风光', '藏区文化', '徒步探险'],
-        days: 6,
-        minPeople: 5,
-        maxPeople: 12,
-        currentPeople: 6,
-        price: 4280,
-        childPrice: 2140,
-        status: 'recruiting',
-        isHot: false,
-        available: 6
-      },
-      {
-        id: '4',
-        title: '新疆伊犁·天山草原房车自驾',
-        image: 'https://placehold.co/700x400/4CAF50/FFFFFF?text=%E7%BA%BF%E8%B7%AF4',
-        tags: ['草原风光', '哈萨克文化', '野生动物'],
-        days: 9,
-        minPeople: 5,
-        maxPeople: 15,
-        currentPeople: 3,
-        price: 6280,
-        childPrice: 3140,
-        status: 'recruiting',
-        isHot: false,
-        available: 12
-      },
-      {
-        id: '5',
-        title: '内蒙古草原·呼伦贝尔房车穿越',
-        image: 'https://placehold.co/700x400/795548/FFFFFF?text=%E7%BA%BF%E8%B7%AF5',
-        tags: ['大草原', '蒙古文化', '骑马体验'],
-        days: 5,
-        minPeople: 5,
-        maxPeople: 12,
-        currentPeople: 12,
-        price: 3680,
-        childPrice: 1840,
-        status: 'departed',
-        isHot: false,
-        available: 0
-      }
-    ];
+    // 使用集中管理的Mock数据
+    const mockTours = mockTourList;
 
     if (isRefresh) {
       tours.value = mockTours;

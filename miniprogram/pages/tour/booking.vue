@@ -355,6 +355,7 @@ import { createTourBooking, type TourBookingParams, type TourBookingResponse } f
 import { requireLogin, isLoggedIn, buildRedirectUrl } from '@/utils/auth';
 import { registerMockOrder } from '@/api/order';
 import { useContactStore } from '@/stores/contact';
+import { mockTourBooking, mockTourBatch } from '@/mock';
 
 // 获取路由参数
 const tourId = ref('');
@@ -731,26 +732,9 @@ const loadBookingData = async () => {
   try {
     uni.showLoading({ title: '加载中...' });
 
-    // Mock数据
-    const mockTour = {
-      id: tourId.value,
-      title: '川西秘境·稻城亚丁房车深度游',
-      duration: 7,
-      minPeople: 5,
-      maxPeople: 12,
-      pricePerPerson: 4980,
-      childPrice: 2490
-    };
-
-    const mockBatch = {
-      id: batchId.value,
-      departureDate: '2025-12-15',
-      currentPeople: 8,
-      maxPeople: 12
-    };
-
-    tourInfo.value = mockTour;
-    batchInfo.value = mockBatch;
+    // 使用集中管理的Mock数据
+    tourInfo.value = { ...mockTourBooking, id: tourId.value };
+    batchInfo.value = { ...mockTourBatch, id: batchId.value };
 
   } catch (error) {
     logger.error('加载预订数据失败:', error);

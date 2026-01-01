@@ -199,8 +199,8 @@
       </view>
 
       <view class="checkbox-row">
-        <u-checkbox-group v-model="formData.agreeToTerms">
-          <u-checkbox :name="true" shape="circle"></u-checkbox>
+        <u-checkbox-group v-model="agreeToTermsArray">
+          <u-checkbox name="agree" shape="circle"></u-checkbox>
         </u-checkbox-group>
         <text class="checkbox-text">我已阅读并同意《众筹托管协议》</text>
       </view>
@@ -290,8 +290,15 @@ const formData = ref({
     name: '',
     phone: '',
     email: ''
-  },
-  agreeToTerms: false
+  }
+})
+
+// 协议同意状态（使用数组以适配 u-checkbox-group）
+const agreeToTermsArray = ref<string[]>([])
+
+// 计算是否同意协议
+const agreeToTerms = computed(() => {
+  return agreeToTermsArray.value.includes('agree')
 })
 
 // 计算总金额
@@ -301,7 +308,7 @@ const totalAmount = computed(() => {
 
 // 是否可以提交
 const canSubmit = computed(() => {
-  return formData.value.agreeToTerms &&
+  return agreeToTerms.value &&
     formData.value.title &&
     formData.value.contact.name &&
     formData.value.contact.phone
@@ -424,7 +431,7 @@ const submit = async () => {
       description: formData.value.description,
       images: formData.value.images.map(img => img.url),
       contact: formData.value.contact,
-      agreeToTerms: formData.value.agreeToTerms
+      agreeToTerms: agreeToTerms.value
     })
 
     uni.hideLoading()

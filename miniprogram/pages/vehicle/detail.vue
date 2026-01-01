@@ -109,7 +109,7 @@
 						<text class="section-title">车辆详情</text>
 					</view>
 					<view class="rich-content">
-						<rich-text :nodes="vehicle.detailHtml"></rich-text>
+						<rich-text :nodes="safeDetailHtml"></rich-text>
 					</view>
 				</view>
 
@@ -191,10 +191,11 @@
 
 <script setup lang="ts">
 import { logger } from '@/utils/logger';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { onLoad, onShareAppMessage } from '@dcloudio/uni-app';
 import { useShare } from '@/composables/useShare';
 import { ShareScene } from '@/types/share';
+import { sanitizeHtml } from '@/utils/sanitize';
 import ShareSheet from '@/components/share/ShareSheet.vue';
 import PosterPreview from '@/components/share/PosterPreview.vue';
 import AnnouncementBar from '@/components/common/AnnouncementBar.vue';
@@ -239,6 +240,11 @@ const vehicleImages = ref([
 	'/static/优惠政策.jpg',
 	'/static/场景推荐2.jpg'
 ]);
+
+// 安全处理后的 HTML 内容
+const safeDetailHtml = computed(() => {
+	return sanitizeHtml(vehicle.value.detailHtml);
+});
 
 // 分享功能
 const {

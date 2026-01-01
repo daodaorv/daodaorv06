@@ -484,6 +484,7 @@ import { useUserStore } from '@/stores/user';
 import { getRentalRules } from '@/api/rules';
 import type { RentalRuleResponse } from '@/api/rules';
 import { uploadDriverLicenseImage } from '@/api/upload';
+import { mockSpecialOffer } from '@/mock';
 
 // 订单类型
 const orderType = ref<'normal' | 'special-offer'>('normal');
@@ -1084,32 +1085,8 @@ const loadSpecialOfferData = async (offerId: string) => {
 		// Mock实现 - 待后端API开发
 		// const response = await getSpecialOfferDetail(offerId);
 
-		// Mock数据
-		const mockData = {
-			offerId: offerId,
-			fixedRentalDays: 5,
-			packagePrice: 1280,
-			originalPrice: 3400,
-			vehicle: {
-				name: '依维柯欧胜C型房车',
-				type: 'C型房车',
-				image: '/static/场景推荐2.jpg',
-				seats: 6,
-				beds: 4
-			},
-			pickupStore: {
-				name: '北京大新门店',
-				address: '北京市朝阳区大新路123号'
-			},
-			returnStore: {
-				name: '西安鼓楼门店',
-				address: '陕西省西安市碑林区鼓楼街88号'
-			},
-			availableTimeRange: {
-				start: '2025-12-05',
-				end: '2025-12-30'
-			}
-		};
+		// 使用集中管理的Mock数据
+		const mockData = { ...mockSpecialOffer, offerId };
 
 		// 更新特惠套餐数据
 		specialOfferData.value = {

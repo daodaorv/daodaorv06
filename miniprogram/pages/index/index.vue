@@ -116,6 +116,7 @@ import ServiceGrid from '@/components/business/ServiceGrid.vue';
 import RentDatePicker from '@/components/business/RentDatePicker.vue';
 import { getUserLocation, reverseGeocode, type LocationResult, type LocationError, LocationErrorType } from '@/utils/location';
 import { getWindowInfo } from '@/utils/system';
+import { mockHomeNotices, mockHomeBanners, mockCommunityPosts } from '@/mock';
 
 // 类型定义
 interface Notice {
@@ -156,57 +157,18 @@ const statusBarHeight = ref(0);
 const navbarBackground = ref('rgba(255, 255, 255, 0)');
 const navbarColor = ref('#FFFFFF');
 
-// 公告数据
-const notices = ref<Notice[]>([
-	{ id: '1', content: '国庆假期房车火热预订中,部分车型已售罄!' },
-	{ id: '2', content: '新用户注册即送100元优惠券!' }
-]);
+// 公告数据 - 使用统一Mock数据
+const notices = ref<Notice[]>(mockHomeNotices);
 
-// 轮播图数据 (使用更宽幅的图片展示)
-const banners = ref<Banner[]>([
-	{ id: '1', image: '/static/场景推荐2.jpg' },
-	{ id: '2', image: '/static/优惠政策.jpg' }
-]);
+// 轮播图数据 - 使用统一Mock数据
+const banners = ref<Banner[]>(mockHomeBanners);
 
 // 组件引用（使用正确的类型）
 const bookingFormRef = ref<InstanceType<typeof BookingForm> | null>(null);
 const rentDatePickerRef = ref<InstanceType<typeof RentDatePicker> | null>(null);
 
-// 社区内容
-const communityList = ref<CommunityItem[]>([
-	{
-		id: '1',
-		title: '我们最爱的海滨营地，拥有绝美海景的完美度假地',
-		description: '拥有绝美海景的完美度假地。',
-		author: '旅行一家人',
-		likes: '1.2k',
-		image: '/static/场景推荐2.jpg'
-	},
-	{
-		id: '2',
-		title: '优胜美地周末游，充分利用国家公园之旅的小贴士',
-		description: '充分利用国家公园之旅的小贴士。',
-		author: '冒险家',
-		likes: '980',
-		image: '/static/优惠政策.jpg'
-	},
-	{
-		id: '3',
-		title: '房车露营初体验，第一次租房车需要注意什么？',
-		description: '第一次租房车需要注意什么？',
-		author: '新手上路',
-		likes: '560',
-		image: '/static/场景推荐2.jpg'
-	},
-	{
-		id: '4',
-		title: '川西小环线攻略，7天6晚，感受高原的魅力',
-		description: '7天6晚，感受高原的魅力。',
-		author: '自驾达人',
-		likes: '2.3k',
-		image: '/static/优惠政策.jpg'
-	}
-]);
+// 社区内容 - 使用统一Mock数据
+const communityList = ref<CommunityItem[]>(mockCommunityPosts);
 
 // 用户位置信息
 const userLocation = ref<LocationResult | null>(null);

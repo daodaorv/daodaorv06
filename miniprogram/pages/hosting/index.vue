@@ -141,6 +141,16 @@
           </view>
           <image class="core-icon" src="/static/images/new-car-icon.png" mode="aspectFit"></image>
         </view>
+
+        <!-- 众筹托管 -->
+        <view class="feature-card-core" @click="goToCrowdfunding">
+          <view class="core-content">
+            <text class="core-title">众筹托管</text>
+            <text class="core-subtitle">按份额共享收益</text>
+            <view class="core-badge purple">低门槛高回报</view>
+          </view>
+          <image class="core-icon" src="/static/images/crowdfunding-icon.png" mode="aspectFit"></image>
+        </view>
       </view>
     </view>
 
@@ -201,6 +211,7 @@ import { ShareScene } from '@/types/share';
 import { isLoggedIn } from '@/utils/auth';
 import ShareSheet from '@/components/share/ShareSheet.vue';
 import PosterPreview from '@/components/share/PosterPreview.vue';
+import { mockHostingIncome, mockHostingVehicles, mockHostingNotices } from '@/mock';
 
 // 数据定义
 const isLogin = ref(false);
@@ -296,34 +307,9 @@ const checkLoginStatus = () => {
 };
 
 const loadHostingData = () => {
-  // Mock数据：托管收益
-  incomeData.value = {
-    totalIncome: 12580.50,
-    todayPending: 350.00,
-    monthEstimate: 8500.00
-  };
-
-  // Mock数据：托管车辆
-  vehicles.value = [
-    {
-      id: 1,
-      plateNumber: '京A·12345',
-      thumbnail: 'https://placehold.co/200x150/FF9F29/FFFFFF?text=%E6%88%BF%E8%BD%A61',
-      status: 'renting',
-      statusText: '出租中',
-      todayIncome: 350.00,
-      monthIncome: 5200.00
-    },
-    {
-      id: 2,
-      plateNumber: '京B·67890',
-      thumbnail: 'https://placehold.co/200x150/2196F3/FFFFFF?text=%E6%88%BF%E8%BD%A62',
-      status: 'idle',
-      statusText: '空闲',
-      todayIncome: 0,
-      monthIncome: 3300.00
-    }
-  ];
+  // 使用集中管理的Mock数据
+  incomeData.value = mockHostingIncome;
+  vehicles.value = mockHostingVehicles;
 };
 
 // 平滑滚动到功能区
@@ -387,6 +373,13 @@ const goToOldCarHosting = () => {
 const goToNewCarHosting = () => {
   uni.navigateTo({
     url: '/pages/hosting/new-car/index'
+  });
+};
+
+// 跳转到众筹托管
+const goToCrowdfunding = () => {
+  uni.navigateTo({
+    url: '/pages/hosting/crowdfunding/index'
   });
 };
 
@@ -897,15 +890,20 @@ $font-family-num: 'DIN Alternate', -apple-system, sans-serif;
     padding: 6rpx 16rpx;
     border-radius: 100rpx;
     font-weight: 600;
-    
+
     &.orange {
       background: rgba(255, 159, 41, 0.15);
       color: #FF9F29;
     }
-    
+
     &.blue {
       background: rgba(33, 150, 243, 0.15);
       color: #2196F3;
+    }
+
+    &.purple {
+      background: rgba(156, 39, 176, 0.15);
+      color: #9C27B0;
     }
   }
 }

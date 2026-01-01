@@ -130,6 +130,7 @@ import { logger } from '@/utils/logger';
 import { ref, computed, onMounted } from 'vue';
 import { onLoad } from '@dcloudio/uni-app';
 import { getMyCoupons } from '@/api/coupon';
+import { mockCouponList } from '@/mock';
 
 // 页面参数
 const orderAmount = ref(0);
@@ -267,87 +268,8 @@ const loadCoupons = async () => {
 		// const response = await getMyCoupons({ status: 'unused' });
 		// allCoupons.value = response.data;
 
-		// Mock数据
-		allCoupons.value = [
-			{
-				id: 'CP001',
-				name: '房车租赁满减券',
-				description: '适用于所有房车租赁订单',
-				type: 'discount',
-				amount: 200,
-				minAmount: 800,
-				validFrom: '2025-11-01',
-				validTo: '2025-12-31',
-				status: 'available',
-				applicableProducts: ['vehicle'],
-				scope: '房车租赁订单'
-			},
-			{
-				id: 'CP002',
-				name: '房车新用户专享券',
-				description: '首次租车专享优惠',
-				type: 'discount',
-				amount: 300,
-				minAmount: 1200,
-				validFrom: '2025-11-01',
-				validTo: '2025-12-31',
-				status: 'available',
-				applicableProducts: ['vehicle'],
-				scope: '房车租赁订单'
-			},
-			{
-				id: 'CP003',
-				name: '营地预订立减券',
-				description: '指定营地预订可用',
-				type: 'discount',
-				amount: 120,
-				minAmount: 600,
-				validFrom: '2025-11-01',
-				validTo: '2025-12-31',
-				status: 'available',
-				applicableProducts: ['campsite'],
-				scope: '营地预订'
-			},
-			{
-				id: 'CP004',
-				name: '旅游线路优惠券',
-				description: '适用于旅游线路订单',
-				type: 'discount',
-				amount: 400,
-				minAmount: 3000,
-				validFrom: '2025-11-01',
-				validTo: '2025-12-31',
-				status: 'available',
-				applicableProducts: ['tour'],
-				scope: '旅游线路订单'
-			},
-			{
-				id: 'CP005',
-				name: '营地周末券',
-				description: '限周末营地入住使用',
-				type: 'discount',
-				amount: 80,
-				minAmount: 500,
-				validFrom: '2025-11-15',
-				validTo: '2025-12-31',
-				status: 'available',
-				applicableProducts: ['campsite'],
-				scope: '营地预订'
-			},
-			{
-				id: 'CP006',
-				name: '已使用房车券',
-				description: '已使用的优惠券示例',
-				type: 'discount',
-				amount: 150,
-				minAmount: 700,
-				validFrom: '2025-10-01',
-				validTo: '2025-11-30',
-				status: 'used',
-				applicableProducts: ['vehicle'],
-				scope: '房车租赁订单'
-			}
-		];
+		// 使用集中管理的Mock数据
+		allCoupons.value = mockCouponList;
 
 		uni.hideLoading();
 	} catch (error) {
