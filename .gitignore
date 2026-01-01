@@ -110,3 +110,9 @@ components.d.ts
 *.bak
 *.backup
 *.old
+
+# 临时脚本和测试文件
+*.py
+fix-*.md
+*-errors.txt
+.playwright-mcp/
