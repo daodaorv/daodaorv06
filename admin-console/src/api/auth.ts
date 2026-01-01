@@ -1,9 +1,9 @@
-import { request } from '@/utils/request'
+import { get, post } from '@/utils/request'
 import type { LoginForm, ApiResponse, User } from '@/types/user'
 import { mockLogin, mockGetUserInfo, mockLogout } from '@/mock/auth'
 
-// 是否使用 Mock 数据（开发环境默认使用）
-const USE_MOCK = import.meta.env.DEV
+// 是否使用 Mock 数据（已切换到真实 API）
+const USE_MOCK = false
 
 export const authApi = {
   // 登录
@@ -13,7 +13,7 @@ export const authApi = {
         ApiResponse<{ token: string; user: User }>
       >
     }
-    return request.post<ApiResponse<{ token: string; user: User }>>('/auth/login', {
+    return post<ApiResponse<{ token: string; user: User }>>('/auth/login', {
       phone: data.username,
       password: data.password,
     })
@@ -24,7 +24,7 @@ export const authApi = {
     if (USE_MOCK) {
       return mockLogout() as Promise<ApiResponse>
     }
-    return request.post<ApiResponse>('/auth/logout')
+    return post<ApiResponse>('/auth/logout')
   },
 
   // 获取用户信息
@@ -33,13 +33,13 @@ export const authApi = {
       const token = localStorage.getItem('token') || ''
       return mockGetUserInfo(token) as Promise<ApiResponse<User>>
     }
-    return request.get<ApiResponse<User>>('/auth/me')
+    return get<ApiResponse<User>>('/auth/me')
   },
 
   // 刷新token
-  refreshToken: () => request.post<ApiResponse<{ token: string }>>('/auth/refresh'),
+  refreshToken: () => post<ApiResponse<{ token: string }>>('/auth/refresh'),
 
   // 修改密码
   changePassword: (data: { oldPassword: string; newPassword: string }) =>
-    request.post<ApiResponse>('/auth/change-password', data),
+    post<ApiResponse>('/auth/change-password', data),
 }

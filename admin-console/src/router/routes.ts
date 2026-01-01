@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * 路由配置 - 基于菜单配置生成完整路由
  */
@@ -6,6 +5,23 @@ import type { RouteRecordRaw } from 'vue-router'
 import Layout from '@/components/layout/AdminLayout.vue'
 import { menuConfig } from '@/config/menu'
 import type { MenuItem } from '@/types/permission'
+
+// 扩展 vue-router 的类型定义
+declare module 'vue-router' {
+  interface RouteMeta {
+    title?: string
+    description?: string
+    hidePageHeader?: boolean
+    icon?: string
+    hidden?: boolean
+    roles?: import('@/types/permission').UserRole[]
+    permissions?: string[]
+    noCache?: boolean
+    affix?: boolean
+    breadcrumb?: boolean
+    requiresAuth?: boolean
+  }
+}
 
 // 将菜单配置转换为路由配置
 const generateRoutes = (menus: MenuItem[], _parentPath = ''): RouteRecordRaw[] => {
@@ -21,9 +37,8 @@ const generateRoutes = (menus: MenuItem[], _parentPath = ''): RouteRecordRaw[] =
       // 没有子菜单的才作为路由添加
       const route: RouteRecordRaw = {
         path: menu.path,
-        // @ts-ignore
         name: menu.name,
-        meta: menu.meta,
+        meta: menu.meta as import('vue-router').RouteMeta,
         component: menu.component || (() => import('@/views/common/ComingSoon.vue')),
       }
       routes.push(route)
@@ -40,6 +55,12 @@ export const constantRoutes: RouteRecordRaw[] = [
     name: 'Login',
     component: () => import('@/views/auth/Login.vue'),
     meta: { title: '登录', requiresAuth: false },
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: () => import('@/views/auth/Register.vue'),
+    meta: { title: '注册申请', requiresAuth: false },
   },
   {
     path: '/404',

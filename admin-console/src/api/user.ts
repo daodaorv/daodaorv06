@@ -1,6 +1,6 @@
-// @ts-nocheck
 import { request } from '@/utils/request'
 import type { ApiResponse } from '@/types/user'
+import type { Tag } from '@/types/tag'
 import {
   mockGetUserList,
   mockGetUserDetail,
@@ -19,8 +19,8 @@ import {
   mockRemoveUserTag,
 } from '@/mock/tags'
 
-// 是否使用 Mock 数据（开发环境默认使用）
-const USE_MOCK = import.meta.env.DEV
+// 是否使用 Mock 数据（已切换到真实 API）
+const USE_MOCK = false
 
 // 用户管理API接口类型定义
 export interface UserListParams {
@@ -103,7 +103,7 @@ export const userApi = {
     if (USE_MOCK) {
       return mockGetUserList(params) as Promise<ApiResponse<UserListResponse>>
     }
-    return request.get<ApiResponse<UserListResponse>>('/users', params)
+    return request.get<ApiResponse<UserListResponse>>('/admin/users', params)
   },
 
   // 获取用户详情
@@ -111,7 +111,7 @@ export const userApi = {
     if (USE_MOCK) {
       return mockGetUserDetail(id) as Promise<ApiResponse<UserInfo>>
     }
-    return request.get<ApiResponse<UserInfo>>(`/users/${id}`)
+    return request.get<ApiResponse<UserInfo>>(`/admin/users/${id}`)
   },
 
   // 创建用户
@@ -119,7 +119,7 @@ export const userApi = {
     if (USE_MOCK) {
       return mockCreateUser(data) as Promise<ApiResponse<UserInfo>>
     }
-    return request.post<ApiResponse<UserInfo>>('/users', data)
+    return request.post<ApiResponse<UserInfo>>('/admin/users', data)
   },
 
   // 更新用户信息
@@ -127,7 +127,7 @@ export const userApi = {
     if (USE_MOCK) {
       return mockUpdateUser(data) as Promise<ApiResponse<UserInfo>>
     }
-    return request.put<ApiResponse<UserInfo>>(`/users/${data.id}`, data)
+    return request.put<ApiResponse<UserInfo>>(`/admin/users/${data.id}`, data)
   },
 
   // 删除用户
@@ -135,7 +135,7 @@ export const userApi = {
     if (USE_MOCK) {
       return mockDeleteUser(id) as Promise<ApiResponse>
     }
-    return request.delete<ApiResponse>(`/users/${id}`)
+    return request.delete<ApiResponse>(`/admin/users/${id}`)
   },
 
   // 更改用户状态
@@ -143,12 +143,12 @@ export const userApi = {
     if (USE_MOCK) {
       return mockChangeUserStatus(id, status) as Promise<ApiResponse>
     }
-    return request.put<ApiResponse>(`/users/${id}/status`, { status })
+    return request.put<ApiResponse>(`/admin/users/${id}/status`, { status })
   },
 
   // 重置用户密码
   resetPassword: (id: number, newPassword: string) =>
-    request.put<ApiResponse>(`/users/${id}/reset-password`, { password: newPassword }),
+    request.put<ApiResponse>(`/admin/users/${id}/reset-password`, { password: newPassword }),
 
   // 用户导入
   importUsers: (file: File) => {

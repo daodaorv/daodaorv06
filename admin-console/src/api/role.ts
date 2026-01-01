@@ -10,8 +10,8 @@ import {
   mockGetRoleUsers,
 } from '@/mock/roles'
 
-// 是否使用 Mock 数据（开发环境默认使用）
-const USE_MOCK = import.meta.env.DEV
+// 是否使用 Mock 数据（已切换到真实 API）
+const USE_MOCK = false
 
 // 角色管理API接口类型定义
 export interface RoleListParams {

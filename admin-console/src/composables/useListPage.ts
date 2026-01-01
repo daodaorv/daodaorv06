@@ -1,5 +1,7 @@
 import { ref, reactive, computed } from 'vue'
 import { ElMessage } from 'element-plus'
+import type { ApiResponse, PaginationResponse, ListPageOptions } from '@/types/common'
+import { isSuccessResponse, getErrorMessage } from '@/types/common'
 
 /**
  * 列表页面通用逻辑 Composable
@@ -25,15 +27,10 @@ import { ElMessage } from 'element-plus'
  * })
  * ```
  */
-export function useListPage<T = any>(
-  fetchFn: (params: any) => Promise<any>,
-  initialSearchForm: Record<string, any> = {},
-  options: {
-    pageSize?: number
-    immediate?: boolean
-    onSuccess?: (data: any) => void
-    onError?: (error: any) => void
-  } = {}
+export function useListPage<T = unknown>(
+  fetchFn: (params: unknown) => Promise<ApiResponse<PaginationResponse<T>>>,
+  initialSearchForm: Record<string, unknown> = {},
+  options: ListPageOptions<T> = {}
 ) {
   const { pageSize = 10, immediate = true, onSuccess, onError } = options
 
@@ -60,53 +57,72 @@ export function useListPage<T = any>(
   const isEmpty = computed(() => !loading.value && list.value.length === 0)
 
   /**
+   * 构建请求参数
+   */
+  const buildRequestParams = (): unknown => {
+    return {
+      ...searchForm,
+      page: pagination.page,
+      pageSize: pagination.pageSize,
+    }
+  }
+
+  /**
+   * 更新列表数据
+   */
+  const updateListData = (data: PaginationResponse<T>): void => {
+    list.value = data.list || data.items || data.data || []
+    pagination.total = data.total || data.count || 0
+  }
+
+  /**
+   * 重置列表状态
+   */
+  const resetListState = (): void => {
+    list.value = []
+    pagination.total = 0
+  }
+
+  /**
+   * 处理成功响应
+   */
+  const handleFetchSuccess = (response: ApiResponse<PaginationResponse<T>>): void => {
+    if (isSuccessResponse(response)) {
+      updateListData(response.data)
+      onSuccess?.(response.data)
+    } else if (response.code === 401) {
+      ElMessage.error('登录已过期，请重新登录')
+      resetListState()
+    } else {
+      ElMessage.error(response.message || '获取列表失败')
+      resetListState()
+    }
+  }
+
+  /**
+   * 处理错误响应
+   */
+  const handleFetchError = (error: unknown): void => {
+    console.error('获取列表失败:', error)
+
+    const errorMessage = getErrorMessage(error, '获取列表失败')
+    ElMessage.error(errorMessage)
+
+    resetListState()
+    onError?.(error)
+  }
+
+  /**
    * 获取列表数据
    */
-  const fetchList = async () => {
+  const fetchList = async (): Promise<void> => {
     loading.value = true
     try {
-      const params = {
-        ...searchForm,
-        page: pagination.page,
-        pageSize: pagination.pageSize,
-      }
-
+      const params = buildRequestParams()
       const response = await fetchFn(params)
-
-      // 处理响应数据
-      if (response.code === 200) {
-        list.value = response.data.list || response.data.items || response.data || []
-        pagination.total = response.data.total || response.data.count || 0
-
-        // 成功回调
-        onSuccess?.(response.data)
-      } else if (response.code === 401) {
-        // 处理未授权
-        ElMessage.error('登录已过期，请重新登录')
-        // 可以在这里触发跳转到登录页
-      } else {
-        // 处理业务错误
-        ElMessage.error(response.message || '获取列表失败')
-        list.value = []
-        pagination.total = 0
-      }
-    } catch (error: any) {
-      // 处理网络错误
-      console.error('获取列表失败:', error)
-
-      if (error.message?.includes('timeout')) {
-        ElMessage.error('请求超时，请重试')
-      } else if (error.message?.includes('Network')) {
-        ElMessage.error('网络连接失败，请检查网络')
-      } else {
-        ElMessage.error(error.message || '获取列表失败')
-      }
-
-      list.value = []
-      pagination.total = 0
-
-      // 错误回调
-      onError?.(error)
+      handleFetchSuccess(response)
+    } catch (error: unknown) {
+      handleFetchError(error)
     } finally {
       loading.value = false
     }

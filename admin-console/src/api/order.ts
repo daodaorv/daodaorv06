@@ -476,3 +476,48 @@ export const getOrderTimeline = (_orderId: number) => {
     ],
   })
 }
+
+// ==================== 导出 API 对象 ====================
+
+/**
+ * 订单 API 对象（用于 composables）
+ */
+export const orderApi = {
+  getOrderList,
+  getOrderDetail,
+  getOrderByOrderNo,
+  createOrder,
+  updateOrder,
+  cancelOrder,
+  confirmOrder,
+  completeOrder,
+  getOrderStats,
+  getExceptionList,
+  getExceptionDetail,
+  handleException,
+  getExceptionStats,
+  assignException,
+  escalateException,
+  settleException,
+  getExceptionTimeline,
+  getRefundList,
+  approveRefund,
+  getRefundStats,
+  retryRefund,
+  changeRefundMethod,
+  registerOfflineRefund,
+  getRefundProgress,
+  getReviewList,
+  replyReview,
+  toggleReviewStatus,
+  getReviewStats,
+  createReview,
+  deleteReview,
+  getReviewStatsByVehicle,
+  getReviewStatsByStore,
+  getReviewTrend,
+  pickupOrder,
+  returnOrder,
+  getPickupRecord,
+  getOrderTimeline,
+}

@@ -41,28 +41,6 @@ export const menuConfig: MenuItem[] = [
         component: () => import('@/views/user/UserList.vue'),
       },
       {
-        path: '/users/tags',
-        name: 'UserTags',
-        meta: { title: '标签管理', description: '管理用户标签和自动打标规则' },
-        component: () => import('@/views/user/UserTags.vue'),
-      },
-      {
-        path: '/users/rule-logs',
-        name: 'RuleExecutionLogs',
-        meta: { title: '规则执行日志', description: '查看自动打标规则执行记录' },
-        component: () => import('@/views/user/RuleExecutionLogs.vue'),
-      },
-      {
-        path: '/users/membership-migration',
-        name: 'MembershipMigration',
-        meta: {
-          title: '数据迁移',
-          description: '迁移历史会员数据',
-          roles: [UserRole.PLATFORM_ADMIN],
-        },
-        component: () => import('@/views/user/MembershipMigration.vue'),
-      },
-      {
         path: '/users/risk',
         name: 'UserRisk',
         meta: {
@@ -679,6 +657,16 @@ export const menuConfig: MenuItem[] = [
         name: 'EmployeeList',
         meta: { title: '员工列表', description: '管理平台员工信息、角色分配和在职状态' },
         component: () => import('@/views/employee/EmployeeList.vue'),
+      },
+      {
+        path: '/employees/registration-audit',
+        name: 'RegistrationAudit',
+        meta: {
+          title: '注册审核',
+          description: '审核移动端提交的注册申请（员工、清洁工、服务商、合作方）',
+          roles: [UserRole.PLATFORM_ADMIN],
+        },
+        component: () => import('@/views/employee/RegistrationAudit.vue'),
       },
       {
         path: '/employees/roles',

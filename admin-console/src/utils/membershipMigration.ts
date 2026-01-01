@@ -1,11 +1,18 @@
-// @ts-nocheck
 /**
  * PLUS会员数据迁移工具
  * 将旧的 plus_member 用户类型迁移为 registered + PLUS会员标签
  */
 
-import type { UserInfo } from '@/api/user'
+import type { UserInfo, UserType } from '@/api/user'
 import type { Tag } from '@/api/user'
+
+// 旧的用户类型（用于迁移）
+type LegacyUserType = UserType | 'plus_member'
+
+// 扩展 UserInfo 以支持旧的用户类型
+interface LegacyUserInfo extends Omit<UserInfo, 'userType'> {
+  userType: LegacyUserType
+}
 
 // 迁移日志接口
 export interface MigrationLog {
@@ -37,7 +44,7 @@ export interface MigrationStats {
  * @returns 迁移日志和统计信息
  */
 export async function migrateUsers(
-  users: UserInfo[],
+  users: LegacyUserInfo[],
   plusMemberTag: Tag
 ): Promise<{ logs: MigrationLog[]; stats: MigrationStats }> {
   const startTime = new Date()
@@ -127,7 +134,7 @@ export async function migrateUsers(
  * @param users 用户列表
  * @returns 验证结果
  */
-export function validateMigration(users: UserInfo[]): {
+export function validateMigration(users: LegacyUserInfo[]): {
   isValid: boolean
   issues: string[]
 } {

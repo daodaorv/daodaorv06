@@ -60,10 +60,11 @@ export class RiskControlEngine {
     }
 
     return {
-      riskScore,
+      score: riskScore,
       riskLevel: this.getRiskLevel(riskScore),
-      riskFactors,
-      actionRecommended: this.getRecommendedAction(riskScore),
+      reasons: riskFactors,
+      action: this.getRecommendedAction(riskScore),
+      triggeredRules: [],
     }
   }
 
@@ -81,9 +82,9 @@ export class RiskControlEngine {
    * 获取建议动作
    */
   private getRecommendedAction(score: number): RiskAction {
-    if (score >= 80) return RiskAction.BLOCK
+    if (score >= 80) return RiskAction.REJECT
     if (score >= 60) return RiskAction.FREEZE
-    if (score >= 40) return RiskAction.WARNING
-    return RiskAction.NONE
+    if (score >= 40) return RiskAction.REVIEW
+    return RiskAction.PASS
   }
 }

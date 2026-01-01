@@ -83,7 +83,7 @@ export async function testFullSync() {
  * 在浏览器控制台中暴露调试函数
  */
 if (typeof window !== 'undefined') {
-  ;(window as any).debugTimorApi = {
+  (window as any).debugTimorApi = {
     testCalculateSyncYears,
     testFetchTimorHolidays,
     testFullSync,

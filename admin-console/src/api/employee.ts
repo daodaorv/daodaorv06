@@ -13,8 +13,8 @@ import {
   mockGetEmployeePerformanceStats,
 } from '@/mock/employees'
 
-// 是否使用 Mock 数据（开发环境默认使用）
-const USE_MOCK = import.meta.env.DEV
+// 是否使用 Mock 数据（已切换到真实 API）
+const USE_MOCK = false
 
 // 服务角色类型（从 marketing.ts 导入）
 export type ServiceRoleType = 'driver' | 'cleaner' | 'maintenance' | 'guide' | 'other'

@@ -10,6 +10,7 @@ import App from './App.vue'
 import router from './router'
 import '@/assets/styles/main.scss'
 import { permission, role } from '@/directives/permission'
+import { useUserStore } from '@/stores/user'
 
 const app = createApp(App)
 
@@ -23,6 +24,11 @@ app.directive('permission', permission)
 app.directive('role', role)
 
 app.use(createPinia())
+
+// 初始化用户信息（从 localStorage 恢复）
+const userStore = useUserStore()
+userStore.initUserInfo()
+
 app.use(router)
 app.use(ElementPlus, {
   locale: zhCn,

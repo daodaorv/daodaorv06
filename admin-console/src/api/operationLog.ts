@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { request } from '@/utils/request'
 import type { ApiResponse } from '@/types/user'
 import {
@@ -8,8 +7,8 @@ import {
   mockCleanOperationLogs,
 } from '@/mock/operationLogs'
 
-// 是否使用 Mock 数据（开发环境默认使用）
-const USE_MOCK = import.meta.env.DEV
+// 是否使用 Mock 数据（已切换到真实 API）
+const USE_MOCK = false
 
 // 操作日志API接口类型定义
 export interface OperationLogListParams {

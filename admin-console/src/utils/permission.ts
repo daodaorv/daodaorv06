@@ -9,7 +9,18 @@ import type { User } from '@/types/user'
  * 检查用户是否有指定角色
  */
 export function hasRole(user: User | null, roles?: UserRole[]): boolean {
-  if (!user || !roles || roles.length === 0) {
+  // 如果没有指定角色要求，则允许访问
+  if (!roles || roles.length === 0) {
+    return true
+  }
+
+  // 如果没有用户信息，则拒绝访问
+  if (!user) {
+    return false
+  }
+
+  // 如果用户没有角色信息，则允许访问（兼容 Mock 数据）
+  if (!user.role) {
     return true
   }
 
