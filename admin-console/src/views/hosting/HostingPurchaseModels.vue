@@ -124,12 +124,30 @@
 
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted } from 'vue'
-import { ElMessage } from 'element-plus'
-import { Picture } from '@element-plus/icons-vue'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import StatsCard from '@/components/common/StatsCard.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'
-import { mockVehicleModels } from '@/mock/vehicles'
+import type { SearchField } from '@/components/common/SearchForm.vue'
+import type { TableColumn } from '@/components/common/DataTable.vue'
 import { useErrorHandler } from '@/composables'
+import { mockVehicleModels } from '@/mock/vehicles'
+
+// 车型接口
+interface VehicleModel {
+  id: number
+  modelName: string
+  brandName: string
+  supportPurchaseHosting?: boolean
+  image?: string
+  purchaseHostingConfig?: {
+    guaranteedMonthlyIncome?: number
+    minDownPaymentRatio?: number
+    maxLoanTerm?: number
+    estimatedAnnualReturn?: number
+  }
+  [key: string]: unknown
+}
 
 const { handleApiError } = useErrorHandler()
 
@@ -140,7 +158,7 @@ const searchForm = reactive({
 })
 
 // 搜索字段配置
-const searchFields = computed(() => [
+const searchFields = computed<SearchField[]>(() => [
   {
     prop: 'keyword',
     label: '关键词',
@@ -151,7 +169,7 @@ const searchFields = computed(() => [
 ])
 
 // 数据列表
-const modelsList = ref([])
+const modelsList = ref<VehicleModel[]>([])
 const loading = ref(false)
 
 // 分页
@@ -162,16 +180,16 @@ const pagination = reactive({
 })
 
 // 表格列配置
-const tableColumns = [
-  { prop: 'image', label: '车型图片', width: 120, slot: true },
+const tableColumns: TableColumn[] = [
+  { prop: 'image', label: '车型图片', width: 120, slot: 'image' },
   { prop: 'modelName', label: '车型名称', width: 200 },
   { prop: 'brandName', label: '品牌', width: 120 },
-  { prop: 'vehiclePrice', label: '参考价格', width: 140, slot: true },
-  { prop: 'downPaymentRatio', label: '最低首付', width: 100, slot: true },
-  { prop: 'loanTerm', label: '最长期限', width: 100, slot: true },
-  { prop: 'guaranteedIncome', label: '保底月收益', width: 140, slot: true },
-  { prop: 'annualReturn', label: '年化收益率', width: 120, slot: true },
-  { prop: 'actions', label: '操作', width: 200, slot: true, fixed: 'right' },
+  { prop: 'vehiclePrice', label: '参考价格', width: 140, slot: 'vehiclePrice' },
+  { prop: 'downPaymentRatio', label: '最低首付', width: 100, slot: 'downPaymentRatio' },
+  { prop: 'loanTerm', label: '最长期限', width: 100, slot: 'loanTerm' },
+  { prop: 'guaranteedIncome', label: '保底月收益', width: 140, slot: 'guaranteedIncome' },
+  { prop: 'annualReturn', label: '年化收益率', width: 120, slot: 'annualReturn' },
+  { prop: 'actions', label: '操作', width: 200, slot: 'actions', fixed: 'right' },
 ]
 
 // 编辑对话框
@@ -204,7 +222,7 @@ const loadModelsList = async () => {
     // 分页
     const start = (pagination.page - 1) * pagination.pageSize
     const end = start + pagination.pageSize
-    modelsList.value = filteredModels.slice(start, end)
+    modelsList.value = filteredModels.slice(start, end) as unknown as VehicleModel[]
     pagination.total = filteredModels.length
   } catch (error) {
     handleApiError(error, '加载车型列表失败')

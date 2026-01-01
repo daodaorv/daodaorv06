@@ -81,6 +81,9 @@ import StatsCard from '@/components/common/StatsCard.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'
 import FormDialog from '@/components/common/FormDialog.vue'
+import type { SearchField } from '@/components/common/SearchForm.vue'
+import type { TableColumn, TableAction } from '@/components/common/DataTable.vue'
+import type { FormField } from '@/components/common/FormDialog.vue'
 import { useErrorHandler } from '@/composables'
 import {
   getOwnerUsageFeeConfigList,
@@ -88,6 +91,18 @@ import {
   updateOwnerUsageFeeConfig,
   deleteOwnerUsageFeeConfig,
 } from '@/api/hosting'
+
+
+// 车主使用费配置接口
+interface OwnerUsageFeeConfig {
+  id?: number
+  name: string
+  serviceFeeMin: number
+  serviceFeeMax: number
+  serviceFeeDefault: number
+  enabled: boolean
+  [key: string]: unknown
+}
 
 const { handleApiError } = useErrorHandler()
 
@@ -106,7 +121,7 @@ const searchForm = reactive({
 })
 
 // 搜索字段配置
-const searchFields = computed(() => [
+const searchFields = computed<SearchField[]>(() => [
   {
     prop: 'keyword',
     label: '关键词',
@@ -120,26 +135,26 @@ const searchFields = computed(() => [
     type: 'select',
     placeholder: '全部状态',
     options: [
-      { label: '启用', value: true },
-      { label: '禁用', value: false },
+      { label: '启用', value: 'true' },
+      { label: '禁用', value: 'false' },
     ],
     width: '150px',
   },
 ])
 
 // 表格列配置
-const tableColumns = [
+const tableColumns: TableColumn[] = [
   { prop: 'id', label: 'ID', width: 80 },
   { prop: 'configName', label: '配置名称', width: 180 },
-  { prop: 'serviceFeeRange', label: '服务费', width: 160, slot: true },
+  { prop: 'serviceFeeRange', label: '服务费', width: 160, slot: 'serviceFeeRange' },
   { prop: 'relocationFee', label: '异地还车费', width: 120 },
   { prop: 'maxUsageDaysPerMonth', label: '最大自用天数', width: 120 },
   { prop: 'effectiveDate', label: '生效日期', width: 120 },
-  { prop: 'enabled', label: '状态', width: 100, slot: true },
+  { prop: 'enabled', label: '状态', width: 100, slot: 'enabled' },
 ]
 
 // 表格操作配置
-const tableActions = [
+const tableActions: TableAction[] = [
   {
     label: '编辑',
     type: 'primary',
@@ -153,7 +168,7 @@ const tableActions = [
 ]
 
 // 数据列表
-const configList = ref([])
+const configList = ref<OwnerUsageFeeConfig[]>([])
 const loading = ref(false)
 
 // 分页
@@ -187,8 +202,9 @@ const formData = reactive({
 })
 
 // 表单字段配置
-const formFields = computed(() => [
+const formFields: FormField[] = [
   {
+    prop: '',
     type: 'divider',
     label: '基本信息',
   },
@@ -205,7 +221,7 @@ const formFields = computed(() => [
     rows: 2,
     placeholder: '请输入配置说明',
   },
-])
+]
 
 // 表单验证规则
 const formRules = {
@@ -222,7 +238,7 @@ const loadConfigList = async () => {
       page: pagination.page,
       pageSize: pagination.pageSize,
     })
-    configList.value = response.data.list
+    configList.value = response.data.list as unknown as OwnerUsageFeeConfig[]
     pagination.total = response.data.total
 
     // 更新统计数据

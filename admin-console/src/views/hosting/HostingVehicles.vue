@@ -1,4 +1,3 @@
-<!-- @ts-nocheck -->
 <template>
   <div class="hosting-vehicles-container">
     <SearchForm

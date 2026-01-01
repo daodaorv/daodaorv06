@@ -1,4 +1,3 @@
-<!-- @ts-nocheck -->
 <template>
   <div class="crowdfunding-income-container">
     <!-- 统计卡片 -->

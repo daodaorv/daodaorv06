@@ -1,4 +1,3 @@
-<!-- @ts-nocheck -->
 <template>
   <div class="crowdfunding-vehicles-container">
     <!-- 搜索表单 -->
