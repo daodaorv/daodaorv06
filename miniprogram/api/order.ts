@@ -226,7 +226,7 @@ export function registerMockOrder(order: Partial<MockOrderRecord> & { orderNo: s
  */
 export function calculatePrice(data: import('@/types/order').CalculatePriceParams) {
     logger.debug('计算订单价格', data);
-    return post('/orders/calculate-price', data).then((response: any) => {
+    return post<import('@/types/common').ApiResponse<import('@/types/order').PriceDetail>>('/orders/calculate-price', data).then((response) => {
         return response.data;
     });
 }
@@ -236,7 +236,7 @@ export function calculatePrice(data: import('@/types/order').CalculatePriceParam
  */
 export function createOrder(data: import('@/types/order').CreateOrderParams) {
 	logger.debug('创建订单', data)
-	return post('/orders', data).then((response: any) => {
+	return post<import('@/types/common').ApiResponse<import('@/types/order').OrderRecord>>('/orders', data).then((response) => {
 		return response.data
 	})
 }
@@ -261,7 +261,7 @@ export function getUserOrders(params?: {
     limit?: number;
 }) {
 	logger.debug('获取用户订单列表', params)
-	return get('/orders', params).then((response: any) => {
+	return get<import('@/types/common').ApiResponse<import('@/types/order').OrderListResponse>>('/orders', params).then((response) => {
 		return response.data
 	})
 }
@@ -271,7 +271,7 @@ export function getUserOrders(params?: {
  */
 export function getOrderStatusList() {
     logger.debug('获取订单状态列表');
-    return get('/orders/statuses').then((response: any) => {
+    return get<import('@/types/common').ApiResponse<import('@/types/order').OrderStatus[]>>('/orders/statuses').then((response) => {
         return response.data;
     });
 }
@@ -282,7 +282,7 @@ export function getOrderStatusList() {
  */
 export function getOrderDetail(orderId: string) {
 	logger.debug('获取订单详情', { orderId })
-	return get(`/orders/${orderId}`).then((response: any) => {
+	return get<import('@/types/common').ApiResponse<import('@/types/order').OrderRecord>>(`/orders/${orderId}`).then((response) => {
 		return response.data
 	})
 }
@@ -292,7 +292,7 @@ export function getOrderDetail(orderId: string) {
  */
 export function cancelOrder(orderId: string, reason?: string) {
 	logger.debug('取消订单', { orderId, reason })
-	return post(`/orders/${orderId}/cancel`, { reason }).then((response: any) => {
+	return post<import('@/types/common').ApiResponse<{ success: boolean }>>(`/orders/${orderId}/cancel`, { reason }).then((response) => {
 		return response.data
 	})
 }
@@ -302,7 +302,7 @@ export function cancelOrder(orderId: string, reason?: string) {
  */
 export function deleteOrder(orderId: string) {
 	logger.debug('删除订单', { orderId })
-	return del(`/orders/${orderId}`).then((response: any) => {
+	return del<import('@/types/common').ApiResponse<{ success: boolean }>>(`/orders/${orderId}`).then((response) => {
 		return response.data
 	})
 }
@@ -312,7 +312,7 @@ export function deleteOrder(orderId: string) {
  */
 export function updateOrderStatus(orderNo: string, status: string) {
 	logger.debug('更新订单状态', { orderNo, status })
-	return put(`/orders/${orderNo}/status`, { status }).then((response: any) => {
+	return put<import('@/types/common').ApiResponse<{ success: boolean }>>(`/orders/${orderNo}/status`, { status }).then((response) => {
 		return response.data
 	})
 }

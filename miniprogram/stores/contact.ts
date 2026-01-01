@@ -6,11 +6,12 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { getContacts, createContact, updateContact, deleteContact } from '@/api/contact';
 import { logger } from '@/utils/logger';
+import type { Contact, CreateContactParams, UpdateContactParams } from '@/types/contact';
 
 export const useContactStore = defineStore('contact', () => {
     // 状态
-    const contactList = ref<any[]>([]);
-    const currentContact = ref<any>(null);
+    const contactList = ref<Contact[]>([]);
+    const currentContact = ref<Contact | null>(null);
 
     // 获取联系人列表
     const fetchContacts = async () => {
@@ -31,7 +32,7 @@ export const useContactStore = defineStore('contact', () => {
     };
 
     // 添加联系人
-    const addContact = async (data: any) => {
+    const addContact = async (data: CreateContactParams) => {
         try {
             const res = await createContact(data);
             if (res.code === 0) {
@@ -46,7 +47,7 @@ export const useContactStore = defineStore('contact', () => {
     };
 
     // 编辑联系人
-    const editContact = async (id: string, data: any) => {
+    const editContact = async (id: string, data: UpdateContactParams) => {
         try {
             const res = await updateContact(id, data);
             if (res.code === 0) {

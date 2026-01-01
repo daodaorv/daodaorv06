@@ -10,8 +10,8 @@ import type { PosterConfig } from '@/types/share'
  * 海报生成器
  */
 class PosterGenerator {
-  private canvas: any = null
-  private ctx: any = null
+  private canvas: UniApp.Canvas | null = null
+  private ctx: CanvasRenderingContext2D | null = null
   private readonly canvasWidth = 750
   private readonly canvasHeight = 1334
 

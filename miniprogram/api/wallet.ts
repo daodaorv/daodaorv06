@@ -4,6 +4,7 @@
 
 import { get, post } from '@/utils/request'
 import { logger } from '@/utils/logger'
+import type { ApiResponse } from '@/types/common'
 
 // 类型定义
 export interface WalletBalance {
@@ -36,7 +37,7 @@ export interface WithdrawParams {
  */
 export function getWalletBalance(): Promise<WalletBalance> {
   logger.debug('获取钱包余额')
-  return get('/wallet/balance').then((response: any) => {
+  return get<ApiResponse<WalletBalance>>('/wallet/balance').then((response) => {
     return response.data
   })
 }
@@ -47,7 +48,7 @@ export function getWalletBalance(): Promise<WalletBalance> {
  */
 export function getWalletTransactions(page: number = 1, pageSize: number = 10) {
   logger.debug('获取交易记录', { page, pageSize })
-  return get('/wallet/transactions', { page, pageSize }).then((response: any) => {
+  return get<ApiResponse<{ list: WalletTransaction[], total: number }>>('/wallet/transactions', { page, pageSize }).then((response) => {
     return response.data
   })
 }
@@ -58,7 +59,7 @@ export function getWalletTransactions(page: number = 1, pageSize: number = 10) {
  */
 export function withdrawWallet(params: WithdrawParams): Promise<{ message: string }> {
   logger.debug('提现申请', params)
-  return post('/wallet/withdraw', params).then((response: any) => {
+  return post<ApiResponse<{ message: string }>>('/wallet/withdraw', params).then((response) => {
     return response.data
   })
 }

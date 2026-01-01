@@ -6,12 +6,13 @@ import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import { login, getUserProfile, wechatLogin } from '@/api/auth';
 import { logger } from '@/utils/logger';
+import type { UserInfo } from '@/types/user';
 
 export const useUserStore = defineStore('user', () => {
     // 状态
     const token = ref('');
     const refreshToken = ref('');
-    const userInfo = ref<any>(null);
+    const userInfo = ref<UserInfo | null>(null);
     const userTags = ref<string[]>([]);  // 用户标签列表
 
     // 计算属性
@@ -24,18 +25,18 @@ export const useUserStore = defineStore('user', () => {
     };
 
     // 初始化:从本地存储恢复
-    const parseStoredUserInfo = (stored: any) => {
+    const parseStoredUserInfo = (stored: unknown): UserInfo | null => {
         if (!stored) return null;
         if (typeof stored === 'string') {
             try {
-                return JSON.parse(stored);
+                return JSON.parse(stored) as UserInfo;
             } catch (error) {
                 logger.warn('解析 userInfo 失败，已清理异常缓存', error);
                 uni.removeStorageSync('userInfo');
                 return null;
             }
         }
-        return stored;
+        return stored as UserInfo;
     };
 
     const init = () => {
@@ -81,7 +82,7 @@ export const useUserStore = defineStore('user', () => {
     };
 
     // 微信登录
-    const doWechatLogin = async (code: string, userInfoData?: any) => {
+    const doWechatLogin = async (code: string, userInfoData?: Partial<UserInfo>) => {
         try {
             const res = await wechatLogin(code, userInfoData);
             if (res.code === 0) {
@@ -136,9 +137,11 @@ export const useUserStore = defineStore('user', () => {
     };
 
     // 更新用户信息
-    const updateUserInfo = (data: any) => {
-        userInfo.value = { ...userInfo.value, ...data };
-        uni.setStorageSync('userInfo', JSON.stringify(userInfo.value));
+    const updateUserInfo = (data: Partial<UserInfo>) => {
+        if (userInfo.value) {
+            userInfo.value = { ...userInfo.value, ...data };
+            uni.setStorageSync('userInfo', JSON.stringify(userInfo.value));
+        }
     };
 
     return {

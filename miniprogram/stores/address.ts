@@ -6,9 +6,10 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { getAddresses, createAddress, updateAddress, deleteAddress } from '@/api/address'
 import { logger } from '@/utils/logger'
+import type { Address, CreateAddressParams, UpdateAddressParams } from '@/types/address'
 
 export const useAddressStore = defineStore('address', () => {
-  const addressList = ref<any[]>([])
+  const addressList = ref<Address[]>([])
 
   const fetchAddresses = async () => {
     try {
@@ -24,7 +25,7 @@ export const useAddressStore = defineStore('address', () => {
     }
   }
 
-  const addAddress = async (data: any) => {
+  const addAddress = async (data: CreateAddressParams) => {
     try {
       const res = await createAddress(data)
       if (res.code === 0) {
@@ -38,7 +39,7 @@ export const useAddressStore = defineStore('address', () => {
     }
   }
 
-  const editAddress = async (id: string, data: any) => {
+  const editAddress = async (id: string, data: UpdateAddressParams) => {
     try {
       const res = await updateAddress(id, data)
       if (res.code === 0) {

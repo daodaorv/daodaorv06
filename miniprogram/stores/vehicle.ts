@@ -6,16 +6,17 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { getVehicles, getVehicleDetail, favoriteVehicle, getFavoriteVehicles } from '@/api/vehicle';
 import { logger } from '@/utils/logger';
+import type { VehicleListItem, VehicleDetail, VehicleFilterParams } from '@/types/vehicle';
 
 export const useVehicleStore = defineStore('vehicle', () => {
     // 状态
-    const vehicleList = ref<any[]>([]);
-    const currentVehicle = ref<any>(null);
-    const searchParams = ref<any>({});
+    const vehicleList = ref<VehicleListItem[]>([]);
+    const currentVehicle = ref<VehicleDetail | null>(null);
+    const searchParams = ref<VehicleFilterParams>({});
     const favoriteIds = ref<string[]>([]);
 
     // 获取车辆列表
-    const fetchVehicles = async (params: any) => {
+    const fetchVehicles = async (params: VehicleFilterParams) => {
         try {
             searchParams.value = params;
             const res = await getVehicles(params);

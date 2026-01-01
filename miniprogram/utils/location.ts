@@ -10,6 +10,14 @@
 
 import { logger } from './logger'
 
+// 门店接口
+interface Store {
+	id: string;
+	name: string;
+	distance?: number;
+	[key: string]: unknown;
+}
+
 // 定位结果接口
 export interface LocationResult {
 	latitude: number;
@@ -511,9 +519,9 @@ function toRad(degrees: number): number {
  * 按距离排序门店
  */
 export function sortStoresByDistance(
-	stores: any[],
+	stores: Store[],
 	userLocation: { lat: number; lng: number }
-): any[] {
+): Store[] {
 	return stores
 		.map(store => {
 			const storeCoord = STORE_COORDINATES[store.id];
@@ -534,7 +542,7 @@ export function sortStoresByDistance(
 /**
  * 按名称排序门店
  */
-export function sortStoresByName(stores: any[]): any[] {
+export function sortStoresByName(stores: Store[]): Store[] {
 	return [...stores].sort((a, b) => a.name.localeCompare(b.name, 'zh-CN'));
 }
 
@@ -542,9 +550,9 @@ export function sortStoresByName(stores: any[]): any[] {
  * 查找最近的门店
  */
 export function findNearestStore(
-	stores: any[],
+	stores: Store[],
 	userLocation: { lat: number; lng: number }
-): any | null {
+): Store | null {
 	const sorted = sortStoresByDistance(stores, userLocation);
 	return sorted.length > 0 ? sorted[0] : null;
 }

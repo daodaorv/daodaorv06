@@ -4,6 +4,7 @@
 
 import { get, post, put } from '@/utils/request'
 import { logger } from '@/utils/logger'
+import type { ApiResponse } from '@/types/common'
 
 // 类型定义
 export interface LoginResponse {
@@ -113,7 +114,7 @@ export function sendCode(phone: string, type: 'login' | 'register' | 'bind' = 'l
  */
 export function register(data: RegisterParams): Promise<LoginResponse> {
 	logger.debug('用户注册', data)
-	return post('/auth/register', data).then((response: any) => {
+	return post<ApiResponse<LoginResponse>>('/auth/register', data).then((response) => {
 		// 保存token到本地存储
 		if (response.data?.token) {
 			uni.setStorageSync('token', response.data.token)
@@ -129,7 +130,7 @@ export function register(data: RegisterParams): Promise<LoginResponse> {
  */
 export function login(params: LoginParams): Promise<LoginResponse> {
 	logger.debug('密码登录', params)
-	return post('/auth/login', params).then((response: any) => {
+	return post<ApiResponse<LoginResponse>>('/auth/login', params).then((response) => {
 		// 保存token到本地存储
 		if (response.data?.token) {
 			uni.setStorageSync('token', response.data.token)
@@ -145,7 +146,7 @@ export function login(params: LoginParams): Promise<LoginResponse> {
  */
 export function loginWithCode(phone: string, code: string): Promise<LoginResponse> {
 	logger.debug('验证码登录', { phone, code })
-	return post('/auth/login-with-code', { phone, code }).then((response: any) => {
+	return post<ApiResponse<LoginResponse>>('/auth/login-with-code', { phone, code }).then((response) => {
 		// 保存token到本地存储
 		if (response.data?.token) {
 			uni.setStorageSync('token', response.data.token)
@@ -161,7 +162,7 @@ export function loginWithCode(phone: string, code: string): Promise<LoginRespons
  */
 export function wechatLogin(params: WechatLoginParams): Promise<LoginResponse> {
 	logger.debug('微信授权登录', params)
-	return post('/auth/wechat-login', params).then((response: any) => {
+	return post<ApiResponse<LoginResponse>>('/auth/wechat-login', params).then((response) => {
 		// 保存token到本地存储
 		if (response.data?.token) {
 			uni.setStorageSync('token', response.data.token)
@@ -177,7 +178,7 @@ export function wechatLogin(params: WechatLoginParams): Promise<LoginResponse> {
  */
 export function alipayLogin(params: AlipayLoginParams): Promise<LoginResponse> {
 	logger.debug('支付宝授权登录', params)
-	return post('/auth/alipay-login', params).then((response: any) => {
+	return post<ApiResponse<LoginResponse>>('/auth/alipay-login', params).then((response) => {
 		// 保存token到本地存储
 		if (response.data?.token) {
 			uni.setStorageSync('token', response.data.token)
@@ -193,7 +194,7 @@ export function alipayLogin(params: AlipayLoginParams): Promise<LoginResponse> {
  */
 export function douyinLogin(params: DouyinLoginParams): Promise<LoginResponse> {
 	logger.debug('抖音授权登录', params)
-	return post('/auth/douyin-login', params).then((response: any) => {
+	return post<ApiResponse<LoginResponse>>('/auth/douyin-login', params).then((response) => {
 		// 保存token到本地存储
 		if (response.data?.token) {
 			uni.setStorageSync('token', response.data.token)
@@ -209,7 +210,7 @@ export function douyinLogin(params: DouyinLoginParams): Promise<LoginResponse> {
  */
 export function loginWithUsername(params: UsernameLoginParams): Promise<LoginResponse> {
 	logger.debug('用户名密码登录', params)
-	return post('/auth/username-login', params).then((response: any) => {
+	return post<ApiResponse<LoginResponse>>('/auth/username-login', params).then((response) => {
 		// 保存token到本地存储
 		if (response.data?.token) {
 			uni.setStorageSync('token', response.data.token)
@@ -253,7 +254,7 @@ export function supportOneClickLogin(): boolean {
  */
 export function bindPhone(params: BindPhoneParams): Promise<{ success: boolean }> {
 	logger.debug('绑定手机号', params)
-	return post('/auth/bind-phone', params).then((response: any) => {
+	return post<ApiResponse<{ success: boolean }>>('/auth/bind-phone', params).then((response) => {
 		return response.data
 	})
 }
@@ -263,7 +264,7 @@ export function bindPhone(params: BindPhoneParams): Promise<{ success: boolean }
  */
 export function refreshToken(refreshToken: string): Promise<{ token: string; refreshToken: string }> {
 	logger.debug('刷新Token', { refreshToken })
-	return post('/auth/refresh-token', { refreshToken }).then((response: any) => {
+	return post<ApiResponse<{ token: string; refreshToken: string }>>('/auth/refresh-token', { refreshToken }).then((response) => {
 		// 保存新的token到本地存储
 		if (response.data?.token) {
 			uni.setStorageSync('token', response.data.token)
@@ -278,7 +279,7 @@ export function refreshToken(refreshToken: string): Promise<{ token: string; ref
  */
 export function getUserProfile(): Promise<UserInfo> {
 	logger.debug('获取用户信息')
-	return get('/users/profile').then((response: any) => {
+	return get<ApiResponse<UserInfo>>('/users/profile').then((response) => {
 		return response.data
 	})
 }
@@ -288,7 +289,7 @@ export function getUserProfile(): Promise<UserInfo> {
  */
 export function updateUserProfile(data: Partial<UserInfo>): Promise<UserInfo> {
 	logger.debug('更新用户资料', data)
-	return put('/users/profile', data).then((response: any) => {
+	return put<ApiResponse<UserInfo>>('/users/profile', data).then((response) => {
 		// 更新本地存储的用户信息
 		try {
 			const userInfo = uni.getStorageSync('userInfo')
@@ -316,7 +317,7 @@ export function updateUserProfile(data: Partial<UserInfo>): Promise<UserInfo> {
  */
 export function logout(): Promise<{ success: boolean }> {
 	logger.debug('退出登录')
-	return post('/auth/logout').then((response: any) => {
+	return post<ApiResponse<{ success: boolean }>>('/auth/logout').then((response) => {
 		// 清除本地存储的token
 		uni.removeStorageSync('token')
 		uni.removeStorageSync('refreshToken')
