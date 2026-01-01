@@ -1,4 +1,3 @@
-<!-- @ts-nocheck -->
 <template>
   <div class="order-reviews-container">
     <el-tabs v-model="activeTab" type="border-card">

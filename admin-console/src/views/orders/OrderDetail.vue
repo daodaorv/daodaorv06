@@ -1,4 +1,3 @@
-<!-- @ts-nocheck -->
 <template>
   <div class="order-detail-container">
     <el-card v-if="order" class="detail-card">

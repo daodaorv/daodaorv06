@@ -1,4 +1,3 @@
-<!-- @ts-nocheck -->
 <template>
   <div class="order-exceptions-container">
     <StatsCard :stats="statsConfig" />

@@ -1,4 +1,3 @@
-<!-- @ts-nocheck -->
 <template>
   <div class="order-refunds-container">
     <StatsCard :stats="statsConfig" />
