@@ -1,4 +1,3 @@
-<!-- @ts-nocheck -->
 <template>
   <div class="city-tier-management-container">
     <DataTable

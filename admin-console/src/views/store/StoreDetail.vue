@@ -1,4 +1,3 @@
-<!-- @ts-nocheck -->
 <template>
   <div class="store-detail-container">
     <el-card v-if="store" class="detail-card">

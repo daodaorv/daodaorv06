@@ -1,4 +1,3 @@
-<!-- @ts-nocheck -->
 <template>
   <div class="service-management">
     <el-card>

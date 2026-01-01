@@ -1,4 +1,3 @@
-<!-- @ts-nocheck -->
 <template>
   <div class="partner-profit-config-container">
     <!-- 统计卡片 -->

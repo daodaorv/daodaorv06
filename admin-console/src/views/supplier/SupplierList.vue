@@ -1,4 +1,3 @@
-<!-- @ts-nocheck -->
 <template>
   <div class="supplier-list-container">
     <StatsCard v-if="showStats" :stats="statsConfig" />

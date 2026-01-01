@@ -1,4 +1,3 @@
-<!-- @ts-nocheck -->
 <template>
   <div class="store-list-container">
     <StatsCard :stats="statsConfig" />
