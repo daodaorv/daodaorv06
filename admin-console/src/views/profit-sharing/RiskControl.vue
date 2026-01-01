@@ -130,6 +130,7 @@ const formData = reactive({
   type: 'device_limit' as 'device_limit' | 'ip_limit' | 'order_frequency' | 'amount_threshold',
   threshold: 0,
   action: 'freeze' as 'freeze' | 'alert' | 'reject',
+  enabled: true,
   description: '',
 })
 
@@ -248,7 +249,7 @@ const getActionName = (action: string) => {
 }
 
 const getActionTag = (action: string) => {
-  const map: Record<string, string> = {
+  const map: Record<string, 'primary' | 'success' | 'warning' | 'info' | 'danger'> = {
     freeze: 'danger',
     alert: 'warning',
     reject: 'info',

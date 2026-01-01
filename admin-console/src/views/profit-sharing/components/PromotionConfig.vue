@@ -52,7 +52,7 @@
     <!-- 编辑对话框 -->
     <el-dialog
       v-model="dialogVisible"
-      :title="`编辑${getProductTypeName(currentConfig?.productType || 'vehicle_rental')}推广配置`"
+      :title="`编辑${getProductTypeName((currentConfig?.productType || 'vehicle_rental') as ProductType)}推广配置`"
       width="600px"
     >
       <el-form ref="formRef" :model="formData" :rules="formRules" label-width="140px">
@@ -250,7 +250,7 @@ const getProductTypeName = (type: ProductType) => {
 
 // 获取产品类型标签
 const getProductTypeTag = (type: ProductType) => {
-  const map: Record<ProductType, string> = {
+  const map: Record<ProductType, 'primary' | 'success' | 'warning' | 'info' | 'danger'> = {
     vehicle_rental: 'primary',
     campsite: 'success',
     tour: 'warning',

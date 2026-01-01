@@ -70,7 +70,7 @@
           node-key="id"
           class="promotion-tree"
         >
-          <template #default="{ node, data }">
+          <template #default="{ data }">
             <div class="tree-node">
               <div class="node-info">
                 <el-avatar :size="32" class="node-avatar">

@@ -210,7 +210,7 @@ const getRiskLevelName = (level: string) => {
 }
 
 const getRiskLevelTag = (level: string) => {
-  const map: Record<string, string> = {
+  const map: Record<string, 'primary' | 'success' | 'warning' | 'info' | 'danger'> = {
     low: 'success',
     medium: 'warning',
     high: 'danger',
@@ -228,7 +228,7 @@ const getStatusName = (status: string) => {
 }
 
 const getStatusTag = (status: string) => {
-  const map: Record<string, string> = {
+  const map: Record<string, 'primary' | 'success' | 'warning' | 'info' | 'danger'> = {
     pending: 'warning',
     confirmed: 'danger',
     dismissed: 'info',

@@ -121,7 +121,8 @@
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Search, Refresh } from '@element-plus/icons-vue'
-import type { WithdrawalRequest, WithdrawalStatus } from '@/types/profit'
+import type { WithdrawalRequest } from '@/types/profit'
+import { WithdrawalStatus } from '@/types/profit'
 import { getWithdrawalRequests, reviewWithdrawalRequest, completeWithdrawal } from '@/api/profit'
 import BalanceManagement from './components/BalanceManagement.vue'
 
@@ -190,7 +191,7 @@ const handleApprove = async (row: WithdrawalRequest) => {
       cancelButtonText: '取消',
       type: 'warning',
     })
-    await reviewWithdrawalRequest(row.id, { status: 'approved' })
+    await reviewWithdrawalRequest(row.id, { status: WithdrawalStatus.APPROVED })
     ElMessage.success('审核通过')
     fetchRequests()
   } catch (error) {
@@ -209,7 +210,7 @@ const handleReject = async (row: WithdrawalRequest) => {
       inputPattern: /.+/,
       inputErrorMessage: '请输入拒绝原因',
     })
-    await reviewWithdrawalRequest(row.id, { status: 'rejected', reason })
+    await reviewWithdrawalRequest(row.id, { status: WithdrawalStatus.REJECTED, reason })
     ElMessage.success('已拒绝')
     fetchRequests()
   } catch (error) {
@@ -252,8 +253,8 @@ const getStatusName = (status: WithdrawalStatus) => {
   return map[status] || status
 }
 
-const getStatusTag = (status: WithdrawalStatus) => {
-  const map: Record<WithdrawalStatus, string> = {
+const getStatusTag = (status: WithdrawalStatus): 'primary' | 'success' | 'warning' | 'info' | 'danger' => {
+  const map: Record<WithdrawalStatus, 'primary' | 'success' | 'warning' | 'info' | 'danger'> = {
     pending: 'warning',
     approved: 'success',
     rejected: 'danger',
@@ -261,7 +262,7 @@ const getStatusTag = (status: WithdrawalStatus) => {
     completed: 'success',
     failed: 'danger',
   }
-  return map[status] || ''
+  return map[status] || 'info'
 }
 
 onMounted(() => {

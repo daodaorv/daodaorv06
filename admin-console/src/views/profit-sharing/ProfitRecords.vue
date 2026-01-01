@@ -255,7 +255,7 @@ const getProductTypeName = (type: ProductType) => {
 }
 
 const getProductTypeTag = (type: ProductType) => {
-  const map: Record<ProductType, string> = {
+  const map: Record<ProductType, 'primary' | 'success' | 'warning' | 'info' | 'danger'> = {
     vehicle_rental: 'primary',
     campsite: 'success',
     tour: 'warning',
@@ -274,15 +274,15 @@ const getStatusName = (status: ProfitStatus) => {
   return map[status] || status
 }
 
-const getStatusTag = (status: ProfitStatus) => {
-  const map: Record<ProfitStatus, string> = {
+const getStatusTag = (status: ProfitStatus): 'primary' | 'success' | 'warning' | 'info' | 'danger' => {
+  const map: Record<ProfitStatus, 'primary' | 'success' | 'warning' | 'info' | 'danger'> = {
     pending: 'info',
     calculated: 'warning',
     paid: 'success',
     frozen: 'danger',
     cancelled: 'info',
   }
-  return map[status] || ''
+  return map[status] || 'info'
 }
 
 onMounted(() => {

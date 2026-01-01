@@ -255,7 +255,7 @@ const getProductTypeName = (type: ProductType) => {
 }
 
 const getProductTypeTag = (type: ProductType) => {
-  const map: Record<ProductType, string> = {
+  const map: Record<ProductType, 'primary' | 'success' | 'warning' | 'info' | 'danger'> = {
     vehicle_rental: 'primary',
     campsite: 'success',
     tour: 'warning',
@@ -273,7 +273,7 @@ const getHostingTypeName = (type: HostingType) => {
 }
 
 const getHostingTypeTag = (type: HostingType) => {
-  const map: Record<HostingType, string> = {
+  const map: Record<HostingType, 'primary' | 'success' | 'warning' | 'info' | 'danger'> = {
     own_car: 'primary',
     new_car: 'success',
     crowdfunding: 'warning',

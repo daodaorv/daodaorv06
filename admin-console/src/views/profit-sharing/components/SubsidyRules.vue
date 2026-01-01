@@ -37,7 +37,7 @@ const fetchSubsidyRules = async () => {
   try {
     const res = await getHostingProfitConfigs()
     const allRules: SubsidyRule[] = []
-    res.data.forEach(config => {
+    res.data.forEach((config: any) => {
       allRules.push(...config.subsidyRules)
     })
     subsidyList.value = allRules
@@ -59,7 +59,7 @@ const getHostingTypeName = (type: HostingType) => {
 }
 
 const getHostingTypeTag = (type: HostingType) => {
-  const map: Record<HostingType, string> = {
+  const map: Record<HostingType, 'primary' | 'success' | 'warning' | 'info' | 'danger'> = {
     own_car: 'primary',
     new_car: 'success',
     crowdfunding: 'warning',

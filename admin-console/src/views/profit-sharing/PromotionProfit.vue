@@ -481,7 +481,7 @@ const getProductTypeName = (type: ProductType) => {
 
 // 获取产品类型标签
 const getProductTypeTag = (type: ProductType) => {
-  const map: Record<ProductType, string> = {
+  const map: Record<ProductType, 'primary' | 'success' | 'warning' | 'info' | 'danger'> = {
     vehicle_rental: 'primary',
     campsite: 'success',
     tour: 'warning',
@@ -502,15 +502,15 @@ const getStatusName = (status: ProfitStatus) => {
 }
 
 // 获取状态标签
-const getStatusTag = (status: ProfitStatus) => {
-  const map: Record<ProfitStatus, string> = {
+const getStatusTag = (status: ProfitStatus): 'primary' | 'success' | 'warning' | 'info' | 'danger' => {
+  const map: Record<ProfitStatus, 'primary' | 'success' | 'warning' | 'info' | 'danger'> = {
     pending: 'info',
     calculated: 'warning',
     paid: 'success',
     frozen: 'danger',
     cancelled: 'info',
   }
-  return map[status] || ''
+  return map[status] || 'info'
 }
 
 // 初始化

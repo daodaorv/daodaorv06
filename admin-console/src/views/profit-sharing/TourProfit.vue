@@ -267,15 +267,15 @@ const getStatusName = (status: ProfitStatus) => {
   return map[status] || status
 }
 
-const getStatusTag = (status: ProfitStatus) => {
-  const map: Record<ProfitStatus, string> = {
+const getStatusTag = (status: ProfitStatus): 'primary' | 'success' | 'warning' | 'info' | 'danger' => {
+  const map: Record<ProfitStatus, 'primary' | 'success' | 'warning' | 'info' | 'danger'> = {
     pending: 'info',
     calculated: 'warning',
     paid: 'success',
     frozen: 'danger',
     cancelled: 'info',
   }
-  return map[status] || ''
+  return map[status] || 'info'
 }
 
 onMounted(() => {

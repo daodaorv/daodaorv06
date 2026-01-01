@@ -44,7 +44,7 @@
     <!-- 编辑对话框 -->
     <el-dialog
       v-model="dialogVisible"
-      :title="`编辑${getHostingTypeName(currentConfig?.hostingType || 'own_car')}配置`"
+      :title="`编辑${getHostingTypeName((currentConfig?.hostingType || 'own_car') as HostingType)}配置`"
       width="600px"
     >
       <el-form ref="formRef" :model="formData" :rules="formRules" label-width="120px">
@@ -192,7 +192,7 @@ const getHostingTypeName = (type: HostingType) => {
 }
 
 const getHostingTypeTag = (type: HostingType) => {
-  const map: Record<HostingType, string> = {
+  const map: Record<HostingType, 'primary' | 'success' | 'warning' | 'info' | 'danger'> = {
     own_car: 'primary',
     new_car: 'success',
     crowdfunding: 'warning',

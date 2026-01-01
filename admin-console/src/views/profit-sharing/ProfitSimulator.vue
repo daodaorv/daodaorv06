@@ -194,14 +194,14 @@
 import { ref, reactive } from 'vue'
 import { ElMessage } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
-import type { ProfitSimulatorInput, ProfitSimulatorOutput } from '@/types/profit'
+import type { ProfitSimulatorInput, ProfitSimulatorOutput, ProductType } from '@/types/profit'
 import { simulateProfit } from '@/api/profit'
 
 const simulating = ref(false)
 const formRef = ref<FormInstance>()
 
 const formData = reactive<ProfitSimulatorInput>({
-  productType: 'vehicle_rental',
+  productType: 'vehicle_rental' as ProductType,
   orderAmount: 5000,
   directCost: 1500,
   hasPromoter: false,

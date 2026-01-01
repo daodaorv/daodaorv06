@@ -478,7 +478,7 @@ const getHostingTypeName = (type: HostingType) => {
 
 // 获取托管类型标签
 const getHostingTypeTag = (type: HostingType) => {
-  const map: Record<HostingType, string> = {
+  const map: Record<HostingType, 'primary' | 'success' | 'warning' | 'info' | 'danger'> = {
     own_car: 'primary',
     new_car: 'success',
     crowdfunding: 'warning',
@@ -499,15 +499,15 @@ const getStatusName = (status: ProfitStatus) => {
 }
 
 // 获取状态标签
-const getStatusTag = (status: ProfitStatus) => {
-  const map: Record<ProfitStatus, string> = {
+const getStatusTag = (status: ProfitStatus): 'primary' | 'success' | 'warning' | 'info' | 'danger' => {
+  const map: Record<ProfitStatus, 'primary' | 'success' | 'warning' | 'info' | 'danger'> = {
     pending: 'info',
     calculated: 'warning',
     paid: 'success',
     frozen: 'danger',
     cancelled: 'info',
   }
-  return map[status] || ''
+  return map[status] || 'info'
 }
 
 // 初始化
