@@ -1,4 +1,3 @@
-<!-- @ts-nocheck -->
 <template>
   <div class="profit-price-diff-container">
     <!-- 统计卡片 -->

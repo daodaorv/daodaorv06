@@ -1,4 +1,3 @@
-<!-- @ts-nocheck -->
 <template>
   <div class="profit-employee-container">
     <!-- 统计卡片 -->
