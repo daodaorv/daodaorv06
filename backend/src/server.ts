@@ -3,6 +3,8 @@ import { config } from '@config/index';
 import { logger } from '@utils/logger';
 import { testConnection, closePool } from '@db/connection';
 import { connectRedis, testRedisConnection, disconnectRedis } from '@config/redis';
+// 导入队列处理器（启动分润计算队列）
+import './queues/commission.queue';
 
 /**
  * 启动服务器

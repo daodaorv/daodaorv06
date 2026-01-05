@@ -26,6 +26,9 @@ import orderRoutes from './v1/order.routes';
 import contactRoutes from './v1/contact.routes';
 import rulesRoutes from './v1/rules.routes';
 import operationLogRoutes from './v1/operation-log.routes';
+import hostingApplicationRoutes from './v1/hosting-application.routes';
+import benefitConfigRoutes from './v1/benefit-config.routes';
+import membershipOrderRoutes from './v1/membership-order.routes';
 
 const router = Router();
 
@@ -57,5 +60,8 @@ router.use('/v1/orders', orderRoutes);
 router.use('/v1/contacts', contactRoutes);
 router.use('/v1/rules', rulesRoutes);
 router.use('/v1/operation-logs', operationLogRoutes);
+router.use('/v1/hosting-applications', hostingApplicationRoutes);
+router.use('/v1/benefit-configs', benefitConfigRoutes);
+router.use('/v1/membership-orders', membershipOrderRoutes);
 
 export default router;

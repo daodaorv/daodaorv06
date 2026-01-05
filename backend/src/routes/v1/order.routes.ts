@@ -6,6 +6,7 @@ import { logger } from '@utils/logger';
 import { OrderQueryParams, CreateOrderParams, CancelOrderParams, OrderStatus, PaymentStatus } from '../../types/models/order.types';
 import { authMiddleware } from '../../middleware/auth.middleware';
 import { requirePermission } from '../../middleware/permission.middleware';
+import { commissionQueue } from '../../config/queue';
 
 const router = Router();
 const orderDAO = new OrderDAO();
@@ -328,6 +329,17 @@ router.put('/:id/status', authMiddleware, requirePermission('order:update'), asy
     if (!success) {
       res.status(500).json(errorResponse('更新订单状态失败', 500));
       return undefined;
+    }
+
+    // 如果订单状态更新为已完成，触发分润计算队列
+    if (status === 'completed') {
+      try {
+        await commissionQueue.add({ orderId: order.id });
+        logger.info('已将订单加入分润计算队列', { orderId: order.id });
+      } catch (error) {
+        logger.error('加入分润计算队列失败', { orderId: order.id, error });
+        // 不影响订单状态更新的成功响应
+      }
     }
 
     res.json(successResponse({ message: '订单状态已更新', status }));

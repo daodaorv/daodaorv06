@@ -64,4 +64,51 @@ export class HostingApplicationDAO extends BaseDao<HostingApplication> {
       limit,
     };
   }
+
+  /**
+   * 审核托管申请
+   */
+  async reviewApplication(data: {
+    id: number;
+    status: 'approved' | 'rejected';
+    reviewedBy: number;
+    rejectReason?: string;
+  }): Promise<boolean> {
+    const sql = `
+      UPDATE ${this.tableName}
+      SET status = ?, reviewed_by = ?, reviewed_at = NOW(), reject_reason = ?
+      WHERE id = ?
+    `;
+    const result = await QueryBuilder.update(sql, [
+      data.status,
+      data.reviewedBy,
+      data.rejectReason || null,
+      data.id,
+    ]);
+    return result > 0;
+  }
+
+  /**
+   * 获取待审核的申请列表
+   */
+  async getPendingApplications(page: number = 1, limit: number = 10) {
+    const offset = (page - 1) * limit;
+
+    const rows = await QueryBuilder.query<HostingApplication>(
+      `SELECT * FROM ${this.tableName} WHERE status = 'pending' ORDER BY created_at ASC LIMIT ? OFFSET ?`,
+      [limit, offset]
+    );
+
+    const countResult = await QueryBuilder.queryOne<any>(
+      `SELECT COUNT(*) as total FROM ${this.tableName} WHERE status = 'pending'`,
+      []
+    );
+
+    return {
+      list: rows,
+      total: countResult?.total || 0,
+      page,
+      limit,
+    };
+  }
 }
