@@ -1,16 +1,12 @@
 <template>
-  <div class="profit-records-container">
-    <el-page-header @back="$router.back()" class="page-header">
-      <template #content>
-        <span class="page-title">分润记录查询</span>
-      </template>
-      <template #extra>
+  <div class="page-container">
+      <div class="page-actions">
         <el-button type="primary" @click="handleExport">
           <el-icon><Download /></el-icon>
           导出数据
         </el-button>
-      </template>
-    </el-page-header>
+      </div>
+    </div>
 
     <!-- 统计卡片 -->
     <el-row :gutter="20" class="stats-row">
@@ -146,8 +142,8 @@
 
       <!-- 分页 -->
       <el-pagination
-        v-model:current-page="pagination.page"
-        v-model:page-size="pagination.pageSize"
+        :current-page="pagination.page"
+        :page-size="pagination.pageSize"
         :total="pagination.total"
         :page-sizes="[10, 20, 50, 100]"
         layout="total, sizes, prev, pager, next, jumper"
@@ -291,18 +287,21 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
-.profit-records-container {
+.page-container {
   padding: 20px;
+  background: #f5f7fa;
+  min-height: calc(100vh - 60px);
 
-  .page-header {
-    margin-bottom: 20px;
-    background: #fff;
-    padding: 16px 20px;
-    border-radius: 4px;
+  .page-description {
+        font-size: 14px;
+        color: #909399;
+        margin: 0;
+      }
+    }
 
-    .page-title {
-      font-size: 18px;
-      font-weight: 600;
+    .page-actions {
+      display: flex;
+      gap: 8px;
     }
   }
 

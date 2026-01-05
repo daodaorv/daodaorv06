@@ -242,16 +242,6 @@ const formatNumber = (num: number) => num.toFixed(2)
 .profit-simulator-container {
   padding: 20px;
 
-  .page-header {
-    margin-bottom: 20px;
-    background: #fff;
-    padding: 16px 20px;
-    border-radius: 4px;
-
-    .page-title {
-      font-size: 18px;
-      font-weight: 600;
-    }
   }
 
   .card-header {

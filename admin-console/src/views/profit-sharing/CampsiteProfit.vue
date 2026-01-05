@@ -1,11 +1,5 @@
 <template>
-  <div class="campsite-profit-container">
-    <el-page-header @back="$router.back()" class="page-header">
-      <template #content>
-        <span class="page-title">营地产品分润管理</span>
-      </template>
-    </el-page-header>
-
+  <div class="page-container">
     <el-row :gutter="20" class="stats-row">
       <el-col :span="6">
         <el-card shadow="hover" class="stats-card">
@@ -134,8 +128,8 @@
           </el-table>
 
           <el-pagination
-            v-model:current-page="pagination.page"
-            v-model:page-size="pagination.pageSize"
+            :current-page="pagination.page"
+            :page-size="pagination.pageSize"
             :total="pagination.total"
             :page-sizes="[10, 20, 50, 100]"
             layout="total, sizes, prev, pager, next, jumper"
@@ -279,20 +273,16 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
-.campsite-profit-container {
+.page-container {
   padding: 20px;
+  background: #f5f7fa;
+  min-height: calc(100vh - 60px);
 
-  .page-header {
-    margin-bottom: 20px;
-    background: #fff;
-    padding: 16px 20px;
-    border-radius: 4px;
-
-    .page-title {
-      font-size: 18px;
-      font-weight: 600;
-    }
-  }
+  .page-description {
+        font-size: 14px;
+        color: #909399;
+        margin: 0;
+      }
 
   .stats-row {
     margin-bottom: 20px;

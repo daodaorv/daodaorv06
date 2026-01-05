@@ -198,8 +198,8 @@
 
           <!-- 分页 -->
           <el-pagination
-            v-model:current-page="pagination.page"
-            v-model:page-size="pagination.pageSize"
+            :current-page="pagination.page"
+            :page-size="pagination.pageSize"
             :total="pagination.total"
             :page-sizes="[10, 20, 50, 100]"
             layout="total, sizes, prev, pager, next, jumper"
@@ -524,16 +524,6 @@ onMounted(() => {
 .promotion-profit-container {
   padding: 20px;
 
-  .page-header {
-    margin-bottom: 20px;
-    background: #fff;
-    padding: 16px 20px;
-    border-radius: 4px;
-
-    .page-title {
-      font-size: 18px;
-      font-weight: 600;
-    }
   }
 
   .stats-row {
