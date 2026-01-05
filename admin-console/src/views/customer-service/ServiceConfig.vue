@@ -1,5 +1,5 @@
 <template>
-  <div class="service-config-container">
+  <div class="page-container">
     <el-tabs v-model="activeTab" class="config-tabs">
       <!-- 智能路由配置 -->
       <el-tab-pane label="智能路由配置" name="routing">
@@ -336,9 +336,17 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
-.service-config-container {
+.page-container {
   padding: 20px;
+  background: #f5f7fa;
+  min-height: calc(100vh - 60px);
 }
+
+.page-description {
+      font-size: 14px;
+      color: #909399;
+      margin: 0;
+    }
 
 .config-tabs {
   margin-top: 20px;
