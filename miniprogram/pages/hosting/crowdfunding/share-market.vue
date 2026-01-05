@@ -114,7 +114,7 @@
             @click="selectSort(option.value)"
           >
             <text class="option-text">{{ option.label }}</text>
-            <u-icon v-if="currentSort === option.value" name="checkbox-mark" size="18" color="#9C27B0"></u-icon>
+            <u-icon v-if="currentSort === option.value" name="checkbox-mark" size="18" color="#2979FF"></u-icon>
           </view>
         </view>
       </view>
@@ -136,7 +136,7 @@
             @click="selectPriceFilter(option.value)"
           >
             <text class="option-text">{{ option.label }}</text>
-            <u-icon v-if="currentPriceFilter === option.value" name="checkbox-mark" size="18" color="#9C27B0"></u-icon>
+            <u-icon v-if="currentPriceFilter === option.value" name="checkbox-mark" size="18" color="#2979FF"></u-icon>
           </view>
         </view>
       </view>
@@ -348,7 +348,7 @@ const goToDetail = (id: string) => {
 
           &.status-funding {
             background: rgba(156, 39, 176, 0.1);
-            color: #9C27B0;
+            color: #2979FF;
           }
 
           &.status-hosting {
@@ -403,7 +403,7 @@ const goToDetail = (id: string) => {
         .price-value {
           font-size: 28rpx;
           font-weight: 700;
-          color: #9C27B0;
+          color: #2979FF;
         }
 
         .price-change {
@@ -503,7 +503,7 @@ const goToDetail = (id: string) => {
       .total-value {
         font-size: 28rpx;
         font-weight: 700;
-        color: #9C27B0;
+        color: #2979FF;
       }
     }
   }
@@ -583,7 +583,7 @@ const goToDetail = (id: string) => {
       }
 
       &.active .option-text {
-        color: #9C27B0;
+        color: #2979FF;
         font-weight: 600;
       }
     }

@@ -379,7 +379,7 @@ const goToLogin = () => {
 // 顶部Banner
 .hero-banner {
   position: relative;
-  background: linear-gradient(135deg, #9C27B0 0%, #BA68C8 100%);
+  background: linear-gradient(135deg, #2979FF 0%, #00B578 100%);
   padding: 60rpx 32rpx 40rpx;
   overflow: hidden;
 
@@ -461,7 +461,7 @@ const goToLogin = () => {
   &.active .tab-text {
     font-size: 32rpx;
     font-weight: 600;
-    color: #9C27B0;
+    color: #2979FF;
   }
 
   .tab-indicator {
@@ -471,7 +471,7 @@ const goToLogin = () => {
     transform: translateX(-50%);
     width: 40rpx;
     height: 6rpx;
-    background: #9C27B0;
+    background: #2979FF;
     border-radius: 3rpx;
   }
 }
@@ -580,7 +580,7 @@ const goToLogin = () => {
   .price-value {
     font-size: 28rpx;
     font-weight: 600;
-    color: #9C27B0;
+    color: #2979FF;
   }
 
   .return-value {
@@ -643,7 +643,7 @@ const goToLogin = () => {
 
     .progress-fill {
       height: 100%;
-      background: linear-gradient(90deg, #9C27B0 0%, #BA68C8 100%);
+      background: linear-gradient(90deg, #2979FF 0%, #00B578 100%);
       border-radius: 6rpx;
       transition: width 0.3s;
     }
@@ -657,7 +657,7 @@ const goToLogin = () => {
     .progress-text {
       font-size: 24rpx;
       font-weight: 600;
-      color: #9C27B0;
+      color: #2979FF;
     }
 
     .remaining-text {
@@ -767,7 +767,7 @@ const goToLogin = () => {
         color: #1D2129;
 
         &.primary {
-          color: #9C27B0;
+          color: #2979FF;
           font-size: 30rpx;
         }
 
@@ -803,7 +803,7 @@ const goToLogin = () => {
 
   .login-btn,
   .browse-btn {
-    background: linear-gradient(135deg, #9C27B0 0%, #BA68C8 100%);
+    background: linear-gradient(135deg, #2979FF 0%, #00B578 100%);
     color: #FFFFFF;
     font-size: 28rpx;
     padding: 0 60rpx;
@@ -820,7 +820,7 @@ const goToLogin = () => {
 
 .my-shares {
   .stats-card {
-    background: linear-gradient(135deg, #9C27B0 0%, #BA68C8 100%);
+    background: linear-gradient(135deg, #2979FF 0%, #00B578 100%);
     border-radius: 16rpx;
     padding: 32rpx;
     margin-bottom: 24rpx;

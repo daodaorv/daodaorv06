@@ -51,7 +51,7 @@
           <u-icon
             :name="participantType === 'individual' ? 'checkbox-mark' : 'checkbox'"
             size="20"
-            :color="participantType === 'individual' ? '#9C27B0' : '#C0C4CC'"
+            :color="participantType === 'individual' ? '#2979FF' : '#C0C4CC'"
           ></u-icon>
           <text>个人参与</text>
         </view>
@@ -63,7 +63,7 @@
           <u-icon
             :name="participantType === 'company' ? 'checkbox-mark' : 'checkbox'"
             size="20"
-            :color="participantType === 'company' ? '#9C27B0' : '#C0C4CC'"
+            :color="participantType === 'company' ? '#2979FF' : '#C0C4CC'"
           ></u-icon>
           <text>企业参与</text>
         </view>
@@ -112,7 +112,7 @@
                 mode="aspectFill"
               ></image>
               <view v-else class="upload-placeholder">
-                <u-icon name="camera-fill" size="32" color="#9C27B0"></u-icon>
+                <u-icon name="camera-fill" size="32" color="#2979FF"></u-icon>
                 <text>点击上传</text>
                 <text class="upload-tip">身份证正面</text>
               </view>
@@ -125,7 +125,7 @@
                 mode="aspectFill"
               ></image>
               <view v-else class="upload-placeholder">
-                <u-icon name="camera-fill" size="32" color="#9C27B0"></u-icon>
+                <u-icon name="camera-fill" size="32" color="#2979FF"></u-icon>
                 <text>点击上传</text>
                 <text class="upload-tip">身份证反面</text>
               </view>
@@ -168,7 +168,7 @@
                 mode="aspectFill"
               ></image>
               <view v-else class="upload-placeholder">
-                <u-icon name="camera-fill" size="40" color="#9C27B0"></u-icon>
+                <u-icon name="camera-fill" size="40" color="#2979FF"></u-icon>
                 <text>点击上传营业执照</text>
                 <text class="upload-tip">请确保照片清晰可辨识</text>
               </view>
@@ -637,7 +637,7 @@ const handleSubmit = async () => {
       .progress-text {
         font-size: 24rpx;
         font-weight: 600;
-        color: #9C27B0;
+        color: #2979FF;
       }
 
       .remaining-text {
@@ -725,11 +725,11 @@ const handleSubmit = async () => {
       }
 
       &.active {
-        background: rgba(156, 39, 176, 0.1);
-        border-color: #9C27B0;
+        background: rgba(41, 121, 255, 0.1);
+        border-color: #2979FF;
 
         text {
-          color: #9C27B0;
+          color: #2979FF;
           font-weight: 600;
         }
       }
@@ -815,11 +815,11 @@ const handleSubmit = async () => {
             align-items: center;
             justify-content: center;
             gap: 8rpx;
-            border: 2rpx dashed #9C27B0;
+            border: 2rpx dashed #2979FF;
 
             text {
               font-size: 22rpx;
-              color: #9C27B0;
+              color: #2979FF;
 
               &.upload-tip {
                 font-size: 20rpx;
@@ -862,11 +862,11 @@ const handleSubmit = async () => {
             align-items: center;
             justify-content: center;
             gap: 12rpx;
-            border: 2rpx dashed #9C27B0;
+            border: 2rpx dashed #2979FF;
 
             text {
               font-size: 24rpx;
-              color: #9C27B0;
+              color: #2979FF;
 
               &.upload-tip {
                 font-size: 20rpx;
@@ -936,13 +936,13 @@ const handleSubmit = async () => {
 
           .currency {
             font-size: 28rpx;
-            color: #9C27B0;
+            color: #2979FF;
           }
 
           .amount {
             font-size: 40rpx;
             font-weight: 700;
-            color: #9C27B0;
+            color: #2979FF;
           }
         }
       }
@@ -1082,7 +1082,7 @@ const handleSubmit = async () => {
       color: #1D2129;
 
       .link-text {
-        color: #9C27B0;
+        color: #2979FF;
         text-decoration: underline;
       }
     }
@@ -1121,13 +1121,13 @@ const handleSubmit = async () => {
 
       .currency {
         font-size: 24rpx;
-        color: #9C27B0;
+        color: #2979FF;
       }
 
       .amount {
         font-size: 36rpx;
         font-weight: 700;
-        color: #9C27B0;
+        color: #2979FF;
       }
     }
   }
@@ -1135,7 +1135,7 @@ const handleSubmit = async () => {
   .submit-btn {
     width: 240rpx;
     height: 88rpx;
-    background: linear-gradient(135deg, #9C27B0 0%, #BA68C8 100%);
+    background: linear-gradient(135deg, #2979FF 0%, #00B578 100%);
     color: #FFFFFF;
     border-radius: 44rpx;
     font-size: 30rpx;

@@ -99,7 +99,7 @@
             @click="selectFilter(option.value)"
           >
             <text class="option-text">{{ option.label }}</text>
-            <u-icon v-if="currentFilter === option.value" name="checkbox-mark" size="18" color="#9C27B0"></u-icon>
+            <u-icon v-if="currentFilter === option.value" name="checkbox-mark" size="18" color="#2979FF"></u-icon>
           </view>
         </view>
       </view>
@@ -395,7 +395,7 @@ const handleWithdraw = async () => {
   margin-bottom: 20rpx;
 
   .stats-card {
-    background: linear-gradient(135deg, #9C27B0 0%, #BA68C8 100%);
+    background: linear-gradient(135deg, #2979FF 0%, #00B578 100%);
     border-radius: 16rpx;
     padding: 32rpx 24rpx;
     display: flex;
@@ -622,7 +622,7 @@ const handleWithdraw = async () => {
       }
 
       &.active .option-text {
-        color: #9C27B0;
+        color: #2979FF;
         font-weight: 600;
       }
     }

@@ -24,7 +24,7 @@
           <text class="model-brand">{{ model.brand }}</text>
         </view>
         <view class="share-btn" @click="handleShare">
-          <u-icon name="share" size="20" color="#9C27B0"></u-icon>
+          <u-icon name="share" size="20" color="#2979FF"></u-icon>
         </view>
       </view>
 
@@ -355,18 +355,18 @@ const startCrowdfunding = () => {
 
         .currency {
           font-size: 28rpx;
-          color: #9C27B0;
+          color: #2979FF;
         }
 
         .amount {
           font-size: 48rpx;
           font-weight: 700;
-          color: #9C27B0;
+          color: #2979FF;
         }
 
         .unit {
           font-size: 28rpx;
-          color: #9C27B0;
+          color: #2979FF;
         }
       }
     }
@@ -433,7 +433,7 @@ const startCrowdfunding = () => {
           color: #1D2129;
 
           &.primary {
-            color: #9C27B0;
+            color: #2979FF;
           }
         }
       }
@@ -558,7 +558,7 @@ const startCrowdfunding = () => {
 
     .project-count {
       font-size: 24rpx;
-      color: #9C27B0;
+      color: #2979FF;
       padding: 6rpx 16rpx;
       background: rgba(156, 39, 176, 0.1);
       border-radius: 32rpx;
@@ -640,11 +640,11 @@ const startCrowdfunding = () => {
 
     &.secondary {
       background: #F8F9FC;
-      color: #9C27B0;
+      color: #2979FF;
     }
 
     &.primary {
-      background: linear-gradient(135deg, #9C27B0 0%, #BA68C8 100%);
+      background: linear-gradient(135deg, #2979FF 0%, #00B578 100%);
       color: #FFFFFF;
     }
   }

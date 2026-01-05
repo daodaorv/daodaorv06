@@ -142,7 +142,7 @@
     <!-- 底部操作栏 -->
     <view class="bottom-bar">
       <view class="contact-btn" @click="contactSeller">
-        <u-icon name="chat" size="24" color="#9C27B0"></u-icon>
+        <u-icon name="chat" size="24" color="#2979FF"></u-icon>
         <text>联系卖家</text>
       </view>
       <button class="buy-btn" @click="handleBuy">
@@ -383,8 +383,8 @@ const handleBuy = async () => {
         font-weight: 600;
 
         &.status-funding {
-          background: rgba(156, 39, 176, 0.1);
-          color: #9C27B0;
+          background: rgba(41, 121, 255, 0.1);
+          color: #2979FF;
         }
 
         &.status-hosting {
@@ -446,7 +446,7 @@ const handleBuy = async () => {
   }
 
   .price-card {
-    background: linear-gradient(135deg, rgba(156, 39, 176, 0.05) 0%, rgba(186, 104, 200, 0.05) 100%);
+    background: linear-gradient(135deg, rgba(41, 121, 255, 0.05) 0%, rgba(0, 181, 120, 0.05) 100%);
     border-radius: 16rpx;
     padding: 24rpx;
 
@@ -473,13 +473,13 @@ const handleBuy = async () => {
 
         .currency {
           font-size: 24rpx;
-          color: #9C27B0;
+          color: #2979FF;
         }
 
         .amount {
           font-size: 32rpx;
           font-weight: 700;
-          color: #9C27B0;
+          color: #2979FF;
         }
       }
 
@@ -757,7 +757,7 @@ const handleBuy = async () => {
   .contact-btn {
     width: 88rpx;
     height: 88rpx;
-    background: rgba(156, 39, 176, 0.1);
+    background: rgba(41, 121, 255, 0.1);
     border-radius: 50%;
     display: flex;
     flex-direction: column;
@@ -767,14 +767,14 @@ const handleBuy = async () => {
 
     text {
       font-size: 20rpx;
-      color: #9C27B0;
+      color: #2979FF;
     }
   }
 
   .buy-btn {
     flex: 1;
     height: 88rpx;
-    background: linear-gradient(135deg, #9C27B0 0%, #BA68C8 100%);
+    background: linear-gradient(135deg, #2979FF 0%, #00B578 100%);
     color: #FFFFFF;
     border-radius: 44rpx;
     font-size: 30rpx;

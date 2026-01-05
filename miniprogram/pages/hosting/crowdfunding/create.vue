@@ -501,12 +501,12 @@ const submit = async () => {
 
     &.active {
       .step-number {
-        background: #9C27B0;
+        background: #2979FF;
         color: #FFFFFF;
       }
 
       .step-text {
-        color: #9C27B0;
+        color: #2979FF;
         font-weight: 600;
       }
     }
@@ -527,7 +527,7 @@ const submit = async () => {
     transition: all 0.3s;
 
     &.active {
-      background: #9C27B0;
+      background: #2979FF;
     }
   }
 }
@@ -595,7 +595,7 @@ const submit = async () => {
       .price-value {
         font-size: 28rpx;
         font-weight: 600;
-        color: #9C27B0;
+        color: #2979FF;
       }
     }
   }
@@ -681,7 +681,7 @@ const submit = async () => {
 
       &.primary {
         font-size: 32rpx;
-        color: #9C27B0;
+        color: #2979FF;
       }
     }
   }
@@ -786,7 +786,7 @@ const submit = async () => {
       color: #1D2129;
 
       &.primary {
-        color: #9C27B0;
+        color: #2979FF;
         font-size: 30rpx;
       }
     }
@@ -821,11 +821,11 @@ const submit = async () => {
 
     &.secondary {
       background: #F8F9FC;
-      color: #9C27B0;
+      color: #2979FF;
     }
 
     &.primary {
-      background: linear-gradient(135deg, #9C27B0 0%, #BA68C8 100%);
+      background: linear-gradient(135deg, #2979FF 0%, #00B578 100%);
       color: #FFFFFF;
 
       &[disabled] {

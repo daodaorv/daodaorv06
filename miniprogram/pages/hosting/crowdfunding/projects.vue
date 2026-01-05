@@ -107,7 +107,7 @@
             @click="selectStatus(option.value)"
           >
             <text class="option-text">{{ option.label }}</text>
-            <u-icon v-if="currentStatus === option.value" name="checkbox-mark" size="18" color="#9C27B0"></u-icon>
+            <u-icon v-if="currentStatus === option.value" name="checkbox-mark" size="18" color="#2979FF"></u-icon>
           </view>
         </view>
       </view>
@@ -129,7 +129,7 @@
             @click="selectSort(option.value)"
           >
             <text class="option-text">{{ option.label }}</text>
-            <u-icon v-if="currentSort === option.value" name="checkbox-mark" size="18" color="#9C27B0"></u-icon>
+            <u-icon v-if="currentSort === option.value" name="checkbox-mark" size="18" color="#2979FF"></u-icon>
           </view>
         </view>
       </view>
@@ -311,7 +311,7 @@ const goToDetail = (id: string) => {
     backdrop-filter: blur(10px);
 
     &.status-funding {
-      background: rgba(156, 39, 176, 0.9);
+      background: rgba(41, 121, 255, 0.9);
       color: #FFFFFF;
     }
 
@@ -368,7 +368,7 @@ const goToDetail = (id: string) => {
 
     .progress-fill {
       height: 100%;
-      background: linear-gradient(90deg, #9C27B0 0%, #BA68C8 100%);
+      background: linear-gradient(90deg, #2979FF 0%, #00B578 100%);
       border-radius: 6rpx;
       transition: width 0.3s;
     }
@@ -382,7 +382,7 @@ const goToDetail = (id: string) => {
     .progress-text {
       font-size: 24rpx;
       font-weight: 600;
-      color: #9C27B0;
+      color: #2979FF;
     }
 
     .remaining-text {
@@ -519,7 +519,7 @@ const goToDetail = (id: string) => {
       }
 
       &.active .option-text {
-        color: #9C27B0;
+        color: #2979FF;
         font-weight: 600;
       }
     }

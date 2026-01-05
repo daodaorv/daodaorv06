@@ -474,7 +474,7 @@ const handleSubmit = async () => {
 
       .reference-text {
         font-size: 24rpx;
-        color: #9C27B0;
+        color: #2979FF;
       }
     }
   }
@@ -543,13 +543,13 @@ const handleSubmit = async () => {
 
         .currency {
           font-size: 28rpx;
-          color: #9C27B0;
+          color: #2979FF;
         }
 
         .amount {
           font-size: 40rpx;
           font-weight: 700;
-          color: #9C27B0;
+          color: #2979FF;
         }
       }
     }
@@ -684,13 +684,13 @@ const handleSubmit = async () => {
 
       .currency {
         font-size: 24rpx;
-        color: #9C27B0;
+        color: #2979FF;
       }
 
       .amount {
         font-size: 36rpx;
         font-weight: 700;
-        color: #9C27B0;
+        color: #2979FF;
       }
     }
   }
@@ -698,7 +698,7 @@ const handleSubmit = async () => {
   .submit-btn {
     width: 240rpx;
     height: 88rpx;
-    background: linear-gradient(135deg, #9C27B0 0%, #BA68C8 100%);
+    background: linear-gradient(135deg, #2979FF 0%, #00B578 100%);
     color: #FFFFFF;
     border-radius: 44rpx;
     font-size: 30rpx;

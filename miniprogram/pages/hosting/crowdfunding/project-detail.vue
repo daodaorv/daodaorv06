@@ -142,7 +142,7 @@
     <!-- 底部操作栏 -->
     <view class="bottom-bar">
       <view class="share-btn" @click="handleShare">
-        <u-icon name="share" size="24" color="#9C27B0"></u-icon>
+        <u-icon name="share" size="24" color="#2979FF"></u-icon>
         <text>分享</text>
       </view>
       <button
@@ -299,7 +299,7 @@ const participate = () => {
     z-index: 10;
 
     &.status-funding {
-      background: rgba(156, 39, 176, 0.9);
+      background: rgba(41, 121, 255, 0.9);
       color: #FFFFFF;
     }
 
@@ -402,7 +402,7 @@ const participate = () => {
     .progress-percent {
       font-size: 32rpx;
       font-weight: 700;
-      color: #9C27B0;
+      color: #2979FF;
     }
   }
 
@@ -415,7 +415,7 @@ const participate = () => {
 
     .progress-fill {
       height: 100%;
-      background: linear-gradient(90deg, #9C27B0 0%, #BA68C8 100%);
+      background: linear-gradient(90deg, #2979FF 0%, #00B578 100%);
       border-radius: 8rpx;
       transition: width 0.3s;
     }
@@ -466,7 +466,7 @@ const participate = () => {
 
     &.main {
       padding: 24rpx;
-      background: linear-gradient(135deg, rgba(156, 39, 176, 0.05) 0%, rgba(186, 104, 200, 0.05) 100%);
+      background: linear-gradient(135deg, rgba(41, 121, 255, 0.05) 0%, rgba(186, 104, 200, 0.05) 100%);
       border-radius: 12rpx;
       margin-bottom: 16rpx;
       border-bottom: none;
@@ -478,18 +478,18 @@ const participate = () => {
 
         .currency {
           font-size: 28rpx;
-          color: #9C27B0;
+          color: #2979FF;
         }
 
         .amount {
           font-size: 48rpx;
           font-weight: 700;
-          color: #9C27B0;
+          color: #2979FF;
         }
 
         .unit {
           font-size: 28rpx;
-          color: #9C27B0;
+          color: #2979FF;
         }
       }
     }
@@ -622,9 +622,9 @@ const participate = () => {
 
     .participant-count {
       font-size: 24rpx;
-      color: #9C27B0;
+      color: #2979FF;
       padding: 6rpx 16rpx;
-      background: rgba(156, 39, 176, 0.1);
+      background: rgba(41, 121, 255, 0.1);
       border-radius: 32rpx;
     }
   }
@@ -657,9 +657,9 @@ const participate = () => {
 
       .participant-badge {
         font-size: 22rpx;
-        color: #9C27B0;
+        color: #2979FF;
         padding: 4rpx 12rpx;
-        background: rgba(156, 39, 176, 0.1);
+        background: rgba(41, 121, 255, 0.1);
         border-radius: 8rpx;
       }
     }
@@ -715,7 +715,7 @@ const participate = () => {
   .share-btn {
     width: 88rpx;
     height: 88rpx;
-    background: rgba(156, 39, 176, 0.1);
+    background: rgba(41, 121, 255, 0.1);
     border-radius: 50%;
     display: flex;
     flex-direction: column;
@@ -725,7 +725,7 @@ const participate = () => {
 
     text {
       font-size: 20rpx;
-      color: #9C27B0;
+      color: #2979FF;
     }
   }
 
@@ -742,7 +742,7 @@ const participate = () => {
     }
 
     &.primary {
-      background: linear-gradient(135deg, #9C27B0 0%, #BA68C8 100%);
+      background: linear-gradient(135deg, #2979FF 0%, #00B578 100%);
       color: #FFFFFF;
     }
 

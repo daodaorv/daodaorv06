@@ -295,7 +295,7 @@ const goToMarket = () => {
   margin-bottom: 20rpx;
 
   .stats-card {
-    background: linear-gradient(135deg, #9C27B0 0%, #BA68C8 100%);
+    background: linear-gradient(135deg, #2979FF 0%, #00B578 100%);
     border-radius: 16rpx;
     padding: 32rpx 24rpx;
     display: flex;
@@ -353,7 +353,7 @@ const goToMarket = () => {
 
     &.active {
       text {
-        color: #9C27B0;
+        color: #2979FF;
         font-weight: 600;
       }
 
@@ -365,7 +365,7 @@ const goToMarket = () => {
         transform: translateX(-50%);
         width: 60rpx;
         height: 4rpx;
-        background: #9C27B0;
+        background: #2979FF;
         border-radius: 2rpx;
       }
     }
@@ -431,7 +431,7 @@ const goToMarket = () => {
 
           &.status-funding {
             background: rgba(156, 39, 176, 0.1);
-            color: #9C27B0;
+            color: #2979FF;
           }
 
           &.status-hosting {
@@ -500,11 +500,11 @@ const goToMarket = () => {
 
       &.secondary {
         background: #F8F9FC;
-        color: #9C27B0;
+        color: #2979FF;
       }
 
       &.primary {
-        background: linear-gradient(135deg, #9C27B0 0%, #BA68C8 100%);
+        background: linear-gradient(135deg, #2979FF 0%, #00B578 100%);
         color: #FFFFFF;
       }
     }
@@ -615,11 +615,11 @@ const goToMarket = () => {
 
       &.secondary {
         background: #F8F9FC;
-        color: #9C27B0;
+        color: #2979FF;
       }
 
       &.primary {
-        background: linear-gradient(135deg, #9C27B0 0%, #BA68C8 100%);
+        background: linear-gradient(135deg, #2979FF 0%, #00B578 100%);
         color: #FFFFFF;
       }
     }
@@ -662,7 +662,7 @@ const goToMarket = () => {
   .empty-btn {
     width: 240rpx;
     height: 72rpx;
-    background: linear-gradient(135deg, #9C27B0 0%, #BA68C8 100%);
+    background: linear-gradient(135deg, #2979FF 0%, #00B578 100%);
     color: #FFFFFF;
     border-radius: 36rpx;
     font-size: 26rpx;
