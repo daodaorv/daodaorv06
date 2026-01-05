@@ -21,8 +21,8 @@ const mockContacts: MockContact[] = [
         phone: '13800000000',
         idCard: '110101199001017654',
         driverLicenseNo: '110101198806050011',
-        driverLicenseFront: 'https://via.placeholder.com/300x200?text=DL+Front',
-        driverLicenseBack: 'https://via.placeholder.com/300x200?text=DL+Back',
+        driverLicenseFront: 'https://placehold.co/300x200?text=DL+Front',
+        driverLicenseBack: 'https://placehold.co/300x200?text=DL+Back',
         isDefault: true,
         createdAt: new Date().toISOString()
     },
@@ -32,8 +32,8 @@ const mockContacts: MockContact[] = [
         phone: '13900000000',
         idCard: '310101199503041234',
         driverLicenseNo: '310101199003031234',
-        driverLicenseFront: 'https://via.placeholder.com/300x200?text=DL+Front',
-        driverLicenseBack: 'https://via.placeholder.com/300x200?text=DL+Back',
+        driverLicenseFront: 'https://placehold.co/300x200?text=DL+Front',
+        driverLicenseBack: 'https://placehold.co/300x200?text=DL+Back',
         isDefault: false,
         createdAt: new Date().toISOString()
     }

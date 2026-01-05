@@ -615,20 +615,30 @@ defineExpose({ onDateConfirm });
 }
 
 // 城市门店选择行
-.city-store-row {
 	display: flex;
-	gap: 16rpx;
+	gap: 0;
+	background: $uni-bg-color; // 整体背景 wrap
+	border-radius: 12rpx;
+	padding: 8rpx;
+	align-items: center;
 
 	.city-selector {
 		flex: 0 0 35%;
-		background: $uni-bg-color;
-		border-radius: 12rpx;
 		padding: 20rpx 16rpx;
 		cursor: pointer;
-		transition: opacity 0.2s;
-
-		&:active {
-			opacity: 0.7;
+		background: transparent; // 去除背景
+		position: relative;
+		
+		// 分割线
+		&::after {
+			content: '';
+			position: absolute;
+			right: 0;
+			top: 50%;
+			transform: translateY(-50%);
+			width: 1px;
+			height: 24rpx;
+			background-color: #E5E6EB;
 		}
 
 		.city-name {
@@ -646,15 +656,9 @@ defineExpose({ onDateConfirm });
 
 	.store-selector {
 		flex: 1;
-		background: $uni-bg-color;
-		border-radius: 12rpx;
-		padding: 20rpx 16rpx;
+		padding: 20rpx 24rpx; // 增加左内边距
 		cursor: pointer;
-		transition: opacity 0.2s;
-
-		&:active {
-			opacity: 0.7;
-		}
+		background: transparent; // 去除背景
 
 		.store-name {
 			font-size: 28rpx;

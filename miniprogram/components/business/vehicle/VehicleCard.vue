@@ -235,8 +235,8 @@ const handleFavorite = () => {
 	font-size: 20rpx;
 	color: $uni-text-color-secondary;
 	background-color: $uni-bg-color;
-	padding: 4rpx 12rpx;
-	border-radius: 8rpx;
+	padding: 4rpx 16rpx;
+	border-radius: 20rpx;
 }
 
 .specs-row {

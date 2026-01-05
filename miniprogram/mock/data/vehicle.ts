@@ -11,7 +11,7 @@ const mockVehicles = [
         model: 'Sprinter',
         year: 2023,
         seats: 4,
-        images: ['https://via.placeholder.com/400x300'],
+        images: ['https://placehold.co/400x300'],
         basePrice: 580,
         store: {
             id: 'store_001',
@@ -29,7 +29,7 @@ const mockVehicles = [
         model: 'RV80',
         year: 2023,
         seats: 6,
-        images: ['https://via.placeholder.com/400x300'],
+        images: ['https://placehold.co/400x300'],
         basePrice: 480,
         store: {
             id: 'store_001',

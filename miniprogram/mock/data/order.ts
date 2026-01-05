@@ -83,7 +83,7 @@ export const orderData = {
                 vehicle: {
                     id: 'vehicle_001',
                     name: '奔驰Sprinter豪华房车',
-                    image: 'https://via.placeholder.com/200x150'
+                    image: 'https://placehold.co/200x150'
                 },
                 pickupInfo: {
                     storeName: '北京朝阳门店',

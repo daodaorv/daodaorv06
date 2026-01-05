@@ -31,7 +31,7 @@ export const authData = {
                     id: 'user_001',
                     phone: data.phone,
                     nickname: '新用户',
-                    avatar: 'https://via.placeholder.com/100',
+                    avatar: 'https://placehold.co/100x100',
                     userType: 'CUSTOMER',
                     tags: ['新用户']  // 新用户标签
                 }
@@ -53,7 +53,7 @@ export const authData = {
                     id: 'user_001',
                     phone: data.phone,
                     nickname: '叨叨用户',
-                    avatar: 'https://via.placeholder.com/100',
+                    avatar: 'https://placehold.co/100x100',
                     userType: 'CUSTOMER',
                     tags: []  // 普通用户无标签
                 }
