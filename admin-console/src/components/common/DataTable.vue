@@ -68,7 +68,6 @@
     </el-table>
 
     <!-- 分页 -->
-    <!-- eslint-disable vue/no-mutating-props -->
     <div v-if="pagination" class="pagination-container">
       <el-pagination
         v-model:current-page="pagination.page"
@@ -80,7 +79,6 @@
         @current-change="handleCurrentChange"
       />
     </div>
-    <!-- eslint-enable vue/no-mutating-props -->
   </el-card>
 </template>
 
@@ -118,7 +116,7 @@ export interface Pagination {
 
 const _props = withDefaults(
   defineProps<{
-    data: any[]
+    data?: any[]
     columns: TableColumn[]
     loading?: boolean
     actions?: TableAction[]
@@ -129,6 +127,7 @@ const _props = withDefaults(
   }>(),
   {
     loading: false,
+    data: () => [],
     actions: () => [],
     actionsWidth: 200,
     toolbarButtons: () => [],
