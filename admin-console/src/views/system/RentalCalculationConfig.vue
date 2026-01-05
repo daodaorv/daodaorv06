@@ -1,5 +1,8 @@
 <template>
-  <div class="rental-calculation-config">
+  <div class="page-container">
+    <!-- 页面标题 -->
+    </div>
+
     <el-card shadow="never">
       <template #header>
         <div class="card-header">
@@ -290,8 +293,16 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
-.rental-calculation-config {
+.page-container {
   padding: 20px;
+  background: #f5f7fa;
+  min-height: calc(100vh - 60px);
+
+  .page-description {
+        font-size: 14px;
+        color: #909399;
+        margin: 0;
+      }
 
   .card-header {
     display: flex;

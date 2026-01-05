@@ -1,9 +1,6 @@
 <template>
-  <div class="system-monitor-container">
+  <div class="page-container">
     <!-- 页面标题 -->
-    <div class="page-header">
-      <h2>系统监控</h2>
-      <p class="page-description">实时监控系统性能和资源使用情况</p>
     </div>
 
     <!-- 系统状态卡片 -->
@@ -416,25 +413,16 @@ onUnmounted(() => {
 </script>
 
 <style scoped lang="scss">
-.system-monitor-container {
+.page-container {
   padding: 20px;
+  background: #f5f7fa;
+  min-height: calc(100vh - 60px);
 
-  .page-header {
-    margin-bottom: 20px;
-
-    h2 {
-      font-size: 24px;
-      font-weight: 600;
-      margin-bottom: 8px;
-      color: #303133;
-    }
-
-    .page-description {
-      font-size: 14px;
-      color: #909399;
-      margin: 0;
-    }
-  }
+  .page-description {
+        font-size: 14px;
+        color: #909399;
+        margin: 0;
+      }
 
   .status-row {
     margin-bottom: 20px;

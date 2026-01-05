@@ -1,15 +1,9 @@
 <template>
-  <div class="system-config-container">
-    <!-- 页面标题 -->
-    <div class="page-header">
-      <h2>系统配置</h2>
-      <p class="page-description">管理系统基础参数和业务规则配置</p>
-    </div>
+  <div class="page-container">
+    <PageHeader title="系统配置" description="管理平台基础配置与业务规则" />
 
-    <!-- 配置分类标签 -->
-    // @ts-ignore
     <el-card class="tabs-card" shadow="never">
-      <el-tabs v-model="activeTab" @tab-change="handleTabChange">
+      <el-tabs v-model="activeTab">
         <el-tab-pane label="基础配置" name="basic">
           <BasicConfig />
         </el-tab-pane>
@@ -31,41 +25,23 @@
 </template>
 
 <script setup lang="ts">
-// @ts-nocheck
 import { ref } from 'vue'
+import PageHeader from '@/components/common/PageHeader.vue'
 import BasicConfig from './components/BasicConfig.vue'
 import BusinessRules from './components/BusinessRules.vue'
 import PaymentConfig from './components/PaymentConfig.vue'
 import NotificationConfig from './components/NotificationConfig.vue'
 import ThirdPartyConfig from './components/ThirdPartyConfig.vue'
 
-const activeTab = ref('basic')
-
-const handleTabChange = (tabName: string) => {
-  console.log('切换到标签:', tabName)
-}
+type TabName = 'basic' | 'business' | 'payment' | 'notification' | 'thirdparty'
+const activeTab = ref<TabName>('basic')
 </script>
 
 <style scoped lang="scss">
-.system-config-container {
+.page-container {
   padding: 20px;
-
-  .page-header {
-    margin-bottom: 20px;
-
-    h2 {
-      font-size: 24px;
-      font-weight: 600;
-      margin-bottom: 8px;
-      color: #303133;
-    }
-
-    .page-description {
-      font-size: 14px;
-      color: #909399;
-      margin: 0;
-    }
-  }
+  background: #f5f7fa;
+  min-height: calc(100vh - 60px);
 
   .tabs-card {
     :deep(.el-tabs__header) {

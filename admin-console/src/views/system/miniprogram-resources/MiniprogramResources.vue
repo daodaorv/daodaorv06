@@ -1,9 +1,6 @@
 <template>
-  <div class="miniprogram-resources-container">
+  <div class="page-container">
     <!-- 页面标题 -->
-    <div class="page-header">
-      <h2>小程序资源配置</h2>
-      <p class="page-description">管理小程序端的图片、文本、配置等资源</p>
     </div>
 
     <!-- 配置分类标签 -->
@@ -46,25 +43,16 @@ const handleTabChange = (tabName: string) => {
 </script>
 
 <style scoped lang="scss">
-.miniprogram-resources-container {
+.page-container {
   padding: 20px;
+  background: #f5f7fa;
+  min-height: calc(100vh - 60px);
 
-  .page-header {
-    margin-bottom: 20px;
-
-    h2 {
-      font-size: 24px;
-      font-weight: 600;
-      margin-bottom: 8px;
-      color: #303133;
-    }
-
-    .page-description {
-      font-size: 14px;
-      color: #909399;
-      margin: 0;
-    }
-  }
+  .page-description {
+        font-size: 14px;
+        color: #909399;
+        margin: 0;
+      }
 
   .tabs-card {
     :deep(.el-tabs__header) {

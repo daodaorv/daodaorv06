@@ -1,6 +1,7 @@
 <template>
-  <div class="system-audit-container">
+  <div class="page-container">
     <!-- 页面标题 -->
+    </div>
 
     <!-- 搜索表单 -->
     <SearchForm
@@ -448,8 +449,16 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
-.system-audit-container {
+.page-container {
   padding: 20px;
+  background: #f5f7fa;
+  min-height: calc(100vh - 60px);
+
+  .page-description {
+        font-size: 14px;
+        color: #909399;
+        margin: 0;
+      }
 
   .operator-info {
     display: flex;

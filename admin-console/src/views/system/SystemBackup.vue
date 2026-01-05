@@ -1,9 +1,6 @@
 <template>
-  <div class="system-backup-container">
+  <div class="page-container">
     <!-- 页面标题 -->
-    <div class="page-header">
-      <h2>数据备份</h2>
-      <p class="page-description">管理数据库备份和恢复操作</p>
     </div>
 
     <!-- 备份统计卡片 -->
@@ -175,8 +172,8 @@
       <!-- 分页 -->
       <div class="pagination-container">
         <el-pagination
-          v-model:current-page="pagination.page"
-          v-model:page-size="pagination.pageSize"
+          :current-page="pagination.page"
+          :page-size="pagination.pageSize"
           :page-sizes="[10, 20, 50, 100]"
           :total="pagination.total"
           layout="total, sizes, prev, pager, next, jumper"
@@ -586,25 +583,16 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
-.system-backup-container {
+.page-container {
   padding: 20px;
+  background: #f5f7fa;
+  min-height: calc(100vh - 60px);
 
-  .page-header {
-    margin-bottom: 20px;
-
-    h2 {
-      font-size: 24px;
-      font-weight: 600;
-      margin-bottom: 8px;
-      color: #303133;
-    }
-
-    .page-description {
-      font-size: 14px;
-      color: #909399;
-      margin: 0;
-    }
-  }
+  .page-description {
+        font-size: 14px;
+        color: #909399;
+        margin: 0;
+      }
 
   .stats-row {
     margin-bottom: 20px;
