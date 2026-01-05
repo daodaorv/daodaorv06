@@ -1,5 +1,5 @@
 <template>
-  <div class="campsite-settings-container">
+  <div class="page-container">
     <el-card class="settings-card">
       <template #header>
         <div class="card-header">
@@ -965,9 +965,17 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
-.campsite-settings-container {
+.page-container {
   padding: 20px;
+  background: #f5f7fa;
+  min-height: calc(100vh - 60px);
 }
+
+.page-description {
+      font-size: 14px;
+      color: #909399;
+      margin: 0;
+    }
 
 .settings-card {
   margin-top: 20px;
