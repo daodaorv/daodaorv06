@@ -1,5 +1,5 @@
 <template>
-  <div class="user-blacklist-container">
+  <div class="page-container">
     <SearchForm
       v-model="searchForm"
       :fields="searchFields"
@@ -442,20 +442,28 @@ function handleExport() {
 </script>
 
 <style scoped lang="scss">
-.user-blacklist-container {
+.page-container {
   padding: 20px;
+  background: #f5f7fa;
+  min-height: calc(100vh - 60px);
+}
 
-  .user-info {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+.page-description {
+  font-size: 14px;
+  color: #909399;
+  margin: 0;
+}
 
-    .user-detail {
-      .phone {
-        font-size: 12px;
-        color: #909399;
-        margin-top: 4px;
-      }
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  .user-detail {
+    .phone {
+      font-size: 12px;
+      color: #909399;
+      margin-top: 4px;
     }
   }
 }
