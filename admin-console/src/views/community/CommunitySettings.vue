@@ -1,5 +1,5 @@
 <template>
-  <div class="community-settings-container">
+  <div class="page-container">
     <el-tabs v-model="activeTab" class="settings-tabs">
       <!-- 版块管理 -->
       <el-tab-pane label="版块管理" name="sections">
@@ -522,9 +522,17 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
-.community-settings-container {
+.page-container {
   padding: 20px;
+  background: #f5f7fa;
+  min-height: calc(100vh - 60px);
 }
+
+.page-description {
+      font-size: 14px;
+      color: #909399;
+      margin: 0;
+    }
 
 .settings-tabs {
   margin-top: 20px;

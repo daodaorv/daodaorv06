@@ -1,6 +1,6 @@
 <!-- 社区内容管理页面 -->
 <template>
-  <div class="community-content-container">
+  <div class="page-container">
     <!-- 统计卡片 -->
     <StatsCard :stats="statsCards" />
 
@@ -628,9 +628,17 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
-.community-content-container {
+.page-container {
   padding: 20px;
+  background: #f5f7fa;
+  min-height: calc(100vh - 60px);
 }
+
+.page-description {
+      font-size: 14px;
+      color: #909399;
+      margin: 0;
+    }
 
 .user-info {
   display: flex;
