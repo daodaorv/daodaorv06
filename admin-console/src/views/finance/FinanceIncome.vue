@@ -1,5 +1,5 @@
 <template>
-  <div class="finance-income-container">
+  <div class="page-container">
     <!-- 统计卡片 -->
     <el-row :gutter="16" class="stats-row">
       <el-col :span="6">
@@ -372,9 +372,17 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
-.finance-income-container {
+.page-container {
   padding: 20px;
+  background: #f5f7fa;
+  min-height: calc(100vh - 60px);
 }
+
+.page-description {
+      font-size: 14px;
+      color: #909399;
+      margin: 0;
+    }
 
 .stats-row {
   margin-bottom: 20px;
