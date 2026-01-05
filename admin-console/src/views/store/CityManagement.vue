@@ -1,5 +1,5 @@
 <template>
-  <div class="city-management-container">
+  <div class="page-container">
     <DataTable
       :data="cityList"
       :columns="tableColumns"
@@ -220,13 +220,21 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
-.city-management-container {
+.page-container {
   padding: 20px;
+  background: #f5f7fa;
+  min-height: calc(100vh - 60px);
+}
 
-  .form-tip {
-    font-size: 12px;
-    color: #909399;
-    margin-top: 4px;
-  }
+.page-description {
+      font-size: 14px;
+      color: #909399;
+      margin: 0;
+    }
+
+.form-tip {
+  font-size: 12px;
+  color: #909399;
+  margin-top: 4px;
 }
 </style>

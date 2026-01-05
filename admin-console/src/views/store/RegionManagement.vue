@@ -1,5 +1,5 @@
 <template>
-  <div class="city-tier-management-container">
+  <div class="page-container">
     <DataTable
       :data="cityTierList"
       :columns="tableColumns"
@@ -251,7 +251,15 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
-.city-tier-management-container {
+.page-container {
   padding: 20px;
+  background: #f5f7fa;
+  min-height: calc(100vh - 60px);
 }
+
+.page-description {
+      font-size: 14px;
+      color: #909399;
+      margin: 0;
+    }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="store-detail-container">
+  <div class="page-container">
     <el-card v-if="store" class="detail-card">
       <template #header>
         <div class="card-header">
@@ -1175,35 +1175,43 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
-.store-detail-container {
+.page-container {
   padding: 20px;
+  background: #f5f7fa;
+  min-height: calc(100vh - 60px);
+}
 
-  .detail-card,
-  .images-card,
-  .location-card,
-  .vehicles-card,
-  .employees-card,
-  .special-services-card {
-    margin-top: 20px;
-  }
-
-  .card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .images-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 16px;
-
-    .store-image {
-      width: 100%;
-      height: 150px;
-      border-radius: 4px;
-      cursor: pointer;
+.page-description {
+      font-size: 14px;
+      color: #909399;
+      margin: 0;
     }
+
+.detail-card,
+.images-card,
+.location-card,
+.vehicles-card,
+.employees-card,
+.special-services-card {
+  margin-top: 20px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.images-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+
+  .store-image {
+    width: 100%;
+    height: 150px;
+    border-radius: 4px;
+    cursor: pointer;
   }
 }
 </style>
