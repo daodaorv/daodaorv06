@@ -182,10 +182,12 @@ const posts = ref([
 
 // 瀑布流分栏
 const leftPosts = computed(() => {
+	if (!posts.value || !Array.isArray(posts.value)) return []
 	return posts.value.filter((_, index) => index % 2 === 0)
 })
 
 const rightPosts = computed(() => {
+	if (!posts.value || !Array.isArray(posts.value)) return []
 	return posts.value.filter((_, index) => index % 2 === 1)
 })
 
@@ -396,7 +398,7 @@ const navigateTo = (url: string) => {
 	background-color: #FFFFFF;
 	border-radius: $uni-radius-md;
 	overflow: hidden;
-	box-shadow: $uni-shadow-sm;
+	box-shadow: $uni-shadow-card;
 	transition: opacity 0.2s ease;
 
 	&:active { opacity: 0.9; }

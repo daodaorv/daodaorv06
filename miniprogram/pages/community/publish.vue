@@ -442,22 +442,22 @@ const getMockProducts = (type: ProductType): Product[] => {
 	switch (type) {
 		case ProductType.CAMPSITE:
 			return [
-				{ id: '1', name: '青城山房车营地', price: 200, image: 'https://via.placeholder.com/100', type },
-				{ id: '2', name: '西岭雪山露营基地', price: 180, image: 'https://via.placeholder.com/100', type },
-				{ id: '3', name: '都江堰房车公园', price: 220, image: 'https://via.placeholder.com/100', type }
+				{ id: '1', name: '青城山房车营地', price: 200, image: 'https://placehold.co/100x100', type },
+				{ id: '2', name: '西岭雪山露营基地', price: 180, image: 'https://placehold.co/100x100', type },
+				{ id: '3', name: '都江堰房车公园', price: 220, image: 'https://placehold.co/100x100', type }
 			]
 		case ProductType.TRAVEL:
 			return [
-				{ id: '4', name: '川西环线7日游', price: 800, image: 'https://via.placeholder.com/100', type },
-				{ id: '5', name: '稻城亚丁5日游', price: 1200, image: 'https://via.placeholder.com/100', type },
-				{ id: '6', name: '九寨沟黄龙4日游', price: 900, image: 'https://via.placeholder.com/100', type }
+				{ id: '4', name: '川西环线7日游', price: 800, image: 'https://placehold.co/100x100', type },
+				{ id: '5', name: '稻城亚丁5日游', price: 1200, image: 'https://placehold.co/100x100', type },
+				{ id: '6', name: '九寨沟黄龙4日游', price: 900, image: 'https://placehold.co/100x100', type }
 			]
 		case ProductType.RENTAL:
 			return [
-				{ id: '1', name: '杭州→千岛湖 依维柯欧胜C型房车', price: 1280, image: 'https://via.placeholder.com/100', type },
-				{ id: '2', name: '上海→舟山 大通V90 B型房车', price: 980, image: 'https://via.placeholder.com/100', type },
-				{ id: '3', name: '南京→黄山 福特全顺C型房车', price: 1580, image: 'https://via.placeholder.com/100', type },
-				{ id: '4', name: '杭州→莫干山 奔驰斯宾特B型房车', price: 2280, image: 'https://via.placeholder.com/100', type }
+				{ id: '1', name: '杭州→千岛湖 依维柯欧胜C型房车', price: 1280, image: 'https://placehold.co/100x100', type },
+				{ id: '2', name: '上海→舟山 大通V90 B型房车', price: 980, image: 'https://placehold.co/100x100', type },
+				{ id: '3', name: '南京→黄山 福特全顺C型房车', price: 1580, image: 'https://placehold.co/100x100', type },
+				{ id: '4', name: '杭州→莫干山 奔驰斯宾特B型房车', price: 2280, image: 'https://placehold.co/100x100', type }
 			]
 		default:
 			return []
