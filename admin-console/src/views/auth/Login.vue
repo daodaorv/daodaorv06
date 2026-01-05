@@ -1,11 +1,10 @@
 <template>
-  <div class="login-container">
+  <div class="page-container">
     <div class="login-form">
       <!-- Logo和标题 -->
       <div class="login-header">
-        <div class="logo">🚐</div>
-        <h1 class="title">叨叨房车租赁管理平台</h1>
-        <p class="subtitle">专业的房车租赁管理解决方案</p>
+        <h2 class="title">叨叨房车租赁管理平台</h2>
+        <p class="page-description">专业的房车租赁管理解决方案</p>
       </div>
 
       <!-- 登录表单 -->
@@ -127,12 +126,13 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
-.login-container {
+.page-container {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
 
   .login-form {
     width: 400px;
@@ -143,21 +143,16 @@ onMounted(() => {
 
     .login-header {
       text-align: center;
-      margin-bottom: 40px;
-
-      .logo {
-        font-size: 64px;
-        margin-bottom: 16px;
-      }
+      margin-bottom: 30px;
 
       .title {
         font-size: 24px;
         font-weight: 600;
         color: #303133;
-        margin-bottom: 8px;
+        margin: 0 0 8px 0;
       }
 
-      .subtitle {
+      .page-description {
         font-size: 14px;
         color: #909399;
         margin: 0;
@@ -190,7 +185,7 @@ onMounted(() => {
 }
 
 @media (max-width: 768px) {
-  .login-container {
+  .page-container {
     padding: 20px;
 
     .login-form {

@@ -1,11 +1,10 @@
 <template>
-  <div class="register-container">
+  <div class="page-container">
     <div class="register-form">
       <!-- Logo和标题 -->
-      <div class="register-header">
-        <div class="logo">🚐</div>
-        <h1 class="title">叨叨房车租赁管理平台</h1>
-        <p class="subtitle">申请注册管理账号</p>
+      <div class="header">
+        <h2 class="title">叨叨房车租赁管理平台</h2>
+        <p class="page-description">申请注册管理账号</p>
       </div>
 
       <!-- 身份选择 -->
@@ -225,7 +224,7 @@ const handleBack = () => {
 </script>
 
 <style scoped lang="scss">
-.register-container {
+.page-container {
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -241,27 +240,17 @@ const handleBack = () => {
     border-radius: 8px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 
-    .register-header {
-      text-align: center;
-      margin-bottom: 30px;
+    .title {
+      font-size: 24px;
+      font-weight: 600;
+      color: #303133;
+      margin: 0 0 8px 0;
+    }
 
-      .logo {
-        font-size: 64px;
-        margin-bottom: 16px;
-      }
-
-      .title {
-        font-size: 24px;
-        font-weight: 600;
-        color: #303133;
-        margin-bottom: 8px;
-      }
-
-      .subtitle {
-        font-size: 14px;
-        color: #909399;
-        margin: 0;
-      }
+    .page-description {
+      font-size: 14px;
+      color: #909399;
+      margin: 0;
     }
 
     .role-selection {
@@ -300,7 +289,7 @@ const handleBack = () => {
 }
 
 @media (max-width: 768px) {
-  .register-container {
+  .page-container {
     padding: 20px;
 
     .register-form {

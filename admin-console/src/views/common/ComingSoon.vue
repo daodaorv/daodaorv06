@@ -1,10 +1,11 @@
 <template>
-  <div class="coming-soon">
+  <div class="page-container">
+    <!-- 内容区 -->
     <div class="coming-soon-content">
       <el-icon :size="120" color="#409eff">
         <Tools />
       </el-icon>
-      <h2>功能开发中</h2>
+      <h3>功能开发中</h3>
       <p>该功能正在开发中，敬请期待...</p>
       <el-button type="primary" @click="goBack">返回上一页</el-button>
     </div>
@@ -22,16 +23,28 @@ const goBack = () => {
 </script>
 
 <style scoped lang="scss">
-.coming-soon {
+.page-container {
+  padding: 20px;
+  background: #f5f7fa;
+  min-height: calc(100vh - 60px);
   display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 60vh;
+  flex-direction: column;
+
+  .page-description {
+        font-size: 14px;
+        color: #909399;
+        margin: 0;
+      }
 
   .coming-soon-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     text-align: center;
 
-    h2 {
+    h3 {
       margin: 24px 0 12px;
       font-size: 28px;
       font-weight: 600;
