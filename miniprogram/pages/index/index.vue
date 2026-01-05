@@ -397,7 +397,7 @@ const navigateTo = (url: string) => {
 	display: flex;
 	justify-content: space-between;
 	align-items: flex-start;
-	box-shadow: $uni-shadow-sm;
+	box-shadow: $uni-shadow-card;
 	position: relative;
 	overflow: hidden;
 	
@@ -465,7 +465,7 @@ const navigateTo = (url: string) => {
 	background: #FFFFFF;
 	border-radius: 24rpx;
 	overflow: hidden;
-	box-shadow: $uni-shadow-sm;
+	box-shadow: $uni-shadow-card;
 	display: flex;
 	flex-direction: row;
 	padding: 20rpx;

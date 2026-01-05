@@ -374,7 +374,7 @@ const goToDetail = (vehicle: VehicleCardData) => {
 	background-color: #FFFFFF;
 	padding: 6rpx 16rpx;
 	border-radius: 20rpx;
-	box-shadow: $uni-shadow-sm;
+	box-shadow: $uni-shadow-card;
 }
 
 .vehicle-list {

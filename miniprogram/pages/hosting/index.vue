@@ -7,7 +7,7 @@
           <view class="notice-item" @click="handleNoticeClick(notice)">
             <view class="notice-tag">公告</view>
             <text class="notice-text">{{ notice.content }}</text>
-            <text class="notice-arrow">›</text>
+            <u-icon name="arrow-right" size="14" color="#CCCCCC"></u-icon>
           </view>
         </swiper-item>
       </swiper>
@@ -78,7 +78,7 @@
       <view class="section-header">
         <text class="section-title">托管车辆</text>
         <view v-if="vehicles.length > 3" class="view-all" @click="viewAllVehicles">
-          全部 <text class="arrow">›</text>
+          全部 <u-icon name="arrow-right" size="14" color="#888888"></u-icon>
         </view>
       </view>
       <view class="vehicle-list">
@@ -122,14 +122,16 @@
         <text class="section-title">托管服务</text>
       </view>
       <view class="feature-grid-core">
-        <!-- 自有车托管 -->
-        <view class="feature-card-core" @click="goToOldCarHosting">
+        <!-- 众筹托管 -->
+        <view class="feature-card-core" @click="goToCrowdfunding">
           <view class="core-content">
-            <text class="core-title">闲置托管</text>
-            <text class="core-subtitle">自有车入驻赚收益</text>
-            <view class="core-badge orange">车主70%分成</view>
+            <text class="core-title">众筹托管</text>
+            <text class="core-subtitle">按份额共享收益</text>
+            <view class="core-badge trust-blue">低门槛高回报</view>
           </view>
-          <image class="core-icon" src="/static/images/old-car-icon.png" mode="aspectFit"></image>
+          <view class="core-icon-wrapper">
+            <u-icon name="grid-fill" size="40" color="#2979FF"></u-icon>
+          </view>
         </view>
 
         <!-- 购车托管 -->
@@ -139,17 +141,21 @@
             <text class="core-subtitle">保底收益+高分成</text>
             <view class="core-badge blue">保底3500/月</view>
           </view>
-          <image class="core-icon" src="/static/images/new-car-icon.png" mode="aspectFit"></image>
+          <view class="core-icon-wrapper">
+            <u-icon name="car-fill" size="40" color="#2979FF"></u-icon>
+          </view>
         </view>
 
-        <!-- 众筹托管 -->
-        <view class="feature-card-core" @click="goToCrowdfunding">
+        <!-- 自有车托管 -->
+        <view class="feature-card-core" @click="goToOldCarHosting">
           <view class="core-content">
-            <text class="core-title">众筹托管</text>
-            <text class="core-subtitle">按份额共享收益</text>
-            <view class="core-badge purple">低门槛高回报</view>
+            <text class="core-title">闲置托管</text>
+            <text class="core-subtitle">自有车入驻赚收益</text>
+            <view class="core-badge orange">车主70%分成</view>
           </view>
-          <image class="core-icon" src="/static/images/crowdfunding-icon.png" mode="aspectFit"></image>
+          <view class="core-icon-wrapper">
+            <u-icon name="car" size="40" color="#FF9F29"></u-icon>
+          </view>
         </view>
       </view>
     </view>
@@ -168,7 +174,7 @@
               <text class="aux-desc">邀请好友推广有奖</text>
             </view>
           </view>
-          <text class="aux-arrow">›</text>
+          <u-icon name="arrow-right" size="14" color="#CCCCCC"></u-icon>
         </view>
 
         <!-- 协议与帮助 -->
@@ -182,7 +188,7 @@
               <text class="aux-desc">了解托管协议与帮助</text>
             </view>
           </view>
-          <text class="aux-arrow">›</text>
+          <u-icon name="arrow-right" size="14" color="#CCCCCC"></u-icon>
         </view>
       </view>
     </view>
@@ -901,9 +907,9 @@ $font-family-num: 'DIN Alternate', -apple-system, sans-serif;
       color: #2196F3;
     }
 
-    &.purple {
-      background: rgba(156, 39, 176, 0.15);
-      color: #9C27B0;
+    &.trust-blue {
+      background: rgba(41, 121, 255, 0.15);
+      color: #2979FF;
     }
   }
 }

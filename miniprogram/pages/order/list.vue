@@ -533,7 +533,7 @@ onShow(() => {
 }
 
 .status-bar {
-	width: 8rpx;
+	width: 6rpx;
 	background-color: $uni-color-primary;
 	flex-shrink: 0;
 }

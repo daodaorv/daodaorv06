@@ -111,19 +111,20 @@
 			</view>
 		</view>
 
-		<!-- 功能列表 -->
+		<!-- 功能宫格 -->
 		<view class="card-container menu-card">
-			<view
-				v-for="(item, index) in listMenu"
-				:key="index"
-				class="menu-item"
-				@tap="handleMenuClick(item)"
-			>
-				<view class="menu-left">
-					<u-icon :name="item.icon" size="20" color="#1D2129"></u-icon>
-					<text class="menu-name">{{ item.name }}</text>
+			<view class="menu-grid">
+				<view
+					v-for="(item, index) in listMenu"
+					:key="index"
+					class="grid-item"
+					@tap="handleMenuClick(item)"
+				>
+					<view class="grid-icon-box">
+						<u-icon :name="item.icon" size="28" color="#1D2129"></u-icon>
+					</view>
+					<text class="grid-name">{{ item.name }}</text>
 				</view>
-				<u-icon name="arrow-right" size="14" color="#CCCCCC"></u-icon>
 			</view>
 		</view>
 
@@ -514,36 +515,41 @@ const navigateTo = (url: string) => {
 	color: $uni-text-color-secondary;
 }
 
-/* Menu List */
+/* Menu Grid */
 .menu-card {
-	padding: 0 $uni-spacing-lg;
+	padding: $uni-spacing-lg $uni-spacing-md;
 }
 
-.menu-item {
+.menu-grid {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 32rpx 0;
+}
+
+.grid-item {
 	display: flex;
+	flex-direction: column;
 	align-items: center;
-	justify-content: space-between;
-	padding: $uni-spacing-lg 0;
-	border-bottom: 1rpx solid $uni-border-color-light;
-	transition: opacity 0.2s ease;
-
-	&:last-child {
-		border-bottom: none;
-	}
-
+	gap: 16rpx;
+	
 	&:active {
 		opacity: 0.7;
+		transform: scale(0.98);
 	}
 }
 
-.menu-left {
+.grid-icon-box {
+	width: 80rpx;
+	height: 80rpx;
+	background-color: #F7F8FA;
+	border-radius: 24rpx;
 	display: flex;
 	align-items: center;
-	gap: $uni-spacing-md;
+	justify-content: center;
 }
 
-.menu-name {
-	font-size: 28rpx;
+.grid-name {
+	font-size: 24rpx;
 	color: $uni-text-color;
 }
 
