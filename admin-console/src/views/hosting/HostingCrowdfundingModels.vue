@@ -1,5 +1,5 @@
 <template>
-  <div class="crowdfunding-models-container">
+  <div class="page-container">
     <!-- 搜索表单 -->
     <SearchForm
       v-model="searchForm"
@@ -589,19 +589,28 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
-.crowdfunding-models-container {
+.page-container {
   padding: 20px;
+  background: #f5f7fa;
+  min-height: calc(100vh - 60px);
+}
 
-  .image-slot {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 80px;
-    height: 60px;
-    background-color: #f5f7fa;
-    color: #909399;
-    font-size: 24px;
-  }
+.page-description {
+      font-size: 14px;
+      color: #909399;
+      margin: 0;
+    }
+
+.image-slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 60px;
+  background-color: #f5f7fa;
+  color: #909399;
+  font-size: 24px;
+}
 
   .price-text {
     color: #f56c6c;

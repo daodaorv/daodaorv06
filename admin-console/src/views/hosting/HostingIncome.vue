@@ -1,5 +1,5 @@
 <template>
-  <div class="hosting-income-container">
+  <div class="page-container">
     <!-- 统计卡片 -->
     <el-row :gutter="20" class="stats-row">
       <el-col :span="6">
@@ -517,35 +517,44 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
-.hosting-income-container {
+.page-container {
   padding: 20px;
+  background: #f5f7fa;
+  min-height: calc(100vh - 60px);
+}
 
-  .stats-row {
-    margin-bottom: 20px;
+.page-description {
+      font-size: 14px;
+      color: #909399;
+      margin: 0;
+    }
 
-    .stat-card {
-      .stat-content {
+.stats-row {
+  margin-bottom: 20px;
+
+  .stat-card {
+    .stat-content {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+
+      .stat-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 8px;
         display: flex;
         align-items: center;
-        gap: 15px;
+        justify-content: center;
+      }
 
-        .stat-icon {
-          width: 60px;
-          height: 60px;
-          border-radius: 8px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
+      .stat-info {
+        flex: 1;
+
+        .stat-label {
+          font-size: 14px;
+          color: #909399;
+          margin-bottom: 8px;
         }
-
-        .stat-info {
-          flex: 1;
-
-          .stat-label {
-            font-size: 14px;
-            color: #909399;
-            margin-bottom: 8px;
-          }
 
           .stat-value {
             font-size: 24px;

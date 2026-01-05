@@ -1,5 +1,5 @@
 <template>
-  <div class="crowdfunding-income-container">
+  <div class="page-container">
     <!-- 统计卡片 -->
     <el-row :gutter="20" style="margin-bottom: 20px">
       <el-col :span="6">
@@ -684,25 +684,34 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
-.crowdfunding-income-container {
+.page-container {
   padding: 20px;
+  background: #f5f7fa;
+  min-height: calc(100vh - 60px);
+}
 
-  .stat-card {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-
-    .stat-icon {
-      width: 64px;
-      height: 64px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+.page-description {
+      font-size: 14px;
+      color: #909399;
+      margin: 0;
     }
 
-    .stat-content {
-      flex: 1;
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  .stat-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .stat-content {
+    flex: 1;
 
       .stat-label {
         font-size: 14px;
