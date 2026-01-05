@@ -1,5 +1,5 @@
 <template>
-  <div class="vehicle-status-container">
+  <div class="page-container">
     <StatsCard :stats="statsConfig" />
 
     <SearchForm
@@ -565,10 +565,19 @@ function handleExport() {
 </script>
 
 <style scoped lang="scss">
-.vehicle-status-container {
+.page-container {
   padding: 20px;
+  background: #f5f7fa;
+  min-height: calc(100vh - 60px);
+}
 
-  .history-item {
+.page-description {
+      font-size: 14px;
+      color: #909399;
+      margin: 0;
+    }
+
+.history-item {
     .history-header {
       display: flex;
       align-items: center;

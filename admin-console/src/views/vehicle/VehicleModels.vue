@@ -1,5 +1,5 @@
 <template>
-  <div class="vehicle-models-container">
+  <div class="page-container">
     <SearchForm
       v-model="searchForm"
       :fields="searchFields"
@@ -1042,10 +1042,19 @@ function handleExport() {
 </script>
 
 <style scoped lang="scss">
-.vehicle-models-container {
+.page-container {
   padding: 20px;
+  background: #f5f7fa;
+  min-height: calc(100vh - 60px);
+}
 
-  .image-slot {
+.page-description {
+      font-size: 14px;
+      color: #909399;
+      margin: 0;
+    }
+
+.image-slot {
     display: flex;
     align-items: center;
     justify-content: center;

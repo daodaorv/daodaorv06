@@ -1,16 +1,15 @@
 <template>
-  <div class="vehicle-model-edit-container">
-    <!-- 页面头部 -->
-    <div class="page-header">
-      <div class="header-left">
-        <el-button :icon="ArrowLeft" @click="handleBack">返回</el-button>
-        <h2 class="page-title">{{ isEdit ? '编辑车型' : '新增车型' }}</h2>
-      </div>
-      <div class="header-right">
-        <el-button @click="handleBack">取消</el-button>
-        <el-button type="primary" :loading="submitLoading" @click="handleSubmit"> 保存 </el-button>
-      </div>
-    </div>
+  <div class="page-container">
+    <PageHeader :title="isEdit ? '编辑车型' : '新增车型'" description="维护车型基础信息与众筹托管参数">
+      <template #extra>
+        <div class="header-right">
+          <el-button @click="handleBack">取消</el-button>
+          <el-button type="primary" :loading="submitLoading" @click="handleSubmit">
+            保存
+          </el-button>
+        </div>
+      </template>
+    </PageHeader>
 
     <!-- 表单内容 -->
     <div class="page-content">
@@ -336,6 +335,7 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
 import { ArrowLeft, Plus, ZoomIn, Delete } from '@element-plus/icons-vue'
 import draggable from 'vuedraggable'
+import PageHeader from '@/components/common/PageHeader.vue'
 import RichTextEditor from '@/components/common/RichTextEditor.vue'
 import {
   getVehicleModelDetail as getVehicleModelById,
@@ -677,37 +677,15 @@ onMounted(async () => {
 </script>
 
 <style scoped lang="scss">
-.vehicle-model-edit-container {
+.page-container {
   height: 100%;
   display: flex;
   flex-direction: column;
   background-color: #f5f7fa;
 
-  .page-header {
+  .header-right {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 16px 24px;
-    background-color: #fff;
-    border-bottom: 1px solid #e4e7ed;
-
-    .header-left {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-
-      .page-title {
-        margin: 0;
-        font-size: 18px;
-        font-weight: 600;
-        color: #303133;
-      }
-    }
-
-    .header-right {
-      display: flex;
-      gap: 12px;
-    }
+    gap: 12px;
   }
 
   .page-content {
