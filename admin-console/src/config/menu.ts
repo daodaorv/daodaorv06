@@ -60,6 +60,26 @@ export const menuConfig: MenuItem[] = [
         },
         component: () => import('@/views/user/UserBlacklist.vue'),
       },
+      {
+        path: '/users/membership-orders',
+        name: 'MembershipOrders',
+        meta: {
+          title: '会员订单',
+          description: '管理用户会员订单，查看订单状态和支付信息',
+          roles: [UserRole.PLATFORM_ADMIN],
+        },
+        component: () => import('@/views/user/MembershipOrders.vue'),
+      },
+      {
+        path: '/users/benefit-config',
+        name: 'BenefitConfig',
+        meta: {
+          title: '会员权益配置',
+          description: '管理会员权益和托管欢迎权益配置',
+          roles: [UserRole.PLATFORM_ADMIN],
+        },
+        component: () => import('@/views/system/BenefitConfig.vue'),
+      },
     ],
   },
 
@@ -211,10 +231,10 @@ export const menuConfig: MenuItem[] = [
         meta: { title: '自有车托管', icon: 'Van' },
         children: [
           {
-            path: '/hosting/old-car',
-            name: 'HostingOldCar',
-            meta: { title: '托管申请审核', description: '审核车主自有车辆托管申请' },
-            component: () => import('@/views/hosting/HostingOldCar.vue'),
+            path: '/hosting/applications',
+            name: 'HostingApplications',
+            meta: { title: '托管申请审核', description: '审核车主自有车辆托管申请，自动分配角色和权益' },
+            component: () => import('@/views/hosting/HostingApplications.vue'),
           },
           {
             path: '/hosting/vehicles',
@@ -667,24 +687,6 @@ export const menuConfig: MenuItem[] = [
           roles: [UserRole.PLATFORM_ADMIN],
         },
         component: () => import('@/views/employee/RegistrationAudit.vue'),
-      },
-      {
-        path: '/employees/roles',
-        name: 'EmployeeRoles',
-        meta: { title: '角色分配', description: '为员工分配系统角色，控制其访问权限和数据范围' },
-        component: () => import('@/views/employee/EmployeeRoles.vue'),
-      },
-      {
-        path: '/employees/store-staff',
-        name: 'EmployeeStoreStaff',
-        meta: { title: '门店员工', description: '管理门店经理和门店员工的信息、排班和考勤' },
-        component: () => import('@/views/employee/EmployeeStoreStaff.vue'),
-      },
-      {
-        path: '/employees/customer-service',
-        name: 'EmployeeCustomerService',
-        meta: { title: '客服人员', description: '管理客服人员信息、工作量统计和服务质量评价' },
-        component: () => import('@/views/employee/EmployeeCustomerService.vue'),
       },
       {
         path: '/employees/performance',
