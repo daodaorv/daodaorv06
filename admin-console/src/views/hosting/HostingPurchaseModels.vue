@@ -1,5 +1,5 @@
 <template>
-  <div class="purchase-models-container">
+  <div class="page-container">
     <!-- 搜索表单 -->
     <SearchForm
       v-model="searchForm"
@@ -297,9 +297,17 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
-.purchase-models-container {
+.page-container {
   padding: 20px;
+  background: #f5f7fa;
+  min-height: calc(100vh - 60px);
 }
+
+.page-description {
+      font-size: 14px;
+      color: #909399;
+      margin: 0;
+    }
 
 .image-slot {
   display: flex;
