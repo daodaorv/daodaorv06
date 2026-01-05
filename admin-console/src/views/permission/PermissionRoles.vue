@@ -1,6 +1,7 @@
 <template>
-  <div class="permission-roles-container">
+  <div class="page-container">
     <!-- 页面标题 -->
+    <PageHeader title="角色管理" description="管理员工角色和权限配置" />
 
     <!-- 搜索表单 -->
     <SearchForm
@@ -190,6 +191,7 @@ import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
 import { Plus, Download } from '@element-plus/icons-vue'
+import PageHeader from '@/components/common/PageHeader.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'
 import type { SearchField } from '@/components/common/SearchForm.vue'
@@ -276,8 +278,8 @@ const loadRoleList = async () => {
       keyword: searchForm.keyword,
       status: searchForm.status as any,
     })
-    roleList.value = response.data.list
-    pagination.total = response.data.total
+    roleList.value = Array.isArray(response?.data?.list) ? response.data.list : []
+    pagination.total = Number(response?.data?.total ?? 0)
   } catch (error) {
     handleApiError(error, '加载角色列表失败')
   } finally {
@@ -439,6 +441,12 @@ const handleDelete = async (row: Role) => {
 
 // 状态切换
 const handleStatusChange = async (row: Role) => {
+  if (!row.id) {
+    ElMessage.error('角色 ID 不存在')
+    row.status = row.status === 'active' ? 'inactive' : 'active'
+    return
+  }
+
   try {
     await roleApi.updateRole({
       id: row.id,
@@ -550,12 +558,13 @@ const handleDialogClose = () => {
 
 // 分页
 const handleSizeChange = (size: number) => {
-  pagination.pageSize = size
+  pagination.page = 1
+  pagination.pageSize = Number(size)
   loadRoleList()
 }
 
 const handleCurrentChange = (page: number) => {
-  pagination.page = page
+  pagination.page = Number(page)
   loadRoleList()
 }
 
@@ -591,23 +600,31 @@ function handleExport() {
 </script>
 
 <style scoped lang="scss">
-.permission-roles-container {
+.page-container {
   padding: 20px;
+  background: #f5f7fa;
+  min-height: calc(100vh - 60px);
+}
 
-  .permission-config {
-    .permission-group {
-      margin-bottom: 20px;
+.page-description {
+      font-size: 14px;
+      color: #909399;
+      margin: 0;
+    }
 
-      .group-title {
-        font-weight: 600;
-        margin-bottom: 10px;
-        color: #303133;
-      }
+.permission-config {
+  .permission-group {
+    margin-bottom: 20px;
 
-      .el-checkbox {
-        display: block;
-        margin-bottom: 10px;
-      }
+    .group-title {
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: #303133;
+    }
+
+    .el-checkbox {
+      display: block;
+      margin-bottom: 10px;
     }
   }
 }

@@ -1,6 +1,9 @@
 <!-- 菜单权限管理页面 -->
 <template>
-  <div class="permission-menu-container">
+  <div class="page-container">
+    <!-- 页面标题 -->
+    <PageHeader title="菜单权限" description="管理角色的菜单访问权限" />
+
     <!-- 搜索表单 -->
     <SearchForm
       v-model="searchParams"
@@ -74,6 +77,7 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, type FormInstance } from 'element-plus'
+import PageHeader from '@/components/common/PageHeader.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'
 import type { SearchField } from '@/components/common/SearchForm.vue'
@@ -222,7 +226,15 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
-.permission-menu-container {
+.page-container {
   padding: 20px;
+  background: #f5f7fa;
+  min-height: calc(100vh - 60px);
 }
+
+.page-description {
+      font-size: 14px;
+      color: #909399;
+      margin: 0;
+    }
 </style>
