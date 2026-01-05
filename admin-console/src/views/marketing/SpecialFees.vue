@@ -1,6 +1,6 @@
 <!-- 特殊费用管理页面 -->
 <template>
-  <div class="special-fees-container">
+  <div class="page-container">
     <!-- 搜索表单 -->
     <SearchForm :fields="searchFields" @search="handleSearch" @reset="handleReset" />
 
@@ -685,7 +685,15 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
-.special-fees-container {
+.page-container {
   padding: 20px;
+  background: #f5f7fa;
+  min-height: calc(100vh - 60px);
 }
+
+.page-description {
+      font-size: 14px;
+      color: #909399;
+      margin: 0;
+    }
 </style>

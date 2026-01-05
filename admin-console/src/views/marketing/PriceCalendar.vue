@@ -1,5 +1,5 @@
 <template>
-  <div class="price-calendar-container">
+  <div class="page-container">
     <!-- 筛选器 -->
     <el-card class="filter-card">
       <el-form :inline="true" :model="filters">
@@ -547,81 +547,89 @@ onMounted(async () => {
 </script>
 
 <style scoped lang="scss">
-.price-calendar-container {
+.page-container {
   padding: 20px;
+  background: #f5f7fa;
+  min-height: calc(100vh - 60px);
+}
 
-  .filter-card {
-    margin-bottom: 20px;
-  }
-
-  .calendar-card {
-    margin-top: 20px;
-
-    .calendar-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-
-      .calendar-actions {
-        display: flex;
-        gap: 10px;
-        align-items: center;
-      }
-    }
-
-    .calendar-grid {
-      .calendar-weekdays {
-        display: grid;
-        grid-template-columns: repeat(7, 1fr);
-        gap: 8px;
-        margin-bottom: 8px;
-
-        .weekday {
-          text-align: center;
-          font-weight: bold;
-          color: #606266;
-          padding: 8px;
-        }
-      }
-
-      .calendar-days {
-        display: grid;
-        grid-template-columns: repeat(7, 1fr);
-        gap: 8px;
-      }
-    }
-  }
-
-  .list-card {
-    margin-top: 20px;
-  }
-
-  .stat-item {
-    text-align: center;
-
-    .stat-label {
+.page-description {
       font-size: 14px;
       color: #909399;
-      margin-bottom: 8px;
+      margin: 0;
     }
 
-    .stat-value {
-      font-size: 24px;
-      font-weight: bold;
-      color: #303133;
-    }
-  }
+.filter-card {
+  margin-bottom: 20px;
+}
 
-  .price-highlight {
-    color: #f56c6c;
-    font-weight: bold;
-    font-size: 16px;
-  }
+.calendar-card {
+  margin-top: 20px;
 
-  .price-change {
+  .calendar-header {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 4px;
+
+    .calendar-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
   }
+
+  .calendar-grid {
+    .calendar-weekdays {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+      margin-bottom: 8px;
+
+      .weekday {
+        text-align: center;
+        font-weight: bold;
+        color: #606266;
+        padding: 8px;
+      }
+    }
+
+    .calendar-days {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+    }
+  }
+}
+
+.list-card {
+  margin-top: 20px;
+}
+
+.stat-item {
+  text-align: center;
+
+  .stat-label {
+    font-size: 14px;
+    color: #909399;
+    margin-bottom: 8px;
+  }
+
+  .stat-value {
+    font-size: 24px;
+    font-weight: bold;
+    color: #303133;
+  }
+}
+
+.price-highlight {
+  color: #f56c6c;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.price-change {
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="coupon-records-container">
+  <div class="page-container">
     <!-- 搜索筛选区 -->
     <SearchForm
       v-model="searchForm"
@@ -465,7 +465,15 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
-.coupon-records-container {
+.page-container {
   padding: 20px;
+  background: #f5f7fa;
+  min-height: calc(100vh - 60px);
 }
+
+.page-description {
+      font-size: 14px;
+      color: #909399;
+      margin: 0;
+    }
 </style>
