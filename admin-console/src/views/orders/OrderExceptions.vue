@@ -1,5 +1,5 @@
 <template>
-  <div class="order-exceptions-container">
+  <div class="page-container">
     <StatsCard :stats="statsConfig" />
 
     <SearchForm
@@ -593,7 +593,15 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
-.order-exceptions-container {
+.page-container {
   padding: 20px;
+  background: #f5f7fa;
+  min-height: calc(100vh - 60px);
 }
+
+.page-description {
+      font-size: 14px;
+      color: #909399;
+      margin: 0;
+    }
 </style>

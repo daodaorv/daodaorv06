@@ -1,5 +1,5 @@
 <template>
-  <div class="order-reviews-container">
+  <div class="page-container">
     <el-tabs v-model="activeTab" type="border-card">
       <!-- 评价列表标签页 -->
       <el-tab-pane label="评价列表" name="list">
@@ -511,14 +511,22 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
-.order-reviews-container {
+.page-container {
   padding: 20px;
+  background: #f5f7fa;
+  min-height: calc(100vh - 60px);
+}
 
-  .tab-header {
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: flex-end;
-  }
+.page-description {
+      font-size: 14px;
+      color: #909399;
+      margin: 0;
+    }
+
+.tab-header {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .comment-cell {

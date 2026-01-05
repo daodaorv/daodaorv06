@@ -1,5 +1,5 @@
 <template>
-  <div class="order-list-container">
+  <div class="page-container">
     <!-- 搜索表单 -->
     <SearchForm
       v-model="searchForm"
@@ -142,8 +142,16 @@ const searchFields: SearchField[] = [
 ]
 </script>
 
-<style scoped>
-.order-list-container {
+<style scoped lang="scss">
+.page-container {
   padding: 20px;
+  background: #f5f7fa;
+  min-height: calc(100vh - 60px);
 }
+
+.page-description {
+      font-size: 14px;
+      color: #909399;
+      margin: 0;
+    }
 </style>

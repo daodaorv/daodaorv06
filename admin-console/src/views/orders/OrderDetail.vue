@@ -1,5 +1,5 @@
 <template>
-  <div class="order-detail-container">
+  <div class="page-container">
     <el-card v-if="order" class="detail-card">
       <template #header>
         <div class="card-header">
@@ -591,25 +591,36 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
-.order-detail-container {
+.page-container {
   padding: 20px;
-  .detail-card,
-  .vehicle-card,
-  .driver-card,
-  .payment-card,
-  .actions-card {
-    margin-top: 20px;
-  }
-  .card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .action-buttons {
-    display: flex;
-    gap: 12px;
-    justify-content: center;
-    padding: 20px 0;
-  }
+  background: #f5f7fa;
+  min-height: calc(100vh - 60px);
+}
+
+.page-description {
+      font-size: 14px;
+      color: #909399;
+      margin: 0;
+    }
+
+.detail-card,
+.vehicle-card,
+.driver-card,
+.payment-card,
+.actions-card {
+  margin-top: 20px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  padding: 20px 0;
 }
 </style>
