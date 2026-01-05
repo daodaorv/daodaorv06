@@ -1,13 +1,16 @@
 <template>
-  <div class="price-analysis-container">
+  <div class="page-container">
+      <el-button type="primary" size="small" @click="handleRefresh">
+        <el-icon><Refresh /></el-icon>
+        刷新数据
+      </el-button>
+    </div>
+
+    <!-- 关键指标卡片 -->
     <el-card shadow="never" class="header-card">
       <template #header>
         <div class="card-header">
-          <span>价格分析报表</span>
-          <el-button type="primary" size="small" @click="handleRefresh">
-            <el-icon><Refresh /></el-icon>
-            刷新数据
-          </el-button>
+          <span>关键指标</span>
         </div>
       </template>
 
@@ -496,8 +499,16 @@ onMounted(async () => {
 </script>
 
 <style scoped lang="scss">
-.price-analysis-container {
+.page-container {
   padding: 20px;
+  background: #f5f7fa;
+  min-height: calc(100vh - 60px);
+
+  .page-description {
+        font-size: 14px;
+        color: #909399;
+        margin: 0;
+      }
 
   .header-card {
     margin-bottom: 20px;
