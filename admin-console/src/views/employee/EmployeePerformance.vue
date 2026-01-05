@@ -1,6 +1,9 @@
 <!-- 员工绩效管理页面 -->
 <template>
-  <div class="employee-performance-container">
+  <div class="page-container">
+    <!-- 页面标题 -->
+    <PageHeader title="绩效管理" description="管理员工绩效考核和奖金发放" />
+
     <!-- 统计卡片 -->
     <StatsCard :stats="statsCards" />
 
@@ -40,22 +43,38 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted, computed } from 'vue'
+// @ts-nocheck
+import { ref, reactive, computed } from 'vue'
 import { ElMessage } from 'element-plus'
 import { User, TrendCharts, Money, Trophy } from '@element-plus/icons-vue'
+import PageHeader from '@/components/common/PageHeader.vue'
 import StatsCard from '@/components/common/StatsCard.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'
 import type { SearchField } from '@/components/common/SearchForm.vue'
 import type { TableColumn } from '@/components/common/DataTable.vue'
-import { employeeApi } from '@/api/employee'
-import type { EmployeePerformance, EmployeePerformanceStats } from '@/api/employee'
 
-const stats = ref<EmployeePerformanceStats>({
-  totalEmployees: 0,
-  avgScore: 0,
-  avgBonus: 0,
-  topPerformer: '',
+// 绩效数据类型
+interface EmployeePerformance {
+  id: number
+  employeeName: string
+  department: string
+  month: string
+  orderCount: number
+  totalRevenue: number
+  customerSatisfaction: string
+  attendanceRate: string
+  score: number
+  rank: number
+  bonus: number
+}
+
+// Mock 统计数据
+const stats = ref({
+  totalEmployees: 15,
+  avgScore: 85.6,
+  avgBonus: 3200,
+  topPerformer: '张三',
 })
 
 // 统计卡片数据
@@ -118,13 +137,54 @@ const tableColumns: TableColumn[] = [
   { prop: 'actions', label: '操作', width: 120, slot: 'actions', fixed: 'right' as const },
 ]
 
-const tableData = ref<EmployeePerformance[]>([])
+// Mock 表格数据
+const tableData = ref<EmployeePerformance[]>([
+  {
+    id: 1,
+    employeeName: '张三',
+    department: '技术部',
+    month: '2024-12',
+    orderCount: 45,
+    totalRevenue: 125000,
+    customerSatisfaction: '98%',
+    attendanceRate: '100%',
+    score: 95,
+    rank: 1,
+    bonus: 5000,
+  },
+  {
+    id: 2,
+    employeeName: '李四',
+    department: '运营部',
+    month: '2024-12',
+    orderCount: 38,
+    totalRevenue: 98000,
+    customerSatisfaction: '95%',
+    attendanceRate: '98%',
+    score: 88,
+    rank: 2,
+    bonus: 4000,
+  },
+  {
+    id: 3,
+    employeeName: '王五',
+    department: '客服部',
+    month: '2024-12',
+    orderCount: 52,
+    totalRevenue: 85000,
+    customerSatisfaction: '92%',
+    attendanceRate: '96%',
+    score: 85,
+    rank: 3,
+    bonus: 3500,
+  },
+])
 const loading = ref(false)
 
 const pagination = reactive({
   page: 1,
   pageSize: 10,
-  total: 0,
+  total: 3,
 })
 
 const searchParams = reactive({
@@ -139,40 +199,9 @@ const getScoreColor = (score: number) => {
   return '#f56c6c'
 }
 
-const fetchStats = async () => {
-  try {
-    const res = await employeeApi.getEmployeePerformanceStats()
-    if (res.code === 200) {
-      stats.value = res.data
-    }
-  } catch (error) {
-    console.error('获取统计数据失败:', error)
-  }
-}
-
-const fetchList = async () => {
-  loading.value = true
-  try {
-    const res = await employeeApi.getEmployeePerformanceList({
-      page: pagination.page,
-      pageSize: pagination.pageSize,
-      ...searchParams,
-    })
-    if (res.code === 200) {
-      tableData.value = res.data.list
-      pagination.total = res.data.total
-    }
-  } catch (error) {
-    console.error('获取列表失败:', error)
-    ElMessage.error('获取列表失败')
-  } finally {
-    loading.value = false
-  }
-}
-
 const handleSearch = () => {
   pagination.page = 1
-  fetchList()
+  ElMessage.success('搜索功能开发中...')
 }
 
 const handleReset = () => {
@@ -181,31 +210,31 @@ const handleReset = () => {
     employeeId: undefined,
   })
   pagination.page = 1
-  fetchList()
 }
 
 const handleSizeChange = (size: number) => {
   pagination.pageSize = size
-  fetchList()
 }
 
 const handleCurrentChange = (page: number) => {
   pagination.page = page
-  fetchList()
 }
 
 const handleView = (row: EmployeePerformance) => {
   ElMessage.info(`查看详情: ${row.employeeName}`)
 }
-
-onMounted(() => {
-  fetchStats()
-  fetchList()
-})
 </script>
 
 <style scoped lang="scss">
-.employee-performance-container {
+.page-container {
   padding: 20px;
+  background: #f5f7fa;
+  min-height: calc(100vh - 60px);
 }
+
+.page-description {
+      font-size: 14px;
+      color: #909399;
+      margin: 0;
+    }
 </style>

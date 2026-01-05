@@ -1,5 +1,8 @@
 <template>
-  <div class="employee-list-container">
+  <div class="page-container">
+    <!-- 页面标题 -->
+    <PageHeader title="员工列表" description="管理平台员工信息、角色分配和权限配置" />
+
     <SearchForm
       v-model="searchForm"
       :fields="searchFields"
@@ -110,6 +113,7 @@ import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Plus, Download, Upload } from '@element-plus/icons-vue'
+import PageHeader from '@/components/common/PageHeader.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'
 import FormDialog from '@/components/common/FormDialog.vue'
@@ -117,7 +121,6 @@ import type { SearchField } from '@/components/common/SearchForm.vue'
 import type { TableColumn, TableAction, ToolbarButton } from '@/components/common/DataTable.vue'
 import type { FormField } from '@/components/common/FormDialog.vue'
 import { useErrorHandler } from '@/composables'
-import { VEHICLE_STATUS_OPTIONS } from '@/constants'
 import { exportToCSV, downloadImportTemplate } from '@/utils/export'
 
 const router = useRouter()
@@ -255,12 +258,12 @@ const searchFields: SearchField[] = [
     options: ROLE_OPTIONS,
   },
   {
-    prop: 'status',
-    label: '员工状态',
-    type: 'select',
-    placeholder: '请选择状态',
-    width: '150px',
-    options: VEHICLE_STATUS_OPTIONS,
+    prop: 'loginPlatforms',
+    label: '可登录平台',
+    type: 'checkbox-group',
+    placeholder: '请选择平台',
+    width: '200px',
+    options: LOGIN_PLATFORM_OPTIONS,
   },
 ]
 
@@ -400,9 +403,12 @@ const formFields: FormField[] = [
       },
       {
         prop: 'status',
-        label: '员工状态',
+        label: '在职状态',
         type: 'radio',
-        options: VEHICLE_STATUS_OPTIONS,
+        options: [
+          { label: '在职', value: 'active' },
+          { label: '离职', value: 'inactive' },
+        ],
         span: 12,
       },
     ],
@@ -424,11 +430,17 @@ const formRules = {
   ],
   email: [
     { required: true, message: '请输入邮箱', trigger: 'blur' },
-    { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' },
+    { type: 'email' as const, message: '请输入正确的邮箱地址', trigger: 'blur' },
   ],
   storeId: [{ required: true, message: '请选择所属门店', trigger: 'change' }],
   loginPlatforms: [
-    { required: true, message: '请选择至少一个登录平台', trigger: 'change', type: 'array', min: 1 },
+    {
+      required: true,
+      message: '请选择至少一个登录平台',
+      trigger: 'change',
+      type: 'array' as const,
+      min: 1,
+    },
   ],
 }
 
@@ -698,32 +710,40 @@ function getRoleTypeTag(role: string) {
 </script>
 
 <style scoped lang="scss">
-.employee-list-container {
+.page-container {
   padding: 20px;
+  background: #f5f7fa;
+  min-height: calc(100vh - 60px);
+}
 
-  .employee-info {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+.page-description {
+      font-size: 14px;
+      color: #909399;
+      margin: 0;
+    }
 
-    .employee-detail {
-      .name {
-        font-weight: 500;
-        margin-bottom: 4px;
-      }
+.employee-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 
-      .job-number {
-        font-size: 12px;
-        color: #909399;
-      }
+  .employee-detail {
+    .name {
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .job-number {
+      font-size: 12px;
+      color: #909399;
     }
   }
+}
 
-  .login-platforms {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 4px;
-  }
+.login-platforms {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
 }
 </style>

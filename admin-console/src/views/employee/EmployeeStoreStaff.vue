@@ -1,5 +1,8 @@
 <template>
-  <div class="employee-store-staff-container">
+  <div class="page-container">
+    <!-- 页面标题 -->
+    <PageHeader title="门店员工" description="管理门店员工信息和角色分配" />
+
     <SearchForm
       v-model="searchForm"
       :fields="searchFields"
@@ -110,6 +113,7 @@ import { ref, reactive, onMounted, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Plus, Download, Upload } from '@element-plus/icons-vue'
+import PageHeader from '@/components/common/PageHeader.vue'
 import SearchForm from '@/components/common/SearchForm.vue'
 import DataTable from '@/components/common/DataTable.vue'
 import FormDialog from '@/components/common/FormDialog.vue'
@@ -781,33 +785,36 @@ function getRoleTypeTag(role: string) {
 }
 </script>
 
+
 <style scoped lang="scss">
-.employee-store-staff-container {
+.page-container {
   padding: 20px;
+  background: #f5f7fa;
+  min-height: calc(100vh - 60px);
+}
 
-  .employee-info {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+.employee-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 
-    .employee-detail {
-      .name {
-        font-weight: 500;
-        margin-bottom: 4px;
-      }
+  .employee-detail {
+    .name {
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
 
-      .job-number {
-        font-size: 12px;
-        color: #909399;
-      }
+    .job-number {
+      font-size: 12px;
+      color: #909399;
     }
   }
+}
 
-  .login-platforms {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 4px;
-  }
+.login-platforms {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
 }
 </style>
