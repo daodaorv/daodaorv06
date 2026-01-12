@@ -9,16 +9,21 @@
       <view class="progress-line" :class="{ active: currentStep > 1 }"></view>
       <view class="progress-step" :class="{ active: currentStep >= 2, completed: currentStep > 2 }">
         <view class="step-number">2</view>
-        <text class="step-text">份额设置</text>
+        <text class="step-text">委托方案</text>
       </view>
       <view class="progress-line" :class="{ active: currentStep > 2 }"></view>
       <view class="progress-step" :class="{ active: currentStep >= 3, completed: currentStep > 3 }">
         <view class="step-number">3</view>
-        <text class="step-text">项目描述</text>
+        <text class="step-text">份额设置</text>
       </view>
       <view class="progress-line" :class="{ active: currentStep > 3 }"></view>
-      <view class="progress-step" :class="{ active: currentStep >= 4 }">
+      <view class="progress-step" :class="{ active: currentStep >= 4, completed: currentStep > 4 }">
         <view class="step-number">4</view>
+        <text class="step-text">项目描述</text>
+      </view>
+      <view class="progress-line" :class="{ active: currentStep > 4 }"></view>
+      <view class="progress-step" :class="{ active: currentStep >= 5 }">
+        <view class="step-number">5</view>
         <text class="step-text">协议确认</text>
       </view>
     </view>
@@ -53,8 +58,39 @@
       </view>
     </view>
 
-    <!-- 步骤2：份额设置 -->
+    <!-- 步骤2：委托方案 -->
     <view v-if="currentStep === 2" class="step-content">
+      <view class="section-header">
+        <text class="section-title">选择委托方案</text>
+        <text class="section-desc">请选择车辆登记和托管运营方式</text>
+      </view>
+      <view class="plan-cards">
+        <view v-for="plan in trusteeshipPlans" :key="plan.plan" class="plan-card" :class="{ active: formData.trusteeshipPlan === plan.plan }" @click="selectPlan(plan.plan)">
+          <view class="plan-header">
+            <text class="plan-name">{{ plan.name }}</text>
+            <view v-if="plan.isRecommended" class="recommend-tag">推荐</view>
+          </view>
+          <text class="plan-desc">{{ plan.description }}</text>
+          <view class="plan-details">
+            <view class="detail-row">
+              <text class="detail-label">车辆登记</text>
+              <text class="detail-value">{{ plan.vehicleRegistration }}</text>
+            </view>
+            <view class="detail-row">
+              <text class="detail-label">叨叨收益</text>
+              <text class="detail-value">{{ plan.daodaoIncome }}</text>
+            </view>
+          </view>
+          <view class="plan-risk">
+            <u-icon name="info-circle" size="14" color="#FF9800"></u-icon>
+            <text>{{ plan.riskNote }}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 步骤3：份额设置 -->
+    <view v-if="currentStep === 3" class="step-content">
       <view class="form-section">
         <view class="section-title">总份额数</view>
         <view class="number-input-row">
@@ -116,10 +152,10 @@
       </view>
     </view>
 
-    <!-- 步骤3：项目描述 -->
-    <view v-if="currentStep === 3" class="step-content">
+    <!-- 步骤4：项目描述 -->
+    <view v-if="currentStep === 4" class="step-content">
       <view class="form-section">
-        <view class="section-title">项目描述</view>
+        <view class="section-title">份额设置</view>
         <u-textarea
           v-model="formData.description"
           placeholder="请详细描述您的众筹计划，包括车辆用途、运营计划、收益预期等"
@@ -155,12 +191,18 @@
       </view>
     </view>
 
-    <!-- 步骤4：协议确认 -->
-    <view v-if="currentStep === 4" class="step-content">
+    <!-- 步骤5：协议确认 -->
+    <view v-if="currentStep === 5" class="step-content">
       <view class="agreement-section">
         <view class="agreement-title">众筹托管协议</view>
         <scroll-view class="agreement-content" scroll-y>
           <text class="agreement-text">
+【您选择的委托方案】
+
+委托方案：{{ agreementContent.planName }}
+车辆登记：{{ agreementContent.vehicleReg }}
+风险说明：{{ agreementContent.riskNote }}
+
 【重要提示】
 
 1. 众筹托管为用户自发行为，叨叨房车仅提供服务和监管，不承担法律责任义务
@@ -181,7 +223,7 @@
 
 3. 众筹成功后，平台将统一代购车辆
 
-4. 车辆购置完成后，参与者需指定托管代表签署托管协议
+4. 车辆购置完成后，车辆登记在{{ agreementContent.vehicleReg }}
 
 5. 车辆托管运营期间，收益按份额比例自动分配
 
@@ -235,14 +277,33 @@
       <button v-if="currentStep > 1" class="action-btn secondary" @click="prevStep">
         上一步
       </button>
-      <button v-if="currentStep < 4" class="action-btn primary" @click="nextStep">
+      <button v-if="currentStep < 5" class="action-btn primary" @click="nextStep">
         下一步
       </button>
-      <button v-if="currentStep === 4" class="action-btn primary" :disabled="!canSubmit" @click="submit">
+      <button v-if="currentStep === 5" class="action-btn primary" :disabled="!canSubmit" @click="submit">
         提交审核
       </button>
     </view>
   </view>
+    <!-- 方案C风险声明弹窗 -->
+    <u-popup :show="showRiskModal" mode="center" round="16" @close="closeRiskModal">
+      <view class="risk-modal">
+        <view class="risk-title">风险声明</view>
+        <view class="risk-content">
+          <text>您选择了"用户自行委托"方案，请知悉以下风险：</text>
+          <view class="risk-list">
+            <view class="risk-item">1. 车辆将登记在指定用户名下</view>
+            <view class="risk-item">2. 该用户对车辆拥有法律上的所有权</view>
+            <view class="risk-item">3. 存在车辆被抵押、转卖等法律风险</view>
+            <view class="risk-item">4. 叨叨房车不承担相关法律责任</view>
+          </view>
+        </view>
+        <view class="risk-actions">
+          <button class="risk-btn cancel" @click="cancelRiskPlan">取消选择</button>
+          <button class="risk-btn confirm" @click="confirmRiskPlan">我已知悉风险</button>
+        </view>
+      </view>
+    </u-popup>
 </template>
 
 <script setup lang="ts">
@@ -250,6 +311,7 @@ import { ref, computed, onMounted } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { getCrowdfundingModelDetail, createCrowdfundingProject } from '@/api/crowdfunding'
 import type { CrowdfundingVehicleModel } from '@/types/crowdfunding'
+import { TrusteeshipPlan, TRUSTEESHIP_PLANS } from '@/types/trusteeship'
 import { logger } from '@/utils/logger'
 
 // 数据定义
@@ -279,7 +341,12 @@ const model = ref<CrowdfundingVehicleModel>({
   crowdfundingCount: 0
 })
 
+// 委托方案列表
+const trusteeshipPlans = TRUSTEESHIP_PLANS
+const showRiskModal = ref(false)
+
 const formData = ref({
+  trusteeshipPlan: TrusteeshipPlan.DAODAO_TRUSTEE,
   title: '',
   totalShares: 10,
   pricePerShare: 0,
@@ -299,6 +366,16 @@ const agreeToTermsArray = ref<string[]>([])
 // 计算是否同意协议
 const agreeToTerms = computed(() => {
   return agreeToTermsArray.value.includes('agree')
+})
+
+// 动态协议内容
+const agreementContent = computed(() => {
+  const plan = trusteeshipPlans.find(p => p.plan === formData.value.trusteeshipPlan)
+  return {
+    planName: plan?.name || "",
+    vehicleReg: plan?.vehicleRegistration || "",
+    riskNote: plan?.riskNote || ""
+  }
 })
 
 // 计算总金额
@@ -365,6 +442,31 @@ const deleteImage = (event: any) => {
 }
 
 // 下一步
+// 选择委托方案
+// 关闭风险弹窗
+// 取消选择方案C
+// 确认风险并选择方案C
+const confirmRiskPlan = () => {
+  formData.value.trusteeshipPlan = TrusteeshipPlan.USER_SELF
+  showRiskModal.value = false
+}
+
+const cancelRiskPlan = () => {
+  showRiskModal.value = false
+}
+
+const closeRiskModal = () => {
+  showRiskModal.value = false
+}
+
+const selectPlan = (plan: TrusteeshipPlan) => {
+  if (plan === TrusteeshipPlan.USER_SELF) {
+    showRiskModal.value = true
+    return
+  }
+  formData.value.trusteeshipPlan = plan
+}
+
 const nextStep = () => {
   if (currentStep.value === 1) {
     if (!formData.value.title) {
@@ -375,6 +477,8 @@ const nextStep = () => {
       return
     }
   } else if (currentStep.value === 2) {
+    // 委托方案已默认选择，无需验证
+  } else if (currentStep.value === 3) {
     if (formData.value.pricePerShare < 1000) {
       uni.showToast({
         title: '单份价格不能低于1000元',
@@ -382,10 +486,10 @@ const nextStep = () => {
       })
       return
     }
-  } else if (currentStep.value === 3) {
+  } else if (currentStep.value === 4) {
     if (!formData.value.description) {
       uni.showToast({
-        title: '请输入项目描述',
+        title: '请输入份额设置',
         icon: 'none'
       })
       return
@@ -431,6 +535,7 @@ const submit = async () => {
       description: formData.value.description,
       images: formData.value.images.map(img => img.url),
       contact: formData.value.contact,
+      trusteeshipPlan: formData.value.trusteeshipPlan,
       agreeToTerms: agreeToTerms.value
     })
 
@@ -547,6 +652,99 @@ const submit = async () => {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+// 委托方案选择
+.section-header {
+  margin-bottom: 32rpx;
+  .section-title {
+    font-size: 32rpx;
+    font-weight: 600;
+    color: #1D2129;
+  }
+  .section-desc {
+    font-size: 24rpx;
+    color: #86909C;
+    margin-top: 8rpx;
+    display: block;
+  }
+}
+
+.plan-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx;
+}
+
+.plan-card {
+  background: #FFFFFF;
+  border-radius: 16rpx;
+  padding: 32rpx;
+  border: 2rpx solid #E5E6EB;
+  transition: all 0.3s;
+  &.active {
+    border-color: #2979FF;
+    background: #F0F7FF;
+  }
+}
+
+.plan-header {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  margin-bottom: 16rpx;
+}
+
+.plan-name {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #1D2129;
+}
+
+.recommend-tag {
+  background: #FF9800;
+  color: #FFFFFF;
+  font-size: 20rpx;
+  padding: 4rpx 12rpx;
+  border-radius: 8rpx;
+}
+
+.plan-desc {
+  font-size: 26rpx;
+  color: #4E5969;
+  margin-bottom: 20rpx;
+  display: block;
+}
+
+.plan-details {
+  background: #F7F8FA;
+  border-radius: 8rpx;
+  padding: 16rpx;
+  margin-bottom: 16rpx;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8rpx 0;
+}
+
+.detail-label {
+  font-size: 24rpx;
+  color: #86909C;
+}
+
+.detail-value {
+  font-size: 24rpx;
+  color: #1D2129;
+}
+
+.plan-risk {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  font-size: 22rpx;
+  color: #FF9800;
 }
 
 // 车型信息卡片
@@ -833,5 +1031,45 @@ const submit = async () => {
       }
     }
   }
+}
+.risk-modal {
+  padding: 40rpx;
+  width: 600rpx;
+}
+.risk-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 32rpx;
+}
+.risk-content {
+  margin-bottom: 32rpx;
+  font-size: 28rpx;
+  color: #4E5969;
+}
+.risk-list {
+  margin-top: 20rpx;
+}
+.risk-item {
+  padding: 8rpx 0;
+  color: #F53F3F;
+}
+.risk-actions {
+  display: flex;
+  gap: 20rpx;
+}
+.risk-btn {
+  flex: 1;
+  height: 80rpx;
+  border-radius: 40rpx;
+  font-size: 28rpx;
+}
+.risk-btn.cancel {
+  background: #F2F3F5;
+  color: #4E5969;
+}
+.risk-btn.confirm {
+  background: #2979FF;
+  color: #FFFFFF;
 }
 </style>

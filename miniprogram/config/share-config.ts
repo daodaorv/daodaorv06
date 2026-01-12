@@ -177,7 +177,7 @@ export const shareAchievementConfig = {
     reward: {
       type: 'points',
       amount: 10
-    }
+    },
   },
   // 分享达人
   expert: {
@@ -189,7 +189,7 @@ export const shareAchievementConfig = {
     reward: {
       type: 'points',
       amount: 50
-    }
+    },
   },
   // 分享专家
   master: {
@@ -201,7 +201,7 @@ export const shareAchievementConfig = {
     reward: {
       type: 'coupon',
       amount: 20
-    }
+    },
   },
   // 影响力大师
   influencer: {
@@ -213,7 +213,7 @@ export const shareAchievementConfig = {
     reward: {
       type: 'coupon',
       amount: 50
-    }
+    },
   },
   // 邀请达人
   inviter: {
@@ -225,6 +225,30 @@ export const shareAchievementConfig = {
     reward: {
       type: 'coupon',
       amount: 100
+    },
+  },
+  // 金牌推广员
+  goldPromoter: {
+    id: 'gold_promoter',
+    name: '金牌推广员',
+    description: '成功邀请50位好友注册',
+    icon: '🏅',
+    target: 50,
+    reward: {
+      type: 'coupon',
+      amount: 200
+    }
+  },
+  // 推广大使
+  ambassador: {
+    id: 'ambassador',
+    name: '推广大使',
+    description: '成功邀请100位好友注册',
+    icon: '🎖️',
+    target: 100,
+    reward: {
+      type: 'coupon',
+      amount: 500
     }
   }
 }

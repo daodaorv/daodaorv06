@@ -32,8 +32,13 @@ export function generateRefreshToken(payload: JwtPayload): string {
 /**
  * 验证访问令牌
  */
-export function verifyToken(token: string): JwtPayload {
-  return jwt.verify(token, config.jwt.secret) as JwtPayload;
+export function verifyToken(token: string): JwtPayload | null {
+  try {
+    return jwt.verify(token, config.jwt.secret) as JwtPayload;
+  } catch (error) {
+    // Token无效或已过期
+    return null;
+  }
 }
 
 /**

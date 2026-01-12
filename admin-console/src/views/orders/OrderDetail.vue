@@ -142,6 +142,12 @@
       </el-descriptions>
     </el-card>
 
+    <!-- 支付记录 -->
+    <PaymentRecords v-if="order" :records="paymentRecords" />
+
+    <!-- 操作日志 -->
+    <OperationLogs v-if="order" :logs="operationLogs" />
+
     <el-card v-if="order" class="timeline-card">
       <template #header><span>订单时间线</span></template>
       <OrderTimeline :timeline="orderTimeline" @action="handleTimelineAction" />
@@ -290,6 +296,8 @@ import {
 } from '@/api/order'
 import { useErrorHandler } from '@/composables'
 import OrderTimeline from '@/components/orders/OrderTimeline.vue'
+import PaymentRecords from '@/components/orders/PaymentRecords.vue'
+import OperationLogs from '@/components/orders/OperationLogs.vue'
 import PickupDialog from '@/components/orders/PickupDialog.vue'
 import ReturnDialog from '@/components/orders/ReturnDialog.vue'
 
@@ -313,6 +321,12 @@ const cancelFormRules: FormRules = {
 // 订单时间线
 const orderTimeline = ref<any[]>([])
 
+// 支付记录
+const paymentRecords = ref<any[]>([])
+
+// 操作日志
+const operationLogs = ref<any[]>([])
+
 // 取车管理对话框
 const pickupDialogVisible = ref(false)
 
@@ -333,6 +347,10 @@ const loadOrderDetail = async () => {
     order.value = res.data
     // 加载订单时间线
     await loadOrderTimeline(orderId)
+    // 加载支付记录
+    loadPaymentRecords(orderId)
+    // 加载操作日志
+    loadOperationLogs(orderId)
   } catch (error) {
     handleApiError(error, '加载订单详情失败')
     router.push('/orders/list')
@@ -349,6 +367,77 @@ const loadOrderTimeline = async (orderId: number) => {
   } catch (error) {
     handleApiError(error, '加载订单时间线失败')
   }
+}
+
+// 加载支付记录 (Mock 数据)
+const loadPaymentRecords = (orderId: number) => {
+  // TODO: 替换为真实 API 调用
+  paymentRecords.value = [
+    {
+      id: 1,
+      type: 'payment',
+      paymentType: 'deposit',
+      paymentMethod: 'wechat',
+      paymentAccount: '微信支付',
+      amount: 5000,
+      status: 'success',
+      transactionNo: 'WX20240109123456789',
+      paymentTime: '2024-01-09 10:30:00',
+      remark: '押金支付',
+    },
+    {
+      id: 2,
+      type: 'payment',
+      paymentType: 'rent',
+      paymentMethod: 'alipay',
+      paymentAccount: '支付宝',
+      amount: 3000,
+      status: 'success',
+      transactionNo: 'ALI20240109123456789',
+      paymentTime: '2024-01-09 10:35:00',
+      remark: '租金支付',
+    },
+  ]
+}
+
+// 加载操作日志 (Mock 数据)
+const loadOperationLogs = (orderId: number) => {
+  // TODO: 替换为真实 API 调用
+  operationLogs.value = [
+    {
+      id: 1,
+      type: 'create',
+      operatorName: '系统',
+      operatorId: 0,
+      description: '用户创建订单',
+      createdAt: '2024-01-09 10:00:00',
+    },
+    {
+      id: 2,
+      type: 'payment',
+      operatorName: '用户',
+      operatorId: 1,
+      description: '完成押金支付',
+      details: {
+        '支付方式': '微信支付',
+        '支付金额': '¥5000',
+        '交易号': 'WX20240109123456789',
+      },
+      createdAt: '2024-01-09 10:30:00',
+    },
+    {
+      id: 3,
+      type: 'status_change',
+      operatorName: '管理员',
+      operatorId: 100,
+      description: '订单状态变更',
+      details: {
+        '原状态': '待支付',
+        '新状态': '待确认',
+      },
+      createdAt: '2024-01-09 10:31:00',
+    },
+  ]
 }
 
 const handleConfirm = async () => {

@@ -615,6 +615,7 @@ defineExpose({ onDateConfirm });
 }
 
 // 城市门店选择行
+.city-store-row {
 	display: flex;
 	gap: 0;
 	background: $uni-bg-color; // 整体背景 wrap

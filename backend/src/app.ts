@@ -1,3 +1,4 @@
+// 应用配置模块
 import express, { Application } from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
@@ -12,25 +13,25 @@ import routes from '@routes/index';
 export function createApp(): Application {
   const app = express();
 
+  // 解析JSON请求体 - 必须在其他中间件之前
+  app.use(express.json({ limit: '10mb' }));
+
+  // 解析URL编码请求体
+  app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
   // 安全中间件
   app.use(helmet());
 
-  // CORS配置
+  // CORS配置 - 开发环境允许所有来源
   app.use(
     cors({
-      origin: config.cors.origin,
-      credentials: true,
+      origin: config.env === 'development' ? '*' : config.cors.origin,
+      credentials: config.env === 'development' ? false : true,
     })
   );
 
   // 压缩响应
   app.use(compression());
-
-  // 解析JSON请求体
-  app.use(express.json({ limit: '10mb' }));
-
-  // 解析URL编码请求体
-  app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
   // 请求日志
   app.use((req, _res, next) => {

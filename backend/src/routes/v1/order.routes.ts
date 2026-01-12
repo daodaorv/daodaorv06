@@ -22,6 +22,7 @@ router.post('/', authMiddleware, requirePermission('order:create'), async (req: 
       vehicle_id: req.body.vehicle_id,
       store_id: req.body.store_id,
       return_store_id: req.body.return_store_id,
+      business_line: req.body.business_line || 'vehicle_rental', // 默认为房车租赁
       start_date: req.body.start_date,
       end_date: req.body.end_date,
       remark: req.body.remark,

@@ -57,7 +57,7 @@ export class BaseDao<T extends RowDataPacket> {
     const keys = Object.keys(data);
     const values = Object.values(data);
     const placeholders = keys.map(() => '?').join(', ');
-    const sql = `INSERT INTO ${this.tableName} (${keys.join(', ')}) VALUES (${placeholders})`;
+    const sql = `INSERT INTO ${this.tableName} (${keys.map(k => `\`${k}\``).join(', ')}) VALUES (${placeholders})`;
     const result = await QueryBuilder.insert(sql, values);
     return result.insertId;
   }
@@ -68,7 +68,7 @@ export class BaseDao<T extends RowDataPacket> {
   async update(id: number, data: Partial<T>): Promise<number> {
     const keys = Object.keys(data);
     const values = Object.values(data);
-    const setClause = keys.map((key) => `${key} = ?`).join(', ');
+    const setClause = keys.map((key) => `\`${key}\` = ?`).join(', ');
     const sql = `UPDATE ${this.tableName} SET ${setClause} WHERE id = ?`;
     return QueryBuilder.update(sql, [...values, id]);
   }

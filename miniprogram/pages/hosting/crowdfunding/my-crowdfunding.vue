@@ -82,6 +82,9 @@
         </view>
 
         <view v-if="project.status === 'hosting'" class="project-actions">
+          <button class="action-btn secondary" @click.stop="goToSelfUseBooking(project.id)">
+            自用预约
+          </button>
           <button class="action-btn secondary" @click.stop="viewIncome(project.id)">
             查看收益
           </button>
@@ -257,6 +260,13 @@ const viewIncome = (projectId: string) => {
 const sellShare = (projectId: string) => {
   uni.navigateTo({
     url: `/pages/hosting/crowdfunding/sell-share?projectId=${projectId}`
+  })
+}
+
+// 自用预约
+const goToSelfUseBooking = (projectId: string) => {
+  uni.navigateTo({
+    url: `/pages/hosting/crowdfunding/self-use-booking?projectId=${projectId}`
   })
 }
 

@@ -39,13 +39,34 @@ router.post('/', async (req: Request, res: Response): Promise<void> => {
 });
 
 /**
- * 查询支付状态
+ * 查询支付状态（按订单ID）
  * GET /api/v1/payments/order/:orderId
  */
 router.get('/order/:orderId', async (req: Request, res: Response): Promise<void> => {
   try {
     const orderId = Number(req.params.orderId);
     const payment = await paymentDAO.findByOrderId(orderId);
+
+    if (!payment) {
+      res.status(404).json(errorResponse('支付记录不存在', 404));
+      return undefined;
+    }
+
+    res.json(successResponse(payment));
+  } catch (error) {
+    logger.error('查询支付状态失败:', error);
+    res.status(500).json(errorResponse('查询支付状态失败'));
+  }
+});
+
+/**
+ * 查询支付状态（按支付单号）
+ * GET /api/v1/payments/:paymentNo/status
+ */
+router.get('/:paymentNo/status', async (req: Request, res: Response): Promise<void> => {
+  try {
+    const paymentNo = req.params.paymentNo;
+    const payment = await paymentDAO.findByPaymentNo(paymentNo);
 
     if (!payment) {
       res.status(404).json(errorResponse('支付记录不存在', 404));

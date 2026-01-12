@@ -29,6 +29,9 @@ class DatabaseConnection {
         timezone: '+08:00',
         charset: 'utf8mb4',
         // 确保使用UTF-8编码,解决中文乱码问题
+        connectAttributes: {
+          program_name: 'daodao-backend',
+        },
         typeCast: function (field, next) {
           if (field.type === 'VAR_STRING' || field.type === 'STRING' || field.type === 'TINY_BLOB' || field.type === 'MEDIUM_BLOB' || field.type === 'LONG_BLOB' || field.type === 'BLOB') {
             return field.string();

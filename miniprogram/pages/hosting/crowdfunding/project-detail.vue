@@ -24,10 +24,18 @@
         <text>{{ project.model.brand }} {{ project.model.name }}</text>
       </view>
 
+      <!-- 委托方案标识 -->
+      <view v-if="project.trusteeshipPlan" class="trusteeship-badge">
+        <text class="badge-label">委托方案</text>
+        <text class="badge-value" :class="'plan-' + project.trusteeshipPlan">
+          {{ trusteeshipPlanName }}
+        </text>
+      </view>
+
       <view class="initiator-info">
-        <image :src="project.initiator.avatar" class="avatar" mode="aspectFill"></image>
+        <image :src="owner.avatar" class="avatar" mode="aspectFill"></image>
         <view class="initiator-details">
-          <text class="initiator-name">{{ project.initiator.name }}</text>
+          <text class="initiator-name">{{ owner.name }}</text>
           <text class="initiator-label">发起人</text>
         </view>
       </view>
@@ -105,23 +113,49 @@
       </view>
     </view>
 
+    <!-- 运营数据面板（托管中显示） -->
+    <view v-if="project.status === 'hosting'" class="operation-section">
+      <view class="section-title">运营数据</view>
+      <view class="operation-grid">
+        <view class="operation-item">
+          <text class="operation-value">{{ project.operationData?.totalRentDays || 0 }}</text>
+          <text class="operation-label">累计出租天数</text>
+        </view>
+        <view class="operation-item">
+          <text class="operation-value">¥{{ (project.operationData?.totalIncome || 0).toLocaleString() }}</text>
+          <text class="operation-label">累计收益</text>
+        </view>
+        <view class="operation-item">
+          <text class="operation-value">{{ project.operationData?.maintenanceCount || 0 }}</text>
+          <text class="operation-label">维修保养次数</text>
+        </view>
+        <view class="operation-item">
+          <text class="operation-value">{{ project.operationData?.utilizationRate || 0 }}%</text>
+          <text class="operation-label">出租率</text>
+        </view>
+      </view>
+    </view>
+
     <!-- 项目描述 -->
     <view class="description-section">
       <view class="section-title">项目描述</view>
       <text class="description-text">{{ project.description }}</text>
     </view>
 
-    <!-- 参与者列表 -->
+    <!-- 车主列表（显示份额占比） -->
     <view v-if="project.participantCount > 0" class="participants-section">
       <view class="section-header">
-        <text class="section-title">参与者</text>
+        <text class="section-title">车主列表</text>
         <text class="participant-count">{{ project.participantCount }}人</text>
       </view>
       <view class="participants-list">
-        <view class="participant-item">
-          <image :src="project.initiator.avatar" class="participant-avatar" mode="aspectFill"></image>
-          <text class="participant-name">{{ project.initiator.name }}</text>
-          <view class="participant-badge">发起人</view>
+        <view v-for="owner in project.owners" :key="owner.id" class="participant-item">
+          <image :src="owner.avatar" class="participant-avatar" mode="aspectFill"></image>
+          <view class="participant-info">
+            <text class="participant-name">{{ owner.name }}</text>
+            <text class="participant-shares">{{ owner.shares }}份 ({{ owner.sharePercent }}%)</text>
+          </view>
+          <view v-if="owner.isInitiator" class="participant-badge">发起人</view>
         </view>
       </view>
     </view>
@@ -160,11 +194,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, computed } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { getCrowdfundingProjectDetail } from '@/api/crowdfunding'
 import type { CrowdfundingProject } from '@/types/crowdfunding'
 import { logger } from '@/utils/logger'
+import { TRUSTEESHIP_PLANS } from '@/types/trusteeship'
 
 // 数据定义
 const projectId = ref('')
@@ -203,6 +238,12 @@ const project = ref<CrowdfundingProject>({
   myShares: 0,
   createdAt: '',
   updatedAt: ''
+})
+
+// 计算属性：委托方案名称
+const trusteeshipPlanName = computed(() => {
+  const plan = TRUSTEESHIP_PLANS.find(p => p.plan === project.value.trusteeshipPlan)
+  return plan?.name || '未知方案'
 })
 
 // 页面加载

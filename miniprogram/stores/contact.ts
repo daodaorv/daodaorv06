@@ -20,7 +20,7 @@ export const useContactStore = defineStore('contact', () => {
             if (res.code === 0) {
                 // 空值检查：确保 res.data 是数组
                 contactList.value = Array.isArray(res.data) ? res.data : [];
-                return res.data;
+                return contactList.value;
             }
             return null;
         } catch (error) {

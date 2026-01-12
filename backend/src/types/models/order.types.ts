@@ -14,6 +14,11 @@ export type OrderStatus = 'pending' | 'paid' | 'confirmed' | 'picked_up' | 'retu
 export type PaymentStatus = 'unpaid' | 'paid' | 'refunding' | 'refunded';
 
 /**
+ * 业务线类型枚举
+ */
+export type BusinessLine = 'vehicle_rental' | 'campsite' | 'special_offer' | 'rv_tour';
+
+/**
  * 订单接口
  */
 export interface Order extends RowDataPacket {
@@ -23,6 +28,7 @@ export interface Order extends RowDataPacket {
   vehicle_id: number;
   store_id: number;
   return_store_id?: number;
+  business_line: BusinessLine;
   start_date: Date;
   end_date: Date;
   days: number;
@@ -75,6 +81,7 @@ export interface CreateOrderParams {
   vehicle_id: number;
   store_id: number;
   return_store_id?: number;
+  business_line: BusinessLine;
   start_date: string;
   end_date: string;
   remark?: string;
@@ -85,6 +92,7 @@ export interface CreateOrderParams {
  */
 export interface OrderQueryParams {
   user_id?: number;
+  business_line?: BusinessLine;
   status?: OrderStatus;
   payment_status?: PaymentStatus;
   start_date?: string;

@@ -8,12 +8,24 @@
 export interface Contact {
   /** 联系人ID */
   id: string
+  /** 用户ID */
+  userId?: number
   /** 姓名 */
   name: string
   /** 手机号 */
   phone: string
+  /** 身份证号 */
+  idCard: string
+  /** 驾驶证号 */
+  driverLicenseNo: string
+  /** 驾驶证正面照片 */
+  driverLicenseFront: string
+  /** 驾驶证反面照片 */
+  driverLicenseBack: string
   /** 是否为默认联系人 */
   isDefault: boolean
+  /** 状态 */
+  status?: string
   /** 创建时间 */
   createdAt?: string
   /** 更新时间 */
@@ -28,6 +40,14 @@ export interface CreateContactParams {
   name: string
   /** 手机号 */
   phone: string
+  /** 身份证号 */
+  idCard: string
+  /** 驾驶证号 */
+  driverLicenseNo: string
+  /** 驾驶证正面照片 */
+  driverLicenseFront: string
+  /** 驾驶证反面照片 */
+  driverLicenseBack: string
   /** 是否设为默认 */
   isDefault?: boolean
 }
@@ -40,6 +60,14 @@ export interface UpdateContactParams {
   name?: string
   /** 手机号 */
   phone?: string
+  /** 身份证号 */
+  idCard?: string
+  /** 驾驶证号 */
+  driverLicenseNo?: string
+  /** 驾驶证正面照片 */
+  driverLicenseFront?: string
+  /** 驾驶证反面照片 */
+  driverLicenseBack?: string
   /** 是否设为默认 */
   isDefault?: boolean
 }

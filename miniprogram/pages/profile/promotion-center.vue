@@ -239,7 +239,7 @@ import { shareApi } from '@/api/share'
 import { shareRewardRules } from '@/config/share-config'
 import { generatePoster, savePosterToAlbum } from '@/utils/poster'
 import { logger } from '@/utils/logger'
-import { requireLogin, isLoggedIn, buildRedirectUrl } from '@/utils/auth'
+import { requireLogin, isLoggedIn, buildRedirectUrl, getCurrentUser } from '@/utils/auth'
 import InviteSheet from '@/components/share/InviteSheet.vue'
 import PosterPreview from '@/components/share/PosterPreview.vue'
 
@@ -266,7 +266,7 @@ const {
   showInviteSheet,
   openInviteSheet,
   generateInviteCode
-} = useInvite('user_001')
+} = useInvite(getCurrentUser()?.id || 'guest')
 
 // 使用分享成就功能
 const {
@@ -365,7 +365,7 @@ const handleGeneratePoster = async () => {
     // 生成海报配置
     const posterConfig = {
       scene: ShareScene.INVITE,
-      businessId: 'user_001',
+      businessId: getCurrentUser()?.id || 'guest',
       mainImage: 'https://picsum.photos/670/500?random=invite',
       title: '邀请好友，共享优惠',
       subtitle: '注册即送新人专享券',

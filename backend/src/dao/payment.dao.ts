@@ -77,6 +77,20 @@ export class PaymentDAO extends BaseDao<Payment> {
   }
 
   /**
+   * 根据支付单号查询支付记录
+   */
+  async findByPaymentNo(paymentNo: string): Promise<Payment | null> {
+    try {
+      const sql = 'SELECT * FROM ' + this.tableName + ' WHERE payment_no = ?';
+      const result = (await QueryBuilder.queryOne(sql, [paymentNo])) as Payment | null;
+      return result;
+    } catch (error) {
+      logger.error('根据支付单号查询支付记录失败:', error);
+      throw error;
+    }
+  }
+
+  /**
    * 更新支付状态为成功
    */
   async updatePaymentSuccess(paymentId: number, thirdPartyNo?: string): Promise<boolean> {

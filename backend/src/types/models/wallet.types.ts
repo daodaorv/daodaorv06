@@ -19,12 +19,12 @@ export interface UserWallet extends RowDataPacket {
  */
 export interface WalletTransaction extends RowDataPacket {
   id: number;
+  wallet_id: number;
   user_id: number;
-  type: 'income' | 'expense' | 'freeze' | 'unfreeze';
+  type: 'recharge' | 'withdraw' | 'payment' | 'refund' | 'income';
   amount: number;
-  balance_after: number;
-  description: string;
-  related_type?: string;
-  related_id?: number;
+  balance: number;
+  description?: string;
+  related_order_id?: number;
   created_at: Date;
 }

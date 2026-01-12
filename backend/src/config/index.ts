@@ -111,6 +111,7 @@ export const config: AppConfig = {
   },
 
   cors: {
-    origin: (process.env.CORS_ORIGIN || 'http://localhost:5174').split(','),
+    origin: (process.env.CORS_ORIGIN || 'http://localhost:5173,http://localhost:5174').split(','),
   },
 };
+

@@ -30,7 +30,7 @@ export class OrderDAO extends BaseDao<Order> {
    */
   async createOrder(params: CreateOrderParams): Promise<Order> {
     try {
-      const { user_id, vehicle_id, store_id, return_store_id, start_date, end_date, remark } = params;
+      const { user_id, vehicle_id, store_id, return_store_id, business_line, start_date, end_date, remark } = params;
 
       // 获取车辆信息以计算价格
       const vehicleSql = 'SELECT daily_price, deposit FROM vehicles WHERE id = ?';
@@ -64,9 +64,9 @@ export class OrderDAO extends BaseDao<Order> {
       // 插入订单
       const sql = `
         INSERT INTO ${this.tableName}
-        (order_no, user_id, vehicle_id, store_id, return_store_id, start_date, end_date,
+        (order_no, user_id, vehicle_id, store_id, return_store_id, business_line, start_date, end_date,
          days, daily_price, total_amount, deposit, discount_amount, actual_amount, remark)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `;
 
       const result = await QueryBuilder.insert(sql, [
@@ -75,6 +75,7 @@ export class OrderDAO extends BaseDao<Order> {
         vehicle_id,
         store_id,
         return_store_id || null,
+        business_line,
         start_date,
         end_date,
         days,
@@ -104,7 +105,7 @@ export class OrderDAO extends BaseDao<Order> {
    */
   async findOrders(params: OrderQueryParams): Promise<{ list: OrderDetail[]; total: number }> {
     try {
-      const { user_id, status, payment_status, start_date, end_date, page = 1, pageSize = 10 } = params;
+      const { user_id, business_line, status, payment_status, start_date, end_date, page = 1, pageSize = 10 } = params;
 
       // 构建WHERE条件
       const conditions: string[] = ['1=1'];
@@ -113,6 +114,11 @@ export class OrderDAO extends BaseDao<Order> {
       if (user_id) {
         conditions.push('o.user_id = ?');
         values.push(user_id);
+      }
+
+      if (business_line) {
+        conditions.push('o.business_line = ?');
+        values.push(business_line);
       }
 
       if (status) {

@@ -10,10 +10,16 @@
         :icon="item.icon"
         placement="top"
       >
-        <el-card class="timeline-card" shadow="hover">
+        <el-card class="timeline-card" shadow="hover" :class="{ 'is-important': item.isImportant }">
           <div class="timeline-header">
-            <span class="timeline-title">{{ item.title }}</span>
-            <el-tag :type="item.tagType" size="small">{{ item.status }}</el-tag>
+            <div class="header-left">
+              <span class="timeline-title">{{ item.title }}</span>
+              <el-tag :type="item.tagType" size="small">{{ item.status }}</el-tag>
+            </div>
+            <div v-if="item.duration" class="timeline-duration">
+              <el-icon><Clock /></el-icon>
+              <span>{{ item.duration }}</span>
+            </div>
           </div>
 
           <div v-if="item.description" class="timeline-description">
@@ -81,6 +87,8 @@ interface TimelineItem {
   tagType?: 'primary' | 'success' | 'warning' | 'danger' | 'info'
   description?: string
   operator?: string
+  duration?: string
+  isImportant?: boolean
   details?: Array<{ label: string; value: string }>
   images?: string[]
   actions?: Array<{
@@ -105,8 +113,12 @@ const emit = defineEmits<{
 
 // 计算时间线数据
 const timelineData = computed<TimelineItem[]>(() => {
-  return props.timeline.map(item => {
+  return props.timeline.map((item, index) => {
     const config = getTimelineConfig(item.action)
+    const duration = index < props.timeline.length - 1
+      ? calculateDuration(item.timestamp, props.timeline[index + 1].timestamp)
+      : undefined
+
     return {
       title: config.title,
       timestamp: formatDateTime(item.timestamp),
@@ -117,12 +129,33 @@ const timelineData = computed<TimelineItem[]>(() => {
       tagType: config.tagType,
       description: item.description || config.description,
       operator: item.operator,
+      duration,
+      isImportant: config.isImportant,
       details: item.details || [],
       images: item.images || [],
       actions: item.actions || [],
     }
   })
 })
+
+// 计算持续时间
+const calculateDuration = (startTime: string, endTime: string) => {
+  const start = new Date(startTime).getTime()
+  const end = new Date(endTime).getTime()
+  const diff = end - start
+
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24))
+  const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
+
+  if (days > 0) {
+    return `${days}天${hours}小时`
+  } else if (hours > 0) {
+    return `${hours}小时${minutes}分钟`
+  } else {
+    return `${minutes}分钟`
+  }
+}
 
 // 获取时间线配置
 const getTimelineConfig = (action: string) => {
@@ -135,6 +168,7 @@ const getTimelineConfig = (action: string) => {
       icon: Document,
       tagType: 'primary',
       description: '用户成功创建订单',
+      isImportant: true,
     },
     paid: {
       title: '支付完成',
@@ -144,6 +178,7 @@ const getTimelineConfig = (action: string) => {
       icon: Check,
       tagType: 'success',
       description: '订单支付成功',
+      isImportant: true,
     },
     confirmed: {
       title: '订单确认',
@@ -171,6 +206,7 @@ const getTimelineConfig = (action: string) => {
       icon: CaretRight,
       tagType: 'success',
       description: '客户完成取车手续',
+      isImportant: true,
     },
     in_use: {
       title: '使用中',
@@ -189,6 +225,7 @@ const getTimelineConfig = (action: string) => {
       icon: Check,
       tagType: 'success',
       description: '客户完成还车手续',
+      isImportant: true,
     },
     completed: {
       title: '订单完成',
@@ -198,6 +235,7 @@ const getTimelineConfig = (action: string) => {
       icon: Check,
       tagType: 'success',
       description: '订单已完成，押金已退还',
+      isImportant: true,
     },
     cancelled: {
       title: '订单取消',
@@ -295,9 +333,20 @@ const handleAction = (key: string, item: any) => {
 
 .timeline-card {
   margin-bottom: 0;
+  transition: all 0.3s;
 
   :deep(.el-card__body) {
     padding: 16px;
+  }
+
+  &.is-important {
+    border: 2px solid #409eff;
+    box-shadow: 0 2px 12px 0 rgba(64, 158, 255, 0.2);
+
+    .timeline-title {
+      color: #409eff;
+      font-weight: 700;
+    }
   }
 }
 
@@ -307,10 +356,30 @@ const handleAction = (key: string, item: any) => {
   align-items: center;
   margin-bottom: 12px;
 
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+  }
+
   .timeline-title {
     font-size: 16px;
     font-weight: 600;
     color: #303133;
+  }
+
+  .timeline-duration {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #909399;
+    font-size: 13px;
+    white-space: nowrap;
+
+    .el-icon {
+      font-size: 14px;
+    }
   }
 }
 

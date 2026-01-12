@@ -64,6 +64,53 @@ router.post('/check-availability', async (req: Request, res: Response): Promise<
 });
 
 /**
+ * 计算营地预订价格
+ * POST /api/v1/campsites/calculate-price
+ */
+router.post('/calculate-price', async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { campsiteId, siteTypeId, checkInDate, checkOutDate, guests } = req.body;
+
+    if (!campsiteId || !siteTypeId || !checkInDate || !checkOutDate) {
+      res.status(400).json(errorResponse('缺少必要参数', 400));
+      return undefined;
+    }
+
+    // 计算天数
+    const start = new Date(checkInDate);
+    const end = new Date(checkOutDate);
+    const days = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
+
+    if (days <= 0) {
+      res.status(400).json(errorResponse('退房日期必须大于入住日期', 400));
+      return undefined;
+    }
+
+    // Mock价格计算
+    const dailyPrice = 200; // 每晚价格
+    const subtotal = dailyPrice * days;
+    const serviceFee = subtotal * 0.05; // 5%服务费
+    const totalAmount = subtotal + serviceFee;
+
+    res.json(successResponse({
+      campsiteId,
+      siteTypeId,
+      checkInDate,
+      checkOutDate,
+      days,
+      guests: guests || 2,
+      dailyPrice,
+      subtotal,
+      serviceFee,
+      totalAmount,
+    }));
+  } catch (error) {
+    logger.error('计算营地价格失败:', error);
+    res.status(500).json(errorResponse('计算营地价格失败'));
+  }
+});
+
+/**
  * 创建营地预订订单
  * POST /api/v1/campsites/bookings
  */

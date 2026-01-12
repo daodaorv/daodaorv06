@@ -215,137 +215,171 @@ export const menuConfig: MenuItem[] = [
     ],
   },
 
+  // ==================== 房车租赁产品线 ====================
   {
-    path: '/hosting',
-    name: 'Hosting',
+    path: '/vehicle-rental',
+    name: 'VehicleRental',
     meta: {
-      title: '托管管理',
-      icon: 'Coin',
+      title: '房车租赁',
+      icon: 'Van',
       roles: [UserRole.PLATFORM_ADMIN, UserRole.REGIONAL_MANAGER],
     },
     children: [
-      // ==================== 自有车托管 ====================
+      // 产品管理（快捷入口）
       {
-        path: '/hosting/own-vehicle',
-        name: 'HostingOwnVehicle',
-        meta: { title: '自有车托管', icon: 'Van' },
+        path: '/vehicle-rental/products',
+        name: 'VehicleRentalProducts',
+        meta: { title: '产品管理', icon: 'Box' },
         children: [
           {
-            path: '/hosting/applications',
-            name: 'HostingApplications',
-            meta: { title: '托管申请审核', description: '审核车主自有车辆托管申请，自动分配角色和权益' },
-            component: () => import('@/views/hosting/HostingApplications.vue'),
+            path: '/vehicles/list',
+            name: 'VehicleRentalVehicleList',
+            meta: { title: '车辆管理', description: '快捷入口 → 车辆管理模块' },
+            component: () => import('@/views/vehicle/VehicleList.vue'),
           },
           {
-            path: '/hosting/vehicles',
-            name: 'HostingVehicles',
-            meta: { title: '托管车辆管理', description: '管理托管车辆运营状态和收益数据' },
-            component: () => import('@/views/hosting/HostingVehicles.vue'),
-          },
-          {
-            path: '/hosting/income',
-            name: 'HostingIncome',
-            meta: { title: '收益管理', description: '管理托管车辆收益统计和分成记录' },
-            component: () => import('@/views/hosting/HostingIncome.vue'),
-          },
-          {
-            path: '/hosting/owner-usage',
-            name: 'HostingOwnerUsage',
-            meta: {
-              title: '车主自用审核',
-              description: '审核车主自用申请，管理自用费用和订单冲突',
-            },
-            component: () => import('@/views/hosting/HostingOwnerUsage.vue'),
-          },
-          {
-            path: '/hosting/config',
-            name: 'HostingConfig',
-            meta: { title: '配置管理' },
-            children: [
-              {
-                path: '/hosting/owner-usage-fee-config',
-                name: 'HostingOwnerUsageFeeConfig',
-                meta: { title: '自用费用配置', description: '配置车主自用费用规则和限制' },
-                component: () => import('@/views/hosting/HostingOwnerUsageFeeConfig.vue'),
-              },
-              {
-                path: '/hosting/seasonal-subsidy-config',
-                name: 'HostingSeasonalSubsidyConfig',
-                meta: { title: '淡季补贴配置', description: '配置淡季补贴规则和计算方式' },
-                component: () => import('@/views/hosting/HostingSeasonalSubsidyConfig.vue'),
-              },
-            ],
-          },
-        ],
-      },
-      // ==================== 购车托管 ====================
-      {
-        path: '/hosting/purchase',
-        name: 'HostingPurchase',
-        meta: { title: '购车托管', icon: 'ShoppingCart' },
-        children: [
-          {
-            path: '/hosting/new-car',
-            name: 'HostingNewCar',
-            meta: { title: '购车申请审核', description: '审核购车托管申请和跟进购车进度' },
-            component: () => import('@/views/hosting/HostingNewCar.vue'),
-          },
-          {
-            path: '/hosting/purchase/models',
-            name: 'HostingPurchaseModels',
-            meta: { title: '购车托管车型', description: '管理支持购车托管的车型配置' },
-            component: () => import('@/views/hosting/HostingPurchaseModels.vue'),
+            path: '/marketing/pricing',
+            name: 'VehicleRentalPricing',
+            meta: { title: '价格策略', description: '快捷入口 → 营销管理' },
+            component: () => import('@/views/marketing/MarketingPricing.vue'),
           },
         ],
       },
 
-      // ==================== 众筹托管 ====================
+      // 托管管理（整合到此处）
       {
-        path: '/hosting/crowdfunding',
-        name: 'HostingCrowdfunding',
-        meta: { title: '众筹托管', icon: 'TrendCharts' },
+        path: '/vehicle-rental/hosting',
+        name: 'VehicleRentalHosting',
+        meta: {
+          title: '托管管理',
+          icon: 'Coin',
+        },
         children: [
+          // ==================== 自有车托管 ====================
           {
-            path: '/hosting/crowdfunding-models',
-            name: 'HostingCrowdfundingModels',
-            meta: { title: '众筹车型管理', description: '管理支持众筹的车型配置和统计数据' },
-            component: () => import('@/views/hosting/HostingCrowdfundingModels.vue'),
+            path: '/hosting/own-vehicle',
+            name: 'HostingOwnVehicle',
+            meta: { title: '自有车托管', icon: 'Van' },
+            children: [
+              {
+                path: '/hosting/applications',
+                name: 'HostingApplications',
+                meta: { title: '托管申请审核', description: '审核车主自有车辆托管申请，自动分配角色和权益' },
+                component: () => import('@/views/hosting/HostingApplications.vue'),
+              },
+              {
+                path: '/hosting/vehicles',
+                name: 'HostingVehicles',
+                meta: { title: '托管车辆管理', description: '管理托管车辆运营状态和收益数据' },
+                component: () => import('@/views/hosting/HostingVehicles.vue'),
+              },
+              {
+                path: '/hosting/income',
+                name: 'HostingIncome',
+                meta: { title: '收益管理', description: '管理托管车辆收益统计和分成记录' },
+                component: () => import('@/views/hosting/HostingIncome.vue'),
+              },
+              {
+                path: '/hosting/owner-usage',
+                name: 'HostingOwnerUsage',
+                meta: {
+                  title: '车主自用审核',
+                  description: '审核车主自用申请，管理自用费用和订单冲突',
+                },
+                component: () => import('@/views/hosting/HostingOwnerUsage.vue'),
+              },
+              {
+                path: '/hosting/config',
+                name: 'HostingConfig',
+                meta: { title: '配置管理' },
+                children: [
+                  {
+                    path: '/hosting/owner-usage-fee-config',
+                    name: 'HostingOwnerUsageFeeConfig',
+                    meta: { title: '自用费用配置', description: '配置车主自用费用规则和限制' },
+                    component: () => import('@/views/hosting/HostingOwnerUsageFeeConfig.vue'),
+                  },
+                  {
+                    path: '/hosting/seasonal-subsidy-config',
+                    name: 'HostingSeasonalSubsidyConfig',
+                    meta: { title: '淡季补贴配置', description: '配置淡季补贴规则和计算方式' },
+                    component: () => import('@/views/hosting/HostingSeasonalSubsidyConfig.vue'),
+                  },
+                ],
+              },
+            ],
           },
+
+          // ==================== 购车托管 ====================
           {
-            path: '/hosting/crowdfunding-projects',
-            name: 'HostingCrowdfundingProjects',
-            meta: { title: '众筹项目管理', description: '审核和管理众筹项目、参与者和进度' },
-            component: () => import('@/views/hosting/HostingCrowdfundingProjects.vue'),
+            path: '/hosting/purchase',
+            name: 'HostingPurchase',
+            meta: { title: '购车托管', icon: 'ShoppingCart' },
+            children: [
+              {
+                path: '/hosting/new-car',
+                name: 'HostingNewCar',
+                meta: { title: '购车申请审核', description: '审核购车托管申请和跟进购车进度' },
+                component: () => import('@/views/hosting/HostingNewCar.vue'),
+              },
+              {
+                path: '/hosting/purchase/models',
+                name: 'HostingPurchaseModels',
+                meta: { title: '购车托管车型', description: '管理支持购车托管的车型配置' },
+                component: () => import('@/views/hosting/HostingPurchaseModels.vue'),
+              },
+            ],
           },
+
+          // ==================== 众筹托管 ====================
           {
-            path: '/hosting/crowdfunding-owners',
-            name: 'HostingCrowdfundingOwners',
-            meta: { title: '众筹车主管理', description: '管理众筹参与用户和角色分配' },
-            component: () => import('@/views/hosting/HostingCrowdfundingOwners.vue'),
-          },
-          {
-            path: '/hosting/crowdfunding-shares',
-            name: 'HostingCrowdfundingShares',
-            meta: { title: '份额管理', description: '管理众筹份额持有和转移记录' },
-            component: () => import('@/views/hosting/HostingCrowdfundingShares.vue'),
-          },
-          {
-            path: '/hosting/crowdfunding-transactions',
-            name: 'HostingCrowdfundingTransactions',
-            meta: { title: '份额交易监管', description: '监管份额交易和价格变化' },
-            component: () => import('@/views/hosting/HostingCrowdfundingTransactions.vue'),
-          },
-          {
-            path: '/hosting/crowdfunding-income',
-            name: 'HostingCrowdfundingIncome',
-            meta: { title: '收益分配管理', description: '管理众筹车辆收益分配和统计' },
-            component: () => import('@/views/hosting/HostingCrowdfundingIncome.vue'),
-          },
-          {
-            path: '/hosting/crowdfunding-vehicles',
-            name: 'HostingCrowdfundingVehicles',
-            meta: { title: '众筹车辆管理', description: '管理众筹车辆托管状态和运营数据' },
-            component: () => import('@/views/hosting/HostingCrowdfundingVehicles.vue'),
+            path: '/hosting/crowdfunding',
+            name: 'HostingCrowdfunding',
+            meta: { title: '众筹托管', icon: 'TrendCharts' },
+            children: [
+              {
+                path: '/hosting/crowdfunding-models',
+                name: 'HostingCrowdfundingModels',
+                meta: { title: '众筹车型管理', description: '管理支持众筹的车型配置和统计数据' },
+                component: () => import('@/views/hosting/HostingCrowdfundingModels.vue'),
+              },
+              {
+                path: '/hosting/crowdfunding-projects',
+                name: 'HostingCrowdfundingProjects',
+                meta: { title: '众筹项目管理', description: '审核和管理众筹项目、参与者和进度' },
+                component: () => import('@/views/hosting/HostingCrowdfundingProjects.vue'),
+              },
+              {
+                path: '/hosting/crowdfunding-owners',
+                name: 'HostingCrowdfundingOwners',
+                meta: { title: '众筹车主管理', description: '管理众筹参与用户和角色分配' },
+                component: () => import('@/views/hosting/HostingCrowdfundingOwners.vue'),
+              },
+              {
+                path: '/hosting/crowdfunding-shares',
+                name: 'HostingCrowdfundingShares',
+                meta: { title: '份额管理', description: '管理众筹份额持有和转移记录' },
+                component: () => import('@/views/hosting/HostingCrowdfundingShares.vue'),
+              },
+              {
+                path: '/hosting/crowdfunding-transactions',
+                name: 'HostingCrowdfundingTransactions',
+                meta: { title: '份额交易监管', description: '监管份额交易和价格变化' },
+                component: () => import('@/views/hosting/HostingCrowdfundingTransactions.vue'),
+              },
+              {
+                path: '/hosting/crowdfunding-income',
+                name: 'HostingCrowdfundingIncome',
+                meta: { title: '收益分配管理', description: '管理众筹车辆收益分配和统计' },
+                component: () => import('@/views/hosting/HostingCrowdfundingIncome.vue'),
+              },
+              {
+                path: '/hosting/crowdfunding-vehicles',
+                name: 'HostingCrowdfundingVehicles',
+                meta: { title: '众筹车辆管理', description: '管理众筹车辆托管状态和运营数据' },
+                component: () => import('@/views/hosting/HostingCrowdfundingVehicles.vue'),
+              },
+            ],
           },
         ],
       },
@@ -451,6 +485,43 @@ export const menuConfig: MenuItem[] = [
     ],
   },
 
+  // 主产品管理
+  {
+    path: '/special-offers',
+    name: 'SpecialOffers',
+    meta: {
+      title: '特惠租车',
+      icon: 'Discount',
+      roles: [UserRole.PLATFORM_ADMIN, UserRole.REGIONAL_MANAGER],
+    },
+    children: [
+      {
+        path: '/special-offers/list',
+        name: 'SpecialOffersList',
+        meta: { title: '特惠租车管理', description: '管理固定路线的房车租赁套餐' },
+        component: () => import('@/views/marketing/SpecialOffers.vue'),
+      },
+    ],
+  },
+
+  {
+    path: '/tours',
+    name: 'Tours',
+    meta: {
+      title: '房车旅游',
+      icon: 'Guide',
+      roles: [UserRole.PLATFORM_ADMIN, UserRole.REGIONAL_MANAGER],
+    },
+    children: [
+      {
+        path: '/tours/list',
+        name: 'ToursList',
+        meta: { title: '房车旅游管理', description: '管理房车旅游路线和批次' },
+        component: () => import('@/views/marketing/MarketingTours.vue'),
+      },
+    ],
+  },
+
   // 营销运营管理
   {
     path: '/marketing',
@@ -474,6 +545,41 @@ export const menuConfig: MenuItem[] = [
         component: () => import('@/views/marketing/MarketingPricing.vue'),
       },
       {
+        path: '/marketing/coupon-mall',
+        name: 'CouponMall',
+        meta: {
+          title: '特惠商城管理',
+          description: '管理特惠商城优惠券产品、获取方式、库存和销售数据',
+          roles: [UserRole.PLATFORM_ADMIN]
+        },
+        children: [
+          {
+            path: '/marketing/coupon-mall/products',
+            name: 'CouponProducts',
+            meta: { title: '优惠券产品管理', description: '管理特惠商城展示的优惠券产品' },
+            component: () => import('@/views/marketing/coupon-mall/CouponProducts.vue'),
+          },
+          {
+            path: '/marketing/coupon-mall/acquisition',
+            name: 'AcquisitionMethods',
+            meta: { title: '获取方式配置', description: '配置优惠券的多种获取方式和参数' },
+            component: () => import('@/views/marketing/coupon-mall/AcquisitionMethods.vue'),
+          },
+          {
+            path: '/marketing/coupon-mall/inventory',
+            name: 'CouponInventory',
+            meta: { title: '库存与限购配置', description: '管理优惠券库存和用户限购规则' },
+            component: () => import('@/views/marketing/coupon-mall/CouponInventory.vue'),
+          },
+          {
+            path: '/marketing/coupon-mall/statistics',
+            name: 'CouponStatistics',
+            meta: { title: '销售数据统计', description: '统计和分析优惠券销售数据' },
+            component: () => import('@/views/marketing/coupon-mall/CouponStatistics.vue'),
+          },
+        ],
+      },
+      {
         path: '/marketing/coupons',
         name: 'MarketingCoupons',
         meta: { title: '优惠券管理', description: '管理优惠券创建、发放和核销' },
@@ -490,18 +596,6 @@ export const menuConfig: MenuItem[] = [
         name: 'MarketingActivities',
         meta: { title: '营销活动', description: '管理营销活动策划和执行' },
         component: () => import('@/views/marketing/MarketingActivities.vue'),
-      },
-      {
-        path: '/marketing/special-offers',
-        name: 'SpecialOffers',
-        meta: { title: '特惠租车', description: '管理固定路线的房车租赁套餐' },
-        component: () => import('@/views/marketing/SpecialOffers.vue'),
-      },
-      {
-        path: '/marketing/tours',
-        name: 'MarketingTours',
-        meta: { title: '房车旅游', description: '管理房车旅游路线和批次' },
-        component: () => import('@/views/marketing/MarketingTours.vue'),
       },
       {
         path: '/marketing/extras',
@@ -602,62 +696,107 @@ export const menuConfig: MenuItem[] = [
       {
         path: '/profit-sharing/promotion',
         name: 'PromotionProfit',
-        meta: { title: '推广分润管理', description: '管理两级推广分润、PLUS会员奖励和推广关系' },
+        meta: { title: '推广分润记录', description: '管理推广分润记录、结算和支付' },
         component: () => import('@/views/profit-sharing/PromotionProfit.vue'),
       },
       {
-        path: '/profit-sharing/vehicle-rental',
-        name: 'VehicleRentalProfit',
-        meta: { title: '房车租赁分润', description: '管理托管车主分润、绩效加成和补贴规则' },
-        component: () => import('@/views/profit-sharing/VehicleRentalProfit.vue'),
+        path: '/profit-sharing/hosting',
+        name: 'HostingProfit',
+        meta: { title: '托管分润记录', description: '管理托管车辆分润记录、结算和支付' },
+        component: () => import('@/views/profit-sharing/HostingProfit.vue'),
       },
       {
-        path: '/profit-sharing/campsite',
-        name: 'CampsiteProfit',
-        meta: { title: '营地产品分润', description: '管理营地业主分润和捆绑销售加成' },
-        component: () => import('@/views/profit-sharing/CampsiteProfit.vue'),
+        path: '/profit-sharing/partner',
+        name: 'PartnerProfit',
+        meta: { title: '合作商分润记录', description: '管理合作商订单差价分润记录' },
+        component: () => import('@/views/profit-sharing/PartnerProfit.vue'),
       },
       {
-        path: '/profit-sharing/tour',
-        name: 'TourProfit',
-        meta: { title: '旅游产品分润', description: '管理旅游产品提供者分润和众筹分润' },
-        component: () => import('@/views/profit-sharing/TourProfit.vue'),
+        path: '/profit-sharing/employee',
+        name: 'EmployeeProfit',
+        meta: { title: '员工分润记录', description: '管理员工绩效激励分润记录' },
+        component: () => import('@/views/profit-sharing/EmployeeProfit.vue'),
       },
       {
         path: '/profit-sharing/config',
         name: 'ProfitConfig',
-        meta: { title: '分润配置管理', description: '配置各类分润比例、门槛奖励和补贴规则' },
+        meta: { title: '分润配置管理', description: '配置各类分润比例和规则' },
         component: () => import('@/views/profit-sharing/ProfitConfig.vue'),
-      },
-      {
-        path: '/profit-sharing/records',
-        name: 'ProfitRecords',
-        meta: { title: '分润记录查询', description: '查询所有分润记录、统计报表和排行榜' },
-        component: () => import('@/views/profit-sharing/ProfitRecords.vue'),
-      },
-      {
-        path: '/profit-sharing/simulator',
-        name: 'ProfitSimulator',
-        meta: { title: '分润模拟器', description: '模拟分润计算，验证规则配置和总额平衡' },
-        component: () => import('@/views/profit-sharing/ProfitSimulator.vue'),
       },
       {
         path: '/profit-sharing/withdrawal',
         name: 'WithdrawalAudit',
-        meta: { title: '提现审核', description: '审核用户提现申请，管理余额和提现记录' },
+        meta: { title: '提现审核', description: '审核用户提现申请和管理提现记录' },
         component: () => import('@/views/profit-sharing/WithdrawalAudit.vue'),
       },
+    ],
+  },
+
+  // ==================== 内容管理 ====================
+  {
+    path: '/content',
+    name: 'Content',
+    meta: {
+      title: '内容管理',
+      icon: 'Document',
+      roles: [UserRole.PLATFORM_ADMIN, UserRole.REGIONAL_MANAGER],
+    },
+    children: [
+      // 首页内容
       {
-        path: '/profit-sharing/risk-control',
-        name: 'RiskControl',
-        meta: { title: '风控配置', description: '配置风控规则，防范刷单和异常订单' },
-        component: () => import('@/views/profit-sharing/RiskControl.vue'),
+        path: '/content/home',
+        name: 'ContentHome',
+        meta: { title: '首页内容', icon: 'House' },
+        children: [
+          {
+            path: '/content/banners',
+            name: 'ContentBanners',
+            meta: { title: 'Banner管理', description: '管理小程序首页轮播图' },
+            component: () => import('@/views/content/BannerManagement.vue'),
+          },
+          {
+            path: '/content/announcements',
+            name: 'ContentAnnouncements',
+            meta: { title: '公告管理', description: '管理小程序首页公告信息' },
+            component: () => import('@/views/content/AnnouncementManagement.vue'),
+          },
+        ],
       },
+
+      // 帮助中心
       {
-        path: '/profit-sharing/promotion-tree',
-        name: 'PromotionTree',
-        meta: { title: '推广关系树', description: '查看推广关系树状结构和团队收益' },
-        component: () => import('@/views/profit-sharing/PromotionTree.vue'),
+        path: '/content/help',
+        name: 'ContentHelp',
+        meta: { title: '帮助中心', icon: 'QuestionFilled' },
+        children: [
+          {
+            path: '/content/help-categories',
+            name: 'ContentHelpCategories',
+            meta: { title: '分类管理', description: '管理帮助中心分类' },
+            component: () => import('@/views/content/HelpCategoryManagement.vue'),
+          },
+          {
+            path: '/content/help-articles',
+            name: 'ContentHelpArticles',
+            meta: { title: '文章管理', description: '管理帮助中心文章内容' },
+            component: () => import('@/views/content/HelpArticleManagement.vue'),
+          },
+        ],
+      },
+
+      // 资源管理
+      {
+        path: '/content/resources',
+        name: 'ContentResources',
+        meta: { title: '资源管理', icon: 'Picture' },
+        children: [
+          {
+            path: '/content/images',
+            name: 'ContentImages',
+            meta: { title: '图片库', description: '管理图片资源' },
+            component: () => import('@/views/content/ImageLibrary.vue'),
+          },
+        ],
       },
     ],
   },

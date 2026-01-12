@@ -1,5 +1,6 @@
 import { Router, Request, Response } from 'express';
 import { UserDAO, UserProfileDAO } from '@dao/user.dao';
+import { UserWalletDAO } from '@dao/wallet.dao';
 import { UserProfile } from '../../types/models/user.types';
 import { successResponse, errorResponse } from '@utils/response';
 import { logger } from '@utils/logger';
@@ -8,6 +9,7 @@ import { authMiddleware } from '../../middleware/auth.middleware';
 const router = Router();
 const userDAO = new UserDAO();
 const userProfileDAO = new UserProfileDAO();
+const walletDAO = new UserWalletDAO();
 
 /**
  * 1. 获取用户信息
@@ -111,7 +113,7 @@ router.put('/profile', authMiddleware, async (req: Request, res: Response) => {
  * 3. 获取用户钱包余额
  * GET /api/v1/users/wallet
  */
-router.get('/wallet', authMiddleware, async (req: Request, res: Response) => {
+router.get('/wallet', authMiddleware, async (req: Request, res: Response): Promise<void> => {
   try {
     const userId = req.user?.userId;
 
@@ -120,14 +122,24 @@ router.get('/wallet', authMiddleware, async (req: Request, res: Response) => {
       return undefined;
     }
 
-    // Mock钱包数据
-    // TODO: 从钱包表查询真实数据
+    const wallet = await walletDAO.getUserWallet(userId);
+
+    if (!wallet) {
+      res.json(successResponse({
+        balance: 0,
+        frozenBalance: 0,
+        totalIncome: 0,
+        totalExpense: 0,
+      }));
+      return undefined;
+    }
+
     res.json(
       successResponse({
-        balance: 1250.5,
-        frozenAmount: 0,
-        totalIncome: 5680.0,
-        totalExpense: 4429.5,
+        balance: wallet.balance,
+        frozenBalance: wallet.frozen_balance,
+        totalIncome: wallet.total_income,
+        totalExpense: wallet.total_expense,
       })
     );
   } catch (error) {

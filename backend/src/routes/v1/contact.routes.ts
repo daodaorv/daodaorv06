@@ -82,14 +82,14 @@ router.post('/', authMiddleware, async (req: Request, res: Response) => {
     }
 
     const contactId = await contactDAO.create({
-      user_id: userId,
+      userId: userId,
       name,
       phone,
-      id_card: idCard,
-      driver_license_no: driverLicenseNo,
-      driver_license_front: driverLicenseFront,
-      driver_license_back: driverLicenseBack,
-      is_default: isDefault || false,
+      idCard: idCard,
+      driverLicenseNo: driverLicenseNo,
+      driverLicenseFront: driverLicenseFront,
+      driverLicenseBack: driverLicenseBack,
+      isDefault: isDefault || false,
     });
 
     res.status(201).json(successResponse({ id: contactId }));
@@ -123,11 +123,11 @@ router.put('/:id', authMiddleware, async (req: Request, res: Response) => {
     const updated = await contactDAO.update(contactId, userId, {
       name,
       phone,
-      id_card: idCard,
-      driver_license_no: driverLicenseNo,
-      driver_license_front: driverLicenseFront,
-      driver_license_back: driverLicenseBack,
-      is_default: isDefault,
+      idCard: idCard,
+      driverLicenseNo: driverLicenseNo,
+      driverLicenseFront: driverLicenseFront,
+      driverLicenseBack: driverLicenseBack,
+      isDefault: isDefault,
     });
 
     if (!updated) {

@@ -169,6 +169,12 @@
 			}
 		},
 		{
+			"path": "pages/hosting/crowdfunding/self-use-booking",
+			"style": {
+				"navigationBarTitleText": "自用预约"
+			}
+		},
+		{
 			"path": "pages/campsite/list",
 			"style": {
 				"navigationBarTitleText": "营地预订",
@@ -364,11 +370,6 @@
 			}
 		},
 		{
-			"path": "pages/profile/invite",
-			"style": {
-				"navigationBarTitleText": "邀请中心"
-			}
-		},
 		{
 			"path": "pages/profile/promotion-center",
 			"style": {

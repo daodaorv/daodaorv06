@@ -54,18 +54,23 @@ router.get('/transactions', authMiddleware, async (req: Request, res: Response) 
       res.status(401).json(errorResponse('未授权', 401));
       return undefined;
     }
-    const { page = 1, pageSize = 10 } = req.query;
+    const page = req.query.page && !isNaN(Number(req.query.page)) ? Number(req.query.page) : 1;
+    const pageSize = req.query.pageSize && !isNaN(Number(req.query.pageSize)) ? Number(req.query.pageSize) : 10;
+    const type = req.query.type as string | undefined;
 
-    // TODO: 实现交易记录查询
-    const result = {
-      list: [],
-      total: 0,
-      page: Number(page),
-      pageSize: Number(pageSize),
+    const result = await walletDAO.getTransactions({
       userId,
-    };
+      page,
+      pageSize,
+      type,
+    });
 
-    return res.json(successResponse(result));
+    return res.json(successResponse({
+      list: result.list,
+      total: result.total,
+      page,
+      pageSize,
+    }));
   } catch (error: any) {
     if (error instanceof Error) {
       return res.status(500).json(errorResponse(error.message));
@@ -75,7 +80,44 @@ router.get('/transactions', authMiddleware, async (req: Request, res: Response) 
 });
 
 /**
- * 3. 提现申请
+ * 3. 钱包充值
+ * POST /api/v1/wallet/recharge
+ */
+router.post('/recharge', authMiddleware, async (req: Request, res: Response) => {
+  try {
+    const userId = req.user?.userId;
+    if (!userId) {
+      res.status(401).json(errorResponse('未授权', 401));
+      return undefined;
+    }
+    const { amount, description } = req.body;
+
+    // 验证充值金额
+    if (!amount || amount <= 0) {
+      return res.status(400).json(errorResponse('充值金额必须大于0', 400));
+    }
+
+    const result = await walletDAO.recharge({
+      userId,
+      amount: Number(amount),
+      description,
+    });
+
+    return res.json(successResponse({
+      wallet: result.wallet,
+      transaction: result.transaction,
+      message: '充值成功',
+    }));
+  } catch (error: any) {
+    if (error instanceof Error) {
+      return res.status(500).json(errorResponse(error.message));
+    }
+    return res.status(500).json(errorResponse('充值失败'));
+  }
+});
+
+/**
+ * 4. 提现申请
  * POST /api/v1/wallet/withdraw
  */
 router.post('/withdraw', authMiddleware, async (req: Request, res: Response) => {
