@@ -296,10 +296,24 @@ const loadData = async () => {
     }
   } catch (error) {
     logger.error('加载数据失败', error)
+
     // 确保即使出错也有默认值
     hotModels.value = []
     projects.value = []
     transactions.value = []
+
+    // 通知用户加载失败，并提供重试选项
+    uni.showModal({
+      title: '加载失败',
+      content: '数据加载失败，请检查网络连接后重试',
+      confirmText: '重试',
+      cancelText: '取消',
+      success: (res) => {
+        if (res.confirm) {
+          loadData()
+        }
+      }
+    })
   }
 }
 
@@ -320,8 +334,22 @@ const loadMyData = async () => {
     }
   } catch (error) {
     logger.error('加载我的数据失败', error)
+
     // 确保即使出错也有默认值
     myShares.value = []
+
+    // 通知用户加载失败，并提供重试选项
+    uni.showModal({
+      title: '加载失败',
+      content: '我的众筹数据加载失败，请检查网络连接后重试',
+      confirmText: '重试',
+      cancelText: '取消',
+      success: (res) => {
+        if (res.confirm) {
+          loadMyData()
+        }
+      }
+    })
   }
 }
 

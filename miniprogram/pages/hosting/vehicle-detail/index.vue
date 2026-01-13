@@ -42,33 +42,116 @@
   </view>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      vehicle: {
-        name: '上汽大通V90',
-        plate: '京A·12345',
-        image: '/static/logo.png',
-        status: 'renting',
-        statusText: '出租中',
-        todayIncome: 350,
-        monthIncome: 5200,
-        totalIncome: 28500,
-        location: '北京市朝阳区叨叨房车朝阳门店',
-        insurance: '已投保（太平洋保险）',
-        nextMaintenance: '2025-12-15'
-      }
+<script setup lang="ts">
+import { ref } from 'vue';
+import { onLoad } from '@dcloudio/uni-app';
+import { logger } from '@/utils/logger';
+import { getVehicleDetail } from '@/api/hosting';
+
+// 车辆数据
+const vehicle = ref<any>({
+  name: '',
+  plate: '',
+  image: '/static/logo.png',
+  status: '',
+  statusText: '',
+  todayIncome: 0,
+  monthIncome: 0,
+  totalIncome: 0,
+  location: '',
+  insurance: '',
+  nextMaintenance: ''
+});
+
+const loading = ref(false);
+const vehicleId = ref('');
+
+// 加载车辆详情
+const loadVehicleDetail = async (id: string) => {
+  loading.value = true;
+  try {
+    const res: any = await getVehicleDetail(Number(id));
+
+    // 数据校验
+    if (!res || res.code !== 0 || !res.data) {
+      throw new Error('车辆数据格式错误');
     }
-  },
-  methods: {
-    applySelfUse() {
-      uni.navigateTo({
-        url: '/pages/hosting/self-use/index?vehicleId=' + this.vehicle.id
-      })
+
+    const data = res.data;
+
+    // 数据校验：检查必要字段
+    if (!data.id || !data.name) {
+      throw new Error('车辆数据不完整');
     }
+
+    vehicle.value = {
+      id: data.id,
+      name: data.name,
+      plate: data.plate || '未知车牌',
+      image: data.image || '/static/logo.png',
+      status: data.status || 'idle',
+      statusText: data.statusText || '空闲中',
+      todayIncome: data.todayIncome || 0,
+      monthIncome: data.monthIncome || 0,
+      totalIncome: data.totalIncome || 0,
+      location: data.location || '未知位置',
+      insurance: data.insurance || '未投保',
+      nextMaintenance: data.nextMaintenance || '未设置'
+    };
+
+    logger.debug('成功加载车辆详情:', id, vehicle.value);
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : '加载失败';
+    logger.error('加载车辆详情失败:', error);
+    uni.showToast({
+      title: errorMessage,
+      icon: 'none',
+      duration: 2000
+    });
+    setTimeout(() => {
+      uni.navigateBack();
+    }, 1500);
+  } finally {
+    loading.value = false;
   }
-}
+};
+
+// 申请自用
+const applySelfUse = () => {
+  if (!vehicle.value.id) {
+    uni.showToast({
+      title: '车辆信息不完整',
+      icon: 'none'
+    });
+    return;
+  }
+
+  uni.navigateTo({
+    url: `/pages/hosting/self-use/index?vehicleId=${vehicle.value.id}`
+  });
+};
+
+// 页面加载
+onLoad(async (options: any) => {
+  const id = options?.id;
+
+  // 数据校验：必须提供车辆ID
+  if (!id) {
+    logger.error('缺少车辆ID参数');
+    uni.showToast({
+      title: '车辆参数错误',
+      icon: 'none',
+      duration: 2000
+    });
+    setTimeout(() => {
+      uni.navigateBack();
+    }, 1500);
+    return;
+  }
+
+  vehicleId.value = id;
+  await loadVehicleDetail(id);
+});
 </script>
 
 <style scoped lang="scss">

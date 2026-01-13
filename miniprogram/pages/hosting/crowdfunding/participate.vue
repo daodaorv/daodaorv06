@@ -436,33 +436,61 @@ const uploadIdCard = (type: 'front' | 'back') => {
     sourceType: ['camera', 'album'],
     success: async (res) => {
       const tempPath = res.tempFilePaths[0]
-      if (tempPath) {
-        uni.showLoading({ title: '上传中...' })
-        try {
-          // Mock上传实现
-          await new Promise(resolve => setTimeout(resolve, 1500))
-          const url = `https://mock-cdn.example.com/id-card/${type}/${Date.now()}.jpg`
+      if (!tempPath) {
+        return
+      }
 
-          if (type === 'front') {
-            individualInfo.value.idCardFrontImage = url
-          } else {
-            individualInfo.value.idCardBackImage = url
+      // 文件大小验证（最大5MB）
+      uni.getFileInfo({
+        filePath: tempPath,
+        success: async (fileInfo) => {
+          const maxSize = 5 * 1024 * 1024 // 5MB
+          if (fileInfo.size > maxSize) {
+            uni.showToast({
+              title: '图片大小不能超过5MB',
+              icon: 'none',
+              duration: 2000
+            })
+            return
           }
 
-          uni.hideLoading()
+          uni.showLoading({ title: '上传中...' })
+          try {
+            // TODO: 替换为真实的上传API
+            // const uploadRes = await uploadFile(tempPath, 'id-card')
+            // const url = uploadRes.url
+
+            // Mock上传实现（开发阶段）
+            await new Promise(resolve => setTimeout(resolve, 1500))
+            const url = `https://mock-cdn.example.com/id-card/${type}/${Date.now()}.jpg`
+
+            if (type === 'front') {
+              individualInfo.value.idCardFrontImage = url
+            } else {
+              individualInfo.value.idCardBackImage = url
+            }
+
+            uni.hideLoading()
+            uni.showToast({
+              title: '上传成功',
+              icon: 'success'
+            })
+          } catch (error) {
+            uni.hideLoading()
+            logger.error('上传身份证照片失败', error)
+            uni.showToast({
+              title: '上传失败，请重试',
+              icon: 'none'
+            })
+          }
+        },
+        fail: () => {
           uni.showToast({
-            title: '上传成功',
-            icon: 'success'
-          })
-        } catch (error) {
-          uni.hideLoading()
-          logger.error('上传身份证照片失败', error)
-          uni.showToast({
-            title: '上传失败，请重试',
+            title: '获取文件信息失败',
             icon: 'none'
           })
         }
-      }
+      })
     }
   })
 }
@@ -502,16 +530,45 @@ const uploadBusinessLicense = () => {
   })
 }
 
-// 验证手机号格式
+// 验证手机号格式（支持国内手机号）
 const validatePhone = (phone: string): boolean => {
+  if (!phone || phone.trim() === '') {
+    return false
+  }
+  // 支持1开头的11位手机号
   const phoneReg = /^1[3-9]\d{9}$/
-  return phoneReg.test(phone)
+  return phoneReg.test(phone.trim())
 }
 
-// 验证身份证号格式
+// 验证身份证号格式（包含校验位验证）
 const validateIdCard = (idCard: string): boolean => {
-  const idCardReg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/
-  return idCardReg.test(idCard)
+  if (!idCard || idCard.trim() === '') {
+    return false
+  }
+
+  const idCardStr = idCard.trim().toUpperCase()
+
+  // 15位或18位身份证号
+  const idCardReg = /(^\d{15}$)|(^\d{17}(\d|X)$)/
+  if (!idCardReg.test(idCardStr)) {
+    return false
+  }
+
+  // 18位身份证需要验证校验位
+  if (idCardStr.length === 18) {
+    const factors = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2]
+    const checkCodes = ['1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2']
+
+    let sum = 0
+    for (let i = 0; i < 17; i++) {
+      sum += parseInt(idCardStr[i]) * factors[i]
+    }
+
+    const checkCode = checkCodes[sum % 11]
+    return idCardStr[17] === checkCode
+  }
+
+  return true
 }
 
 // 提交参与

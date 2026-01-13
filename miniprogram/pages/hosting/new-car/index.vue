@@ -43,7 +43,7 @@ export default {
   data() {
     return {
       models: [],
-      form: { name: '', phone: '' }
+      form: { name: '', phone: '', selectedModelId: '', selectedModelName: '' }
     }
   },
   onLoad() {
@@ -60,9 +60,21 @@ export default {
       }
     },
     selectModel(model) {
-      uni.navigateTo({
-        url: `/pages/hosting/model-detail/index?id=${model.id}`
+      // 保存选中的车型信息
+      this.form.selectedModelId = model.id
+      this.form.selectedModelName = model.name
+
+      // 显示选中提示
+      uni.showToast({
+        title: `已选择：${model.name}`,
+        icon: 'success',
+        duration: 1500
       })
+
+      // 可选：跳转到车型详情页
+      // uni.navigateTo({
+      //   url: `/pages/hosting/model-detail/index?id=${model.id}`
+      // })
     },
     goToModelList() {
       uni.navigateTo({
@@ -70,13 +82,35 @@ export default {
       })
     },
     submit() {
-      if (!this.form.name || !this.form.phone) {
-        uni.showToast({ title: '请填写完整信息', icon: 'none' })
+      // 验证：姓名必填
+      if (!this.form.name || !this.form.name.trim()) {
+        uni.showToast({ title: '请输入姓名', icon: 'none' })
         return
       }
+
+      // 验证：电话必填
+      if (!this.form.phone || !this.form.phone.trim()) {
+        uni.showToast({ title: '请输入联系电话', icon: 'none' })
+        return
+      }
+
+      // 验证：电话格式
+      const phoneRegex = /^1[3-9]\d{9}$/
+      if (!phoneRegex.test(this.form.phone)) {
+        uni.showToast({ title: '请输入正确的手机号码', icon: 'none' })
+        return
+      }
+
+      // 验证：必须选择车型
+      if (!this.form.selectedModelId) {
+        uni.showToast({ title: '请先选择意向车型', icon: 'none' })
+        return
+      }
+
+      // 提交成功
       uni.showModal({
         title: '提交成功',
-        content: '我们将在24小时内联系您',
+        content: `您选择的车型：${this.form.selectedModelName}\n我们将在24小时内联系您`,
         showCancel: false,
         success: () => uni.navigateBack()
       })

@@ -175,6 +175,14 @@ export default {
         },
         fail: () => {
           logger.debug('获取定位失败，使用默认城市')
+
+          // 通知用户定位失败
+          uni.showToast({
+            title: '定位失败，请手动选择城市',
+            icon: 'none',
+            duration: 2500
+          })
+
           // 定位失败时默认选择第一个城市
           if (this.cities.length > 0) {
             this.formData.cityId = this.cities[0].id

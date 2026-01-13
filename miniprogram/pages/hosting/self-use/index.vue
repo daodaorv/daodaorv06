@@ -268,9 +268,23 @@ export default {
       const index = Number(e.detail.value)
       const store = this.availableReturnStores[index]
       if (!store) return
+
+      const oldFee = this.fees.returnFee
       this.form.returnStoreId = store.id
       this.form.returnStoreName = store.name
       this.calculateReturnFee()
+
+      // 费用变化提示
+      if (this.fees.returnFee !== oldFee) {
+        const message = this.fees.returnFee > 0
+          ? `异地还车费用：¥${this.fees.returnFee}`
+          : '该门店无需异地还车费'
+        uni.showToast({
+          title: message,
+          icon: 'none',
+          duration: 2000
+        })
+      }
     },
     calculateReturnFee() {
       if (!this.isDifferentLocation) {
@@ -324,10 +338,29 @@ export default {
       ]
     },
     async submit() {
+      // 验证：必须选择取还车时间
       if (!this.form.pickupDate || !this.form.returnDate) {
         uni.showToast({ title: '请选择取还车时间', icon: 'none' })
         return
       }
+
+      // 验证：还车时间必须晚于取车时间
+      const pickupDateTime = dayjs(`${this.form.pickupDate} ${this.form.pickupTime}`)
+      const returnDateTime = dayjs(`${this.form.returnDate} ${this.form.returnTime}`)
+
+      if (returnDateTime.isBefore(pickupDateTime) || returnDateTime.isSame(pickupDateTime)) {
+        uni.showToast({ title: '还车时间必须晚于取车时间', icon: 'none' })
+        return
+      }
+
+      // 验证：租期至少1小时
+      const durationHours = returnDateTime.diff(pickupDateTime, 'hour')
+      if (durationHours < 1) {
+        uni.showToast({ title: '租期至少需要1小时', icon: 'none' })
+        return
+      }
+
+      // 验证：异地还车必须选择还车门店
       if (this.isDifferentLocation && !this.form.returnStoreId) {
         uni.showToast({ title: '请选择还车门店', icon: 'none' })
         return
