@@ -6,8 +6,8 @@
 			<uni-countdown 
 				:show-day="false" 
 				:hour="0" 
-				:minute="15" 
-				:second="0" 
+				:minute="countdownMinutes" 
+				:second="countdownSeconds" 
 				color="#FF9F29" 
 				splitor-color="#333"
 				@timeup="onTimeUp"
@@ -134,6 +134,41 @@ const redirectUrl = ref('/pages/order/pay');
 let cachedRouteParams: Record<string, any> | null = null;
 const userBalance = ref(500.00);
 
+// 倒计时持久化
+const countdownMinutes = ref(15);
+const countdownSeconds = ref(0);
+const COUNTDOWN_STORAGE_KEY = 'payment_countdown_';
+
+// 初始化倒计时
+const initCountdown = (orderNoValue: string) => {
+	const storageKey = COUNTDOWN_STORAGE_KEY + orderNoValue;
+	const savedData = uni.getStorageSync(storageKey);
+
+	if (savedData && savedData.startTime) {
+		// 计算剩余时间
+		const elapsed = Date.now() - savedData.startTime;
+		const totalSeconds = 15 * 60 - Math.floor(elapsed / 1000);
+
+		if (totalSeconds > 0) {
+			countdownMinutes.value = Math.floor(totalSeconds / 60);
+			countdownSeconds.value = totalSeconds % 60;
+		} else {
+			// 已超时
+			countdownMinutes.value = 0;
+			countdownSeconds.value = 0;
+			onTimeUp();
+		}
+	} else {
+		// 首次进入，保存开始时间
+		uni.setStorageSync(storageKey, {
+			startTime: Date.now(),
+			orderNo: orderNoValue
+		});
+		countdownMinutes.value = 15;
+		countdownSeconds.value = 0;
+	}
+};
+
 // 状态控制
 const useBalance = ref(false);
 // 根据平台设置默认支付方式
@@ -216,6 +251,10 @@ const mockPayment = (paymentData: any) => {
 // 支付成功处理
 const handlePaymentSuccess = async (result: any) => {
 	try {
+		// 清理倒计时存储
+		const storageKey = COUNTDOWN_STORAGE_KEY + result.orderNo;
+		uni.removeStorageSync(storageKey);
+
 		// 1. 显示支付成功提示
 		uni.showToast({
 			title: '支付成功',
@@ -352,6 +391,10 @@ const setupPayPage = (options: any) => {
 	if (options.amount) {
 		orderAmount.value = Number(options.amount);
 	}
+
+	// 初始化倒计时
+	initCountdown(orderNo.value);
+
 	pageReady.value = true;
 };
 

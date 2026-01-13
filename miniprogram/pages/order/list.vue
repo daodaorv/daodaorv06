@@ -119,6 +119,7 @@ import dayjs from 'dayjs';
 import { onLoad, onShow } from '@dcloudio/uni-app';
 import { getUserOrders } from '@/api/order';
 import { requireLogin, isLoggedIn, buildRedirectUrl } from '@/utils/auth';
+import { getStatusColor, canPayOrder, canCancelOrder, isOrderInProgress, isOrderCompleted } from '@/utils/orderStatus';
 
 // Mock Data
 const statusList = [
@@ -210,38 +211,33 @@ const formatDate = (dateStr: string) => {
 	return dayjs(dateStr).format('MM月DD日 HH:mm');
 };
 
-const getStatusColor = (status: string) => {
-	const map: any = {
-		pending_payment: '#FF4D4F',
-		pending_pickup: '#FF9F29',
-		renting: '#00B578',
-		completed: '#2196F3',
-		cancelled: '#999999'
-	};
-	return map[status] || '#999999';
-};
-
 const getOrderActions = (order: any) => {
 	const status = order.status;
-	if (status === 'pending_payment') {
+
+	// 待支付状态
+	if (canPayOrder(status)) {
 		return [
 			{ text: '取消订单', primary: false, code: 'cancel' },
 			{ text: '去支付', primary: true, code: 'pay' }
 		];
 	}
-	// 租赁中状态：支持 in_progress 和 renting 两种状态码
-	if (status === 'in_progress' || status === 'renting') {
+
+	// 租赁中状态
+	if (isOrderInProgress(status)) {
 		return [
 			{ text: '车辆异常', primary: false, code: 'report' },
 			{ text: '续租', primary: true, code: 'renew' }
 		];
 	}
-	if (status === 'completed') {
+
+	// 已完成状态
+	if (isOrderCompleted(status)) {
 		return [
 			{ text: '删除订单', primary: false, code: 'delete' },
 			{ text: '再次预订', primary: true, code: 'rebook' }
 		];
 	}
+
 	return [];
 };
 
@@ -374,39 +370,31 @@ const goToDetail = (order: any) => {
 	});
 };
 
-// 页面初始化时的设置
-const setupOrderListPage = (options: any) => {
-	// 如果有状态参数，设置当前状态
-	if (options.status) {
-		currentStatus.value = options.status;
-	}
-	pageReady.value = true;
-	loadOrders();
-};
-
-// 确保用户已登录
-const ensureAuth = (options: any) => {
-	redirectUrl.value = buildRedirectUrl('/pages/order/list', options || {});
-	if (isLoggedIn()) {
-		return true;
-	}
-	return requireLogin(redirectUrl.value);
-};
-
 // 页面加载时检查登录状态
-onLoad((options: any) => {
+onLoad(async (options: any) => {
 	cachedRouteParams = options || {};
-	pageReady.value = false;
-	if (!ensureAuth(cachedRouteParams)) {
+
+	// 统一登录拦截
+	if (!isLoggedIn()) {
+		redirectUrl.value = buildRedirectUrl('/pages/order/list', cachedRouteParams);
+		await requireLogin(redirectUrl.value);
 		return;
 	}
-	setupOrderListPage(cachedRouteParams);
+
+	// 设置状态参数
+	if (cachedRouteParams.status) {
+		currentStatus.value = cachedRouteParams.status;
+	}
+
+	pageReady.value = true;
+	await loadOrders();
 });
 
 // 页面显示时检查登录状态（从登录页返回时）
 onShow(() => {
-	if (!pageReady.value && cachedRouteParams && isLoggedIn()) {
-		setupOrderListPage(cachedRouteParams);
+	if (!pageReady.value && isLoggedIn()) {
+		pageReady.value = true;
+		loadOrders();
 	}
 });
 </script>

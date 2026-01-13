@@ -179,6 +179,7 @@ import { ref, computed } from 'vue';
 import { onLoad, onShow } from '@dcloudio/uni-app';
 import dayjs from 'dayjs';
 import { getOrderDetail } from '@/api/order';
+import { getStatusConfig, canPayOrder, canCancelOrder } from '@/utils/orderStatus';
 
 const statusBarHeight = ref(0);
 const currentOrderId = ref(''); // 保存当前订单ID，用于刷新
@@ -209,70 +210,96 @@ onLoad(async (options: any) => {
 
 	// 支持通过 id 或 orderNo 参数加载订单详情
 	const orderId = options.id || options.orderNo;
+
+	// 数据校验：必须提供订单ID
+	if (!orderId) {
+		logger.error('缺少订单ID参数');
+		uni.showToast({
+			title: '订单参数错误',
+			icon: 'none',
+			duration: 2000
+		});
+		setTimeout(() => {
+			uni.navigateBack();
+		}, 1500);
+		return;
+	}
+
 	currentOrderId.value = orderId; // 保存订单ID用于后续刷新
 
-	if (orderId) {
-		// 从 Mock 数据加载订单详情
-		try {
-			const res: any = await getOrderDetail(orderId);
-			if (res.code === 0 && res.data) {
-				// 映射数据结构
-				const orderData = res.data;
-				const isCampsiteOrder = orderData.orderType === 'campsite';
+	// 从 Mock 数据加载订单详情
+	try {
+		const res: any = await getOrderDetail(orderId);
 
-				// 根据订单类型处理费用明细
-				let feeDetails: any = {};
-				if (isCampsiteOrder && orderData.campsiteFeeDetails) {
-					// 营地订单费用明细
-					feeDetails = {
-						siteFee: orderData.campsiteFeeDetails.siteFee || 0,
-						cleaningFee: orderData.campsiteFeeDetails.cleaningFee || 0,
-						insuranceFee: orderData.campsiteFeeDetails.insuranceFee || 0,
-						servicesFee: orderData.campsiteFeeDetails.servicesFee || 0,
-						discountAmount: orderData.campsiteFeeDetails.couponDiscount || 0,
-						nights: orderData.campsiteFeeDetails.nights || 1
-					};
-				} else {
-					// 房车订单费用明细
-					feeDetails = {
-						rentalFee: orderData.totalAmount - (orderData.actualAmount - orderData.totalAmount),
-						serviceFee: 160,
-						discountAmount: orderData.totalAmount - orderData.actualAmount
-					};
-				}
-
-				order.value = {
-					id: orderData.id,
-					orderNo: orderData.orderNo,
-					status: orderData.status.code,
-					orderType: orderData.orderType || 'vehicle',
-					vehicleName: orderData.vehicle?.name || (isCampsiteOrder ? '未知营位' : '未知车辆'),
-					vehicleImage: orderData.vehicle?.images?.[0] || '/static/logo.png',
-					vehicleSpec: isCampsiteOrder
-						? orderData.vehicle?.model || '营位信息'
-						: `${orderData.vehicle?.specifications?.transmission || ''} | ${orderData.vehicle?.specifications?.seats || ''}座 | ${orderData.vehicle?.specifications?.fuelType || ''}`,
-					pickupTime: orderData.pickupTime,
-					returnTime: orderData.returnTime,
-					pickupStoreName: orderData.pickupStore?.name || (isCampsiteOrder ? '未知营地' : '未知门店'),
-					returnStoreName: orderData.returnStore?.name || (isCampsiteOrder ? '未知营地' : '未知门店'),
-					totalAmount: orderData.actualAmount,
-					createdAt: dayjs(orderData.createdAt).format('YYYY-MM-DD HH:mm:ss'),
-					contactName: orderData.pickupContactName || '张三',
-					contactPhone: orderData.pickupContactPhone || '138****0000',
-					...feeDetails
-				};
-				logger.debug('成功加载订单详情:', orderId, order.value);
-			}
-		} catch (error) {
-			logger.error('加载订单详情失败:', error);
-			uni.showToast({
-				title: '订单不存在',
-				icon: 'none'
-			});
-			setTimeout(() => {
-				uni.navigateBack();
-			}, 1500);
+		// 数据校验：检查响应格式
+		if (!res || res.code !== 0 || !res.data) {
+			throw new Error('订单数据格式错误');
 		}
+
+		const orderData = res.data;
+
+		// 数据校验：检查必要字段
+		if (!orderData.id || !orderData.orderNo || !orderData.status) {
+			throw new Error('订单数据不完整');
+		}
+
+		const isCampsiteOrder = orderData.orderType === 'campsite';
+
+		// 根据订单类型处理费用明细
+		let feeDetails: any = {};
+		if (isCampsiteOrder && orderData.campsiteFeeDetails) {
+			// 营地订单费用明细
+			feeDetails = {
+				siteFee: orderData.campsiteFeeDetails.siteFee || 0,
+				cleaningFee: orderData.campsiteFeeDetails.cleaningFee || 0,
+				insuranceFee: orderData.campsiteFeeDetails.insuranceFee || 0,
+				servicesFee: orderData.campsiteFeeDetails.servicesFee || 0,
+				discountAmount: orderData.campsiteFeeDetails.couponDiscount || 0,
+				nights: orderData.campsiteFeeDetails.nights || 1
+			};
+		} else {
+			// 房车订单费用明细
+			const serviceFee = 160;
+			const discountAmount = orderData.totalAmount - orderData.actualAmount;
+			feeDetails = {
+				rentalFee: orderData.totalAmount - serviceFee,
+				serviceFee: serviceFee,
+				discountAmount: discountAmount
+			};
+		}
+
+		order.value = {
+			id: orderData.id,
+			orderNo: orderData.orderNo,
+			status: orderData.status.code,
+			orderType: orderData.orderType || 'vehicle',
+			vehicleName: orderData.vehicle?.name || (isCampsiteOrder ? '未知营位' : '未知车辆'),
+			vehicleImage: orderData.vehicle?.images?.[0] || '/static/logo.png',
+			vehicleSpec: isCampsiteOrder
+				? orderData.vehicle?.model || '营位信息'
+				: `${orderData.vehicle?.specifications?.transmission || ''} | ${orderData.vehicle?.specifications?.seats || ''}座 | ${orderData.vehicle?.specifications?.fuelType || ''}`,
+			pickupTime: orderData.pickupTime,
+			returnTime: orderData.returnTime,
+			pickupStoreName: orderData.pickupStore?.name || (isCampsiteOrder ? '未知营地' : '未知门店'),
+			returnStoreName: orderData.returnStore?.name || (isCampsiteOrder ? '未知营地' : '未知门店'),
+			totalAmount: orderData.actualAmount,
+			createdAt: dayjs(orderData.createdAt).format('YYYY-MM-DD HH:mm:ss'),
+			contactName: orderData.pickupContactName || '张三',
+			contactPhone: orderData.pickupContactPhone || '138****0000',
+			...feeDetails
+		};
+		logger.debug('成功加载订单详情:', orderId, order.value);
+	} catch (error: unknown) {
+		const errorMessage = error instanceof Error ? error.message : '加载失败';
+		logger.error('加载订单详情失败:', error);
+		uni.showToast({
+			title: errorMessage,
+			icon: 'none',
+			duration: 2000
+		});
+		setTimeout(() => {
+			uni.navigateBack();
+		}, 1500);
 	}
 });
 
@@ -281,7 +308,9 @@ onShow(async () => {
 	if (currentOrderId.value) {
 		try {
 			const res: any = await getOrderDetail(currentOrderId.value);
-			if (res.code === 0 && res.data) {
+
+			// 数据校验：检查响应格式和必要字段
+			if (res && res.code === 0 && res.data && res.data.status) {
 				// 只更新订单状态，不重新加载整个页面
 				order.value.status = res.data.status.code;
 				logger.debug('刷新订单状态', {
@@ -289,7 +318,7 @@ onShow(async () => {
 					status: res.data.status.code
 				});
 			}
-		} catch (error) {
+		} catch (error: unknown) {
 			logger.error('刷新订单状态失败:', error);
 		}
 	}
@@ -297,91 +326,21 @@ onShow(async () => {
 
 // Computed Properties
 const statusMeta = computed(() => {
-	const map: any = {
-		// 后端状态映射
-		pending: {
-			title: '待支付',
-			desc: '请在 29:59 内完成支付，超时将自动取消',
-			icon: 'clock',
-			bgGradient: 'linear-gradient(135deg, #FF9F29 0%, #FFB84D 100%)'
-		},
-		paid: {
-			title: '已支付',
-			desc: '订单已支付，等待商家确认',
-			icon: 'hourglass',
-			bgGradient: 'linear-gradient(135deg, #FFB84D 0%, #FFC966 100%)'
-		},
-		confirmed: {
-			title: '已确认',
-			desc: '订单已确认，请按时到店取车',
-			icon: 'calendar',
-			bgGradient: 'linear-gradient(135deg, #52C41A 0%, #73D13D 100%)'
-		},
-		picked_up: {
-			title: '租赁中',
-			desc: '祝您旅途愉快，注意行车安全',
-			icon: 'car-fill',
-			bgGradient: 'linear-gradient(135deg, #00B578 0%, #4CAF50 100%)'
-		},
-		returned: {
-			title: '已还车',
-			desc: '车辆已归还，等待验收',
-			icon: 'map',
-			bgGradient: 'linear-gradient(135deg, #1890FF 0%, #40A9FF 100%)'
-		},
-		completed: {
-			title: '已完成',
-			desc: '订单已完成，期待下次为您服务',
-			icon: 'checkmark-circle-fill',
-			bgGradient: 'linear-gradient(135deg, #2196F3 0%, #42A5F5 100%)'
-		},
-		cancelled: {
-			title: '已取消',
-			desc: '订单已取消',
-			icon: 'close-circle-fill',
-			bgGradient: 'linear-gradient(135deg, #999999 0%, #BBBBBB 100%)'
-		},
-		// 兼容旧的前端状态码（逐步废弃）
-		pending_payment: {
-			title: '待支付',
-			desc: '请在 29:59 内完成支付，超时将自动取消',
-			icon: 'clock',
-			bgGradient: 'linear-gradient(135deg, #FF9F29 0%, #FFB84D 100%)'
-		},
-		pending_confirmation: {
-			title: '待确认',
-			desc: '订单已提交，等待商家确认',
-			icon: 'hourglass',
-			bgGradient: 'linear-gradient(135deg, #FFB84D 0%, #FFC966 100%)'
-		},
-		pending_pickup: {
-			title: '待取车',
-			desc: '订单已确认，请按时到店取车',
-			icon: 'calendar',
-			bgGradient: 'linear-gradient(135deg, #52C41A 0%, #73D13D 100%)'
-		},
-		in_progress: {
-			title: '租赁中',
-			desc: '祝您旅途愉快，注意行车安全',
-			icon: 'car-fill',
-			bgGradient: 'linear-gradient(135deg, #00B578 0%, #4CAF50 100%)'
-		},
-		pending_return: {
-			title: '待还车',
-			desc: '请按时到店还车，感谢您的使用',
-			icon: 'map',
-			bgGradient: 'linear-gradient(135deg, #1890FF 0%, #40A9FF 100%)'
-		}
+	const config = getStatusConfig(order.value.status);
+	return {
+		title: config.name,
+		desc: config.description || '',
+		icon: config.icon,
+		bgGradient: config.bgGradient || 'linear-gradient(135deg, #999999 0%, #BBBBBB 100%)'
 	};
-	return map[order.value.status] || map.pending;
 });
 
 const duration = computed(() => {
 	return dayjs(order.value.returnTime).diff(dayjs(order.value.pickupTime), 'day');
 });
 
-const canCancel = computed(() => ['pending_payment', 'pending_pickup'].includes(order.value.status));
-const canPay = computed(() => order.value.status === 'pending_payment');
+const canCancel = computed(() => canCancelOrder(order.value.status));
+const canPay = computed(() => canPayOrder(order.value.status));
 const showStatusActions = computed(() => canCancel.value || canPay.value);
 
 // Methods
