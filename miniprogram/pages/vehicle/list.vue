@@ -74,6 +74,7 @@ import VehicleCard, { type VehicleCardData } from '@/components/business/vehicle
 import VehicleFilter from '@/components/business/vehicle/VehicleFilter.vue'
 import EmptyState from '@/components/base/EmptyState.vue'
 import ErrorState from '@/components/base/ErrorState.vue'
+import { generateMockVehicles } from '@/mock/vehicleGenerator'
 
 // 页面状态
 const loading = ref(false)
@@ -82,98 +83,6 @@ const errorMessage = ref('')
 
 // 搜索参数
 const searchParams = ref<any>({});
-
-// 根据搜索参数生成 Mock 车辆数据
-const generateMockVehicles = (params: any): VehicleCardData[] => {
-	const city = params.pickupCity || '深圳';
-	const store = params.pickupStore || '深圳宝安店';
-
-	// 从 BookingForm 中获取门店 ID 映射
-	const storeIdMap: Record<string, string> = {
-		'北京朝阳店': '101', '北京海淀店': '102', '北京大兴店': '103',
-		'上海虹桥店': '201', '上海浦东店': '202', '上海嘉定店': '203',
-		'成都双流店': '301', '成都高新店': '302', '成都天府店': '303',
-		'深圳宝安店': '401', '深圳南山店': '402', '深圳龙岗店': '403',
-		'广州白云店': '501', '广州天河店': '502', '广州番禺店': '503',
-		'杭州萧山店': '601', '杭州西湖店': '602',
-		'重庆江北店': '701', '重庆渝北店': '702',
-		'西安未央店': '801', '西安雁塔店': '802',
-		'武汉洪山店': '901', '武汉江汉店': '902',
-		'长沙岳麓店': '1001', '长沙雨花店': '1002',
-		'南京江宁店': '1101', '南京鼓楼店': '1102',
-		'苏州吴中店': '1201', '苏州工业园店': '1202',
-		'天津滨海店': '1301', '天津南开店': '1302',
-		'青岛市南店': '1401', '青岛崂山店': '1402',
-		'厦门思明店': '1501', '厦门湖里店': '1502',
-		'昆明官渡店': '1601', '昆明盘龙店': '1602',
-		'三亚凤凰店': '1701', '三亚海棠湾店': '1702',
-		'海口美兰店': '1801', '海口龙华店': '1802'
-	};
-
-	const storeId = storeIdMap[store] || '401';
-
-	// 生成该门店的车辆数据
-	// 使用数字ID（1-4），这些ID在后端数据库中真实存在
-	return [
-		{
-			id: '1',
-			name: '上汽大通RG10 生活家V90',
-			image: '/static/场景推荐2.jpg',
-			type: 'C型',
-			seats: 6,
-			beds: 4,
-			transmission: '自动挡',
-			price: 680,
-			tags: ['热门', '新车', '独立卫浴'],
-			features: ['独立卫浴', 'KTV'],
-			brand: '上汽大通',
-			storeId,
-			storeName: store,
-		},
-		{
-			id: '2',
-			name: '宇通B530 舒适版',
-			image: '/static/优惠政策.jpg',
-			type: 'B型',
-			seats: 4,
-			beds: 2,
-			transmission: '自动挡',
-			price: 520,
-			tags: ['经济实惠', '好停车'],
-			brand: '宇通',
-			storeId,
-			storeName: store,
-		},
-		{
-			id: '3',
-			name: '览众C7 经典版',
-			image: '/static/场景推荐2.jpg',
-			type: 'C型',
-			seats: 6,
-			beds: 4,
-			transmission: '手动挡',
-			price: 580,
-			tags: ['皮卡底盘', '动力强'],
-			brand: '览众',
-			storeId,
-			storeName: store,
-		},
-		{
-			id: '4',
-			name: '上汽大通V90 商务版',
-			image: '/static/优惠政策.jpg',
-			type: 'B型',
-			seats: 4,
-			beds: 2,
-			transmission: '自动挡',
-			price: 480,
-			tags: [],
-			brand: '上汽大通',
-			storeId,
-			storeName: store,
-		}
-	];
-};
 
 // Mock数据 (初始化为空，由 loadVehicles 动态生成)
 const allVehicles = ref<VehicleCardData[]>([]);
@@ -266,20 +175,23 @@ const loadVehicles = async () => {
 		// 模拟 API 调用延迟
 		await new Promise(resolve => setTimeout(resolve, 800));
 
-		// 实际项目中这里应该调用 API
-		// const res = await api.getVehicles(searchParams.value);
-		// allVehicles.value = res.data;
+		// 使用统一的 Mock 数据生成器
+		const mockData = generateMockVehicles(
+			searchParams.value.pickupCity,
+			searchParams.value.pickupStore
+		);
 
-		// 根据搜索参数生成对应城市的 Mock 数据
-		allVehicles.value = generateMockVehicles(searchParams.value);
+		allVehicles.value = mockData;
 
 		logger.debug('车辆数据加载成功', {
 			city: searchParams.value.pickupCity,
-			count: allVehicles.value.length
+			store: searchParams.value.pickupStore,
+			count: mockData.length
 		});
 	} catch (e: any) {
 		error.value = true;
 		errorMessage.value = e.message || '加载失败，请重试';
+		logger.error('加载车辆列表失败', e);
 	} finally {
 		loading.value = false;
 	}

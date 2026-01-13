@@ -271,35 +271,83 @@ onLoad((options: any) => {
 	const sys = uni.getSystemInfoSync();
 	statusBarHeight.value = sys.statusBarHeight || 0;
 
-	// 从本地存储读取完整的车辆数据
-	const selectedVehicle = uni.getStorageSync('selected_vehicle');
+	// 数据加载优先级：
+	// 1. 优先使用本地存储的完整数据（从列表页跳转）
+	// 2. 其次使用 URL 参数 ID（从分享/外部链接进入）
+	// 3. 最后使用默认数据（兜底）
 
-	if (selectedVehicle) {
-		// 使用列表页传递的完整数据
-		vehicle.value = {
-			...vehicle.value,
-			id: selectedVehicle.id,
-			name: selectedVehicle.name,
-			type: selectedVehicle.type,
-			seats: selectedVehicle.seats,
-			beds: selectedVehicle.beds,
-			transmission: selectedVehicle.transmission,
-			price: selectedVehicle.price,
-			tags: selectedVehicle.tags || [],
-			storeName: selectedVehicle.storeName,
-			storeId: selectedVehicle.storeId,
-			brand: selectedVehicle.brand
-		};
+	try {
+		// 尝试从本地存储读取完整数据
+		const selectedVehicle = uni.getStorageSync('selected_vehicle');
 
-		logger.debug('加载车辆详情(从存储):', {
-			id: vehicle.value.id,
-			name: vehicle.value.name,
-			storeName: vehicle.value.storeName
+		if (selectedVehicle && selectedVehicle.id) {
+			// 验证必要字段是否存在
+			if (!selectedVehicle.name || !selectedVehicle.price) {
+				throw new Error('存储的车辆数据不完整');
+			}
+
+			// 使用列表页传递的完整数据
+			vehicle.value = {
+				...vehicle.value, // 保留默认值
+				id: selectedVehicle.id,
+				name: selectedVehicle.name,
+				type: selectedVehicle.type,
+				seats: selectedVehicle.seats,
+				beds: selectedVehicle.beds,
+				transmission: selectedVehicle.transmission,
+				price: selectedVehicle.price,
+				tags: selectedVehicle.tags || [],
+				storeName: selectedVehicle.storeName,
+				storeId: selectedVehicle.storeId,
+				brand: selectedVehicle.brand
+			};
+
+			logger.debug('加载车辆详情(从存储):', {
+				id: vehicle.value.id,
+				name: vehicle.value.name,
+				storeName: vehicle.value.storeName
+			});
+		} else if (options.id) {
+			// 兼容直接传递ID的情况（分享/外部链接）
+			vehicle.value.id = options.id;
+
+			logger.debug('加载车辆详情(仅ID):', options.id);
+
+			// TODO: 后续联调时，这里应该调用 API 根据 ID 获取完整数据
+			// const vehicleData = await getVehicleDetail(options.id);
+			// vehicle.value = { ...vehicle.value, ...vehicleData };
+
+			uni.showToast({
+				title: '使用默认数据展示',
+				icon: 'none',
+				duration: 2000
+			});
+		} else {
+			// 没有任何数据源，使用默认数据
+			logger.warn('未找到车辆数据，使用默认数据');
+
+			uni.showToast({
+				title: '未找到车辆信息',
+				icon: 'none',
+				duration: 2000
+			});
+		}
+	} catch (error: unknown) {
+		// 错误处理
+		logger.error('加载车辆详情失败:', error);
+
+		const errorMessage = error instanceof Error ? error.message : '加载失败';
+
+		uni.showToast({
+			title: errorMessage,
+			icon: 'none',
+			duration: 2000
 		});
-	} else if (options.id) {
-		// 兼容直接传递ID的情况
-		vehicle.value.id = options.id;
-		logger.debug('加载车辆详情(仅ID):', options.id);
+
+		// 使用默认数据作为兜底
+		if (options.id) {
+			vehicle.value.id = options.id;
+		}
 	}
 
 	// 处理分享来源
@@ -327,7 +375,17 @@ const goBack = () => {
 };
 
 const handleBook = () => {
-	// 从存储中获取搜索参数
+	// 校验车辆数据完整性
+	if (!vehicle.value.id || !vehicle.value.name) {
+		uni.showToast({
+			title: '车辆信息不完整，请返回重试',
+			icon: 'none',
+			duration: 2000
+		});
+		return;
+	}
+
+	// 从存储中获取搜索参数（可能不存在）
 	const selectedVehicle = uni.getStorageSync('selected_vehicle');
 	const searchParams = selectedVehicle?.searchParams || {};
 
@@ -340,7 +398,7 @@ const handleBook = () => {
 	logger.debug('跳转到订单确认页', {
 		vehicleId: vehicle.value.id,
 		storeName: vehicle.value.storeName,
-		searchParams
+		hasSearchParams: Object.keys(searchParams).length > 0
 	});
 
 	uni.navigateTo({
