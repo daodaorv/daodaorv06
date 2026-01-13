@@ -317,59 +317,86 @@ const sendComment = async () => {
 }
 
 const loadPost = async () => {
-	// Mock data loading
-	// post.value = await getPostDetail(postId.value)
-	// For demo purpose, keep existing mock or load real
-    // Using the same mock logic as before but ensuring it populates correctly
-    post.value = {
-        id: '1',
-        userId: 'u1',
-        userName: '房车旅行家',
-        userAvatar: '/static/logo.png',
-        type: 'GUIDE',
-        title: '川西秘境·稻城亚丁房车自驾攻略',
-        content: '稻城亚丁被誉为"蓝色星球上的最后一片净土"。\n\n这里有雪山、冰川、峡谷、森林、草甸、湖泊，风景绝美。\n\n最佳旅游季节：9-10月，此时秋色迷人，气候宜人。\n\n注意事项：\n1. 高原反应预防\n2. 防晒保暖\n3. 尊重当地风俗',
-        images: [
-            '/static/logo.png',
-            '/static/logo.png'
-        ],
-        tags: ['川西', '自驾', '攻略'],
-        location: '四川·甘孜',
-        viewCount: 1205,
-        likeCount: 89,
-        commentCount: 12,
-        favoriteCount: 45,
-        isLiked: false,
-        isFavorited: false,
-        status: 'PUBLISHED',
-        createdAt: '2025-11-28T10:00:00Z'
-    } as any
+	try {
+		// Mock data loading
+		// post.value = await getPostDetail(postId.value)
+		// For demo purpose, keep existing mock or load real
+		// Using the same mock logic as before but ensuring it populates correctly
+		post.value = {
+			id: '1',
+			userId: 'u1',
+			userName: '房车旅行家',
+			userAvatar: '/static/logo.png',
+			type: 'GUIDE',
+			title: '川西秘境·稻城亚丁房车自驾攻略',
+			content: '稻城亚丁被誉为"蓝色星球上的最后一片净土"。\n\n这里有雪山、冰川、峡谷、森林、草甸、湖泊，风景绝美。\n\n最佳旅游季节：9-10月，此时秋色迷人，气候宜人。\n\n注意事项：\n1. 高原反应预防\n2. 防晒保暖\n3. 尊重当地风俗',
+			images: [
+				'/static/logo.png',
+				'/static/logo.png'
+			],
+			tags: ['川西', '自驾', '攻略'],
+			location: '四川·甘孜',
+			viewCount: 1205,
+			likeCount: 89,
+			commentCount: 12,
+			favoriteCount: 45,
+			isLiked: false,
+			isFavorited: false,
+			status: 'PUBLISHED',
+			createdAt: '2025-11-28T10:00:00Z'
+		} as any
+	} catch (error) {
+		logger.error('加载帖子详情失败:', error)
+		uni.showModal({
+			title: '加载失败',
+			content: '帖子加载失败，请检查网络连接后重试',
+			confirmText: '重试',
+			cancelText: '返回',
+			success: (res) => {
+				if (res.confirm) {
+					loadPost()
+				} else {
+					uni.navigateBack()
+				}
+			}
+		})
+	}
 }
 
 const loadComments = async () => {
-    // Mock comments
-    comments.value = [
-        {
-            id: 'c1',
-            userId: 'u2',
-            userName: '路在脚下',
-            userAvatar: '/static/logo.png',
-            content: '太美了！请问租车费用大概多少？',
-            createdAt: '2025-11-28T10:30:00Z',
-            likeCount: 5,
-            isLiked: false,
-            replies: [
-                {
-                    id: 'r1',
-                    userId: 'u1',
-                    userName: '房车旅行家',
-                    replyToUserName: '路在脚下',
-                    content: '淡旺季价格不同，建议查看APP首页的特惠套餐哦。',
-                    createdAt: '2025-11-28T11:00:00Z'
-                }
-            ]
-        } as any
-    ]
+	try {
+		// Mock comments
+		comments.value = [
+			{
+				id: 'c1',
+				userId: 'u2',
+				userName: '路在脚下',
+				userAvatar: '/static/logo.png',
+				content: '太美了！请问租车费用大概多少？',
+				createdAt: '2025-11-28T10:30:00Z',
+				likeCount: 5,
+				isLiked: false,
+				replies: [
+					{
+						id: 'r1',
+						userId: 'u1',
+						userName: '房车旅行家',
+						replyToUserName: '路在脚下',
+						content: '淡旺季价格不同，建议查看APP首页的特惠套餐哦。',
+						createdAt: '2025-11-28T11:00:00Z'
+					}
+				]
+			} as any
+		]
+	} catch (error) {
+		logger.error('加载评论失败:', error)
+		uni.showToast({
+			title: '评论加载失败',
+			icon: 'none',
+			duration: 2000
+		})
+		comments.value = []
+	}
 }
 
 onMounted(() => {

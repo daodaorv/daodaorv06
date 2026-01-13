@@ -335,6 +335,7 @@ import { createCampsiteBooking, type CampsiteBookingParams, type CampsiteBooking
 import { registerMockOrder } from '@/api/order';
 import { requireLogin, isLoggedIn, buildRedirectUrl } from '@/utils/auth';
 import { useContactStore } from '@/stores/contact';
+import { BackendOrderStatus, getStatusName } from '@/utils/orderStatus';
 
 // 获取路由参数
 const campsiteId = ref('');
@@ -497,7 +498,14 @@ const nights = computed(() => {
   const checkIn = new Date(bookingForm.value.checkInDate);
   const checkOut = new Date(bookingForm.value.checkOutDate);
   const diff = checkOut.getTime() - checkIn.getTime();
-  return Math.ceil(diff / (1000 * 60 * 60 * 24));
+  const calculatedNights = Math.ceil(diff / (1000 * 60 * 60 * 24));
+
+  // 验证日期逻辑：离店日期必须晚于入住日期，至少1晚
+  if (calculatedNights <= 0) {
+    return 0; // 返回0表示日期选择无效
+  }
+
+  return calculatedNights;
 });
 
 // 价格计算
@@ -571,6 +579,16 @@ const payablePrice = computed(() => {
   return Math.max(totalPrice.value - couponDiscount.value, 0);
 });
 
+// 验证手机号格式（支持国内手机号）
+const validatePhone = (phone: string): boolean => {
+  if (!phone || phone.trim() === '') {
+    return false;
+  }
+  // 支持1开头的11位手机号（包含虚拟运营商）
+  const phoneReg = /^1\d{10}$/;
+  return phoneReg.test(phone.trim());
+};
+
 // 是否可以提交
 const canSubmit = computed(() => {
   return (
@@ -579,7 +597,7 @@ const canSubmit = computed(() => {
     nights.value > 0 &&
     bookingForm.value.guests > 0 &&
     bookingForm.value.contactName.trim() !== '' &&
-    /^1[3-9]\d{9}$/.test(bookingForm.value.contactPhone) &&
+    validatePhone(bookingForm.value.contactPhone) &&
     agreed.value
   );
 });
@@ -773,6 +791,21 @@ const openDatePicker = () => {
 };
 
 const handleDateConfirm = (data: any) => {
+  // 验证日期有效性
+  const checkIn = new Date(data.pickupDate);
+  const checkOut = new Date(data.returnDate);
+  const diff = checkOut.getTime() - checkIn.getTime();
+  const calculatedNights = Math.ceil(diff / (1000 * 60 * 60 * 24));
+
+  if (calculatedNights <= 0) {
+    uni.showToast({
+      title: '离店日期必须晚于入住日期',
+      icon: 'none',
+      duration: 2000
+    });
+    return;
+  }
+
   bookingForm.value.checkInDate = data.pickupDate;
   bookingForm.value.checkOutDate = data.returnDate;
   bookingForm.value.checkInTime = data.time;
@@ -850,7 +883,7 @@ const cacheCampsiteOrder = (bookingResult: CampsiteBookingResponse) => {
     id: bookingResult.orderId,
     orderNo: bookingResult.orderNo,
     statusId: 1,
-    status: { code: 'pending_payment', name: '待支付' },
+    status: { code: BackendOrderStatus.PENDING, name: getStatusName(BackendOrderStatus.PENDING) },
     orderType: 'campsite',
     pickupTime: checkInISO,
     returnTime: checkOutISO,
@@ -963,6 +996,15 @@ const submitBooking = async () => {
       }
     } catch (apiError) {
       logger.warn('创建营地预订接口暂不可用，使用Mock数据回退', apiError);
+
+      // 通知用户正在使用Mock数据（开发环境）
+      uni.showModal({
+        title: '开发模式提示',
+        content: '当前使用Mock数据模拟预订流程，实际生产环境将连接真实API',
+        showCancel: false,
+        confirmText: '我知道了'
+      });
+
       const now = Date.now();
       bookingResult = {
         orderId: `mock-${now}`,

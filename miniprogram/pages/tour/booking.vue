@@ -356,6 +356,7 @@ import { requireLogin, isLoggedIn, buildRedirectUrl } from '@/utils/auth';
 import { registerMockOrder } from '@/api/order';
 import { useContactStore } from '@/stores/contact';
 import { mockTourBooking, mockTourBatch } from '@/mock';
+import { BackendOrderStatus, getStatusName } from '@/utils/orderStatus';
 
 // 获取路由参数
 const tourId = ref('');
@@ -856,7 +857,7 @@ const cacheTourOrder = (bookingResult: TourBookingResponse) => {
     id: bookingResult.orderId,
     orderNo: bookingResult.orderNo,
     statusId: 1,
-    status: { code: 'pending_payment', name: '待支付' },
+    status: { code: BackendOrderStatus.PENDING, name: getStatusName(BackendOrderStatus.PENDING) },
     orderType: 'tour',
     pickupTime: departureISO,
     returnTime: returnDate.toISOString(),
