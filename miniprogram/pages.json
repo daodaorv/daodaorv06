@@ -370,7 +370,6 @@
 			}
 		},
 		{
-		{
 			"path": "pages/profile/promotion-center",
 			"style": {
 				"navigationBarTitleText": "推广中心",

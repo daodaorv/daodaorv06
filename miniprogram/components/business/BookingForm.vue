@@ -104,65 +104,32 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import dayjs from 'dayjs';
 import 'dayjs/locale/zh-cn';
 import CityStorePicker from './CityStorePicker.vue';
 import {
-	getUserLocation,
 	reverseGeocode,
 	findNearestStore,
 	sortStoresByDistance,
 	sortStoresByName
 } from '../../utils/location';
 import { logger } from '@/utils/logger';
+import { mockCities, mockStores } from '@/mock';
 
 dayjs.locale('zh-cn');
 
+// Props: 接收父组件传递的位置信息，避免重复定位
+const props = defineProps<{
+	initialLocation?: { lat: number; lng: number } | null;
+	initialCity?: string;
+}>();
+
 const emit = defineEmits(['search', 'open-date-picker']);
 
-// --- Mock Data ---
-const cities = [
-	{ id: '1', name: '北京' },
-	{ id: '2', name: '上海' },
-	{ id: '3', name: '成都' },
-	{ id: '4', name: '深圳' },
-	{ id: '5', name: '广州' },
-	{ id: '6', name: '杭州' },
-	{ id: '7', name: '重庆' },
-	{ id: '8', name: '西安' },
-	{ id: '9', name: '武汉' },
-	{ id: '10', name: '长沙' },
-	{ id: '11', name: '南京' },
-	{ id: '12', name: '苏州' },
-	{ id: '13', name: '天津' },
-	{ id: '14', name: '青岛' },
-	{ id: '15', name: '厦门' },
-	{ id: '16', name: '昆明' },
-	{ id: '17', name: '三亚' },
-	{ id: '18', name: '海口' }
-];
-
-const stores = {
-	'1': [{ id: '101', name: '北京朝阳店' }, { id: '102', name: '北京海淀店' }, { id: '103', name: '北京大兴店' }],
-	'2': [{ id: '201', name: '上海虹桥店' }, { id: '202', name: '上海浦东店' }, { id: '203', name: '上海嘉定店' }],
-	'3': [{ id: '301', name: '成都双流店' }, { id: '302', name: '成都高新店' }, { id: '303', name: '成都天府店' }],
-	'4': [{ id: '401', name: '深圳宝安店' }, { id: '402', name: '深圳南山店' }, { id: '403', name: '深圳龙岗店' }],
-	'5': [{ id: '501', name: '广州白云店' }, { id: '502', name: '广州天河店' }, { id: '503', name: '广州番禺店' }],
-	'6': [{ id: '601', name: '杭州萧山店' }, { id: '602', name: '杭州西湖店' }],
-	'7': [{ id: '701', name: '重庆江北店' }, { id: '702', name: '重庆渝北店' }],
-	'8': [{ id: '801', name: '西安未央店' }, { id: '802', name: '西安雁塔店' }],
-	'9': [{ id: '901', name: '武汉洪山店' }, { id: '902', name: '武汉江汉店' }],
-	'10': [{ id: '1001', name: '长沙岳麓店' }, { id: '1002', name: '长沙雨花店' }],
-	'11': [{ id: '1101', name: '南京江宁店' }, { id: '1102', name: '南京鼓楼店' }],
-	'12': [{ id: '1201', name: '苏州吴中店' }, { id: '1202', name: '苏州工业园店' }],
-	'13': [{ id: '1301', name: '天津滨海店' }, { id: '1302', name: '天津南开店' }],
-	'14': [{ id: '1401', name: '青岛市南店' }, { id: '1402', name: '青岛崂山店' }],
-	'15': [{ id: '1501', name: '厦门思明店' }, { id: '1502', name: '厦门湖里店' }],
-	'16': [{ id: '1601', name: '昆明官渡店' }, { id: '1602', name: '昆明盘龙店' }],
-	'17': [{ id: '1701', name: '三亚凤凰店' }, { id: '1702', name: '三亚海棠湾店' }],
-	'18': [{ id: '1801', name: '海口美兰店' }, { id: '1802', name: '海口龙华店' }]
-};
+// 使用统一的 Mock 数据
+const cities = mockCities;
+const stores = mockStores;
 
 // --- State ---
 const pickupCity = ref('');
@@ -182,9 +149,8 @@ const returnTime = ref('10:00');
 
 const isDifferentLocation = ref(false);
 
-// 新增：定位相关状态
+// 定位相关状态
 const userLocation = ref<{ lat: number; lng: number } | null>(null);
-const isLocating = ref(false);
 
 // --- Picker State ---
 const cityStorePicker = ref();
@@ -207,65 +173,54 @@ const duration = computed(() => {
 onMounted(async () => {
 	const hasCache = loadFromStorage();
 
-	// 获取用户定位
-	try {
-		isLocating.value = true;
-		const location = await getUserLocation({
-			type: 'gcj02',
-			showLoading: false,
-			timeout: 10000
-		});
-		userLocation.value = {
-			lat: location.latitude,
-			lng: location.longitude
-		};
-		// 移除日志：由业务层统一记录，避免重复
+	// 使用父组件传递的位置信息
+	if (props.initialLocation) {
+		userLocation.value = props.initialLocation;
+	}
 
-		// 如果没有缓存数据，或者缓存的城市与定位城市不一致，则更新
-		if (!hasCache || !pickupCity.value) {
-			await initDefaultLocation();
-		} else {
-			// 有缓存数据，但检查是否需要更新门店（选择最近的门店）
-			const cityName = await reverseGeocode(
-				userLocation.value.lat,
-				userLocation.value.lng
-			);
-
-			// 如果定位城市与缓存城市一致，更新为最近的门店
-			if (cityName === pickupCity.value && pickupCityId.value) {
-				const cityStores = (stores as any)[pickupCityId.value] || [];
-				if (cityStores.length > 0) {
-					const nearest = findNearestStore(cityStores, userLocation.value);
-					if (nearest && nearest.id !== pickupStoreId.value) {
-						logger.debug('更新为最近的门店', { storeName: nearest.name });
-						pickupStore.value = nearest.name;
-						pickupStoreId.value = nearest.id;
-						if (!isDifferentLocation.value) {
-							returnStore.value = nearest.name;
-							returnStoreId.value = nearest.id;
-						}
-						saveToStorage();
-					}
-				}
-			}
-			// 如果定位城市与缓存城市不一致，更新城市和门店
-			else if (cityName !== pickupCity.value) {
-				logger.debug('定位城市变化', { from: pickupCity.value, to: cityName });
-				await initDefaultLocation();
-			}
-		}
-	} catch (error) {
-		logger.error('获取定位失败', error);
-		userLocation.value = null;
-
-		// 定位失败，如果没有缓存数据，使用默认位置
-		if (!hasCache || !pickupCity.value) {
-			await initDefaultLocation();
-		}
-	} finally {
-		isLocating.value = false;
+	// 初始化默认位置
+	if (!hasCache || !pickupCity.value) {
+		await initDefaultLocation();
+	} else if (userLocation.value) {
+		// 有缓存且有定位，检查是否需要更新门店
+		await updateNearestStoreIfNeeded();
 	}
 });
+
+// 监听父组件传递的位置变化
+watch(() => props.initialLocation, async (newLocation) => {
+	if (newLocation && !userLocation.value) {
+		userLocation.value = newLocation;
+		await updateNearestStoreIfNeeded();
+	}
+});
+
+// 更新最近门店（如果需要）
+async function updateNearestStoreIfNeeded() {
+	if (!userLocation.value || !pickupCityId.value) return;
+
+	const cityName = await reverseGeocode(userLocation.value.lat, userLocation.value.lng);
+
+	if (cityName === pickupCity.value) {
+		const cityStores = stores[pickupCityId.value] || [];
+		if (cityStores.length > 0) {
+			const nearest = findNearestStore(cityStores, userLocation.value);
+			if (nearest && nearest.id !== pickupStoreId.value) {
+				logger.debug('更新为最近的门店', { storeName: nearest.name });
+				pickupStore.value = nearest.name;
+				pickupStoreId.value = nearest.id;
+				if (!isDifferentLocation.value) {
+					returnStore.value = nearest.name;
+					returnStoreId.value = nearest.id;
+				}
+				saveToStorage();
+			}
+		}
+	} else if (cityName !== pickupCity.value) {
+		logger.debug('定位城市变化', { from: pickupCity.value, to: cityName });
+		await initDefaultLocation();
+	}
+}
 
 // --- Methods ---
 
@@ -292,7 +247,7 @@ async function initDefaultLocation() {
 	pickupCityId.value = defaultCityId;
 
 	// 获取门店列表并选择最近的
-	const cityStores = (stores as any)[defaultCityId] || [];
+	const cityStores = stores[defaultCityId] || [];
 	if (cityStores.length > 0) {
 		let selectedStore = cityStores[0];
 
@@ -344,7 +299,7 @@ const openStorePicker = (target: 'pickup' | 'return') => {
 	pickerTitle.value = target === 'pickup' ? '选择取车门店' : '选择还车门店';
 
 	// 获取门店列表
-	let cityStores = (stores as any)[cityId] || [];
+	const cityStores = stores[cityId] || [];
 
 	// 根据是否有定位进行排序
 	if (userLocation.value) {
@@ -364,7 +319,7 @@ const onPickerConfirm = (item: any) => {
 			pickupCityId.value = item.id;
 
 			// 自动填充门店
-			const cityStores = (stores as any)[item.id] || [];
+			const cityStores = stores[item.id] || [];
 			if (cityStores.length > 0) {
 				let selectedStore = cityStores[0];
 
@@ -398,7 +353,7 @@ const onPickerConfirm = (item: any) => {
 			returnCityId.value = item.id;
 
 			// 自动填充还车门店
-			const cityStores = (stores as any)[item.id] || [];
+			const cityStores = stores[item.id] || [];
 			if (cityStores.length > 0) {
 				let selectedStore = cityStores[0];
 
