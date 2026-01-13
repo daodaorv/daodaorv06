@@ -100,6 +100,8 @@
 <script setup lang="ts">
 import { ref, computed, onUnmounted } from 'vue'
 import { bindPhone, sendCode } from '@/api/auth'
+import { validatePhone } from '@/utils/validation'
+import { VALIDATION_MESSAGES } from '@/constants/messages'
 
 // 表单数据
 const formData = ref({
@@ -124,15 +126,17 @@ const codeButtonText = computed(() => {
 
 // 是否可以提交
 const canSubmit = computed(() => {
-	return formData.value.phone.length === 11 && formData.value.code.length === 6
+	const phoneValidation = validatePhone(formData.value.phone)
+	return phoneValidation.valid && formData.value.code.length === 6
 })
 
 // 发送验证码
 const handleSendCode = async () => {
-	// 验证手机号
-	if (!formData.value.phone || formData.value.phone.length !== 11) {
+	// 使用统一验证工具验证手机号
+	const phoneValidation = validatePhone(formData.value.phone)
+	if (!phoneValidation.valid) {
 		uni.showToast({
-			title: '请输入正确的手机号',
+			title: phoneValidation.message || VALIDATION_MESSAGES.INVALID_PHONE,
 			icon: 'none'
 		})
 		return

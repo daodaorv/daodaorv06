@@ -97,6 +97,8 @@
 <script setup lang="ts">
 import { ref, computed, onUnmounted } from 'vue'
 import { sendCode } from '@/api/auth'
+import { validatePhone } from '@/utils/validation'
+import { VALIDATION_MESSAGES } from '@/constants/messages'
 
 // 表单数据
 const formData = ref({
@@ -125,8 +127,9 @@ const codeButtonText = computed(() => {
 
 // 是否可以提交
 const canSubmit = computed(() => {
+	const phoneValidation = validatePhone(formData.value.phone)
 	return (
-		formData.value.phone.length === 11 &&
+		phoneValidation.valid &&
 		formData.value.code.length === 6 &&
 		formData.value.newPassword.length >= 6 &&
 		formData.value.newPassword.length <= 20 &&
@@ -136,9 +139,10 @@ const canSubmit = computed(() => {
 
 // 发送验证码
 const handleSendCode = async () => {
-	if (!formData.value.phone || formData.value.phone.length !== 11) {
+	const phoneValidation = validatePhone(formData.value.phone)
+	if (!phoneValidation.valid) {
 		uni.showToast({
-			title: '请输入正确的手机号',
+			title: phoneValidation.message || VALIDATION_MESSAGES.INVALID_PHONE,
 			icon: 'none'
 		})
 		return

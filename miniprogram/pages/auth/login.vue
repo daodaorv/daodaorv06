@@ -240,6 +240,8 @@ import {
 	type PlatformType
 } from '@/api/auth'
 import { saveLoginInfo, handleLoginSuccess } from '@/utils/auth'
+import { validatePhone } from '@/utils/validation'
+import { VALIDATION_MESSAGES } from '@/constants/messages'
 
 // 平台信息
 const platform = ref<PlatformType>('h5')
@@ -307,8 +309,10 @@ const canSubmit = computed(() => {
 	if (!agreed.value) return false
 
 	if (loginType.value === 'phone') {
-		// 手机号登录
-		if (!phoneForm.value.phone || phoneForm.value.phone.length !== 11) return false
+		// 手机号登录 - 使用统一验证工具
+		const phoneValidation = validatePhone(phoneForm.value.phone)
+		if (!phoneValidation.valid) return false
+
 		if (phoneLoginMethod.value === 'code') {
 			return phoneForm.value.code.length === 6
 		} else {
@@ -338,10 +342,11 @@ const switchLoginType = (type: 'phone' | 'username') => {
 
 // 发送验证码
 const handleSendCode = async () => {
-	// 验证手机号
-	if (!phoneForm.value.phone || phoneForm.value.phone.length !== 11) {
+	// 使用统一验证工具验证手机号
+	const phoneValidation = validatePhone(phoneForm.value.phone)
+	if (!phoneValidation.valid) {
 		uni.showToast({
-			title: '请输入正确的手机号',
+			title: phoneValidation.message || VALIDATION_MESSAGES.INVALID_PHONE,
 			icon: 'none'
 		})
 		return
