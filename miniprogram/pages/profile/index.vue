@@ -83,28 +83,28 @@
 				<view class="status-item" @tap="navigateToOrders(1)">
 					<view class="icon-box">
 						<u-icon name="rmb" size="28" color="#1D2129"></u-icon>
-						<view v-if="orderCounts.pendingPayment > 0" class="dot-badge"></view>
+						<view v-if="orderCounts.pending > 0" class="dot-badge"></view>
 					</view>
 					<text class="status-text">待付款</text>
 				</view>
 				<view class="status-item" @tap="navigateToOrders(2)">
 					<view class="icon-box">
 						<u-icon name="bag" size="28" color="#1D2129"></u-icon>
-						<view v-if="orderCounts.pendingConfirm > 0" class="dot-badge"></view>
+						<view v-if="orderCounts.paid > 0" class="dot-badge"></view>
 					</view>
 					<text class="status-text">待确认</text>
 				</view>
 				<view class="status-item" @tap="navigateToOrders(3)">
 					<view class="icon-box">
 						<u-icon name="calendar" size="28" color="#1D2129"></u-icon>
-						<view v-if="orderCounts.pendingPickup > 0" class="dot-badge"></view>
+						<view v-if="orderCounts.confirmed > 0" class="dot-badge"></view>
 					</view>
 					<text class="status-text">待取车</text>
 				</view>
 				<view class="status-item" @tap="navigateToOrders(4)">
 					<view class="icon-box">
 						<u-icon name="car" size="28" color="#1D2129"></u-icon>
-						<view v-if="orderCounts.renting > 0" class="dot-badge"></view>
+						<view v-if="orderCounts.picked_up > 0" class="dot-badge"></view>
 					</view>
 					<text class="status-text">租赁中</text>
 				</view>
@@ -140,6 +140,8 @@ import { ref, computed } from 'vue';
 import { onShow } from '@dcloudio/uni-app';
 import { isLoggedIn, getCurrentUser, logout as logoutUtil } from '@/utils/auth';
 import { getWindowInfo } from '@/utils/system';
+import { BackendOrderStatus } from '@/utils/orderStatus';
+import { getOrders } from '@/api/order';
 
 // 获取系统状态栏高度
 const statusBarHeight = ref(0);
@@ -156,12 +158,12 @@ const userInfo = ref({
 	levelName: '普通会员'
 });
 
-// 订单数量
+// 订单数量（使用后端标准状态码）
 const orderCounts = ref({
-	pendingPayment: 0,
-	pendingConfirm: 0,
-	pendingPickup: 0,
-	renting: 0
+	[BackendOrderStatus.PENDING]: 0,      // 待支付
+	[BackendOrderStatus.PAID]: 0,         // 已支付（待确认）
+	[BackendOrderStatus.CONFIRMED]: 0,    // 已确认（待取车）
+	[BackendOrderStatus.PICKED_UP]: 0     // 租赁中
 });
 
 // 菜单配置
@@ -183,6 +185,9 @@ const listMenu = ref([
 // 页面显示时检查登录状态
 onShow(() => {
 	checkLoginStatus();
+	if (isLogin.value) {
+		loadOrderCounts();
+	}
 });
 
 const checkLoginStatus = () => {
@@ -202,6 +207,33 @@ const checkLoginStatus = () => {
 			nickname: '游客',
 			levelName: '普通会员'
 		};
+	}
+};
+
+// 加载订单统计数据
+const loadOrderCounts = async () => {
+	try {
+		const { data } = await getOrders({ page: 1, limit: 100 });
+
+		// 重置计数
+		orderCounts.value = {
+			[BackendOrderStatus.PENDING]: 0,
+			[BackendOrderStatus.PAID]: 0,
+			[BackendOrderStatus.CONFIRMED]: 0,
+			[BackendOrderStatus.PICKED_UP]: 0
+		};
+
+		// 统计各状态订单数量
+		if (data?.list) {
+			data.list.forEach((order: any) => {
+				const status = order.status;
+				if (orderCounts.value.hasOwnProperty(status)) {
+					orderCounts.value[status]++;
+				}
+			});
+		}
+	} catch (error) {
+		console.error('加载订单统计失败:', error);
 	}
 };
 

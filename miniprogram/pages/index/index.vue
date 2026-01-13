@@ -24,6 +24,7 @@
 				indicatorMode="dot"
 				indicatorActiveColor="#FF9F29"
 				indicatorInactiveColor="rgba(255,255,255,0.5)"
+				@click="handleBannerClick"
 			></u-swiper>
 			<!-- 底部遮罩，平滑过渡到页面背景 -->
 			<view class="hero-mask"></view>
@@ -31,10 +32,15 @@
 
 		<!-- 主要内容容器 (负 margin 实现悬浮堆叠) -->
 		<view class="content-container">
-			
+
 			<!-- 悬浮预订表单 -->
 			<view class="floating-form-wrapper">
-				<BookingForm ref="bookingFormRef" @search="handleSearch" @open-date-picker="handleOpenDatePicker" />
+				<BookingForm
+					ref="bookingFormRef"
+					:initial-location="userLocationForForm"
+					@search="handleSearch"
+					@open-date-picker="handleOpenDatePicker"
+				/>
 			</view>
 
 			<!-- 公告栏 (移到表单下方) -->
@@ -75,8 +81,15 @@
 					<u-icon name="arrow-right" size="12" color="#999"></u-icon>
 				</view>
 			</view>
-			
-			<view class="content-list">
+
+			<!-- 社区内容列表 -->
+			<view v-if="communityLoading" class="content-loading">
+				<u-loading-icon size="32" text="加载中..."></u-loading-icon>
+			</view>
+			<view v-else-if="communityList.length === 0" class="content-empty">
+				<text>暂无精选内容</text>
+			</view>
+			<view v-else class="content-list">
 				<view
 					v-for="(item, index) in communityList"
 					:key="index"
@@ -108,7 +121,7 @@
 
 <script setup lang="ts">
 import { logger } from '@/utils/logger';
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { onPageScroll } from '@dcloudio/uni-app';
 import NoticeBanner from '@/components/base/NoticeBanner.vue';
 import BookingForm from '@/components/business/BookingForm.vue';
@@ -122,11 +135,13 @@ import { mockHomeNotices, mockHomeBanners, mockCommunityPosts } from '@/mock';
 interface Notice {
 	id: string;
 	content: string;
+	link?: string;
 }
 
 interface Banner {
 	id: string;
 	image: string;
+	link?: string;
 }
 
 interface CommunityItem {
@@ -173,6 +188,18 @@ const communityList = ref<CommunityItem[]>(mockCommunityPosts);
 // 用户位置信息
 const userLocation = ref<LocationResult | null>(null);
 const userCity = ref<string>('');
+
+// 社区内容加载状态
+const communityLoading = ref(false);
+
+// 传递给 BookingForm 的位置信息（格式转换）
+const userLocationForForm = computed(() => {
+	if (!userLocation.value) return null;
+	return {
+		lat: userLocation.value.latitude,
+		lng: userLocation.value.longitude
+	};
+});
 
 // 防抖标志：使用响应式数据避免竞态条件
 const isLocating = ref(false);
@@ -284,6 +311,17 @@ const initLocation = async () => {
 
 const handleNoticeClick = (notice: Notice) => {
 	logger.debug('点击公告:', notice);
+	if (notice.link) {
+		uni.navigateTo({ url: notice.link });
+	}
+};
+
+const handleBannerClick = (index: number) => {
+	const banner = banners.value[index];
+	logger.debug('点击轮播图:', banner);
+	if (banner?.link) {
+		uni.navigateTo({ url: banner.link });
+	}
 };
 
 const handleSearch = (params: Record<string, unknown>) => {
@@ -515,5 +553,16 @@ const navigateTo = (url: string) => {
 
 .likes-count {
 	font-family: 'DIN Alternate', sans-serif;
+}
+
+/* 加载和空状态 */
+.content-loading,
+.content-empty {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 80rpx 0;
+	color: $uni-text-color-secondary;
+	font-size: 28rpx;
 }
 </style>
