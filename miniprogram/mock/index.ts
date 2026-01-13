@@ -9,6 +9,7 @@ export const USE_MOCK = true; // 开发环境使用Mock，生产环境设为fals
 // 导出所有Mock数据模块
 export * from './home';
 export * from './vehicle';
+export * from './vehicleGenerator';
 export * from './order';
 export * from './hosting';
 export * from './community';
