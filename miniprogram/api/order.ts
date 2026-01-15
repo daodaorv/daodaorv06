@@ -27,6 +27,7 @@ interface MockOrderRecord {
     orderNo: string;
     status: OrderStatus;
     statusId?: number;
+    orderType?: string;
     vehicle?: Vehicle | null;
     pickupStore?: Store | null;
     returnStore?: Store | null;
@@ -197,6 +198,7 @@ const mockOrders: MockOrderRecord[] = [
 export function registerMockOrder(order: Partial<MockOrderRecord> & { orderNo: string }): MockOrderRecord {
     const existing = mockOrders.find(o => o.orderNo === order.orderNo);
     const normalized: MockOrderRecord = {
+        ...order,
         id: order.id || `order_${Date.now()}`,
         orderNo: order.orderNo,
         status: order.status || { code: 'pending_payment', name: '待支付' },
@@ -206,8 +208,7 @@ export function registerMockOrder(order: Partial<MockOrderRecord> & { orderNo: s
         totalAmount: order.totalAmount ?? order.actualAmount ?? 0,
         actualAmount: order.actualAmount ?? order.totalAmount ?? 0,
         depositAmount: order.depositAmount ?? 0,
-        createdAt: order.createdAt || new Date().toISOString(),
-        ...order
+        createdAt: order.createdAt || new Date().toISOString()
     };
 
     if (existing) {
@@ -282,9 +283,8 @@ export function getOrderStatusList() {
  */
 export function getOrderDetail(orderId: string) {
 	logger.debug('获取订单详情', { orderId })
-	return get<import('@/types/common').ApiResponse<import('@/types/order').OrderRecord>>(`/orders/${orderId}`).then((response) => {
-		return response.data
-	})
+	// 返回完整的响应对象，包含 code、message、data
+	return get<import('@/types/common').ApiResponse<import('@/types/order').OrderRecord>>(`/orders/${orderId}`)
 }
 
 /**
@@ -317,6 +317,16 @@ export function updateOrderStatus(orderNo: string, status: string) {
 	})
 }
 
+/**
+ * 确认支付（仅用于模拟支付环境）
+ * 允许用户在模拟支付成功后更新自己的订单状态为 paid
+ * 注意：生产环境应该由支付回调接口处理
+ */
+export function confirmPayment(orderNo: string) {
+	logger.debug('确认支付', { orderNo })
+	return post<import('@/types/common').ApiResponse<{ message: string; orderNo: string; status: string }>>(`/orders/${orderNo}/confirm-payment`, {})
+}
+
 // 默认导出对象，方便使用 orderApi.xxx() 的方式调用
 export const orderApi = {
     calculatePrice,
@@ -328,6 +338,7 @@ export const orderApi = {
     cancelOrder,
     deleteOrder,
     updateOrderStatus,
+    confirmPayment,
     registerMockOrder
 };
 

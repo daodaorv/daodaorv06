@@ -238,7 +238,7 @@
 							v-model="renterForm.name"
 							placeholder="请输入真实姓名"
 							clearable
-							@input="onRenterFieldInput('name', $event)"
+							@input="onRenterFieldInput"
 						></u-input>
 					</view>
 					<view class="form-item">
@@ -249,7 +249,7 @@
 							type="number"
 							maxlength="11"
 							clearable
-							@input="onRenterFieldInput('phone', $event)"
+							@input="onRenterFieldInput"
 						></u-input>
 					</view>
 					<view class="form-item">
@@ -259,7 +259,7 @@
 							placeholder="请输入驾驶证号码"
 							maxlength="20"
 							clearable
-							@input="onRenterFieldInput('driverLicenseNo', $event)"
+							@input="onRenterFieldInput"
 						></u-input>
 					</view>
 				</view>
@@ -476,6 +476,7 @@
 import { logger } from '@/utils/logger';
 import { ref, computed, watch, onUnmounted } from 'vue';
 import { onLoad, onShow } from '@dcloudio/uni-app';
+// @ts-ignore
 import { storeToRefs } from 'pinia';
 import { requireLogin, isLoggedIn, buildRedirectUrl } from '@/utils/auth';
 import { registerMockOrder, createOrder } from '@/api/order';
@@ -539,7 +540,6 @@ const renterForm = ref({
 	driverLicenseFront: '',
 	driverLicenseBack: ''
 });
-type RenterFormKey = 'name' | 'phone' | 'driverLicenseNo';
 const licensePreview = ref<Record<LicenseSide, string>>({ front: '', back: '' });
 const selectedContactId = ref('');
 const contactSheetVisible = ref(false);
@@ -829,11 +829,12 @@ const goToContactManage = () => {
 	});
 };
 
-const onRenterFieldInput = (field: RenterFormKey, value: string) => {
+const onRenterFieldInput = () => {
+	// 当用户手动修改表单时，清除已选择的联系人
+	// v-model 会自动更新 renterForm 的值，这里只需要清除联系人选择状态
 	if (selectedContactId.value) {
 		selectedContactId.value = '';
 	}
-	renterForm.value[field] = value;
 };
 
 const syncLicensePreview = () => {
@@ -1306,12 +1307,27 @@ const handleSubmit = async () => {
 	uni.showLoading({ title: '提交中...' });
 
 	try {
-		// 构建订单数据
+		// 获取当前用户信息
+		const userStore = useUserStore();
+		const userId = userStore.userInfo?.id;
+
+		if (!userId) {
+			uni.hideLoading();
+			isSubmitting.value = false;
+			uni.showToast({
+				title: '请先登录',
+				icon: 'none',
+				duration: 2000
+			});
+			return;
+		}
+
+		// 构建订单数据（使用后端 API 要求的参数名称）
 		const orderParams = {
-			user_id: userInfo.value?.id ? parseInt(userInfo.value.id) : 1, // 从用户 store 获取用户 ID
-			vehicle_id: parseInt(orderData.value.vehicleId) || 1,
-			store_id: 1, // TODO: 从门店数据获取真实的 store_id
-			return_store_id: 1, // TODO: 从门店数据获取真实的 return_store_id
+			user_id: userId,
+			vehicle_id: orderData.value.vehicleId,
+			store_id: '1', // TODO: 从门店数据获取真实的取车门店ID
+			return_store_id: '1', // TODO: 从门店数据获取真实的还车门店ID
 			start_date: `${orderData.value.pickupDate} ${orderData.value.pickupTime}:00`,
 			end_date: `${orderData.value.returnDate} ${orderData.value.returnTime}:00`,
 			remark: `租车人：${renterInfo.name}，电话：${renterInfo.phone}`
@@ -1327,10 +1343,17 @@ const handleSubmit = async () => {
 		uni.hideLoading();
 		isSubmitting.value = false;
 
+		// 后端返回的字段是 snake_case（order_no, id），需要正确读取
+		const orderResult = createdOrder as any;
+		const orderId = orderResult.id;
+		const orderNo = orderResult.order_no;
+
+		logger.debug('订单信息', { orderId, orderNo });
+
 		// 跳转到支付页面，使用前端计算的总价（不包含押金）
 		// 押金在取车时支付，不在线上支付
 		uni.navigateTo({
-			url: `/pages/order/pay?orderNo=${createdOrder.order_no}&amount=${totalPrice.value}`
+			url: `/pages/order/pay?orderId=${orderId}&orderNo=${orderNo}&amount=${totalPrice.value}`
 		});
 	} catch (error) {
 		logger.error('创建订单失败', error);

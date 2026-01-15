@@ -121,7 +121,7 @@
 import { logger } from '@/utils/logger';
 import { ref, computed } from 'vue';
 import { onLoad, onShow } from '@dcloudio/uni-app';
-import { updateOrderStatus, getOrderDetail } from '@/api/order';
+import { confirmPayment, getOrderDetail } from '@/api/order';
 import { lockVehicle } from '@/api/vehicle';
 import { sendNotification, notifyStore } from '@/api/notification';
 import { requireLogin, isLoggedIn, buildRedirectUrl } from '@/utils/auth';
@@ -255,49 +255,24 @@ const handlePaymentSuccess = async (result: any) => {
 		const storageKey = COUNTDOWN_STORAGE_KEY + result.orderNo;
 		uni.removeStorageSync(storageKey);
 
-		// 1. 显示支付成功提示
+		// 显示支付成功提示
 		uni.showToast({
 			title: '支付成功',
 			icon: 'success',
 			duration: 2000
 		});
 
-		// 2. 更新订单状态（待支付 → 已支付）
-		await updateOrderStatus(result.orderNo, 'paid');
-
-		// 3. 获取订单详情用于后续操作
-		const orderResponse: any = await getOrderDetail(result.orderNo);
-		const orderDetail = orderResponse.data;
-
-		// 4. 锁定车辆库存
-		if (orderDetail.vehicle?.id) {
-			await lockVehicle({
-				vehicleId: orderDetail.vehicle.id,
-				orderNo: result.orderNo,
-				startDate: orderDetail.pickupTime,
-				endDate: orderDetail.returnTime
-			});
+		// 调用支付确认接口，更新订单状态为已支付
+		// 注意：这是模拟支付环境的临时方案，生产环境应由支付回调接口处理
+		try {
+			await confirmPayment(result.orderNo);
+			logger.debug('订单支付状态已更新', { orderNo: result.orderNo });
+		} catch (error) {
+			logger.error('更新订单支付状态失败', error);
+			// 即使更新失败也继续跳转，用户可以在订单详情页看到状态
 		}
 
-		// 5. 发送用户通知
-		await sendNotification({
-			type: 'payment_success',
-			orderNo: result.orderNo,
-			userId: 'current_user_id', // 实际应从用户store获取
-			title: '支付成功',
-			content: `订单${result.orderNo}支付成功，等待门店确认`
-		});
-
-		// 6. 通知门店
-		if (orderDetail.pickupStore?.id) {
-			await notifyStore({
-				storeId: orderDetail.pickupStore.id,
-				orderNo: result.orderNo,
-				type: 'payment_success'
-			});
-		}
-
-		// 7. 延迟跳转到订单详情页
+		// 延迟跳转到订单详情页
 		setTimeout(() => {
 			uni.redirectTo({
 				url: `/pages/order/detail?orderNo=${result.orderNo}`
@@ -306,7 +281,7 @@ const handlePaymentSuccess = async (result: any) => {
 
 	} catch (error) {
 		logger.error('支付成功后处理失败:', error);
-		// 即使后续处理失败，也跳转到订单详情页
+		// 即使处理失败，也跳转到订单详情页
 		setTimeout(() => {
 			uni.redirectTo({
 				url: `/pages/order/detail?orderNo=${result.orderNo}`

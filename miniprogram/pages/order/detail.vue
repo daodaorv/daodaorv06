@@ -238,8 +238,8 @@ onLoad(async (options: any) => {
 
 		const orderData = res.data;
 
-		// 数据校验：检查必要字段
-		if (!orderData.id || !orderData.orderNo || !orderData.status) {
+		// 数据校验：检查必要字段（后端返回的是 snake_case）
+		if (!orderData.id || !orderData.order_no || !orderData.status) {
 			throw new Error('订单数据不完整');
 		}
 
@@ -270,25 +270,25 @@ onLoad(async (options: any) => {
 
 		order.value = {
 			id: orderData.id,
-			orderNo: orderData.orderNo,
-			status: orderData.status.code,
+			orderNo: orderData.order_no, // 后端返回 snake_case
+			status: orderData.status, // 后端返回字符串，不是对象
 			orderType: orderData.orderType || 'vehicle',
-			vehicleName: orderData.vehicle?.name || (isCampsiteOrder ? '未知营位' : '未知车辆'),
+			vehicleName: orderData.vehicle_name || (isCampsiteOrder ? '未知营位' : '未知车辆'),
 			vehicleImage: orderData.vehicle?.images?.[0] || '/static/logo.png',
 			vehicleSpec: isCampsiteOrder
 				? orderData.vehicle?.model || '营位信息'
-				: `${orderData.vehicle?.specifications?.transmission || ''} | ${orderData.vehicle?.specifications?.seats || ''}座 | ${orderData.vehicle?.specifications?.fuelType || ''}`,
-			pickupTime: orderData.pickupTime,
-			returnTime: orderData.returnTime,
-			pickupStoreName: orderData.pickupStore?.name || (isCampsiteOrder ? '未知营地' : '未知门店'),
-			returnStoreName: orderData.returnStore?.name || (isCampsiteOrder ? '未知营地' : '未知门店'),
-			totalAmount: orderData.actualAmount,
-			createdAt: dayjs(orderData.createdAt).format('YYYY-MM-DD HH:mm:ss'),
-			contactName: orderData.pickupContactName || '张三',
-			contactPhone: orderData.pickupContactPhone || '138****0000',
+				: `${orderData.vehicle_brand || ''} | ${orderData.vehicle?.specifications?.seats || ''}座`,
+			pickupTime: orderData.start_date, // 后端字段名
+			returnTime: orderData.end_date, // 后端字段名
+			pickupStoreName: orderData.store_name || (isCampsiteOrder ? '未知营地' : '未知门店'),
+			returnStoreName: orderData.return_store_name || (isCampsiteOrder ? '未知营地' : '未知门店'),
+			totalAmount: orderData.actual_amount, // 后端字段名
+			createdAt: dayjs(orderData.created_at).format('YYYY-MM-DD HH:mm:ss'),
+			contactName: orderData.pickupContactName || '未知',
+			contactPhone: orderData.pickupContactPhone || '未知',
 			...feeDetails
 		};
-		logger.debug('成功加载订单详情:', orderId, order.value);
+		logger.debug('成功加载订单详情', { orderId, order: order.value });
 	} catch (error: unknown) {
 		const errorMessage = error instanceof Error ? error.message : '加载失败';
 		logger.error('加载订单详情失败:', error);
@@ -309,13 +309,14 @@ onShow(async () => {
 		try {
 			const res: any = await getOrderDetail(currentOrderId.value);
 
-			// 数据校验：检查响应格式和必要字段
+			// 数据校验：检查响应格式和必要字段（后端返回 snake_case）
 			if (res && res.code === 0 && res.data && res.data.status) {
 				// 只更新订单状态，不重新加载整个页面
-				order.value.status = res.data.status.code;
+				// 后端返回的 status 是字符串，不是对象
+				order.value.status = res.data.status;
 				logger.debug('刷新订单状态', {
 					orderNo: currentOrderId.value,
-					status: res.data.status.code
+					status: res.data.status
 				});
 			}
 		} catch (error: unknown) {
