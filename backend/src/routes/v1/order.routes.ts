@@ -15,7 +15,7 @@ const orderDAO = new OrderDAO();
  * 创建订单（需要认证）
  * POST /api/v1/orders
  */
-router.post('/', authMiddleware, requirePermission('order:create'), async (req: Request, res: Response): Promise<void> => {
+router.post('/', authMiddleware, async (req: Request, res: Response): Promise<void> => {
   try {
     const params: CreateOrderParams = {
       user_id: req.body.user_id,
@@ -47,7 +47,7 @@ router.post('/', authMiddleware, requirePermission('order:create'), async (req: 
  * 获取订单列表（需要认证）
  * GET /api/v1/orders
  */
-router.get('/', authMiddleware, requirePermission('order:view'), async (req: Request, res: Response) => {
+router.get('/', authMiddleware, async (req: Request, res: Response) => {
   try {
     const params: OrderQueryParams = {
       user_id: req.query.user_id ? Number(req.query.user_id) : undefined,
@@ -96,7 +96,7 @@ router.get('/statuses', async (_req: Request, res: Response): Promise<void> => {
  * GET /api/v1/orders/:id
  * 支持通过订单ID（数字）或订单号（字符串）查询
  */
-router.get('/:id', authMiddleware, requirePermission('order:view'), async (req: Request, res: Response): Promise<void> => {
+router.get('/:id', authMiddleware, async (req: Request, res: Response): Promise<void> => {
   try {
     const idParam = req.params.id;
     let order = null;
@@ -127,7 +127,7 @@ router.get('/:id', authMiddleware, requirePermission('order:view'), async (req: 
  * 取消订单（需要认证）
  * POST /api/v1/orders/:id/cancel
  */
-router.post('/:id/cancel', authMiddleware, requirePermission('order:cancel'), async (req: Request, res: Response): Promise<void> => {
+router.post('/:id/cancel', authMiddleware, async (req: Request, res: Response): Promise<void> => {
   try {
     const orderId = Number(req.params.id);
     const { cancel_reason, cancelled_by } = req.body;
@@ -347,6 +347,58 @@ router.put('/:id/status', authMiddleware, requirePermission('order:update'), asy
   } catch (error) {
     logger.error('更新订单状态失败:', error);
     res.status(500).json(errorResponse('更新订单状态失败'));
+  }
+});
+
+/**
+ * 支付确认接口（用户可调用，仅用于模拟支付环境）
+ * POST /api/v1/orders/:orderNo/confirm-payment
+ * 允许用户在支付成功后更新自己的订单状态为 paid
+ * 注意：生产环境应该由支付回调接口处理，此接口仅用于开发测试
+ */
+router.post('/:orderNo/confirm-payment', authMiddleware, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { orderNo } = req.params;
+    const userId = (req as any).user?.id;
+
+    if (!userId) {
+      res.status(401).json(errorResponse('未授权', 401));
+      return undefined;
+    }
+
+    // 通过订单号查询订单
+    const orderDetail = await orderDAO.findOrderDetailByOrderNo(orderNo);
+
+    if (!orderDetail) {
+      res.status(404).json(errorResponse('订单不存在', 404));
+      return undefined;
+    }
+
+    // 验证订单所有权：只能更新自己的订单
+    if (orderDetail.user_id !== userId) {
+      res.status(403).json(errorResponse('无权操作此订单', 403));
+      return undefined;
+    }
+
+    // 验证订单状态：只能从 pending 更新为 paid
+    if (orderDetail.status !== 'pending') {
+      res.status(400).json(errorResponse(`订单状态为 ${orderDetail.status}，无法确认支付`, 400));
+      return undefined;
+    }
+
+    // 更新订单状态为已支付
+    const success = await orderDAO.updateOrderStatus(orderDetail.id, 'paid', '用户确认支付成功');
+
+    if (!success) {
+      res.status(500).json(errorResponse('更新订单状态失败', 500));
+      return undefined;
+    }
+
+    logger.info('订单支付确认成功', { orderNo, userId, orderId: orderDetail.id });
+    res.json(successResponse({ message: '支付确认成功', orderNo, status: 'paid' }));
+  } catch (error) {
+    logger.error('支付确认失败:', error);
+    res.status(500).json(errorResponse('支付确认失败'));
   }
 });
 
