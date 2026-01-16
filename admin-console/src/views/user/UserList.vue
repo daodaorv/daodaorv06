@@ -30,10 +30,10 @@
       <template #userInfo="{ row }">
         <div class="user-info">
           <el-avatar :src="row.avatarUrl" :size="40">
-            {{ row.nickname?.charAt(0) || 'U' }}
+            {{ row.username?.charAt(0) || row.phone?.charAt(0) || 'U' }}
           </el-avatar>
           <div class="user-detail">
-            <div class="nickname">{{ row.nickname }}</div>
+            <div class="nickname">{{ row.username || row.phone }}</div>
             <div class="phone">{{ row.phone }}</div>
           </div>
         </div>
@@ -99,8 +99,8 @@
         <el-descriptions-item label="用户ID">
           {{ currentUser.id }}
         </el-descriptions-item>
-        <el-descriptions-item label="昵称">
-          {{ currentUser.nickname }}
+        <el-descriptions-item label="用户名">
+          {{ currentUser.username }}
         </el-descriptions-item>
         <el-descriptions-item label="手机号">
           {{ currentUser.phone }}
@@ -146,7 +146,7 @@
     >
       <template #header>
         <div style="margin-bottom: 16px">
-          <strong>用户：</strong>{{ currentUser?.nickname }} ({{ currentUser?.phone }})
+          <strong>用户：</strong>{{ currentUser?.username || currentUser?.phone }} ({{ currentUser?.phone }})
         </div>
       </template>
     </FormDialog>
@@ -154,7 +154,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive, computed, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { User, UserFilled, Checked, Download } from '@element-plus/icons-vue'
 import PageHeader from '@/components/common/PageHeader.vue'
@@ -168,73 +168,15 @@ import type { TableColumn, TableAction, ToolbarButton } from '@/components/commo
 import type { FormField } from '@/components/common/FormDialog.vue'
 import { useDateFormat, useErrorHandler } from '@/composables'
 import { exportToCSV } from '@/utils/export'
+import { userApi } from '@/api/user'
+import type { UserInfo } from '@/api/user'
 
 // Composables
 const { formatDateTime } = useDateFormat()
 const { handleApiError } = useErrorHandler()
 
-// 用户数据类型
-interface UserRole {
-  id: number
-  name: string
-  code: string
-}
-
-interface User {
-  id: number
-  nickname: string
-  phone: string
-  realName?: string
-  avatarUrl: string
-  roles: UserRole[]
-  status: 'active' | 'banned'
-  createdAt: string
-  lastLoginAt: string
-}
-
-// Mock 数据
-const list = ref<User[]>([
-  {
-    id: 1,
-    nickname: '张三',
-    phone: '13800138000',
-    realName: '张三',
-    avatarUrl: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
-    roles: [{ id: 1, name: '普通注册用户', code: 'normal' }],
-    status: 'active',
-    createdAt: '2024-01-15T10:00:00.000Z',
-    lastLoginAt: '2024-12-28T15:30:00.000Z',
-  },
-  {
-    id: 2,
-    nickname: '李四',
-    phone: '13800138001',
-    realName: '李四',
-    avatarUrl: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
-    roles: [
-      { id: 1, name: '普通注册用户', code: 'normal' },
-      { id: 2, name: 'PLUS用户', code: 'plus' },
-    ],
-    status: 'active',
-    createdAt: '2024-02-20T14:00:00.000Z',
-    lastLoginAt: '2024-12-29T09:15:00.000Z',
-  },
-  {
-    id: 3,
-    nickname: '王五',
-    phone: '13800138002',
-    realName: '王五',
-    avatarUrl: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
-    roles: [
-      { id: 1, name: '普通注册用户', code: 'normal' },
-      { id: 3, name: '自有车托管用户', code: 'hosting_own' },
-    ],
-    status: 'active',
-    createdAt: '2024-03-10T09:00:00.000Z',
-    lastLoginAt: '2024-12-27T18:45:00.000Z',
-  },
-])
-
+// 数据状态
+const list = ref<UserInfo[]>([])
 const loading = ref(false)
 
 // 统计数据
@@ -351,7 +293,7 @@ const tableActions: TableAction[] = []
 const detailDialogVisible = ref(false)
 const roleDialogVisible = ref(false)
 const roleSubmitLoading = ref(false)
-const currentUser = ref<User | null>(null)
+const currentUser = ref<UserInfo | null>(null)
 
 const roleFormData = reactive({
   roleIds: [] as number[],
@@ -380,29 +322,55 @@ const roleFormFields: FormField[] = [
 ]
 
 // 搜索
-function handleSearch() {
+async function handleSearch() {
   pagination.page = 1
-  ElMessage.success('搜索功能开发中...')
+  await loadUserList()
 }
 
 // 重置
-function handleReset() {
+async function handleReset() {
   searchForm.keyword = ''
   searchForm.roleCode = ''
   searchForm.status = ''
   pagination.page = 1
+  await loadUserList()
+}
+
+// 加载用户列表
+async function loadUserList() {
+  loading.value = true
+  try {
+    const response = await userApi.getUserList({
+      page: pagination.page,
+      pageSize: pagination.pageSize,
+      phone: searchForm.keyword,
+      username: searchForm.keyword,
+      status: searchForm.status,
+    })
+
+    list.value = response.data.list
+    pagination.total = response.data.total
+
+    // 更新统计数据
+    stats.totalUsers = response.data.total
+    stats.activeUsers = response.data.list.filter(u => u.status === 'active').length
+  } catch (error) {
+    handleApiError(error, '加载用户列表失败')
+  } finally {
+    loading.value = false
+  }
 }
 
 // 查看详情
-function handleView(row: User) {
+function handleView(row: UserInfo) {
   currentUser.value = row
   detailDialogVisible.value = true
 }
 
 // 分配角色
-function handleAssignRole(row: User) {
+function handleAssignRole(row: UserInfo) {
   currentUser.value = row
-  roleFormData.roleIds = row.roles.map(r => r.id)
+  roleFormData.roleIds = row.roles?.map(r => r.id) || []
   roleDialogVisible.value = true
 }
 
@@ -429,11 +397,11 @@ async function handleRoleSubmit() {
 }
 
 // 切换用户状态
-async function handleToggleStatus(row: User) {
+async function handleToggleStatus(row: UserInfo) {
   const action = row.status === 'active' ? '封禁' : '解封'
   try {
     await ElMessageBox.confirm(
-      `确定要${action}用户 "${row.nickname}" 吗？`,
+      `确定要${action}用户 "${row.username || row.phone}" 吗？`,
       `${action}确认`,
       {
         confirmButtonText: '确定',
@@ -452,12 +420,14 @@ async function handleToggleStatus(row: User) {
 }
 
 // 分页
-function handleSizeChange(size: number) {
+async function handleSizeChange(size: number) {
   pagination.pageSize = size
+  await loadUserList()
 }
 
-function handleCurrentChange(page: number) {
+async function handleCurrentChange(page: number) {
   pagination.page = page
+  await loadUserList()
 }
 
 // 导出数据
@@ -489,6 +459,11 @@ function getRoleTagType(code: string): RoleTagType {
   }
   return typeMap[code] || 'info'
 }
+
+// 页面初始化
+onMounted(() => {
+  loadUserList()
+})
 </script>
 
 <style scoped lang="scss">
