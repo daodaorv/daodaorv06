@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { UserDAO, UserProfileDAO } from '@dao/user.dao';
 import { UserWalletDAO } from '@dao/wallet.dao';
+import { UserRoleDAO } from '../../dao/user-role.dao';
 import { UserProfile } from '../../types/models/user.types';
 import { successResponse, errorResponse } from '@utils/response';
 import { logger } from '@utils/logger';
@@ -10,6 +11,7 @@ const router = Router();
 const userDAO = new UserDAO();
 const userProfileDAO = new UserProfileDAO();
 const walletDAO = new UserWalletDAO();
+const userRoleDAO = new UserRoleDAO();
 
 /**
  * 1. 获取用户信息
@@ -33,12 +35,14 @@ router.get('/profile', authMiddleware, async (req: Request, res: Response) => {
     // 获取用户资料
     const profile = await userProfileDAO.findByUserId(userId);
 
-    // 构建用户标签
-    const tags: string[] = [];
-    if (user.user_type === 'customer') {
-      // 根据用户类型添加标签
-      // TODO: 这里可以根据会员等级、活跃度等添加更多标签
-    }
+    // 获取用户角色
+    const userRolesData = await userRoleDAO.findByUserIdWithDetails(userId);
+    const roles = userRolesData.map(ur => ({
+      id: ur.role.id,
+      code: ur.role.code,
+      name: ur.role.name,
+      type: ur.role.type
+    }));
 
     res.json(
       successResponse({
@@ -47,7 +51,7 @@ router.get('/profile', authMiddleware, async (req: Request, res: Response) => {
         nickname: user.username || '',
         avatar: user.avatar_url || '/static/default-avatar.png',
         userType: user.user_type.toUpperCase(),
-        tags,
+        roles: roles,
         walletBalance: 0, // TODO: 从钱包表查询
         integrals: 0, // TODO: 从积分表查询
         profile: {
