@@ -1,6 +1,7 @@
 import { request } from '@/utils/request'
 import type { ApiResponse } from '@/types/user'
 import type { Tag } from '@/types/tag'
+import type { UserRole } from '@/types/role'
 import {
   mockGetUserList,
   mockGetUserDetail,
@@ -59,7 +60,8 @@ export interface UserInfo {
   status: 'active' | 'inactive' | 'banned'
   realName?: string
   avatarUrl?: string
-  tags?: Tag[] // 用户标签（包含PLUS会员、VIP等标签）
+  roles?: UserRole[]  // 新增：用户角色（用于权限控制）
+  tags?: Tag[] // 保留：用户标签（用于业务分类）
   lastLoginAt?: string
   createdAt: string
   updatedAt: string
