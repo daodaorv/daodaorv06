@@ -195,10 +195,25 @@ const checkLoginStatus = () => {
 	if (isLogin.value) {
 		const user = getCurrentUser();
 		if (user) {
+			// 根据用户角色判断会员等级
+			let levelName = '普通会员';
+			if (user.roles && user.roles.length > 0) {
+				const roleCode = user.roles[0].code;
+				if (roleCode === 'plus') {
+					levelName = 'PLUS会员';
+				} else if (roleCode === 'hosting_own') {
+					levelName = '自有车托管用户';
+				} else if (roleCode === 'hosting_purchase') {
+					levelName = '购车托管用户';
+				} else if (roleCode === 'hosting_crowdfunding') {
+					levelName = '众筹托管用户';
+				}
+			}
+
 			userInfo.value = {
 				avatar: user.avatar || '/static/default-avatar.png',
 				nickname: user.nickname || '房车用户',
-				levelName: user.userType === 'PLUS' ? 'PLUS会员' : '普通会员'
+				levelName: levelName
 			};
 		}
 	} else {
@@ -224,8 +239,8 @@ const loadOrderCounts = async () => {
 		};
 
 		// 统计各状态订单数量
-		if (data?.list) {
-			data.list.forEach((order: any) => {
+		if (data?.orders) {
+			data.orders.forEach((order: any) => {
 				const status = order.status;
 				if (orderCounts.value.hasOwnProperty(status)) {
 					orderCounts.value[status]++;
