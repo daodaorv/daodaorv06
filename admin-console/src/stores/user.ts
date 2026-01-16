@@ -35,6 +35,16 @@ export const useUserStore = defineStore('user', () => {
     const response = await authApi.login(loginForm)
     const { token: newToken, user: userData } = response.data
 
+    // 字段映射：后端返回 nickname，前端使用 username
+    if ((userData as any).nickname && !userData.username) {
+      userData.username = (userData as any).nickname
+    }
+
+    // 字段映射：后端返回 avatar，前端使用 avatar
+    if ((userData as any).avatar && !userData.avatar) {
+      userData.avatar = (userData as any).avatar
+    }
+
     // 如果后端没有返回 role 字段，从 roles 数组中映射
     if (!userData.role && userData.roles && userData.roles.length > 0) {
       userData.role = mapRoleToFrontend(userData.roles[0].code) as UserRole
@@ -70,10 +80,22 @@ export const useUserStore = defineStore('user', () => {
   const getUserInfo = async () => {
     try {
       const response = await authApi.getUserInfo()
-      user.value = response.data
-      userRoles.value = response.data.roles || []  // 更新角色列表
-      localStorage.setItem('user', JSON.stringify(response.data))
-      localStorage.setItem('userRoles', JSON.stringify(response.data.roles || []))  // 保存角色列表
+      const userData = response.data
+
+      // 字段映射：后端返回 nickname，前端使用 username
+      if ((userData as any).nickname && !userData.username) {
+        userData.username = (userData as any).nickname
+      }
+
+      // 字段映射：后端返回 avatar，前端使用 avatar
+      if ((userData as any).avatar && !userData.avatar) {
+        userData.avatar = (userData as any).avatar
+      }
+
+      user.value = userData
+      userRoles.value = userData.roles || []  // 更新角色列表
+      localStorage.setItem('user', JSON.stringify(userData))
+      localStorage.setItem('userRoles', JSON.stringify(userData.roles || []))  // 保存角色列表
       return response
     } catch (error) {
       logout()
