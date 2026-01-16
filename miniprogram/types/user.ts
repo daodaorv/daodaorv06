@@ -3,6 +3,20 @@
  */
 
 /**
+ * 用户角色
+ */
+export interface UserRole {
+  /** 角色ID */
+  id: number
+  /** 角色代码 */
+  code: string
+  /** 角色名称 */
+  name: string
+  /** 角色类型 */
+  type: 'customer' | 'admin'
+}
+
+/**
  * 用户信息
  */
 export interface UserInfo {
@@ -16,16 +30,24 @@ export interface UserInfo {
   avatar: string
   /** 手机号 */
   phone?: string
+  /** 性别 */
+  gender?: number
   /** 实名认证状态 */
-  isVerified: boolean
+  isVerified?: boolean
   /** 会员等级 */
-  memberLevel: number
+  memberLevel?: number
   /** 会员等级名称 */
   memberLevelName?: string
   /** 积分 */
-  points: number
+  points?: number
   /** 余额 */
-  balance: number
+  balance?: number
+  /** 用户类型 */
+  userType?: string
+  /** 用户状态 */
+  status?: string
+  /** 用户角色列表 */
+  roles?: UserRole[]
   /** 创建时间 */
   createdAt?: string
 }
@@ -33,7 +55,7 @@ export interface UserInfo {
 /**
  * 登录参数
  */
-export interface LoginParams {
+export interface LoginParams extends Record<string, unknown> {
   /** 手机号 */
   phone: string
   /** 密码或验证码 */
@@ -49,9 +71,11 @@ export interface LoginResponse {
   /** 访问令牌 */
   token: string
   /** 刷新令牌 */
-  refreshToken?: string
+  refreshToken: string
   /** 用户信息 */
   userInfo: UserInfo
+  /** 是否为新用户 */
+  isNewUser?: boolean
 }
 
 /**
