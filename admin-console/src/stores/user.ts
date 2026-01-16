@@ -2,14 +2,17 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import type { User, LoginForm } from '@/types/user'
 import type { UserRole } from '@/types/permission'
+import type { Role } from '@/types/permission'
 import { authApi } from '@/api/auth'
 
 export const useUserStore = defineStore('user', () => {
   const user = ref<User | null>(null)
   const token = ref<string | null>(localStorage.getItem('token'))
+  const userRoles = ref<Role[]>([])  // 新增：用户角色列表
 
   const isAuthenticated = computed(() => !!token.value)
   const userRole = computed(() => user.value?.role || 'guest')
+  const isPlusMember = computed(() => userRoles.value.some(role => role.code === 'plus'))  // 新增：PLUS会员判断
 
   // 角色代码映射到前端 UserRole 枚举值
   const mapRoleToFrontend = (roleCode: string): string => {
@@ -44,9 +47,11 @@ export const useUserStore = defineStore('user', () => {
 
     token.value = newToken
     user.value = userData
+    userRoles.value = userData.roles || []  // 保存角色列表
 
     localStorage.setItem('token', newToken)
     localStorage.setItem('user', JSON.stringify(userData))
+    localStorage.setItem('userRoles', JSON.stringify(userData.roles || []))  // 保存角色列表到本地存储
 
     return response
   }
@@ -55,8 +60,10 @@ export const useUserStore = defineStore('user', () => {
   const logout = () => {
     token.value = null
     user.value = null
+    userRoles.value = []  // 清空角色列表
     localStorage.removeItem('token')
     localStorage.removeItem('user')
+    localStorage.removeItem('userRoles')  // 清除角色列表
   }
 
   // 获取用户信息
@@ -64,7 +71,9 @@ export const useUserStore = defineStore('user', () => {
     try {
       const response = await authApi.getUserInfo()
       user.value = response.data
+      userRoles.value = response.data.roles || []  // 更新角色列表
       localStorage.setItem('user', JSON.stringify(response.data))
+      localStorage.setItem('userRoles', JSON.stringify(response.data.roles || []))  // 保存角色列表
       return response
     } catch (error) {
       logout()
@@ -85,6 +94,17 @@ export const useUserStore = defineStore('user', () => {
         }
 
         user.value = userData
+
+        // 恢复角色列表
+        const savedRoles = localStorage.getItem('userRoles')
+        if (savedRoles) {
+          try {
+            userRoles.value = JSON.parse(savedRoles)
+          } catch (error) {
+            console.error('解析角色列表失败:', error)
+            userRoles.value = []
+          }
+        }
       } catch (error) {
         console.error('解析用户信息失败:', error)
         logout()
@@ -111,8 +131,10 @@ export const useUserStore = defineStore('user', () => {
   return {
     user,
     token,
+    userRoles,  // 导出角色列表
     isAuthenticated,
     userRole,
+    isPlusMember,  // 导出PLUS会员判断
     login,
     logout,
     getUserInfo,
