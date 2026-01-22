@@ -60,7 +60,7 @@ const isDevelopment = (): boolean => {
   try {
     // uni-app 环境下使用条件编译或 process.env
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const env = (process as any)?.env?.NODE_ENV
+    const env = (globalThis as any).process?.env?.NODE_ENV
     return env === 'development' || env === undefined
   } catch {
     // 如果 process 不存在，默认为开发环境

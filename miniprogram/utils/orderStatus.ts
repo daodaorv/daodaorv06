@@ -3,6 +3,8 @@
  * 解决前后端状态码不一致的问题
  */
 
+import { logger } from './logger'
+
 /**
  * 后端标准状态码（数据库存储）
  */
@@ -125,7 +127,7 @@ const STATUS_CONFIG: Record<BackendOrderStatus, StatusConfig> = {
 export function normalizeStatus(status: string): BackendOrderStatus {
   const normalized = STATUS_MAP[status];
   if (!normalized) {
-    console.warn(`未知的订单状态码: ${status}，使用默认状态 pending`);
+    logger.warn(`未知的订单状态码: ${status}，使用默认状态 pending`);
     return BackendOrderStatus.PENDING;
   }
   return normalized;

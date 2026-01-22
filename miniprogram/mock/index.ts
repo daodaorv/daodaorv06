@@ -17,6 +17,8 @@ export * from './user';
 export * from './campsite';
 export * from './tour';
 export * from './config';
+export * from './share';
+export * from './points';
 
 /**
  * Mock数据使用说明：

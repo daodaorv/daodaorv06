@@ -4,14 +4,14 @@
 
 // 首页公告数据
 export const mockHomeNotices = [
-  { id: '1', content: '国庆假期房车火热预订中,部分车型已售罄!', link: '/pages/special-offer/list' },
-  { id: '2', content: '新用户注册即送100元优惠券!', link: '/pages/coupon-mall/index' }
+  { id: '1', content: '国庆假期房车火热预订中,部分车型已售罄!', link: '/pages/business/special-offer/list' },
+  { id: '2', content: '新用户注册即送100元优惠券!', link: '/pages/business/coupon-mall/index' }
 ];
 
 // 首页轮播图数据
 export const mockHomeBanners = [
-  { id: '1', image: '/static/场景推荐2.jpg', link: '/pages/tour/list' },
-  { id: '2', image: '/static/优惠政策.jpg', link: '/pages/special-offer/list' }
+  { id: '1', image: '/static/场景推荐2.jpg', link: '/pages/business/tour/list' },
+  { id: '2', image: '/static/优惠政策.jpg', link: '/pages/business/special-offer/list' }
 ];
 
 // 城市列表数据

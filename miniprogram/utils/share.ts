@@ -7,11 +7,11 @@ import { logger } from './logger'
 import type {
   ShareConfig,
   ShareContent,
-  ShareScene,
   ShareMethod,
   ShareCache,
   ShareSource
 } from '@/types/share'
+import { ShareScene } from '@/types/share'
 import { shareApi } from '@/api/share'
 
 /**

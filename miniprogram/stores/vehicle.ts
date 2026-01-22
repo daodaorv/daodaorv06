@@ -21,7 +21,7 @@ export const useVehicleStore = defineStore('vehicle', () => {
             searchParams.value = params;
             const res = await getVehicles(params);
             if (res.code === 0) {
-                vehicleList.value = res.data.list;
+                vehicleList.value = (res.data as { list: VehicleListItem[] }).list;
                 return res.data;
             }
             return null;
@@ -77,7 +77,7 @@ export const useVehicleStore = defineStore('vehicle', () => {
                 }
                 // 保存到本地存储
                 uni.setStorageSync('favoriteIds', JSON.stringify(favoriteIds.value));
-                return res.data.favorited;
+                return (res.data as { favorited: boolean }).favorited;
             }
             return false;
         } catch (error) {

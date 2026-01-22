@@ -15,25 +15,6 @@
 			}
 		},
 		{
-			"path": "pages/community/publish",
-			"style": {
-				"navigationBarTitleText": "发布内容",
-				"navigationStyle": "custom"
-			}
-		},
-		{
-			"path": "pages/community/detail",
-			"style": {
-				"navigationBarTitleText": "详情"
-			}
-		},
-		{
-			"path": "pages/community/user",
-			"style": {
-				"navigationBarTitleText": "个人主页"
-			}
-		},
-		{
 			"path": "pages/hosting/index",
 			"style": {
 				"navigationBarTitleText": "托管中心",
@@ -41,408 +22,10 @@
 			}
 		},
 		{
-			"path": "pages/hosting/old-car/index",
-			"style": {
-				"navigationBarTitleText": "自有车托管"
-			}
-		},
-		{
-			"path": "pages/hosting/new-car/index",
-			"style": {
-				"navigationBarTitleText": "购车托管"
-			}
-		},
-		{
-			"path": "pages/hosting/self-use/index",
-			"style": {
-				"navigationBarTitleText": "车主自用申请"
-			}
-		},
-		{
-			"path": "pages/hosting/income/index",
-			"style": {
-				"navigationBarTitleText": "收益管理"
-			}
-		},
-		{
-			"path": "pages/hosting/agreement/index",
-			"style": {
-				"navigationBarTitleText": "托管协议与帮助"
-			}
-		},
-		{
-			"path": "pages/hosting/vehicle-detail/index",
-			"style": {
-				"navigationBarTitleText": "车辆详情"
-			}
-		},
-		{
-			"path": "pages/hosting/model-detail/index",
-			"style": {
-				"navigationBarTitleText": "车型详情",
-				"navigationStyle": "custom"
-			}
-		},
-		{
-			"path": "pages/hosting/model-list/index",
-			"style": {
-				"navigationBarTitleText": "购车托管车型",
-				"enablePullDownRefresh": true
-			}
-		},
-		{
-			"path": "pages/hosting/crowdfunding/index",
-			"style": {
-				"navigationBarTitleText": "众筹托管",
-				"enablePullDownRefresh": true
-			}
-		},
-		{
-			"path": "pages/hosting/crowdfunding/models",
-			"style": {
-				"navigationBarTitleText": "可众筹车型",
-				"enablePullDownRefresh": true
-			}
-		},
-		{
-			"path": "pages/hosting/crowdfunding/projects",
-			"style": {
-				"navigationBarTitleText": "众筹项目",
-				"enablePullDownRefresh": true
-			}
-		},
-		{
-			"path": "pages/hosting/crowdfunding/model-detail",
-			"style": {
-				"navigationBarTitleText": "车型详情",
-				"navigationStyle": "custom"
-			}
-		},
-		{
-			"path": "pages/hosting/crowdfunding/project-detail",
-			"style": {
-				"navigationBarTitleText": "项目详情"
-			}
-		},
-		{
-			"path": "pages/hosting/crowdfunding/participate",
-			"style": {
-				"navigationBarTitleText": "参与众筹"
-			}
-		},
-		{
-			"path": "pages/hosting/crowdfunding/create",
-			"style": {
-				"navigationBarTitleText": "发起众筹"
-			}
-		},
-		{
-			"path": "pages/hosting/crowdfunding/my-crowdfunding",
-			"style": {
-				"navigationBarTitleText": "我的众筹",
-				"enablePullDownRefresh": true
-			}
-		},
-		{
-			"path": "pages/hosting/crowdfunding/share-market",
-			"style": {
-				"navigationBarTitleText": "份额交易市场",
-				"enablePullDownRefresh": true
-			}
-		},
-		{
-			"path": "pages/hosting/crowdfunding/share-detail",
-			"style": {
-				"navigationBarTitleText": "份额详情"
-			}
-		},
-		{
-			"path": "pages/hosting/crowdfunding/sell-share",
-			"style": {
-				"navigationBarTitleText": "出售份额"
-			}
-		},
-		{
-			"path": "pages/hosting/crowdfunding/income-detail",
-			"style": {
-				"navigationBarTitleText": "众筹收益明细"
-			}
-		},
-		{
-			"path": "pages/hosting/crowdfunding/self-use-booking",
-			"style": {
-				"navigationBarTitleText": "自用预约"
-			}
-		},
-		{
-			"path": "pages/campsite/list",
-			"style": {
-				"navigationBarTitleText": "营地预订",
-				"enablePullDownRefresh": true
-			}
-		},
-		{
-			"path": "pages/campsite/detail",
-			"style": {
-				"navigationBarTitleText": "营地详情"
-			}
-		},
-		{
-			"path": "pages/campsite/booking",
-			"style": {
-				"navigationBarTitleText": "预订营位"
-			}
-		},
-		{
-			"path": "pages/tour/list",
-			"style": {
-				"navigationBarTitleText": "房车旅游",
-				"enablePullDownRefresh": true
-			}
-		},
-		{
-			"path": "pages/tour/detail",
-			"style": {
-				"navigationBarTitleText": "线路详情"
-			}
-		},
-		{
-			"path": "pages/tour/booking",
-			"style": {
-				"navigationBarTitleText": "预订线路"
-			}
-		},
-		{
-			"path": "pages/special-offer/list",
-			"style": {
-				"navigationBarTitleText": "特惠租车",
-				"enablePullDownRefresh": true
-			}
-		},
-		{
-			"path": "pages/special-offer/detail",
-			"style": {
-				"navigationBarTitleText": "套餐详情"
-			}
-		},
-		{
-			"path": "pages/vehicle/list",
-			"style": {
-				"navigationBarTitleText": "选择房车"
-			}
-		},
-		{
-			"path": "pages/vehicle/detail",
-			"style": {
-				"navigationBarTitleText": "房车详情",
-				"navigationStyle": "custom"
-			}
-		},
-		{
-			"path": "pages/order/confirm",
-			"style": {
-				"navigationBarTitleText": "确认订单"
-			}
-		},
-		{
-			"path": "pages/order/pay",
-			"style": {
-				"navigationBarTitleText": "收银台"
-			}
-		},
-		{
-			"path": "pages/order/list",
-			"style": {
-				"navigationBarTitleText": "我的订单",
-				"navigationStyle": "custom",
-				"enablePullDownRefresh": true
-			}
-		},
-		{
-			"path": "pages/order/detail",
-			"style": {
-				"navigationBarTitleText": "订单详情",
-				"navigationStyle": "custom"
-			}
-		},
-		{
-			"path": "pages/order/renewal",
-			"style": {
-				"navigationBarTitleText": "续租申请"
-			}
-		},
-		{
-			"path": "pages/order/report",
-			"style": {
-				"navigationBarTitleText": "事故/故障申报"
-			}
-		},
-		{
-			"path": "pages/order/select-coupon",
-			"style": {
-				"navigationBarTitleText": "选择优惠券"
-			}
-		},
-		{
 			"path": "pages/profile/index",
 			"style": {
 				"navigationBarTitleText": "我的",
 				"navigationStyle": "custom"
-			}
-		},
-		{
-			"path": "pages/profile/edit",
-			"style": {
-				"navigationBarTitleText": "个人信息"
-			}
-		},
-		{
-			"path": "pages/profile/complete-info",
-			"style": {
-				"navigationBarTitleText": "完善个人信息"
-			}
-		},
-		{
-			"path": "pages/profile/favorites",
-			"style": {
-				"navigationBarTitleText": "我的收藏",
-				"enablePullDownRefresh": true
-			}
-		},
-		{
-			"path": "pages/profile/contacts",
-			"style": {
-				"navigationBarTitleText": "常用联系人"
-			}
-		},
-		{
-			"path": "pages/profile/contact-edit",
-			"style": {
-				"navigationBarTitleText": "添加联系人"
-			}
-		},
-		{
-			"path": "pages/profile/address",
-			"style": {
-				"navigationBarTitleText": "地址管理"
-			}
-		},
-		{
-			"path": "pages/profile/address-edit",
-			"style": {
-				"navigationBarTitleText": "编辑地址"
-			}
-		},
-		{
-			"path": "pages/profile/password-login",
-			"style": {
-				"navigationBarTitleText": "修改登录密码"
-			}
-		},
-		{
-			"path": "pages/profile/password-pay",
-			"style": {
-				"navigationBarTitleText": "设置支付密码"
-			}
-		},
-		{
-			"path": "pages/profile/settings",
-			"style": {
-				"navigationBarTitleText": "设置"
-			}
-		},
-		{
-			"path": "pages/profile/about",
-			"style": {
-				"navigationBarTitleText": "关于我们"
-			}
-		},
-		{
-			"path": "pages/profile/wallet",
-			"style": {
-				"navigationBarTitleText": "我的钱包"
-			}
-		},
-		{
-			"path": "pages/profile/coupons",
-			"style": {
-				"navigationBarTitleText": "优惠券"
-			}
-		},
-		{
-			"path": "pages/profile/promotion-center",
-			"style": {
-				"navigationBarTitleText": "推广中心",
-				"enablePullDownRefresh": true
-			}
-		},
-		{
-			"path": "pages/share/achievements",
-			"style": {
-				"navigationBarTitleText": "分享成就"
-			}
-		},
-		{
-			"path": "pages/share/invite-records",
-			"style": {
-				"navigationBarTitleText": "邀请记录",
-				"enablePullDownRefresh": true
-			}
-		},
-		{
-			"path": "pages/coupon-mall/index",
-			"style": {
-				"navigationBarTitleText": "特惠商城",
-				"enablePullDownRefresh": true
-			}
-		},
-		{
-			"path": "pages/coupon-mall/detail",
-			"style": {
-				"navigationBarTitleText": "优惠券详情"
-			}
-		},
-		{
-			"path": "pages/membership/index",
-			"style": {
-				"navigationBarTitleText": "PLUS会员"
-			}
-		},
-		{
-			"path": "pages/membership/purchase",
-			"style": {
-				"navigationBarTitleText": "开通会员"
-			}
-		},
-		{
-			"path": "pages/rating/create",
-			"style": {
-				"navigationBarTitleText": "评价服务"
-			}
-		},
-		{
-			"path": "pages/rating/list",
-			"style": {
-				"navigationBarTitleText": "我的评价",
-				"enablePullDownRefresh": true
-			}
-		},
-		{
-			"path": "pages/help/index",
-			"style": {
-				"navigationBarTitleText": "帮助中心"
-			}
-		},
-		{
-			"path": "pages/help/article",
-			"style": {
-				"navigationBarTitleText": "帮助详情"
-			}
-		},
-		{
-			"path": "pages/help/category",
-			"style": {
-				"navigationBarTitleText": "帮助分类"
 			}
 		},
 		{
@@ -470,56 +53,531 @@
 			}
 		},
 		{
-			"path": "pages/profile/points",
+			"path": "pages/vehicle/list",
 			"style": {
-				"navigationBarTitleText": "积分中心"
+				"navigationBarTitleText": "选择房车"
+			}
+		},
+		{
+			"path": "pages/vehicle/detail",
+			"style": {
+				"navigationBarTitleText": "房车详情",
+				"navigationStyle": "custom"
 			}
 		}
 	],
-	"tabBar": {
-			"color": "rgba(0, 0, 0, 0.6)",
-			"selectedColor": "#FF9F29",
-			"backgroundColor": "#FFFFFF",
-			"borderStyle": "black",
-			"list": [
+	"subPackages": [
+		{
+			"root": "pages/community-sub",
+			"name": "community",
+			"pages": [
 				{
-					"pagePath": "pages/index/index",
-					"text": "首页",
-					"iconPath": "/static/tabbar/home.png",
-					"selectedIconPath": "/static/tabbar/home-active.png"
+					"path": "publish",
+					"style": {
+						"navigationBarTitleText": "发布内容",
+						"navigationStyle": "custom"
+					}
 				},
 				{
-					"pagePath": "pages/community/index",
-					"text": "社区",
-					"iconPath": "/static/tabbar/community.png",
-					"selectedIconPath": "/static/tabbar/community-active.png"
+					"path": "detail",
+					"style": {
+						"navigationBarTitleText": "详情"
+					}
 				},
 				{
-					"pagePath": "pages/hosting/index",
-					"text": "托管中心",
-					"iconPath": "/static/tabbar/hosting.png",
-					"selectedIconPath": "/static/tabbar/hosting-active.png"
-				},
-				{
-					"pagePath": "pages/profile/index",
-					"text": "我的",
-					"iconPath": "/static/tabbar/profile.png",
-					"selectedIconPath": "/static/tabbar/profile-active.png"
+					"path": "user",
+					"style": {
+						"navigationBarTitleText": "个人主页"
+					}
 				}
 			]
 		},
-		"globalStyle": {
-			"navigationBarTextStyle": "black",
-			"navigationBarTitleText": "叨叨房车",
-			"navigationBarBackgroundColor": "#FFFFFF",
-			"backgroundColor": "#F8F8F8"
+		{
+			"root": "pages/hosting-sub",
+			"name": "hosting",
+			"pages": [
+				{
+					"path": "old-car/index",
+					"style": {
+						"navigationBarTitleText": "自有车托管"
+					}
+				},
+				{
+					"path": "new-car/index",
+					"style": {
+						"navigationBarTitleText": "购车托管"
+					}
+				},
+				{
+					"path": "self-use/index",
+					"style": {
+						"navigationBarTitleText": "车主自用申请"
+					}
+				},
+				{
+					"path": "income/index",
+					"style": {
+						"navigationBarTitleText": "收益管理"
+					}
+				},
+				{
+					"path": "agreement/index",
+					"style": {
+						"navigationBarTitleText": "托管协议与帮助"
+					}
+				},
+				{
+					"path": "vehicle-detail/index",
+					"style": {
+						"navigationBarTitleText": "车辆详情"
+					}
+				},
+				{
+					"path": "model-detail/index",
+					"style": {
+						"navigationBarTitleText": "车型详情",
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "model-list/index",
+					"style": {
+						"navigationBarTitleText": "购车托管车型",
+						"enablePullDownRefresh": true
+					}
+				},
+				{
+					"path": "crowdfunding/index",
+					"style": {
+						"navigationBarTitleText": "众筹托管",
+						"enablePullDownRefresh": true
+					}
+				},
+				{
+					"path": "crowdfunding/models",
+					"style": {
+						"navigationBarTitleText": "可众筹车型",
+						"enablePullDownRefresh": true
+					}
+				},
+				{
+					"path": "crowdfunding/projects",
+					"style": {
+						"navigationBarTitleText": "众筹项目",
+						"enablePullDownRefresh": true
+					}
+				},
+				{
+					"path": "crowdfunding/model-detail",
+					"style": {
+						"navigationBarTitleText": "车型详情",
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "crowdfunding/project-detail",
+					"style": {
+						"navigationBarTitleText": "项目详情"
+					}
+				},
+				{
+					"path": "crowdfunding/participate",
+					"style": {
+						"navigationBarTitleText": "参与众筹"
+					}
+				},
+				{
+					"path": "crowdfunding/create",
+					"style": {
+						"navigationBarTitleText": "发起众筹"
+					}
+				},
+				{
+					"path": "crowdfunding/my-crowdfunding",
+					"style": {
+						"navigationBarTitleText": "我的众筹",
+						"enablePullDownRefresh": true
+					}
+				},
+				{
+					"path": "crowdfunding/share-market",
+					"style": {
+						"navigationBarTitleText": "份额交易市场",
+						"enablePullDownRefresh": true
+					}
+				},
+				{
+					"path": "crowdfunding/share-detail",
+					"style": {
+						"navigationBarTitleText": "份额详情"
+					}
+				},
+				{
+					"path": "crowdfunding/sell-share",
+					"style": {
+						"navigationBarTitleText": "出售份额"
+					}
+				},
+				{
+					"path": "crowdfunding/income-detail",
+					"style": {
+						"navigationBarTitleText": "众筹收益明细"
+					}
+				},
+				{
+					"path": "crowdfunding/self-use-booking",
+					"style": {
+						"navigationBarTitleText": "自用预约"
+					}
+				}
+			]
 		},
-		"easycom": {
-			"autoscan": true,
-			"custom": {
-				"^u--(.*)": "@/uni_modules/uview-plus/components/u-$1/u-$1.vue",
-				"^up-(.*)": "@/uni_modules/uview-plus/components/u-$1/u-$1.vue",
-				"^u-([^-].*)": "@/uni_modules/uview-plus/components/u-$1/u-$1.vue"
+		{
+			"root": "pages/order",
+			"name": "order",
+			"pages": [
+				{
+					"path": "confirm",
+					"style": {
+						"navigationBarTitleText": "确认订单"
+					}
+				},
+				{
+					"path": "pay",
+					"style": {
+						"navigationBarTitleText": "收银台"
+					}
+				},
+				{
+					"path": "list",
+					"style": {
+						"navigationBarTitleText": "我的订单",
+						"navigationStyle": "custom",
+						"enablePullDownRefresh": true
+					}
+				},
+				{
+					"path": "detail",
+					"style": {
+						"navigationBarTitleText": "订单详情",
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "renewal",
+					"style": {
+						"navigationBarTitleText": "续租申请"
+					}
+				},
+				{
+					"path": "report",
+					"style": {
+						"navigationBarTitleText": "事故/故障申报"
+					}
+				},
+				{
+					"path": "select-coupon",
+					"style": {
+						"navigationBarTitleText": "选择优惠券"
+					}
+				},
+				{
+					"path": "transfer-pay",
+					"style": {
+						"navigationBarTitleText": "转账支付"
+					}
+				}
+			]
+		},
+		{
+			"root": "pages/profile-sub",
+			"name": "profile",
+			"pages": [
+				{
+					"path": "edit",
+					"style": {
+						"navigationBarTitleText": "个人信息"
+					}
+				},
+				{
+					"path": "complete-info",
+					"style": {
+						"navigationBarTitleText": "完善个人信息"
+					}
+				},
+				{
+					"path": "favorites",
+					"style": {
+						"navigationBarTitleText": "我的收藏",
+						"enablePullDownRefresh": true
+					}
+				},
+				{
+					"path": "contacts",
+					"style": {
+						"navigationBarTitleText": "常用联系人"
+					}
+				},
+				{
+					"path": "contact-edit",
+					"style": {
+						"navigationBarTitleText": "添加联系人"
+					}
+				},
+				{
+					"path": "address",
+					"style": {
+						"navigationBarTitleText": "地址管理"
+					}
+				},
+				{
+					"path": "address-edit",
+					"style": {
+						"navigationBarTitleText": "编辑地址"
+					}
+				},
+				{
+					"path": "password-login",
+					"style": {
+						"navigationBarTitleText": "修改登录密码"
+					}
+				},
+				{
+					"path": "password-pay",
+					"style": {
+						"navigationBarTitleText": "设置支付密码"
+					}
+				},
+				{
+					"path": "settings",
+					"style": {
+						"navigationBarTitleText": "设置"
+					}
+				},
+				{
+					"path": "about",
+					"style": {
+						"navigationBarTitleText": "关于我们"
+					}
+				},
+				{
+					"path": "wallet",
+					"style": {
+						"navigationBarTitleText": "我的钱包"
+					}
+				},
+				{
+					"path": "coupons",
+					"style": {
+						"navigationBarTitleText": "优惠券"
+					}
+				},
+				{
+					"path": "promotion-center",
+					"style": {
+						"navigationBarTitleText": "推广中心",
+						"enablePullDownRefresh": true
+					}
+				},
+				{
+					"path": "points",
+					"style": {
+						"navigationBarTitleText": "积分中心"
+					}
+				}
+			]
+		},
+		{
+			"root": "pages/business",
+			"name": "business",
+			"pages": [
+				{
+					"path": "campsite/list",
+					"style": {
+						"navigationBarTitleText": "营地预订",
+						"enablePullDownRefresh": true
+					}
+				},
+				{
+					"path": "campsite/detail",
+					"style": {
+						"navigationBarTitleText": "营地详情"
+					}
+				},
+				{
+					"path": "campsite/booking",
+					"style": {
+						"navigationBarTitleText": "预订营位"
+					}
+				},
+				{
+					"path": "tour/list",
+					"style": {
+						"navigationBarTitleText": "房车旅游",
+						"enablePullDownRefresh": true
+					}
+				},
+				{
+					"path": "tour/detail",
+					"style": {
+						"navigationBarTitleText": "线路详情"
+					}
+				},
+				{
+					"path": "tour/booking",
+					"style": {
+						"navigationBarTitleText": "预订线路"
+					}
+				},
+				{
+					"path": "special-offer/list",
+					"style": {
+						"navigationBarTitleText": "特惠租车",
+						"enablePullDownRefresh": true
+					}
+				},
+				{
+					"path": "special-offer/detail",
+					"style": {
+						"navigationBarTitleText": "套餐详情"
+					}
+				},
+				{
+					"path": "coupon-mall/index",
+					"style": {
+						"navigationBarTitleText": "特惠商城",
+						"enablePullDownRefresh": true
+					}
+				},
+				{
+					"path": "coupon-mall/detail",
+					"style": {
+						"navigationBarTitleText": "优惠券详情"
+					}
+				},
+				{
+					"path": "membership/index",
+					"style": {
+						"navigationBarTitleText": "PLUS会员"
+					}
+				},
+				{
+					"path": "membership/purchase",
+					"style": {
+						"navigationBarTitleText": "开通会员"
+					}
+				},
+				{
+					"path": "rating/create",
+					"style": {
+						"navigationBarTitleText": "评价服务"
+					}
+				},
+				{
+					"path": "rating/list",
+					"style": {
+						"navigationBarTitleText": "我的评价",
+						"enablePullDownRefresh": true
+					}
+				},
+				{
+					"path": "help/index",
+					"style": {
+						"navigationBarTitleText": "帮助中心"
+					}
+				},
+				{
+					"path": "help/article",
+					"style": {
+						"navigationBarTitleText": "帮助详情"
+					}
+				},
+				{
+					"path": "help/category",
+					"style": {
+						"navigationBarTitleText": "帮助分类"
+					}
+				},
+				{
+					"path": "share/achievements",
+					"style": {
+						"navigationBarTitleText": "分享成就"
+					}
+				},
+				{
+					"path": "store/list",
+					"style": {
+						"navigationBarTitleText": "门店列表",
+						"enablePullDownRefresh": true
+					}
+				},
+				{
+					"path": "store/detail",
+					"style": {
+						"navigationBarTitleText": "门店详情"
+					}
+				}
+			]
+		}
+	],
+	"preloadRule": {
+		"pages/index/index": {
+			"network": "all",
+			"packages": ["order", "business"]
+		},
+		"pages/hosting/index": {
+			"network": "all",
+			"packages": ["hosting"]
+		},
+		"pages/profile/index": {
+			"network": "all",
+			"packages": ["profile", "order"]
+		}
+	},
+	"tabBar": {
+		"color": "rgba(0, 0, 0, 0.6)",
+		"selectedColor": "#FF9F29",
+		"backgroundColor": "#FFFFFF",
+		"borderStyle": "black",
+		"list": [
+			{
+				"pagePath": "pages/index/index",
+				"text": "首页",
+				"iconPath": "/static/tabbar/home.png",
+				"selectedIconPath": "/static/tabbar/home-active.png"
+			},
+			{
+				"pagePath": "pages/community/index",
+				"text": "社区",
+				"iconPath": "/static/tabbar/community.png",
+				"selectedIconPath": "/static/tabbar/community-active.png"
+			},
+			{
+				"pagePath": "pages/hosting/index",
+				"text": "托管中心",
+				"iconPath": "/static/tabbar/hosting.png",
+				"selectedIconPath": "/static/tabbar/hosting-active.png"
+			},
+			{
+				"pagePath": "pages/profile/index",
+				"text": "我的",
+				"iconPath": "/static/tabbar/profile.png",
+				"selectedIconPath": "/static/tabbar/profile-active.png"
 			}
+		]
+	},
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "叨叨房车",
+		"navigationBarBackgroundColor": "#FFFFFF",
+		"backgroundColor": "#F8F8F8"
+	},
+	"easycom": {
+		"autoscan": true,
+		"custom": {
+			"^u--(.*)": "@/uni_modules/uview-plus/components/u-$1/u-$1.vue",
+			"^up-(.*)": "@/uni_modules/uview-plus/components/u-$1/u-$1.vue",
+			"^u-([^-].*)": "@/uni_modules/uview-plus/components/u-$1/u-$1.vue"
 		}
 	}
+}

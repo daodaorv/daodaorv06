@@ -11,10 +11,73 @@ import { logger } from './logger'
 const USE_MOCK = false;
 
 // API基础URL
-const BASE_URL = USE_MOCK ? '' : 'http://127.0.0.1:3001/api/v1';
+// 开发环境：http://127.0.0.1:3001/api
+// 生产环境：根据实际部署地址修改
+const BASE_URL = USE_MOCK ? '' : 'http://127.0.0.1:3001/api';
 
 // Mock数据处理器
 import { mockRequest } from '@/mock/handlers/index';
+
+// Token 刷新状态管理
+let isRefreshing = false; // 是否正在刷新 token
+let refreshSubscribers: Array<(token: string) => void> = []; // 等待 token 刷新的请求队列
+
+/**
+ * 添加请求到刷新队列
+ */
+function subscribeTokenRefresh(callback: (token: string) => void): void {
+	refreshSubscribers.push(callback);
+}
+
+/**
+ * 通知所有等待的请求
+ */
+function onTokenRefreshed(token: string): void {
+	refreshSubscribers.forEach((callback) => callback(token));
+	refreshSubscribers = [];
+}
+
+/**
+ * 刷新 Token
+ */
+async function doRefreshToken(): Promise<string> {
+	const refreshToken = uni.getStorageSync('refreshToken');
+	if (!refreshToken) {
+		throw new Error('No refresh token available');
+	}
+
+	try {
+		// 调用刷新 token API
+		const response = await uni.request({
+			url: BASE_URL + '/auth/refresh-token',
+			method: 'POST',
+			data: { refreshToken },
+			header: {
+				'Content-Type': 'application/json'
+			}
+		});
+
+		const result = response.data as any;
+		if (result.code === 0 && result.data?.token) {
+			const newToken = result.data.token;
+			const newRefreshToken = result.data.refreshToken;
+
+			// 保存新的 token
+			uni.setStorageSync('token', newToken);
+			if (newRefreshToken) {
+				uni.setStorageSync('refreshToken', newRefreshToken);
+			}
+
+			logger.info('Token 刷新成功');
+			return newToken;
+		} else {
+			throw new Error('Token refresh failed');
+		}
+	} catch (error) {
+		logger.error('Token 刷新失败', error);
+		throw error;
+	}
+}
 
 // 定义请求数据类型
 type RequestData = Record<string, unknown> | unknown[];
@@ -46,9 +109,9 @@ interface UniRequestResponse {
 }
 
 /**
- * 统一请求方法
+ * 统一请求方法（内部实现）
  */
-export function request<T = unknown>(options: RequestOptions): Promise<ResponseData<T>> {
+function doRequest<T = unknown>(options: RequestOptions, retryCount = 0): Promise<ResponseData<T>> {
 	return new Promise((resolve, reject) => {
 		// 记录请求日志
 		logger.logRequest(options.method || 'GET', options.url, options.data);
@@ -100,8 +163,23 @@ export function request<T = unknown>(options: RequestOptions): Promise<ResponseD
 
 				if (response.code === 0) {
 					resolve(response)
+				} else if (response.code === 401 && retryCount === 0) {
+					// 判断是否应该刷新 token
+					// 登录相关接口的 401 错误不应触发 token 刷新
+					const isAuthEndpoint = url.includes('/auth/login') ||
+						url.includes('/auth/register') ||
+						url.includes('/auth/send-code')
+
+					if (isAuthEndpoint) {
+						// 认证接口的 401 是业务错误（如密码错误），不是 token 过期
+						handleBusinessError(response)
+						reject(response)
+					} else {
+						// 其他接口的 401 才是 token 过期，需要刷新
+						handleTokenExpired(options, resolve, reject)
+					}
 				} else {
-					// 业务错误处理
+					// 其他业务错误处理
 					handleBusinessError(response)
 					reject(response)
 				}
@@ -117,6 +195,56 @@ export function request<T = unknown>(options: RequestOptions): Promise<ResponseD
 }
 
 /**
+ * 处理 Token 过期
+ */
+async function handleTokenExpired<T>(
+	options: RequestOptions,
+	resolve: (value: ResponseData<T>) => void,
+	reject: (reason: any) => void
+): Promise<void> {
+	if (!isRefreshing) {
+		// 开始刷新 token
+		isRefreshing = true;
+		try {
+			const newToken = await doRefreshToken();
+			isRefreshing = false;
+			// 通知所有等待的请求
+			onTokenRefreshed(newToken);
+			// 重试当前请求
+			doRequest<T>(options, 1).then(resolve).catch(reject);
+		} catch (error) {
+			isRefreshing = false;
+			refreshSubscribers = [];
+			// Token 刷新失败，清除登录信息并跳转登录页
+			uni.removeStorageSync('token');
+			uni.removeStorageSync('refreshToken');
+			uni.removeStorageSync('userInfo');
+			uni.showToast({
+				title: '登录已过期，请重新登录',
+				icon: 'none'
+			});
+			setTimeout(() => {
+				uni.reLaunch({ url: '/pages/auth/login' });
+			}, 1500);
+			reject(error);
+		}
+	} else {
+		// 正在刷新 token，将请求加入队列
+		subscribeTokenRefresh((newToken) => {
+			// Token 刷新成功，重试请求
+			doRequest<T>(options, 1).then(resolve).catch(reject);
+		});
+	}
+}
+
+/**
+ * 统一请求方法（对外接口）
+ */
+export function request<T = unknown>(options: RequestOptions): Promise<ResponseData<T>> {
+	return doRequest<T>(options, 0);
+}
+
+/**
  * 处理业务错误
  */
 function handleBusinessError(response: ResponseData<unknown>): void {
@@ -124,18 +252,6 @@ function handleBusinessError(response: ResponseData<unknown>): void {
 
 	// 特殊错误码处理
 	switch (code) {
-		case 401:
-			// 未登录或登录过期
-			uni.showToast({
-				title: '登录已过期，请重新登录',
-				icon: 'none'
-			});
-			// 清除token并跳转到登录页
-			uni.removeStorageSync('token');
-			setTimeout(() => {
-				uni.reLaunch({ url: '/pages/auth/login' });
-			}, 1500);
-			break;
 		case 403:
 			// 无权限
 			uni.showToast({

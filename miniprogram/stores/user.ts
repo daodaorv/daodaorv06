@@ -2,7 +2,6 @@
  * 用户状态管理
  */
 
-// @ts-ignore
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import { login, getUserProfile, wechatLogin, type LoginParams } from '@/api/auth';

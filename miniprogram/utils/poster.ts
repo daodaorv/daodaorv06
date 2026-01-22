@@ -10,7 +10,7 @@ import type { PosterConfig } from '@/types/share'
  * 海报生成器
  */
 class PosterGenerator {
-  private canvas: UniApp.Canvas | null = null
+  private canvas: any = null
   private ctx: CanvasRenderingContext2D | null = null
   private readonly canvasWidth = 750
   private readonly canvasHeight = 1334
@@ -30,17 +30,20 @@ class PosterGenerator {
             this.ctx = this.canvas.getContext('2d')
 
             // 设置Canvas尺寸（使用新 API）
+            let dpr = 2
             // #ifdef MP-WEIXIN
             const windowInfo = uni.getWindowInfo()
-            const dpr = windowInfo.pixelRatio || 2
+            dpr = windowInfo.pixelRatio || 2
             // #endif
             // #ifndef MP-WEIXIN
-            const dpr = uni.getSystemInfoSync().pixelRatio || 2
+            dpr = uni.getSystemInfoSync().pixelRatio || 2
             // #endif
 
             this.canvas.width = this.canvasWidth * dpr
             this.canvas.height = this.canvasHeight * dpr
-            this.ctx.scale(dpr, dpr)
+            if (this.ctx) {
+              this.ctx.scale(dpr, dpr)
+            }
 
             resolve()
           } else {
@@ -60,6 +63,10 @@ class PosterGenerator {
     try {
       // 初始化Canvas
       await this.initCanvas(canvasId)
+
+      if (!this.ctx) {
+        throw new Error('Canvas上下文初始化失败')
+      }
 
       // 清空画布
       this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight)
@@ -106,6 +113,8 @@ class PosterGenerator {
    * 绘制背景
    */
   private async drawBackground(): Promise<void> {
+    if (!this.ctx) return
+
     // 渐变背景
     const gradient = this.ctx.createLinearGradient(0, 0, 0, this.canvasHeight)
     gradient.addColorStop(0, '#FF9F29')
@@ -120,9 +129,13 @@ class PosterGenerator {
    * @param imageUrl 图片URL
    */
   private async drawMainImage(imageUrl: string): Promise<void> {
+    if (!this.ctx || !this.canvas) return
+
     return new Promise((resolve, reject) => {
       const image = this.canvas.createImage()
       image.onload = () => {
+        if (!this.ctx) return reject(new Error('Canvas上下文不可用'))
+
         const x = 40
         const y = 100
         const width = this.canvasWidth - 80
@@ -166,6 +179,8 @@ class PosterGenerator {
     height: number,
     radius: number
   ): void {
+    if (!this.ctx) return
+
     this.ctx.beginPath()
     this.ctx.moveTo(x + radius, y)
     this.ctx.lineTo(x + width - radius, y)
@@ -184,6 +199,8 @@ class PosterGenerator {
    * @param title 标题文本
    */
   private drawTitle(title: string): void {
+    if (!this.ctx) return
+
     this.ctx.fillStyle = '#FFFFFF'
     this.ctx.font = 'bold 48px sans-serif'
     this.ctx.textAlign = 'center'
@@ -193,7 +210,9 @@ class PosterGenerator {
     const lines = this.wrapText(title, maxWidth, 48)
 
     lines.forEach((line, index) => {
-      this.ctx.fillText(line, this.canvasWidth / 2, 680 + index * 60)
+      if (this.ctx) {
+        this.ctx.fillText(line, this.canvasWidth / 2, 680 + index * 60)
+      }
     })
   }
 
@@ -205,13 +224,15 @@ class PosterGenerator {
    * @returns 换行后的文本数组
    */
   private wrapText(text: string, maxWidth: number, fontSize: number): string[] {
+    if (!this.ctx) return [text]
+
     const words = text.split('')
     const lines: string[] = []
     let currentLine = ''
 
     words.forEach(word => {
       const testLine = currentLine + word
-      const metrics = this.ctx.measureText(testLine)
+      const metrics = this.ctx!.measureText(testLine)
 
       if (metrics.width > maxWidth && currentLine !== '') {
         lines.push(currentLine)
@@ -233,6 +254,8 @@ class PosterGenerator {
    * @param subtitle 副标题文本
    */
   private drawSubtitle(subtitle: string): void {
+    if (!this.ctx) return
+
     this.ctx.fillStyle = 'rgba(255, 255, 255, 0.9)'
     this.ctx.font = '32px sans-serif'
     this.ctx.textAlign = 'center'
@@ -244,6 +267,8 @@ class PosterGenerator {
    * @param price 价格
    */
   private drawPrice(price: string): void {
+    if (!this.ctx) return
+
     this.ctx.fillStyle = '#FFFFFF'
     this.ctx.font = 'bold 56px sans-serif'
     this.ctx.textAlign = 'center'
@@ -258,9 +283,13 @@ class PosterGenerator {
    * @param qrCodeUrl 二维码图片URL
    */
   private async drawQRCode(qrCodeUrl: string): Promise<void> {
+    if (!this.ctx || !this.canvas) return
+
     return new Promise((resolve, reject) => {
       const image = this.canvas.createImage()
       image.onload = () => {
+        if (!this.ctx) return reject(new Error('Canvas上下文不可用'))
+
         const size = 200
         const x = (this.canvasWidth - size) / 2
         const y = 1000
@@ -287,6 +316,8 @@ class PosterGenerator {
    * @param inviteCode 邀请码
    */
   private drawInviteCode(inviteCode: string): void {
+    if (!this.ctx) return
+
     this.ctx.fillStyle = '#FFFFFF'
     this.ctx.font = 'bold 32px sans-serif'
     this.ctx.textAlign = 'center'
@@ -297,6 +328,8 @@ class PosterGenerator {
    * 绘制品牌信息
    */
   private drawBrandInfo(): void {
+    if (!this.ctx) return
+
     this.ctx.fillStyle = 'rgba(255, 255, 255, 0.8)'
     this.ctx.font = '24px sans-serif'
     this.ctx.textAlign = 'center'
@@ -308,6 +341,10 @@ class PosterGenerator {
    * @returns 临时图片路径
    */
   private exportImage(): Promise<string> {
+    if (!this.canvas) {
+      return Promise.reject(new Error('Canvas未初始化'))
+    }
+
     return new Promise((resolve, reject) => {
       uni.canvasToTempFilePath({
         canvas: this.canvas,

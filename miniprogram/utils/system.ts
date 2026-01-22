@@ -4,6 +4,28 @@
  */
 
 /**
+ * 安全区域接口
+ */
+export interface SafeArea {
+  left: number
+  right: number
+  top: number
+  bottom: number
+  width: number
+  height: number
+}
+
+/**
+ * 安全区域边距接口
+ */
+export interface SafeAreaInsets {
+  top: number
+  right: number
+  bottom: number
+  left: number
+}
+
+/**
  * 窗口信息接口
  */
 export interface WindowInfo {
@@ -13,8 +35,8 @@ export interface WindowInfo {
   windowHeight: number
   pixelRatio: number
   statusBarHeight: number
-  safeArea?: UniApp.SafeArea
-  safeAreaInsets?: UniApp.SafeAreaInsets
+  safeArea?: SafeArea
+  safeAreaInsets?: SafeAreaInsets
 }
 
 /**

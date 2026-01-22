@@ -3,7 +3,8 @@
  * 提供登录检查、登录拦截、Token管理等功能
  */
 
-import { checkLoginStatus, type UserInfo } from '@/api/auth'
+import { checkLoginStatus } from '@/api/auth'
+import type { UserInfo } from '@/types/user'
 import { logger } from './logger'
 
 /**
