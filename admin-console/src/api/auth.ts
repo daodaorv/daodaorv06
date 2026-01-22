@@ -13,7 +13,7 @@ export const authApi = {
         ApiResponse<{ token: string; user: User }>
       >
     }
-    return post<ApiResponse<{ token: string; user: User }>>('/auth/login', {
+    return post<ApiResponse<{ token: string; user: User }>>('/v1/auth/login', {
       phone: data.username,
       password: data.password,
     })
@@ -24,7 +24,7 @@ export const authApi = {
     if (USE_MOCK) {
       return mockLogout() as Promise<ApiResponse>
     }
-    return post<ApiResponse>('/auth/logout')
+    return post<ApiResponse>('/v1/auth/logout')
   },
 
   // 获取用户信息
@@ -33,13 +33,13 @@ export const authApi = {
       const token = localStorage.getItem('token') || ''
       return mockGetUserInfo(token) as Promise<ApiResponse<User>>
     }
-    return get<ApiResponse<User>>('/auth/me')
+    return get<ApiResponse<User>>('/v1/auth/me')
   },
 
   // 刷新token
-  refreshToken: () => post<ApiResponse<{ token: string }>>('/auth/refresh'),
+  refreshToken: () => post<ApiResponse<{ token: string }>>('/v1/auth/refresh'),
 
   // 修改密码
   changePassword: (data: { oldPassword: string; newPassword: string }) =>
-    post<ApiResponse>('/auth/change-password', data),
+    post<ApiResponse>('/v1/auth/change-password', data),
 }

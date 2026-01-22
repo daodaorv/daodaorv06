@@ -189,6 +189,26 @@
       style="width: 100%"
     />
 
+    <!-- 文件上传 -->
+    <el-upload
+      v-else-if="field.type === 'upload'"
+      :auto-upload="false"
+      :show-file-list="true"
+      :limit="field.limit || 1"
+      :accept="field.accept"
+      :disabled="field.disabled"
+      :on-change="(file: any) => handleFileChange(file, field.prop)"
+      :on-remove="() => handleFileRemove(field.prop)"
+      list-type="picture-card"
+    >
+      <el-icon><Plus /></el-icon>
+      <template #tip>
+        <div class="el-upload__tip">
+          {{ field.placeholder || '点击上传文件' }}
+        </div>
+      </template>
+    </el-upload>
+
     <!-- 富文本编辑器 -->
     <RichTextEditor
       v-else-if="field.type === 'richtext'"
@@ -211,13 +231,24 @@
 </template>
 
 <script setup lang="ts">
+import { Plus } from '@element-plus/icons-vue'
 import type { FormField } from './FormDialog.vue'
 import RichTextEditor from './RichTextEditor.vue'
 
-defineProps<{
+const props = defineProps<{
   field: FormField
   formData: Record<string, any>
 }>()
+
+// 文件上传处理
+function handleFileChange(file: any, prop: string) {
+  props.formData[prop] = file.raw
+}
+
+// 文件移除处理
+function handleFileRemove(prop: string) {
+  props.formData[prop] = null
+}
 </script>
 
 <style scoped lang="scss">

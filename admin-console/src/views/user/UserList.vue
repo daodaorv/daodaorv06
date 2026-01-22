@@ -1,8 +1,5 @@
 <template>
   <div class="page-container">
-    <!-- 页面标题 -->
-    <PageHeader title="用户列表" description="管理小程序端用户信息、角色分配和状态" />
-
     <!-- 统计卡片 -->
     <StatsCard :stats="statsConfig" />
 
@@ -22,9 +19,11 @@
       :actions="tableActions"
       :toolbar-buttons="toolbarButtons"
       :pagination="pagination"
-      :actions-width="280"
+      :actions-width="320"
+      :selectable="true"
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
+      @selection-change="handleSelectionChange"
     >
       <!-- 用户信息列 -->
       <template #userInfo="{ row }">
@@ -73,6 +72,9 @@
       <template #actions="{ row }">
         <el-button link type="primary" size="small" @click="handleView(row)">
           查看详情
+        </el-button>
+        <el-button link type="primary" size="small" @click="handleEdit(row)">
+          编辑
         </el-button>
         <el-button link type="primary" size="small" @click="handleAssignRole(row)">
           分配角色
@@ -134,6 +136,17 @@
       </el-descriptions>
     </el-dialog>
 
+    <!-- 用户编辑对话框 -->
+    <FormDialog
+      v-model="editDialogVisible"
+      :title="isAddMode ? '添加用户' : '编辑用户'"
+      :fields="editFormFields"
+      :form-data="editFormData"
+      :loading="editSubmitLoading"
+      width="700px"
+      @submit="handleEditSubmit"
+    />
+
     <!-- 分配角色对话框 -->
     <FormDialog
       v-model="roleDialogVisible"
@@ -147,6 +160,23 @@
       <template #header>
         <div style="margin-bottom: 16px">
           <strong>用户：</strong>{{ currentUser?.username || currentUser?.phone }} ({{ currentUser?.phone }})
+        </div>
+      </template>
+    </FormDialog>
+
+    <!-- 批量分配角色对话框 -->
+    <FormDialog
+      v-model="batchRoleDialogVisible"
+      title="批量分配角色"
+      :fields="roleFormFields"
+      :form-data="roleFormData"
+      :loading="roleSubmitLoading"
+      width="600px"
+      @submit="handleBatchRoleSubmit"
+    >
+      <template #header>
+        <div style="margin-bottom: 16px">
+          <strong>已选择：</strong>{{ selectedUsers.length }} 个用户
         </div>
       </template>
     </FormDialog>
@@ -278,34 +308,124 @@ const tableColumns: TableColumn[] = [
 ]
 
 // 工具栏按钮配置
-const toolbarButtons: ToolbarButton[] = [
+const toolbarButtons = computed<ToolbarButton[]>(() => [
+  {
+    label: '添加用户',
+    type: 'primary',
+    onClick: handleAdd,
+  },
+  {
+    label: '批量分配角色',
+    type: 'default',
+    onClick: handleBatchAssignRole,
+    disabled: selectedUsers.value.length === 0,
+  },
+  {
+    label: '批量删除',
+    type: 'danger',
+    onClick: handleBatchDelete,
+    disabled: selectedUsers.value.length === 0,
+  },
   {
     label: '导出',
     icon: Download,
     onClick: handleExport,
   },
-]
+])
 
 // 表格操作列配置
 const tableActions: TableAction[] = []
 
 // 对话框
 const detailDialogVisible = ref(false)
+const editDialogVisible = ref(false)
 const roleDialogVisible = ref(false)
+const batchRoleDialogVisible = ref(false)
+const editSubmitLoading = ref(false)
 const roleSubmitLoading = ref(false)
 const currentUser = ref<UserInfo | null>(null)
+const isAddMode = ref(false)
+
+// 批量选择
+const selectedUsers = ref<UserInfo[]>([])
 
 const roleFormData = reactive({
   roleIds: [] as number[],
 })
 
-// 可用角色列表
-const availableRoles = ref([
-  { id: 1, name: '普通注册用户', code: 'normal' },
-  { id: 2, name: 'PLUS用户', code: 'plus' },
-  { id: 3, name: '自有车托管用户', code: 'hosting_own' },
-  { id: 4, name: '购车托管用户', code: 'hosting_purchase' },
-  { id: 5, name: '众筹托管用户', code: 'hosting_crowdfunding' },
+const editFormData = reactive({
+  username: '',
+  phone: '',
+  realName: '',
+  password: '',
+  avatarUrl: '',
+  avatarFile: null as File | null,
+  roleIds: [] as number[],
+})
+
+// 可用角色列表（从后端动态加载）
+const availableRoles = ref<Array<{ id: number; name: string; code: string }>>([])
+
+// 加载角色列表
+async function loadRoles() {
+  try {
+    // 根据产品需求文档，C端用户角色包括：
+    // 1. 普通用户
+    // 2. PLUS会员
+    availableRoles.value = [
+      { id: 21, name: '普通用户', code: 'customer_normal' },
+      { id: 22, name: 'PLUS会员', code: 'customer_plus' },
+    ]
+  } catch (error) {
+    handleApiError(error, '加载角色列表失败')
+  }
+}
+
+// 编辑表单字段配置
+const editFormFields = computed<FormField[]>(() => [
+  {
+    prop: 'username',
+    label: '用户名',
+    type: 'input',
+    required: true,
+    placeholder: '请输入用户名',
+  },
+  {
+    prop: 'phone',
+    label: '手机号',
+    type: 'input',
+    required: true,
+    placeholder: '请输入手机号',
+  },
+  {
+    prop: 'realName',
+    label: '真实姓名',
+    type: 'input',
+    placeholder: '请输入真实姓名',
+  },
+  {
+    prop: 'password',
+    label: isAddMode.value ? '登录密码' : '新密码',
+    type: 'password',
+    required: isAddMode.value,
+    placeholder: isAddMode.value ? '请输入登录密码' : '留空则不修改密码',
+  },
+  {
+    prop: 'avatarFile',
+    label: '用户头像',
+    type: 'upload',
+    accept: 'image/*',
+    placeholder: '点击上传头像',
+  },
+  {
+    prop: 'roleIds',
+    label: '用户角色',
+    type: 'checkbox',
+    options: availableRoles.value.map(r => ({
+      label: r.name,
+      value: r.id,
+    })),
+  },
 ])
 
 // 角色表单字段配置
@@ -367,6 +487,78 @@ function handleView(row: UserInfo) {
   detailDialogVisible.value = true
 }
 
+// 批量选择变化
+function handleSelectionChange(selection: UserInfo[]) {
+  selectedUsers.value = selection
+}
+
+// 添加用户
+function handleAdd() {
+  isAddMode.value = true
+  editFormData.username = ''
+  editFormData.phone = ''
+  editFormData.realName = ''
+  editFormData.password = ''
+  editFormData.avatarUrl = ''
+  editFormData.avatarFile = null
+  editFormData.roleIds = []
+  editDialogVisible.value = true
+}
+
+// 编辑用户
+function handleEdit(row: UserInfo) {
+  isAddMode.value = false
+  currentUser.value = row
+  editFormData.username = row.username || ''
+  editFormData.phone = row.phone || ''
+  editFormData.realName = row.realName || ''
+  editFormData.password = ''
+  editFormData.avatarUrl = row.avatarUrl || ''
+  editFormData.avatarFile = null
+  editFormData.roleIds = row.roles?.map(r => r.id) || []
+  editDialogVisible.value = true
+}
+
+// 提交编辑
+async function handleEditSubmit() {
+  editSubmitLoading.value = true
+  try {
+    if (isAddMode.value) {
+      // 调用创建用户 API
+      const createData = {
+        username: editFormData.username,
+        phone: editFormData.phone,
+        password: editFormData.password,
+        realName: editFormData.realName,
+        userType: 'registered' as const,
+      }
+      await userApi.createUser(createData)
+      ElMessage.success('添加用户成功')
+    } else {
+      // 调用更新用户 API
+      if (!currentUser.value) {
+        throw new Error('当前用户信息不存在')
+      }
+
+      const updateData = {
+        id: currentUser.value.id,
+        username: editFormData.username,
+        realName: editFormData.realName,
+      }
+      await userApi.updateUser(updateData)
+      ElMessage.success('编辑用户成功')
+    }
+
+    // 关闭对话框并刷新列表
+    editDialogVisible.value = false
+    await loadUserList()
+  } catch (error) {
+    handleApiError(error, isAddMode.value ? '添加用户失败' : '编辑用户失败')
+  } finally {
+    editSubmitLoading.value = false
+  }
+}
+
 // 分配角色
 function handleAssignRole(row: UserInfo) {
   currentUser.value = row
@@ -378,17 +570,16 @@ function handleAssignRole(row: UserInfo) {
 async function handleRoleSubmit() {
   roleSubmitLoading.value = true
   try {
-    // 模拟API调用
-    await new Promise(resolve => setTimeout(resolve, 1000))
-
-    if (currentUser.value) {
-      currentUser.value.roles = availableRoles.value.filter(r =>
-        roleFormData.roleIds.includes(r.id)
-      )
+    if (!currentUser.value) {
+      throw new Error('当前用户信息不存在')
     }
+
+    // 调用真实 API
+    await userApi.assignUserRoles(currentUser.value.id, roleFormData.roleIds)
 
     ElMessage.success('角色分配成功')
     roleDialogVisible.value = false
+    await loadUserList()
   } catch (error) {
     handleApiError(error, '角色分配失败')
   } finally {
@@ -396,9 +587,74 @@ async function handleRoleSubmit() {
   }
 }
 
+// 批量分配角色
+function handleBatchAssignRole() {
+  if (selectedUsers.value.length === 0) {
+    ElMessage.warning('请先选择用户')
+    return
+  }
+  roleFormData.roleIds = []
+  batchRoleDialogVisible.value = true
+}
+
+// 提交批量角色分配
+async function handleBatchRoleSubmit() {
+  roleSubmitLoading.value = true
+  try {
+    const userIds = selectedUsers.value.map(u => u.id)
+
+    // 调用真实 API
+    await userApi.batchAssignRoles(userIds, roleFormData.roleIds)
+
+    ElMessage.success(`成功为 ${selectedUsers.value.length} 个用户分配角色`)
+    batchRoleDialogVisible.value = false
+    selectedUsers.value = []
+    await loadUserList()
+  } catch (error) {
+    handleApiError(error, '批量分配角色失败')
+  } finally {
+    roleSubmitLoading.value = false
+  }
+}
+
+// 批量删除
+async function handleBatchDelete() {
+  if (selectedUsers.value.length === 0) {
+    ElMessage.warning('请先选择用户')
+    return
+  }
+
+  try {
+    await ElMessageBox.confirm(
+      `确定要删除选中的 ${selectedUsers.value.length} 个用户吗？此操作不可恢复！`,
+      '批量删除确认',
+      {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }
+    )
+
+    const userIds = selectedUsers.value.map(u => u.id)
+
+    // 调用真实 API
+    await userApi.batchDeleteUsers(userIds)
+
+    ElMessage.success(`成功删除 ${selectedUsers.value.length} 个用户`)
+    selectedUsers.value = []
+    await loadUserList()
+  } catch (error) {
+    if (error !== 'cancel') {
+      handleApiError(error, '批量删除失败')
+    }
+  }
+}
+
 // 切换用户状态
 async function handleToggleStatus(row: UserInfo) {
   const action = row.status === 'active' ? '封禁' : '解封'
+  const newStatus = row.status === 'active' ? 'banned' : 'active'
+
   try {
     await ElMessageBox.confirm(
       `确定要${action}用户 "${row.username || row.phone}" 吗？`,
@@ -410,8 +666,11 @@ async function handleToggleStatus(row: UserInfo) {
       }
     )
 
-    row.status = row.status === 'active' ? 'banned' : 'active'
+    // 调用真实 API
+    await userApi.changeUserStatus(row.id, newStatus)
+
     ElMessage.success(`${action}成功`)
+    await loadUserList()
   } catch (error) {
     if (error !== 'cancel') {
       handleApiError(error, `${action}失败`)
@@ -462,6 +721,7 @@ function getRoleTagType(code: string): RoleTagType {
 
 // 页面初始化
 onMounted(() => {
+  loadRoles()
   loadUserList()
 })
 </script>

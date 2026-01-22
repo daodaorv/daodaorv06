@@ -10,7 +10,7 @@ import router from '@/router'
 
 // 创建axios实例
 const service: AxiosInstance = axios.create({
-  baseURL: '/api/v1',
+  baseURL: '/api',
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',

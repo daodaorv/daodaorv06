@@ -105,7 +105,7 @@ export const userApi = {
     if (USE_MOCK) {
       return mockGetUserList(params) as Promise<ApiResponse<UserListResponse>>
     }
-    return request.get<ApiResponse<UserListResponse>>('/admin/users', params)
+    return request.get<ApiResponse<UserListResponse>>('/v1/admin/users', params)
   },
 
   // 获取用户详情
@@ -113,7 +113,7 @@ export const userApi = {
     if (USE_MOCK) {
       return mockGetUserDetail(id) as Promise<ApiResponse<UserInfo>>
     }
-    return request.get<ApiResponse<UserInfo>>(`/admin/users/${id}`)
+    return request.get<ApiResponse<UserInfo>>(`/v1/admin/users/${id}`)
   },
 
   // 创建用户
@@ -121,7 +121,7 @@ export const userApi = {
     if (USE_MOCK) {
       return mockCreateUser(data) as Promise<ApiResponse<UserInfo>>
     }
-    return request.post<ApiResponse<UserInfo>>('/admin/users', data)
+    return request.post<ApiResponse<UserInfo>>('/v1/admin/users', data)
   },
 
   // 更新用户信息
@@ -129,7 +129,7 @@ export const userApi = {
     if (USE_MOCK) {
       return mockUpdateUser(data) as Promise<ApiResponse<UserInfo>>
     }
-    return request.put<ApiResponse<UserInfo>>(`/admin/users/${data.id}`, data)
+    return request.put<ApiResponse<UserInfo>>(`/v1/admin/users/${data.id}`, data)
   },
 
   // 删除用户
@@ -137,7 +137,7 @@ export const userApi = {
     if (USE_MOCK) {
       return mockDeleteUser(id) as Promise<ApiResponse>
     }
-    return request.delete<ApiResponse>(`/admin/users/${id}`)
+    return request.delete<ApiResponse>(`/v1/admin/users/${id}`)
   },
 
   // 更改用户状态
@@ -145,12 +145,27 @@ export const userApi = {
     if (USE_MOCK) {
       return mockChangeUserStatus(id, status) as Promise<ApiResponse>
     }
-    return request.put<ApiResponse>(`/admin/users/${id}/status`, { status })
+    return request.put<ApiResponse>(`/v1/admin/users/${id}/status`, { status })
   },
 
   // 重置用户密码
   resetPassword: (id: number, newPassword: string) =>
-    request.put<ApiResponse>(`/admin/users/${id}/reset-password`, { password: newPassword }),
+    request.put<ApiResponse>(`/v1/admin/users/${id}/reset-password`, { password: newPassword }),
+
+  // 分配用户角色
+  assignUserRoles: (id: number, roleIds: number[]) => {
+    return request.put<ApiResponse>(`/v1/admin/users/${id}/roles`, { roleIds })
+  },
+
+  // 批量分配角色
+  batchAssignRoles: (userIds: number[], roleIds: number[]) => {
+    return request.post<ApiResponse>('/v1/admin/users/batch/roles', { userIds, roleIds })
+  },
+
+  // 批量删除用户
+  batchDeleteUsers: (userIds: number[]) => {
+    return request.post<ApiResponse>('/v1/admin/users/batch/delete', { userIds })
+  },
 
   // 用户导入
   importUsers: (file: File) => {
