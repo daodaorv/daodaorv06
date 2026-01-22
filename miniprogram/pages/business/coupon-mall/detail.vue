@@ -183,7 +183,6 @@ const coupon = ref<CouponData>({
 	stackRule: '不可与其他满减券叠加使用，可与会员折扣叠加',
 	specialLimit: '仅限新用户首单使用，每人限领1次',
 	price: 0,
-	pointsPrice: 0,
 	stock: 1000,
 	limitPerUser: 1,
 	claimed: false,
@@ -239,24 +238,16 @@ const getCouponTypeClass = (type: string) => {
 };
 
 const getAcquisitionMethod = () => {
-	if (coupon.value.price === 0 && coupon.value.pointsPrice === 0) {
+	if (coupon.value.price === 0) {
 		return '免费领取';
-	} else if (coupon.value.pointsPrice > 0 && coupon.value.price > 0) {
-		return `${coupon.value.pointsPrice}积分+¥${coupon.value.price}组合购买`;
-	} else if (coupon.value.pointsPrice > 0) {
-		return `${coupon.value.pointsPrice}积分兑换`;
 	} else {
 		return `¥${coupon.value.price}现金购买`;
 	}
 };
 
 const getActionText = () => {
-	if (coupon.value.price === 0 && coupon.value.pointsPrice === 0) {
+	if (coupon.value.price === 0) {
 		return '领取';
-	} else if (coupon.value.pointsPrice > 0 && coupon.value.price > 0) {
-		return '购买';
-	} else if (coupon.value.pointsPrice > 0) {
-		return '兑换';
 	} else {
 		return '购买';
 	}
@@ -283,11 +274,7 @@ const handleAction = () => {
 	let actionText = getActionText();
 	let content = `确定${actionText}该优惠券吗？`;
 
-	if (coupon.value.pointsPrice > 0 && coupon.value.price > 0) {
-		content = `将使用${coupon.value.pointsPrice}积分+¥${coupon.value.price}购买该优惠券，确定继续吗？`;
-	} else if (coupon.value.pointsPrice > 0) {
-		content = `将使用${coupon.value.pointsPrice}积分兑换该优惠券，确定继续吗？`;
-	} else if (coupon.value.price > 0) {
+	if (coupon.value.price > 0) {
 		content = `将支付¥${coupon.value.price}购买该优惠券，确定继续吗？`;
 	}
 

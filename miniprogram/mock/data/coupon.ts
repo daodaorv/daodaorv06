@@ -15,7 +15,6 @@ export interface CouponData {
 	stackRule: string;
 	specialLimit?: string;
 	price: number;
-	pointsPrice: number;
 	stock?: number;
 	limitPerUser?: number;
 	claimed: boolean;
@@ -40,7 +39,6 @@ export const mockCoupons: CouponData[] = [
 		stackRule: '不可与其他满减券叠加使用,可与会员折扣叠加',
 		specialLimit: '仅限新用户首单使用,每人限领1次',
 		price: 0,
-		pointsPrice: 0,
 		stock: 1000,
 		limitPerUser: 1,
 		claimed: false,
@@ -61,7 +59,6 @@ export const mockCoupons: CouponData[] = [
 		description: '本优惠券适用于所有房车租赁订单,满1000元即可使用,立减100元。适合长期租赁用户,让您的旅行更加经济实惠。',
 		stackRule: '不可与其他满减券叠加使用,可与会员折扣叠加',
 		price: 0,
-		pointsPrice: 300,
 		stock: 500,
 		limitPerUser: 2,
 		claimed: false,
@@ -81,7 +78,6 @@ export const mockCoupons: CouponData[] = [
 		description: '全场通用9折优惠券,适用于所有房车租赁订单。会员专属福利,让您享受更多优惠。折扣后价格更实惠,是长期租赁的最佳选择。',
 		stackRule: '不可与其他折扣券叠加,可与满减券叠加使用',
 		price: 0,
-		pointsPrice: 200,
 		limitPerUser: 1,
 		claimed: false,
 		soldOut: false,
@@ -102,7 +98,6 @@ export const mockCoupons: CouponData[] = [
 		stackRule: '不可与其他折扣券叠加,可与满减券叠加使用',
 		specialLimit: '仅限高级会员使用',
 		price: 0,
-		pointsPrice: 500,
 		limitPerUser: 1,
 		claimed: false,
 		soldOut: false,
@@ -121,7 +116,6 @@ export const mockCoupons: CouponData[] = [
 		description: '每日租金抵扣30元,适用于所有房车租赁订单。可与其他优惠券叠加使用,让您的每一天都更实惠。长期租赁用户的最佳选择。',
 		stackRule: '可与其他优惠券叠加使用',
 		price: 0,
-		pointsPrice: 150,
 		limitPerUser: 3,
 		claimed: false,
 		soldOut: false,
@@ -140,7 +134,6 @@ export const mockCoupons: CouponData[] = [
 		description: '减免门店服务费200元,适用于所有房车租赁订单。包含车辆清洁、检查、交接等服务费用,让您的租车体验更加省心。',
 		stackRule: '可与其他优惠券叠加使用',
 		price: 0,
-		pointsPrice: 400,
 		limitPerUser: 1,
 		claimed: false,
 		soldOut: false,
@@ -160,7 +153,6 @@ export const mockCoupons: CouponData[] = [
 		stackRule: '可与其他优惠券叠加使用',
 		specialLimit: '仅限跨城市还车订单使用',
 		price: 0,
-		pointsPrice: 600,
 		limitPerUser: 1,
 		claimed: false,
 		soldOut: false,
@@ -180,7 +172,6 @@ export const mockCoupons: CouponData[] = [
 		stackRule: '不可与其他折扣券叠加,可与满减券叠加使用',
 		specialLimit: '仅限生日当月使用,需完成实名认证',
 		price: 0,
-		pointsPrice: 0,
 		limitPerUser: 1,
 		claimed: false,
 		soldOut: false,
@@ -199,7 +190,6 @@ export const mockCoupons: CouponData[] = [
 		description: '本优惠券适用于所有房车租赁订单,满2000元即可使用,立减200元。适合长期租赁和高端车型,让您的旅行更加超值。',
 		stackRule: '不可与其他满减券叠加使用,可与会员折扣叠加',
 		price: 19.9,
-		pointsPrice: 0,
 		stock: 200,
 		limitPerUser: 1,
 		claimed: false,
@@ -216,10 +206,9 @@ export const mockCoupons: CouponData[] = [
 		condition: '满1500元可用',
 		scope: '房车租赁',
 		validity: '领取后30天内有效',
-		description: '本优惠券适用于所有房车租赁订单,满1500元即可使用,立减150元。组合购买更优惠,积分+现金的方式让您省钱又实惠。',
+		description: '本优惠券适用于所有房车租赁订单,满1500元即可使用,立减150元。现金购买更优惠,让您省钱又实惠。',
 		stackRule: '不可与其他满减券叠加使用,可与会员折扣叠加',
 		price: 9.9,
-		pointsPrice: 100,
 		stock: 300,
 		limitPerUser: 2,
 		claimed: false,
@@ -274,8 +263,8 @@ export function getVipCoupons(): CouponData[] {
 export function claimCoupon(id: string): boolean {
 	const coupon = getCouponById(id);
 	if (coupon && !coupon.claimed && !coupon.soldOut) {
-		// 检查是否需要积分或现金
-		if (coupon.price > 0 || coupon.pointsPrice > 0) {
+		// 检查是否需要现金
+		if (coupon.price > 0) {
 			return false; // 需要购买，不能直接领取
 		}
 
@@ -329,99 +318,7 @@ export function buyCoupon(id: string, payAmount: number): { success: boolean; me
 	return { success: true, message: '购买成功' };
 }
 
-/**
- * 模拟积分兑换优惠券
- * @param id 优惠券ID
- * @param userPoints 用户当前积分
- * @returns 兑换结果
- */
-export function exchangeCouponWithPoints(id: string, userPoints: number): { success: boolean; message: string; pointsUsed?: number } {
-	const coupon = getCouponById(id);
 
-	if (!coupon) {
-		return { success: false, message: '优惠券不存在' };
-	}
-
-	if (coupon.claimed) {
-		return { success: false, message: '您已领取过该优惠券' };
-	}
-
-	if (coupon.soldOut) {
-		return { success: false, message: '优惠券已售罄' };
-	}
-
-	// 检查积分是否足够
-	if (coupon.pointsPrice > 0 && userPoints < coupon.pointsPrice) {
-		return { success: false, message: `积分不足，需要${coupon.pointsPrice}积分` };
-	}
-
-	// 兑换成功
-	coupon.claimed = true;
-	if (coupon.stock !== undefined) {
-		coupon.stock--;
-		if (coupon.stock <= 0) {
-			coupon.soldOut = true;
-		}
-	}
-
-	return {
-		success: true,
-		message: '兑换成功',
-		pointsUsed: coupon.pointsPrice
-	};
-}
-
-/**
- * 模拟组合购买优惠券（积分+现金）
- * @param id 优惠券ID
- * @param userPoints 用户当前积分
- * @param payAmount 支付金额
- * @returns 购买结果
- */
-export function buyCouponWithCombo(
-	id: string,
-	userPoints: number,
-	payAmount: number
-): { success: boolean; message: string; pointsUsed?: number; amountPaid?: number } {
-	const coupon = getCouponById(id);
-
-	if (!coupon) {
-		return { success: false, message: '优惠券不存在' };
-	}
-
-	if (coupon.claimed) {
-		return { success: false, message: '您已领取过该优惠券' };
-	}
-
-	if (coupon.soldOut) {
-		return { success: false, message: '优惠券已售罄' };
-	}
-
-	// 检查积分和现金是否都满足
-	if (coupon.pointsPrice > 0 && userPoints < coupon.pointsPrice) {
-		return { success: false, message: `积分不足，需要${coupon.pointsPrice}积分` };
-	}
-
-	if (coupon.price > 0 && payAmount < coupon.price) {
-		return { success: false, message: `支付金额不足，需要支付¥${coupon.price}` };
-	}
-
-	// 购买成功
-	coupon.claimed = true;
-	if (coupon.stock !== undefined) {
-		coupon.stock--;
-		if (coupon.stock <= 0) {
-			coupon.soldOut = true;
-		}
-	}
-
-	return {
-		success: true,
-		message: '购买成功',
-		pointsUsed: coupon.pointsPrice,
-		amountPaid: coupon.price
-	};
-}
 
 /**
  * 模拟赠送优惠券
@@ -494,8 +391,6 @@ export default {
 	getVipCoupons,
 	claimCoupon,
 	buyCoupon,
-	exchangeCouponWithPoints,
-	buyCouponWithCombo,
 	giftCoupon,
 	checkCouponAvailability
 };

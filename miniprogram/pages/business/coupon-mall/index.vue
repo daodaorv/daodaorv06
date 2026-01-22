@@ -9,18 +9,6 @@
 			</swiper>
 		</view>
 
-		<!-- 积分余额卡片 -->
-		<view class="points-card" @tap="goToPointsCenter">
-			<view class="points-info">
-				<view class="points-label">我的积分</view>
-				<view class="points-value">{{ userPoints }}</view>
-			</view>
-			<view class="points-action">
-				<text class="action-text">查看明细</text>
-				<u-icon name="arrow-right" size="16" color="#999"></u-icon>
-			</view>
-		</view>
-
 		<!-- 快捷入口 -->
 		<view class="quick-entry">
 			<view class="entry-item" @tap="goToNewUserZone">
@@ -74,7 +62,7 @@
 						<view class="coupon-name">{{ coupon.name }}</view>
 						<view class="coupon-condition">{{ coupon.condition }}</view>
 						<view class="coupon-action">
-							<text class="action-price" v-if="coupon.price > 0">{{ coupon.price }}积分</text>
+							<text class="action-price" v-if="coupon.price > 0">¥{{ coupon.price }}</text>
 							<text class="action-price" v-else>免费领取</text>
 						</view>
 					</view>
@@ -134,12 +122,6 @@
 					<text class="btn-text" v-if="coupon.claimed">已领取</text>
 					<text class="btn-text" v-else-if="coupon.soldOut">已售罄</text>
 					<text class="btn-text active" v-else-if="coupon.price === 0">免费领</text>
-					<text class="btn-text active" v-else-if="coupon.pointsPrice > 0 && coupon.price > 0">
-						{{ coupon.pointsPrice }}积分+¥{{ coupon.price }}
-					</text>
-					<text class="btn-text active" v-else-if="coupon.pointsPrice > 0">
-						{{ coupon.pointsPrice }}积分
-					</text>
 					<text class="btn-text active" v-else>¥{{ coupon.price }}</text>
 				</view>
 			</view>
@@ -155,7 +137,6 @@ import { ref, computed, onMounted } from 'vue';
 import { onReachBottom, onShow } from '@dcloudio/uni-app';
 import { mockCoupons, getHotCoupons, getCouponsByType, type CouponData } from '@/mock/data/coupon';
 import { isLoggedIn } from '@/utils/auth';
-import { getPointsBalance } from '@/api/points';
 
 // 类型定义
 interface Banner {
@@ -171,7 +152,6 @@ interface Category {
 
 // 响应式数据
 const isLogin = ref(false);
-const userPoints = ref(0);
 const currentCategory = ref('all');
 const currentFilter = ref<'all' | 'new' | 'vip' | 'expiring'>('all');
 const loadMoreStatus = ref('noMore');
@@ -202,20 +182,6 @@ const checkLoginStatus = () => {
 	isLogin.value = isLoggedIn();
 };
 
-// 加载积分数据
-const loadPointsData = async () => {
-	if (!isLogin.value) {
-		userPoints.value = 0;
-		return;
-	}
-	try {
-		const balance = await getPointsBalance();
-		userPoints.value = balance.balance;
-	} catch (error) {
-		userPoints.value = 0;
-	}
-};
-
 // 加载优惠券数据
 const loadCouponData = () => {
 	if (!isLogin.value) {
@@ -230,14 +196,12 @@ const loadCouponData = () => {
 // 初始化数据
 onMounted(() => {
 	checkLoginStatus();
-	loadPointsData();
 	loadCouponData();
 });
 
 // 页面显示时刷新状态
 onShow(() => {
 	checkLoginStatus();
-	loadPointsData();
 	loadCouponData();
 });
 
@@ -271,16 +235,6 @@ const filteredCoupons = computed(() => {
 });
 
 // 方法
-const goToPointsCenter = () => {
-	if (!isLogin.value) {
-		uni.navigateTo({ url: '/pages/auth/login?redirect=/pages/profile-sub/points' });
-		return;
-	}
-	uni.navigateTo({
-		url: '/pages/profile-sub/points'
-	});
-};
-
 const goToNewUserZone = () => {
 	if (!isLogin.value) {
 		uni.navigateTo({ url: '/pages/auth/login?redirect=/pages/business/coupon-mall/index' });
@@ -364,12 +318,8 @@ const handleCouponAction = (coupon: CouponData) => {
 
 	// 显示领取/购买确认弹窗
 	let actionText = '';
-	if (coupon.price === 0 && coupon.pointsPrice === 0) {
+	if (coupon.price === 0) {
 		actionText = '免费领取';
-	} else if (coupon.pointsPrice > 0 && coupon.price > 0) {
-		actionText = `使用${coupon.pointsPrice}积分+¥${coupon.price}购买`;
-	} else if (coupon.pointsPrice > 0) {
-		actionText = `使用${coupon.pointsPrice}积分兑换`;
 	} else {
 		actionText = `支付¥${coupon.price}购买`;
 	}
@@ -459,52 +409,6 @@ onReachBottom(() => {
 	height: 100%;
 }
 
-// 积分卡片
-.points-card {
-	margin: $uni-spacing-lg;
-	padding: $uni-spacing-xl;
-	background: $uni-color-primary-gradient;
-	border-radius: $uni-radius-lg;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	box-shadow: $uni-shadow-glow;
-	transition: all 0.3s ease;
-
-	&:active {
-		transform: scale(0.98);
-		opacity: 0.9;
-	}
-}
-
-.points-info {
-	display: flex;
-	flex-direction: column;
-	gap: $uni-spacing-sm;
-}
-
-.points-label {
-	font-size: $uni-font-size-base;
-	color: rgba(255, 255, 255, 0.9);
-}
-
-.points-value {
-	font-size: 48rpx;
-	font-weight: bold;
-	color: $uni-text-color-inverse;
-	font-family: 'DIN Alternate', sans-serif;
-}
-
-.points-action {
-	display: flex;
-	align-items: center;
-	gap: $uni-spacing-sm;
-}
-
-.action-text {
-	font-size: $uni-font-size-base;
-	color: rgba(255, 255, 255, 0.9);
-}
 
 // 快捷入口
 .quick-entry {

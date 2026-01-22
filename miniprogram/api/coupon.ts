@@ -28,12 +28,11 @@ export function getCouponDetail(id: string) {
 }
 
 /**
- * 领取优惠券（免费/积分/现金/组合）
+ * 领取优惠券（免费/现金）
  * @param id 优惠券ID
  * @param params 领取参数
  */
 export function claimCoupon(id: string, params?: {
-    usePoints?: number;
     payAmount?: number;
     paymentMethod?: string;
 }) {

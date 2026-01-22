@@ -246,13 +246,6 @@ export const mockGetMembershipPackages = (): Promise<MembershipPackage[]> => {
             },
             {
               id: 'benefit_005',
-              name: '积分翻倍',
-              description: '消费积分双倍返还',
-              icon: 'integral',
-              type: 'PRIVILEGE'
-            },
-            {
-              id: 'benefit_006',
               name: '优先取车',
               description: '门店取车享受优先服务',
               icon: 'arrow-upward',
