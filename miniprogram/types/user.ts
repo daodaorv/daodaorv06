@@ -110,6 +110,4 @@ export interface UserStats {
   completedOrders: number
   /** 优惠券数量 */
   couponCount: number
-  /** 积分 */
-  points: number
 }

@@ -171,7 +171,6 @@ const orderCounts = ref({
 // 菜单配置
 const gridMenu = ref([
 	{ name: '优惠券', icon: 'coupon-fill', iconColor: '#FF4D4F', path: '/pages/profile-sub/coupons', badge: '3' },
-	{ name: '积分', icon: 'integral-fill', iconColor: '#FF9F29', path: '/pages/profile-sub/points', amount: '2,080' },
 	{ name: '钱包', icon: 'wallet-fill', iconColor: '#2196F3', path: '/pages/profile-sub/wallet', amount: '¥1280' },
 	{ name: '收藏', icon: 'star-fill', iconColor: '#FFC107', path: '/pages/profile-sub/favorites' }
 ]);
