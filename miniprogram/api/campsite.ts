@@ -7,7 +7,7 @@ import { request, type ResponseData } from '@/utils/request';
 /**
  * 营地列表查询参数
  */
-export interface CampsiteListParams {
+export interface CampsiteListParams extends Record<string, unknown> {
   page?: number;
   pageSize?: number;
   distance?: string; // 距离筛选: '0-5', '5-10', '10-20', '20-'
@@ -116,7 +116,7 @@ export interface Review {
 /**
  * 营地预订参数
  */
-export interface CampsiteBookingParams {
+export interface CampsiteBookingParams extends Record<string, unknown> {
   campsiteId: string;
   siteTypeId: string;
   checkInDate: string;
@@ -152,7 +152,7 @@ export interface CampsiteBookingResponse {
 /**
  * 价格计算参数
  */
-export interface PriceCalculateParams {
+export interface PriceCalculateParams extends Record<string, unknown> {
   campsiteId: string;
   siteTypeId: string;
   checkInDate: string;
@@ -174,7 +174,7 @@ export interface PriceCalculateResponse {
 /**
  * 营位可用性检查参数
  */
-export interface AvailabilityCheckParams {
+export interface AvailabilityCheckParams extends Record<string, unknown> {
   campsiteId: string;
   siteTypeId: string;
   checkInDate: string;

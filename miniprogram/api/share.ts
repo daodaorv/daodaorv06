@@ -4,6 +4,8 @@
  */
 
 import { get, post } from '@/utils/request'
+import { USE_MOCK, mockShareStats, mockShareAchievements, mockInviteRecords, mockInviteStats } from '@/mock'
+import { isLoggedIn } from '@/utils/auth'
 import type {
   ShareRecordResponse,
   ShareStatsResponse,
@@ -12,6 +14,10 @@ import type {
   PosterUrlResponse,
   ShareAchievementsResponse
 } from '@/types/share'
+
+// 未登录时的空数据
+const emptyStats = { totalShares: 0, totalViews: 0, totalConversions: 0, todayShares: 0, todayViews: 0, weekShares: 0, weekViews: 0 }
+const emptyInviteStats = { totalInvites: 0, registeredCount: 0, orderedCount: 0, totalReward: 0, todayInvites: 0, weekInvites: 0 }
 
 /**
  * 分享API
@@ -27,6 +33,9 @@ export const shareApi = {
     businessId: string
     shareTime: string
   }): Promise<ShareRecordResponse> {
+    if (USE_MOCK) {
+      return Promise.resolve({ code: 0, message: 'success', data: { success: true } } as any)
+    }
     return post('/share/record', data)
   },
 
@@ -40,6 +49,9 @@ export const shareApi = {
     shareFrom: string
     viewTime: string
   }): Promise<ShareRecordResponse> {
+    if (USE_MOCK) {
+      return Promise.resolve({ code: 0, message: 'success', data: { success: true } } as any)
+    }
     return post('/share/view', data)
   },
 
@@ -48,6 +60,10 @@ export const shareApi = {
    * @returns 分享统计数据
    */
   getShareStats(): Promise<ShareStatsResponse> {
+    if (USE_MOCK) {
+      const data = isLoggedIn() ? mockShareStats : emptyStats
+      return Promise.resolve({ code: 0, message: 'success', data } as any)
+    }
     return get('/share/stats')
   },
 
@@ -60,6 +76,9 @@ export const shareApi = {
     pageSize?: number
     scene?: string
   }): Promise<ShareRecordResponse> {
+    if (USE_MOCK) {
+      return Promise.resolve({ code: 0, message: 'success', data: [] } as any)
+    }
     return get('/share/history', params)
   },
 
@@ -71,6 +90,10 @@ export const shareApi = {
     page?: number
     pageSize?: number
   }): Promise<InviteRecordsResponse> {
+    if (USE_MOCK) {
+      const data = isLoggedIn() ? mockInviteRecords : []
+      return Promise.resolve({ code: 0, message: 'success', data } as any)
+    }
     return get('/invite/records', params)
   },
 
@@ -79,6 +102,10 @@ export const shareApi = {
    * @returns 邀请统计数据
    */
   getInviteStats(): Promise<InviteStatsResponse> {
+    if (USE_MOCK) {
+      const data = isLoggedIn() ? mockInviteStats : emptyInviteStats
+      return Promise.resolve({ code: 0, message: 'success', data } as any)
+    }
     return get('/invite/stats')
   },
 
@@ -91,6 +118,13 @@ export const shareApi = {
     page: string
     width?: number
   }): Promise<PosterUrlResponse> {
+    if (USE_MOCK) {
+      return Promise.resolve({
+        code: 0,
+        message: 'success',
+        data: { url: 'https://picsum.photos/200/200?random=qrcode' }
+      } as any)
+    }
     return post('/share/mini-program-code', data)
   },
 
@@ -101,6 +135,9 @@ export const shareApi = {
   bindInviteRelation(data: {
     inviteCode: string
   }): Promise<ShareRecordResponse> {
+    if (USE_MOCK) {
+      return Promise.resolve({ code: 0, message: 'success', data: { success: true } } as any)
+    }
     return post('/invite/bind', data)
   },
 
@@ -109,6 +146,10 @@ export const shareApi = {
    * @returns 成就列表
    */
   getShareAchievements(): Promise<ShareAchievementsResponse> {
+    if (USE_MOCK) {
+      const data = isLoggedIn() ? mockShareAchievements : []
+      return Promise.resolve({ code: 0, message: 'success', data } as any)
+    }
     return get('/share/achievements')
   },
 
@@ -121,6 +162,9 @@ export const shareApi = {
     businessId: string
     timestamp: number
   }): Promise<ShareRecordResponse> {
+    if (USE_MOCK) {
+      return Promise.resolve({ code: 0, message: 'success', data: { valid: true } } as any)
+    }
     return post('/share/verify', data)
   },
 
@@ -134,6 +178,9 @@ export const shareApi = {
     reason: string
     timestamp: number
   }): Promise<ShareRecordResponse> {
+    if (USE_MOCK) {
+      return Promise.resolve({ code: 0, message: 'success', data: { reported: true } } as any)
+    }
     return post('/share/report-abnormal', data)
   }
 }

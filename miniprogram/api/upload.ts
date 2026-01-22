@@ -5,7 +5,9 @@
 
 type DriverLicenseSide = 'front' | 'back';
 
-const UPLOAD_ENDPOINT = 'http://localhost:3001/api/v1/upload/driver-license';
+// API 基础地址
+const API_BASE_URL = 'http://localhost:3001/api';
+const UPLOAD_ENDPOINT = `${API_BASE_URL}/v1/upload/driver-license`;
 const USE_UPLOAD_MOCK = true;
 
 export function uploadDriverLicenseImage(filePath: string, side: DriverLicenseSide): Promise<string> {

@@ -1,9 +1,12 @@
 /**
  * 积分系统 API
  * 包含积分余额、积分记录、积分规则等接口
+ * @status 联调中 - 使用Mock数据
  */
 
-import { logger } from '@/utils/logger'
+import { request } from '@/utils/request'
+import { USE_MOCK, mockPointsBalance, mockPointsRecords, mockPointsRules, mockPointsStatistics, emptyPointsBalance, emptyPointsStatistics } from '@/mock'
+import { isLoggedIn } from '@/utils/auth'
 
 // ==================== 类型定义 ====================
 
@@ -100,19 +103,16 @@ export interface PointsStatistics {
 /**
  * 获取积分余额
  */
-export function getPointsBalance(): Promise<PointsBalance> {
-	return new Promise((resolve) => {
-		setTimeout(() => {
-			logger.debug('获取积分余额')
-			resolve({
-				balance: 1580,
-				totalEarned: 2350,
-				totalUsed: 770,
-				expiringSoon: 0,
-				expiringDate: undefined
-			})
-		}, 500)
+export async function getPointsBalance(): Promise<PointsBalance> {
+	if (USE_MOCK) {
+		const data = isLoggedIn() ? mockPointsBalance : emptyPointsBalance
+		return Promise.resolve(data)
+	}
+	const response = await request<PointsBalance>({
+		url: '/points/balance',
+		method: 'GET'
 	})
+	return response.data
 }
 
 /**
@@ -121,241 +121,76 @@ export function getPointsBalance(): Promise<PointsBalance> {
  * @param page 页码
  * @param pageSize 每页数量
  */
-export function getPointsRecords(
+export async function getPointsRecords(
 	type?: PointsRecordType,
 	page: number = 1,
 	pageSize: number = 20
 ): Promise<{ records: PointsRecord[]; total: number }> {
-	return new Promise((resolve) => {
-		setTimeout(() => {
-			logger.debug('获取积分记录', { type: type || '全部', page })
-
-			// Mock 数据
-			const allRecords: PointsRecord[] = [
-				{
-					id: '1',
-					type: 'HOSTING_INCOME',
-					amount: 500,
-					balance: 1580,
-					description: '托管收益转化积分（11月收益5000元的1%）',
-					orderId: 'HOST001',
-					createdAt: '2025-12-01 10:30:00'
-				},
-				{
-					id: '2',
-					type: 'RATING',
-					amount: 50,
-					balance: 1080,
-					description: '优质评价奖励',
-					orderId: 'ORDER123',
-					createdAt: '2025-11-28 15:20:00'
-				},
-				{
-					id: '3',
-					type: 'SIGN_IN',
-					amount: 2,
-					balance: 1030,
-					description: '每日签到奖励',
-					createdAt: '2025-11-28 09:00:00'
-				},
-				{
-					id: '4',
-					type: 'EXCHANGE',
-					amount: -200,
-					balance: 1028,
-					description: '兑换200元优惠券',
-					orderId: 'EX001',
-					createdAt: '2025-11-27 14:30:00'
-				},
-				{
-					id: '5',
-					type: 'ACTIVITY',
-					amount: 100,
-					balance: 1228,
-					description: '参与双十一活动奖励',
-					createdAt: '2025-11-11 20:00:00'
-				},
-				{
-					id: '6',
-					type: 'REFERRAL',
-					amount: 50,
-					balance: 1128,
-					description: '推荐好友注册奖励',
-					createdAt: '2025-11-10 16:45:00'
-				},
-				{
-					id: '7',
-					type: 'RENTAL',
-					amount: 15,
-					balance: 1078,
-					description: '租车消费返积分（消费1500元）',
-					orderId: 'ORDER120',
-					createdAt: '2025-11-05 11:20:00'
-				},
-				{
-					id: '8',
-					type: 'RATING',
-					amount: 70,
-					balance: 1063,
-					description: '优质评价+图片奖励（50+20）',
-					orderId: 'ORDER118',
-					createdAt: '2025-11-03 09:15:00'
-				},
-				{
-					id: '9',
-					type: 'SIGN_IN',
-					amount: 5,
-					balance: 993,
-					description: '连续签到7天额外奖励',
-					createdAt: '2025-11-01 09:00:00'
-				},
-				{
-					id: '10',
-					type: 'EXCHANGE',
-					amount: -100,
-					balance: 988,
-					description: '兑换100元优惠券',
-					orderId: 'EX002',
-					createdAt: '2025-10-28 16:30:00'
-				}
-			]
-
-			// 根据类型筛选
-			const filteredRecords = type
-				? allRecords.filter(r => r.type === type)
-				: allRecords
-
-			// 分页
-			const start = (page - 1) * pageSize
-			const end = start + pageSize
-			const records = filteredRecords.slice(start, end)
-
-			resolve({
-				records,
-				total: filteredRecords.length
-			})
-		}, 500)
+	if (USE_MOCK) {
+		if (!isLoggedIn()) {
+			return Promise.resolve({ records: [], total: 0 })
+		}
+		let records = [...mockPointsRecords]
+		if (type) {
+			records = records.filter(r => r.type === type)
+		}
+		const start = (page - 1) * pageSize
+		const end = start + pageSize
+		return Promise.resolve({
+			records: records.slice(start, end),
+			total: records.length
+		})
+	}
+	const response = await request<{ records: PointsRecord[]; total: number }>({
+		url: '/points/records',
+		method: 'GET',
+		data: { type, page, pageSize }
 	})
+	return response.data
 }
 
 /**
  * 获取积分规则
  */
-export function getPointsRules(): Promise<PointsRule[]> {
-	return new Promise((resolve) => {
-		setTimeout(() => {
-			logger.debug('获取积分规则')
-			resolve([
-				{
-					id: '1',
-					type: 'HOSTING_INCOME',
-					name: '托管收益',
-					description: '托管车主每月收益的1%转化为消费积分（仅首次托管）',
-					points: '收益的1%',
-					enabled: true,
-					userTypeLimit: ['HOST']
-				},
-				{
-					id: '2',
-					type: 'RATING',
-					name: '评价反馈',
-					description: '优质评价获得10-50积分，图片评价额外20积分',
-					points: '10-50',
-					enabled: true,
-					userTypeLimit: ['HOST']
-				},
-				{
-					id: '3',
-					type: 'SIGN_IN',
-					name: '签到打卡',
-					description: '每日签到获得2积分，连续签到额外奖励',
-					points: '2',
-					enabled: true,
-					userTypeLimit: ['HOST']
-				},
-				{
-					id: '4',
-					type: 'ACTIVITY',
-					name: '活动参与',
-					description: '参与平台活动获得5-100积分',
-					points: '5-100',
-					enabled: true,
-					userTypeLimit: ['HOST']
-				},
-				{
-					id: '5',
-					type: 'REFERRAL',
-					name: '推荐好友',
-					description: '成功推荐新用户注册获得50积分',
-					points: '50',
-					enabled: true,
-					userTypeLimit: ['HOST']
-				},
-				{
-					id: '6',
-					type: 'RENTAL',
-					name: '租车消费',
-					description: '普通用户租车消费100元返1积分',
-					points: '消费100元返1积分',
-					enabled: true,
-					userTypeLimit: ['NORMAL', 'PLUS']
-				}
-			])
-		}, 500)
+export async function getPointsRules(): Promise<PointsRule[]> {
+	if (USE_MOCK) {
+		return Promise.resolve(mockPointsRules)
+	}
+	const response = await request<PointsRule[]>({
+		url: '/points/rules',
+		method: 'GET'
 	})
+	return response.data
 }
 
 /**
  * 获取积分统计
  */
-export function getPointsStatistics(): Promise<PointsStatistics> {
-	return new Promise((resolve) => {
-		setTimeout(() => {
-			logger.debug('获取积分统计')
-			resolve({
-				monthEarned: 720,
-				monthUsed: 300,
-				yearEarned: 2350,
-				yearUsed: 770,
-				earnedTrend: [
-					{ date: '11-25', amount: 50 },
-					{ date: '11-26', amount: 2 },
-					{ date: '11-27', amount: 0 },
-					{ date: '11-28', amount: 52 },
-					{ date: '11-29', amount: 2 },
-					{ date: '11-30', amount: 2 },
-					{ date: '12-01', amount: 500 }
-				],
-				usedTrend: [
-					{ date: '11-25', amount: 0 },
-					{ date: '11-26', amount: 0 },
-					{ date: '11-27', amount: 200 },
-					{ date: '11-28', amount: 0 },
-					{ date: '11-29', amount: 0 },
-					{ date: '11-30', amount: 0 },
-					{ date: '12-01', amount: 0 }
-				]
-			})
-		}, 500)
+export async function getPointsStatistics(): Promise<PointsStatistics> {
+	if (USE_MOCK) {
+		const data = isLoggedIn() ? mockPointsStatistics : emptyPointsStatistics
+		return Promise.resolve(data)
+	}
+	const response = await request<PointsStatistics>({
+		url: '/points/statistics',
+		method: 'GET'
 	})
+	return response.data
 }
 
 /**
  * 每日签到
  */
-export function dailySignIn(): Promise<{ points: number; continuousDays: number }> {
-	return new Promise((resolve, reject) => {
-		setTimeout(() => {
-			logger.debug('每日签到')
-
-			// 模拟签到成功
-			const continuousDays = Math.floor(Math.random() * 7) + 1
-			const points = continuousDays === 7 ? 5 : 2
-
-			resolve({
-				points,
-				continuousDays
-			})
-		}, 500)
+export async function dailySignIn(): Promise<{ points: number; continuousDays: number }> {
+	if (USE_MOCK) {
+		if (!isLoggedIn()) {
+			return Promise.reject(new Error('请先登录'))
+		}
+		return Promise.resolve({ points: 10, continuousDays: 3 })
+	}
+	const response = await request<{ points: number; continuousDays: number }>({
+		url: '/points/sign-in',
+		method: 'POST'
 	})
+	return response.data
 }

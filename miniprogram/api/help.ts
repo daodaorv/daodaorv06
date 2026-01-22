@@ -36,7 +36,7 @@ export interface HelpArticle {
 /**
  * 帮助文章列表查询参数
  */
-export interface HelpArticleListParams {
+export interface HelpArticleListParams extends Record<string, unknown> {
   categoryId?: string
   keyword?: string
   page?: number

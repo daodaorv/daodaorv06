@@ -35,7 +35,7 @@ export interface Contact {
 /**
  * 创建联系人参数
  */
-export interface CreateContactParams {
+export interface CreateContactParams extends Record<string, unknown> {
   /** 姓名 */
   name: string
   /** 手机号 */
@@ -55,7 +55,7 @@ export interface CreateContactParams {
 /**
  * 更新联系人参数
  */
-export interface UpdateContactParams {
+export interface UpdateContactParams extends Record<string, unknown> {
   /** 姓名 */
   name?: string
   /** 手机号 */

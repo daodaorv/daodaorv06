@@ -60,7 +60,7 @@ export interface RelatedProduct {
 /**
  * 发布内容请求参数
  */
-export interface CreatePostParams {
+export interface CreatePostParams extends Record<string, unknown> {
   type: PostType
   title: string
   content: string
@@ -85,6 +85,7 @@ export interface Comment {
   replyToUserName?: string
   likeCount: number
   replyCount?: number
+  isLiked?: boolean
   createdAt: string
   replies?: Comment[]
 }
@@ -92,7 +93,7 @@ export interface Comment {
 /**
  * 评论请求参数
  */
-export interface CommentParams {
+export interface CommentParams extends Record<string, unknown> {
   content: string
   replyToId?: string
   replyToUserId?: string
@@ -218,224 +219,188 @@ const mockUserProfile: UserProfile = {
 
 /**
  * 发布内容
- * @status 已开发 - 使用Mock数据，待后端API开发后对接
+ * @status 联调中 - 使用真实API
  */
 export const createPost = async (params: CreatePostParams): Promise<CommunityPost> => {
-  // Mock实现 - 待后端API开发
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      const newPost: CommunityPost = {
-        id: `post_${Date.now()}`,
-        userId: 'user_001',
-        userName: '当前用户',
-        userAvatar: '/static/images/default-avatar.png',
-        type: params.type,
-        title: params.title,
-        content: params.content,
-        images: params.images,
-        tags: params.tags,
-        location: params.location,
-        viewCount: 0,
-        likeCount: 0,
-        commentCount: 0,
-        favoriteCount: 0,
-        isLiked: false,
-        isFavorited: false,
-        status: PostStatus.PENDING,
-        createdAt: new Date().toISOString()
-      }
-      resolve(newPost)
-    }, 500)
+  const { request } = await import('@/utils/request')
+  const response = await request<CommunityPost>({
+    url: '/community/posts',
+    method: 'POST',
+    data: params
   })
+  return response.data
 }
 
 /**
  * 获取内容详情
- * @status 已开发 - 使用Mock数据，待后端API开发后对接
+ * @status 联调中 - 使用真实API
  */
 export const getPostDetail = async (id: string): Promise<CommunityPost> => {
-  // Mock实现 - 待后端API开发
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      const post = mockPosts.find(p => p.id === id) || mockPosts[0]
-      resolve(post)
-    }, 300)
+  const { request } = await import('@/utils/request')
+  const response = await request<CommunityPost>({
+    url: `/community/posts/${id}`,
+    method: 'GET'
   })
+  return response.data
 }
 
 /**
  * 点赞内容
- * @status 已开发 - 使用Mock数据，待后端API开发后对接
+ * @status 联调中 - 使用真实API
  */
 export const likePost = async (id: string): Promise<{ isLiked: boolean; likeCount: number }> => {
-  // Mock实现 - 待后端API开发
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        isLiked: true,
-        likeCount: 90
-      })
-    }, 300)
+  const { request } = await import('@/utils/request')
+  const response = await request<{ isLiked: boolean; likeCount: number }>({
+    url: `/community/posts/${id}/like`,
+    method: 'POST'
   })
+  return response.data
 }
 
 /**
  * 取消点赞
- * @status 已开发 - 使用Mock数据，待后端API开发后对接
+ * @status 联调中 - 使用真实API
  */
 export const unlikePost = async (id: string): Promise<{ isLiked: boolean; likeCount: number }> => {
-  // Mock实现 - 待后端API开发
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        isLiked: false,
-        likeCount: 88
-      })
-    }, 300)
+  const { request } = await import('@/utils/request')
+  const response = await request<{ isLiked: boolean; likeCount: number }>({
+    url: `/community/posts/${id}/unlike`,
+    method: 'POST'
   })
+  return response.data
 }
 
 /**
  * 评论内容
- * @status 已开发 - 使用Mock数据，待后端API开发后对接
+ * @status 联调中 - 使用真实API
  */
 export const commentPost = async (id: string, params: CommentParams): Promise<Comment> => {
-  // Mock实现 - 待后端API开发
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      const newComment: Comment = {
-        id: `comment_${Date.now()}`,
-        postId: id,
-        userId: 'user_001',
-        userName: '当前用户',
-        userAvatar: '/static/images/default-avatar.png',
-        content: params.content,
-        replyToId: params.replyToId,
-        replyToUserId: params.replyToUserId,
-        likeCount: 0,
-        createdAt: new Date().toISOString()
-      }
-      resolve(newComment)
-    }, 300)
+  const { request } = await import('@/utils/request')
+  const response = await request<Comment>({
+    url: `/community/posts/${id}/comments`,
+    method: 'POST',
+    data: params
   })
+  return response.data
 }
 
 /**
  * 获取评论列表
- * @status 已开发 - 使用Mock数据，待后端API开发后对接
+ * @status 联调中 - 使用真实API
  */
 export const getComments = async (
   id: string,
   params: { page?: number; pageSize?: number } = {}
 ): Promise<{ list: Comment[]; total: number; hasMore: boolean }> => {
-  // Mock实现 - 待后端API开发
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        list: mockComments,
-        total: mockComments.length,
-        hasMore: false
-      })
-    }, 300)
+  const { request } = await import('@/utils/request')
+  const response = await request<{ list: Comment[]; total: number; hasMore: boolean }>({
+    url: `/community/posts/${id}/comments`,
+    method: 'GET',
+    data: params
   })
+  return response.data
 }
 
 /**
  * 收藏内容
- * @status 已开发 - 使用Mock数据，待后端API开发后对接
+ * @status 联调中 - 使用真实API
  */
 export const favoritePost = async (id: string): Promise<{ isFavorited: boolean; favoriteCount: number }> => {
-  // Mock实现 - 待后端API开发
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        isFavorited: true,
-        favoriteCount: 46
-      })
-    }, 300)
+  const { request } = await import('@/utils/request')
+  const response = await request<{ isFavorited: boolean; favoriteCount: number }>({
+    url: `/community/posts/${id}/favorite`,
+    method: 'POST'
   })
+  return response.data
 }
 
 /**
  * 取消收藏
- * @status 已开发 - 使用Mock数据，待后端API开发后对接
+ * @status 联调中 - 使用真实API
  */
 export const unfavoritePost = async (id: string): Promise<{ isFavorited: boolean; favoriteCount: number }> => {
-  // Mock实现 - 待后端API开发
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        isFavorited: false,
-        favoriteCount: 44
-      })
-    }, 300)
+  const { request } = await import('@/utils/request')
+  const response = await request<{ isFavorited: boolean; favoriteCount: number }>({
+    url: `/community/posts/${id}/unfavorite`,
+    method: 'POST'
   })
+  return response.data
 }
 
 /**
  * 获取用户主页
- * @status 已开发 - 使用Mock数据，待后端API开发后对接
+ * @status 联调中 - 使用真实API
  */
 export const getUserProfile = async (id: string): Promise<UserProfile> => {
-  // Mock实现 - 待后端API开发
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(mockUserProfile)
-    }, 300)
+  const { request } = await import('@/utils/request')
+  const response = await request<UserProfile>({
+    url: `/community/users/${id}/profile`,
+    method: 'GET'
   })
+  return response.data
 }
 
 /**
  * 关注用户
- * @status 已开发 - 使用Mock数据，待后端API开发后对接
+ * @status 联调中 - 使用真实API
  */
 export const followUser = async (id: string): Promise<{ isFollowing: boolean; followerCount: number }> => {
-  // Mock实现 - 待后端API开发
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        isFollowing: true,
-        followerCount: 1251
-      })
-    }, 300)
+  const { request } = await import('@/utils/request')
+  const response = await request<{ isFollowing: boolean; followerCount: number }>({
+    url: `/community/users/${id}/follow`,
+    method: 'POST'
   })
+  return response.data
 }
 
 /**
  * 取消关注
- * @status 已开发 - 使用Mock数据，待后端API开发后对接
+ * @status 联调中 - 使用真实API
  */
 export const unfollowUser = async (id: string): Promise<{ isFollowing: boolean; followerCount: number }> => {
-  // Mock实现 - 待后端API开发
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        isFollowing: false,
-        followerCount: 1249
-      })
-    }, 300)
+  const { request } = await import('@/utils/request')
+  const response = await request<{ isFollowing: boolean; followerCount: number }>({
+    url: `/community/users/${id}/unfollow`,
+    method: 'POST'
   })
+  return response.data
 }
 
 /**
  * 上传图片
- * @status 已开发 - 使用Mock数据，待后端API开发后对接
+ * @status 联调中 - 使用真实API
  */
 export const uploadImage = async (filePath: string): Promise<{ url: string; thumbnail: string }> => {
-  // Mock实现 - 待后端API开发
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      // 模拟上传成功，返回图片URL
-      resolve({
-        url: filePath, // 实际应该返回服务器URL
-        thumbnail: filePath
-      })
-    }, 1000)
+  const { request } = await import('@/utils/request')
+  const response = await request<{ url: string; thumbnail: string }>({
+    url: '/community/upload/image',
+    method: 'POST',
+    data: { filePath }
   })
+  return response.data
+}
+
+/**
+ * 获取帖子列表（用于社区首页）
+ * @status 联调中 - 使用真实API
+ */
+export const getPosts = async (params: {
+  type?: PostType
+  page?: number
+  pageSize?: number
+}): Promise<{ list: CommunityPost[]; total: number; hasMore: boolean }> => {
+  const { request } = await import('@/utils/request')
+  const response = await request<{ list: CommunityPost[]; total: number; hasMore: boolean }>({
+    url: '/community/posts',
+    method: 'GET',
+    data: params
+  })
+  return response.data
 }
 
 /**
  * Mock 获取帖子列表（用于社区首页）
+ * @deprecated 已切换为真实API,保留供参考
  */
 export const mockGetPosts = async (params: {
   type?: PostType

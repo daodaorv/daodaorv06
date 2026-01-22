@@ -7,7 +7,7 @@ import { request, type ResponseData } from '@/utils/request';
 /**
  * 旅游线路列表查询参数
  */
-export interface TourListParams {
+export interface TourListParams extends Record<string, unknown> {
   page?: number;
   pageSize?: number;
   duration?: string; // 行程天数筛选: '3-5', '6-8', '9-'
@@ -101,7 +101,7 @@ export interface CancellationPolicy {
 /**
  * 旅游预订参数
  */
-export interface TourBookingParams {
+export interface TourBookingParams extends Record<string, unknown> {
   tourId: string;
   batchId: string;
   adults: number;
@@ -138,7 +138,7 @@ export interface TourBookingResponse {
 /**
  * 价格计算参数
  */
-export interface TourPriceCalculateParams {
+export interface TourPriceCalculateParams extends Record<string, unknown> {
   tourId: string;
   batchId: string;
   adults: number;
@@ -168,7 +168,7 @@ export interface PriceBreakdownItem {
 /**
  * 批次可用性检查参数
  */
-export interface TourAvailabilityCheckParams {
+export interface TourAvailabilityCheckParams extends Record<string, unknown> {
   tourId: string;
   batchId: string;
   people: number;

@@ -25,7 +25,7 @@ export interface WalletTransaction {
   createdAt: string
 }
 
-export interface WithdrawParams {
+export interface WithdrawParams extends Record<string, unknown> {
   amount: number
   accountType: 'wechat' | 'alipay' | 'bank'
   accountInfo: string
@@ -37,9 +37,7 @@ export interface WithdrawParams {
  */
 export function getWalletBalance(): Promise<WalletBalance> {
   logger.debug('获取钱包余额')
-  return get<ApiResponse<WalletBalance>>('/wallet/balance').then((response) => {
-    return response.data
-  })
+  return get<WalletBalance>('/wallet/balance').then(res => res.data)
 }
 
 /**

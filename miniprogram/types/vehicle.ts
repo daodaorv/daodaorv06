@@ -77,7 +77,7 @@ export interface VehicleListItem {
 /**
  * 车辆筛选参数
  */
-export interface VehicleFilterParams {
+export interface VehicleFilterParams extends Record<string, unknown> {
   /** 品牌 */
   brand?: string
   /** 座位数 */

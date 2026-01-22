@@ -4,7 +4,7 @@
 
 import { get, post, put, del } from '@/utils/request'
 
-export interface AddressPayload {
+export interface AddressPayload extends Record<string, unknown> {
   name: string
   phone: string
   province: string

@@ -1,4 +1,3 @@
-// @ts-nocheck
 export {};
 declare module 'vue' {
 	export interface GlobalComponents { }
@@ -132,4 +131,53 @@ declare global {
 	function __VLS_asFunctionalElement<T>(tag: T, endTag?: T): (attrs: T & Record<string, unknown>) => void;
 	function __VLS_asFunctionalSlot<S>(slot: S): S extends () => infer R ? (props: {}) => R : NonNullable<S>;
 	function __VLS_tryAsConstant<const T>(t: T): T;
+
+	// uni-app 全局类型声明
+	const uni: any;
+
+	// uni-app 全局 API
+	function getCurrentPages(): any[];
+
+	// Vue 3 编译器宏（仅在 <script setup> 中可用）
+	const defineProps: <T = any>(props?: T) => T;
+	const defineEmits: <T = any>(emits?: T) => T;
+	const defineExpose: <T = any>(exposed?: T) => void;
+	const withDefaults: <T, D>(props: T, defaults: D) => T & D;
+}
+
+// 声明 vue 和 pinia 模块（uni-app 内置）
+declare module 'vue' {
+	export function ref<T>(value: T): any;
+	export function computed<T>(getter: () => T): any;
+	export function watch(...args: any[]): any;
+	export function onMounted(fn: () => void): void;
+	export function onUnmounted(fn: () => void): void;
+	export function nextTick(fn?: () => void): Promise<void>;
+	export function reactive<T extends object>(target: T): any;
+	export function readonly<T>(target: T): any;
+	export function watchEffect(effect: () => void): any;
+	export function provide(key: string | symbol, value: any): void;
+	export function inject<T>(key: string | symbol, defaultValue?: T): T;
+	export interface GlobalComponents { }
+	export interface GlobalDirectives { }
+}
+
+declare module 'pinia' {
+	export function defineStore(id: string, setup: () => any): any;
+	export function createPinia(): any;
+	export function storeToRefs(store: any): any;
+}
+
+// uni-app 生命周期和 API 扩展
+declare module '@dcloudio/uni-app' {
+	export function onLoad(callback: (options?: any) => void): void;
+	export function onShow(callback: () => void): void;
+	export function onHide(callback: () => void): void;
+	export function onReady(callback: () => void): void;
+	export function onUnload(callback: () => void): void;
+	export function onPullDownRefresh(callback: () => void): void;
+	export function onReachBottom(callback: () => void): void;
+	export function onShareAppMessage(callback: (options?: any) => any): void;
+	export function onShareTimeline(callback: (options?: any) => any): void;
+	export function onPageScroll(callback: (options?: any) => void): void;
 }

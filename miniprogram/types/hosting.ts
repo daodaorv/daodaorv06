@@ -49,7 +49,7 @@ export interface DocumentInfo {
 /**
  * 自有车托管申请数据
  */
-export interface OldCarApplicationData {
+export interface OldCarApplicationData extends Record<string, unknown> {
   /** 车辆信息 */
   vehicleInfo: VehicleInfo
   /** 车主信息 */
@@ -84,7 +84,7 @@ export interface ContactInfo {
 /**
  * 购车托管申请数据
  */
-export interface NewCarApplicationData {
+export interface NewCarApplicationData extends Record<string, unknown> {
   /** 车型ID */
   modelId: string
   /** 购车方式 */
@@ -100,7 +100,7 @@ export interface NewCarApplicationData {
 /**
  * 车主自用申请数据
  */
-export interface SelfUseApplicationData {
+export interface SelfUseApplicationData extends Record<string, unknown> {
   /** 车辆ID */
   vehicleId: string
   /** 使用开始日期 */
@@ -116,7 +116,7 @@ export interface SelfUseApplicationData {
 /**
  * 收益详情查询参数
  */
-export interface IncomeDetailParams {
+export interface IncomeDetailParams extends Record<string, unknown> {
   /** 车辆ID */
   vehicleId?: string
   /** 开始日期 */
@@ -152,7 +152,7 @@ export interface IncomeRecord {
 /**
  * 提现申请数据
  */
-export interface WithdrawData {
+export interface WithdrawData extends Record<string, unknown> {
   /** 提现金额（元） */
   amount: number
   /** 提现方式 */
@@ -166,7 +166,7 @@ export interface WithdrawData {
 /**
  * 车型预订数据
  */
-export interface ModelBookingData {
+export interface ModelBookingData extends Record<string, unknown> {
   /** 车型ID */
   modelId: string
   /** 预约姓名 */

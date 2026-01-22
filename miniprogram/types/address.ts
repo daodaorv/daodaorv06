@@ -29,7 +29,7 @@ export interface Address {
 /**
  * 创建地址参数
  */
-export interface CreateAddressParams {
+export interface CreateAddressParams extends Record<string, unknown> {
   /** 收货人姓名 */
   name: string
   /** 手机号 */
@@ -49,7 +49,7 @@ export interface CreateAddressParams {
 /**
  * 更新地址参数
  */
-export interface UpdateAddressParams {
+export interface UpdateAddressParams extends Record<string, unknown> {
   /** 收货人姓名 */
   name?: string
   /** 手机号 */

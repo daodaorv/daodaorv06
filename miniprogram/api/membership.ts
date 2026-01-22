@@ -48,7 +48,7 @@ export interface MembershipPackage {
 /**
  * 购买会员请求参数
  */
-export interface PurchaseMembershipParams {
+export interface PurchaseMembershipParams extends Record<string, unknown> {
   packageId: string
   autoRenew: boolean
   paymentMethod: 'wechat' | 'alipay' | 'balance'
@@ -57,7 +57,7 @@ export interface PurchaseMembershipParams {
 /**
  * 微信支付参数
  */
-export interface WechatPaymentParams {
+export interface WechatPaymentParams extends Record<string, unknown> {
   appId: string
   timeStamp: string
   nonceStr: string

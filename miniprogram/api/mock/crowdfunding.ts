@@ -324,11 +324,15 @@ const mockTransactions: ShareTransaction[] = [
       id: 'project_002',
       title: '宇通B530众筹 - 高端商务接待车',
       model: {
+        id: 'model_002',
         name: '宇通B530 舒适版',
         brand: '宇通',
         thumbnail: 'https://placehold.co/400x300/2196F3/FFFFFF?text=B530'
       },
+      totalShares: 100,
+      progress: 100,
       status: CrowdfundingStatus.HOSTING,
+      statusText: '托管中',
       estimatedAnnualReturn: 20.3
     },
     seller: {
@@ -355,11 +359,15 @@ const mockTransactions: ShareTransaction[] = [
       id: 'project_002',
       title: '宇通B530众筹 - 高端商务接待车',
       model: {
+        id: 'model_002',
         name: '宇通B530 舒适版',
         brand: '宇通',
         thumbnail: 'https://placehold.co/400x300/2196F3/FFFFFF?text=B530'
       },
+      totalShares: 100,
+      progress: 100,
       status: CrowdfundingStatus.HOSTING,
+      statusText: '托管中',
       estimatedAnnualReturn: 20.3
     },
     seller: {
@@ -630,7 +638,16 @@ function listShareForSale(data: ListShareForSaleParams) {
   const newTransaction: ShareTransaction = {
     id: `transaction_${Date.now()}`,
     shareId: data.shareId,
-    project: mockShares[0].project,
+    project: {
+      ...mockShares[0].project,
+      model: {
+        ...mockShares[0].project.model,
+        id: 'model_001'
+      },
+      totalShares: 100,
+      progress: 100,
+      estimatedAnnualReturn: 15
+    },
     seller: {
       id: 'current_user',
       name: '我',
@@ -673,9 +690,9 @@ function getShareMarket(params?: ShareMarketQuery) {
   } else if (params?.sortBy === 'price_desc') {
     filteredTransactions.sort((a, b) => b.pricePerShare - a.pricePerShare)
   } else if (params?.sortBy === 'return_desc') {
-    filteredTransactions.sort((a, b) => b.returnRate - a.returnRate)
+    filteredTransactions.sort((a, b) => (b.returnRate || 0) - (a.returnRate || 0))
   } else {
-    filteredTransactions.sort((a, b) => new Date(b.listingTime).getTime() - new Date(a.listingTime).getTime())
+    filteredTransactions.sort((a, b) => new Date(b.listingTime || '').getTime() - new Date(a.listingTime || '').getTime())
   }
 
   const page = params?.page || 1

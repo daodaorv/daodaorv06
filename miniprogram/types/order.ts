@@ -30,10 +30,18 @@ export interface Vehicle {
   id: string
   /** 车辆名称 */
   name: string
+  /** 品牌 */
+  brand?: string
+  /** 型号 */
+  model?: string
+  /** 车牌号 */
+  plateNumber?: string
   /** 车辆图片 */
   images: string[]
+  /** 车辆特性 */
+  features?: string[]
   /** 车辆规格 */
-  specifications: VehicleSpecifications
+  specifications?: VehicleSpecifications
 }
 
 /**
@@ -45,7 +53,7 @@ export interface Store {
   /** 门店名称 */
   name: string
   /** 门店地址 */
-  address: string
+  address?: string
 }
 
 /**
@@ -85,7 +93,7 @@ export interface OrderRecord {
 /**
  * 价格计算参数
  */
-export interface CalculatePriceParams {
+export interface CalculatePriceParams extends Record<string, unknown> {
   /** 车辆ID */
   vehicleId: string
   /** 取车日期 */
@@ -117,7 +125,7 @@ export interface PriceDetail {
 /**
  * 创建订单参数
  */
-export interface CreateOrderParams {
+export interface CreateOrderParams extends Record<string, unknown> {
   /** 车辆ID */
   vehicleId: string
   /** 取车门店ID */
@@ -143,7 +151,7 @@ export interface CreateOrderParams {
 /**
  * 订单列表查询参数
  */
-export interface OrderListParams {
+export interface OrderListParams extends Record<string, unknown> {
   /** 订单状态 */
   status?: string
   /** 页码 */

@@ -156,6 +156,8 @@ export interface CrowdfundingProject {
   isParticipated: boolean
   /** 我的份额数 */
   myShares: number
+  /** 我的累计收益(元) */
+  myIncome?: number
   /** 创建时间 */
   createdAt: string
   /** 更新时间 */
@@ -218,18 +220,24 @@ export interface CrowdfundingShare {
 export interface ShareTransaction {
   /** 交易ID */
   id: string
+  /** 项目ID */
+  projectId?: string
   /** 份额ID */
-  shareId: string
+  shareId?: string
   /** 项目信息 */
   project: {
     id: string
     title: string
     model: {
+      id: string
       name: string
       brand: string
       thumbnail: string
     }
+    totalShares: number
+    progress: number
     status: CrowdfundingStatus
+    statusText: string
     estimatedAnnualReturn: number
   }
   /** 卖方信息 */
@@ -245,11 +253,13 @@ export interface ShareTransaction {
     avatar: string
   }
   /** 出售份额数 */
-  quantity: number
+  shares?: number
+  /** 出售份额数（别名） */
+  quantity?: number
   /** 出售单价(元/份) */
   pricePerShare: number
   /** 出售总价(元) */
-  totalPrice: number
+  totalPrice?: number
   /** 平台参考价(元/份) */
   referencePrice: number
   /** 价格浮动(%) */
@@ -257,13 +267,21 @@ export interface ShareTransaction {
   /** 累计收益(元) */
   totalIncome: number
   /** 收益率(%) */
-  returnRate: number
+  returnRate?: number
+  /** 持有天数 */
+  holdingDays?: number
   /** 交易状态 */
   status: ShareTransactionStatus
   /** 状态文本 */
-  statusText: string
+  statusText?: string
   /** 挂单时间 */
-  listingTime: string
+  listedAt?: string
+  /** 挂单时间（别名） */
+  listingTime?: string
+  /** 创建时间 */
+  createdAt?: string
+  /** 更新时间 */
+  updatedAt?: string
   /** 交易完成时间 */
   completedTime?: string
   /** 备注 */
@@ -331,7 +349,7 @@ export interface CrowdfundingIncomeRecord {
 /**
  * 发起众筹请求参数
  */
-export interface CreateCrowdfundingParams {
+export interface CreateCrowdfundingParams extends Record<string, unknown> {
   /** 车型ID */
   modelId: string
   /** 项目标题 */
@@ -369,7 +387,7 @@ export enum ParticipantType {
 /**
  * 参与众筹请求参数
  */
-export interface ParticipateCrowdfundingParams {
+export interface ParticipateCrowdfundingParams extends Record<string, unknown> {
   /** 项目ID */
   projectId: string
   /** 购买份额数 */
@@ -405,7 +423,7 @@ export interface ParticipateCrowdfundingParams {
 /**
  * 挂出份额交易请求参数
  */
-export interface ListShareForSaleParams {
+export interface ListShareForSaleParams extends Record<string, unknown> {
   /** 份额ID */
   shareId: string
   /** 出售份额数 */
@@ -437,7 +455,7 @@ export interface CrowdfundingStats {
 /**
  * 众筹项目查询参数
  */
-export interface CrowdfundingProjectQuery {
+export interface CrowdfundingProjectQuery extends Record<string, unknown> {
   /** 状态筛选 */
   status?: CrowdfundingStatus
   /** 排序方式 */
@@ -451,7 +469,7 @@ export interface CrowdfundingProjectQuery {
 /**
  * 份额市场查询参数
  */
-export interface ShareMarketQuery {
+export interface ShareMarketQuery extends Record<string, unknown> {
   /** 项目ID筛选 */
   projectId?: string
   /** 价格排序 */

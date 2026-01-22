@@ -29,3 +29,14 @@ export function getPaymentStatus(paymentNo: string) {
 export function getWalletBalance() {
     return get('/users/wallet');
 }
+
+/**
+ * 上传转账凭证
+ */
+export function uploadTransferProof(data: {
+    orderId: string;
+    imageUrls: string[];
+    remark?: string;
+}) {
+    return post('/payments/transfer-proof', data);
+}

@@ -1,4 +1,6 @@
 import { get, post } from '@/utils/request'
+import { USE_MOCK } from '@/mock'
+import crowdfundingMock from './mock/crowdfunding'
 import type {
   CrowdfundingVehicleModel,
   CrowdfundingProject,
@@ -13,12 +15,10 @@ import type {
   ShareMarketQuery
 } from '@/types/crowdfunding'
 import type { PaginatedResponse } from '@/types/common'
-import mockCrowdfunding from '@/api/mock/crowdfunding'
-
-const USE_MOCK = true // 开发环境使用Mock数据
 
 /**
  * 众筹托管API
+ * @status 联调中 - 使用Mock数据
  */
 
 // ==================== 众筹车型相关 ====================
@@ -28,7 +28,7 @@ const USE_MOCK = true // 开发环境使用Mock数据
  */
 export const getCrowdfundingModels = (params?: { page?: number; pageSize?: number }) => {
   if (USE_MOCK) {
-    return Promise.resolve(mockCrowdfunding.getCrowdfundingModels(params))
+    return crowdfundingMock.getCrowdfundingModels(params)
   }
   return get<PaginatedResponse<CrowdfundingVehicleModel>>('/crowdfunding/models', params)
 }
@@ -38,7 +38,7 @@ export const getCrowdfundingModels = (params?: { page?: number; pageSize?: numbe
  */
 export const getCrowdfundingModelDetail = (id: string) => {
   if (USE_MOCK) {
-    return Promise.resolve(mockCrowdfunding.getCrowdfundingModelDetail(id))
+    return crowdfundingMock.getCrowdfundingModelDetail(id)
   }
   return get<CrowdfundingVehicleModel>(`/crowdfunding/models/${id}`)
 }
@@ -50,7 +50,7 @@ export const getCrowdfundingModelDetail = (id: string) => {
  */
 export const createCrowdfundingProject = (data: CreateCrowdfundingParams) => {
   if (USE_MOCK) {
-    return Promise.resolve(mockCrowdfunding.createCrowdfundingProject(data))
+    return crowdfundingMock.createCrowdfundingProject(data)
   }
   return post<CrowdfundingProject>('/crowdfunding/projects', data)
 }
@@ -60,7 +60,7 @@ export const createCrowdfundingProject = (data: CreateCrowdfundingParams) => {
  */
 export const getCrowdfundingProjects = (params?: CrowdfundingProjectQuery) => {
   if (USE_MOCK) {
-    return Promise.resolve(mockCrowdfunding.getCrowdfundingProjects(params))
+    return crowdfundingMock.getCrowdfundingProjects(params)
   }
   return get<PaginatedResponse<CrowdfundingProject>>('/crowdfunding/projects', params)
 }
@@ -70,7 +70,7 @@ export const getCrowdfundingProjects = (params?: CrowdfundingProjectQuery) => {
  */
 export const getCrowdfundingProjectDetail = (id: string) => {
   if (USE_MOCK) {
-    return Promise.resolve(mockCrowdfunding.getCrowdfundingProjectDetail(id))
+    return crowdfundingMock.getCrowdfundingProjectDetail(id)
   }
   return get<CrowdfundingProject>(`/crowdfunding/projects/${id}`)
 }
@@ -80,7 +80,7 @@ export const getCrowdfundingProjectDetail = (id: string) => {
  */
 export const participateCrowdfunding = (data: ParticipateCrowdfundingParams) => {
   if (USE_MOCK) {
-    return Promise.resolve(mockCrowdfunding.participateCrowdfunding(data))
+    return crowdfundingMock.participateCrowdfunding(data)
   }
   return post('/crowdfunding/participate', data)
 }
@@ -90,7 +90,7 @@ export const participateCrowdfunding = (data: ParticipateCrowdfundingParams) => 
  */
 export const getMyCrowdfundingProjects = () => {
   if (USE_MOCK) {
-    return Promise.resolve(mockCrowdfunding.getMyCrowdfundingProjects())
+    return crowdfundingMock.getMyCrowdfundingProjects()
   }
   return get<CrowdfundingProject[]>('/crowdfunding/my-projects')
 }
@@ -102,7 +102,7 @@ export const getMyCrowdfundingProjects = () => {
  */
 export const getMyCrowdfundingShares = () => {
   if (USE_MOCK) {
-    return Promise.resolve(mockCrowdfunding.getMyCrowdfundingShares())
+    return crowdfundingMock.getMyCrowdfundingShares()
   }
   return get<CrowdfundingShare[]>('/crowdfunding/my-shares')
 }
@@ -112,7 +112,7 @@ export const getMyCrowdfundingShares = () => {
  */
 export const getShareDetail = (id: string) => {
   if (USE_MOCK) {
-    return Promise.resolve(mockCrowdfunding.getShareDetail(id))
+    return crowdfundingMock.getShareDetail(id)
   }
   return get<CrowdfundingShare>(`/crowdfunding/shares/${id}`)
 }
@@ -124,7 +124,7 @@ export const getShareDetail = (id: string) => {
  */
 export const listShareForSale = (data: ListShareForSaleParams) => {
   if (USE_MOCK) {
-    return Promise.resolve(mockCrowdfunding.listShareForSale(data))
+    return crowdfundingMock.listShareForSale(data)
   }
   return post<ShareTransaction>('/crowdfunding/shares/sell', data)
 }
@@ -134,7 +134,7 @@ export const listShareForSale = (data: ListShareForSaleParams) => {
  */
 export const getShareMarket = (params?: ShareMarketQuery) => {
   if (USE_MOCK) {
-    return Promise.resolve(mockCrowdfunding.getShareMarket(params))
+    return crowdfundingMock.getShareMarket(params)
   }
   return get<PaginatedResponse<ShareTransaction>>('/crowdfunding/share-market', params)
 }
@@ -144,7 +144,7 @@ export const getShareMarket = (params?: ShareMarketQuery) => {
  */
 export const buyShare = (transactionId: string, paymentMethod: string) => {
   if (USE_MOCK) {
-    return Promise.resolve(mockCrowdfunding.buyShare(transactionId, paymentMethod))
+    return crowdfundingMock.buyShare(transactionId, paymentMethod)
   }
   return post(`/crowdfunding/shares/buy/${transactionId}`, { paymentMethod })
 }
@@ -154,7 +154,7 @@ export const buyShare = (transactionId: string, paymentMethod: string) => {
  */
 export const cancelShareListing = (transactionId: string) => {
   if (USE_MOCK) {
-    return Promise.resolve(mockCrowdfunding.cancelShareListing(transactionId))
+    return crowdfundingMock.cancelShareListing(transactionId)
   }
   return post(`/crowdfunding/shares/cancel/${transactionId}`)
 }
@@ -166,7 +166,7 @@ export const cancelShareListing = (transactionId: string) => {
  */
 export const getCrowdfundingStats = () => {
   if (USE_MOCK) {
-    return Promise.resolve(mockCrowdfunding.getCrowdfundingStats())
+    return crowdfundingMock.getCrowdfundingStats()
   }
   return get<CrowdfundingStats>('/crowdfunding/stats')
 }
@@ -176,7 +176,7 @@ export const getCrowdfundingStats = () => {
  */
 export const getCrowdfundingIncome = (params?: { projectId?: string; page?: number; pageSize?: number }) => {
   if (USE_MOCK) {
-    return Promise.resolve(mockCrowdfunding.getCrowdfundingIncome(params))
+    return crowdfundingMock.getCrowdfundingIncome(params)
   }
   return get<PaginatedResponse<CrowdfundingIncomeRecord>>('/crowdfunding/income', params)
 }
@@ -186,7 +186,7 @@ export const getCrowdfundingIncome = (params?: { projectId?: string; page?: numb
  */
 export const withdrawCrowdfundingIncome = (data: { amount: number; method: string; account: string }) => {
   if (USE_MOCK) {
-    return Promise.resolve(mockCrowdfunding.withdrawCrowdfundingIncome(data))
+    return crowdfundingMock.withdrawCrowdfundingIncome(data)
   }
   return post('/crowdfunding/withdraw', data)
 }

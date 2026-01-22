@@ -50,7 +50,7 @@ export interface RatingReply {
 /**
  * 创建评价请求参数
  */
-export interface CreateRatingParams {
+export interface CreateRatingParams extends Record<string, unknown> {
   orderId: string
   type: RatingType
   targetId: string
@@ -63,7 +63,7 @@ export interface CreateRatingParams {
 /**
  * 更新评价请求参数
  */
-export interface UpdateRatingParams {
+export interface UpdateRatingParams extends Record<string, unknown> {
   rating?: number
   content?: string
   images?: string[]
@@ -73,7 +73,7 @@ export interface UpdateRatingParams {
 /**
  * 评价列表查询参数
  */
-export interface RatingListParams {
+export interface RatingListParams extends Record<string, unknown> {
   type?: RatingType
   status?: RatingStatus
   page?: number

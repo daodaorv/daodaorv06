@@ -46,7 +46,7 @@ export interface MembershipPlan {
 /**
  * 支付参数
  */
-export interface PaymentParams {
+export interface PaymentParams extends Record<string, unknown> {
   /** 支付方式 */
   method: 'wechat' | 'alipay'
   /** 支付金额 */
@@ -58,7 +58,7 @@ export interface PaymentParams {
 /**
  * 购买会员参数
  */
-export interface PurchaseMembershipParams {
+export interface PurchaseMembershipParams extends Record<string, unknown> {
   /** 套餐ID */
   planId: string
   /** 支付参数 */
