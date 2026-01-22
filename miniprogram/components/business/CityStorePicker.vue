@@ -101,7 +101,9 @@ const props = defineProps<{
 	selectedId?: string;
 }>();
 
-const emit = defineEmits(['confirm']);
+const emit = defineEmits<{
+	(e: 'confirm', data: any): void
+}>();
 const show = ref(false);
 const searchText = ref('');
 

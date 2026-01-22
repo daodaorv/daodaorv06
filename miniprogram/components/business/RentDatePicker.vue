@@ -120,7 +120,9 @@ const props = withDefaults(defineProps<Props>(), {
 	defaultTime: '10:00',
 	durationUnit: '天'
 });
-const emit = defineEmits(['confirm']);
+const emit = defineEmits<{
+	(e: 'confirm', data: any): void
+}>();
 const show = ref(false);
 const calendarData = ref<Month[]>([]);
 const timeList = ref<string[]>([]);

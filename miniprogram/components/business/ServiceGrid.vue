@@ -26,10 +26,10 @@ interface Service {
 }
 
 const services = ref<Service[]>([
-	{ id: '1', name: '特惠租车', icon: 'gift-fill', path: '/pages/special-offer/list' },
+	{ id: '1', name: '特惠租车', icon: 'gift-fill', path: '/pages/business/special-offer/list' },
 	{ id: '3', name: '托管中心', icon: 'home-fill', path: '/pages/hosting/index', isTabBar: true },
-	{ id: '4', name: '营地预订', icon: 'map-fill', path: '/pages/campsite/list' },
-	{ id: '5', name: '房车旅游', icon: 'car-fill', path: '/pages/tour/list' }
+	{ id: '4', name: '营地预订', icon: 'map-fill', path: '/pages/business/campsite/list' },
+	{ id: '5', name: '房车旅游', icon: 'car-fill', path: '/pages/business/tour/list' }
 ]);
 
 const handleServiceClick = (service: Service) => {

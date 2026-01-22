@@ -125,7 +125,10 @@ const props = defineProps<{
 	initialCity?: string;
 }>();
 
-const emit = defineEmits(['search', 'open-date-picker']);
+const emit = defineEmits<{
+	(e: 'search', params: any): void
+	(e: 'open-date-picker', data: any): void
+}>();
 
 // 使用统一的 Mock 数据
 const cities = mockCities;
@@ -153,7 +156,7 @@ const isDifferentLocation = ref(false);
 const userLocation = ref<{ lat: number; lng: number } | null>(null);
 
 // --- Picker State ---
-const cityStorePicker = ref();
+const cityStorePicker = ref<any>(null);
 const pickerType = ref<'city' | 'store'>('city');
 const pickerTitle = ref('');
 const pickerData = ref<any[]>([]);

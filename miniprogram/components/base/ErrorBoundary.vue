@@ -5,10 +5,10 @@
 			<view class="error-icon">
 				<u-icon name="close" size="80" color="#F44336"></u-icon>
 			</view>
-			<text class="error-title">页面加载失败</text>
-			<text class="error-message">{{ errorMessage }}</text>
+			<text class="error-title">{{ title }}</text>
+			<text class="error-message">{{ errorMessage || defaultMessage }}</text>
 			<button class="retry-button" @tap="handleRetry">
-				重新加载
+				{{ retryText }}
 			</button>
 		</view>
 	</view>
@@ -16,20 +16,64 @@
 
 <script setup lang="ts">
 import { ref, onErrorCaptured } from 'vue';
+import { logger } from '@/utils/logger';
+
+interface Props {
+	/** 错误标题 */
+	title?: string;
+	/** 默认错误消息 */
+	defaultMessage?: string;
+	/** 重试按钮文字 */
+	retryText?: string;
+	/** 是否捕获错误（设为 false 则继续向上传播） */
+	stopPropagation?: boolean;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+	title: '页面加载失败',
+	defaultMessage: '请稍后重试',
+	retryText: '重新加载',
+	stopPropagation: true
+});
 
 const hasError = ref(false);
 const errorMessage = ref('');
 
-const emit = defineEmits(['error', 'retry']);
+const emit = defineEmits<{
+	(e: 'error', error: Error): void
+	(e: 'retry'): void
+}>();
 
-onErrorCaptured((error: Error) => {
+/**
+ * 捕获子组件错误
+ * Vue 3 的 onErrorCaptured 钩子
+ */
+onErrorCaptured((error: Error, instance, info: string) => {
 	hasError.value = true;
-	errorMessage.value = error.message || '未知错误';
+	errorMessage.value = error.message || props.defaultMessage;
+
+	// 记录错误日志
+	logger.error('ErrorBoundary 捕获错误:', {
+		message: error.message,
+		stack: error.stack,
+		info,
+		component: instance?.$options?.name || 'Unknown'
+	});
+
+	// 触发错误事件
 	emit('error', error);
-	
-	// 阻止错误继续传播
-	return false;
+
+	// 返回 false 继续向上传播，返回 true 阻止传播
+	return props.stopPropagation;
 });
+
+/**
+ * 手动设置错误状态（供外部调用）
+ */
+const setError = (error: Error | string) => {
+	hasError.value = true;
+	errorMessage.value = typeof error === 'string' ? error : error.message;
+};
 
 const handleRetry = () => {
 	hasError.value = false;
@@ -43,7 +87,9 @@ const reset = () => {
 };
 
 defineExpose({
-	reset
+	reset,
+	setError,
+	hasError
 });
 </script>
 

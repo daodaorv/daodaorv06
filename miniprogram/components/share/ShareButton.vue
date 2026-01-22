@@ -28,6 +28,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import ShareSheet from './ShareSheet.vue'
+import { logger } from '@/utils/logger'
 import { shareApi } from '@/api/share'
 
 /**
@@ -53,10 +54,17 @@ const props = withDefaults(defineProps<Props>(), {
   size: 'medium'
 })
 
+// 佣金预览类型
+interface CommissionPreview {
+  isPlusReward?: boolean
+  plusRewardAmount?: number
+  totalEstimate: number
+}
+
 // 状态
 const loading = ref(false)
 const showShareSheet = ref(false)
-const commissionPreview = ref<any>(null)
+const commissionPreview = ref<CommissionPreview | null>(null)
 
 // 计算属性
 const shareDescription = computed(() => {
@@ -78,8 +86,8 @@ const loadCommissionPreview = async () => {
   try {
     loading.value = true
 
-    // 调用佣金预览API
-    const response = await shareApi.previewCommission({
+    // 调用佣金预览API（该方法尚未在 shareApi 中定义，待后端联调时添加）
+    const response = await (shareApi as { previewCommission: (params: { productType: string; productId: number; estimatedPrice: number }) => Promise<CommissionPreview> }).previewCommission({
       productType: props.productType,
       productId: props.productId,
       estimatedPrice: props.estimatedPrice
@@ -87,7 +95,7 @@ const loadCommissionPreview = async () => {
 
     commissionPreview.value = response
   } catch (error) {
-    console.error('加载佣金预览失败:', error)
+    logger.error('加载佣金预览失败:', error)
     uni.showToast({
       title: '加载佣金信息失败',
       icon: 'none'

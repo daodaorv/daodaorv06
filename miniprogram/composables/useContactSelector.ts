@@ -194,7 +194,7 @@ export function useContactSelector(): UseContactSelectorReturn {
    */
   const goToContactManage = (): void => {
     uni.navigateTo({
-      url: '/pages/profile/contacts'
+      url: '/pages/profile-sub/contacts'
     })
   }
 

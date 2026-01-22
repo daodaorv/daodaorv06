@@ -71,8 +71,8 @@ export interface VehicleCardData {
 	dailyPrice?: number | string
 	pricePerDay?: number | string
 	basePrice?: number | string
-	specs?: any
-	specifications?: any
+	specs?: { seats?: number; beds?: number }
+	specifications?: { seats?: number; beds?: number }
 	features?: string[]
 }
 
@@ -82,7 +82,10 @@ const props = defineProps<{
 	showFavoriteButton?: boolean
 }>()
 
-const emit = defineEmits(['click', 'favorite-change'])
+const emit = defineEmits<{
+	(e: 'click', data: VehicleCardData): void
+	(e: 'favorite-change', favorited: boolean): void
+}>()
 
 const favoritedState = ref(!!props.favorited)
 
@@ -115,7 +118,7 @@ const displayPrice = computed(() => {
 const displayTags = computed(() => {
 	// 优先显示自定义标签，否则显示自动生成的标签
 	if (props.data.tags && props.data.tags.length) return props.data.tags.slice(0, 3);
-	const tags = [];
+	const tags: string[] = [];
 	if (props.data.brand) tags.push(props.data.brand);
 	return tags;
 })

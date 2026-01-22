@@ -49,7 +49,28 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 
-const emit = defineEmits(['filter', 'sort']);
+// 类型定义
+interface FilterOption {
+	label: string;
+	value: string;
+}
+
+interface FilterTab {
+	key: string;
+	label: string;
+	default: string;
+}
+
+interface FilterValues {
+	type: string;
+	price: string;
+	brand: string;
+}
+
+const emit = defineEmits<{
+	(e: 'filter', data: FilterValues): void
+	(e: 'sort', order: string): void
+}>();
 
 const isSticky = ref(false); // 可以通过页面滚动监听来改变样式
 const activeTab = ref('');
@@ -61,7 +82,7 @@ const tabs = [
 	{ key: 'brand', label: '品牌', default: '品牌' }
 ];
 
-const optionsMap: any = {
+const optionsMap: Record<string, FilterOption[]> = {
 	type: [
 		{ label: '不限', value: '' },
 		{ label: 'C型房车', value: 'C型' },
@@ -83,7 +104,7 @@ const optionsMap: any = {
 	]
 };
 
-const filters = ref<any>({
+const filters = ref<FilterValues>({
 	type: '',
 	price: '',
 	brand: ''
@@ -93,18 +114,18 @@ const currentOptions = computed(() => {
 	return optionsMap[activeTab.value] || [];
 });
 
-const hasValue = (key: string) => !!filters.value[key];
+const hasValue = (key: string) => !!filters.value[key as keyof FilterValues];
 
-const getLabel = (tab: any) => {
-	const val = filters.value[tab.key];
+const getLabel = (tab: FilterTab) => {
+	const val = filters.value[tab.key as keyof FilterValues];
 	if (!val) return tab.default;
 	// 查找 label
-	const opt = optionsMap[tab.key].find((o: any) => o.value === val);
+	const opt = optionsMap[tab.key].find((o: FilterOption) => o.value === val);
 	return opt ? opt.label : tab.default;
 };
 
 const isSelected = (val: string) => {
-	return filters.value[activeTab.value] === val;
+	return (filters.value as Record<string, string>)[activeTab.value] === val;
 };
 
 const handleTabClick = (key: string) => {
@@ -120,7 +141,7 @@ const closePopup = () => {
 };
 
 const selectOption = (val: string) => {
-	filters.value[activeTab.value] = val;
+	(filters.value as Record<string, string>)[activeTab.value] = val;
 	emit('filter', { ...filters.value });
 	closePopup();
 };
