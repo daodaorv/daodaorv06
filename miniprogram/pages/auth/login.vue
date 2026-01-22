@@ -328,7 +328,7 @@ const canSubmit = computed(() => {
 onMounted(() => {
 	platform.value = getPlatform()
 	showOneClickLogin.value = supportOneClickLogin()
-	logger.debug('[登录页面] 当前平台:', platform.value, '支持一键登录:', showOneClickLogin.value)
+	logger.debug('[登录页面] 当前平台', { platform: platform.value, supportOneClick: showOneClickLogin.value })
 })
 
 // 切换登录方式
@@ -416,7 +416,7 @@ const handleLogin = async () => {
 		}
 
 		// 保存登录信息
-		saveLoginInfo(result.token, result.refreshToken, result.user)
+		saveLoginInfo(result.token, result.refreshToken, result.userInfo)
 
 		uni.showToast({
 			title: '登录成功',
@@ -484,7 +484,7 @@ const handleWechatPhoneNumber = async (e: any) => {
 						})
 
 						// 保存登录信息
-						saveLoginInfo(result.token, result.refreshToken, result.user)
+						saveLoginInfo(result.token, result.refreshToken, result.userInfo)
 
 						// 检查是否为新用户，新用户需要完善信息
 						if (result.isNewUser) {
@@ -498,7 +498,7 @@ const handleWechatPhoneNumber = async (e: any) => {
 
 							setTimeout(() => {
 								uni.redirectTo({
-									url: '/pages/profile/complete-info?from=login'
+									url: '/pages/profile-sub/complete-info?from=login'
 								})
 							}, 1500)
 						} else {
@@ -578,10 +578,10 @@ const handleOneClickLogin = () => {
 					const result = await alipayLogin({ code: loginRes.code })
 
 					// 检查是否需要绑定手机号
-					if (!result.user.phone) {
+					if (!result.userInfo.phone) {
 						// 保存临时token
 						uni.setStorageSync('tempToken', result.token)
-						uni.setStorageSync('tempUserInfo', result.user)
+						uni.setStorageSync('tempUserInfo', result.userInfo)
 						loading.value = false
 						// 跳转到手机绑定页面
 						uni.navigateTo({
@@ -591,7 +591,7 @@ const handleOneClickLogin = () => {
 					}
 
 					// 保存登录信息
-					saveLoginInfo(result.token, result.refreshToken, result.user)
+					saveLoginInfo(result.token, result.refreshToken, result.userInfo)
 
 					// 检查是否为新用户，新用户需要完善信息
 					if (result.isNewUser) {
@@ -604,7 +604,7 @@ const handleOneClickLogin = () => {
 
 						setTimeout(() => {
 							uni.redirectTo({
-								url: '/pages/profile/complete-info?from=login'
+								url: '/pages/profile-sub/complete-info?from=login'
 							})
 						}, 1500)
 					} else {
@@ -653,10 +653,10 @@ const handleOneClickLogin = () => {
 					const result = await douyinLogin({ code: loginRes.code })
 
 					// 检查是否需要绑定手机号
-					if (!result.user.phone) {
+					if (!result.userInfo.phone) {
 						// 保存临时token
 						uni.setStorageSync('tempToken', result.token)
-						uni.setStorageSync('tempUserInfo', result.user)
+						uni.setStorageSync('tempUserInfo', result.userInfo)
 						loading.value = false
 						// 跳转到手机绑定页面
 						uni.navigateTo({
@@ -666,7 +666,7 @@ const handleOneClickLogin = () => {
 					}
 
 					// 保存登录信息
-					saveLoginInfo(result.token, result.refreshToken, result.user)
+					saveLoginInfo(result.token, result.refreshToken, result.userInfo)
 
 					// 检查是否为新用户，新用户需要完善信息
 					if (result.isNewUser) {
@@ -679,7 +679,7 @@ const handleOneClickLogin = () => {
 
 						setTimeout(() => {
 							uni.redirectTo({
-								url: '/pages/profile/complete-info?from=login'
+								url: '/pages/profile-sub/complete-info?from=login'
 							})
 						}, 1500)
 					} else {

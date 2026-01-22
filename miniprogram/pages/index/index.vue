@@ -53,7 +53,7 @@
 
 			<!-- 推广卡片 -->
 			<view class="promo-cards">
-				<view class="promo-card" @tap="navigateTo('/pages/coupon-mall/index')">
+				<view class="promo-card" @tap="navigateTo('/pages/business/coupon-mall/index')">
 					<view class="promo-content">
 						<text class="promo-title">特惠商城</text>
 						<text class="promo-desc">限时特惠套餐</text>
@@ -62,7 +62,7 @@
 						<u-icon name="gift-fill" size="28" color="#FF9F29"></u-icon>
 					</view>
 				</view>
-				<view class="promo-card" @tap="navigateTo('/pages/membership/index')">
+				<view class="promo-card" @tap="navigateTo('/pages/business/membership/index')">
 					<view class="promo-content">
 						<text class="promo-title">PLUS会员</text>
 						<text class="promo-desc">尊享专属权益</text>
@@ -94,7 +94,7 @@
 					v-for="(item, index) in communityList"
 					:key="index"
 					class="content-item"
-					@tap="navigateTo('/pages/community/detail?id=' + item.id)"
+					@tap="navigateTo('/pages/community-sub/detail?id=' + item.id)"
 				>
 					<image class="content-image" :src="item.image" mode="aspectFill"></image>
 					<view class="content-info">

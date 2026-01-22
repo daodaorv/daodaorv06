@@ -318,8 +318,14 @@ const loadHostingData = () => {
   vehicles.value = mockHostingVehicles;
 };
 
-// 平滑滚动到功能区
+// 平滑滚动到功能区（未登录时跳转登录）
 const scrollToFeatures = () => {
+  if (!isLogin.value) {
+    uni.navigateTo({
+      url: '/pages/auth/login?redirect=/pages/hosting/index'
+    });
+    return;
+  }
   uni.pageScrollTo({
     selector: '#features',
     duration: 300
@@ -336,57 +342,63 @@ const handleWithdraw = () => {
     return;
   }
   uni.navigateTo({
-    url: '/pages/hosting/income/index?action=withdraw'
+    url: '/pages/hosting-sub/income/index?action=withdraw'
   });
 };
 
 // 查看全部车辆
 const viewAllVehicles = () => {
   uni.navigateTo({
-    url: '/pages/hosting/vehicle-list/index'
+    url: '/pages/hosting-sub/vehicle-list/index'
   });
 };
 
 // 车主自用申请
 const applySelfUse = (vehicle: any) => {
   uni.navigateTo({
-    url: `/pages/hosting/self-use/index?vehicleId=${vehicle.id}`
+    url: `/pages/hosting-sub/self-use/index?vehicleId=${vehicle.id}`
   });
 };
 
 // 跳转到车辆详情
 const goToVehicleDetail = (vehicleId: number) => {
   uni.navigateTo({
-    url: `/pages/hosting/vehicle-detail/index?id=${vehicleId}`
+    url: `/pages/hosting-sub/vehicle-detail/index?id=${vehicleId}`
   });
 };
 
 // 跳转到托管协议
 const goToAgreement = () => {
   uni.navigateTo({
-    url: '/pages/hosting/agreement/index'
+    url: '/pages/hosting-sub/agreement/index'
   });
 };
 
 // 跳转到自有车托管
 const goToOldCarHosting = () => {
-  uni.navigateTo({
-    url: '/pages/hosting/old-car/index'
-  });
+  if (!isLogin.value) {
+    uni.navigateTo({ url: '/pages/auth/login?redirect=/pages/hosting-sub/old-car/index' });
+    return;
+  }
+  uni.navigateTo({ url: '/pages/hosting-sub/old-car/index' });
 };
 
 // 跳转到购车托管
 const goToNewCarHosting = () => {
-  uni.navigateTo({
-    url: '/pages/hosting/new-car/index'
-  });
+  if (!isLogin.value) {
+    uni.navigateTo({ url: '/pages/auth/login?redirect=/pages/hosting-sub/new-car/index' });
+    return;
+  }
+  uni.navigateTo({ url: '/pages/hosting-sub/new-car/index' });
 };
 
 // 跳转到众筹托管
 const goToCrowdfunding = () => {
-  uni.navigateTo({
-    url: '/pages/hosting/crowdfunding/index'
-  });
+  if (!isLogin.value) {
+    uni.navigateTo({ url: '/pages/auth/login?redirect=/pages/hosting-sub/crowdfunding/index' });
+    return;
+  }
+  uni.navigateTo({ url: '/pages/hosting-sub/crowdfunding/index' });
 };
 
 // 公告点击

@@ -398,7 +398,7 @@ const handleSubmit = async () => {
         if (orderType.value === 'crowdfunding') {
           // 众筹订单跳转到众筹详情
           uni.redirectTo({
-            url: `/pages/hosting/crowdfunding/detail?projectId=${projectId.value}`
+            url: `/pages/hosting-sub/crowdfunding/detail?projectId=${projectId.value}`
           })
         } else {
           // 租赁订单跳转到订单详情

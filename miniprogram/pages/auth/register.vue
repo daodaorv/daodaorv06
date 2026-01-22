@@ -268,7 +268,7 @@ const handleRegister = async () => {
 		const result = await register(params)
 
 		// 保存登录信息
-		saveLoginInfo(result.token, result.refreshToken, result.user)
+		saveLoginInfo(result.token, result.refreshToken, result.userInfo)
 
 		uni.showToast({
 			title: '注册成功',

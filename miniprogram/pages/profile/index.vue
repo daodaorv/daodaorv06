@@ -23,12 +23,12 @@
 						<text class="nickname">{{ isLogin ? userInfo.nickname : '点击登录/注册' }}</text>
 						<u-icon v-if="!isLogin" name="arrow-right" size="14" color="#1D2129"></u-icon>
 					</view>
-					<text class="subtitle">{{ isLogin ? 'ID: 888888' : '登录后享受更多权益' }}</text>
+					<text class="subtitle">{{ isLogin ? `ID: ${userInfo.id || '未知'}` : '登录后享受更多权益' }}</text>
 				</view>
 			</view>
 			
 			<!-- 会员黑卡入口 -->
-			<view class="vip-banner" v-if="isLogin" @tap.stop="navigateTo('/pages/membership/index')">
+			<view class="vip-banner" v-if="isLogin" @tap.stop="navigateTo('/pages/business/membership/index')">
 				<view class="vip-content">
 					<view class="vip-left">
 						<u-icon name="star-fill" size="18" color="#FFD700"></u-icon>
@@ -142,6 +142,7 @@ import { isLoggedIn, getCurrentUser, logout as logoutUtil } from '@/utils/auth';
 import { getWindowInfo } from '@/utils/system';
 import { BackendOrderStatus } from '@/utils/orderStatus';
 import { getOrders } from '@/api/order';
+import { logger } from '@/utils/logger';
 
 // 获取系统状态栏高度
 const statusBarHeight = ref(0);
@@ -153,6 +154,7 @@ const isLogin = ref(false);
 
 // 用户信息
 const userInfo = ref({
+	id: '',
 	avatar: '/static/default-avatar.png',
 	nickname: '游客',
 	levelName: '普通会员'
@@ -168,18 +170,18 @@ const orderCounts = ref({
 
 // 菜单配置
 const gridMenu = ref([
-	{ name: '优惠券', icon: 'coupon-fill', iconColor: '#FF4D4F', path: '/pages/profile/coupons', badge: '3' },
-	{ name: '积分', icon: 'integral-fill', iconColor: '#FF9F29', path: '/pages/profile/points', amount: '2,080' },
-	{ name: '钱包', icon: 'wallet-fill', iconColor: '#2196F3', path: '/pages/profile/wallet', amount: '¥1280' },
-	{ name: '收藏', icon: 'star-fill', iconColor: '#FFC107', path: '/pages/profile/favorites' }
+	{ name: '优惠券', icon: 'coupon-fill', iconColor: '#FF4D4F', path: '/pages/profile-sub/coupons', badge: '3' },
+	{ name: '积分', icon: 'integral-fill', iconColor: '#FF9F29', path: '/pages/profile-sub/points', amount: '2,080' },
+	{ name: '钱包', icon: 'wallet-fill', iconColor: '#2196F3', path: '/pages/profile-sub/wallet', amount: '¥1280' },
+	{ name: '收藏', icon: 'star-fill', iconColor: '#FFC107', path: '/pages/profile-sub/favorites' }
 ]);
 
 const listMenu = ref([
-	{ name: '推广中心', icon: 'share-fill', path: '/pages/profile/promotion-center' },
-	{ name: '常用联系人', icon: 'account-fill', path: '/pages/profile/contacts' },
-	{ name: '地址管理', icon: 'map-fill', path: '/pages/profile/address' },
-	{ name: '联系客服', icon: 'server-man', path: '/pages/help/index' },
-	{ name: '设置', icon: 'setting-fill', path: '/pages/profile/settings' }
+	{ name: '推广中心', icon: 'share-fill', path: '/pages/profile-sub/promotion-center' },
+	{ name: '常用联系人', icon: 'account-fill', path: '/pages/profile-sub/contacts' },
+	{ name: '地址管理', icon: 'map-fill', path: '/pages/profile-sub/address' },
+	{ name: '联系客服', icon: 'server-man', path: '/pages/business/help/index' },
+	{ name: '设置', icon: 'setting-fill', path: '/pages/profile-sub/settings' }
 ]);
 
 // 页面显示时检查登录状态
@@ -211,6 +213,7 @@ const checkLoginStatus = () => {
 			}
 
 			userInfo.value = {
+				id: user.id || '',
 				avatar: user.avatar || '/static/default-avatar.png',
 				nickname: user.nickname || '房车用户',
 				levelName: levelName
@@ -218,6 +221,7 @@ const checkLoginStatus = () => {
 		}
 	} else {
 		userInfo.value = {
+			id: '',
 			avatar: '/static/default-avatar.png',
 			nickname: '游客',
 			levelName: '普通会员'
@@ -248,7 +252,7 @@ const loadOrderCounts = async () => {
 			});
 		}
 	} catch (error) {
-		console.error('加载订单统计失败:', error);
+		logger.error('加载订单统计失败:', error);
 	}
 };
 
@@ -256,7 +260,7 @@ const handleLogin = () => {
 	if (!isLogin.value) {
 		uni.navigateTo({ url: '/pages/auth/login' });
 	} else {
-		uni.navigateTo({ url: '/pages/profile/edit' });
+		uni.navigateTo({ url: '/pages/profile-sub/edit' });
 	}
 };
 

@@ -376,13 +376,13 @@ onLoad(async (options: any) => {
 
 	// 统一登录拦截
 	if (!isLoggedIn()) {
-		redirectUrl.value = buildRedirectUrl('/pages/order/list', cachedRouteParams);
+		redirectUrl.value = buildRedirectUrl('/pages/order/list', cachedRouteParams || undefined);
 		await requireLogin(redirectUrl.value);
 		return;
 	}
 
 	// 设置状态参数
-	if (cachedRouteParams.status) {
+	if (cachedRouteParams && cachedRouteParams.status) {
 		currentStatus.value = cachedRouteParams.status;
 	}
 

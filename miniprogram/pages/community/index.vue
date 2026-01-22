@@ -10,7 +10,7 @@
 
 		<!-- 业务入口 (沉浸式卡片) -->
 		<view class="business-grid">
-			<view class="biz-card campsite-card" @click="navigateTo('/pages/campsite/list')">
+			<view class="biz-card campsite-card" @click="navigateTo('/pages/business/campsite/list')">
 				<view class="card-overlay"></view>
 				<view class="biz-content">
 					<view class="biz-header">
@@ -20,7 +20,7 @@
 					<text class="biz-desc">精选全国 200+ 优质营地</text>
 				</view>
 			</view>
-			<view class="biz-card tour-card" @click="navigateTo('/pages/tour/list')">
+			<view class="biz-card tour-card" @click="navigateTo('/pages/business/tour/list')">
 				<view class="card-overlay"></view>
 				<view class="biz-content">
 					<view class="biz-header">
@@ -218,14 +218,14 @@ const loadPosts = () => {
 // 跳转到帖子详情
 const goToDetail = (postId: number) => {
 	uni.navigateTo({
-		url: `/pages/community/detail?id=${postId}`
+		url: `/pages/community-sub/detail?id=${postId}`
 	})
 }
 
 // 跳转到发布页面
 const goToPublish = () => {
 	uni.navigateTo({
-		url: '/pages/community/publish'
+		url: '/pages/community-sub/publish'
 	})
 }
 

@@ -305,7 +305,7 @@ const formatDate = (dateStr: string) => {
 // 去优惠券商城
 const goToCouponMall = () => {
 	uni.navigateTo({
-		url: '/pages/coupon-mall/index'
+		url: '/pages/business/coupon-mall/index'
 	});
 };
 

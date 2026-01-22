@@ -369,6 +369,10 @@
 						<text class="detail-label">附加服务</text>
 						<text class="detail-value">¥{{ servicesPrice }}</text>
 					</view>
+					<view v-if="remoteReturnFee > 0" class="detail-row">
+						<text class="detail-label">异地还车费({{ orderData.pickupStore }}→{{ orderData.returnStore }} 约{{ remoteReturnDistance }}km)</text>
+						<text class="detail-value">¥{{ remoteReturnFee }}</text>
+					</view>
 					<view v-if="!isSpecialOffer && selectedCoupon" class="detail-row discount">
 						<text class="detail-label">优惠券抵扣</text>
 						<text class="detail-value">-¥{{ couponDiscount }}</text>
@@ -476,7 +480,6 @@
 import { logger } from '@/utils/logger';
 import { ref, computed, watch, onUnmounted } from 'vue';
 import { onLoad, onShow } from '@dcloudio/uni-app';
-// @ts-ignore
 import { storeToRefs } from 'pinia';
 import { requireLogin, isLoggedIn, buildRedirectUrl } from '@/utils/auth';
 import { registerMockOrder, createOrder } from '@/api/order';
@@ -486,6 +489,7 @@ import { getRentalRules } from '@/api/rules';
 import type { RentalRuleResponse } from '@/api/rules';
 import { uploadDriverLicenseImage } from '@/api/upload';
 import { mockSpecialOffer } from '@/mock';
+import { calculateDistance } from '@/utils/location';
 
 // 订单类型
 const orderType = ref<'normal' | 'special-offer'>('normal');
@@ -520,12 +524,184 @@ const orderData = ref({
 	beds: 4,
 	dailyPrice: 680,
 	pickupLocation: '成都市武侯区天府大道中段',
+	pickupStore: '成都双流店', // 取车门店名称
 	pickupDate: '2024-12-01',
 	pickupTime: '09:00',
 	returnLocation: '成都市武侯区天府大道中段',
+	returnStore: '成都双流店', // 还车门店名称
 	returnDate: '2024-12-05',
-	returnTime: '18:00'
+	returnTime: '18:00',
+	isDifferentLocation: false // 是否异地还车
 });
+
+// 门店名称到ID的映射
+const STORE_NAME_TO_ID: Record<string, string> = {
+	// 北京门店
+	'北京朝阳店': '101',
+	'北京海淀店': '102',
+	'北京大兴店': '103',
+	// 上海门店
+	'上海虹桥店': '201',
+	'上海浦东店': '202',
+	'上海嘉定店': '203',
+	// 成都门店
+	'成都双流店': '301',
+	'成都高新店': '302',
+	'成都天府店': '303',
+	// 深圳门店
+	'深圳宝安店': '401',
+	'深圳南山店': '402',
+	'深圳龙岗店': '403',
+	// 广州门店
+	'广州白云店': '501',
+	'广州天河店': '502',
+	'广州番禺店': '503',
+	// 杭州门店
+	'杭州萧山店': '601',
+	'杭州西湖店': '602',
+	// 重庆门店
+	'重庆江北店': '701',
+	'重庆渝北店': '702',
+	// 西安门店
+	'西安未央店': '801',
+	'西安雁塔店': '802',
+	// 武汉门店
+	'武汉洪山店': '901',
+	'武汉江汉店': '902',
+	// 长沙门店
+	'长沙岳麓店': '1001',
+	'长沙雨花店': '1002',
+	// 南京门店
+	'南京江宁店': '1101',
+	'南京鼓楼店': '1102',
+	// 苏州门店
+	'苏州吴中店': '1201',
+	'苏州工业园店': '1202',
+	// 天津门店
+	'天津滨海店': '1301',
+	'天津南开店': '1302',
+	// 青岛门店
+	'青岛市南店': '1401',
+	'青岛崂山店': '1402',
+	// 厦门门店
+	'厦门思明店': '1501',
+	'厦门湖里店': '1502',
+	// 昆明门店
+	'昆明官渡店': '1601',
+	'昆明盘龙店': '1602',
+	// 三亚门店
+	'三亚凤凰店': '1701',
+	'三亚海棠湾店': '1702',
+	// 海口门店
+	'海口美兰店': '1801',
+	'海口龙华店': '1802'
+};
+
+/**
+ * 根据门店名称获取门店ID
+ */
+const getStoreIdByName = (storeName: string): string | null => {
+	return STORE_NAME_TO_ID[storeName] || null;
+};
+
+// 门店GPS坐标数据
+const STORE_COORDINATES: Record<string, { lat: number; lng: number }> = {
+	// 北京门店
+	'101': { lat: 39.9219, lng: 116.4436 },
+	'102': { lat: 39.9590, lng: 116.2987 },
+	'103': { lat: 39.7280, lng: 116.3410 },
+	// 上海门店
+	'201': { lat: 31.1974, lng: 121.3284 },
+	'202': { lat: 31.2231, lng: 121.5397 },
+	'203': { lat: 31.2752, lng: 121.1965 },
+	// 成都门店
+	'301': { lat: 30.5785, lng: 103.9476 },
+	'302': { lat: 30.6598, lng: 104.0657 },
+	'303': { lat: 30.6622, lng: 104.0657 },
+	// 深圳门店
+	'401': { lat: 22.5551, lng: 113.8840 },
+	'402': { lat: 22.5329, lng: 113.9344 },
+	'403': { lat: 22.7208, lng: 114.2468 },
+	// 广州门店
+	'501': { lat: 23.1620, lng: 113.2988 },
+	'502': { lat: 23.1353, lng: 113.3235 },
+	'503': { lat: 22.9388, lng: 113.3838 },
+	// 杭州门店
+	'601': { lat: 30.2294, lng: 120.2344 },
+	'602': { lat: 30.2591, lng: 120.1294 },
+	// 重庆门店
+	'701': { lat: 29.5750, lng: 106.6047 },
+	'702': { lat: 29.6027, lng: 106.5300 },
+	// 西安门店
+	'801': { lat: 34.3853, lng: 108.9486 },
+	'802': { lat: 34.2250, lng: 108.9486 },
+	// 武汉门店
+	'901': { lat: 30.5100, lng: 114.4070 },
+	'902': { lat: 30.5844, lng: 114.2734 },
+	// 长沙门店
+	'1001': { lat: 28.2353, lng: 112.9388 },
+	'1002': { lat: 28.1353, lng: 113.0353 },
+	// 南京门店
+	'1101': { lat: 31.9522, lng: 118.7969 },
+	'1102': { lat: 32.0603, lng: 118.7780 },
+	// 苏州门店
+	'1201': { lat: 31.2625, lng: 120.6197 },
+	'1202': { lat: 31.3167, lng: 120.6853 },
+	// 天津门店
+	'1301': { lat: 39.0851, lng: 117.7070 },
+	'1302': { lat: 39.1235, lng: 117.1633 },
+	// 青岛门店
+	'1401': { lat: 36.0671, lng: 120.3826 },
+	'1402': { lat: 36.1067, lng: 120.4594 },
+	// 厦门门店
+	'1501': { lat: 24.4798, lng: 118.0894 },
+	'1502': { lat: 24.5127, lng: 118.1279 },
+	// 昆明门店
+	'1601': { lat: 25.0406, lng: 102.7123 },
+	'1602': { lat: 25.0858, lng: 102.7123 },
+	// 三亚门店
+	'1701': { lat: 18.2528, lng: 109.5117 },
+	'1702': { lat: 18.4055, lng: 109.7543 },
+	// 海口门店
+	'1801': { lat: 20.0444, lng: 110.1999 },
+	'1802': { lat: 20.0311, lng: 110.3185 }
+};
+
+/**
+ * 计算异地还车距离(公里)
+ */
+const calculateRemoteReturnDistance = (pickupStore: string, returnStore: string): number => {
+	// 如果取还车门店相同,返回0
+	if (pickupStore === returnStore) {
+		return 0;
+	}
+
+	// 获取门店ID
+	const pickupStoreId = getStoreIdByName(pickupStore);
+	const returnStoreId = getStoreIdByName(returnStore);
+
+	// 如果门店ID不存在,返回0
+	if (!pickupStoreId || !returnStoreId) {
+		return 0;
+	}
+
+	// 获取门店坐标
+	const pickupCoords = STORE_COORDINATES[pickupStoreId];
+	const returnCoords = STORE_COORDINATES[returnStoreId];
+
+	// 如果坐标不存在,返回0
+	if (!pickupCoords || !returnCoords) {
+		return 0;
+	}
+
+	// 计算距离
+	return calculateDistance(
+		pickupCoords.lat,
+		pickupCoords.lng,
+		returnCoords.lat,
+		returnCoords.lng
+	);
+};
 
 const contactStore = useContactStore();
 const { contactList } = storeToRefs(contactStore);
@@ -658,6 +834,37 @@ const servicesPrice = computed(() => {
 	}, 0);
 });
 
+// 计算异地还车距离(公里)
+const remoteReturnDistance = computed(() => {
+	// 特惠套餐不支持异地还车
+	if (isSpecialOffer.value) {
+		return 0;
+	}
+
+	// 如果不是异地还车,返回0
+	if (!orderData.value.isDifferentLocation) {
+		return 0;
+	}
+
+	// 计算取还车门店之间的距离
+	return calculateRemoteReturnDistance(
+		orderData.value.pickupStore,
+		orderData.value.returnStore
+	);
+});
+
+// 计算异地还车费用
+const remoteReturnFee = computed(() => {
+	const distance = remoteReturnDistance.value;
+	if (distance === 0) {
+		return 0;
+	}
+
+	// 异地还车费率: 2.5元/公里
+	const REMOTE_RETURN_RATE = 2.5;
+	return Math.round(distance * REMOTE_RETURN_RATE);
+});
+
 // 计算优惠券抵扣
 const couponDiscount = computed(() => {
 	if (!selectedCoupon.value || isSpecialOffer.value) return 0;
@@ -674,7 +881,7 @@ const couponDiscount = computed(() => {
 
 // 计算总价
 const totalPrice = computed(() => {
-	const total = basePrice.value + insurancePrice.value + servicesPrice.value - couponDiscount.value;
+	const total = basePrice.value + insurancePrice.value + servicesPrice.value + remoteReturnFee.value - couponDiscount.value;
 	return Math.max(total, 0);
 });
 
@@ -825,7 +1032,7 @@ const handleContactSelect = (action: any) => {
 
 const goToContactManage = () => {
 	uni.navigateTo({
-		url: '/pages/profile/contacts'
+		url: '/pages/profile-sub/contacts'
 	});
 };
 
@@ -1105,7 +1312,10 @@ const loadSpecialOfferData = async (offerId: string) => {
 		orderData.value.seats = mockData.vehicle.seats;
 		orderData.value.beds = mockData.vehicle.beds;
 		orderData.value.pickupLocation = `${mockData.pickupStore.name} - ${mockData.pickupStore.address}`;
+		orderData.value.pickupStore = mockData.pickupStore.name;
 		orderData.value.returnLocation = `${mockData.returnStore.name} - ${mockData.returnStore.address}`;
+		orderData.value.returnStore = mockData.returnStore.name;
+		orderData.value.isDifferentLocation = mockData.pickupStore.name !== mockData.returnStore.name;
 
 		// 设置默认取车时间为可选时间段的第一天
 		orderData.value.pickupDate = mockData.availableTimeRange.start;
@@ -1156,7 +1366,10 @@ const setupOrderPage = (options: any) => {
 
 			// 更新取还车信息（使用搜索参数中的真实数据）
 			orderData.value.pickupLocation = `${searchParams.pickupStore} - ${searchParams.pickupCity}`;
+			orderData.value.pickupStore = searchParams.pickupStore;
 			orderData.value.returnLocation = `${searchParams.returnStore} - ${searchParams.returnCity}`;
+			orderData.value.returnStore = searchParams.returnStore;
+			orderData.value.isDifferentLocation = searchParams.isDifferentLocation || false;
 			orderData.value.pickupDate = searchParams.pickupDate;
 			orderData.value.pickupTime = searchParams.pickupTime;
 			orderData.value.returnDate = searchParams.returnDate;
