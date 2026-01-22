@@ -59,4 +59,28 @@ router.put(
   userAdminController.updateUserStatus.bind(userAdminController)
 );
 
+// 分配用户角色
+router.put(
+  '/:id/roles',
+  authMiddleware,
+  requirePermission('user:edit'),
+  userAdminController.assignUserRoles.bind(userAdminController)
+);
+
+// 批量分配角色
+router.post(
+  '/batch/roles',
+  authMiddleware,
+  requirePermission('user:edit'),
+  userAdminController.batchAssignRoles.bind(userAdminController)
+);
+
+// 批量删除用户
+router.post(
+  '/batch/delete',
+  authMiddleware,
+  requirePermission('user:delete'),
+  userAdminController.batchDeleteUsers.bind(userAdminController)
+);
+
 export default router;

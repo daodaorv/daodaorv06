@@ -249,4 +249,108 @@ export class UserAdminController {
       res.status(500).json(errorResponse('更改用户状态失败', 500));
     }
   }
+
+  /**
+   * 分配用户角色
+   * PUT /api/v1/admin/users/:id/roles
+   */
+  async assignUserRoles(req: Request, res: Response): Promise<void> {
+    try {
+      const { id } = req.params;
+      const { roleIds } = req.body;
+
+      if (!Array.isArray(roleIds)) {
+        res.status(400).json(errorResponse('角色ID必须是数组', 400));
+        return;
+      }
+
+      const user = await this.userDAO.findById(Number(id));
+      if (!user) {
+        res.status(404).json(errorResponse('用户不存在', 404));
+        return;
+      }
+
+      // 删除用户现有角色
+      await QueryBuilder.execute('DELETE FROM user_roles WHERE user_id = ?', [Number(id)]);
+
+      // 添加新角色
+      if (roleIds.length > 0) {
+        const values = roleIds.map(roleId => `(${Number(id)}, ${Number(roleId)})`).join(',');
+        await QueryBuilder.execute(`INSERT INTO user_roles (user_id, role_id) VALUES ${values}`);
+      }
+
+      res.json(successResponse({ success: true }));
+    } catch (error) {
+      logger.error('分配用户角色失败:', error);
+      res.status(500).json(errorResponse('分配用户角色失败', 500));
+    }
+  }
+
+  /**
+   * 批量分配角色
+   * POST /api/v1/admin/users/batch/roles
+   */
+  async batchAssignRoles(req: Request, res: Response): Promise<void> {
+    try {
+      const { userIds, roleIds } = req.body;
+
+      if (!Array.isArray(userIds) || userIds.length === 0) {
+        res.status(400).json(errorResponse('用户ID列表不能为空', 400));
+        return;
+      }
+
+      if (!Array.isArray(roleIds)) {
+        res.status(400).json(errorResponse('角色ID必须是数组', 400));
+        return;
+      }
+
+      // 删除这些用户的现有角色
+      const userIdList = userIds.map(id => Number(id)).join(',');
+      await QueryBuilder.execute(`DELETE FROM user_roles WHERE user_id IN (${userIdList})`);
+
+      // 为每个用户添加新角色
+      if (roleIds.length > 0) {
+        const values: string[] = [];
+        userIds.forEach(userId => {
+          roleIds.forEach(roleId => {
+            values.push(`(${Number(userId)}, ${Number(roleId)})`);
+          });
+        });
+        await QueryBuilder.execute(`INSERT INTO user_roles (user_id, role_id) VALUES ${values.join(',')}`);
+      }
+
+      res.json(successResponse({ success: true, count: userIds.length }));
+    } catch (error) {
+      logger.error('批量分配角色失败:', error);
+      res.status(500).json(errorResponse('批量分配角色失败', 500));
+    }
+  }
+
+  /**
+   * 批量删除用户
+   * POST /api/v1/admin/users/batch/delete
+   */
+  async batchDeleteUsers(req: Request, res: Response): Promise<void> {
+    try {
+      const { userIds } = req.body;
+
+      if (!Array.isArray(userIds) || userIds.length === 0) {
+        res.status(400).json(errorResponse('用户ID列表不能为空', 400));
+        return;
+      }
+
+      const userIdList = userIds.map(id => Number(id)).join(',');
+
+      // 删除用户角色关联
+      await QueryBuilder.execute(`DELETE FROM user_roles WHERE user_id IN (${userIdList})`);
+
+      // 删除用户
+      await QueryBuilder.execute(`DELETE FROM users WHERE id IN (${userIdList})`);
+
+      res.json(successResponse({ success: true, count: userIds.length }));
+    } catch (error) {
+      logger.error('批量删除用户失败:', error);
+      res.status(500).json(errorResponse('批量删除用户失败', 500));
+    }
+  }
 }
