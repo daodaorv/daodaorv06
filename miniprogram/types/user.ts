@@ -38,8 +38,6 @@ export interface UserInfo {
   memberLevel?: number
   /** 会员等级名称 */
   memberLevelName?: string
-  /** 积分 */
-  points?: number
   /** 余额 */
   balance?: number
   /** 用户类型 */
